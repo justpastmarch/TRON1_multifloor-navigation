@@ -1,0 +1,168 @@
+TASK: Todo 2 - six-package catkin skeleton and dependency/node inventory
+RESULT: PASS
+ATTEMPT_STATUS: omo_unavailable (Todo 1 bound exact a1 fallback)
+TARGET: /home/m3tron/Desktop/TRON1_Modular_Navigation
+SOURCE: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation (read-only product tree)
+
+CHANGED TARGET FILES
+- src/CMakeLists.txt (target orchestration correction: load canonical Noetic catkin toplevel)
+- test/test_package_dag.py
+- src/tron1_interfaces/{package.xml,CMakeLists.txt,setup.py,src/tron1_interfaces/__init__.py}
+- src/tron1_condition_engine/{package.xml,CMakeLists.txt,setup.py,src/tron1_condition_engine/__init__.py}
+- src/mission_manager/{package.xml,CMakeLists.txt,setup.py,src/mission_manager/__init__.py,scripts/mission_manager_node.py}
+- src/multifloor_manager/{package.xml,CMakeLists.txt,setup.py,src/multifloor_manager/__init__.py,scripts/multifloor_manager_node.py}
+- src/stair_supervisor/{package.xml,CMakeLists.txt,setup.py,src/stair_supervisor/__init__.py,scripts/stair_supervisor_node.py}
+- src/tron1_bringup/{package.xml,CMakeLists.txt,setup.py,src/tron1_bringup/__init__.py}
+- Empty launch/config/test roots exist in every package; scripts roots exist only in the three capability packages.
+- No old product/source file was modified. This evidence receipt is the only old-workspace write.
+
+APPROVED CONTRACT
+- Packages (exactly 6): tron1_interfaces, tron1_condition_engine, mission_manager, multifloor_manager, stair_supervisor, tron1_bringup.
+- Project edges:
+  tron1_interfaces -> []
+  tron1_condition_engine -> []
+  mission_manager -> [tron1_interfaces]
+  multifloor_manager -> [tron1_condition_engine, tron1_interfaces]
+  stair_supervisor -> [tron1_interfaces]
+  tron1_bringup -(exec)-> [mission_manager, multifloor_manager, stair_supervisor]
+- Installed project nodes (exactly 3): mission_manager_node.py, multifloor_manager_node.py, stair_supervisor_node.py.
+- tron1_condition_engine has no ROS package dependency; tron1_bringup declares no executable; capability AST audit rejects imports of another capability package.
+
+FAILING-FIRST
+Command:
+  python3 -m unittest test.test_package_dag -v
+Result before package implementation:
+  exit 1; Ran 6 tests; FAILED (failures=1, errors=2)
+  Both adversarial fixture tests already passed. Repository checks failed because all six package roots/CMake files were absent.
+
+BUILD RECOVERY
+First command:
+  catkin_make
+First result:
+  exit 1; target src/CMakeLists.txt called unknown catkin_workspace() after find_package(catkin).
+Root correction:
+  Replaced the incomplete target-only bootstrap with project(TRON1_Modular_Navigation) plus the canonical /opt/ros/noetic/share/catkin/cmake/toplevel.cmake include.
+Second/final build results:
+  exit 0; Python=/usr/bin/python3 3.8.10; catkin 0.8.12; configure/generate/build completed.
+  Catkin reported exactly:
+    traversing 6 packages in topological order:
+    tron1_bringup, tron1_condition_engine, tron1_interfaces,
+    mission_manager, multifloor_manager, stair_supervisor
+  It generated devel wrappers only for the three approved node scripts.
+
+REQUIRED COMBINED GATE
+Command:
+  python3 -m unittest test.test_package_dag -v && catkin_make
+Result:
+  exit 0; 6/6 direct tests passed in 0.004s; catkin make exited 0.
+Direct test inventory:
+  DIRECT_TEST_METHODS=6
+  DIRECT_ASSERTION_CALLS=10
+
+STATIC / PYTHON 3.8 CHECKS
+- python3 -m compileall -q test src/mission_manager src/multifloor_manager src/stair_supervisor src/tron1_interfaces src/tron1_condition_engine src/tron1_bringup
+  -> exit 0
+- ruff check --no-cache test/test_package_dag.py src/mission_manager src/multifloor_manager src/stair_supervisor src/tron1_interfaces src/tron1_condition_engine src/tron1_bringup
+  -> exit 0; All checks passed.
+- Pure LOC: test/test_package_dag.py=146; every setup.py=8; module roots=1 or 4; node wrappers=6. No file is in the 200-line warning band.
+- The shared check-no-excuse-rules.py could not execute under required Python 3.8 because the checker itself contains Python 3.10 match syntax (SyntaxError at its line 519). Ruff, compileall, unittest, and catkin were used as executable gates.
+- LSP diagnostics were unavailable because the tool server was rooted in the immutable source workspace and rejected target paths outside its request cwd.
+
+MANUAL ROS PACKAGE / ENTRYPOINT / LAUNCH-RESOLUTION SMOKE
+Environment:
+  source devel/setup.bash
+Package inventory result:
+  ROS_PACKAGE_INVENTORY=['mission_manager', 'multifloor_manager', 'stair_supervisor', 'tron1_bringup', 'tron1_condition_engine', 'tron1_interfaces']
+rospack find result:
+  all six resolved to /home/m3tron/Desktop/TRON1_Modular_Navigation/src/<package>
+Installed declaration/wrapper result:
+  CMAKE_INSTALLED_PYTHON=['mission_manager_node.py', 'multifloor_manager_node.py', 'stair_supervisor_node.py']
+  DEVEL_NODE_WRAPPERS=['mission_manager_node.py', 'multifloor_manager_node.py', 'stair_supervisor_node.py']
+Temporary launch smoke commands:
+  roslaunch --nodes task2-launch-smoke.launch
+  roslaunch --args=/mission_manager task2-launch-smoke.launch
+  roslaunch --args=/multifloor_manager task2-launch-smoke.launch
+  roslaunch --args=/stair_supervisor task2-launch-smoke.launch
+  roslaunch --find-node=/mission_manager task2-launch-smoke.launch (and the other two nodes)
+Results:
+  nodes=/mission_manager,/multifloor_manager,/stair_supervisor
+  args resolved to the three target devel/lib/<package>/<node>.py wrappers.
+  every --find-node resolved task2-launch-smoke.launch.
+  The worker-owned temporary launch was deleted after the smoke.
+
+ADVERSARIAL PROBES
+- malformed_input: PackageDagFixtureTest injected mission_manager -> multifloor_manager; rejected. Injected safety_node.py as a fourth installed node; rejected. Command ran 2/2 tests, exit 0.
+- dirty_worktree: source_provenance.py returned {"output_count": 0, "source_count": 104, "status": "ok"}. The 12 source files read for Todo 2 had identical before/after SHA-256 values, including d4197e... package.xml and cb3866... CMakeLists.txt for mission, f13a97... and 6f84d0... for multifloor, and 690f79... and bf28dc... for stair. All three setup/node-script pairs also matched their recorded baseline hashes.
+- stale_state: Todo 1 boundary artifacts were preserved except for the authorized machine-readable source-selection receipt reconciliation; docs/migration/source-selection.json is SHA-256 7e5beffba6dbf935b8e88b30232a2348793a6f65ca022bf9d02f028fb4fdf195. The only pre-existing target product file changed was src/CMakeLists.txt, minimally corrected after its real catkin failure.
+- generated_artifacts: FORBIDDEN_SOURCE_ARTIFACTS=[]; no build/devel/install/cache/generated Python output exists inside target src; no old package was copied wholesale.
+- misleading_success_output: direct suite count is 6, package inventory is 6, CMake/devel node inventories are both 3, and live rospack/roslaunch paths are recorded above.
+- repeated_interruptions: the failed first configure was followed by a successful configure/build using the same target build root; no process was left running, and generated build/devel state was removed after smoke completion.
+- capability isolation: AST import inspection passed for all Python files in mission_manager, multifloor_manager, and stair_supervisor.
+
+NON-BLOCKING HOST OBSERVATION
+- An extra `rospack depends1` probe returned nonzero because the installed Noetic metadata references unavailable legacy rosdep keys python-catkin-pkg/python-empy/python-rospkg. This did not affect `rospack list-names`, six `rospack find` calls, launch resolution, package XML parsing, or catkin configure/build. Project-edge truth was therefore taken from the passing manifest contract and successful catkin graph, not this broken host metadata command.
+- An initial misuse of roslaunch (`--find-node` without `=NODE_NAME`) was rejected as a launch filename error; the documented syntax was then used successfully against the temporary launch.
+
+CLEANUP
+- Deleted task2-launch-smoke.launch.
+- Deleted worker-generated target build/ and devel/ after all build/ROS smoke evidence was captured; install/ was never created.
+- Deleted all worker-generated __pycache__ and .pyc files.
+- Final cleanup probe: RESIDUAL_WORKER_ARTIFACTS=[]; PYTHON_CACHES=[].
+- Final post-cleanup contract run: python3 -B -m unittest test.test_package_dag -v -> exit 0; 6/6.
+- Retained only the approved target skeleton, target contract test, target catkin root correction, and this exact a1 evidence receipt.
+
+ARCHITECTURAL SELF-REVIEW
+- Single responsibility: each package root owns one named package concern; the contract file owns package-DAG/node inventory validation.
+- Boundary purity: XML and Python imports are parsed at test boundaries; no untyped payload is passed into product code.
+- Variant/escape/defensive checks: no Any, cast, type-ignore, broad exception, dynamic import, ROS import in condition engine, or cross-capability import was introduced.
+- Helpers/parameters: no production helper abstraction or function over three parameters was added.
+- Logging: no logging behavior was introduced.
+- Behavior lock: reverting the package roots recreates the observed red repository failures; adding an extra edge or fourth node is rejected by explicit fixtures.
+
+VERIFICATION-FINDING CORRECTION
+- Added these six authoritative immutable-source inputs to target docs/migration/source-selection.json:
+  src/mission_manager/CMakeLists.txt (cb3866be52086ef75cdab55db39294941a812b926d96a4774e8424ed21e9eff5)
+  src/mission_manager/setup.py (79fd4a31c1640112bcffab34272db09814cb5efa07c43aede49b2779e8b4e21d)
+  src/multifloor_manager/CMakeLists.txt (6f84d00ee16b4f7ae7e120526ac01fd61753884d24df438368c012fc97c7f792)
+  src/multifloor_manager/setup.py (c2173d9f9ca716fb16f345258e2f2994e99c24d19a5ea26c07661cf5ebc2d304)
+  src/stair_supervisor/CMakeLists.txt (bf28dcd42c7940c8d7f70b8999387a88a35e9759e59ae7a90dc359693a8d03e2)
+  src/stair_supervisor/setup.py (8632e52a1f91cb58db447e655b803884ee1e96cff1c86d28a80b5a8814642391)
+- Corrected the evidence claim to three setup/node-script pairs.
+- Reconciled task-1-source-selection.json to source_count=104 and manifest_sha256=7e5beffba6dbf935b8e88b30232a2348793a6f65ca022bf9d02f028fb4fdf195.
+- No package manifest, CMake declaration, setup file, module, node, or dependency edge changed during this correction.
+
+CORRECTION VERIFICATION COMMANDS / RESULTS
+- `PYTHONDONTWRITEBYTECODE=1 python3 -B tools/source_provenance.py`
+  -> exit 0; {"output_count": 0, "source_count": 104, "status": "ok"}
+- `PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_package_dag -v`
+  -> exit 0; Ran 6 tests in 0.005s; OK.
+- `catkin_make`
+  -> exit 0; configured/generated/built exactly six packages: tron1_bringup, tron1_condition_engine, tron1_interfaces, mission_manager, multifloor_manager, stair_supervisor; generated only the three approved devel node wrappers.
+- After `source devel/setup.bash`, six `rospack find` calls
+  -> exit 0; every package resolved under /home/m3tron/Desktop/TRON1_Modular_Navigation/src.
+- `roslaunch --nodes task2-verification-smoke.launch` and `roslaunch --args` for all three nodes
+  -> exit 0; nodes were /mission_manager, /multifloor_manager, /stair_supervisor and commands resolved to the three target devel wrappers.
+- Inventory probes
+  -> ROS_PACKAGE_INVENTORY=['mission_manager', 'multifloor_manager', 'stair_supervisor', 'tron1_bringup', 'tron1_condition_engine', 'tron1_interfaces']
+  -> CMAKE_INSTALLED_PYTHON=DEVEL_NODE_WRAPPERS=['mission_manager_node.py', 'multifloor_manager_node.py', 'stair_supervisor_node.py']
+- Receipt reconciliation probe
+  -> MANIFEST_SHA256=7e5beffba6dbf935b8e88b30232a2348793a6f65ca022bf9d02f028fb4fdf195; RECEIPT_SOURCE_COUNT=104.
+- Cleanup removed task2-verification-smoke.launch, build/, devel/, tools/test caches; final probe returned RESIDUAL_WORKER_ARTIFACTS=[] and PYTHON_CACHES=[].
+- Final post-cleanup provenance and package-DAG commands both exited 0 (104 sources; 6/6 tests).
+
+DoneClaim:
+  task: Todo 2 - six-package catkin skeleton and dependency/node inventory
+  status: DONE_VERIFICATION_FINDINGS_CORRECTED
+  target_packages: PASS (exactly 6)
+  project_dependency_dag: PASS
+  installed_project_nodes: PASS (exactly 3)
+  direct_tests: PASS (6/6; 10 direct assertions)
+  catkin_configure_build: PASS
+  ros_package_launch_resolution: PASS
+  python_3_8_compatibility: PASS
+  source_product_workspace: READ_ONLY (104 selected hashes valid; 12 Todo-2 source hashes unchanged)
+  source_selection_manifest: PASS (104 unique inputs; SHA-256 7e5beffba6dbf935b8e88b30232a2348793a6f65ca022bf9d02f028fb4fdf195)
+  evidence_wording: CORRECTED (three setup/node-script pairs)
+  forbidden_source_generated_artifacts: NONE
+  cleanup: PASS
+  hardware_or_later_todo_claims: NONE

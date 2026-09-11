@@ -1,0 +1,213 @@
+Todo 17 — complete offline acceptance, ROS mocks, and install smoke
+Date: 2026-08-26
+Target: /home/m3tron/Desktop/TRON1_Modular_Navigation
+Immutable old product tree: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+Evidence attempt: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/ulw/modular-architecture-expansion/a1
+
+OUTCOME
+- tools/operator/check.sh delegates once to tools/acceptance.sh.
+- The wrapper builds, sources devel for build-time contracts, runs all condition/capability suites and catkin tests, installs, then runs the package-qualified loopback ROS mission rostest and its clean-environment regression from install space before five deterministic process smoke cases and one env-i install-origin subprocess.
+- The test-only rostest launches the existing mission_manager_node.py and a fake move_base action server inside the test process. It adds no deployed node/package/interface/transport owner.
+- Both test processes carry ROS_IP/ROS_HOSTNAME=127.0.0.1. A CATKIN_ENABLE_TESTING-only package hook applies the same identity before the exact package-qualified rostest parent starts; it delegates every other rostest unchanged.
+- No SSH, robot, mini-PC, sensor, actuator, navigation hardware, stair hardware, E-stop, or physical behavior was contacted or claimed.
+
+RED -> GREEN
+RED command:
+  PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_acceptance_contract -v
+RED result:
+  FAILED: 3 tests; acceptance wrapper and smoke driver were absent and bringup had no system_smoke rostest registration.
+GREEN identical command:
+  PASS: Ran 5 tests, OK.
+
+AMBIENT NETWORK RED -> GREEN
+RED environment: ROS_IP=10.192.1.200, ROS_HOSTNAME unset, ROS_MASTER_URI=http://10.192.1.2:11311.
+RED result: package-qualified installed rostest timed out/failed before mock launch because its parent XML-RPC server advertised 10.192.1.200.
+GREEN static contract: both test-only processes declare loopback identity and production system.launch declares no env override.
+GREEN runtime contract: clean install subprocess preserves the invalid ambient input, sources install/setup.bash, then passes installed rostest in 3.330 seconds with tests=1/errors=0/failures=0.
+
+EXACT ACCEPTANCE COMMAND
+Command:
+  ./run.sh --check
+Result:
+  exit 0
+  [ACCEPT] catkin build
+  [ACCEPT] package DAG, config, interfaces, architecture, launch, and process contracts
+  root contracts: Ran 74 tests, OK
+  resolved validation passed: deployed=75 examples=16
+  condition engine: Ran 23 tests, OK
+  mission manager: Ran 30 tests, OK
+  multifloor manager: Ran 14 tests, OK
+  stair supervisor: Ran 14 tests, OK
+  catkin XML: Summary: 23 tests, 0 errors, 0 failures, 0 skipped
+  install-sourced system smoke rostest: TESTS 1, ERRORS 0, FAILURES 0
+  clean install discovery regression: Ran 1 test, OK
+  smoke JSON: happy/cancel/stale/nonfinite/websocket-fault all status=pass
+  clean install origins: six target install paths, status=pass
+  [PASS] complete offline acceptance (loopback ROS and deterministic mocks only; no SSH or hardware)
+
+Side-effect boundary command:
+  PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_run_script_contract.RunScriptContractTest.test_check_is_offline_even_when_ssh_is_a_failing_probe -v
+Result: PASS, Ran 1 test; a PATH-prepended SSH shim that records and exits 97 was never invoked while the complete acceptance wrapper exited 0.
+
+The first integration attempt reached install successfully but could not resolve system_smoke.test after install/setup.bash exposed only installed package assets. No pass was claimed. The permanent fix installs the launch, runner, and fixture only when CATKIN_ENABLE_TESTING is enabled; it removes the source ROS_PACKAGE_PATH workaround and adds no production node or runtime topology. The focused install-sourced rostest, clean-environment regression, and full acceptance rerun all passed.
+
+VERIFIER EXACT CHAIN (UNCHANGED)
+Ambient before command: ROS_IP=10.192.1.200, ROS_HOSTNAME unset, ROS_MASTER_URI=http://10.192.1.2:11311.
+Command:
+  ./run.sh --check && catkin_make install && source install/setup.bash && rostest tron1_bringup system_smoke.test && python3 test/tools/system_smoke_driver.py --case happy
+Result: exit 0; no ROS_PACKAGE_PATH override; installed launch origin; rostest tests=1/errors=0/failures=0; happy status=pass.
+
+FIVE AGENT-RUNNABLE SMOKE CASES
+Command:
+  source /opt/ros/noetic/setup.bash && source install/setup.bash && for smoke_case in happy cancel stale nonfinite websocket-fault; do python3 -B test/tools/system_smoke_driver.py --case "$smoke_case" || exit; done
+Observable results:
+  {"case": "happy", "status": "pass"}
+  {"case": "cancel", "status": "pass"}
+  {"case": "stale", "status": "pass"}
+  {"case": "nonfinite", "status": "pass"}
+  {"case": "websocket-fault", "status": "pass"}
+Behavior:
+- happy: direct mission boundary completed navigate/inspect/record-route return success cases.
+- cancel: active correlated move_base child was cancelled once and unconfirmed anchor remained home.
+- stale: ordinary stream iteration emitted complete zero after monotonic freshness expiry.
+- nonfinite: NaN/Inf replaced the current command with zero and never reached the wire.
+- websocket-fault: send error entered terminal FAULT, stopped iteration, did not reconnect, and did not replay.
+
+END-TO-END MOCK MISSION ROSTEST
+Launch source: src/tron1_bringup/test/system_smoke.test
+Installed launch origin: install/share/tron1_bringup/test/system_smoke.test
+Driver source: src/tron1_bringup/test/system_smoke_rostest.py
+Installed driver origin: install/lib/tron1_bringup/system_smoke_rostest.py
+Command:
+  source /opt/ros/noetic/setup.bash && source install/setup.bash && ROS_MASTER_URI=http://127.0.0.1:11311 ROS_IP=127.0.0.1 ROS_HOSTNAME=127.0.0.1 rostest tron1_bringup system_smoke.test --results-filename task17-system-smoke-install-final.xml
+Result: SUCCESS; tests=1 errors=0 failures=0.
+Observable: real /mission server accepted home_3f -> stair_a_entry_3f navigate, called mocked /move_base exactly once with frame map, and returned MissionResult.OK.
+Preserved XML:
+- task-17-rostest.xml
+- task-17-rosunit.xml
+Clean install regression command:
+  source /opt/ros/noetic/setup.bash && source install/setup.bash && python3 -B -m unittest test.test_install_rostest_contract -v
+Result: PASS, Ran 1 test; the subprocess starts with a constructed environment, sources only Noetic and target install, executes the package-qualified rostest, parses generated XML, and requires exactly one passing case.
+
+EXACT CATKIN COMMANDS
+Command: source /opt/ros/noetic/setup.bash && catkin_make
+Result: exit 0; traversed exactly six packages; interfaces generated; build 100%.
+Command: source /opt/ros/noetic/setup.bash && ROS_MASTER_URI=http://127.0.0.1:11311 ROS_IP=127.0.0.1 ROS_HOSTNAME=127.0.0.1 catkin_make run_tests
+Result: exit 0; mission nosetests 8+1, stair 4, multifloor rostests 5+1, bringup system smoke 1.
+Command: catkin_test_results --verbose build/test_results
+Result: Summary: 23 tests, 0 errors, 0 failures, 0 skipped.
+Command: source /opt/ros/noetic/setup.bash && catkin_make install
+Result: exit 0; all six Python packages and exactly three project node executables installed.
+
+CLEAN INSTALL ORIGIN GATE
+Command:
+  env -i HOME="$PWD" PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TARGET_ROOT="$PWD" OLD_WORKSPACE=/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation bash --noprofile --norc -c 'source /opt/ros/noetic/setup.bash; source "$TARGET_ROOT/install/setup.bash"; python3 -B "$TARGET_ROOT/test/tools/install_origin_check.py"'
+Result: exit 0, status=pass.
+Origins:
+- tron1_interfaces -> target/install/lib/python3/dist-packages/tron1_interfaces/__init__.py
+- tron1_condition_engine -> target/install/lib/python3/dist-packages/tron1_condition_engine/__init__.py
+- mission_manager -> target/install/lib/python3/dist-packages/mission_manager/__init__.py
+- multifloor_manager -> target/install/lib/python3/dist-packages/multifloor_manager/__init__.py
+- stair_supervisor -> target/install/lib/python3/dist-packages/stair_supervisor/__init__.py
+- tron1_bringup -> target/install/lib/python3/dist-packages/tron1_bringup/__init__.py
+Rejected old-workspace origins: 0.
+
+PACKAGE / LAUNCH INVENTORY
+Command: python3 -B -m unittest test.test_package_dag test.test_launch_contract -v
+Result: Ran 15 tests, OK.
+Packages exactly 6:
+  tron1_interfaces, tron1_condition_engine, mission_manager, multifloor_manager, stair_supervisor, tron1_bringup
+Installed project nodes exactly 3:
+  mission_manager_node.py, multifloor_manager_node.py, stair_supervisor_node.py
+Command: source /opt/ros/noetic/setup.bash && source devel/setup.bash && roslaunch --nodes tron1_bringup system.launch use_mock_hardware:=true
+Result: exit 0, exact nodes:
+  /pointcloud_to_laserscan
+  /apriltag_ros_continuous_node
+  /map_server
+  /amcl
+  /move_base
+  /multifloor_manager
+  /stair_supervisor
+  /mission_manager
+  /rviz
+No extra runtime topology, bridge, mux, watchdog, safety node, UI, door node, or second robot transport owner was added.
+
+SOURCE PROVENANCE
+Command: python3 -B tools/source_provenance.py
+Result: {"output_count": 0, "source_count": 104, "status": "ok"}; every selected immutable source hash still matches.
+Target hashes:
+  06763bbd15580be2b9005aa2cff05d5821a32b0c5f99119a99793a7a4599bc6a tools/operator/check.sh
+  492f0742b6d1bfa379e9d8a9e7220c0825a8bd7d0f98d3f75bcfbf9e2678d7a0 tools/acceptance.sh
+  83605adbaeb14b6f6bd129239d80253cc1ee25b574bc69d5e631176484d1ebbd test/test_acceptance_contract.py
+  7a9aa70696fc0b5a46301069c2083e4cd629e6b8eaeff6e5af0cf24ca39069a7 test/test_launch_contract.py
+  b66b5268132764b597721c4298505b5b38168593e67a85f00af68b22a33963f6 test/test_install_rostest_contract.py
+  a3f72762ce02d155d203ed0fe861d59ef19264d86b444569979a5e02a0f91f8c test/tools/system_smoke_driver.py
+  101e9b5b536587db14ae8e15b481fbf8df1995c2024926831cf158053f04ae9b test/tools/install_origin_check.py
+  d007d983978dd0ba72d20bf0025acc7c791496c5f078fb9dc5acb3988ae63d19 src/tron1_bringup/CMakeLists.txt
+  4496e75a72047d481a5151c90e4f05403d719b1c517373ea930f9064a7779b77 src/tron1_bringup/package.xml
+  b1293948d9e764bb280137a6ec8ac5d9ce4708e9fec645721bb2ab3ce106a2a2 src/tron1_bringup/test/system_smoke.test
+  72305de9914a3b8fb7ac9534fcd1bb5bbc43e534a04449969b469fb7e29abdc2 src/tron1_bringup/test/env-hooks/99.tron1_bringup_system_smoke.sh
+  1f1bd866dd2ee589c770f2678eb41e7975234af9f0d814be5e727764cf5980e1 src/tron1_bringup/launch/system.launch (unchanged production graph)
+  c3f590c09aaecd0a5e6f06c7f5959de9aefb65e2f531ce3d8cb1ea79e3eb7ab3 src/tron1_bringup/test/system_smoke_rostest.py
+
+QUALITY / SIZE
+- sh -n test-only hook and bash -n run.sh/tools scripts: exit 0.
+- Ruff on both affected Python contracts: All checks passed.
+- Python 3.13 no-excuse audit on both affected Python contracts: no violations.
+- Pure LOC: acceptance contract 89; install regression 58; test launch 23; test-only hook 7; bringup CMake 30. All healthy.
+- Responsibilities are singular: wrapper orchestration, smoke case dispatch, install provenance, and live mission ROS assertion.
+- No untrusted mapping crosses the install checker boundary; no tagged variant chain, Any/cast/type-ignore, broad exception, defensive runtime layer, one-off production helper, >3-parameter production API, redundant destructive verification, negative production name, or logging change was added.
+
+CLEANUP
+- ./run.sh --cleanup: exit 0.
+- pgrep for roscore/rosmaster/roslaunch/rostest/mission smoke: no output.
+- No .active scan artifact exists.
+- Required target build/devel/install and build/test_results are retained as acceptance products.
+- Source/test/tool transient Python caches and transient ~/.ros task17 result files were removed after evidence capture; generated install bytecode remains part of the installed artifact.
+- No old product/source file was edited; old-workspace writes are only these bound a1 Todo 17 evidence artifacts.
+
+DoneClaim
+{
+  "task": "17. Prove the complete offline system through contracts, ROS mocks, and install smoke execution",
+  "changed_files": [
+    "tools/operator/check.sh",
+    "tools/acceptance.sh",
+    "test/test_acceptance_contract.py",
+    "test/test_launch_contract.py",
+    "test/test_install_rostest_contract.py",
+    "test/tools/system_smoke_driver.py",
+    "test/tools/install_origin_check.py",
+    "src/tron1_bringup/CMakeLists.txt",
+    "src/tron1_bringup/package.xml",
+    "src/tron1_bringup/test/env-hooks/99.tron1_bringup_system_smoke.sh",
+    "src/tron1_bringup/test/system_smoke.test",
+    "src/tron1_bringup/test/system_smoke_rostest.py"
+  ],
+  "tests": [
+    "./run.sh --check: exit 0",
+    "root acceptance contracts: 74/74",
+    "capability suites: 23/23 condition, 30/30 mission, 14/14 multifloor, 14/14 stair",
+    "catkin test results: 23 tests, 0 errors/failures/skips",
+    "system mission rostest: 1/1",
+    "clean install rostest discovery regression: 1/1",
+    "invalid ambient ROS_IP install regression: 1/1",
+    "unchanged verifier exact chain under ROS_IP=10.192.1.200: exit 0",
+    "five smoke cases: 5/5",
+    "clean install origins: 6/6 target install, 0 old workspace"
+  ],
+  "manual_qa": [
+    "task-17-runtime-trace.json",
+    "task-17-rostest.xml (installed launch origin)",
+    "task-17-rosunit.xml",
+    "nine-node roslaunch --nodes inventory"
+  ],
+  "cleanup": [
+    "wrapper cleanup exit 0",
+    "no ROS/mock process",
+    "no active scan artifact",
+    "transient source caches and ROS result copies removed"
+  ],
+  "risks": [
+    "Offline and loopback mocks only. No hardware/provenance matrix or powered-TRON behavior is claimed."
+  ]
+}

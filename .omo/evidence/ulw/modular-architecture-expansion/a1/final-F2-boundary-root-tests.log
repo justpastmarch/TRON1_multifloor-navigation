@@ -1,0 +1,51 @@
+test_extra_capability_dependency_fixture_is_rejected (test.test_package_dag.PackageDagFixtureTest) ... ok
+test_fourth_installed_node_fixture_is_rejected (test.test_package_dag.PackageDagFixtureTest) ... ok
+test_capabilities_do_not_import_each_other (test.test_package_dag.PackageDagRepositoryTest) ... ok
+test_direct_project_dependency_edges_are_exact (test.test_package_dag.PackageDagRepositoryTest) ... ok
+test_installed_project_node_inventory_is_exact (test.test_package_dag.PackageDagRepositoryTest) ... ok
+test_package_inventory_and_skeleton_roots_are_exact (test.test_package_dag.PackageDagRepositoryTest) ... ok
+test_capability_packages_contain_no_interface_definitions (test.test_interface_contract.InterfaceContractTest) ... ok
+test_duplicate_definition_probe_is_detected (test.test_interface_contract.InterfaceContractTest) ... ok
+test_field_and_constant_mutation_probes_are_detected (test.test_interface_contract.InterfaceContractTest) ... ok
+test_generated_result_and_state_constants_preserve_semantics (test.test_interface_contract.InterfaceContractTest) ... ERROR
+test_generated_types_resolve_from_shared_package (test.test_interface_contract.InterfaceContractTest) ... ERROR
+test_malformed_action_fixture_is_rejected (test.test_interface_contract.InterfaceContractTest) ... ok
+test_normalized_target_definitions_match_selected_sources (test.test_interface_contract.InterfaceContractTest) ... ok
+test_capability_launch_probe_is_detected (test.test_launch_contract.LaunchFailureProbeTest) ... ok
+test_duplicate_scan_and_fourth_node_probes_are_detected (test.test_launch_contract.LaunchFailureProbeTest) ... ok
+test_unresolved_asset_and_outside_transport_probes_are_detected (test.test_launch_contract.LaunchFailureProbeTest) ... ok
+test_assets_and_owner_configuration_arguments_resolve (test.test_launch_contract.LaunchGraphContractTest) ... ok
+test_bringup_installs_no_production_executable (test.test_launch_contract.LaunchGraphContractTest) ... ok
+test_mock_fixture_selects_system_without_adding_nodes (test.test_launch_contract.LaunchGraphContractTest) ... ok
+test_production_inventory_is_exact (test.test_launch_contract.LaunchGraphContractTest) ... ok
+test_scan_and_transport_ownership_are_unique (test.test_launch_contract.LaunchGraphContractTest) ... ok
+test_system_is_the_only_production_top_level (test.test_launch_contract.LaunchGraphContractTest) ... ok
+test_accepted_and_open_conflation_fixture_is_rejected (test.test_architecture_resolution.ArchitectureResolutionTest) ... ok
+test_automatic_door_example_is_documentation_only_and_typed (test.test_architecture_resolution.ArchitectureResolutionTest) ... ok
+test_command_and_ip_in_condition_policy_fixture_is_rejected (test.test_architecture_resolution.ArchitectureResolutionTest) ... ok
+test_example_leakage_fixture_is_rejected (test.test_architecture_resolution.ArchitectureResolutionTest) ... ok
+test_resolved_manifest_has_six_views_and_real_trace_targets (test.test_architecture_resolution.ArchitectureResolutionTest) ... ok
+test_stale_mermaid_id_fixture_is_rejected (test.test_architecture_resolution.ArchitectureResolutionTest) ... ok
+test_cleanup_terminates_recorded_child_and_preserves_unowned_process (test.test_process_boundary_contract.ProcessBoundaryContractTest) ... ok
+test_stale_pid_start_time_cannot_terminate_live_process (test.test_process_boundary_contract.ProcessBoundaryContractTest) ... ok
+
+======================================================================
+ERROR: test_generated_result_and_state_constants_preserve_semantics (test.test_interface_contract.InterfaceContractTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m3tron/Desktop/TRON1_Modular_Navigation/test/test_interface_contract.py", line 109, in test_generated_result_and_state_constants_preserve_semantics
+    from tron1_interfaces.msg import (  # pylint: disable=import-outside-toplevel
+ModuleNotFoundError: No module named 'tron1_interfaces'
+
+======================================================================
+ERROR: test_generated_types_resolve_from_shared_package (test.test_interface_contract.InterfaceContractTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m3tron/Desktop/TRON1_Modular_Navigation/test/test_interface_contract.py", line 87, in test_generated_types_resolve_from_shared_package
+    from tron1_interfaces.msg import (  # pylint: disable=import-outside-toplevel
+ModuleNotFoundError: No module named 'tron1_interfaces'
+
+----------------------------------------------------------------------
+Ran 30 tests in 2.378s
+
+FAILED (errors=2)

@@ -1,0 +1,10 @@
+location_id,floor_id,x_m,y_m,yaw_rad,status,provenance,reason
+home_5f,5F,,,,blocked_pending_stationary_site_survey,unavailable,"No two separated surveyed 5F correspondences"
+stair_5f_to_rf,5F,,,,blocked_pending_stationary_site_survey,unavailable,"No two separated surveyed 5F correspondences"
+stair_5f_from_rf,5F,,,,blocked_pending_stationary_site_survey,unavailable,"No two separated surveyed 5F correspondences"
+stair_rf_landing,RF,,,,blocked_pending_stationary_site_survey,unavailable,"No two separated surveyed RF correspondences"
+stair_rf_to_5f,RF,,,,blocked_pending_stationary_site_survey,unavailable,"No two separated surveyed RF correspondences"
+roof_loop_sw,RF,,,,blocked_pending_stationary_site_survey,unavailable,"No two separated surveyed RF correspondences"
+roof_loop_nw,RF,,,,blocked_pending_stationary_site_survey,unavailable,"No two separated surveyed RF correspondences"
+roof_loop_ne,RF,,,,blocked_pending_stationary_site_survey,unavailable,"No two separated surveyed RF correspondences"
+roof_loop_se,RF,,,,blocked_pending_stationary_site_survey,unavailable,"No two separated surveyed RF correspondences"

@@ -1,0 +1,3 @@
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s test -v
+focused site/parity/evaluator/launch contract tests
+read-only production YAML, fixture parity, source import, and generated-tree scope audit

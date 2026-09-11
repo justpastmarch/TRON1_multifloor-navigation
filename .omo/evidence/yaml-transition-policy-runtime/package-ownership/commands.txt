@@ -1,0 +1,16 @@
+attempt_id: package-ownership-generated-cleanup-2026-08-24T16:48:00+09:00
+executor_session_id: codex:yaml-transition-policy-runtime-todo-4-generated-cleanup-2026-08-24
+model_policy: GPT-family direct work only; no Kimi-family delegation
+
+1. Before hash inventory of three exact stale artifacts: exit 0; generated-inventory-before.json
+2. Source ownership scan for mission_manager.transitions: exit 0; no source match
+3. Generated scan for transitions.py/test_transitions: exit 0; stale build module and mission XML identified
+4. rm -f build/mission_manager/lib/mission_manager/transitions.py install/lib/python3/dist-packages/mission_manager/transitions.py build/test_results/mission_manager/nosetests-test.test_transitions.py.xml: exit 0
+5. catkin_make: exit 0
+6. catkin_make run_tests_multifloor_manager: exit 0; registered multifloor evaluator passed 16 tests
+7. catkin_make install: exit 0
+8. Source-direct importable mission_manager.transitions scan: exit 0; []
+9. Devel-sourced importable mission_manager.transitions scan: exit 0; []
+10. Install-sourced importable mission_manager.transitions scan: exit 0; []
+11. XML parse/count of build/test_results/multifloor_manager/nosetests-test.test_transitions.py.xml: exit 0; tests=16 errors=0 failures=0
+12. catkin_test_results --verbose: not run; Todo 5 and unrelated runtime failures are outside this repair

@@ -1,0 +1,73 @@
+# Production site data remains disabled until every floor, stair endpoint, and
+# profile is supplied and reviewed. The dormant 5F/RF edges below preserve the
+# confirmed topology without enabling motion.
+# Edge keys: id, from, to, type; stair edges also require stair_id.
+schema_version: 1
+configured: true
+edges:
+  - id: home_to_stair_3f
+    from: home_3f
+    to: stair_3f_up_entry
+    type: NAV
+  - id: stair_3f_entry_to_home
+    from: stair_3f_up_entry
+    to: home_3f
+    type: NAV
+  - id: stair_4f_landing_to_entry
+    from: stair_4f_from_3f
+    to: stair_4f_to_5f
+    type: NAV
+  - id: stair_3f_4f_up
+    from: stair_3f_up_entry
+    to: stair_4f_from_3f
+    type: STAIR_UP
+    stair_id: stair_3f_4f
+  - id: stair_3f_4f_down
+    from: stair_4f_from_3f
+    to: stair_3f_up_entry
+    type: STAIR_DOWN
+    stair_id: stair_3f_4f
+  - id: stair_5f_landing_to_entry
+    from: stair_5f_from_4f
+    to: stair_5f_to_rf
+    type: NAV
+  - id: stair_4f_5f_up
+    from: stair_4f_to_5f
+    to: stair_5f_from_4f
+    type: STAIR_UP
+    stair_id: stair_4f_5f
+  - id: stair_4f_5f_down
+    from: stair_5f_from_4f
+    to: stair_4f_to_5f
+    type: STAIR_DOWN
+    stair_id: stair_4f_5f
+  - id: stair_5f_rf_up
+    from: stair_5f_to_rf
+    to: stair_rf_landing
+    type: STAIR_UP
+    stair_id: stair_5f_rf
+  - id: stair_5f_rf_down
+    from: stair_rf_landing
+    to: stair_5f_to_rf
+    type: STAIR_DOWN
+    stair_id: stair_5f_rf
+  - id: roof_loop_start
+    from: stair_rf_landing
+    to: roof_loop_sw
+    type: NAV
+  - id: roof_loop_west
+    from: roof_loop_sw
+    to: roof_loop_nw
+    type: NAV
+  - id: roof_loop_north
+    from: roof_loop_nw
+    to: roof_loop_ne
+    type: NAV
+  - id: roof_loop_east
+    from: roof_loop_ne
+    to: roof_loop_se
+    type: NAV
+  - id: roof_loop_close
+    from: roof_loop_se
+    to: stair_rf_landing
+    type: NAV

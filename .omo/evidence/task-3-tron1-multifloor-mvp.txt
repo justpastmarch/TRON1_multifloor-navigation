@@ -1,0 +1,39 @@
+DoneClaim: Todo 3 strict YAML schemas, typed loaders, and cross-reference validation
+
+Baseline
+- python3 -m unittest discover -s test -v
+  PASS: 8 tests before edits.
+- python3 -m unittest test.test_site_configuration -v
+  RED: ModuleNotFoundError: mission_manager.site_config (expected absent-loader proof).
+
+Final verification
+- PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s test -v
+  PASS: 36 tests, including 15 site-configuration cases.
+- ruff check <all changed Python modules and test>
+  PASS: All checks passed.
+- catkin_make
+  PASS: 3 packages traversed; all generated-message/build targets reached 100%.
+- LSP diagnostics on every changed Python file
+  PASS: no diagnostics.
+- basedpyright
+  NOT RUN: executable is not installed; LSP diagnostics supplied the type gate.
+- Python no-excuse checker
+  NOT RUN: installed checker uses match syntax and cannot execute under ROS Noetic Python 3.8.
+
+Real CLI QA
+- PYTHONDONTWRITEBYTECODE=1 python3 validate_bundle.py --site-config-root test/fixtures/building_valid
+  PASS: SITE_CONFIG_OK floors=3 locations=7 edges=9; BUNDLE_OK.
+- PYTHONDONTWRITEBYTECODE=1 python3 validate_bundle.py --validate-production-config
+  EXPECTED FAIL: BUNDLE_ERROR: locations.yaml:configured: must be true before use.
+
+Adversarial evidence
+- Malformed YAML: test_malformed_yaml_is_path_qualified passed with robot.yaml-qualified error.
+- Stale/dangling data: dangling graph endpoint, unknown tag, missing profile, floor mismatch,
+  missing map image, and stale-TF corpus tests all passed.
+- Dirty concurrent file: malformed hidden .qa_dirty.yaml was present while the real valid CLI
+  still returned SITE_CONFIG_OK/BUNDLE_OK; the file was then deleted.
+- Generated artifacts: catkin build/devel outputs remained ignored by bundle validation.
+- Cleanup: .qa_dirty.yaml absent; src/**/__pycache__ has no files; test bytecode for this task removed.
+
+Scope guard
+- No mission FSM, route planner, floor-transition node, stair control, action definition, or launch file changed.

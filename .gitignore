@@ -1,0 +1,11 @@
+build/
+devel/
+install/
+__pycache__/
+*.pyc
+
+# Local ROS bags
+*.bag
+*.bag.active.invalid
+*.bag.INCOMPLETE.json
+*.bag.capture.json

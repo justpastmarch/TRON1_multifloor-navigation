@@ -1,0 +1,18 @@
+schema_version: 2
+plan: .omo/plans/yaml-transition-policy-runtime.md
+task: F5
+task_id: final-scope-fidelity
+attempt_id: final-scope-fidelity-2026-08-24
+workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+workspace_is_git: false
+status: complete
+baseline:
+  root_suite: 79 tests with 3 known failures
+  registered_results: 150 tests with 9 errors and 1 failure, primarily import-environment failures
+current:
+  focused_policy_and_fixture_checks: pass
+  fixture_parity: pass; only transitions.yaml differs between valid and blocked fixtures
+  production_configured_false: pass
+resolved_failure: test_launch_contract.LaunchContractTest.test_flat_navigation_speed_limit_is_consistent now distinguishes the 0.40 planner fallback from the 0.50 effective launch/robot/environment limit.
+scope: no new root-suite failures remain relative to the recorded baseline; the two remaining entrypoint-count failures are baseline failures.
+cleanup: no processes, temporary files, or product edits created by this audit.

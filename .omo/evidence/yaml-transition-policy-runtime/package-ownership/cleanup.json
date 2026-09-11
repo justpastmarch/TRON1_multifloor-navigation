@@ -1,0 +1,17 @@
+{
+  "status": "complete",
+  "attempt_id": "package-ownership-generated-cleanup-2026-08-24T16:48:00+09:00",
+  "executor_session_id": "codex:yaml-transition-policy-runtime-todo-4-generated-cleanup-2026-08-24",
+  "deleted_only_after_source_scan": true,
+  "deleted_paths_absent": true,
+  "generated_cleanup": "three exact inventoried artifacts removed; no generated module contents edited; fresh catkin build/install regenerated remaining outputs",
+  "cleanup_command": "rm -f build/mission_manager/lib/mission_manager/transitions.py install/lib/python3/dist-packages/mission_manager/transitions.py build/test_results/mission_manager/nosetests-test.test_transitions.py.xml",
+  "cleanup_command_exit_code": 0,
+  "removed_hashes": {
+    "build/mission_manager/lib/mission_manager/transitions.py": "e07fe850e755480132e50d9e3debf931f3ba73b8dd33b84f082c30bf1b6844cf",
+    "install/lib/python3/dist-packages/mission_manager/transitions.py": "e07fe850e755480132e50d9e3debf931f3ba73b8dd33b84f082c30bf1b6844cf",
+    "build/test_results/mission_manager/nosetests-test.test_transitions.py.xml": "84fb46ba96bf30d78e3fbc62bc7369a7651827f91eb9beeb8b0d90ed980d1245"
+  },
+  "user_ros_hotfixes_and_bags": "preserved",
+  "task_processes": "none started outside catkin test execution"
+}

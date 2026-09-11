@@ -1,0 +1,50 @@
+{
+  "common_rejected_overlap_s": [
+    232.0262746810913,
+    236.56913542747498
+  ],
+  "controller_intent_label": "controller_intent_only",
+  "lidar_valid_interval_count": 19,
+  "main_topic_rejected_intervals": [
+    {
+      "duration_s": 8.821327447891235,
+      "end_s": 236.64652705192566,
+      "start_s": 227.82519960403442,
+      "topic": "/camera1/color/image_raw/compressed"
+    },
+    {
+      "duration_s": 5.374023199081421,
+      "end_s": 236.8389253616333,
+      "start_s": 231.46490216255188,
+      "topic": "/livox/imu"
+    },
+    {
+      "duration_s": 19.011229276657104,
+      "end_s": 237.0335624217987,
+      "start_s": 218.0223331451416,
+      "topic": "/livox/lidar"
+    },
+    {
+      "duration_s": 6.3402016162872314,
+      "end_s": 237.47756600379944,
+      "start_s": 231.1373643875122,
+      "topic": "/tron/sensor_joy"
+    },
+    {
+      "duration_s": 4.542860746383667,
+      "end_s": 236.56913542747498,
+      "start_s": 232.0262746810913,
+      "topic": "/tron/wheel_odom_raw"
+    }
+  ],
+  "motion_interfaces_invoked": false,
+  "source_bag_sha256": "d28f40a9a4c0c30906ff835b643f4893f4f652642a0c97d27157a0d0c7651a02",
+  "status": "pass",
+  "wheel_discontinuity": {
+    "edge_rejected": true,
+    "previous_record_time_s": 236.8378462791443,
+    "record_time_s": 236.83797979354858,
+    "step_distance_m": 1.9192705600380995
+  },
+  "wheel_valid_interval_count": 9
+}

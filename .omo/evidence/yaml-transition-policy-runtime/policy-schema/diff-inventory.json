@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "plan": ".omo/plans/yaml-transition-policy-runtime.md",
+  "task": "2",
+  "task_id": "policy-schema",
+  "attempt_id": "policy-schema-2026-08-24T12:00:35+09:00",
+  "workspace_non_git": true,
+  "changed_paths": {
+    "src/multifloor_manager/src/multifloor_manager/transitions.py": {
+      "before_sha256": null,
+      "after_sha256": "0957655e8de4a350095fc64f81e725eafd6af682f1553c60b9b56eeb9ecae61c",
+      "ownership": "Todo 2 immutable schema and constants"
+    },
+    "src/multifloor_manager/src/multifloor_manager/configuration.py": {
+      "before_sha256": "16004d5bd255e2d8a62f42a827446203e1f83230637a02ff0845d51afe064820",
+      "after_sha256": "064f0edcd62ba9ee64eaf1869c6c5a134707ebdd73b5928e09df6bb21d3a4055",
+      "ownership": "Todo 2 strict YAML conversion"
+    },
+    "test/fixtures/building_valid/transitions.yaml": {
+      "before_sha256": "3826ec018b3a1a10035d26ecff6245c377746b69b9742a2d12bc286ea6d94721",
+      "after_sha256": "591b76a92e4a960c90751d00eb4965197af54aba0241124717a162b9ba18e5c0",
+      "ownership": "Todo 2 valid fixture migration"
+    },
+    "src/multifloor_manager/config/transitions.yaml": {
+      "before_sha256": "79a796b18c925831d8cb87bef14ff258d3592b5e9b69b992f8cea094d42d58b9",
+      "after_sha256": "d1381a47c80ed28e90f5b6543574636abfed442b0e501f42ae1c02e97f7585f9",
+      "ownership": "Todo 2 production comment-only placeholder"
+    },
+    "src/mission_manager/src/mission_manager/site_config.py": {
+      "before_sha256": "9e919931fc48401d0a710979b4c9016decc8bc2d5c2bfbd7473fe6626f34dbf8",
+      "after_sha256": "2e67efe1a47fb8835a7c302ba4ac1edcead76bb25e08cc88336730089f80f639",
+      "ownership": "Todo 2 schema type ownership and obsolete validation removal"
+    },
+    "test/test_site_configuration.py": {
+      "before_sha256": "4ade24f8c023ecbb5c25a8dbd5744affc013480f73d5a59e64b1affc8ae14899",
+      "after_sha256": "9be4d6764d24190f91bdb70a95c304721d22129e04bc43fac2ae03ce4a079856",
+      "ownership": "Todo 2 baseline, red, strict, and placeholder tests"
+    }
+  },
+  "preserved_concurrent_paths": {
+    "src/multifloor_manager/rviz/wf_navigation.rviz": {
+      "before_sha256": "9123997acc99313f4b62afb437a86a5c13a02eee5b169572a715dce6649a3d64",
+      "after_sha256": "9123997acc99313f4b62afb437a86a5c13a02eee5b169572a715dce6649a3d64",
+      "status": "unchanged"
+    },
+    "test/test_bundle_contract.py": {
+      "before_sha256": "28fc0e22e2e3072517ed024f262623d03140984c953df014d9a266d24fa8d9cd",
+      "after_sha256": "28fc0e22e2e3072517ed024f262623d03140984c953df014d9a266d24fa8d9cd",
+      "status": "unchanged"
+    }
+  },
+  "generated_paths": {
+    "build": "pre-existing; not edited or deleted",
+    "devel": "pre-existing; not edited or deleted",
+    "install": "pre-existing stale/non-authoritative; not imported, edited, or deleted"
+  },
+  "evidence_paths": [
+    ".omo/evidence/yaml-transition-policy-runtime/policy-schema/baseline.json",
+    ".omo/evidence/yaml-transition-policy-runtime/policy-schema/commands.txt",
+    ".omo/evidence/yaml-transition-policy-runtime/policy-schema/diff-inventory.json",
+    ".omo/evidence/yaml-transition-policy-runtime/policy-schema/test-results.txt",
+    ".omo/evidence/yaml-transition-policy-runtime/policy-schema/cleanup.json",
+    ".omo/evidence/yaml-transition-policy-runtime/policy-schema/receipt.yaml",
+    ".omo/start-work/ledger.jsonl",
+    ".omo/plans/yaml-transition-policy-runtime.md"
+  ]
+}

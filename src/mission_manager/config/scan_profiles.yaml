@@ -1,0 +1,25 @@
+# Production policy remains disabled until the complete site bundle is approved.
+# Profile keys: id, topics, duration_sec, output_root, free_space_min.
+schema_version: 1
+configured: true
+profiles:
+  - id: roof_scan_profile
+    topics:
+      - /camera1/color/image_raw
+      - /camera1/color/camera_info
+      - /livox/lidar
+      - /navigation/cmd_vel
+      - /stair_supervisor/websocket_tx
+      - /stair_supervisor/state
+      - /mission/feedback
+      - /mission/result
+      - /multifloor/floor_state
+      - /amcl_pose
+      - /tf
+      - /tf_static
+      - /tron/wheel_odom_raw
+      - /tron/imu
+      - /scan
+    duration_sec: 30.0
+    output_root: roof_scans
+    free_space_min: 0.20

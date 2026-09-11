@@ -1,0 +1,20 @@
+<launch>
+  <test
+    test-name="stair_supervisor_node_boundary"
+    pkg="stair_supervisor"
+    type="test_stair_supervisor_node.py"
+    time-limit="45.0"
+  />
+  <test
+    test-name="websocket_tx_surface"
+    pkg="stair_supervisor"
+    type="test_websocket_tx_ros.py"
+    time-limit="45.0"
+  />
+  <test
+    test-name="stair_fake_websocket_qa"
+    pkg="stair_supervisor"
+    type="test_stair_fake_websocket_ros.py"
+    time-limit="45.0"
+  />
+</launch>

@@ -1,0 +1,13 @@
+# SYNTHETIC NON-PRODUCTION FIXTURE: poses are test values, not surveyed coordinates.
+schema_version: 1
+configured: true
+locations:
+  - {id: home_5f, floor_id: 5F, type: HOME, x: 0.0, y: 0.0, yaw: 0.0}
+  - {id: stair_entry_5f, floor_id: 5F, type: STAIR_ENTRY, x: 1.0, y: 0.0, yaw: 0.0}
+  - {id: roof_landing, floor_id: RF, type: LANDING, x: 0.0, y: 1.0, yaw: 0.0}
+  - {id: roof_loop_north, floor_id: RF, type: WAYPOINT, x: 0.0, y: 2.0, yaw: 0.0}
+  - {id: roof_loop_east, floor_id: RF, type: WAYPOINT, x: 2.0, y: 2.0, yaw: -1.57}
+  - {id: roof_loop_south, floor_id: RF, type: WAYPOINT, x: 2.0, y: 0.0, yaw: 3.14}
+  - {id: roof_loop_complete, floor_id: RF, type: SCAN, x: 0.5, y: 0.5, yaw: 1.57}
+  - {id: roof_return_entry, floor_id: RF, type: STAIR_ENTRY, x: 0.0, y: 1.0, yaw: 3.14}
+  - {id: stair_return_5f, floor_id: 5F, type: LANDING, x: 1.0, y: 0.0, yaw: 3.14}

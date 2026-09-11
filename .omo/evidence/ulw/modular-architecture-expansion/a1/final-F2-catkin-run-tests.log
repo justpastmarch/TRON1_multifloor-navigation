@@ -1,0 +1,257 @@
+Built target tests
+Removing test result files from '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rosunit-multifloor_node_wiring.xml'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rosunit-floor_transition_contract.xml'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rostest-test_floor_transition.xml'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rostest-test_node_wiring.xml'
+Removing test result files from '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor/rosunit-stair_supervisor_disabled_surface.xml'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor/nosetests-test.test_stair_ros_node.py.xml'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor/rostest-test_stair_supervisor.xml'
+Removing test result files from '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager/nosetests-test.test_mission_ros_adapter.py.xml'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager/nosetests-test.test_mission_node_ros.py.xml'
+Removing test result files from '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/tron1_bringup'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/tron1_bringup/rosunit-system_smoke_mission.xml'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/tron1_bringup/rostest-test_system_smoke.xml'
+Built target clean_test_results_multifloor_manager
+Built target clean_test_results_stair_supervisor
+Built target clean_test_results_mission_manager
+Built target clean_test_results_tron1_bringup
+Scanning dependencies of target _run_tests_stair_supervisor_rostest_test_stair_supervisor.test
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.009s
+
+OK
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.034s
+
+OK
+.-- run_tests.py: execute commands
+  "/usr/bin/cmake" -E make_directory /home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager
+  /usr/bin/nosetests3 -P --process-timeout=60 /home/m3tron/Desktop/TRON1_Modular_Navigation/src/mission_manager/test/test_mission_ros_adapter.py --with-xunit --xunit-file=/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager/nosetests-test.test_mission_ros_adapter.py.xml
+-- run_tests.py: verify result "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager/nosetests-test.test_mission_ros_adapter.py.xml"
+...
+----------------------------------------------------------------------
+Ran 4 tests in 0.051s
+
+OK
+Built target _run_tests_mission_manager_nosetests_test.test_mission_ros_adapter.py
+-- run_tests.py: execute commands
+  "/usr/bin/cmake" -E make_directory /home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager
+  /usr/bin/nosetests3 -P --process-timeout=60 /home/m3tron/Desktop/TRON1_Modular_Navigation/src/mission_manager/test/test_mission_node_ros.py --with-xunit --xunit-file=/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager/nosetests-test.test_mission_node_ros.py.xml
+-- run_tests.py: verify result "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager/nosetests-test.test_mission_node_ros.py.xml"
+Built target _run_tests_mission_manager_nosetests_test.test_mission_node_ros.py
+-- run_tests.py: execute commands
+  "/usr/bin/cmake" -E make_directory /home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor
+  /usr/bin/nosetests3 -P --process-timeout=60 /home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor/test/test_stair_ros_node.py --with-xunit --xunit-file=/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor/nosetests-test.test_stair_ros_node.py.xml
+-- run_tests.py: verify result "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor/nosetests-test.test_stair_ros_node.py.xml"
+Built target _run_tests_mission_manager_nosetests
+Built target _run_tests_stair_supervisor_nosetests_test.test_stair_ros_node.py
+Built target _run_tests_mission_manager
+Built target _run_tests_stair_supervisor_nosetests
+... logging to /home/m3tron/.ros/log/rostest-m3tron-All-Series-731009.log
+[ROSUNIT] Outputting test results to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/tron1_bringup/rostest-test_system_smoke.xml
+[Testcase: testsystem_smoke_mission] ... ERROR!
+ERROR: Unable to contact my own server at [http://10.192.1.200:42515/].
+This usually means that the network is not configured properly.
+
+A common cause is that the machine cannot connect to itself.  Please check
+for errors by running:
+
+	ping 10.192.1.200
+
+For more tips, please see
+
+	http://wiki.ros.org/ROS/NetworkSetup
+
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 672, in run
+    self._callSetUp()
+  File "/usr/lib/python3.8/unittest/case.py", line 630, in _callSetUp
+    self.setUp()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rostest/runner.py", line 201, in setUp
+    self.test_parent.setUp()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rostest/rostest_parent.py", line 99, in setUp
+    self._start_infrastructure()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/parent.py", line 263, in _start_infrastructure
+    self._start_server()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/parent.py", line 212, in _start_server
+    self.server.start()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/server.py", line 404, in start
+    raise RLException("""Unable to contact my own server at [%s].
+--------------------------------------------------------------------------------
+[ROSTEST]-----------------------------------------------------------------------
+
+
+SUMMARY
+[1;31m * RESULT: FAIL[0m
+ * TESTS: 0
+[1;31m * ERRORS: 1[0m
+ * FAILURES: 0
+
+rostest log file is in /home/m3tron/.ros/log/rostest-m3tron-All-Series-731009.log
+... logging to /home/m3tron/.ros/log/rostest-m3tron-All-Series-731002.log
+[ROSUNIT] Outputting test results to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rostest-test_floor_transition.xml
+[Testcase: testfloor_transition_contract] ... ERROR!
+ERROR: Unable to contact my own server at [http://10.192.1.200:41115/].
+This usually means that the network is not configured properly.
+
+A common cause is that the machine cannot connect to itself.  Please check
+for errors by running:
+
+	ping 10.192.1.200
+
+For more tips, please see
+
+	http://wiki.ros.org/ROS/NetworkSetup
+
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 672, in run
+    self._callSetUp()
+  File "/usr/lib/python3.8/unittest/case.py", line 630, in _callSetUp
+    self.setUp()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rostest/runner.py", line 201, in setUp
+    self.test_parent.setUp()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rostest/rostest_parent.py", line 99, in setUp
+    self._start_infrastructure()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/parent.py", line 263, in _start_infrastructure
+    self._start_server()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/parent.py", line 212, in _start_server
+    self.server.start()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/server.py", line 404, in start
+    raise RLException("""Unable to contact my own server at [%s].
+--------------------------------------------------------------------------------
+[ROSTEST]-----------------------------------------------------------------------
+
+
+SUMMARY
+[1;31m * RESULT: FAIL[0m
+ * TESTS: 0
+[1;31m * ERRORS: 1[0m
+ * FAILURES: 0
+
+rostest log file is in /home/m3tron/.ros/log/rostest-m3tron-All-Series-731002.log
+... logging to /home/m3tron/.ros/log/rostest-m3tron-All-Series-731005.log
+[ROSUNIT] Outputting test results to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor/rostest-test_stair_supervisor.xml
+[Testcase: teststair_supervisor_disabled_surface] ... ERROR!
+ERROR: Unable to contact my own server at [http://10.192.1.200:42189/].
+This usually means that the network is not configured properly.
+
+A common cause is that the machine cannot connect to itself.  Please check
+for errors by running:
+
+	ping 10.192.1.200
+
+For more tips, please see
+
+	http://wiki.ros.org/ROS/NetworkSetup
+
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 672, in run
+    self._callSetUp()
+  File "/usr/lib/python3.8/unittest/case.py", line 630, in _callSetUp
+    self.setUp()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rostest/runner.py", line 201, in setUp
+    self.test_parent.setUp()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rostest/rostest_parent.py", line 99, in setUp
+    self._start_infrastructure()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/parent.py", line 263, in _start_infrastructure
+    self._start_server()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/parent.py", line 212, in _start_server
+    self.server.start()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/server.py", line 404, in start
+    raise RLException("""Unable to contact my own server at [%s].
+--------------------------------------------------------------------------------
+[ROSTEST]-----------------------------------------------------------------------
+
+
+SUMMARY
+[1;31m * RESULT: FAIL[0m
+ * TESTS: 0
+[1;31m * ERRORS: 1[0m
+ * FAILURES: 0
+
+rostest log file is in /home/m3tron/.ros/log/rostest-m3tron-All-Series-731005.log
+... logging to /home/m3tron/.ros/log/rostest-m3tron-All-Series-731015.log
+[ROSUNIT] Outputting test results to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rostest-test_node_wiring.xml
+[Testcase: testmultifloor_node_wiring] ... ERROR!
+ERROR: Unable to contact my own server at [http://10.192.1.200:37855/].
+This usually means that the network is not configured properly.
+
+A common cause is that the machine cannot connect to itself.  Please check
+for errors by running:
+
+	ping 10.192.1.200
+
+For more tips, please see
+
+	http://wiki.ros.org/ROS/NetworkSetup
+
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 672, in run
+    self._callSetUp()
+  File "/usr/lib/python3.8/unittest/case.py", line 630, in _callSetUp
+    self.setUp()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rostest/runner.py", line 201, in setUp
+    self.test_parent.setUp()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rostest/rostest_parent.py", line 99, in setUp
+    self._start_infrastructure()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/parent.py", line 263, in _start_infrastructure
+    self._start_server()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/parent.py", line 212, in _start_server
+    self.server.start()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/server.py", line 404, in start
+    raise RLException("""Unable to contact my own server at [%s].
+--------------------------------------------------------------------------------
+[ROSTEST]-----------------------------------------------------------------------
+
+
+SUMMARY
+[1;31m * RESULT: FAIL[0m
+ * TESTS: 0
+[1;31m * ERRORS: 1[0m
+ * FAILURES: 0
+
+rostest log file is in /home/m3tron/.ros/log/rostest-m3tron-All-Series-731015.log
+-- run_tests.py: execute commands
+  /usr/bin/python3 /opt/ros/noetic/share/rostest/cmake/../../../bin/rostest --pkgdir=/home/m3tron/Desktop/TRON1_Modular_Navigation/src/tron1_bringup --package=tron1_bringup --results-filename test_system_smoke.xml --results-base-dir "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results" /home/m3tron/Desktop/TRON1_Modular_Navigation/src/tron1_bringup/test/system_smoke.test 
+-- run_tests.py: verify result "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/tron1_bringup/rostest-test_system_smoke.xml"
+-- run_tests.py: execute commands
+  /usr/bin/python3 /opt/ros/noetic/share/rostest/cmake/../../../bin/rostest --pkgdir=/home/m3tron/Desktop/TRON1_Modular_Navigation/src/multifloor_manager --package=multifloor_manager --results-filename test_floor_transition.xml --results-base-dir "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results" /home/m3tron/Desktop/TRON1_Modular_Navigation/src/multifloor_manager/test/floor_transition.test 
+-- run_tests.py: verify result "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rostest-test_floor_transition.xml"
+Built target _run_tests_tron1_bringup_rostest_test_system_smoke.test
+-- run_tests.py: execute commands
+  /usr/bin/python3 /opt/ros/noetic/share/rostest/cmake/../../../bin/rostest --pkgdir=/home/m3tron/Desktop/TRON1_Modular_Navigation/src/multifloor_manager --package=multifloor_manager --results-filename test_node_wiring.xml --results-base-dir "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results" /home/m3tron/Desktop/TRON1_Modular_Navigation/src/multifloor_manager/test/node_wiring.test 
+-- run_tests.py: verify result "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rostest-test_node_wiring.xml"
+Built target _run_tests_multifloor_manager_rostest_test_floor_transition.test
+-- run_tests.py: execute commands
+  /usr/bin/python3 /opt/ros/noetic/share/rostest/cmake/../../../bin/rostest --pkgdir=/home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor --package=stair_supervisor --results-filename test_stair_supervisor.xml --results-base-dir "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results" /home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor/test/stair_supervisor.test 
+-- run_tests.py: verify result "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor/rostest-test_stair_supervisor.xml"
+Built target _run_tests_multifloor_manager_rostest_test_node_wiring.test
+Built target _run_tests_stair_supervisor_rostest_test_stair_supervisor.test
+Built target _run_tests_tron1_bringup_rostest
+Scanning dependencies of target _run_tests_stair_supervisor_rostest
+Built target _run_tests_stair_supervisor_rostest
+Built target _run_tests_tron1_bringup
+Built target _run_tests_multifloor_manager_rostest
+Built target _run_tests_multifloor_manager
+Built target _run_tests_stair_supervisor
+Built target run_tests
+Base path: /home/m3tron/Desktop/TRON1_Modular_Navigation
+Source space: /home/m3tron/Desktop/TRON1_Modular_Navigation/src
+Build space: /home/m3tron/Desktop/TRON1_Modular_Navigation/build
+Devel space: /home/m3tron/Desktop/TRON1_Modular_Navigation/devel
+Install space: /home/m3tron/Desktop/TRON1_Modular_Navigation/install
+####
+#### Running command: "make cmake_check_build_system" in "/home/m3tron/Desktop/TRON1_Modular_Navigation/build"
+####
+####
+#### Running command: "make run_tests -j8 -l8" in "/home/m3tron/Desktop/TRON1_Modular_Navigation/build"
+####

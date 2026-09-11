@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="0" failures="0" name="unittest.suite.TestSuite" tests="1" time="2.115"><testcase classname="rostest.runner.RosTest" name="testmultifloor_node_wiring" time="2.1153" /><system-out>&lt;![CDATA[
+[ROSTEST]setup[/home/m3tron/Desktop/TRON1_Modular_Navigation/src/multifloor_manager/test/node_wiring.test] run_id[eaf8feae-a09e-11f1-81ef-4308ea2b0ed0] starting
+&amp;#x001B;[1mstarted roslaunch server http://127.0.0.1:42865/&amp;#x001B;[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /multifloor_manager_wiring/amcl_pose_topic: /fixture/amcl_stream
+ * /multifloor_manager_wiring/config_root: /home/m3tron/Desk...
+ * /multifloor_manager_wiring/global_costmap_topic: /fixture/costmap_...
+ * /multifloor_manager_wiring/initial_floor: 3F
+ * /multifloor_manager_wiring/map_topic: /fixture/map_stream
+ * /multifloor_manager_wiring/tag_topic: /fixture/tag_stream
+ * /rosdistro: noetic
+ * /rosversion: 1.17.4
+
+NODES
+  /
+    multifloor_manager_wiring (multifloor_manager/multifloor_manager_node.py)
+
+[ROSTEST]setup[/home/m3tron/Desktop/TRON1_Modular_Navigation/src/multifloor_manager/test/node_wiring.test] run_id[eaf8feae-a09e-11f1-81ef-4308ea2b0ed0] done
+[ROSTEST]Running test [multifloor_node_wiring]
+&amp;#x001B;[1mROS_MASTER_URI=http://127.0.0.1:39425/&amp;#x001B;[0m
+&amp;#x001B;[1msetting /run_id to eaf8feae-a09e-11f1-81ef-4308ea2b0ed0&amp;#x001B;[0m
+&amp;#x001B;[1mprocess[multifloor_manager_wiring-1]: started with pid [640641]&amp;#x001B;[0m
+[ROSTEST]running test multifloor_node_wiring
+&amp;#x001B;[1mprocess[multifloor_node_wiring-2]: started with pid [640642]&amp;#x001B;[0m
+&amp;#x001B;[1m[multifloor_node_wiring-2] process has finished cleanly
+log file: /home/m3tron/.ros/log/eaf8feae-a09e-11f1-81ef-4308ea2b0ed0/multifloor_node_wiring-2*.log&amp;#x001B;[0m
+[ROSTEST]test [multifloor_node_wiring] finished
+[ROSTEST]test [multifloor_node_wiring] results are in [/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rosunit-multifloor_node_wiring.xml]
+[ROSTEST]test [multifloor_node_wiring] results summary: 0 errors, 0 failures, 1 tests
+[ROSTEST][ROSTEST] test [multifloor_node_wiring] done
+[ROSTEST]tearDown[/home/m3tron/Desktop/TRON1_Modular_Navigation/src/multifloor_manager/test/node_wiring.test]
+shutting down processing monitor...
+[multifloor_manager_wiring-1] killing on exit
+... shutting down processing monitor complete
+[ROSTEST]rostest teardown /home/m3tron/Desktop/TRON1_Modular_Navigation/src/multifloor_manager/test/node_wiring.test complete
+
+]]&gt;</system-out><system-err>&lt;![CDATA[
+
+]]&gt;</system-err></testsuite>

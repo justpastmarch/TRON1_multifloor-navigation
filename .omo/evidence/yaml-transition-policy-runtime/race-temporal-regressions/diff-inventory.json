@@ -1,0 +1,8 @@
+{
+  "task": "race-temporal-regressions",
+  "changed_product_paths": [
+    "src/multifloor_manager/test/test_policy_final_gate.py",
+    "src/multifloor_manager/CMakeLists.txt"
+  ],
+  "production_runtime_paths_changed": false
+}

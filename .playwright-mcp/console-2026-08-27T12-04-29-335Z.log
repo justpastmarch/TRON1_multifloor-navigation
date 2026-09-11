@@ -1,0 +1,9 @@
+[   36219ms] Invariant Violation: Minified React error #227; visit http://facebook.github.io/react/docs/error-decoder.html?invariant=227 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at c (http://127.0.0.1:8899/static/components/react/react-dom.production.min.js?v=dbc734e200d85090ca301fc67d29f674:1:1614)
+    at http://127.0.0.1:8899/static/components/react/react-dom.production.min.js?v=dbc734e200d85090ca301fc67d29f674:1:1683
+    at Object.<anonymous> (http://127.0.0.1:8899/static/components/react/react-dom.production.min.js?v=dbc734e200d85090ca301fc67d29f674:1:96987)
+    at n (http://127.0.0.1:8899/static/components/react/react-dom.production.min.js?v=dbc734e200d85090ca301fc67d29f674:1:123)
+    at http://127.0.0.1:8899/static/components/react/react-dom.production.min.js?v=dbc734e200d85090ca301fc67d29f674:1:922
+    at http://127.0.0.1:8899/static/components/react/react-dom.production.min.js?v=dbc734e200d85090ca301fc67d29f674:1:931
+[   36307ms] [LOG] Welcome to Project Jupyter! Explore the various tools available and their corresponding documentation. If you are interested in contributing to the platform, please visit the community resources section at http://jupyter.org/community.html. @ http://127.0.0.1:8899/static/tree/js/main.min.js?v=72cde7f446eda2f2f2a2f744c319bf66:16012
+[   36377ms] [LOG] Loaded moment locale en @ http://127.0.0.1:8899/static/tree/js/main.min.js?v=72cde7f446eda2f2f2a2f744c319bf66:13781

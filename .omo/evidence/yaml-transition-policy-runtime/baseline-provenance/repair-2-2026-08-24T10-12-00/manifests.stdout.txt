@@ -1,0 +1,9 @@
+START 2026-08-24T10:21:58+09:00
+{"class": "source", "file_count": 142, "manifest_sha256": "63972ff751865072c72eda5a428d915ec0e8a5713faa674562a44f008a00c6be"}
+{"class": "test", "file_count": 97, "manifest_sha256": "7af12a45d3adb24b8442b2ec77af4a6260317a3ef0899868ae67ec31163cb71c"}
+{"class": "build", "file_count": 2187, "manifest_sha256": "5d938a0828f8d0e432e9edde1cf83dcceb0416221427e11270d05583d2fd433c"}
+{"class": "devel", "file_count": 213, "manifest_sha256": "5828e27e7f6c277f5b92d1386882623b95473381e1a68d0bc67d8dc5fb74de48"}
+{"class": "install", "file_count": 283, "manifest_sha256": "567e07680e9b89152046d83edb00002c80581306418f8cd5252d6b8dc978b4ae"}
+{"class": "runtime", "file_count": 15, "manifest_sha256": "572e20e5261c7ccb7d632c476031c66c8537cae357dd84495c75cde86fcdb054"}
+END 2026-08-24T10:21:59+09:00
+EXIT 0

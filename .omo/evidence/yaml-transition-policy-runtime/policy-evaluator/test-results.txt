@@ -1,0 +1,22 @@
+RED REPRODUCTION
+test_evaluate_rejects_epoch_different_from_begun_epoch: AssertionError, InvalidPredicateObservationError not raised
+test_policy_rejects_mutable_conditions_container: AssertionError, InvalidTransitionPolicyError not raised
+test_malformed_entry_is_domain_error_and_does_not_commit_time: AttributeError: 'object' object has no attribute 'value'
+test_decimal_dwell_uses_absolute_threshold: AssertionError: False is not true
+
+GREEN
+Ran 16 tests in 0.001s
+OK
+
+ADVERSARIAL DRIVER
+epoch-fence: pass
+immutable-conditions: pass
+malformed-domain-error: pass
+exception-atomicity: pass
+decimal-absolute-dwell: pass
+exact-timeout-terminal: pass
+
+QUALITY
+Ruff: All checks passed!
+LSP: No diagnostics found for both changed Python files
+pure_loc=194

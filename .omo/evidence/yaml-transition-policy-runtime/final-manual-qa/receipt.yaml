@@ -1,0 +1,26 @@
+schema_version: 2
+plan: .omo/plans/yaml-transition-policy-runtime.md
+task: F4
+task_id: final-manual-qa
+attempt_id: final-manual-qa-2026-08-24
+workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+workspace_is_git: false
+status: complete_with_hardware_blocker
+commands:
+  - ROS_IP=127.0.0.1 ROS_HOSTNAME=127.0.0.1 rostest --text multifloor_manager floor_transition_ros.test
+  - ROS_IP=127.0.0.1 ROS_HOSTNAME=127.0.0.1 rostest --text multifloor_manager floor_transition_policy_blocked_ros.test
+  - ROS_IP=127.0.0.1 ROS_HOSTNAME=127.0.0.1 rostest --text multifloor_manager floor_transition_cancel_ros.test
+  - ROS_IP=127.0.0.1 ROS_HOSTNAME=127.0.0.1 rostest --text multifloor_manager floor_transition_delayed_pose_ros.test
+  - ROS_IP=127.0.0.1 ROS_HOSTNAME=127.0.0.1 rostest --text multifloor_manager floor_transition_epoch_ros.test
+  - ROS_IP=127.0.0.1 ROS_HOSTNAME=127.0.0.1 rostest --text multifloor_manager floor_transition_late_map_ros.test
+observations:
+  valid: SUCCEEDED, terminal READY, result floor 4F, POLICY_READY after COSTMAP_READY
+  blocked: ABORTED, terminal FAULT, POLICY_READY observed, no later target READY
+  cancel: PREEMPTED, terminal FAULT
+  delayed_pose: 1 passed
+  epoch: 6 passed
+  late_map: 1 passed
+summary: every listed rostest reported RESULT SUCCESS with zero errors and failures.
+hardware: live TRON/mini-PC/WebSocket/RViz QA not attempted because hardware is powered off.
+cleanup: no session-owned ROS test processes or temporary artifacts remained; unrelated navigation launch untouched.
+plan_checkbox: updated

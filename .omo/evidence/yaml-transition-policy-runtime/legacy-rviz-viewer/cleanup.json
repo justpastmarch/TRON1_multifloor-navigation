@@ -1,0 +1,13 @@
+{
+  "status": "complete",
+  "task_processes_started": [],
+  "one_shot_processes_completed": [
+    "rosrun multifloor_manager rviz_tf_reconnect.py"
+  ],
+  "user_processes_terminated": [],
+  "messages_published": [],
+  "temporary_artifacts_pending": [],
+  "debug_journal_removed": true,
+  "helper_processes_remaining": [],
+  "preserved_preexisting_cache": "src/multifloor_manager/scripts/__pycache__/rviz_tf_reconnect.cpython-38.pyc"
+}

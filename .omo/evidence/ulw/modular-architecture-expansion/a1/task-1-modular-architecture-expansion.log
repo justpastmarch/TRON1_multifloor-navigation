@@ -1,0 +1,128 @@
+TASK: Todo 1 independent-verification correction
+RESULT: PASS
+ATTEMPT_STATUS: omo_unavailable
+ATTEMPT_PATH: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/ulw/modular-architecture-expansion/a1
+
+SCOPE OF THIS CORRECTION
+- Updated /home/m3tron/Desktop/TRON1_Modular_Navigation/docs/migration/source-selection.json
+- Updated /home/m3tron/Desktop/TRON1_Modular_Navigation/tools/source_provenance.py
+- Updated /home/m3tron/Desktop/TRON1_Modular_Navigation/test/test_workspace_boundary.py
+- Updated this log and task-1-source-selection.json in the exact a1 evidence attempt.
+- Did not revert or write .omo/boulder.json.
+- Did not write .omo/start-work/ledger.jsonl or selected plan/draft status fields; these are modeled as explicit exact-path orchestration exceptions only.
+- No old-workspace product/source file was modified.
+
+OMO STATUS
+- `omo ulw-loop status --json` is unavailable in this environment.
+- This receipt records `omo_unavailable`; it does not claim a successful CLI bind.
+- The revised plan's sole fallback attempt path is the exact ATTEMPT_PATH above.
+
+FAILING-FIRST CORRECTION
+Command:
+  python3 -m unittest test.test_workspace_boundary -v
+Result before implementation:
+  exit 1; Ran 13 tests in 0.573s; FAILED (failures=2)
+  - exact workflow-state output failed with output_forbidden for fixture .omo/boulder.json
+  - required later contract selection failed because the two operator contracts were absent
+
+SOURCE-SELECTION RECONCILIATION
+Verifier SHA-256 values, confirmed directly:
+  b216865d29bf56b75ea7d645d0011aed46d88a3666f0947c525d50f95a9cd271  test/test_run_script_contract.py
+  49145db32b4bb27c6d13f11442f350a450c29526a7c05e2df6d1bc6c672b0359  test/test_system_operator_contract.py
+
+Plan-reference reconciliation command parsed every `References (executor...)` line, stripped line suffixes, retained existing non-.omo files, and compared them to manifest source paths.
+Result:
+  PLAN_REFERENCED_EXISTING_FILES=55
+  MISSING_PLAN_REFERENCES=0
+  MISSING_PATHS=[]
+
+Manifest hash and selected contract hashes command:
+  sha256sum docs/migration/source-selection.json /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/test/test_run_script_contract.py /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/test/test_system_operator_contract.py
+Result:
+  55c28b18890b1c135d2cc39bc0cdd622bd91acca0ac6b30b9cf374b55ab804ee  docs/migration/source-selection.json
+  b216865d29bf56b75ea7d645d0011aed46d88a3666f0947c525d50f95a9cd271  test/test_run_script_contract.py
+  49145db32b4bb27c6d13f11442f350a450c29526a7c05e2df6d1bc6c672b0359  test/test_system_operator_contract.py
+
+ACTUAL MANIFEST / OUTPUT-BOUNDARY VALIDATION
+Command:
+  python3 tools/source_provenance.py --output /home/m3tron/Desktop/TRON1_Modular_Navigation/build/future-result --output /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/ulw/modular-architecture-expansion/a1/task-1-modular-architecture-expansion.log --output /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/boulder.json --output /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/start-work/ledger.jsonl --output /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/plans/modular-architecture-expansion.md --output /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/drafts/modular-architecture-expansion.md
+Result:
+  exit 0
+  {"output_count": 6, "source_count": 98, "status": "ok"}
+
+AUTOMATED QA
+Command:
+  python3 -m unittest test.test_workspace_boundary -v
+Result:
+  exit 0; Ran 13 tests in 0.593s; OK
+  direct unittest assertion calls: 31
+
+Static/compatibility commands and results:
+  ruff check --no-cache tools/source_provenance.py test/test_workspace_boundary.py
+  -> exit 0; All checks passed!
+  python3 -m compileall -q tools test
+  -> exit 0
+  AST audit
+  -> tools/source_provenance.py pure_loc=198
+  -> test/test_workspace_boundary.py pure_loc=195, direct_unittest_assertions=31
+
+MANUAL FILESYSTEM SMOKE
+The driver used target-owned TemporaryDirectory task1-fix-smoke-iyrtiohk and invoked `python3 tools/source_provenance.py` for every case.
+
+HAPPY exit=0
+  stdout={"output_count": 6, "source_count": 1, "status": "ok"}
+  stderr=<empty>
+TRAVERSAL exit=2
+  stdout=<empty>
+  stderr=source_path: ../escape.txt
+GENERATED_SOURCE exit=2
+  stdout=<empty>
+  stderr=source_forbidden: build/artifact
+OLD_PRODUCT_OUTPUT exit=2
+  stdout=<empty>
+  stderr=output_forbidden: /home/m3tron/Desktop/TRON1_Modular_Navigation/task1-fix-smoke-iyrtiohk/source/changed.txt
+SIBLING_EVIDENCE exit=2
+  stdout=<empty>
+  stderr=output_forbidden: /home/m3tron/Desktop/TRON1_Modular_Navigation/task1-fix-smoke-iyrtiohk/evidence/a2/receipt.log
+UNLISTED_ORCHESTRATION exit=2
+  stdout=<empty>
+  stderr=output_forbidden: /home/m3tron/Desktop/TRON1_Modular_Navigation/task1-fix-smoke-iyrtiohk/source/.omo/start-work/state.json
+SIBLING_PLAN exit=2
+  stdout=<empty>
+  stderr=output_forbidden: /home/m3tron/Desktop/TRON1_Modular_Navigation/task1-fix-smoke-iyrtiohk/source/.omo/plans/another-plan.md
+CLEANUP temporary_exists=False
+
+ADVERSARIAL CLASSES
+- malformed_input: traversal, malformed JSON, generated source, and credential source fail closed.
+- dirty_worktree: product metadata stayed count=226 and SHA-256 35ce1ece034563f15af9154a0982e8dd8aeffb8471c70d1eeff7960ae16bb6f9; .omo orchestration exceptions are excluded from the product snapshot.
+- stale_state: unknown nonempty targets without the exact marker are rejected.
+- generated_artifacts: generated/cache/build/devel/install/log/bag sources remain forbidden and none were copied.
+- misleading_success_output: all failure probes returned exit 2 with empty stdout; only valid boundaries emitted status=ok.
+- repeated_interruptions: all subprocesses were bounded and TemporaryDirectory cleanup reported false for existence.
+- scope_fidelity: sibling evidence, unlisted orchestration state, sibling plans, and old product outputs are rejected.
+
+OUTPUT POLICY
+- Product outputs: descendants of /home/m3tron/Desktop/TRON1_Modular_Navigation only.
+- Evidence outputs: descendants of exact a1 attempt only.
+- Workflow state: exact .omo/boulder.json and .omo/start-work/ledger.jsonl only.
+- Status updates: exact selected modular-architecture-expansion plan/draft files only; authorization is limited by the revised plan to checkbox/status edits.
+- Every other old-workspace output is rejected.
+
+CLEANUP
+- Removed task1-fix-smoke-iyrtiohk.
+- Removed worker-owned __pycache__ generated by unittest/compileall.
+- Ruff ran with --no-cache; no .ruff_cache was created.
+- No process remains running.
+- Target product files and exact a1 evidence receipts were retained.
+
+DoneClaim:
+  task: Todo 1 independent-verification correction
+  status: DONE
+  source_selection: PASS (98 hashes; 55/55 existing explicit plan references; 0 missing)
+  automated_qa: PASS (13/13; 31 direct assertions)
+  manual_filesystem_boundary_smoke: PASS
+  output_boundary: PASS (target + exact a1 + four exact orchestration/status files only)
+  old_product_workspace: READ_ONLY
+  orchestration_state: ALLOWED_EXCEPTION_NOT_REVERTED
+  omo_status: omo_unavailable
+  hardware_or_later_plan_claims: NONE

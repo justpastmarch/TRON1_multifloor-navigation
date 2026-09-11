@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "attempt_id": "policy-schema-2026-08-24T12:00:35+09:00",
+  "status": "complete",
+  "created_runtime_resources": [],
+  "temporary_resources": [
+    {
+      "kind": "Python TemporaryDirectory site copies",
+      "owner": "source-direct manual parser driver and unittest setUp",
+      "cleanup": "context managers and unittest tearDown completed",
+      "remaining": false
+    }
+  ],
+  "cache_audit": {
+    "original_command": "glob **/__pycache__",
+    "original_result": "no matches",
+    "original_result_status": "false negative; superseded by filesystem stat evidence",
+    "repair_command": "stat -c '%n type=%F size=%s mtime_epoch=%Y mtime=%y' __pycache__ __pycache__/*",
+    "root_cache": {
+      "path": "__pycache__/",
+      "status": "pre-existing and preserved",
+      "mtime_epoch": 1787535802,
+      "mtime": "2026-08-24 10:43:22.076993794 +0900",
+      "todo_2_started": "2026-08-24T12:00:35+09:00",
+      "predates_todo_2": true,
+      "newest_entry": "__pycache__/bundle_source_contract.cpython-38.pyc",
+      "newest_entry_mtime_epoch": 1787535802
+    },
+    "todo_2_created_new_cache": false,
+    "action": "not deleted because it predates Todo 2",
+    "pythondontwritebytecode": true
+  },
+  "preserved_preexisting": [
+    "build/",
+    "devel/",
+    "install/",
+    "__pycache__/ (pre-existing; newest mtime 2026-08-24 10:43:22 +09:00, before Todo 2 start)",
+    "all unrelated source/test/config paths",
+    "Todo 10 RViz and bundle-test changes"
+  ],
+  "deleted_paths": [],
+  "processes_started": [],
+  "processes_stopped": [],
+  "notes": [
+    "No ROS, browser, network, robot, build, or install process was started.",
+    "Evidence repair supersedes the original false-negative glob claim: root __pycache__/ existed before Todo 2, Todo 2 created no new cache, and no cache was deleted.",
+    "The OpenCode tool retained a truncated command-output file outside the workspace; it is harness-owned and was not modified."
+  ]
+}

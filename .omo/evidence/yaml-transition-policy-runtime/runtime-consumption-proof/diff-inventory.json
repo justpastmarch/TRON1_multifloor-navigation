@@ -1,0 +1,7 @@
+{
+  "task": "runtime-consumption-proof",
+  "fixture_parity": "all files equal except transitions.yaml",
+  "semantic_difference": {"freshness_sec": {"valid": 10.0, "blocked": 0.01}},
+  "production_manager_nodes_per_launch": 1,
+  "new_runtime_nodes": 0
+}

@@ -1,0 +1,4 @@
+ruff check reviewed source/test files
+LSP diagnostics on every reviewed Python file
+python3 -m unittest src/multifloor_manager/test/test_transitions.py -v
+source inspection of clocks, epochs, preemption, unsafe dispatch, and line counts

@@ -1,0 +1,131 @@
+{
+  "schema_version": 2,
+  "class": "runtime",
+  "roots": [
+    "src/mission_manager/scripts",
+    "src/mission_manager/launch",
+    "src/multifloor_manager/scripts",
+    "src/multifloor_manager/launch",
+    "src/stair_supervisor/scripts",
+    "src/stair_supervisor/launch",
+    "src/mission_manager/package.xml",
+    "src/multifloor_manager/package.xml",
+    "src/stair_supervisor/package.xml"
+  ],
+  "explicit_exclusions": [
+    ".git/**",
+    ".omo/**",
+    "**/__pycache__/**",
+    "**/*.pyc",
+    "**/*.pyo"
+  ],
+  "file_count": 15,
+  "manifest_sha256": "572e20e5261c7ccb7d632c476031c66c8537cae357dd84495c75cde86fcdb054",
+  "files": [
+    {
+      "path": "src/mission_manager/launch/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1787118722567134087,
+      "size": 0,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/launch/system.launch",
+      "sha256": "db926f0a04cccfaf570025195b0b34444f07a3d6186dafbb889e85c71853e69a",
+      "mtime_ns": 1787140739868014447,
+      "size": 4059,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/package.xml",
+      "sha256": "d4197e9524547707ea4beff569938ae67116b63bafaa74dea91d6167a1a4e9ba",
+      "mtime_ns": 1787139446604946051,
+      "size": 2117,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/scripts/mission_manager_node.py",
+      "sha256": "e845f1fc7f42f92ca6e5ffed5e5cdb3034f7a4d2810938e7ae69fa092932d107",
+      "mtime_ns": 1787119869853260559,
+      "size": 238,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/launch/apriltag.launch",
+      "sha256": "568907085ac4d37cb12ef4cfcb7ec3bf7d53761215a47e029461e95b1aa6228b",
+      "mtime_ns": 1787298844947369977,
+      "size": 689,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/launch/navigation.launch",
+      "sha256": "64b1db0d38e7c37fb13f7de6476462a12c790479ed51b3aa09516756aefec000",
+      "mtime_ns": 1787298396785986729,
+      "size": 3710,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/launch/pointcloud_to_laserscan.launch",
+      "sha256": "52318c49698d26ccc047a502d7fbc14b0f26e878816ed310008aa605598dfdc2",
+      "mtime_ns": 1787124641424041323,
+      "size": 1409,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/package.xml",
+      "sha256": "5a118b98544612320e76a07f14c5f47807c24ff6527f1bcaee073d6df0d13c7e",
+      "mtime_ns": 1787131367968252819,
+      "size": 1952,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/scripts/multifloor_manager_node.py",
+      "sha256": "df658a5e92ef349f553ad86fa4184c761a291f32f13845bb753adebffa9a077d",
+      "mtime_ns": 1787119869853260559,
+      "size": 247,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/scripts/rviz_tf_reconnect.py",
+      "sha256": "79f1c5dfe46c2372d9c65360366aff07365063679df6f0ac1d2e6a0df207d630",
+      "mtime_ns": 1787207378220208750,
+      "size": 1158,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/scripts/wait_for_tf_exec.sh",
+      "sha256": "92ab933b0f1ad45c85ed6e2fbf3829c15f09194cba15e12a58600d1d403d493c",
+      "mtime_ns": 1787207378224208687,
+      "size": 767,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/launch/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mtime_ns": 1787118722599133635,
+      "size": 0,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/package.xml",
+      "sha256": "690f795f6b787925a07e6b29b0c6b3559c376b3bb6247f478beaf848bc1d9eea",
+      "mtime_ns": 1787131480166514217,
+      "size": 1275,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/scripts/calibrate_yaw_rate.py",
+      "sha256": "31e48cb50c30e9014036491fee19c29320108cbc48e08d447cf9e6005c9083e9",
+      "mtime_ns": 1787287235764205783,
+      "size": 4228,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/scripts/stair_supervisor_node.py",
+      "sha256": "1c5d95ae432e77bbd429908c1747eff01769855ebd9f29d67adcdfbfa2a22841",
+      "mtime_ns": 1787119869853260559,
+      "size": 241,
+      "kind": "file"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+Focused final-gate tests: 2 passed.
+Final-gate success: live levels sampled and commit performed once.
+Final-gate cancellation: second preemption check returned transition cancelled and commit count remained zero.
+Epoch N/N+1 writer, delayed-pose, late-map, cancellation, and evaluator temporal tests passed.

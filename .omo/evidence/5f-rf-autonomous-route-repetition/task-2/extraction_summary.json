@@ -1,0 +1,65 @@
+{
+  "bag_start_epoch_s": 1788920856.977572,
+  "gap_count": 232,
+  "gap_threshold_s": 0.5,
+  "interpolation_performed": false,
+  "topic_counts": {
+    "/camera1/color/image_raw/compressed": 10407,
+    "/livox/imu": 95998,
+    "/livox/lidar": 2690,
+    "/tron/sensor_joy": 238381,
+    "/tron/wheel_odom_raw": 47755
+  },
+  "wheel_jump_threshold_m": 0.5,
+  "wheel_rejected_edges": [
+    {
+      "duration_s": 0.7253522872924805,
+      "end_s": 42.51285982131958,
+      "start_s": 41.7875075340271,
+      "step_distance_m": 0.00040198835111903076
+    },
+    {
+      "duration_s": 0.7074270248413086,
+      "end_s": 66.80463552474976,
+      "start_s": 66.09720849990845,
+      "step_distance_m": 0.0017685671591989
+    },
+    {
+      "duration_s": 0.5099823474884033,
+      "end_s": 224.14909601211548,
+      "start_s": 223.63911366462708,
+      "step_distance_m": 0.00264276499391944
+    },
+    {
+      "duration_s": 0.7051994800567627,
+      "end_s": 228.5355315208435,
+      "start_s": 227.83033204078674,
+      "step_distance_m": 0.0008407814891320503
+    },
+    {
+      "duration_s": 0.8889315128326416,
+      "end_s": 232.02625966072083,
+      "start_s": 231.13732814788818,
+      "step_distance_m": 0.001595192098590313
+    },
+    {
+      "duration_s": 4.542860746383667,
+      "end_s": 236.56913542747498,
+      "start_s": 232.0262746810913,
+      "step_distance_m": 0.0016147681350450233
+    },
+    {
+      "duration_s": 0.000133514404296875,
+      "end_s": 236.83797979354858,
+      "start_s": 236.8378462791443,
+      "step_distance_m": 1.9192705600380995
+    },
+    {
+      "duration_s": 3.2271547317504883,
+      "end_s": 497.6284534931183,
+      "start_s": 494.4012987613678,
+      "step_distance_m": 0.00023928410150132198
+    }
+  ],
+  "zero_fill_performed": false
+}

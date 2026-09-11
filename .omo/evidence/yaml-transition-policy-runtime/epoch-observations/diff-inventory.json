@@ -1,0 +1,13 @@
+{
+  "task": "epoch-observations",
+  "workspace_is_git": false,
+  "changed_product_paths": [
+    "src/multifloor_manager/src/multifloor_manager/ros_runtime.py",
+    "src/multifloor_manager/test/test_floor_transition_epoch_ros.py"
+  ],
+  "todo4_ownership_paths_touched": false,
+  "user_ros_processes_or_bags_touched": false,
+  "generated_paths": ["build/", "devel/", "install/"],
+  "generated_paths_status": "build was run; generated output is not source-owned and was not manually edited or removed",
+  "plan_checkbox": "unchanged"
+}

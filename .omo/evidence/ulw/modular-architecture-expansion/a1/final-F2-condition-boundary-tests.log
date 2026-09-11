@@ -1,0 +1,28 @@
+test_expression_cycle_is_rejected_without_recursion (test_evaluator_expressions.EvaluatorExpressionTest) ... ok
+test_nested_all_any_and_quorum_follow_dependency_order (test_evaluator_expressions.EvaluatorExpressionTest) ... ok
+test_shared_group_is_memoized_once_per_cycle (test_evaluator_expressions.EvaluatorExpressionTest) ... ok
+test_exact_freshness_and_deadline_boundaries (test_evaluator_temporal.EvaluatorTemporalTest) ... ok
+test_interrupted_dwell_requires_a_full_new_interval (test_evaluator_temporal.EvaluatorTemporalTest) ... ok
+test_invalid_evidence_and_clock_do_not_partially_commit_state (test_evaluator_temporal.EvaluatorTemporalTest) ... ok
+test_malformed_container_and_non_all_compiled_root_are_rejected (test_evaluator_temporal.EvaluatorTemporalTest) ... ok
+test_malformed_evidence_identity_and_epoch_are_distinct (test_evaluator_temporal.EvaluatorTemporalTest) ... ok
+test_repeat_evaluation_from_equal_inputs_is_equal (test_evaluator_temporal.EvaluatorTemporalTest) ... ok
+test_ignored_evidence_is_visible_but_absent_from_root (test_evaluator_truth.EvaluatorTruthTest) ... ok
+test_missing_false_wrong_epoch_stale_and_future_reasons (test_evaluator_truth.EvaluatorTruthTest) ... ok
+test_required_optional_and_ignored_truth_table (test_evaluator_truth.EvaluatorTruthTest) ... ok
+test_trace_and_state_are_immutable (test_evaluator_truth.EvaluatorTruthTest) ... ok
+test_compile_explicit_root_with_optional_subtree_and_ignored_trace (test_policy_compiler.PolicyCompilerTest) ... ok
+test_dynamic_producer_values_are_rejected (test_policy_compiler.PolicyCompilerTest) ... ok
+test_expression_cycles_are_rejected (test_policy_compiler.PolicyCompilerTest) ... ok
+test_invalid_quorum_bounds_are_rejected (test_policy_compiler.PolicyCompilerTest) ... ok
+test_missing_and_non_all_roots_are_rejected (test_policy_compiler.PolicyCompilerTest) ... ok
+test_unknown_ids_and_producers_are_rejected (test_policy_compiler.PolicyCompilerTest) ... ok
+test_wrong_membership_is_rejected (test_policy_compiler.PolicyCompilerTest) ... ok
+test_engine_import_contract_is_ros_io_and_dynamic_import_free (test_policy_contract.PolicyContractTest) ... ok
+test_registry_binding_is_explicit_immutable_and_callable (test_policy_contract.PolicyContractTest) ... ok
+test_registry_rejects_duplicates_and_unknown_keys (test_policy_contract.PolicyContractTest) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.018s
+
+OK

@@ -1,0 +1,10 @@
+{
+  "schema_version": 2,
+  "attempt_id": "baseline-provenance-repair-2026-08-24T10:02:19+09:00",
+  "cleanup_performed": [],
+  "generated_paths_removed": [],
+  "generated_paths_modified": [],
+  "processes_left_running": [],
+  "temporary_paths_removed": [],
+  "preservation": "build/, devel/, install/, build/test_results/**/*.xml, source, config, test, and documentation paths were preserved; only six evidence files and ledger lines were changed/added."
+}

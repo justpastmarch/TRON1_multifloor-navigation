@@ -1,0 +1,58 @@
+Todo 1 evidence - three-package catkin workspace
+Date: 2026-08-19
+
+BASELINE (before product edits)
+- python3 validate_bundle.py -> exit 0, BUNDLE_OK
+- ./run.sh --help -> exit 0; existing --check, --preflight, and no-option modes listed
+
+TEST-FIRST PROOF
+- python3 -m unittest test.test_workspace_layout initially failed because all three
+  manifests/entrypoints and workspace sourcing were absent.
+- Final result: Ran 4 tests, OK.
+- External temporary rogue_package fixture is rejected by
+  validate_project_packages with BUNDLE_ERROR: project package mismatch.
+
+BUILD AND DISCOVERY
+- catkin_make -> exit 0; catkin 0.8.12 traversed exactly:
+  mission_manager, multifloor_manager, stair_supervisor.
+- rospack find paths:
+  /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager
+  /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager
+  /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor
+- Workspace-filtered rospack result:
+  PROJECT_PACKAGES=mission_manager,multifloor_manager,stair_supervisor
+- Python import probe -> PACKAGE_IMPORTS_OK.
+
+REAL CLI QA
+- ./run.sh --help -> exit 0 with the baseline operator modes unchanged.
+- With build/devel present, ./run.sh --check -> exit 0:
+  BUNDLE_OK
+  [CHECK] local bundle and software: OK
+
+ADVERSARIAL PROBES
+- Dirty-source probe DIRTY_PROBE.tmp -> validator exit 1 with inventory mismatch;
+  probe removed afterward.
+- A concurrently added unrelated rewrite_rviz_report_with_mapping.py was also
+  detected as dirty source and was not modified. It was moved aside only for the
+  clean-source validation, restored by trap, and its SHA-256 remained
+  9d1257a3cfc112bb07a454509d219863fb245bc44d566166be51287aa6fcd12c.
+- Generated build/devel files are excluded from source checks; clean-source
+  python3 validate_bundle.py and ./run.sh --check both exited 0 while generated
+  catkin trees existed.
+- rosrun placeholder probes exited 2 (not success) and each printed that it is
+  not operational, preventing false readiness claims.
+- git status --short -> exit 128 because this directory is not a Git repository.
+
+STATIC VERIFICATION
+- bash -n run.sh -> exit 0.
+- lsp_diagnostics -> no diagnostics in validate_bundle.py,
+  test/test_workspace_layout.py, or the nine Python files below src/.
+- The no-excuse checker could not execute in this ROS Noetic environment:
+  uv is absent, and direct Python 3.8 execution fails because the checker uses
+  Python 3.10 match syntax. LSP and runtime import checks passed instead.
+
+CLEANUP RECEIPT
+- Removed build/, devel/, Python __pycache__ directories, and obsolete empty
+  root launch/, maps/, nav/, rviz/ directories.
+- Confirmed build, devel, install, pycache, and old asset directories absent.
+- Preserved unrelated rewrite_rviz_report_with_mapping.py with unchanged hash.

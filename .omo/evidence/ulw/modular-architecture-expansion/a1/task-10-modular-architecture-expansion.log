@@ -1,0 +1,124 @@
+Task 10 - multifloor snapshots, producers, registry, and policy YAML
+Date: 2026-08-26
+Target: /home/m3tron/Desktop/TRON1_Modular_Navigation
+Evidence root: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/ulw/modular-architecture-expansion/a1
+
+IMPLEMENTED
+- Immutable package-local snapshots: snapshots.py owns floor vote, localization, target-map, target-costmap, and atomic MultifloorSnapshot records.
+- Pure package-local producers: produce_floor_confirmation, produce_localization_readiness, and produce_costmap_readiness.
+- Target-map identity and readiness are explicit snapshot provenance consumed by localization/costmap producers; no fourth/hidden gate was introduced.
+- Stable composition keys: floor_tag_vote, localization_ready, costmap_ready. compose_producer_registry binds these callables explicitly into frozen ProducerRegistry.
+- produce_evidence runs configured producers once against one snapshot and rejects condition-identity mismatch.
+- configuration.py is the only new multifloor module importing yaml. It parses the capability envelope and passes an already-parsed typed mapping to tron1_condition_engine.compile_policy.
+- Known-good transitions fixture now declares one explicit all root containing T_FLOOR_CONFIRMED, T_LOCALIZED, and T_COSTMAP_READY, with mode and membership entirely in YAML.
+- Production transitions remain configured: false and contain no enabled policy.
+
+TDD RED
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/tron1_condition_engine/src:src/multifloor_manager/src python3 -B -m unittest discover -s src/multifloor_manager/test -p 'test_*producer*.py' -v
+Result before implementation: exit 1; ModuleNotFoundError: No module named 'multifloor_manager.composition'. This was the intended missing-behavior failure.
+
+EXACT PRODUCER ACCEPTANCE
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/tron1_condition_engine/src:src/multifloor_manager/src python3 -B -m unittest discover -s src/multifloor_manager/test -p 'test_*producer*.py' -v
+Result: exit 0; Ran 5 tests; OK.
+Covered: repeat equality, frozen snapshots, false observations, stale epoch rejection, map identity rejection, wrong floor identity rejection, explicit keys, immutable registry, unknown key, duplicate key.
+
+POLICY CONFIGURATION ACCEPTANCE
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/tron1_condition_engine/src:src/multifloor_manager/src python3 -B -m unittest discover -s src/multifloor_manager/test -p 'test_*policy*.py' -v
+Result: exit 0; Ran 4 tests; OK.
+Malformed outcomes exercised:
+- configured: false -> PolicyConfigurationError(code='disabled')
+- two policy entries -> PolicyConfigurationError(code='policy_count')
+- mode ignored while root membership remains -> InvalidPolicyError(code='ignored_in_root')
+- unbound producer key -> InvalidPolicyError(code='unknown_producer')
+
+FULL RELEVANT SUITES
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/tron1_condition_engine/src:src/multifloor_manager/src python3 -B -m unittest discover -s src/multifloor_manager/test -p 'test_*.py' -v
+Result: exit 0; Ran 9 tests; OK.
+
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/tron1_condition_engine/src python3 -B -m unittest discover -s src/tron1_condition_engine/test -p 'test_*.py' -v
+Result: exit 0; Ran 23 tests; OK.
+
+Command:
+PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_configuration_contract -v
+Result: exit 0; Ran 10 tests; OK.
+
+DATA-ONLY MODE DRIVER
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/tron1_condition_engine/src:src/multifloor_manager/src python3 -B src/multifloor_manager/test/policy_mode_driver.py
+Result: exit 0.
+Trace:
+{"ignored": {"localization_mode": "ignored", "localization_value": false, "reason": "success", "result": true, "root_member_count": 2, "root_result": true}, "required": {"localization_mode": "required", "localization_value": false, "reason": "root_false", "result": false, "root_member_count": 3, "root_result": false}}
+Interpretation: changing only localization mode plus matching root membership in YAML changes root truth from false to true; evaluator and producers are unchanged.
+
+IMMUTABILITY / REPEAT EQUALITY
+Command result:
+{'plan_repeat_equal': True, 'registry_keys': ('floor_tag_vote', 'localization_ready', 'costmap_ready'), 'registry_type': 'ProducerRegistry'}
+FrozenInstanceError mutation assertions pass for MultifloorSnapshot and ProducerRegistry. DuplicateProducerError and UnknownProducerError assertions pass.
+
+IMPORT / SIDE-EFFECT / PROHIBITED-CALL SCAN
+AST-scanned:
+- src/multifloor_manager/src/multifloor_manager/snapshots.py
+- src/multifloor_manager/src/multifloor_manager/producers.py
+- src/multifloor_manager/src/multifloor_manager/composition.py
+Banned imports: rospy, roslib, actionlib, socket, subprocess, requests, httpx, yaml, importlib.
+Banned calls: publish, call, send_goal, open, system, popen, exec, eval, __import__.
+Result: {"prohibited_findings": []}; exit 0.
+configuration.py owns the permitted YAML boundary import. No producer imports ROS/YAML/I/O clients, mutates runtime state, or performs transport calls.
+
+STATIC / SYNTAX / SIZE
+Command: ruff check <all seven changed Python files>
+Result: exit 0; All checks passed!
+Command: PYTHONDONTWRITEBYTECODE=1 python3 -B -m compileall -q src/multifloor_manager/src/multifloor_manager src/multifloor_manager/test
+Result: exit 0.
+Pure LOC: snapshots 55; producers 53; composition 44; configuration 51; producer tests 130; policy tests 103; driver 65. Every changed Python file is below 200 pure LOC.
+The programming-skill no-excuse script could not execute under the required Python 3.8 runtime because that external checker itself contains Python match syntax; Ruff and all runtime suites passed. basedpyright is not installed.
+
+SOURCE PROVENANCE
+The Todo 10 old-source references were read only from the immutable source tree and their SHA-256 values exactly match docs/migration/source-selection.json:
+- ros_runtime.py 6c49b572f412b468e815bf78ce4bbff1805a2d0084ceff3a3412df461e0e0b0a
+- readiness.py 7c59a2a96417d4fd1d00bcd331b469c3861314563032707357cf060bf95937c2
+- tag_evidence.py 807865e03b2082defc3409ed4fccbf8345780aa32511d63e25bbe6b3b2706e84
+- map_evidence.py 28d2be8dcbd85e1b47b08a4223f4f17b47d4a365823db027d3c0b3daf8fd49ed
+- transitions.yaml d1381a47c80ed28e90f5b6543574636abfed442b0e501f42ae1c02e97f7585f9
+- test_tag_evidence.py 7961394b5d4f5d11ce293aa3241874edd7b25d3ce088522030b71592b568781f
+- test_map_evidence.py 8f714c2b4b083b4b4ceac1a6415b875c9b261c1721dfe6b1a6b225b8fe881fa3
+No old product/source file was edited.
+
+CLEANUP
+Independent-verifier correction (2026-08-26): the prior task-scope scan was too narrow because workspace-root `.ruff_cache` remained. The following cleanup-only command removed it; no product/source or plan file changed:
+Command: rm -rf ".ruff_cache"
+Result: exit 0; removed `.ruff_cache/0.6.9/{18257370986759775996,9693933484693477866}`, `.ruff_cache/CACHEDIR.TAG`, and `.ruff_cache/.gitignore` with the containing directory.
+
+Focused non-writing verification after cleanup (Ruff was deliberately not run afterward):
+Command: PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/tron1_condition_engine/src:src/multifloor_manager/src python3 -B -m unittest discover -s src/multifloor_manager/test -p 'test_*producer*.py' -v
+Result: exit 0; Ran 5 tests in 0.000s; OK.
+Command: PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/tron1_condition_engine/src:src/multifloor_manager/src python3 -B -m unittest discover -s src/multifloor_manager/test -p 'test_*policy*.py' -v
+Result: exit 0; Ran 4 tests in 0.050s; OK.
+Neither suite recreated a source/test cache.
+
+Workspace-wide residue scan command:
+PYTHONDONTWRITEBYTECODE=1 python3 -B -c 'import json,os,pathlib; root=pathlib.Path("."); cache_dirs={".ruff_cache",".pytest_cache",".mypy_cache","__pycache__"}; temp_suffixes={".pyc",".pyo",".tmp",".temp",".bak"}; candidates=set(); [(candidates.add(p) if p.is_dir() and p.name in cache_dirs else None) for p in root.rglob("*")]; [(candidates.add(p) if p.is_file() and (p.suffix in temp_suffixes or p.name.startswith(".coverage") or p.name.endswith("~")) else None) for p in root.rglob("*")]; rel=sorted(str(p.relative_to(root)) for p in candidates); generated=[p for p in rel if p.split("/",1)[0] in {"build","devel"}]; actionable=[p for p in rel if p.split("/",1)[0] not in {"build","devel"}]; result={"workspace":str(root.resolve()),"actionable_residue":actionable,"generated_build_devel_residue":generated,"generated_roots_present":[name for name in ("build","devel") if (root/name).is_dir()]}; print(json.dumps(result,sort_keys=True)); raise SystemExit(bool(actionable))'
+Result: exit 0.
+- workspace: /home/m3tron/Desktop/TRON1_Modular_Navigation
+- actionable_residue: []
+- generated_roots_present: ["build", "devel"]
+- remaining generated cache residue: two `__pycache__` directories and 25 generated `.pyc` files, all under `devel/lib/python3/dist-packages/tron1_interfaces/`.
+- exact generated hierarchy: `devel/lib/python3/dist-packages/tron1_interfaces/__pycache__/__init__.cpython-38.pyc` and `devel/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/` containing `__init__`, `FloorState`, all seven FloorTransition action/message modules, all seven Mission action/message modules, all seven StairTraversal action/message modules, and `SupervisorState` as `.cpython-38.pyc` files.
+These build/devel outputs predate this cleanup, are generated interface artifacts rather than task-10 temporary residue, and were intentionally retained.
+
+Source provenance rerun after cleanup:
+Command: sha256sum src/multifloor_manager/src/multifloor_manager/ros_runtime.py src/multifloor_manager/src/multifloor_manager/readiness.py src/multifloor_manager/src/multifloor_manager/tag_evidence.py src/multifloor_manager/src/multifloor_manager/map_evidence.py src/multifloor_manager/config/transitions.yaml test/test_tag_evidence.py test/test_map_evidence.py
+Result: exit 0; all seven hashes exactly match the SOURCE PROVENANCE values above. Old source remained read-only.
+
+ARCHITECTURAL SELF-REVIEW
+- Single responsibility: each file owns one noun phrase (snapshots, producers, composition, policy boundary).
+- Boundary purity: YAML is converted at multifloor configuration; engine receives typed mapping data.
+- No tagged-variant discrimination, Any/object/cast/type-ignore, broad exception, defensive ROS layer, one-off safety abstraction, parameter bloat, redundant verification, negative names, or new logging.
+- Every introduced behavior is covered by tests that fail when its implementation is absent.
+
+DoneClaim (corrected after independent cleanup verification): PASS - Todo 10 stop conditions are met and workspace-wide actionable residue is empty. `.ruff_cache` and all task-10 temporary/cache residue are absent; only pre-existing generated build/devel roots and 25 generated tron1_interfaces bytecode files under devel remain. Producer tests pass 5/5 and policy tests pass 4/4 under PYTHONDONTWRITEBYTECODE=1 without recreating caches; source provenance remains exact; product behavior, old source, and plan scope were unchanged.

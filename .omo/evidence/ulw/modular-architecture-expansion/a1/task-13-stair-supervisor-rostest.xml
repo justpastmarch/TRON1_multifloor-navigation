@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="0" failures="0" name="unittest.suite.TestSuite" tests="1" time="2.109"><testcase classname="rostest.runner.RosTest" name="teststair_supervisor_disabled_surface" time="2.1086" /><system-out>&lt;![CDATA[
+[ROSTEST]setup[/home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor/test/stair_supervisor.test] run_id[8235d15e-a0c0-11f1-81ef-4308ea2b0ed0] starting
+&amp;#x001B;[1mstarted roslaunch server http://127.0.0.1:41793/&amp;#x001B;[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: noetic
+ * /rosversion: 1.17.4
+ * /stair_supervisor_disabled/accid: MUST_NOT_CONNECT
+ * /stair_supervisor_disabled/config_root: /home/m3tron/Desk...
+ * /stair_supervisor_disabled/websocket_url: ws://127.0.0.1:9
+
+NODES
+  /
+    stair_supervisor_disabled (stair_supervisor/stair_supervisor_node.py)
+
+[ROSTEST]setup[/home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor/test/stair_supervisor.test] run_id[8235d15e-a0c0-11f1-81ef-4308ea2b0ed0] done
+[ROSTEST]Running test [stair_supervisor_disabled_surface]
+&amp;#x001B;[1mROS_MASTER_URI=http://127.0.0.1:44623/&amp;#x001B;[0m
+&amp;#x001B;[1msetting /run_id to 8235d15e-a0c0-11f1-81ef-4308ea2b0ed0&amp;#x001B;[0m
+&amp;#x001B;[1mprocess[stair_supervisor_disabled-1]: started with pid [728584]&amp;#x001B;[0m
+[ROSTEST]running test stair_supervisor_disabled_surface
+&amp;#x001B;[1mprocess[stair_supervisor_disabled_surface-2]: started with pid [728585]&amp;#x001B;[0m
+&amp;#x001B;[1m[stair_supervisor_disabled_surface-2] process has finished cleanly
+log file: /home/m3tron/.ros/log/8235d15e-a0c0-11f1-81ef-4308ea2b0ed0/stair_supervisor_disabled_surface-2*.log&amp;#x001B;[0m
+[ROSTEST]test [stair_supervisor_disabled_surface] finished
+[ROSTEST]test [stair_supervisor_disabled_surface] results are in [/home/m3tron/.ros/test_results/stair_supervisor/rosunit-stair_supervisor_disabled_surface.xml]
+[ROSTEST]test [stair_supervisor_disabled_surface] results summary: 0 errors, 0 failures, 1 tests
+[ROSTEST][ROSTEST] test [stair_supervisor_disabled_surface] done
+[ROSTEST]tearDown[/home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor/test/stair_supervisor.test]
+shutting down processing monitor...
+[stair_supervisor_disabled-1] killing on exit
+... shutting down processing monitor complete
+[ROSTEST]rostest teardown /home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor/test/stair_supervisor.test complete
+
+]]&gt;</system-out><system-err>&lt;![CDATA[
+
+]]&gt;</system-err></testsuite>

@@ -1,0 +1,119 @@
+schema_version: 2
+plan: .omo/plans/yaml-transition-policy-runtime.md
+task: "3"
+task_id: policy-evaluator
+attempt_id: policy-evaluator-repair-2026-08-24T15:25:02+09:00
+session_id: ses_fcda31262ffe2m5qp9Iw8ZUWwo
+verification_session_id: ses_fcd954c27ffeKvsGbjNvD803n5
+manual_rerun_session_id: ses_fcd85aebbffeX3I1Clnd6DwGK0
+repair_started_at: 2026-08-24T15:25:02+09:00
+repair_completed_at: 2026-08-24T15:30:30.702+09:00
+status: complete
+status_meaning: Independent needs-fix defects reproduced, repaired, and reverified; Todo 3 checkbox intentionally unchanged
+workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+workspace_is_git: false
+model_policy: GPT-family direct work only; no Kimi-family delegation
+dependency_receipts:
+  - path: .omo/evidence/yaml-transition-policy-runtime/policy-schema/receipt.yaml
+    task_id: policy-schema
+    status: complete
+allowed_paths:
+  - src/multifloor_manager/src/multifloor_manager/transitions.py
+  - src/multifloor_manager/test/test_transitions.py
+  - .omo/evidence/yaml-transition-policy-runtime/policy-evaluator/*
+  - .omo/start-work/ledger.jsonl
+changed_product_paths:
+  - src/multifloor_manager/src/multifloor_manager/transitions.py
+  - src/multifloor_manager/test/test_transitions.py
+source_inventory: baseline.json
+diff_inventory: diff-inventory.json
+commands: commands.txt
+tests: test-results.txt
+cleanup: cleanup.json
+tdd:
+  independent_red:
+    command: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest src/multifloor_manager/test/test_transitions.py -v
+    result: epoch bypass, mutable conditions, malformed raw AttributeError, and decimal dwell defects reproduced
+  repair_red:
+    command: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest src/multifloor_manager/test/test_transitions.py -v
+    result: four defect tests failed or errored before source repair
+  green:
+    command: python3 -m unittest src/multifloor_manager/test/test_transitions.py -v
+    exit_code: 0
+    result: 16 tests passed
+manual_qa:
+  channel: source-direct Python driver with explicit manual timestamps
+  manual_rerun_session_id: ses_fcd85aebbffeX3I1Clnd6DwGK0
+  verification_session_id: ses_fcd954c27ffeKvsGbjNvD803n5
+  command: |-
+    PYTHONDONTWRITEBYTECODE=1 python3 - <<'PY'
+    import sys
+    sys.path.insert(0, 'src/multifloor_manager/src')
+    from multifloor_manager.transitions import (InvalidPredicateObservationError, InvalidTransitionPolicyError, PredicateObservation, TransitionCondition, TransitionManager, TransitionPolicy)
+    def make_policy(dwell=2.0, timeout=5.0):
+        return TransitionPolicy(id='driver', enabled=True, conditions=(TransitionCondition('ready', True, True),), optional_count=0, freshness_sec=1.0, dwell_sec=dwell, timeout_sec=timeout)
+    manager = TransitionManager(make_policy()); manager.begin(0.0, 4)
+    try: manager.evaluate({'ready': PredicateObservation(True, 0.0, 5)}, 0.0, 5)
+    except InvalidPredicateObservationError: print('epoch-fence: pass')
+    else: raise AssertionError('epoch bypass')
+    try: TransitionPolicy('list', True, [TransitionCondition('ready', True, True)], 0, 1.0, 0.0, 2.0)
+    except InvalidTransitionPolicyError: print('immutable-conditions: pass')
+    else: raise AssertionError('mutable conditions accepted')
+    try: manager.evaluate({'ready': object()}, 2.0, 4)
+    except InvalidPredicateObservationError: print('malformed-domain-error: pass')
+    else: raise AssertionError('malformed entry accepted')
+    result, evidence = manager.evaluate({'ready': PredicateObservation(True, 1.0, 4)}, 1.0, 4)
+    assert result is False and evidence.dwell_started_at_sec == 1.0
+    print('exception-atomicity: pass')
+    manager = TransitionManager(make_policy()); manager.begin(0.0, 4); manager.evaluate({'ready': PredicateObservation(True, 2.1, 4)}, 2.1, 4)
+    result, evidence = manager.evaluate({'ready': PredicateObservation(True, 4.1, 4)}, 4.1, 4)
+    assert result is True; print('decimal-absolute-dwell: pass')
+    manager = TransitionManager(make_policy()); manager.begin(0.0, 4); result, evidence = manager.evaluate({'ready': PredicateObservation(True, 5.0, 4)}, 5.0, 4)
+    assert result is False and evidence.timed_out is True; print('exact-timeout-terminal: pass')
+    PY
+  exit_code: 0
+  started_at: 2026-08-24T15:36:09+09:00
+  completed_at: 2026-08-24T15:36:09+09:00
+  artifact: test-results.txt
+  result: epoch-fence, immutable-conditions, malformed-domain-error, exception-atomicity, decimal-absolute-dwell, and exact-timeout-terminal all pass
+verification:
+  focused_unittest: pass; 16 tests
+  lsp_diagnostics: clean on both changed Python files
+  ruff: pass
+  pure_loc: 194
+  module_limit: pass; <=250 pure lines
+  exact_timeout: pass; deadline equality remains terminal false
+  freshness_boundary: pass; existing equality test retained
+adversarial_classes:
+  malformed_input: passed; non-PredicateObservation and non-finite inputs become domain errors
+  stale_state: passed; wrong begun epoch, stale/future/missing/false observations cannot become true
+  dirty_worktree: passed; only Todo 3 paths and evidence/ledger changed
+  flaky_tests: passed; no sleeps; explicit timestamps and exact focused command
+  misleading_success_output: passed; red defects, exit codes, typed evidence, and driver output recorded
+  hung_commands: not applicable; no long-running process or external dependency
+  cancel_resume: not applicable; no resumable operation
+  repeated_interruptions: not applicable; no interruptible operation
+  prompt_injection: not applicable; no external text or delegation
+cleanup_result: complete; task-created bytecode removed and pre-existing generated paths preserved
+risks:
+  - legacy mission evaluator intentionally remains until Todo 4
+  - plan checkbox intentionally remains unchecked pending independent verification
+next_safe_tasks:
+  - independent Oracle verification
+  - Todo 4 package ownership cleanup only after verification
+DoneClaim:
+  task: "3 policy-evaluator repair"
+  changed_files:
+    - src/multifloor_manager/src/multifloor_manager/transitions.py
+    - src/multifloor_manager/test/test_transitions.py
+  tests:
+    - "python3 -m unittest src/multifloor_manager/test/test_transitions.py -v: 16 passed"
+    - "ruff check changed Python files: pass"
+    - "LSP diagnostics: clean"
+    - "pure LOC: 194"
+  manual_qa:
+    - .omo/evidence/yaml-transition-policy-runtime/policy-evaluator/test-results.txt
+  cleanup:
+    - .omo/evidence/yaml-transition-policy-runtime/policy-evaluator/cleanup.json
+  risks:
+    - legacy evaluator intentionally remains until Todo 4

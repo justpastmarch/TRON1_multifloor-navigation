@@ -1,0 +1,1 @@
+"""Workspace-level structural tests."""

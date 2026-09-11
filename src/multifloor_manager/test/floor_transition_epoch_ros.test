@@ -1,0 +1,4 @@
+<launch>
+  <test test-name="floor_transition_epoch_ros" pkg="multifloor_manager"
+        type="test_floor_transition_epoch_ros.py" time-limit="15.0"/>
+</launch>

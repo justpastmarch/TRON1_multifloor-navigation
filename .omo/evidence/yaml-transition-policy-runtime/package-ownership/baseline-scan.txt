@@ -1,0 +1,17 @@
+Started: 2026-08-24T16:12:53+09:00
+Command:
+grep -R -nE 'mission_manager\.transitions|from mission_manager import transitions' src test || true
+Result before deletion:
+Binary file src/mission_manager/test/__pycache__/test_transitions.cpython-38.pyc matches
+src/mission_manager/test/test_transitions.py:10:from mission_manager.transitions import (  # noqa: E402
+
+The source scan proves the old evaluator had exactly one source caller, the old
+mission evaluator test. The generated pycache match is not source authority.
+
+Baseline tests:
+python3 -m unittest src/multifloor_manager/test/test_transitions.py -v
+Result: exit 0, 16 tests passed.
+python3 -m unittest src/mission_manager/test/test_transitions.py -v
+Result: exit 1, 11 tests, 10 passed, 1 pre-existing error in
+test_loaded_yaml_policy_adapts_to_named_boolean_evaluator because the old
+evaluator expects required/optional fields absent from the destination policy.

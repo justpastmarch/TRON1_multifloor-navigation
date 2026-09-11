@@ -1,0 +1,30 @@
+Command:
+rosrun rviz rviz -d src/multifloor_manager/rviz/wf_navigation_manual.rviz
+
+Result: attempted with timeout 10s; exit status 124.
+Interpretation: the task-owned RViz process did not exit before the timeout.
+No process remained after timeout cleanup.
+
+Late-RViz reconnect command:
+source devel/setup.bash && timeout 10s rosrun multifloor_manager rviz_tf_reconnect.py
+
+Result: exit 0.
+Output: [READY] RViz subscribed to 4 current /tf publishers
+
+Observed `/amcl` connection:
+* topic: /initialpose
+   * to: /rviz_navigation (http://192.168.1.26:40947/)
+   * direction: inbound
+   * transport: TCPROS
+
+Observed `/move_base` connection:
+* topic: /move_base_simple/goal
+   * to: /rviz_navigation (http://192.168.1.26:40947/)
+   * direction: inbound
+   * transport: TCPROS
+
+Observed `/rviz_navigation` outbound connections:
+- `/initialpose` to `/amcl`, TCPROS
+- `/move_base_simple/goal` to `/move_base`, TCPROS
+
+No pose or goal was published. The helper made XML-RPC callbacks only and exited; no helper process remained.

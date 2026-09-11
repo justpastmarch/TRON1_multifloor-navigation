@@ -1,0 +1,10 @@
+# Floor maps are surveyed; production activation remains disabled until poses, tags,
+# stair profiles, transitions, and mission locations are measured and reviewed.
+# Floor keys: id, map_yaml, frame; frame must be map.
+schema_version: 1
+configured: true
+floors:
+  - {id: 3F, map_yaml: maps/floor_3F.yaml, frame: map}
+  - {id: 4F, map_yaml: maps/floor_4F.yaml, frame: map}
+  - {id: 5F, map_yaml: maps/floor_5F.yaml, frame: map}
+  - {id: RF, map_yaml: maps/floor_RF.yaml, frame: map}

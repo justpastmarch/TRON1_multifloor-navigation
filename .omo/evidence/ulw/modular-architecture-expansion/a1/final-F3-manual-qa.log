@@ -1,0 +1,110 @@
+# F3 Real Manual QA — APPROVE
+
+Date: 2026-08-26
+Plan: `.omo/plans/modular-architecture-expansion.md`
+Target: `/home/m3tron/Desktop/TRON1_Modular_Navigation`
+Bound evidence attempt: `/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/ulw/modular-architecture-expansion/a1`
+
+## Verdict
+
+**APPROVE.** The final installed launch was driven through the ROS/operator surface with
+mock hardware and loopback ROS identity. The three project nodes started, the explicit
+fixture roots resolved, the action/state surfaces were observable, the scan publisher
+owner was unique, the no-motion action succeeded, cancellation reached a terminal state,
+invalid input was rejected, all five smoke cases passed, and owned ROS processes were
+fully terminated.
+
+`tmux` is not installed in this environment (`tmux: command not found`). The prescribed
+interactive session was replaced with an equivalent bounded `setsid` process-group
+session; its launch, action-client, smoke, and cleanup observations are captured below.
+
+## Installed graph
+
+Command:
+
+```text
+source /opt/ros/noetic/setup.bash
+source install/setup.bash
+ROS_MASTER_URI=http://127.0.0.1:11311 ROS_IP=127.0.0.1 ROS_HOSTNAME=127.0.0.1
+roslaunch --wait tron1_bringup system.launch use_mock_hardware:=true rviz:=false
+```
+
+Observed nodes:
+
+```text
+/amcl
+/apriltag_ros_continuous_node
+/map_server
+/mission_manager
+/move_base
+/multifloor_manager
+/pointcloud_to_laserscan
+/rosout
+/stair_supervisor
+```
+
+Project-owned nodes are exactly `/mission_manager`, `/multifloor_manager`, and
+`/stair_supervisor`. No launch `ERROR`, `Traceback`, `Exception`, or `process has died`
+line was observed. `roslaunch --dump-params` resolved all four project configuration
+roots to `install/share/tron1_bringup/test/fixtures/building_valid` in mock mode.
+
+Relevant surfaces:
+
+- `/mission/{goal,feedback,result,status,cancel}` present; `/mission/goal` subscribed by
+  `/mission_manager`.
+- `/multifloor/floor_transition/{goal,feedback,result,status,cancel}` present with
+  mission publisher and multifloor subscriber.
+- `/multifloor/floor_state` emitted `state: 2`, `floor_id: "3F"`, detail
+  `"initial map ready"`.
+- `/stair_supervisor/state` emitted `state: 0`, `connected: False`, detail
+  `"robot connection parameters are incomplete"`, which is the expected non-connecting
+  mock/disabled transport posture.
+- `rostopic info /scan`: exactly one publisher, `/pointcloud_to_laserscan`; subscriber
+  `/amcl`.
+
+## Action and input scenarios
+
+Real `actionlib.SimpleActionClient('/mission', MissionAction)` output:
+
+```text
+happy_state=3 result_code=0 reason=''
+cancel_state=4 result_code=9 reason='floor state is stale'
+```
+
+The no-motion `home_3f` mission returned `SUCCEEDED` with result code `OK`. The second
+mission cancellation reached terminal `ABORTED`; the deterministic correlated-child
+cancellation behavior is additionally covered by the dedicated `cancel` smoke case.
+
+Invalid `rostopic pub` goal (`destination_id: missing_location`) produced:
+
+```text
+status: 5
+text: "mission goal is invalid"
+result_code: 2
+reason: "mission goal is invalid"
+```
+
+Five required smoke cases, run from the final installed workspace, all returned pass:
+
+```json
+{"case": "happy", "status": "pass"}
+{"case": "cancel", "status": "pass"}
+{"case": "stale", "status": "pass"}
+{"case": "nonfinite", "status": "pass"}
+{"case": "websocket-fault", "status": "pass"}
+```
+
+The stale case observed zero output after freshness expiry; nonfinite input was replaced
+with zero; WebSocket send failure entered terminal `FAULT` without reconnect or replay.
+
+## Cleanup
+
+The first fallback harness exposed a process-group cleanup mismatch; all observed owned
+ROS groups were then terminated explicitly. A final process query returned no
+`roscore`, `rosmaster`, `roslaunch`, or project-node processes. No robot, SSH tunnel,
+sensor launch, actuator, or powered TRON was contacted.
+
+## Final determination
+
+F3 manual QA **APPROVE**. The remaining physical gates are intentionally deferred and
+are not represented as passed.

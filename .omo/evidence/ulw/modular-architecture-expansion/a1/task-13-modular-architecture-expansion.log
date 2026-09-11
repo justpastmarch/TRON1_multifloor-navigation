@@ -1,0 +1,110 @@
+Task 13 - F1 evidence supersession: live disabled stair ROS surface
+Date: 2026-08-26
+Target workspace: /home/m3tron/Desktop/TRON1_Modular_Navigation
+Evidence binding: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/ulw/modular-architecture-expansion/a1
+
+SUPERSESSION
+This log and the archived XML below supersede the earlier Todo 13 DoneClaim that relied only on deterministic fake ROS. The actual installed stair_supervisor_node.py was launched under a loopback ROS master and exercised through live generated tron1_interfaces topics/actions.
+
+IMPLEMENTATION
+- Added src/stair_supervisor/test/stair_supervisor.test.
+- Added src/stair_supervisor/test/stair_supervisor_rostest.py.
+- Added test-only disabled fixture src/stair_supervisor/test/fixtures/disabled/stair_profiles.yaml.
+- Registered find_package(rostest REQUIRED) and add_rostest(test/stair_supervisor.test) only inside CATKIN_ENABLE_TESTING.
+- Installed the runner, launch, and fixture only inside that test-only CMake block. No production launch, node, bridge, mux, safety component, timer, or transport was added.
+- Added only <test_depend>rostest</test_depend> to package.xml.
+
+RED / DIAGNOSIS / GREEN
+- Initial red command:
+  source devel/setup.bash && rostest stair_supervisor stair_supervisor.test
+  RESULT: blocked until the shell timeout because the inherited environment advertised ROS_IP=10.192.1.200 from host 192.168.1.26.
+- Runtime diagnosis:
+  printenv showed ROS_MASTER_URI=http://10.192.1.2:11311 and ROS_IP=10.192.1.200.
+  lsof on the live rostest process showed 192.168.1.26:46578 -> 10.192.1.200:40699 in SYN_SENT, proving the parent XML-RPC self-connection was unreachable. No product logic was changed for this environment issue.
+- Exact green rostest with loopback binding:
+  source devel/setup.bash && ROS_MASTER_URI=http://127.0.0.1:11311 ROS_IP=127.0.0.1 ROS_HOSTNAME=127.0.0.1 rostest stair_supervisor stair_supervisor.test
+  RESULT: SUCCESS; TESTS 1; ERRORS 0; FAILURES 0.
+
+LIVE ROS ASSERTIONS
+Test: DisabledStairSupervisorRostest.test_live_disabled_action_and_state_never_arm_transport
+- actionlib client connected to the live /stair_traversal server.
+- /stair_supervisor/state was present and latched.
+- Initial and final SupervisorState were DISARMED, connected=false, ownership_epoch=0.
+- Exact live detail was "stair capability is disabled", proving build_node returned before RobotTransport construction and before the enabled-only Timer path.
+- A live StairTraversalGoal was accepted by actionlib and terminated ABORTED with result_code CAPABILITY_DISABLED.
+- The actual node subscribed to /navigation/cmd_vel but to no /stair/evidence/* topics; those evidence subscriptions and the stream Timer exist only in the enabled node.
+- The launch supplied ws://127.0.0.1:9 and accid=MUST_NOT_CONNECT, but the disabled profile selected the non-connecting surface before either parameter could construct/start RobotTransport.
+- Rostest teardown SIGINT-closed the actual node cleanly. Final process scan found no rosmaster, roslaunch, rostest, stair node, or runner.
+
+ACTUAL XML ARCHIVE
+- task-13-stair-supervisor-rostest.xml
+  Source: /home/m3tron/.ros/test_results/stair_supervisor/rostest-test_stair_supervisor.xml
+  Content inspected: tests=1, errors=0, failures=0; actual stair_supervisor_node.py and runner PIDs; loopback master; clean teardown.
+  SHA256: 19bf738408f8e3c1ddcc6242d73134eaf0074f74caed9fe1146bce97b2b8b46e
+- task-13-stair-supervisor-rosunit.xml
+  Source: /home/m3tron/.ros/test_results/stair_supervisor/rosunit-stair_supervisor_disabled_surface.xml
+  Content inspected: test_live_disabled_action_and_state_never_arm_transport, tests=1, errors=0, failures=0.
+  SHA256: 7deb2361b6ce0e89c40ddebdfc98031c033043cbfd4a671219ff41857ab51700
+
+REGRESSION COMMANDS
+1. PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/stair_supervisor/src python3 -B -m unittest discover -s src/stair_supervisor/test -p 'test_*ros*.py' -v
+   RESULT: 4 tests, OK.
+2. PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/stair_supervisor/src python3 -B -m unittest discover -s src/stair_supervisor/test -p 'test_*.py' -v
+   RESULT: 14 tests, OK.
+3. ROS_MASTER_URI=http://127.0.0.1:11311 ROS_IP=127.0.0.1 ROS_HOSTNAME=127.0.0.1 PYTHONDONTWRITEBYTECODE=1 catkin_make run_tests_stair_supervisor
+   RESULT: fake ROS 4/4 OK plus live rostest 1/1 SUCCESS.
+4. catkin_test_results --verbose build/test_results/stair_supervisor
+   RESULT: 6 tests, 0 errors, 0 failures, 0 skipped (four fake tests plus rostest wrapper and rosunit case).
+5. PYTHONDONTWRITEBYTECODE=1 catkin_make install
+   RESULT: exit 0; output explicitly installed stair_supervisor_rostest.py, stair_supervisor.test, and disabled fixture from the CATKIN_ENABLE_TESTING block.
+6. uv run --python 3.12 .../check-no-excuse-rules.py src/stair_supervisor/test/stair_supervisor_rostest.py
+   RESULT: no violations in 1 file. Runner pure LOC: 68.
+
+OWNERSHIP / TOPOLOGY / PROVENANCE
+- src/stair_supervisor/scripts contains exactly one executable source: stair_supervisor_node.py.
+- Production RobotTransport constructor scan: exactly one match in scripts/stair_supervisor_node.py.
+- Production rospy.Timer scan: exactly one match in src/stair_supervisor/ros_node.py; disabled class has none.
+- New live test runner contains no RobotTransport, websocket.create_connection, or rospy.Timer reference.
+- No Kimi, bridge, mux, watchdog, reconnect implementation, production launch, or additional runtime node was introduced.
+- Immutable old product hashes remain:
+  fa1b089ba9d61c775e9ae59332d7e9927144b476d70a5c947d16c4cd95d20f6a  old ros_entrypoint.py
+  505586213cdcde942fbacc387f83e6c035c9ff961916ec374be42ad9d6013c92  old ros_node.py
+- New/final source hashes:
+  121a98a554f95d454d15ff48f8d0681223d233926e59225c620ecb0d15f35a9d  test/stair_supervisor.test
+  4df5a213616d82678cc5d16a5487326c3099a2c14ad5be97d68c8858b6c14f5c  test/stair_supervisor_rostest.py
+  b280e111fe11c54b85c7956fbd119f88c64a0ef2afaa9105f5e3b274950d3404  test/fixtures/disabled/stair_profiles.yaml
+  95867e9860cec52a004c6bfa48189685321062439174c4ccb0fac4f7306500c8  CMakeLists.txt
+  c390841153cbc33a1320c93e587d6b3f9b8c2dbc8c8539b82741bfdb52fce87f  package.xml
+
+CLEANUP
+- Removed the temporary debug log and debug journal.
+- Removed non-generated source __pycache__ under src/stair_supervisor.
+- Kept catkin devel/build/install outputs and bound XML as generated verification artifacts.
+- Final pgrep found no ROS process; no socket listener, container, tmux session, or hardware connection remains.
+
+DoneClaim:
+  task: "13. Expose stair supervision through the sole stair ROS node - F1 live rostest closure"
+  changed_files:
+    - /home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor/test/stair_supervisor.test
+    - /home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor/test/stair_supervisor_rostest.py
+    - /home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor/test/fixtures/disabled/stair_profiles.yaml
+    - /home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor/CMakeLists.txt
+    - /home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor/package.xml
+  live_surface:
+    - "actual stair_supervisor_node.py under loopback roscore"
+    - "DISARMED, connected=false, ownership_epoch=0"
+    - "live action ABORTED with CAPABILITY_DISABLED"
+    - "disabled detail and graph prove no enabled transport/evidence/timer path"
+  tests:
+    - "exact loopback rostest: 1/1 SUCCESS"
+    - "focused fake ROS: 4/4 OK"
+    - "full stair suite: 14/14 OK"
+    - "catkin stair results: 6 tests, 0 errors/failures"
+    - "catkin install: exit 0"
+  evidence:
+    - task-13-stair-supervisor-rostest.xml
+    - task-13-stair-supervisor-rosunit.xml
+  cleanup:
+    - "no live ROS process; no non-generated source cache; debug artifacts removed"
+  risks:
+    - "Powered robot behavior remains intentionally unexecuted; this closure is the requested disabled-profile loopback ROS proof."

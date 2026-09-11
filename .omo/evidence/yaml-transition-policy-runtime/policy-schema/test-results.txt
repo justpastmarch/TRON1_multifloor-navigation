@@ -1,0 +1,56 @@
+TDD RECEIPT
+===========
+
+BASELINE GREEN
+Command: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test.test_site_configuration.SiteConfigurationTest.test_current_transition_fixture_loads_through_site_boundary -v
+Exit: 0
+Observable: test_current_transition_fixture_loads_through_site_boundary ... ok; Ran 1 test; OK.
+Production/parser state: unchanged old required/optional fixture and parser.
+
+STRICT CONTRACT RED
+Command: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test/test_site_configuration.py -v
+Exit: 1 (expected)
+Summary: Ran 26 tests in 1.556s; FAILED (failures=35, errors=1).
+Representative correct-cause observables:
+- AttributeError: 'TransitionPolicy' object has no attribute 'conditions'
+- transitions.yaml:transitions[0]: keys must be ['dwell_sec', 'enabled', 'freshness_sec', 'id', 'optional', 'optional_count', 'required', 'timeout_sec']; got ['conditions', 'dwell_sec', 'enabled', 'freshness_sec', 'id', 'optional_count', 'timeout_sec']
+- test_old_transition_predicate_arrays_are_rejected failed because the old schema still loaded.
+
+FIRST GREEN ATTEMPT
+Exit: 1
+Summary: Ran 26 tests; one failure in test_old_transition_predicate_arrays_are_rejected because fixture migration made the test input new-schema. The test was repaired to mutate a desired policy into the old exact keys. No production relaxation occurred.
+
+FINAL GREEN
+Command: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test/test_site_configuration.py -v
+Exit: 0
+Summary: Ran 26 tests in 1.392s; OK.
+Flake probe: three additional complete runs, all exit 0 (26 tests each; 1.433s, 1.586s, 1.588s).
+Post-receipt final run: exit 0; 26 tests in 1.727s; OK.
+
+MANUAL QA: SOURCE-DIRECT PARSER DRIVER
+Exit: 0
+Output:
+VALID floor_transition_ready True 0 10.0 0.2 8.0
+CONDITIONS [('T_FLOOR_CONFIRMED', True, True), ('T_LOCALIZED', True, True), ('T_COSTMAP_READY', True, True)]
+EXACT_KEYS PASS
+UNKNOWN_PLACEHOLDER transitions.yaml:transitions[0].conditions[3].name: unknown condition 'T_ARRIVAL_ANNOUNCEMENT_DONE'
+BOOL_POLICY_FLAG transitions.yaml:transitions[0].enabled: expected integer 0 or 1
+STRING_CONDITION_FLAG transitions.yaml:transitions[0].conditions[0].required: expected integer 0 or 1
+DUPLICATE_NAME transitions.yaml:transitions[0].conditions[1].name: duplicate condition 'T_FLOOR_CONFIRMED'
+MISSING_NAME transitions.yaml:transitions[0].conditions: missing mandatory condition 'T_COSTMAP_READY'
+NONZERO_OPTIONAL transitions.yaml:transitions[0].optional_count: expected integer 0
+DWELL_EQUALS_TIMEOUT transitions.yaml:transitions[0].dwell_sec: must be less than timeout_sec
+CONFIGURED_INTEGER transitions.yaml:configured: expected boolean
+OLD_SCHEMA transitions.yaml:transitions[0]: keys must be ['conditions', 'dwell_sec', 'enabled', 'freshness_sec', 'id', 'optional_count', 'timeout_sec']; got ['dwell_sec', 'enabled', 'freshness_sec', 'id', 'optional', 'optional_count', 'required', 'timeout_sec']
+
+STATIC VERIFICATION
+- LSP: no diagnostics in transitions.py, configuration.py, site_config.py, or test_site_configuration.py.
+- Pure LOC: new transitions.py 34; configuration.py 257 (within plan's <=300 existing-module allowance); site_config.py 180; test 190.
+- Production YAML parsed as exactly schema_version/configured/transitions, configured is exact false, and transitions is exact empty list.
+- Fixture policy and each condition have exact approved keys.
+- Exact seven-line comment-only placeholder matched at production YAML lines 3-9.
+- No install-generated import was run. Generated install configuration retained the pre-change digest and no generated multifloor transitions module exists.
+- Evidence JSON/YAML/JSONL integrity check passed before completion; all six required task files exist.
+
+SCOPED REGRESSION NOTE
+Todo 3 owns evaluator migration. The old mission_manager evaluator still expects required/optional attributes and was deliberately not edited or used as a completion gate for Todo 2. The required Todo 2 source-direct site parser suite is green.

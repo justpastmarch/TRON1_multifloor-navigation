@@ -1,0 +1,22 @@
+schema_version: 2
+plan: .omo/plans/yaml-transition-policy-runtime.md
+task: F2
+task_id: final-plan-compliance
+attempt_id: final-plan-compliance-2026-08-24
+workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+workspace_is_git: false
+status: blocked
+passed:
+  - fixed safety predicates remain enabled and required
+  - optional_count remains zero
+  - production transitions remain configured false
+  - no new production node/action/message contract
+  - no reverse package dependency
+  - no automatic-door/network command implementation
+blocked:
+  - required final receipt/task metadata set is incomplete in historical receipts
+  - model-policy attestations are incomplete for several historical receipts
+  - F5 scope fidelity is now complete; root suite contains only the two recorded baseline entrypoint-count failures
+remaining_process_blocker:
+  - Several historical task receipts predate the final evidence schema and lack some metadata fields such as dependency receipts/model-policy attestations.
+smallest_next_action: if strict receipt-schema completeness is required, backfill the historical receipt metadata without changing product files.

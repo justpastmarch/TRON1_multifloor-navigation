@@ -1,0 +1,67 @@
+task: 12
+date: 2026-08-19
+scope: multifloor_manager FloorTransition operational node only
+baseline:
+  command: python3 -m unittest src/multifloor_manager/test/test_readiness.py -v
+  result: FAILED as expected with ModuleNotFoundError for multifloor_manager.readiness
+build:
+  command: catkin_make
+  result: PASS
+unit:
+  command: python3 -m unittest src/multifloor_manager/test/test_readiness.py src/multifloor_manager/test/test_map_loader.py -v
+  result: PASS
+  covered:
+    - three distinct ordered post-initialpose AMCL samples
+    - covariance x/y/yaw limits
+    - stale and replayed pose
+    - stale scan and odometry
+    - missing same-stamp map-to-odom-to-base_Link TF chain
+    - map_server-compatible PGM/YAML fingerprint loaded before service call
+rostest:
+  fixture_command: ROS_IP=127.0.0.1 ROS_HOSTNAME=127.0.0.1 rostest multifloor_manager floor_transition_ros.test
+  fixture_result: PASS
+  cancel_command: ROS_IP=127.0.0.1 ROS_HOSTNAME=127.0.0.1 rostest multifloor_manager floor_transition_cancel_ros.test
+  cancel_result: PASS
+  action_transcript:
+    goal: {transition_id: stair_a, target_floor: 4F}
+    feedback: [ARM_TARGET, CHANGE_MAP, MAP_CONFIRM, INITIALPOSE, AMCL_READY, CLEAR_COSTMAPS, COSTMAP_READY]
+    terminal_status: SUCCEEDED
+    result: {result_code: OK, floor_id: 4F, map_generation: 1}
+    floor_states:
+      - {state: TRANSITIONING, floor_id: ""}
+      - {state: READY, floor_id: 4F, map_generation: 1}
+    nomotion_service_calls: 3
+    in_flight_map_publication_captured: true
+    ready_after_target_costmap_only: true
+  failure_transcript:
+    goal: {transition_id: stair_b, target_floor: RF}
+    injected_failure: LoadMapResponse.RESULT_INVALID_MAP_DATA
+    terminal_status: ABORTED
+    floor_state: {state: FAULT, floor_id: ""}
+    rollback_or_resume: false
+  cancellation_transcript:
+    phase: ARM_TARGET
+    terminal_status: PREEMPTED
+    floor_state: {state: FAULT, floor_id: ""}
+adversarial:
+  stale_wrong_generated_dirty_map: test/test_map_evidence.py
+  stale_wrong_unknown_intermittent_tag: test/test_tag_evidence.py
+  stale_pose_scan_odom_tf: src/multifloor_manager/test/test_readiness.py
+  misleading_costmap_before_clear: rejected by post-clear sequence marker in floor_transition_ros.test
+  service_result_failure: ABORTED and FAULT in floor_transition_ros.test
+  cancel: PREEMPTED and FAULT in floor_transition_cancel_ros.test
+catkin:
+  command: catkin_make run_tests && catkin_test_results --verbose build/test_results
+  result: 132 tests, 0 errors, 0 failures, 0 skipped
+diagnostics:
+  result: 0 diagnostics across src/multifloor_manager Python files
+inventory:
+  installed_project_nodes:
+    - mission_manager_node.py
+    - multifloor_manager_node.py
+    - stair_supervisor_node.py
+  production_init_node_calls: 3
+  new_fourth_node: false
+cleanup:
+  fixed_ros_network_wrapper: test-only rostest_python.sh forces loopback and leaves no ROS master running
+  generated_build_and_devel_files: not source changes

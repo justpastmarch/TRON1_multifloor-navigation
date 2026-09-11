@@ -1,0 +1,24 @@
+schema_version: 2
+plan: .omo/plans/yaml-transition-policy-runtime.md
+task: F3
+task_id: final-code-quality
+attempt_id: final-code-quality-2026-08-24
+workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+workspace_is_git: false
+status: complete_with_nonblocking_formatting_caveat
+verification:
+  lsp: clean on all reviewed Python files
+  ruff_check: pass
+  focused_transition_tests: 16 passed
+  safety_scan: no generic dispatch, eval/exec, unsafe type suppression, or broad exception suppression
+  clock_epoch_review: pass; monotonic policy clock, ROS evidence timestamps, shared-condition epoch fencing, second preemption check
+line_counts_pure_noncomment:
+  transitions.py: 194
+  configuration.py: 257
+  ros_runtime.py: 217
+  ros_node.py: 292
+interpretation: configuration.py and ros_node.py are existing modules and remain below the plan's 300-line existing-module ceiling; the 250-line ceiling applies to the new pure transitions.py module.
+known_caveats:
+  - ruff format --check reports existing formatting drift; formatter normalization is not a plan acceptance criterion.
+  - basedpyright is unavailable; ROS-dependent checks were independently covered by F4.
+plan_checkbox: updated

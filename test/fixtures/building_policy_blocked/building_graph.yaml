@@ -1,0 +1,12 @@
+schema_version: 1
+configured: true
+edges:
+  - {id: leave_home, from: home_3f, to: stair_a_entry_3f, type: NAV}
+  - {id: stair_a_up, from: stair_a_entry_3f, to: stair_a_landing_4f, type: STAIR_UP, stair_id: stair_a}
+  - {id: cross_4f, from: stair_a_landing_4f, to: stair_b_entry_4f, type: NAV}
+  - {id: stair_b_up, from: stair_b_entry_4f, to: roof_landing, type: STAIR_UP, stair_id: stair_b}
+  - {id: scan_out, from: roof_landing, to: roof_scan, type: NAV}
+  - {id: scan_back, from: roof_scan, to: roof_landing, type: NAV}
+  - {id: stair_b_down, from: roof_landing, to: return_4f, type: STAIR_DOWN, stair_id: stair_b}
+  - {id: return_across_4f, from: return_4f, to: stair_a_landing_4f, type: NAV}
+  - {id: stair_a_down, from: stair_a_landing_4f, to: home_3f, type: STAIR_DOWN, stair_id: stair_a}

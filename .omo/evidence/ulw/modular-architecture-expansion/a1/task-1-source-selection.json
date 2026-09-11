@@ -1,0 +1,30 @@
+{
+  "task": "Todo 1 - isolated workspace and source selection",
+  "status": "passed",
+  "attempt_binding": "omo_unavailable",
+  "manifest": "/home/m3tron/Desktop/TRON1_Modular_Navigation/docs/migration/source-selection.json",
+  "manifest_sha256": "7e5beffba6dbf935b8e88b30232a2348793a6f65ca022bf9d02f028fb4fdf195",
+  "source_count": 104,
+  "output_roots": [
+    "/home/m3tron/Desktop/TRON1_Modular_Navigation",
+    "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/ulw/modular-architecture-expansion/a1"
+  ],
+  "exact_workflow_state_paths": [
+    "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/boulder.json",
+    "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/start-work/ledger.jsonl"
+  ],
+  "exact_status_update_paths": [
+    "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/plans/modular-architecture-expansion.md",
+    "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/drafts/modular-architecture-expansion.md"
+  ],
+  "verification": {
+    "unittest_cases": 13,
+    "direct_unittest_assertions": 31,
+    "plan_referenced_existing_files": 55,
+    "missing_plan_references": 0,
+    "manual_happy_exit": 0,
+    "manual_adversarial_exits": [2, 2, 2, 2, 2, 2],
+    "old_product_metadata_before": "35ce1ece034563f15af9154a0982e8dd8aeffb8471c70d1eeff7960ae16bb6f9",
+    "old_product_metadata_after": "35ce1ece034563f15af9154a0982e8dd8aeffb8471c70d1eeff7960ae16bb6f9"
+  }
+}

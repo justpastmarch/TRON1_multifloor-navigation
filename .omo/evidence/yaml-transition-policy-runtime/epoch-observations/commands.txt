@@ -1,0 +1,14 @@
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest src/multifloor_manager/test/test_transitions.py -v: exit 0 (16 tests)
+python3 -m py_compile src/multifloor_manager/src/multifloor_manager/ros_runtime.py src/multifloor_manager/test/test_floor_transition_epoch_ros.py: exit 0
+ruff check src/multifloor_manager/src/multifloor_manager/ros_runtime.py src/multifloor_manager/test/test_floor_transition_epoch_ros.py: exit 0
+LSP diagnostics on ros_runtime.py and test_floor_transition_epoch_ros.py: exit 0, no diagnostics
+catkin_make: exit 0
+catkin_make run_tests_multifloor_manager: exit 0; focused evaluator 16, epoch 6, delayed-pose 1 passed; unrelated aggregate result files included missing/invalid XML
+PYTHONPATH=src/multifloor_manager/src:src/mission_manager/src:src/stair_supervisor/src python3 -m unittest src/multifloor_manager/test/test_floor_transition_epoch_ros.py -v: exit 1, host missing apriltag_ros.msg before test collection
+rostest multifloor_manager floor_transition_epoch_ros.test --text: exit 1, unsourced shell had no workspace ROS_PACKAGE_PATH
+rostest multifloor_manager floor_transition_delayed_pose_ros.test --text: exit 1, unsourced shell had no workspace ROS_PACKAGE_PATH
+Source-registered epoch rostest via catkin_make run_tests_multifloor_manager: 6 passed, 0 errors, 0 failures
+Source-registered delayed-pose rostest via catkin_make run_tests_multifloor_manager: 1 passed, 0 errors, 0 failures
+Token N/N+1 behavior: barrier-controlled writer blocked on runtime.condition; finish N and arm N+1 completed before release; stale writer rejected and N+1 observations remained empty
+ruff check src/multifloor_manager/src/multifloor_manager/ros_runtime.py src/multifloor_manager/test/test_floor_transition_epoch_ros.py && catkin_make run_tests_multifloor_manager_rostest_test_floor_transition_epoch_ros.test run_tests_multifloor_manager_rostest_test_floor_transition_delayed_pose_ros.test: exit 0; epoch 6 passed and delayed-pose 1 passed
+python3 -m json.tool .omo/evidence/yaml-transition-policy-runtime/epoch-observations/baseline.json: exit 0; python3 -m json.tool .omo/evidence/yaml-transition-policy-runtime/epoch-observations/diff-inventory.json: exit 0; python3 -c 'import json; p=".omo/start-work/ledger.jsonl"; [json.loads(line) for line in open(p) if line.strip()]': exit 0; python3 -c 'import yaml; yaml.safe_load(open(".omo/evidence/yaml-transition-policy-runtime/epoch-observations/receipt.yaml"))': exit 0

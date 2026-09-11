@@ -1,0 +1,270 @@
+schema_version: 2
+attempt_id: run-rviz-fix-2026-08-24T10:30:00+09:00
+timestamp_policy: The original evidence preserved the attempt timestamp only. Per-command timestamps are marked unavailable where no stdout/stderr timing artifact exists; no unavailable invocation is claimed as executed.
+
+1.
+  command_literal: python3 -B -m unittest test.test_bundle_contract.BundleContractTest.test_troubleshooting_markdown_parent_example_is_accepted
+  timestamp: unavailable; original per-command timestamp was not captured
+  phase: before-fix red evidence
+  exit_code: 1
+  stdout_artifact: run-rviz-fix/test-results.txt lines 1-4
+  stderr_artifact: none preserved
+  stdout: BUNDLE_ERROR: parent traversal in docs/ros-noetic-amcl-rviz-late-publisher-troubleshooting.md
+
+2.
+  command_literal: ./run.sh
+  timestamp: unavailable; original per-command timestamp was not captured
+  phase: before-fix red evidence
+  exit_code: 1
+  stdout_artifact: run-rviz-fix/commands.txt historical entry 2
+  stderr_artifact: none preserved
+  stdout: BUNDLE_ERROR: parent traversal in docs/ros-noetic-amcl-rviz-late-publisher-troubleshooting.md
+
+3.
+  command_literal: unavailable; the historical entry contained a non-literal Python ellipsis and no executable stdout/stderr artifact preserved the full command
+  timestamp: unavailable
+  phase: source-direct provenance inspection
+  execution_claim: not_claimed
+  exit_code: not_applicable
+  stdout_artifact: none
+  stderr_artifact: none
+  note: The recorded result stated that validate_bundle.py and bundle_source_contract.py resolved under the workspace root; the unrecoverable invocation was not rerun during this repair.
+
+4.
+  command_literal: python3 -B -m unittest test.test_bundle_contract.BundleContractTest.test_troubleshooting_markdown_parent_example_is_accepted test.test_bundle_contract.BundleContractTest.test_parent_traversal_remains_precise_and_generated_safe
+  timestamp: unavailable; original per-command timestamp was not captured
+  phase: after-fix green evidence
+  exit_code: 0
+  stdout_artifact: run-rviz-fix/test-results.txt lines 6-10
+  stderr_artifact: none preserved
+  stdout: Ran 2 tests in 0.099s; OK
+
+5.
+  command_literal: unavailable; the historical entry contained a non-literal Python ellipsis and no executable stdout/stderr artifact preserved the full command
+  timestamp: unavailable
+  phase: source-direct validation
+  execution_claim: not_claimed
+  exit_code: not_applicable
+  stdout_artifact: none
+  stderr_artifact: none
+  note: The recorded result stated SOURCE_DIRECT_VALIDATE=OK; the unrecoverable invocation was not rerun during this repair.
+
+6.
+  command_literal: ./run.sh --check
+  timestamp: unavailable; original per-command timestamp was not captured
+  phase: wrapper verification
+  exit_code: 1
+  stdout_artifact: run-rviz-fix/commands.txt historical entry 6 and current entry 14
+  stderr_artifact: none preserved
+  stdout: BUNDLE_ERROR: RViz visualization contract mismatch; missing=[] forbidden=['/move_base_simple/goal', 'Class: rviz/SetGoal', 'Class: rviz/SetInitialPose']
+
+7.
+  command_literal: python3 -B -m unittest test.test_bundle_contract test.test_launch_contract test.test_run_script_contract
+  timestamp: unavailable; original per-command timestamp was not captured
+  phase: focused contracts
+  exit_code: 0
+  stdout_artifact: run-rviz-fix/test-results.txt lines 12-16
+  stderr_artifact: none preserved
+  stdout: Ran 15 tests in 0.433s; OK
+
+8.
+  command_literal: python3 -B -m unittest discover -s test -p 'test_*.py'
+  timestamp: unavailable; original per-command timestamp was not captured
+  phase: root suite
+  exit_code: 1
+  stdout_artifact: run-rviz-fix/test-results.txt lines 18-21
+  stderr_artifact: none preserved
+  stdout: Ran 80 tests; 3 failures retained outside this fix: RViz forbidden-tool mismatch and two pre-existing runtime entrypoint count failures.
+
+9.
+  command_literal: source /opt/ros/noetic/setup.bash; source devel/setup.bash; roslaunch --nodes mission_manager system.launch cloud_in:=/livox/lidar image_rect:=/camera1/color/image_raw camera_info:=/camera1/color/camera_info initial_floor:=3F home_location_id:=home_3f initial_location_id:=home_3f inspect_profile_id:=roof_scan_profile accid:=x websocket_url:=ws://127.0.0.1:1
+  timestamp: unavailable; original per-command timestamp was not captured
+  phase: launch node graph inspection
+  exit_code: 0
+  stdout_artifact: run-rviz-fix/commands.txt historical entry 9
+  stderr_artifact: none preserved
+  stdout: node graph included /map_server, /amcl, /move_base, /multifloor_manager, /stair_supervisor, /mission_manager, /rviz
+
+10.
+  command_literal: rostopic info /map
+  timestamp: unavailable; original per-command timestamp was not captured
+  phase: standalone map publisher inspection
+  exit_code: 0
+  stdout_artifact: run-rviz-fix/commands.txt historical entries 10 and 15
+  stderr_artifact: none preserved
+  stdout: Type: nav_msgs/OccupancyGrid; Publishers: None; subscriber: /rviz_1787535175564060831
+
+11.
+  command_literal: unavailable; the historical entry contained a non-literal argument ellipsis and no preserved shell transcript recorded the complete fixture-launch invocation
+  timestamp: unavailable
+  phase: fixture-backed map publisher inspection
+  execution_claim: not_claimed
+  exit_code: not_applicable
+  stdout_artifact: none preserved
+  stderr_artifact: none preserved
+  note: The historical result claimed a /map_server publisher, but the exact invocation is unavailable and was not rerun during this repair. Live /map evidence remains blocked.
+
+12.
+  command_literal: python3 -B -c 'from pathlib import Path; text=Path("src/multifloor_manager/rviz/wf_navigation.rviz").read_text(); print("Fixed Frame: map" if "Fixed Frame: map" in text else "Fixed Frame: missing"); print("Class: rviz/Map; Topic: /map" if "Class: rviz/Map" in text and "Topic: /map" in text else "Map display: missing")'
+  timestamp: unavailable; original per-command timestamp was not captured
+  phase: RViz config inspection
+  exit_code: 0
+  stdout_artifact: run-rviz-fix/commands.txt historical entry 12
+  stderr_artifact: none preserved
+  stdout: Fixed Frame: map; Class: rviz/Map; Topic: /map
+
+13.
+  command_literal: cleanup action: stop task roslaunch; remove /tmp/run-rviz-fix-roslaunch.log
+  timestamp: unavailable; original per-action timestamp was not captured
+  phase: initial cleanup
+  exit_code: 0
+  stdout_artifact: run-rviz-fix/cleanup.json
+  stderr_artifact: none preserved
+  stdout: temporary ROS launch stopped; temporary log removed; no task nodes remained
+
+14.
+  command_literal: PYTHONDONTWRITEBYTECODE=1 ./run.sh --check
+  timestamp: unavailable; repair verification timestamp was not captured in a command artifact
+  phase: read-only revalidation
+  exit_code: 1
+  stdout_artifact: run-rviz-fix/commands.txt entry 14
+  stderr_artifact: none preserved
+  stdout: BUNDLE_ERROR: RViz visualization contract mismatch; missing=[] forbidden=['/move_base_simple/goal', 'Class: rviz/SetGoal', 'Class: rviz/SetInitialPose']
+
+15.
+  command_literal: PYTHONDONTWRITEBYTECODE=1 rostopic info /map
+  timestamp: unavailable; repair verification timestamp was not captured in a command artifact
+  phase: read-only live publisher check
+  exit_code: 0
+  stdout_artifact: run-rviz-fix/commands.txt entry 15
+  stderr_artifact: none preserved
+  stdout: Type: nav_msgs/OccupancyGrid; Publishers: None; subscriber: /rviz_1787535175564060831
+
+16.
+  command_literal: ps -p 348555 -o pid=,ppid=,user=,lstart=,args=; tr '\0' ' ' < /proc/348555/cmdline; readlink /proc/348555/cwd
+  timestamp: 2026-08-24T10:55:26+09:00
+  phase: PID ownership verification
+  exit_code: 0
+  stdout_artifact: run-rviz-fix/cleanup.json
+  stderr_artifact: none preserved
+  stdout: PID 348555 exact command /opt/ros/noetic/lib/rviz/rviz -d src/multifloor_manager/rviz/wf_navigation.rviz; start Mon Aug 24 10:32:55 2026; cwd /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+
+17.
+  command_literal: PYTHONDONTWRITEBYTECODE=1 python3 -c 'import json, yaml; from pathlib import Path; root=Path(".omo/evidence/yaml-transition-policy-runtime"); [json.loads(p.read_text()) for p in root.rglob("*.json")]; [yaml.safe_load(p.read_text()) for p in root.rglob("*.yaml")]; [json.loads(x) for x in Path(".omo/start-work/ledger.jsonl").read_text().splitlines()]; print("json_yaml_jsonl=valid")'
+  timestamp: unavailable; repair verification timestamp was not captured in a command artifact
+  phase: structured evidence validation
+  exit_code: 0
+  stdout_artifact: run-rviz-fix/commands.txt entry 17
+  stderr_artifact: none preserved
+  stdout: structured JSON/YAML/JSONL validation passed; historical manifests preserved; post-baseline attribution recorded
+
+18.
+  command_literal: if [ "$(tr '\0' ' ' < /proc/348555/cmdline)" = "/opt/ros/noetic/lib/rviz/rviz -d src/multifloor_manager/rviz/wf_navigation.rviz " ]; then kill 348555; else exit 2; fi
+  timestamp: unavailable; termination timestamp was not captured in a command artifact
+  phase: authorized cleanup
+  exit_code: 0
+  stdout_artifact: run-rviz-fix/cleanup.json
+  stderr_artifact: none preserved
+  stdout: exact command matched; PID 348555 received SIGTERM
+
+19.
+  command_literal: PYTHONDONTWRITEBYTECODE=1 python3 -c 'from pathlib import Path; matches=[]; [matches.append((p.name, bytes((p/"cmdline").read_bytes()).replace(b"\0", b" ").decode(errors="replace").strip())) for p in Path("/proc").glob("[0-9]*") if (p/"cmdline").exists() and (bytes((p/"cmdline").read_bytes()).replace(b"\0", b" ").decode(errors="replace").strip() == "/opt/ros/noetic/lib/rviz/rviz -d src/multifloor_manager/rviz/wf_navigation.rviz" or (bytes((p/"cmdline").read_bytes()).replace(b"\0", b" ").decode(errors="replace").strip().startswith("/opt/ros/noetic/bin/roslaunch") and "mission_manager system.launch" in bytes((p/"cmdline").read_bytes()).replace(b"\0", b" ").decode(errors="replace").strip()))]; assert not matches, matches; print("pid_348555_gone=true task_processes_remaining=none")'
+  timestamp: unavailable; final process audit timestamp was not captured in a command artifact
+  phase: final cleanup verification
+  exit_code: 0
+  stdout_artifact: run-rviz-fix/cleanup.json
+  stderr_artifact: none preserved
+  stdout: pid_348555_gone=true task_processes_remaining=none
+
+20.
+  command_literal: PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_bundle_contract.BundleContractTest.test_navigation_rviz_uses_mission_only_without_direct_goal_tools -v
+  timestamp: 2026-08-24T11:17:56+09:00
+  phase: implementation red evidence
+  exit_code: 1
+  stdout_artifact: run-rviz-fix/test-results.txt latest RED
+  stderr_artifact: none
+  stdout: SystemExit: BUNDLE_ERROR: RViz visualization contract mismatch; missing=[] forbidden=['/move_base_simple/goal', 'Class: rviz/SetGoal', 'Class: rviz/SetInitialPose']
+
+21.
+  command_literal: PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_bundle_contract.BundleContractTest.test_navigation_rviz_uses_mission_only_without_direct_goal_tools -v
+  timestamp: 2026-08-24T11:17:56+09:00
+  phase: implementation green evidence
+  exit_code: 0
+  stdout_artifact: run-rviz-fix/test-results.txt latest GREEN
+  stderr_artifact: none
+  stdout: Ran 1 test in 0.000s; OK
+
+22.
+  command_literal: PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_bundle_contract test.test_launch_contract test.test_run_script_contract
+  timestamp: 2026-08-24T11:17:56+09:00
+  phase: focused contracts
+  exit_code: 0
+  stdout_artifact: run-rviz-fix/test-results.txt latest FOCUSED CONTRACTS
+  stderr_artifact: none
+  stdout: Ran 16 tests in 0.461s; OK
+
+23.
+  command_literal: PYTHONDONTWRITEBYTECODE=1 ./run.sh --check
+  timestamp: 2026-08-24T11:17:56+09:00
+  phase: required wrapper verification
+  exit_code: 0
+  stdout_artifact: run-rviz-fix/test-results.txt latest RUN CHECK
+  stderr_artifact: none
+  stdout: SITE_CONFIG_OK floors=3 locations=7 edges=9; BUNDLE_OK; [CHECK] bundle, fixture, packages, and local software: OK
+
+24.
+  command_literal: PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s test -p 'test_*.py'
+  timestamp: 2026-08-24T11:17:56+09:00
+  phase: broader suite
+  exit_code: 1
+  stdout_artifact: run-rviz-fix/test-results.txt latest ROOT SUITE
+  stderr_artifact: none
+  stdout: Ran 81 tests; 2 pre-existing workspace-entrypoint count failures for multifloor_manager and stair_supervisor
+
+25.
+  command_literal: source-direct RViz inspection and task-process audit
+  timestamp: 2026-08-24T11:17:56+09:00
+  phase: manual QA and cleanup verification
+  exit_code: 0
+  stdout_artifact: run-rviz-fix/test-results.txt latest MANUAL QA
+  stderr_artifact: none
+  stdout: rviz_contract=clean map_contract=preserved; task_owned_matches=[]; task_temp_paths=[]
+
+26.
+  command_literal: structured evidence validation
+  timestamp: 2026-08-24T11:17:56+09:00
+  phase: evidence verification
+  exit_code: 0
+  stdout_artifact: run-rviz-fix/test-results.txt latest STRUCTURED EVIDENCE
+  stderr_artifact: none
+   stdout: json_yaml_jsonl=valid
+
+27.
+  command_literal: PYTHONDONTWRITEBYTECODE=1 python3 -c 'from pathlib import Path; import yaml; path=Path("src/multifloor_manager/rviz/wf_navigation.rviz"); yaml.safe_load(path.read_text(encoding="utf-8")); print("parser=green")'
+  phase: follow-up parser regression
+  exit_code: 1 before edit; 0 after edit
+  stdout: yaml.parser.ParserError at line 250 before edit; parser=green after edit
+
+28.
+  command_literal: PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_bundle_contract.BundleContractTest.test_navigation_rviz_uses_mission_only_without_direct_goal_tools -v
+  phase: follow-up focused parsed RViz contract
+  exit_code: 0
+  stdout: parsed YAML map Topic /map, Fixed Frame map, forbidden goal tools absent
+
+29.
+  command_literal: PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_bundle_contract test.test_launch_contract test.test_run_script_contract
+  phase: follow-up focused bundle
+  exit_code: 0
+  stdout: Ran 16 tests in 0.558s; OK
+
+30.
+  command_literal: PYTHONDONTWRITEBYTECODE=1 ./run.sh --check
+  phase: follow-up required wrapper verification
+  exit_code: 0
+  stdout: SITE_CONFIG_OK floors=3 locations=7 edges=9; BUNDLE_OK; [CHECK] bundle, fixture, packages, and local software: OK
+
+31.
+  command_literal: source-direct parsed RViz inspection and task-process audit
+  phase: follow-up cleanup verification
+  exit_code: 0
+  stdout: rviz_contract=clean map=/map fixed_frame=map forbidden_goal_tools=absent; no task-owned processes or temp paths; existing non-task-owned RViz PID 4599 untouched

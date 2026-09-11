@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="0" failures="0" name="unittest.suite.TestSuite" tests="1" time="2.210"><testcase classname="rostest.runner.RosTest" name="testsystem_smoke_mission" time="2.2101" /><system-out>&lt;![CDATA[
+[ROSTEST]setup[/home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/system_smoke.test] starting
+
+NODES
+  /
+    mission_manager_system_smoke (mission_manager/mission_manager_node.py)
+
+[ROSTEST]running test system_smoke_mission
+[ROSTEST]test [system_smoke_mission] results summary: 0 errors, 0 failures, 1 tests
+[ROSTEST]tearDown[/home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/system_smoke.test]
+]]&gt;</system-out><system-err>&lt;![CDATA[
+]]&gt;</system-err></testsuite>

@@ -1,0 +1,76 @@
+<launch>
+  <arg name="map_yaml"/>
+  <arg name="nav_params_dir"/>
+  <arg name="initial_x" default="0.0"/>
+  <arg name="initial_y" default="0.0"/>
+  <arg name="initial_yaw" default="0.0"/>
+  <arg name="max_vel_x" default="0.50"/>
+  <arg name="max_vel_theta" default="1.57"/>
+  <arg name="min_in_place_vel_theta" default="0.4"/>
+  <arg name="acc_lim_x" default="0.6"/>
+  <arg name="acc_lim_theta" default="2.0"/>
+
+  <node pkg="map_server" type="map_server" name="map_server"
+        args="$(arg map_yaml)">
+    <param name="frame_id" value="map"/>
+  </node>
+
+  <node name="amcl" pkg="amcl" type="amcl" output="screen">
+    <param name="use_map_topic" value="true"/>
+    <param name="first_map_only" value="false"/>
+    <param name="scan_topic" value="/scan"/>
+    <param name="base_frame_id" value="base_Link"/>
+    <param name="odom_frame_id" value="odom"/>
+    <param name="global_frame_id" value="map"/>
+    <param name="initial_pose_x" value="$(arg initial_x)"/>
+    <param name="initial_pose_y" value="$(arg initial_y)"/>
+    <param name="initial_pose_a" value="$(arg initial_yaw)"/>
+    <param name="initial_cov_xx" value="0.01"/>
+    <param name="initial_cov_yy" value="0.01"/>
+    <param name="initial_cov_aa" value="0.01"/>
+    <param name="laser_min_range" value="0.3"/>
+    <param name="laser_max_range" value="12.0"/>
+    <param name="laser_max_beams" value="60"/>
+    <param name="min_particles" value="500"/>
+    <param name="max_particles" value="2000"/>
+    <param name="update_min_d" value="0.1"/>
+    <param name="update_min_a" value="0.1"/>
+    <param name="resample_interval" value="1"/>
+    <param name="transform_tolerance" value="0.3"/>
+    <param name="force_update_after_initialpose" value="true"/>
+    <param name="recovery_alpha_slow" value="0.0"/>
+    <param name="recovery_alpha_fast" value="0.0"/>
+    <param name="gui_publish_rate" value="2.0"/>
+    <param name="save_pose_rate" value="0.5"/>
+  </node>
+
+  <node name="move_base" pkg="move_base" type="move_base" output="screen"
+        launch-prefix="$(find multifloor_manager)/scripts/wait_for_tf_exec.sh map base_Link --">
+    <remap from="cmd_vel" to="/navigation/cmd_vel"/>
+    <remap from="odom" to="/tron/wheel_odom_raw"/>
+    <param name="base_global_planner" value="navfn/NavfnROS"/>
+    <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/>
+    <param name="controller_frequency" value="5.0"/>
+    <param name="planner_patience" value="5.0"/>
+    <param name="recovery_behavior_enabled" value="false"/>
+    <param name="oscillation_timeout" value="10.0"/>
+    <param name="oscillation_distance" value="0.2"/>
+    <rosparam file="$(arg nav_params_dir)/costmap_common_params.yaml"
+              command="load" ns="global_costmap"/>
+    <rosparam file="$(arg nav_params_dir)/costmap_common_params.yaml"
+              command="load" ns="local_costmap"/>
+    <rosparam file="$(arg nav_params_dir)/global_costmap_params.yaml"
+              command="load"/>
+    <rosparam file="$(arg nav_params_dir)/local_costmap_params.yaml"
+              command="load"/>
+    <rosparam file="$(arg nav_params_dir)/base_local_planner_params.yaml"
+              command="load"/>
+    <param name="TrajectoryPlannerROS/max_vel_x" value="$(arg max_vel_x)"/>
+    <param name="TrajectoryPlannerROS/max_vel_theta" value="$(arg max_vel_theta)"/>
+    <param name="TrajectoryPlannerROS/min_vel_theta" value="-$(arg max_vel_theta)"/>
+    <param name="TrajectoryPlannerROS/min_in_place_vel_theta"
+           value="$(arg min_in_place_vel_theta)"/>
+    <param name="TrajectoryPlannerROS/acc_lim_x" value="$(arg acc_lim_x)"/>
+    <param name="TrajectoryPlannerROS/acc_lim_theta" value="$(arg acc_lim_theta)"/>
+  </node>
+</launch>

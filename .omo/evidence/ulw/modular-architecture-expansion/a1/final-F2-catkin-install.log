@@ -1,0 +1,481 @@
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_FloorTransitionAction
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_StairTraversalActionResult
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_StairTraversalResult
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_MissionFeedback
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_FloorTransitionGoal
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_StairTraversalFeedback
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_StairTraversalGoal
+[  0%] Built target actionlib_msgs_generate_messages_cpp
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_FloorTransitionFeedback
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_MissionActionGoal
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_FloorTransitionActionGoal
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_FloorState
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_FloorTransitionActionResult
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_FloorTransitionActionFeedback
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_FloorTransitionResult
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_MissionAction
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_SupervisorState
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_StairTraversalActionFeedback
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_MissionResult
+[  0%] Built target std_msgs_generate_messages_lisp
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_MissionActionFeedback
+[  0%] Built target actionlib_msgs_generate_messages_lisp
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_StairTraversalAction
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_StairTraversalActionGoal
+[  0%] Built target actionlib_msgs_generate_messages_nodejs
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_MissionActionResult
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_MissionGoal
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target std_msgs_generate_messages_eus
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target actionlib_msgs_generate_messages_eus
+[  0%] Built target actionlib_msgs_generate_messages_py
+[ 25%] Built target tron1_interfaces_generate_messages_lisp
+[ 38%] Built target tron1_interfaces_generate_messages_cpp
+[ 57%] Built target tron1_interfaces_generate_messages_nodejs
+[ 78%] Built target tron1_interfaces_generate_messages_eus
+[100%] Built target tron1_interfaces_generate_messages_py
+[100%] Built target tron1_interfaces_generate_messages
+Install the project...
+-- Install configuration: ""
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/_setup_util.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/env.sh
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/setup.bash
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/local_setup.bash
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/setup.sh
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/local_setup.sh
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/setup.zsh
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/local_setup.zsh
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/setup.fish
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/local_setup.fish
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/.rosinstall
++ cd /home/m3tron/Desktop/TRON1_Modular_Navigation/src/tron1_condition_engine
++ mkdir -p /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages
++ /usr/bin/env PYTHONPATH=/home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages:/home/m3tron/Desktop/TRON1_Modular_Navigation/build/lib/python3/dist-packages:/opt/ros/noetic/lib/python3/dist-packages CATKIN_BINARY_DIR=/home/m3tron/Desktop/TRON1_Modular_Navigation/build /usr/bin/python3 /home/m3tron/Desktop/TRON1_Modular_Navigation/src/tron1_condition_engine/setup.py egg_info --egg-base /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_condition_engine build --build-base /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_condition_engine install --root=/ --install-layout=deb --prefix=/home/m3tron/Desktop/TRON1_Modular_Navigation/install --install-scripts=/home/m3tron/Desktop/TRON1_Modular_Navigation/install/bin
+running egg_info
+writing /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_condition_engine/tron1_condition_engine.egg-info/PKG-INFO
+writing dependency_links to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_condition_engine/tron1_condition_engine.egg-info/dependency_links.txt
+writing top-level names to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_condition_engine/tron1_condition_engine.egg-info/top_level.txt
+reading manifest file '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_condition_engine/tron1_condition_engine.egg-info/SOURCES.txt'
+writing manifest file '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_condition_engine/tron1_condition_engine.egg-info/SOURCES.txt'
+running build
+running build_py
+running install
+running install_lib
+running install_egg_info
+removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_condition_engine-0.1.0.egg-info' (and everything under it)
+Copying /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_condition_engine/tron1_condition_engine.egg-info to /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_condition_engine-0.1.0.egg-info
+Skipping SOURCES.txt
+running install_scripts
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/pkgconfig/tron1_condition_engine.pc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_condition_engine/cmake/tron1_condition_engineConfig.cmake
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_condition_engine/cmake/tron1_condition_engineConfig-version.cmake
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_condition_engine/package.xml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_condition_engine/config
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_condition_engine/launch
++ cd /home/m3tron/Desktop/TRON1_Modular_Navigation/src/tron1_interfaces
++ mkdir -p /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages
++ /usr/bin/env PYTHONPATH=/home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages:/home/m3tron/Desktop/TRON1_Modular_Navigation/build/lib/python3/dist-packages:/opt/ros/noetic/lib/python3/dist-packages CATKIN_BINARY_DIR=/home/m3tron/Desktop/TRON1_Modular_Navigation/build /usr/bin/python3 /home/m3tron/Desktop/TRON1_Modular_Navigation/src/tron1_interfaces/setup.py egg_info --egg-base /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_interfaces build --build-base /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_interfaces install --root=/ --install-layout=deb --prefix=/home/m3tron/Desktop/TRON1_Modular_Navigation/install --install-scripts=/home/m3tron/Desktop/TRON1_Modular_Navigation/install/bin
+running egg_info
+writing /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_interfaces/tron1_interfaces.egg-info/PKG-INFO
+writing dependency_links to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_interfaces/tron1_interfaces.egg-info/dependency_links.txt
+writing top-level names to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_interfaces/tron1_interfaces.egg-info/top_level.txt
+reading manifest file '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_interfaces/tron1_interfaces.egg-info/SOURCES.txt'
+writing manifest file '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_interfaces/tron1_interfaces.egg-info/SOURCES.txt'
+running build
+running build_py
+running install
+running install_lib
+running install_egg_info
+removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces-0.1.0.egg-info' (and everything under it)
+Copying /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_interfaces/tron1_interfaces.egg-info to /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces-0.1.0.egg-info
+Skipping SOURCES.txt
+running install_scripts
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/action/FloorTransition.action
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/action/Mission.action
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/action/StairTraversal.action
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/FloorTransitionAction.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/FloorTransitionActionGoal.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/FloorTransitionActionResult.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/FloorTransitionActionFeedback.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/FloorTransitionGoal.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/FloorTransitionResult.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/FloorTransitionFeedback.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/MissionAction.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/MissionActionGoal.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/MissionActionResult.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/MissionActionFeedback.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/MissionGoal.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/MissionResult.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/MissionFeedback.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/StairTraversalAction.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/StairTraversalActionGoal.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/StairTraversalActionResult.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/StairTraversalActionFeedback.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/StairTraversalGoal.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/StairTraversalResult.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/StairTraversalFeedback.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/FloorState.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/msg/SupervisorState.msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/cmake/tron1_interfaces-msg-paths.cmake
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/FloorTransitionActionFeedback.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/FloorTransitionResult.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/StairTraversalActionResult.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/StairTraversalResult.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/FloorTransitionFeedback.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/MissionActionGoal.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/MissionActionFeedback.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/StairTraversalAction.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/FloorState.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/StairTraversalFeedback.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/FloorTransitionAction.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/StairTraversalActionFeedback.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/FloorTransitionActionResult.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/FloorTransitionGoal.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/SupervisorState.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/MissionFeedback.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/MissionActionResult.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/MissionAction.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/MissionGoal.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/StairTraversalGoal.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/MissionResult.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/StairTraversalActionGoal.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/include/tron1_interfaces/FloorTransitionActionGoal.h
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/StairTraversalGoal.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/StairTraversalFeedback.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/StairTraversalActionFeedback.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/StairTraversalAction.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/FloorState.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/MissionAction.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/SupervisorState.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/FloorTransitionActionResult.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/FloorTransitionGoal.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/FloorTransitionActionFeedback.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/MissionFeedback.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/MissionResult.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/StairTraversalActionResult.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/FloorTransitionActionGoal.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/MissionActionFeedback.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/MissionActionResult.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/StairTraversalResult.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/FloorTransitionResult.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/FloorTransitionAction.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/FloorTransitionFeedback.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/MissionActionGoal.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/MissionGoal.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/msg/StairTraversalActionGoal.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/roseus/ros/tron1_interfaces/manifest.l
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/MissionResult.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_FloorTransitionFeedback.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/StairTraversalActionResult.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/StairTraversalGoal.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/MissionAction.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/MissionActionFeedback.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_StairTraversalResult.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/StairTraversalActionGoal.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/FloorTransitionGoal.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_FloorTransitionResult.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/StairTraversalFeedback.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/FloorTransitionAction.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_StairTraversalActionGoal.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_MissionAction.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/MissionFeedback.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_FloorTransitionActionFeedback.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/MissionGoal.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_StairTraversalActionFeedback.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_StairTraversalFeedback.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_MissionGoal.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/StairTraversalResult.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_MissionFeedback.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/FloorTransitionFeedback.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_StairTraversalAction.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_FloorTransitionActionResult.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/SupervisorState.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/FloorTransitionActionGoal.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_StairTraversalGoal.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/MissionActionGoal.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_MissionActionResult.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_FloorTransitionAction.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_FloorState.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_MissionActionGoal.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/MissionActionResult.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/FloorTransitionActionFeedback.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_FloorTransitionGoal.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_MissionResult.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_StairTraversalActionResult.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_SupervisorState.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/StairTraversalActionFeedback.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_MissionActionFeedback.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/FloorState.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/FloorTransitionActionResult.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/StairTraversalAction.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/FloorTransitionResult.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/tron1_interfaces-msg.asd
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/common-lisp/ros/tron1_interfaces/msg/_package_FloorTransitionActionGoal.lisp
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/_index.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/FloorTransitionAction.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/StairTraversalFeedback.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/FloorTransitionFeedback.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/StairTraversalResult.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/FloorTransitionGoal.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/StairTraversalGoal.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/FloorTransitionActionFeedback.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/_index.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/MissionActionFeedback.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/MissionFeedback.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/FloorTransitionActionGoal.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/MissionActionResult.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/StairTraversalActionGoal.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/StairTraversalActionResult.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/FloorState.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/FloorTransitionActionResult.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/MissionResult.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/MissionActionGoal.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/FloorTransitionResult.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/SupervisorState.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/MissionAction.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/StairTraversalAction.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/StairTraversalActionFeedback.js
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/gennodejs/ros/tron1_interfaces/msg/MissionGoal.js
+Listing '/home/m3tron/Desktop/TRON1_Modular_Navigation/devel/lib/python3/dist-packages/tron1_interfaces'...
+Listing '/home/m3tron/Desktop/TRON1_Modular_Navigation/devel/lib/python3/dist-packages/tron1_interfaces/msg'...
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/__pycache__
+-- Installing: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/__pycache__/__init__.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_StairTraversalAction.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_FloorTransitionActionFeedback.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_FloorTransitionResult.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_SupervisorState.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_StairTraversalFeedback.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_MissionActionFeedback.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/__init__.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_StairTraversalActionResult.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_FloorTransitionActionResult.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_FloorTransitionGoal.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_FloorTransitionAction.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_MissionResult.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_StairTraversalActionGoal.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_MissionAction.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_FloorTransitionActionGoal.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_MissionGoal.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_MissionActionGoal.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_MissionActionResult.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_MissionFeedback.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_StairTraversalActionFeedback.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_StairTraversalGoal.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_FloorTransitionFeedback.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_StairTraversalResult.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__/_FloorState.cpython-38.pyc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_MissionActionGoal.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_FloorState.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_MissionActionResult.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_FloorTransitionActionResult.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_StairTraversalFeedback.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_FloorTransitionAction.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_StairTraversalActionFeedback.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_StairTraversalActionGoal.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_FloorTransitionActionFeedback.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_StairTraversalActionResult.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_StairTraversalAction.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_SupervisorState.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_StairTraversalGoal.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_FloorTransitionActionGoal.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_MissionActionFeedback.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_MissionAction.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_MissionGoal.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_FloorTransitionResult.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_FloorTransitionFeedback.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_MissionResult.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_StairTraversalResult.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_MissionFeedback.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/_FloorTransitionGoal.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/__pycache__
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__pycache__
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_interfaces/msg/__init__.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/pkgconfig/tron1_interfaces.pc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/cmake/tron1_interfaces-msg-extras.cmake
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/cmake/tron1_interfacesConfig.cmake
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/cmake/tron1_interfacesConfig-version.cmake
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/package.xml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/config
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_interfaces/launch
++ cd /home/m3tron/Desktop/TRON1_Modular_Navigation/src/mission_manager
++ mkdir -p /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages
++ /usr/bin/env PYTHONPATH=/home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages:/home/m3tron/Desktop/TRON1_Modular_Navigation/build/lib/python3/dist-packages:/opt/ros/noetic/lib/python3/dist-packages CATKIN_BINARY_DIR=/home/m3tron/Desktop/TRON1_Modular_Navigation/build /usr/bin/python3 /home/m3tron/Desktop/TRON1_Modular_Navigation/src/mission_manager/setup.py egg_info --egg-base /home/m3tron/Desktop/TRON1_Modular_Navigation/build/mission_manager build --build-base /home/m3tron/Desktop/TRON1_Modular_Navigation/build/mission_manager install --root=/ --install-layout=deb --prefix=/home/m3tron/Desktop/TRON1_Modular_Navigation/install --install-scripts=/home/m3tron/Desktop/TRON1_Modular_Navigation/install/bin
+running egg_info
+writing /home/m3tron/Desktop/TRON1_Modular_Navigation/build/mission_manager/mission_manager.egg-info/PKG-INFO
+writing dependency_links to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/mission_manager/mission_manager.egg-info/dependency_links.txt
+writing top-level names to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/mission_manager/mission_manager.egg-info/top_level.txt
+reading manifest file '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/mission_manager/mission_manager.egg-info/SOURCES.txt'
+writing manifest file '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/mission_manager/mission_manager.egg-info/SOURCES.txt'
+running build
+running build_py
+running install
+running install_lib
+running install_egg_info
+removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/mission_manager-0.1.0.egg-info' (and everything under it)
+Copying /home/m3tron/Desktop/TRON1_Modular_Navigation/build/mission_manager/mission_manager.egg-info to /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/mission_manager-0.1.0.egg-info
+Skipping SOURCES.txt
+running install_scripts
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/pkgconfig/mission_manager.pc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/mission_manager/cmake/mission_managerConfig.cmake
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/mission_manager/cmake/mission_managerConfig-version.cmake
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/mission_manager/package.xml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/mission_manager/mission_manager_node.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/mission_manager/config
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/mission_manager/config/building_graph.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/mission_manager/config/scan_profiles.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/mission_manager/config/locations.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/mission_manager/launch
++ cd /home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor
++ mkdir -p /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages
++ /usr/bin/env PYTHONPATH=/home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages:/home/m3tron/Desktop/TRON1_Modular_Navigation/build/lib/python3/dist-packages:/opt/ros/noetic/lib/python3/dist-packages CATKIN_BINARY_DIR=/home/m3tron/Desktop/TRON1_Modular_Navigation/build /usr/bin/python3 /home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor/setup.py egg_info --egg-base /home/m3tron/Desktop/TRON1_Modular_Navigation/build/stair_supervisor build --build-base /home/m3tron/Desktop/TRON1_Modular_Navigation/build/stair_supervisor install --root=/ --install-layout=deb --prefix=/home/m3tron/Desktop/TRON1_Modular_Navigation/install --install-scripts=/home/m3tron/Desktop/TRON1_Modular_Navigation/install/bin
+running egg_info
+writing /home/m3tron/Desktop/TRON1_Modular_Navigation/build/stair_supervisor/stair_supervisor.egg-info/PKG-INFO
+writing dependency_links to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/stair_supervisor/stair_supervisor.egg-info/dependency_links.txt
+writing top-level names to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/stair_supervisor/stair_supervisor.egg-info/top_level.txt
+reading manifest file '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/stair_supervisor/stair_supervisor.egg-info/SOURCES.txt'
+writing manifest file '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/stair_supervisor/stair_supervisor.egg-info/SOURCES.txt'
+running build
+running build_py
+running install
+running install_lib
+running install_egg_info
+removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/stair_supervisor-0.1.0.egg-info' (and everything under it)
+Copying /home/m3tron/Desktop/TRON1_Modular_Navigation/build/stair_supervisor/stair_supervisor.egg-info to /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/stair_supervisor-0.1.0.egg-info
+Skipping SOURCES.txt
+running install_scripts
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/pkgconfig/stair_supervisor.pc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/stair_supervisor/cmake/stair_supervisorConfig.cmake
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/stair_supervisor/cmake/stair_supervisorConfig-version.cmake
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/stair_supervisor/package.xml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/stair_supervisor/stair_supervisor_node.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/stair_supervisor/config
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/stair_supervisor/config/robot.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/stair_supervisor/config/stair_profiles.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/stair_supervisor/launch
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/stair_supervisor/stair_supervisor_rostest.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/stair_supervisor/test/stair_supervisor.test
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/stair_supervisor/test/fixtures/disabled
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/stair_supervisor/test/fixtures/disabled/stair_profiles.yaml
++ cd /home/m3tron/Desktop/TRON1_Modular_Navigation/src/multifloor_manager
++ mkdir -p /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages
++ /usr/bin/env PYTHONPATH=/home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages:/home/m3tron/Desktop/TRON1_Modular_Navigation/build/lib/python3/dist-packages:/opt/ros/noetic/lib/python3/dist-packages CATKIN_BINARY_DIR=/home/m3tron/Desktop/TRON1_Modular_Navigation/build /usr/bin/python3 /home/m3tron/Desktop/TRON1_Modular_Navigation/src/multifloor_manager/setup.py egg_info --egg-base /home/m3tron/Desktop/TRON1_Modular_Navigation/build/multifloor_manager build --build-base /home/m3tron/Desktop/TRON1_Modular_Navigation/build/multifloor_manager install --root=/ --install-layout=deb --prefix=/home/m3tron/Desktop/TRON1_Modular_Navigation/install --install-scripts=/home/m3tron/Desktop/TRON1_Modular_Navigation/install/bin
+running egg_info
+writing /home/m3tron/Desktop/TRON1_Modular_Navigation/build/multifloor_manager/multifloor_manager.egg-info/PKG-INFO
+writing dependency_links to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/multifloor_manager/multifloor_manager.egg-info/dependency_links.txt
+writing top-level names to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/multifloor_manager/multifloor_manager.egg-info/top_level.txt
+reading manifest file '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/multifloor_manager/multifloor_manager.egg-info/SOURCES.txt'
+writing manifest file '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/multifloor_manager/multifloor_manager.egg-info/SOURCES.txt'
+running build
+running build_py
+running install
+running install_lib
+running install_egg_info
+removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/multifloor_manager-0.1.0.egg-info' (and everything under it)
+Copying /home/m3tron/Desktop/TRON1_Modular_Navigation/build/multifloor_manager/multifloor_manager.egg-info to /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/multifloor_manager-0.1.0.egg-info
+Skipping SOURCES.txt
+running install_scripts
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/pkgconfig/multifloor_manager.pc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/cmake/multifloor_managerConfig.cmake
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/cmake/multifloor_managerConfig-version.cmake
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/package.xml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/multifloor_manager/multifloor_manager_node.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/config
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/config/floors.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/config/transitions.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/config/maps
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/config/maps/floor_RF.pgm
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/config/maps/floor_3F.pgm
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/config/maps/floor_4F.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/config/maps/floor_4F.pgm
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/config/maps/floor_5F.pgm
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/config/maps/floor_3F.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/config/maps/floor_5F.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/config/maps/floor_RF.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/config/apriltags.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/config/stairs.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/multifloor_manager/launch
++ cd /home/m3tron/Desktop/TRON1_Modular_Navigation/src/tron1_bringup
++ mkdir -p /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages
++ /usr/bin/env PYTHONPATH=/home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages:/home/m3tron/Desktop/TRON1_Modular_Navigation/build/lib/python3/dist-packages:/opt/ros/noetic/lib/python3/dist-packages CATKIN_BINARY_DIR=/home/m3tron/Desktop/TRON1_Modular_Navigation/build /usr/bin/python3 /home/m3tron/Desktop/TRON1_Modular_Navigation/src/tron1_bringup/setup.py egg_info --egg-base /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_bringup build --build-base /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_bringup install --root=/ --install-layout=deb --prefix=/home/m3tron/Desktop/TRON1_Modular_Navigation/install --install-scripts=/home/m3tron/Desktop/TRON1_Modular_Navigation/install/bin
+running egg_info
+writing /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_bringup/tron1_bringup.egg-info/PKG-INFO
+writing dependency_links to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_bringup/tron1_bringup.egg-info/dependency_links.txt
+writing top-level names to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_bringup/tron1_bringup.egg-info/top_level.txt
+reading manifest file '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_bringup/tron1_bringup.egg-info/SOURCES.txt'
+writing manifest file '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_bringup/tron1_bringup.egg-info/SOURCES.txt'
+running build
+running build_py
+running install
+running install_lib
+running install_egg_info
+removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_bringup-0.1.0.egg-info' (and everything under it)
+Copying /home/m3tron/Desktop/TRON1_Modular_Navigation/build/tron1_bringup/tron1_bringup.egg-info to /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/python3/dist-packages/tron1_bringup-0.1.0.egg-info
+Skipping SOURCES.txt
+running install_scripts
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/pkgconfig/tron1_bringup.pc
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/cmake/tron1_bringupConfig.cmake
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/cmake/tron1_bringupConfig-version.cmake
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/package.xml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/config
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/config/nav
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/config/nav/global_costmap_params.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/config/nav/base_local_planner_params.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/config/nav/costmap_common_params.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/config/nav/local_costmap_params.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/config/apriltag_ros_tags.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/launch
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/launch/system.launch
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/launch/apriltag.launch
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/launch/pointcloud_to_laserscan.launch
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/launch/navigation.launch
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/rviz
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/rviz/wf_navigation_manual.rviz
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/rviz/wf_navigation.rviz
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/etc/catkin/profile.d/99.tron1_bringup_system_smoke.sh
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/catkin_env_hook/99.tron1_bringup_system_smoke.sh
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/system_smoke.test
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/lib/tron1_bringup/system_smoke_rostest.py
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/floors.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/building_graph.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/transitions.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/maps
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/maps/floor_3f.pgm
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/maps/floor_rf.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/maps/floor_3f.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/maps/floor_4f.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/maps/floor_4f.pgm
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/maps/floor_rf.pgm
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/scan_profiles.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/apriltags.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/robot.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/apriltag_ros_tags.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/stairs.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/locations.yaml
+-- Up-to-date: /home/m3tron/Desktop/TRON1_Modular_Navigation/install/share/tron1_bringup/test/fixtures/building_valid/stair_profiles.yaml
+Base path: /home/m3tron/Desktop/TRON1_Modular_Navigation
+Source space: /home/m3tron/Desktop/TRON1_Modular_Navigation/src
+Build space: /home/m3tron/Desktop/TRON1_Modular_Navigation/build
+Devel space: /home/m3tron/Desktop/TRON1_Modular_Navigation/devel
+Install space: /home/m3tron/Desktop/TRON1_Modular_Navigation/install
+####
+#### Running command: "make cmake_check_build_system" in "/home/m3tron/Desktop/TRON1_Modular_Navigation/build"
+####
+####
+#### Running command: "make install -j8 -l8" in "/home/m3tron/Desktop/TRON1_Modular_Navigation/build"
+####

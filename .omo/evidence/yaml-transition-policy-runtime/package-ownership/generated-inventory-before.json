@@ -1,0 +1,10 @@
+{
+  "captured_at": "2026-08-24T16:48:00+09:00",
+  "scope": "Todo 4 stale generated mission evaluator artifacts",
+  "paths": {
+    "build/mission_manager/lib/mission_manager/transitions.py": {"exists": true, "size": 6395, "sha256": "e07fe850e755480132e50d9e3debf931f3ba73b8dd33b84f082c30bf1b6844cf", "classification": "generated importable Python module"},
+    "install/lib/python3/dist-packages/mission_manager/transitions.py": {"exists": true, "size": 6395, "sha256": "e07fe850e755480132e50d9e3debf931f3ba73b8dd33b84f082c30bf1b6844cf", "classification": "generated importable Python module"},
+    "build/test_results/mission_manager/nosetests-test.test_transitions.py.xml": {"exists": true, "size": 1729, "sha256": "84fb46ba96bf30d78e3fbc62bc7369a7651827f91eb9beeb8b0d90ed980d1245", "classification": "stale generated XML for deleted mission evaluator test"}
+  },
+  "preserved": ["build/devel/install paths outside the three exact stale artifacts", "user ROS processes", "bags", "Todo 5 runtime source"]
+}

@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "task": "5f-rf-autonomous-route-repetition/task-2",
+  "status": "non_ambiguous_evidence_complete_alignment_blocked",
+  "created_date": "2026-09-10",
+  "source_preservation": {
+    "bag": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/manual_captures/manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "bag_sha256_before_and_after": "d28f40a9a4c0c30906ff835b643f4893f4f652642a0c97d27157a0d0c7651a02",
+    "incomplete_metadata_sha256_before_and_after": "f1cdaf841ef0acd69fc03ec1c92102b0f69a038aa131452770a6199a7ff7c91b",
+    "source_modified": false,
+    "production_yaml_modified": false
+  },
+  "prerequisite": {
+    "directory": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio",
+    "present": true,
+    "documented_validations": [
+      {"command": "UV_CACHE_DIR=/tmp/offline-lio-uv uv run --with numpy --python /usr/bin/python3 tools/offline_lio/test_registration_core.py", "result": "pass: 4 tests"},
+      {"command": "bash -n tools/offline_lio/run_fast_lio_replay.sh", "result": "pass"},
+      {"command": "bash -n tools/offline_lio/replay_rviz.sh", "result": "pass"},
+      {"command": "bash -n tools/offline_lio/run_all.sh", "result": "pass"}
+    ],
+    "tool_sha256": {
+      "process_bag.py": "646526a715e08baa3d591582fd37cf27a34555c283e1620032a4387c062c73ff",
+      "build_comparison_bag.py": "03a1b7e51e4bf8a879c13490b705e335f2eba3b643b57e5353614b70702d87e1",
+      "registration_core.py": "06f1c7f3dee4d88447fe91dd5cc4397da416c79fb07a50e180663168d4dfdc50",
+      "comparison_trajectory.py": "aa0d251172981d67227f9fc8979c98c77044ee7cade62fbd2b76634779d2814c",
+      "traversal_events.py": "3a379b3d5798e7a3ab5d4e5b8b751e094b47dc06bb2ee8e09bb70170d58c0bff",
+      "event_camera.py": "3fc055215e2d28c39670f6fe840fd884d74b680a7d6d7a8b151b6c32fef18b77",
+      "comparison_markers.py": "e24047a2d4f02581dce6f7d395bdfff3e14d1c9af03417dfdbeb13923d90b44b",
+      "run_all.sh": "24e5007f5cb42802864e55e0cfe81030eb3d57c9350996962592de7582437bc9",
+      "run_fast_lio_replay.sh": "f1de760f8b74be80cc8705b18d9105c51d1beb7d4c5559d3ff01f3cb5581086f",
+      "replay_rviz.sh": "02ffcc4b8989bac3fd2be88da8fdb0bbbec1fae9fcb1a7bb73da633aa0f83409",
+      "README.md": "69038062d1e082146f5196fc7184f09c3009c1aed2f72cfcb2605744d3309499"
+    }
+  },
+  "offline_lio_run": {
+    "spec": "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/offline_lio/5f-rf-task-2/lidar_spec.json",
+    "spec_sha256": "5bc9b1adb8909dbdcfe765cb0ad59156bb191121006ac11853ddae38db90daf3",
+    "registration_bag": "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/offline_lio/5f-rf-task-2/lidar_registration.bag",
+    "registration_bag_sha256": "cd73a099123191d2cd421fc8843d68a5e8a591f0f17be127dfa4b72972b4d51a",
+    "registration_csv": "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/offline_lio/5f-rf-task-2/lidar_registration.csv",
+    "registration_csv_sha256": "9f2dfa07fc72a2ede7ca51ff870d18e2bd7a41f1161d3ac2d838f6297b779f3b",
+    "result": {"processed_frames": 1345, "accepted_updates_excluding_seed": 839, "rejected_updates": 505, "acceptance_ratio": 0.6242559523809523, "global_map_points": 32836},
+    "authority": "derived diagnostic comparison only"
+  },
+  "provenance_labels": {
+    "measured": [
+      "bag_metadata.json",
+      "normalized_wheel_path.csv measured_* and record/header-time columns",
+      "controller_intent_samples.csv axes/buttons and timestamps",
+      "gap_intervals.csv source record-time endpoints",
+      "rgb_event_frames.csv actual record/header times and rgb_nearest_*.jpg"
+    ],
+    "derived": [
+      "lidar_relative_path.csv from checksummed sibling process_bag.py",
+      "normalized_wheel_path.csv normalized_* fields, step distances, masks, and segment IDs",
+      "path_valid_intervals.csv",
+      "route_paths_with_rejections.png",
+      "inspection_result.json"
+    ],
+    "inferred": [
+      "semantic_segments.csv coarse visual classifications",
+      "semantic_boundary_brackets.csv"
+    ],
+    "unavailable": [
+      "exact 5F/stair/RF transition timestamps",
+      "surveyed map correspondences",
+      "per-floor rigid transforms and residuals",
+      "map-frame waypoint x/y/yaw",
+      "transmitted command evidence",
+      "FAST-LIO output for this bag"
+    ]
+  },
+  "rejection_policy": {
+    "interpolation": false,
+    "zero_fill": false,
+    "diagnostic_gap_threshold_s": 0.5,
+    "diagnostic_wheel_jump_threshold_m": 0.5,
+    "all_exact_detected_gap_intervals": "gap_intervals.csv (232 rows; SHA-256 98589983f97d0d23f8f289d8ca70dc1725c248559be46a2e7ee40a73deb5c9b2)",
+    "all_exact_valid_edge_intervals": "path_valid_intervals.csv (9 wheel, 19 LiDAR-only; SHA-256 22286a2344bdf05bca5988e5c8d05b8d664b4acd2989a3d5d07760e368688600)",
+    "main_topic_rejected_intervals_s": {
+      "/livox/lidar": [218.0223331451416, 237.0335624217987],
+      "/livox/imu": [231.46490216255188, 236.8389253616333],
+      "/tron/wheel_odom_raw": [232.0262746810913, 236.56913542747498],
+      "/tron/sensor_joy": [231.1373643875122, 237.47756600379944],
+      "/camera1/color/image_raw/compressed": [227.82519960403442, 236.64652705192566]
+    },
+    "simultaneous_common_rejected_overlap_s": [232.0262746810913, 236.56913542747498],
+    "wheel_discontinuity": {"start_s": 236.8378462791443, "end_s": 236.83797979354858, "step_distance_m": 1.9192705600380995, "edge_rejected": true}
+  },
+  "semantic_evidence": {
+    "5F_outbound_observed_s": [0.0005478858947753906, 24.934160470962524],
+    "stair_outbound_observed_s": [49.972673177719116, 175.00631093978882],
+    "RF_planar_observed_s": [200.0065610408783, 300.01064014434814],
+    "5F_return_observed_s": [399.9833469390869, 494.4028308391571],
+    "classification": "inferred from RGB manual QA; not exact and not ground truth"
+  },
+  "map_alignment": {
+    "status": "blocked",
+    "5F_surveyed_correspondence_count": 0,
+    "RF_surveyed_correspondence_count": 0,
+    "required_per_floor": 2,
+    "evidence": "map_alignment_block.md",
+    "waypoints": "waypoint_proposals.csv contains blank coordinates and blocked status"
+  },
+  "ground_truth_contract": {
+    "joy": "controller intent only",
+    "wheel_odometry": "relative diagnostic only; discontinuity rejected",
+    "fast_lio": "unavailable and never navigation authority",
+    "lidar_only": "relative diagnostic only",
+    "source_route_resemblance": "diagnostic only",
+    "map_and_waypoint_acceptance": "requires independent stationary site survey"
+  },
+  "core_output_sha256": {
+    "bag_metadata.json": "049c58db9c3027a07baddc22626a438cdd91975194a20ddc1b8de59146246bc1",
+    "extract_route_evidence.py": "0ee3ace01e57d57180105699d6a7cdfdefd15ebd08a1ec8d548bc717c7b11be5",
+    "build_visuals.py": "1b7015374e8b5c1686443b3a2e27e5ee8ce5a45e0fa5211164c2040603111c1e",
+    "inspect_package.py": "2fdd9289eb9c6f484522cc10c4269ecc4a07fd7250ad2703e1a2df4d4200ba46",
+    "extraction_summary.json": "640477c500b62c32135eeed2a2c0adcf1a13d6a843b257d7e728c948332e892f",
+    "inspection_result.json": "b55b740df93b9d9a824d86cb00b5385ab967a57b15181bee4f14db182ebead39",
+    "normalized_wheel_path.csv": "0f8ba3a4b469562cd3fcb7bd9e99aa08a6de20ce8bc1a26e3c249a4740eeb940",
+    "lidar_relative_path.csv": "34f1732b84edaae8e2907f820cedc44471f4e24f3794b8cfb235c3146a617328",
+    "controller_intent_samples.csv": "294bbf1d204f2b994a19c8b6f1f327afa0f983185aaa0bec49c985a3868ef5ea",
+    "semantic_segments.csv": "98745e2337e17576632bb83bc6d26b9c015624b8cf5754eaf198099e747e296c",
+    "semantic_boundary_brackets.csv": "a2b4588a902c28238bf6eda96bb6fa1ac5db84354273251ec5e8c5e365e232a4",
+    "waypoint_proposals.csv": "905b5288e7a3a6a613ff461fdb2234132b3e4c8507b8e35a2b72ac081a561b17",
+    "map_alignment_block.md": "e1d35b7f4493a8049dac371ce2c3aa7eb60790c63a61863d25e2f70bad7586e5",
+    "route_paths_with_rejections.png": "668ecbe6f8c4d93b5edea4a8cc7e7cca1f8a6fbe96eb3b6fef4ec7c053080ab5",
+    "rgb_route_contact_sheet.jpg": "ae9ed19af45a047edf7d8daf4409cae1b919604afa0ddac8e36185182e0e4a60"
+  },
+  "manual_qa": "manual_qa.md",
+  "adversarial_probes": "adversarial_probes.md",
+  "commands": "commands.md",
+  "cleanup": "cleanup_receipts.md"
+}

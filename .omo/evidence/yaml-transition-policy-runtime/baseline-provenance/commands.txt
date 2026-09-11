@@ -1,0 +1,29 @@
+session_id: codex:yaml-transition-policy-runtime-todo-1-repair
+attempt_id: baseline-provenance-repair-2026-08-24T10:02:19+09:00
+supersedes_attempt_id: baseline-provenance-2026-08-24T09:52:45+09:00
+workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+
+AUTHORITATIVE ORIGINAL BASELINE, PRESERVED:
+2026-08-24T09:52:45+09:00 - COMMAND: python3 -m unittest discover -s test -v - EXIT 1 - 79 tests, 3 failures.
+2026-08-24T09:52:45+09:00 - COMMAND: python3 -c 'import inspect,multifloor_manager.configuration; print(inspect.getfile(multifloor_manager.configuration))' - EXIT 1 - ModuleNotFoundError: No module named 'multifloor_manager'.
+2026-08-24T09:52:45+09:00 - COMMAND: rospack find multifloor_manager - EXIT 1 - [rospack] Error: package 'multifloor_manager' not found.
+2026-08-24T09:52:45+09:00 - EXPLORATORY COMMAND: date --iso-8601=seconds - OUTPUT 2026-08-24T09:52:45+09:00.
+2026-08-24T09:52:45+09:00 - EXPLORATORY COMMAND: inventory Python os.walk/hashlib over roots src,test,README.md,validate_bundle.py,.catkin_workspace and generated build,devel,install - OUTPUT source 142, test 45, build 2187, devel 242, install 283.
+2026-08-24T09:52:45+09:00 - EXPLORATORY COMMAND: generated/test-result manifest loop over build/test_results - OUTPUT was recorded in original tool output; original receipt incorrectly summarized XML count as 36.
+2026-08-24T09:53:26+09:00 to 2026-08-24T09:53:54+09:00 - SERIAL COMMANDS: catkin_make EXIT 0; catkin_make run_tests EXIT 0; catkin_test_results --verbose EXIT 1, summary 150 tests, 9 errors, 1 failure.
+NOTE: The initial unittest/build/test launch overlapped; this was exploratory and the serial run above was authoritative. No product or generated path was manually edited or removed.
+
+REPAIR VERIFICATION COMMANDS, NON-MUTATING:
+2026-08-24T10:02:19+09:00 to 2026-08-24T10:02:20+09:00 - COMMAND: PYTHONPATH="$PWD/src/multifloor_manager/src:$PWD/src/mission_manager/src:$PWD/src/stair_supervisor/src" python3 -c 'import inspect,multifloor_manager.configuration; print(inspect.getfile(multifloor_manager.configuration))' - EXIT 0 - /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/configuration.py.
+2026-08-24T10:02:19+09:00 to 2026-08-24T10:02:20+09:00 - COMMAND: source devel/setup.bash && python3 -c 'import inspect,multifloor_manager.configuration; print(inspect.getfile(multifloor_manager.configuration))' - EXIT 0 - same src path; authoritative source.
+2026-08-24T10:02:19+09:00 to 2026-08-24T10:02:20+09:00 - COMMAND: source install/setup.bash && python3 -c 'import inspect,multifloor_manager.configuration; print(inspect.getfile(multifloor_manager.configuration))' - EXIT 0 - /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/install/lib/python3/dist-packages/multifloor_manager/configuration.py; generated/non-authoritative.
+2026-08-24T10:02:19+09:00 to 2026-08-24T10:02:20+09:00 - COMMAND: source devel/setup.bash && rospack find multifloor_manager - EXIT 0 - /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager.
+2026-08-24T10:02:20+09:00 to 2026-08-24T10:02:20+09:00 - COMMAND: source install/setup.bash && rospack find multifloor_manager - EXIT 0 - /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/install/share/multifloor_manager; generated/non-authoritative.
+2026-08-24T10:02:20+09:00 to 2026-08-24T10:02:20+09:00 - COMMAND: python3 - <<'PY' ... os.walk('build/test_results'), hashlib.sha256, os.path.getmtime, ET.parse XML counts ... PY - EXIT 0 - COUNT=37; complete path manifest in diff-inventory.json.
+2026-08-24T10:02:20+09:00 - COMMAND: Python XML failure extraction over build/test_results/**/*.xml - EXIT 0 - enumerated 6 import errors and 1 calibration failure in test-results.txt and baseline.json.
+2026-08-24T10:02:20+09:00 - COMMAND: per-line json.loads ledger validation and json.loads baseline/diff/cleanup validation - EXIT 0.
+2026-08-24T10:02:20+09:00 - COMMAND: ls -l .omo/evidence/yaml-transition-policy-runtime/baseline-provenance - EXIT 0 - six evidence files present.
+2026-08-24T10:07:07+09:00 to 2026-08-24T10:07:07+09:00 - COMMAND: date --iso-8601=seconds; python3 -c 'import hashlib,os,xml.etree.ElementTree as ET; p=[os.path.join(d,f) for d,_,fs in os.walk("build/test_results") for f in fs if f.endswith(".xml")]; print("COUNT="+str(len(p))); [print(f"{x}\\tsha256={hashlib.sha256(open(x,\\"rb\\").read()).hexdigest()}\\tmtime={os.path.getmtime(x):.6f}\\ttests={ET.parse(x).getroot().attrib.get(\\"tests\\")}\\terrors={ET.parse(x).getroot().attrib.get(\\"errors\\")}\\tfailures={ET.parse(x).getroot().attrib.get(\\"failures\\")}") for x in sorted(p)]'; rc=$?; date --iso-8601=seconds; exit $rc - EXIT 1 - SyntaxError from shell quoting; no files changed.
+2026-08-24T10:07:15+09:00 to 2026-08-24T10:07:15+09:00 - COMMAND: date --iso-8601=seconds; python3 -c 'import os,glob; print("COUNT=" + str(len([p for p in glob.glob("build/test_results/**/*.xml", recursive=True) if os.path.isfile(p)])))'; rc=$?; date --iso-8601=seconds; exit $rc - EXIT 0 - COUNT=37.
+2026-08-24T10:07:15+09:00 - COMMAND: Python manifest comparison using hashlib, os.path.getmtime, xml.etree.ElementTree, and diff-inventory.json - EXIT 0 - 37 paths matched; mtime compared at recorded six-decimal precision with tolerance <1e-5.
+NOTE: Build/devel/install/test commands were not rerun during repair because the repair constraint forbade modifying generated artifacts; their exact original commands, timestamps, exits, and outputs remain above.

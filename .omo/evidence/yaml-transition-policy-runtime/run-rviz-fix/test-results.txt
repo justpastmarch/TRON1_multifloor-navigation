@@ -1,0 +1,76 @@
+RED
+Command: python3 -B -m unittest test.test_bundle_contract.BundleContractTest.test_troubleshooting_markdown_parent_example_is_accepted
+Result: exit 1
+SystemExit: BUNDLE_ERROR: parent traversal in docs/ros-noetic-amcl-rviz-late-publisher-troubleshooting.md
+
+GREEN
+Command: python3 -B -m unittest test.test_bundle_contract.BundleContractTest.test_troubleshooting_markdown_parent_example_is_accepted test.test_bundle_contract.BundleContractTest.test_parent_traversal_remains_precise_and_generated_safe
+Result: exit 0
+Ran 2 tests in 0.158s
+OK
+
+FOCUSED CONTRACTS
+Command: python3 -B -m unittest test.test_bundle_contract test.test_launch_contract test.test_run_script_contract
+Result: exit 0
+Ran 15 tests in 0.518s
+OK
+
+ROOT SUITE
+Command: python3 -B -m unittest discover -s test -p 'test_*.py'
+Result: exit 1
+Ran 80 tests; 3 failures retained outside this fix: RViz forbidden-tool mismatch and two pre-existing runtime entrypoint count failures.
+
+RUNTIME/STRUCTURED VERIFICATION
+Command: PYTHONDONTWRITEBYTECODE=1 ./run.sh --check
+Result: exit 1
+Observed: pre-existing RViz visualization contract mismatch; forbidden=['/move_base_simple/goal', 'Class: rviz/SetGoal', 'Class: rviz/SetInitialPose'].
+
+Command: PYTHONDONTWRITEBYTECODE=1 rostopic info /map
+Result: exit 0
+Observed: Type nav_msgs/OccupancyGrid; Publishers None; publisher evidence partial/blocked because no live map publisher prerequisite was available.
+
+Command: PYTHONDONTWRITEBYTECODE=1 JSON/YAML/JSONL and manifest comparison
+Result: structured JSON/YAML/JSONL valid; historical test manifest mismatch attributed to post-baseline test/test_bundle_contract.py; root source file bundle_source_contract.py is outside the historical src/ manifest.
+
+IMPLEMENTATION ATTEMPT
+Command: PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_bundle_contract.BundleContractTest.test_navigation_rviz_uses_mission_only_without_direct_goal_tools -v
+RED: exit 1; BUNDLE_ERROR: RViz visualization contract mismatch; missing=[] forbidden=['/move_base_simple/goal', 'Class: rviz/SetGoal', 'Class: rviz/SetInitialPose'].
+GREEN: exit 0; Ran 1 test in 0.000s; OK.
+
+FOCUSED CONTRACTS
+Command: PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_bundle_contract test.test_launch_contract test.test_run_script_contract
+Result: exit 0; Ran 16 tests in 0.461s; OK.
+
+RUN CHECK
+Command: PYTHONDONTWRITEBYTECODE=1 ./run.sh --check
+Result: exit 0; SITE_CONFIG_OK floors=3 locations=7 edges=9; BUNDLE_OK; [CHECK] bundle, fixture, packages, and local software: OK.
+
+ROOT SUITE
+Command: PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s test -p 'test_*.py'
+Result: exit 1; Ran 81 tests; 2 pre-existing workspace-entrypoint count failures for multifloor_manager and stair_supervisor.
+
+MANUAL QA/CLEANUP
+Result: exit 0; source-direct inspection reported rviz_contract=clean map_contract=preserved; no task-owned RViz/roslaunch processes or task temp paths remained.
+
+STRUCTURED EVIDENCE
+Result: exit 0; json_yaml_jsonl=valid.
+
+FOLLOW-UP PARSER REGRESSION
+Command: PYTHONDONTWRITEBYTECODE=1 python3 -c 'from pathlib import Path; import yaml; yaml.safe_load((Path("src/multifloor_manager/rviz/wf_navigation.rviz")).read_text(encoding="utf-8")); print("parser=green")'
+RED: exit 1; yaml.parser.ParserError at line 250 before the indentation fix.
+GREEN: exit 0; parser=green after the one-space indentation fix.
+
+FOLLOW-UP FOCUSED CONTRACT
+Command: PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_bundle_contract.BundleContractTest.test_navigation_rviz_uses_mission_only_without_direct_goal_tools -v
+Result: exit 0; parsed YAML asserts map Topic /map, Fixed Frame map, and absence of forbidden goal tools.
+
+FOLLOW-UP FOCUSED CONTRACTS
+Command: PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_bundle_contract test.test_launch_contract test.test_run_script_contract
+Result: exit 0; Ran 16 tests in 0.558s; OK.
+
+FOLLOW-UP RUN CHECK
+Command: PYTHONDONTWRITEBYTECODE=1 ./run.sh --check
+Result: exit 0; SITE_CONFIG_OK floors=3 locations=7 edges=9; BUNDLE_OK; [CHECK] bundle, fixture, packages, and local software: OK.
+
+FOLLOW-UP PROCESS AUDIT
+Result: exit 0; no task-owned processes or task temp paths remained. Existing non-task-owned RViz PID 4599 was observed and not modified.

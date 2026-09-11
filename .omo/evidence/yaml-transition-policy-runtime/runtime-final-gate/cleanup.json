@@ -1,0 +1,6 @@
+{
+  "task": "runtime-final-gate",
+  "cleanup": "No ROS hardware processes or temporary runtime artifacts were created.",
+  "user_processes_touched": false,
+  "hardware_qa": "not attempted; TRON and mini PC were powered off"
+}

@@ -1,0 +1,66 @@
+{
+  "DoneClaim": {
+    "task": "2. Produce a provenance-preserving route-survey evidence package from the recorded drive",
+    "outcome": "complete_with_evidence_backed_map_alignment_block",
+    "command_ledger": ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/commands.md",
+    "input_checksums": {
+      "source_bag_sha256_before_and_after": "d28f40a9a4c0c30906ff835b643f4893f4f652642a0c97d27157a0d0c7651a02",
+      "incomplete_metadata_sha256_before_and_after": "f1cdaf841ef0acd69fc03ec1c92102b0f69a038aa131452770a6199a7ff7c91b"
+    },
+    "output_roots": [
+      "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/5f-rf-autonomous-route-repetition/task-2",
+      "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/offline_lio/5f-rf-task-2"
+    ],
+    "exact_rejected_intervals": {
+      "all": "gap_intervals.csv",
+      "main_topic_intervals_and_common_overlap": "inspection_result.json",
+      "wheel_discontinuity_s": [236.8378462791443, 236.83797979354858],
+      "wheel_discontinuity_step_m": 1.9192705600380995
+    },
+    "exact_valid_intervals": "path_valid_intervals.csv: 9 wheel valid-edge intervals and 19 LiDAR-only accepted valid-edge intervals",
+    "semantic_route_evidence": {
+      "5F_outbound_observed_s": [0.0005478858947753906, 24.934160470962524],
+      "stair_outbound_observed_s": [49.972673177719116, 175.00631093978882],
+      "RF_planar_observed_s": [200.0065610408783, 300.01064014434814],
+      "5F_return_observed_s": [399.9833469390869, 494.4028308391571],
+      "label": "inferred_from_manual_RGB_QA_not_ground_truth",
+      "exact_boundaries": "unavailable; brackets in semantic_boundary_brackets.csv"
+    },
+    "map_alignment": {
+      "verdict": "blocked",
+      "reason": "zero reviewed surveyed correspondences on each floor; two spatially separated correspondences per floor are required",
+      "artifact": "map_alignment_block.md",
+      "waypoints": "waypoint_proposals.csv contains no coordinates"
+    },
+    "tests": [
+      "offline_lio test_registration_core.py: 4/4 passed",
+      "bash -n run_fast_lio_replay.sh: passed",
+      "bash -n replay_rviz.sh: passed",
+      "bash -n run_all.sh: passed",
+      "inspect_package.py: passed with exact checksum/gap/jump invariants",
+      "programming no-excuse checker: no violations in 3 files",
+      "ruff check: all checks passed",
+      "LSP diagnostics: no diagnostics in 3 files",
+      "manifest checksum verification: 15/15 matched"
+    ],
+    "manual_qa": [
+      ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/manual_qa.md",
+      ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/rgb_route_contact_sheet.jpg",
+      ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/route_paths_with_rejections.png"
+    ],
+    "adversarial_probes": ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/adversarial_probes.md",
+    "cleanup": ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/cleanup_receipts.md",
+    "ground_truth_exclusions": [
+      "Joy is controller intent only",
+      "wheel odometry is relative diagnostic evidence",
+      "FAST-LIO is unavailable and not an authority",
+      "LiDAR-only registration is relative diagnostic evidence",
+      "source-route resemblance is diagnostic only"
+    ],
+    "risks": [
+      "Exact floor/stair boundaries remain unavailable",
+      "Map transforms, residuals, overlays, and map-frame waypoints remain blocked pending stationary survey",
+      "The source bag is incomplete despite being indexed/readable"
+    ]
+  }
+}

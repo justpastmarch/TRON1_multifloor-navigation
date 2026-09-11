@@ -1,0 +1,29 @@
+[ERROR] [1787124331.206787]: request_twist failed: timed out
+[INFO] [1787113794.803432]: TRON1 navigation bridge ready: STAND -> WALK complete
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/websocket/_socket.py", line 179, in send
+    return _send()
+  File "/usr/local/lib/python3.8/dist-packages/websocket/_socket.py", line 156, in _send
+    return sock.send(data)
+socket.timeout: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/cmd_vel_bridge.py", line 224, in <module>
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/cmd_vel_bridge.py", line 220, in main
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/cmd_vel_bridge.py", line 188, in close
+    self.connected.clear()
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/cmd_vel_bridge.py", line 106, in _send_zero
+    )
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/tron1_robot_client.py", line 62, in send_request
+    self.connection.send(
+  File "/usr/local/lib/python3.8/dist-packages/websocket/_core.py", line 297, in send
+    return self.send_frame(frame)
+  File "/usr/local/lib/python3.8/dist-packages/websocket/_core.py", line 337, in send_frame
+    l = self._send(data)
+  File "/usr/local/lib/python3.8/dist-packages/websocket/_core.py", line 559, in _send
+    return send(self.sock, data)
+  File "/usr/local/lib/python3.8/dist-packages/websocket/_socket.py", line 182, in send
+    raise WebSocketTimeoutException(message)
+websocket._exceptions.WebSocketTimeoutException: timed out

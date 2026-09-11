@@ -1,0 +1,3 @@
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test.test_policy_fixture_parity -v: exit 0; 1 passed
+source devel/setup.bash && catkin_make run_tests_multifloor_manager_rostest_test_floor_transition_policy_blocked_ros.test: first assertion defect found, then repaired and exit 0
+source devel/setup.bash && catkin_make run_tests_multifloor_manager: exit 0; valid and freshness-blocked action rostests both passed

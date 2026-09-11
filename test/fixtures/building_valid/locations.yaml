@@ -1,0 +1,10 @@
+schema_version: 1
+configured: true
+locations:
+  - {id: home_3f, floor_id: 3F, type: HOME, x: 0.0, y: 0.0, yaw: 0.0}
+  - {id: stair_a_entry_3f, floor_id: 3F, type: STAIR_ENTRY, x: 2.0, y: 1.0, yaw: 1.57}
+  - {id: stair_a_landing_4f, floor_id: 4F, type: LANDING, x: -1.0, y: 2.0, yaw: -1.57}
+  - {id: stair_b_entry_4f, floor_id: 4F, type: STAIR_ENTRY, x: 4.0, y: -2.0, yaw: 0.5}
+  - {id: roof_landing, floor_id: RF, type: LANDING, x: 1.5, y: 3.0, yaw: -0.5}
+  - {id: roof_scan, floor_id: RF, type: SCAN, x: 7.0, y: 1.0, yaw: 3.0}
+  - {id: return_4f, floor_id: 4F, type: LANDING, x: 3.0, y: 4.0, yaw: 0.0}

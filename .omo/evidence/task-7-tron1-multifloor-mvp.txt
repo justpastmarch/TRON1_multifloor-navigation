@@ -1,0 +1,115 @@
+DoneClaim: Todo 7 generic mission FSM and Boolean TransitionManager
+
+Baseline and failing-first
+- python3 -m unittest discover -s test -v
+  PASS: 49 tests before Todo 7 edits.
+- python3 -m unittest discover -s src/mission_manager/test -p 'test_fsm.py' -v
+  RED: ModuleNotFoundError: mission_manager.fsm (expected absent-module proof).
+- test_malformed_policy_scalars_are_rejected_without_coercion
+  RED: truthy string enabled value was initially accepted; GREEN after strict scalar parsing.
+
+Exact Todo 7 tests
+- python3 -m unittest src/mission_manager/test/test_fsm.py src/mission_manager/test/test_transitions.py -v
+  PASS: 16 tests. Covers the complete legal table and its illegal complement, complete route replay,
+  cancellation, timeout, retry result, exact generic states/segments, required and optional predicates,
+  optional-count, disabled policy, zero/continuous dwell, dwell reset, repeated interruption,
+  evidence fields, malformed booleans, and malformed/generated policies.
+- catkin_make run_tests_mission_manager_nosetests
+  PASS: registered package tests, including concurrent route-planner/scan-recorder suites.
+- catkin_test_results --verbose build/test_results/mission_manager
+  PASS: 47 tests, 0 errors, 0 failures, 0 skipped.
+- python3 -m unittest discover -s test -v
+  PASS: 58 tests, including concurrent multifloor evidence work.
+
+Build and static verification
+- catkin_make
+  PASS: all three packages configured and built; mission_manager messages reached 100%.
+- LSP diagnostics on fsm.py, transitions.py, test_fsm.py, and test_transitions.py
+  PASS: no diagnostics.
+- Pure LOC: fsm.py 63; transitions.py 100; test_fsm.py 88; test_transitions.py 103.
+- Python no-excuse checker
+  NOT RUN: uv is absent and the installed checker uses Python 3.10 match syntax, while ROS Noetic
+  supplies Python 3.8. LSP, focused tests, package tests, root tests, and build supplied the gates.
+
+Real CLI/manual replay
+- PYTHONPATH=src/mission_manager/src python3 -c '<complete mission event replay>'
+  PASS: PLAN_MISSION -> EXECUTE_SEGMENT -> NEXT_SEGMENT -> EXECUTE_SEGMENT ->
+  EXECUTE_SEGMENT (retry) -> NEXT_SEGMENT -> MISSION_COMPLETE.
+- PYTHONPATH=src/mission_manager/src python3 -c '<Boolean policy adversarial replay>'
+  PASS: passing evidence starts dwell; stale T_LOCALIZED=false clears dwell; two repeated
+  interruptions each restart dwell; result remains false until a fresh continuous interval completes.
+
+Adversarial evidence and cleanup
+- Malformed: string "true" predicate raises InvalidPredicateValueError instead of coercing truthiness.
+- Stale: stale sensor evidence is supplied as false by the external sensor layer and blocks/reset dwell.
+- Repeated interruption: two false interruptions discard both partial dwell intervals.
+- Misleading/dirty input: unconfigured T_MISLEADING=true is absent from evidence and cannot affect result.
+- Generated policy: optional_count greater than configured optional predicates raises
+  InvalidTransitionPolicyError at construction.
+- Cleanup: no *.bag, *.tmp, *.temp, or __pycache__ artifact exists under src/mission_manager.
+
+Scope guard
+- Added only mission_manager/fsm.py, mission_manager/transitions.py, their tests, CMake test
+  registration, and this evidence file. No route planner, action server, launch, floor node, stair node,
+  scan recorder, or ROS node was changed. Production modules contain no rospy/roslib import,
+  floor-specific state, continuous score, or hardware/sensor logic.
+
+---
+
+DoneClaim: Todo 7 verifier repair — canonical types, YAML adapter, and malformed events
+
+Failing-first evidence
+- Focused pre-repair baseline: 26 tests passed.
+- Canonical identity repro: `fsm_is_planner= False`; assertion failed.
+- YAML integration repro: fixture loaded the old scalar policy, then evaluator raised
+  `AttributeError: 'TransitionPolicy' object has no attribute 'optional'`.
+- Malformed event repro: `IllegalTransitionError: <exception str() failed>` followed by
+  `AttributeError: 'str' object has no attribute 'value'`.
+- Three named regression tests independently reproduced the same identity failure, missing
+  `from_config`, and exception-format crash before production edits.
+
+Changed files
+- `src/mission_manager/src/mission_manager/segment_types.py`: one canonical `SegmentType` owner.
+- `src/mission_manager/src/mission_manager/{fsm.py,route_planner.py}`: import/re-export the canonical class;
+  FSM parses raw strings and raises stable `InvalidMissionEventError` for malformed values.
+- `src/mission_manager/src/mission_manager/transitions.py`: structural `from_config` adapter and
+  freshness/timeout evidence metadata; Boolean/dwell behavior remains score-free.
+- `src/multifloor_manager/src/multifloor_manager/configuration.py`: aggregate required/optional named
+  predicate policy, strict optional_count, freshness, dwell, and timeout parsing.
+- `src/multifloor_manager/config/transitions.yaml` and
+  `test/fixtures/building_valid/transitions.yaml`: documented/real aggregate policy schema.
+- `src/mission_manager/test/{test_route_planner.py,test_fsm.py,test_transitions.py}`: identity,
+  malformed-event, and real YAML evaluator regressions.
+
+Final commands and results
+- `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest <route_planner,fsm,transitions> -v`
+  PASS: 29 tests.
+- `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s test -v`
+  PASS: 64 tests.
+- `catkin_make`
+  PASS: all generated-message/build targets reached 100%.
+- `catkin_make run_tests_mission_manager_nosetests` and
+  `catkin_test_results --verbose build/test_results/mission_manager`
+  PASS: 50 tests, 0 errors, 0 failures, 0 skipped.
+- `catkin_make run_tests` and `catkin_test_results --verbose build/test_results`
+  PASS: 87 workspace tests, 0 errors, 0 failures, 0 skipped; process-boundary rostest succeeded.
+- LSP diagnostics on every changed Python source/test file
+  PASS: no diagnostics.
+
+Manual CLI replay and adversarial probes
+- Real fixture load + BuildingPlanner + FSM replay printed:
+  `canonical True True` and
+  `PLAN_MISSION -> EXECUTE_SEGMENT -> NEXT_SEGMENT -> EXECUTE_SEGMENT -> EXECUTE_SEGMENT -> NEXT_SEGMENT -> MISSION_COMPLETE`.
+- YAML-backed evaluator printed configured `freshness_sec: 0.5`, `timeout_sec: 8.0`, required and
+  optional evidence, stale required=false reset, two interrupted dwell intervals, then `complete False True`.
+- Malformed FSM input printed stable `event 'BAD_EVENT' is invalid while mission is in MISSION_COMPLETE`.
+- Malformed evidence printed `invalid transition input T_GOAL_REACHED: expected boolean`.
+- Generated invalid policy printed `optional_count must be within the optional predicate count`.
+- Misleading/dirty `T_MISLEADING=true` remained unconfigured and absent from evaluated evidence.
+
+Cleanup and scope
+- No `__pycache__`, `*.bag`, `*.tmp`, or `*.temp` remains under `src/mission_manager`.
+- No debug statements, ROS imports, scores, or floor-specific state names exist in the repaired pure modules.
+- No action server, launch, floor node, stair node, scan recorder, or ROS node changed.
+- `route_planner.py` is 236 pure LOC and multifloor `configuration.py` is 231 pure LOC: both remain in
+  the warning band; split before a future line-adding edit. All other changed Python files are below 200.

@@ -1,0 +1,13 @@
+{
+  "status": "complete",
+  "repair_attempt_id": "policy-evaluator-repair-2026-08-24T15:25:02+09:00",
+  "executor_session_id": "ses_fcda31262ffe2m5qp9Iw8ZUWwo",
+  "removed_task_created_files": [
+    "src/multifloor_manager/src/multifloor_manager/__pycache__/transitions.cpython-38.pyc",
+    "src/multifloor_manager/test/__pycache__/test_transitions.cpython-38.pyc"
+  ],
+  "processes": [],
+  "ros_processes_started": [],
+  "preexisting_generated_paths_preserved": true,
+  "verification": "both exact bytecode paths absent after cleanup"
+}

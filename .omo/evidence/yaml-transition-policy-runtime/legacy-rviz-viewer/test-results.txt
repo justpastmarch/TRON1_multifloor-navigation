@@ -1,0 +1,31 @@
+RED (before manual file): FileNotFoundError for
+src/multifloor_manager/rviz/wf_navigation_manual.rviz
+
+GREEN focused bundle/viewer tests:
+Ran 14 tests in 0.492s
+OK
+
+GREEN full unittest discovery except unrelated existing workspace-layout failures:
+Ran 93 tests in 2.316s
+Failures: 2 pre-existing duplicate runtime-script inventory assertions in
+test_workspace_layout.py for stair_supervisor and multifloor_manager.
+
+Focused contract extension: 2 tests, PASS.
+Missing-tools regression: expected assertion failure, PASS.
+Displays equality assertion: PASS.
+./run.sh --check: exit 0.
+
+Late-RViz TCPROS regression baseline:
+- Existing TF callback assertion passed before production edit: 1 test, exit 0.
+
+Late-RViz TCPROS red:
+- `/amcl` `/initialpose` callback was absent from the fake XML-RPC call list.
+- 1 test, 1 failure, exit 1.
+
+Late-RViz TCPROS green:
+- Source-direct focused reconnect tests: 2 tests, exit 0.
+- Missing `/rviz_navigation`, `/amcl`, and `/move_base` each fail closed as a nonzero one-shot process; `wait_for_tf_exec.sh` retains warning-and-exec behavior.
+- Viewer/bundle/system/launch aggregate: 24 tests, exit 0.
+- `./run.sh --check`: exit 0 (`SITE_CONFIG_OK`, `BUNDLE_OK`).
+- LSP diagnostics: no diagnostics in either changed Python file.
+- No-excuse checker: blocked by its Python 3.10 `match` syntax on the required ROS Noetic Python 3.8 interpreter; target files were not inspected by that checker.

@@ -1,0 +1,8 @@
+<launch>
+  <test
+    test-name="scan_recorder_real_rosbag"
+    pkg="mission_manager"
+    type="test_scan_recorder_ros.py"
+    time-limit="60.0"
+  />
+</launch>

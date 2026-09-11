@@ -1,0 +1,6 @@
+{
+  "task": "runtime-consumption-proof",
+  "temporary_files": [],
+  "ros_processes": "rostest-owned processes exited after each target",
+  "user_hardware_touched": false
+}

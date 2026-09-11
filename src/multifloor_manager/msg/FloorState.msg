@@ -1,0 +1,9 @@
+std_msgs/Header header
+uint8 UNKNOWN=0
+uint8 TRANSITIONING=1
+uint8 READY=2
+uint8 FAULT=3
+string floor_id
+uint64 map_generation
+uint8 state
+string detail

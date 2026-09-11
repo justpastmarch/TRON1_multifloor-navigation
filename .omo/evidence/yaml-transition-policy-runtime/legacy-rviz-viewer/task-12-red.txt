@@ -1,0 +1,76 @@
+test_disabled_empty_profiles_load_as_empty_tuple (test_configuration_transition.StairConfigurationTransitionTest) ... ERROR
+test_disabled_nonempty_stair_profiles_reject (test_configuration_transition.StairConfigurationTransitionTest) ... FAIL
+test_empty_profiles_reject_before_ownership_state_or_motion (test_configuration_transition.StairConfigurationTransitionTest) ... FAIL
+test_fresh_nav_forwards_through_existing_transport_seam (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+test_robot_configured_false_rejects (test_configuration_transition.StairConfigurationTransitionTest) ... FAIL
+
+======================================================================
+ERROR: test_disabled_empty_profiles_load_as_empty_tuple (test_configuration_transition.StairConfigurationTransitionTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/test_configuration_transition.py", line 136, in test_disabled_empty_profiles_load_as_empty_tuple
+    configuration = load_stair_configuration(root)
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/configuration.py", line 197, in load_stair_configuration
+    return StairSupervisorConfiguration(_load_profiles(root), _load_robot(root))
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/configuration.py", line 150, in _load_profiles
+    _header(document, {"profiles"}, path)
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/configuration.py", line 101, in _header
+    raise _error(path, "configured", "must be true before use")
+stair_supervisor.configuration.StairConfigurationError: stair_profiles.yaml:configured: must be true before use
+
+======================================================================
+FAIL: test_disabled_nonempty_stair_profiles_reject (test_configuration_transition.StairConfigurationTransitionTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/test_configuration_transition.py", line 111, in test_disabled_nonempty_stair_profiles_reject
+    self.assertEqual(context.exception.field, "profiles")
+AssertionError: 'configured' != 'profiles'
+- configured
++ profiles
+
+
+======================================================================
+FAIL: test_empty_profiles_reject_before_ownership_state_or_motion (test_configuration_transition.StairConfigurationTransitionTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/test_configuration_transition.py", line 157, in test_empty_profiles_reject_before_ownership_state_or_motion
+    self.assertEqual(result.code, ResultCode.CAPABILITY_DISABLED)
+AssertionError: <ResultCode.INVALID_GOAL: 2> != <ResultCode.CAPABILITY_DISABLED: 3>
+
+======================================================================
+FAIL: test_robot_configured_false_rejects (test_configuration_transition.StairConfigurationTransitionTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/test_configuration_transition.py", line 125, in test_robot_configured_false_rejects
+    self.assertEqual(context.exception.file_name, "robot.yaml")
+AssertionError: 'stair_profiles.yaml' != 'robot.yaml'
+- stair_profiles.yaml
++ robot.yaml
+
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.005s
+
+FAILED (failures=3, errors=1)
+
+
+===== TASK-12 REFINEMENT: LOCK-PRECEDENCE RED =====
+test_disabled_empty_profiles_load_as_empty_tuple (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+test_disabled_nonempty_stair_profiles_reject (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+test_empty_profiles_reject_before_existing_traversal_lock (test_configuration_transition.StairConfigurationTransitionTest) ... FAIL
+test_empty_profiles_reject_before_ownership_state_or_motion (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+test_fresh_nav_forwards_through_existing_transport_seam (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+test_robot_configured_false_rejects (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+
+======================================================================
+FAIL: test_empty_profiles_reject_before_existing_traversal_lock (test_configuration_transition.StairConfigurationTransitionTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/test_configuration_transition.py", line 178, in test_empty_profiles_reject_before_existing_traversal_lock
+    self.assertEqual(result.code, ResultCode.CAPABILITY_DISABLED)
+AssertionError: <ResultCode.BUSY: 1> != <ResultCode.CAPABILITY_DISABLED: 3>
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.009s
+
+FAILED (failures=1)

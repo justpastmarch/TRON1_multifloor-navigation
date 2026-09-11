@@ -1,0 +1,46 @@
+schema_version: 2
+plan: .omo/plans/yaml-transition-policy-runtime.md
+task: "6"
+task_id: runtime-final-gate
+attempt_id: runtime-final-gate-2026-08-24
+workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+workspace_is_git: false
+model_policy: GPT-family direct work only; no Kimi-family delegation
+dependency_receipts:
+  - path: .omo/evidence/yaml-transition-policy-runtime/package-ownership/receipt.yaml
+    task_id: package-ownership
+    status: complete
+  - path: .omo/evidence/yaml-transition-policy-runtime/epoch-observations/receipt.yaml
+    task_id: epoch-observations
+    status: complete_with_known_blocker
+allowed_paths:
+  - src/multifloor_manager/src/multifloor_manager/ros_node.py
+  - src/multifloor_manager/test/test_floor_transition_ros.py
+  - src/multifloor_manager/test/test_floor_transition_delayed_pose_ros.py
+  - .omo/evidence/yaml-transition-policy-runtime/runtime-final-gate/*
+  - .omo/plans/yaml-transition-policy-runtime.md
+  - .omo/start-work/ledger.jsonl
+changed_product_paths:
+  - src/multifloor_manager/src/multifloor_manager/ros_node.py
+  - src/multifloor_manager/test/test_floor_transition_ros.py
+  - src/multifloor_manager/test/test_floor_transition_delayed_pose_ros.py
+generated_paths: []
+implementation:
+  - arm_transition token is carried through the transaction
+  - T_FLOOR_CONFIRMED is recorded at the accepted tag boundary
+  - T_LOCALIZED and T_COSTMAP_READY are resampled as live levels after the costmap barrier
+  - policy timeout begins at POLICY_READY, not transaction arm
+  - READY commit requires the second preemption check to pass and the current epoch commit fence
+  - general evidence waits check cancellation before evaluating their predicate
+verification:
+  lsp: clean on all three changed Python files
+  catkin_target: exit 0
+  multifloor_registered_tests: evaluator 16, readiness 11, epoch rostest 6, delayed-pose 1, cancel 1, late-map 1, transition 1
+  transition_action: success/READY through mocked ROS peers; POLICY_READY follows COSTMAP_READY
+  hardware_qa: blocked; TRON and mini PC powered off by user
+known_limitations:
+  - Todo 7 freshness-only blocked action proof remains pending
+  - Todo 8 second-preemption/race matrix remains pending
+  - live robot/WebSocket/RViz QA was not attempted because hardware is powered off
+status: complete_with_hardware_blocker
+plan_checkbox: updated

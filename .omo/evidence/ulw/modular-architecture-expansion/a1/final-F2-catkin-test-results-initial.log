@@ -1,0 +1,157 @@
+Full test results for 'stair_supervisor/rostest-test_stair_supervisor.xml'
+-------------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="1" failures="0" name="unittest.suite.TestSuite" tests="1" time="134.610"><testcase classname="rostest.runner.RosTest" name="teststair_supervisor_disabled_surface" time="134.6103"><error type="RLException">Unable to contact my own server at [http://10.192.1.200:42189/].
+This usually means that the network is not configured properly.
+
+A common cause is that the machine cannot connect to itself.  Please check
+for errors by running:
+
+	ping 10.192.1.200
+
+For more tips, please see
+
+	http://wiki.ros.org/ROS/NetworkSetup
+
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 672, in run
+    self._callSetUp()
+  File "/usr/lib/python3.8/unittest/case.py", line 630, in _callSetUp
+    self.setUp()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rostest/runner.py", line 201, in setUp
+    self.test_parent.setUp()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rostest/rostest_parent.py", line 99, in setUp
+    self._start_infrastructure()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/parent.py", line 263, in _start_infrastructure
+    self._start_server()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/parent.py", line 212, in _start_server
+    self.server.start()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/server.py", line 404, in start
+    raise RLException("""Unable to contact my own server at [%s].
+</error></testcase><system-out>&lt;![CDATA[
+[ROSTEST]setup[/home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor/test/stair_supervisor.test] run_id[174b14f6-a0c2-11f1-81ef-4308ea2b0ed0] starting
+
+]]&gt;</system-out><system-err>&lt;![CDATA[
+
+]]&gt;</system-err></testsuite>
+-------------------------------------------------
+Full test results for 'tron1_bringup/rostest-test_system_smoke.xml'
+-------------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="1" failures="0" name="unittest.suite.TestSuite" tests="1" time="134.588"><testcase classname="rostest.runner.RosTest" name="testsystem_smoke_mission" time="134.5877"><error type="RLException">Unable to contact my own server at [http://10.192.1.200:42515/].
+This usually means that the network is not configured properly.
+
+A common cause is that the machine cannot connect to itself.  Please check
+for errors by running:
+
+	ping 10.192.1.200
+
+For more tips, please see
+
+	http://wiki.ros.org/ROS/NetworkSetup
+
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 672, in run
+    self._callSetUp()
+  File "/usr/lib/python3.8/unittest/case.py", line 630, in _callSetUp
+    self.setUp()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rostest/runner.py", line 201, in setUp
+    self.test_parent.setUp()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rostest/rostest_parent.py", line 99, in setUp
+    self._start_infrastructure()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/parent.py", line 263, in _start_infrastructure
+    self._start_server()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/parent.py", line 212, in _start_server
+    self.server.start()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/server.py", line 404, in start
+    raise RLException("""Unable to contact my own server at [%s].
+</error></testcase><system-out>&lt;![CDATA[
+[ROSTEST]setup[/home/m3tron/Desktop/TRON1_Modular_Navigation/src/tron1_bringup/test/system_smoke.test] run_id[174f1bf0-a0c2-11f1-81ef-4308ea2b0ed0] starting
+
+]]&gt;</system-out><system-err>&lt;![CDATA[
+
+]]&gt;</system-err></testsuite>
+-------------------------------------------------
+Full test results for 'multifloor_manager/rostest-test_floor_transition.xml'
+-------------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="1" failures="0" name="unittest.suite.TestSuite" tests="1" time="134.642"><testcase classname="rostest.runner.RosTest" name="testfloor_transition_contract" time="134.6424"><error type="RLException">Unable to contact my own server at [http://10.192.1.200:41115/].
+This usually means that the network is not configured properly.
+
+A common cause is that the machine cannot connect to itself.  Please check
+for errors by running:
+
+	ping 10.192.1.200
+
+For more tips, please see
+
+	http://wiki.ros.org/ROS/NetworkSetup
+
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 672, in run
+    self._callSetUp()
+  File "/usr/lib/python3.8/unittest/case.py", line 630, in _callSetUp
+    self.setUp()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rostest/runner.py", line 201, in setUp
+    self.test_parent.setUp()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rostest/rostest_parent.py", line 99, in setUp
+    self._start_infrastructure()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/parent.py", line 263, in _start_infrastructure
+    self._start_server()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/parent.py", line 212, in _start_server
+    self.server.start()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/server.py", line 404, in start
+    raise RLException("""Unable to contact my own server at [%s].
+</error></testcase><system-out>&lt;![CDATA[
+[ROSTEST]setup[/home/m3tron/Desktop/TRON1_Modular_Navigation/src/multifloor_manager/test/floor_transition.test] run_id[1746c5ae-a0c2-11f1-81ef-4308ea2b0ed0] starting
+
+]]&gt;</system-out><system-err>&lt;![CDATA[
+
+]]&gt;</system-err></testsuite>
+-------------------------------------------------
+Full test results for 'multifloor_manager/rostest-test_node_wiring.xml'
+-------------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="1" failures="0" name="unittest.suite.TestSuite" tests="1" time="134.606"><testcase classname="rostest.runner.RosTest" name="testmultifloor_node_wiring" time="134.6054"><error type="RLException">Unable to contact my own server at [http://10.192.1.200:37855/].
+This usually means that the network is not configured properly.
+
+A common cause is that the machine cannot connect to itself.  Please check
+for errors by running:
+
+	ping 10.192.1.200
+
+For more tips, please see
+
+	http://wiki.ros.org/ROS/NetworkSetup
+
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 672, in run
+    self._callSetUp()
+  File "/usr/lib/python3.8/unittest/case.py", line 630, in _callSetUp
+    self.setUp()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rostest/runner.py", line 201, in setUp
+    self.test_parent.setUp()
+  File "/opt/ros/noetic/lib/python3/dist-packages/rostest/rostest_parent.py", line 99, in setUp
+    self._start_infrastructure()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/parent.py", line 263, in _start_infrastructure
+    self._start_server()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/parent.py", line 212, in _start_server
+    self.server.start()
+  File "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/server.py", line 404, in start
+    raise RLException("""Unable to contact my own server at [%s].
+</error></testcase><system-out>&lt;![CDATA[
+[ROSTEST]setup[/home/m3tron/Desktop/TRON1_Modular_Navigation/src/multifloor_manager/test/node_wiring.test] run_id[174bd8e6-a0c2-11f1-81ef-4308ea2b0ed0] starting
+
+]]&gt;</system-out><system-err>&lt;![CDATA[
+
+]]&gt;</system-err></testsuite>
+-------------------------------------------------
+multifloor_manager/rostest-test_floor_transition.xml: 1 tests, 1 errors, 0 failures, 0 skipped
+multifloor_manager/rostest-test_node_wiring.xml: 1 tests, 1 errors, 0 failures, 0 skipped
+stair_supervisor/rostest-test_stair_supervisor.xml: 1 tests, 1 errors, 0 failures, 0 skipped
+tron1_bringup/rostest-test_system_smoke.xml: 1 tests, 1 errors, 0 failures, 0 skipped
+Summary: 17 tests, 4 errors, 0 failures, 0 skipped

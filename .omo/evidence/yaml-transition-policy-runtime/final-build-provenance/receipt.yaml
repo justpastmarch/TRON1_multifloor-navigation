@@ -1,0 +1,29 @@
+schema_version: 2
+plan: .omo/plans/yaml-transition-policy-runtime.md
+task: F1
+task_id: final-build-provenance
+attempt_id: final-build-provenance-2026-08-24
+workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+workspace_is_git: false
+status: complete
+verification:
+  catkin_make: exit 0
+  source_direct_imports: exit 0; runtime modules resolved under src/<package>/src
+  devel_imports: exit 0; runtime modules resolved to canonical source files
+  rospack: exit 0; all three packages resolved under this workspace/src
+  generated_runtime: install copies of four multifloor modules byte-identical to src; devel contains generated messages only
+source_sha256:
+  transitions.py: e8dfb77c982fb47d9c238e693fcec3cc651f3a8c634dc539c3f3a148a037b783
+  configuration.py: 064f0edcd62ba9ee64eaf1869c6c5a134707ebdd73b5928e09df6bb21d3a4055
+  ros_runtime.py: 6c49b572f412b468e815bf78ce4bbff1805a2d0084ceff3a3412df461e0e0b0a
+  ros_node.py: b04ae79028038bba8e185192cefc58733cd63ddd8d62a978339830aea527fe08
+  test_floor_transition_ros.py: d82d7495961c528527d4e2e12e21519c318ef511b193b1a2a80022a139f5a0de
+  test_policy_final_gate.py: a5a981ff5917c4898996db9451f707832418a46a4a168b52e2a0d81a70f82def
+  test_floor_transition_delayed_pose_ros.py: b6b9ab2ae62b4a3d346f48c5debe2dfcc8d2ddc2c2829467496b15bbc0515342
+  test_launch_contract.py: f88e19b39f8cd47555b8de79622dae1bf9c67566c30d6ea6dd57876027d69663
+fixture_parity:
+  manager_inputs_match: true
+  only_difference: transitions.yaml freshness_sec 10.0 versus 0.01
+known_caveat: initial PYTHONPATH replacement probe failed by removing ROS paths; corrected ROS-preserving probe passed.
+post_attestation_scope_change: test/test_launch_contract.py was corrected to distinguish the 0.40 planner fallback from the 0.50 launch override; its final digest is recorded above.
+cleanup: no transient catkin process remained; pre-existing ROS processes untouched.

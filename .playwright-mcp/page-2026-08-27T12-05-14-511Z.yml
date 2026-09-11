@@ -1,0 +1,98 @@
+- generic [active] [ref=f2e1]:
+  - navigation "Top Menu" [ref=f2e2]:
+    - generic [ref=f2e3]:
+      - link [ref=f2e5] [cursor=pointer]:
+        - /url: /tree
+        - img "Jupyter Notebook" [ref=f2e6]
+      - button "Quit" [ref=f2e9] [cursor=pointer]
+  - main [ref=f2e13]:
+    - list [ref=f2e14]:
+      - listitem [ref=f2e15]:
+        - link "Files" [ref=f2e16]:
+          - /url: "#notebooks"
+      - listitem [ref=f2e17]:
+        - link "Running" [ref=f2e18] [cursor=pointer]:
+          - /url: "#running"
+      - listitem [ref=f2e19]:
+        - link "Clusters" [ref=f2e20] [cursor=pointer]:
+          - /url: "#clusters"
+    - generic [ref=f2e21]:
+      - generic [ref=f2e22]:
+        - generic [ref=f2e23]:
+          - generic [ref=f2e24]:
+            - generic [ref=f2e25]: Select items to perform actions on them.
+            - generic: 
+          - generic [ref=f2e27]:
+            - button [ref=f2e30] [cursor=pointer]:
+              - button "Choose File" [ref=f2e31]
+              - text: Upload
+            - button "New Toggle Dropdown" [ref=f2e33] [cursor=pointer]:
+              - text: New
+              - generic [ref=f2e35]: Toggle Dropdown
+            - button "Refresh notebook list" [ref=f2e37] [cursor=pointer]:
+              - generic [ref=f2e38]: 
+        - generic [ref=f2e39]:
+          - generic [ref=f2e40]:
+            - generic [ref=f2e41]:
+              - checkbox "Select All/None" [ref=f2e42] [cursor=pointer]:
+                - checkbox [ref=f2e43]
+                - text: "0"
+              - button "checkbox Toggle Dropdown" [expanded] [ref=f2e44] [cursor=pointer]:
+                - generic [ref=f2e45]: checkbox
+                - generic [ref=f2e47]: Toggle Dropdown
+              - text:    
+            - list [ref=f2e49]:
+              - listitem [ref=f2e50]:
+                - link "" [ref=f2e51] [cursor=pointer]:
+                  - /url: /tree
+              - listitem [ref=f2e53]:
+                - text: /
+                - link:
+                  - /url: /tree
+            - generic [ref=f2e54]:
+              - button "Sort by name" [ref=f2e56] [cursor=pointer]:
+                - text: Name
+                - generic [ref=f2e57]: 
+              - button "Sort by last modified" [ref=f2e59] [cursor=pointer]: Last Modified
+              - button "Sort by file size" [ref=f2e61] [cursor=pointer]: File size
+          - generic [ref=f2e63]:
+            - checkbox "Click here to rename, delete, etc." [ref=f2e64]
+            - generic [ref=f2e65]: 
+            - link "01_mapping_and_map_save.ipynb" [ref=f2e66] [cursor=pointer]:
+              - /url: /notebooks/01_mapping_and_map_save.ipynb
+            - generic [ref=f2e69]:
+              - generic "2026-08-27 20:49" [ref=f2e70]: 16 minutes ago
+              - generic [ref=f2e71]: 13.3 kB
+          - generic [ref=f2e73]:
+            - checkbox "Click here to rename, delete, etc." [ref=f2e74]
+            - generic [ref=f2e75]: 
+            - link "02_pose_and_nav_goal.ipynb" [ref=f2e76] [cursor=pointer]:
+              - /url: /notebooks/02_pose_and_nav_goal.ipynb
+            - generic [ref=f2e79]:
+              - generic "2026-08-27 20:50" [ref=f2e80]: 15 minutes ago
+              - generic [ref=f2e81]: 13.3 kB
+          - generic [ref=f2e83]:
+            - checkbox "Click here to rename, delete, etc." [ref=f2e84]
+            - generic [ref=f2e85]: 
+            - link "03_rosbag_recording.ipynb" [ref=f2e86] [cursor=pointer]:
+              - /url: /notebooks/03_rosbag_recording.ipynb
+            - generic [ref=f2e89]:
+              - generic "2026-08-27 20:52" [ref=f2e90]: 13 minutes ago
+              - generic [ref=f2e91]: 13 kB
+          - generic [ref=f2e93]:
+            - checkbox "Click here to rename, delete, etc." [ref=f2e94]
+            - generic [ref=f2e95]: 
+            - link "check_environment.sh" [ref=f2e96] [cursor=pointer]:
+              - /url: /edit/check_environment.sh
+            - generic [ref=f2e99]:
+              - generic "2026-08-27 20:58" [ref=f2e100]: 7 minutes ago
+              - generic [ref=f2e101]: 10.3 kB
+          - generic [ref=f2e103]:
+            - checkbox "Click here to rename, delete, etc." [ref=f2e104]
+            - generic [ref=f2e105]: 
+            - link "README.md" [ref=f2e106] [cursor=pointer]:
+              - /url: /edit/README.md
+            - generic [ref=f2e109]:
+              - generic "2026-08-27 20:53" [ref=f2e110]: 12 minutes ago
+              - generic [ref=f2e111]: 8.22 kB
+      - text:   

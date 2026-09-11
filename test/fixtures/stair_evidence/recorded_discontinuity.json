@@ -1,0 +1,9 @@
+{
+  "source_manifest": ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/manifest.json",
+  "imu_gap_start_s": 231.46490216255188,
+  "imu_gap_end_s": 236.8389253616333,
+  "gap_sec": 5.374023199081421,
+  "wheel_discontinuity_start_s": 236.8378462791443,
+  "wheel_discontinuity_end_s": 236.83797979354858,
+  "odom_step_m": 1.9192705600380995
+}

@@ -1,0 +1,6 @@
+image: floor_rf.pgm
+resolution: 0.20
+origin: [3.0, -1.0, -0.5]
+negate: 0
+occupied_thresh: 0.75
+free_thresh: 0.25

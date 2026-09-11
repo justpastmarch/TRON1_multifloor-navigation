@@ -1,0 +1,14 @@
+schema_version: 1
+configured: true
+profiles:
+  - id: roof_scan_profile
+    topics:
+      - /scan/points
+      - /camera/color/image_raw
+      - /camera/depth/image_raw
+      - /imu/data
+      - /tf
+      - /localization/pose
+    duration_sec: 0.2
+    output_root: artifacts/scans
+    free_space_min: 0.35

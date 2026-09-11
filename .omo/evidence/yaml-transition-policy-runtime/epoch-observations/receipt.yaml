@@ -1,0 +1,69 @@
+schema_version: 2
+plan: .omo/plans/yaml-transition-policy-runtime.md
+task: "5"
+task_id: epoch-observations
+attempt_id: epoch-observations-repair-2026-08-24
+workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+workspace_is_git: false
+model_policy: GPT-family direct work only; no Kimi-family delegation
+dependency_receipts:
+  - path: .omo/evidence/yaml-transition-policy-runtime/policy-evaluator/receipt.yaml
+    task_id: policy-evaluator
+    status: complete
+allowed_paths:
+  - src/multifloor_manager/src/multifloor_manager/ros_runtime.py
+  - src/multifloor_manager/test/test_floor_transition_epoch_ros.py
+  - .omo/evidence/yaml-transition-policy-runtime/epoch-observations/*
+  - .omo/start-work/ledger.jsonl
+changed_product_paths:
+  - src/multifloor_manager/src/multifloor_manager/ros_runtime.py
+  - src/multifloor_manager/test/test_floor_transition_epoch_ros.py
+source_sha256:
+  ros_runtime.py: 6c49b572f412b468e815bf78ce4bbff1805a2d0084ceff3a3412df461e0e0b0a
+  test_floor_transition_epoch_ros.py: 65930e4599a2298536fa2a2146a344f94d8b9115e11170b63f495de07026b83a
+generated_sha256:
+  install/lib/python3/dist-packages/multifloor_manager/ros_runtime.py: 6c49b572f412b468e815bf78ce4bbff1805a2d0084ceff3a3412df461e0e0b0a
+  devel/lib/python3/dist-packages/multifloor_manager/ros_runtime.py: absent
+tests:
+  focused_evaluator: "16 passed; exit 0"
+  focused_epoch_rostest: "6 passed; exit 0"
+  focused_delayed_pose_rostest: "1 passed; exit 0"
+  catkin_make: "exit 0"
+  catkin_make_run_tests_multifloor_manager: "exit 0; unrelated aggregate XML validation warnings recorded"
+  ruff: "exit 0"
+  lsp: "clean on ros_runtime.py and test_floor_transition_epoch_ros.py"
+manual_qa:
+  channel: existing source-direct ROS epoch rostest
+  result: token N/N+1, begin timing, stale operation rejection, and finish cleanup passed
+quality:
+  runtime_pure_loc: 217
+  epoch_test_pure_loc: 250
+  no_new_module: true
+  reentrant_condition_preserved: true
+cleanup: .omo/evidence/yaml-transition-policy-runtime/epoch-observations/cleanup.json
+diff_inventory: .omo/evidence/yaml-transition-policy-runtime/epoch-observations/diff-inventory.json
+baseline: .omo/evidence/yaml-transition-policy-runtime/epoch-observations/baseline.json
+commands: .omo/evidence/yaml-transition-policy-runtime/epoch-observations/commands.txt
+status: complete_with_known_blocker
+status_meaning: focused registered ROS tests pass; unsourced direct collection is blocked by missing apriltag_ros.msg
+plan_checkbox: unchanged
+DoneClaim:
+  task: "5 epoch-observations"
+  changed_files:
+    - src/multifloor_manager/src/multifloor_manager/ros_runtime.py
+    - src/multifloor_manager/test/test_floor_transition_epoch_ros.py
+  tests:
+    - "catkin_make: exit 0"
+    - "catkin_make run_tests_multifloor_manager: exit 0"
+    - "epoch rostest: 6 passed"
+    - "delayed-pose rostest: 1 passed"
+    - "evaluator: 16 passed"
+    - "Ruff: exit 0"
+    - "LSP: clean"
+  manual_qa:
+    - .omo/evidence/yaml-transition-policy-runtime/epoch-observations/test-results.txt
+  cleanup:
+    - .omo/evidence/yaml-transition-policy-runtime/epoch-observations/cleanup.json
+  risks:
+    - "Direct unsourced unittest collection cannot import apriltag_ros.msg; registered ROS target passed"
+    - "Plan checkbox intentionally remains unchecked"

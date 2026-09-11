@@ -1,0 +1,7 @@
+source devel/setup.bash && catkin_make run_tests_multifloor_manager: exit 0; all registered multifloor tests passed after final-gate wiring
+LSP diagnostics: ros_node.py, test_floor_transition_ros.py, test_floor_transition_delayed_pose_ros.py; no diagnostics
+source-direct policy evaluator: 16 tests passed
+initial post-wiring run: transition action succeeded but expected feedback lacked POLICY_READY; delayed-pose fixture lacked policy live evidence and timed out
+test repair: expected POLICY_READY after COSTMAP_READY; delayed-pose barrier test stubs only its out-of-scope policy helper
+final post-repair run: transition, epoch, delayed-pose, cancellation, late-map, evaluator, readiness, and fixture targets passed
+hardware manual QA: not run; TRON and mini PC powered off

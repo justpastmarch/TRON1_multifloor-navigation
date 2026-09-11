@@ -1,0 +1,6 @@
+{
+  "task": "operator-contract",
+  "changed_product_paths": ["README.md"],
+  "preserved_paths": ["src/multifloor_manager/config/transitions.yaml"],
+  "generated_paths": []
+}

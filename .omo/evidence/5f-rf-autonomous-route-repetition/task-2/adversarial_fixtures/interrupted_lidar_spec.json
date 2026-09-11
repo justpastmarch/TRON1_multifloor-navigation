@@ -1,0 +1,20 @@
+{
+  "bag_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/manual_captures/manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+  "output_bag_path": "/tmp/task2-interrupt/lidar_registration.bag",
+  "output_csv_path": "/tmp/task2-interrupt/lidar_registration.csv",
+  "lidar_topic": "/livox/lidar",
+  "start_offset_s": 0.0,
+  "duration_s": 508.439235,
+  "frame_step": 2,
+  "local_map_scans": 15,
+  "max_range_m": 20.0,
+  "floor_plane_threshold_m": 0.08,
+  "registration": {
+    "voxel_size_m": 0.20,
+    "correspondence_distance_m": 0.80,
+    "max_iterations": 30,
+    "min_fitness": 0.35,
+    "max_translation_step_m": 0.50,
+    "max_rotation_step_rad": 0.35
+  }
+}

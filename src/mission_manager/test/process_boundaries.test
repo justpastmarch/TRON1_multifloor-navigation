@@ -1,0 +1,8 @@
+<launch>
+  <test
+    test-name="todo4_process_boundaries"
+    pkg="mission_manager"
+    type="test_process_boundaries.py"
+    time-limit="45.0"
+  />
+</launch>

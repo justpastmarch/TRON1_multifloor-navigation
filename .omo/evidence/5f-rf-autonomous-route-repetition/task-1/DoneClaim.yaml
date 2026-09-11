@@ -1,0 +1,201 @@
+task: 1
+title: Lock non-replay safety and record successful outbound WebSocket commands
+status: done
+date: 2026-09-10
+workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+environment: Ubuntu 20.04, ROS Noetic 1.17.4, CPython 3.8.10, catkin 0.8.12
+
+outcome:
+  websocket_tx_topic: /stair_supervisor/websocket_tx
+  websocket_owner: stair_supervisor
+  installed_runtime_node_count: 3
+  transport_ros_free: true
+  reconnect_added: false
+  live_robot_connection_used: false
+  motion_used: false
+  recorder_added: false
+
+changed_files:
+  - run.sh
+  - replay_joy_preview.sh
+  - src/mission_manager/config/scan_profiles.yaml
+  - src/stair_supervisor/src/stair_supervisor/robot_client.py
+  - src/stair_supervisor/src/stair_supervisor/robot_transport.py
+  - src/stair_supervisor/src/stair_supervisor/ros_node.py
+  - src/stair_supervisor/test/robot_transport/test_robot_transport_fakes.py
+  - src/stair_supervisor/test/robot_transport/test_robot_transport.py
+  - src/stair_supervisor/test/robot_transport/test_robot_transport_faults.py
+  - src/stair_supervisor/test/test_stair_supervisor_node.py
+  - src/stair_supervisor/test/test_websocket_tx_ros.py
+  - src/stair_supervisor/test/stair_supervisor_node.test
+  - test/test_run_script_contract.py
+  - test/test_command_provenance_contract.py
+
+unchanged_scoped_files:
+  src/stair_supervisor/src/stair_supervisor/ros_entrypoint.py:
+    baseline_sha256: 0edb06b3b64037b26c0bcdd88e522a9bff4801c741fb64ebbbfb4068342ae41f
+    final_sha256: 0edb06b3b64037b26c0bcdd88e522a9bff4801c741fb64ebbbfb4068342ae41f
+  src/stair_supervisor/CMakeLists.txt:
+    baseline_sha256: bf28dcd42c7940c8d7f70b8999387a88a35e9759e59ae7a90dc359693a8d03e2
+    final_sha256: bf28dcd42c7940c8d7f70b8999387a88a35e9759e59ae7a90dc359693a8d03e2
+  src/stair_supervisor/package.xml:
+    baseline_sha256: 690f795f6b787925a07e6b29b0c6b3559c376b3bb6247f478beaf848bc1d9eea
+    final_sha256: 690f795f6b787925a07e6b29b0c6b3559c376b3bb6247f478beaf848bc1d9eea
+
+baseline_characterization:
+  command: >-
+    source devel/setup.bash && python3 -m unittest discover -s
+    src/stair_supervisor/test/robot_transport -p 'test_robot_*.py' -v
+  result: 21 tests, 0 failures
+  observations:
+    successful_send: DirectRobotClient serialized and sent frames, but exposed no observer or ROS TX topic.
+    failed_send: RobotTransport latched FAULT, closed the client, and blocked reconnect/resume.
+    watchdog_zero: 'stale command emitted {x: 0.0, y: 0.0, z: 0.0}.'
+    close_zero: normal close emitted four repeated zero frames.
+    preview: run.sh printed source=/tron/sensor_joy output=/replay/tron/sensor_joy, but SENSOR_JOY_TOPIC could redirect selection through the environment.
+  topology_command: >-
+    python3 -m unittest
+    test.test_workspace_layout.WorkspaceLayoutTest.test_only_three_package_entrypoints_initialize_ros_nodes
+    test.test_system_operator_contract.SystemOperatorContractTest.test_system_launch_owns_exactly_three_custom_nodes -v
+  topology_result: 2 tests, 0 failures
+
+red_first:
+  observer_command: >-
+    source devel/setup.bash && python3 -m unittest
+    test_robot_transport.RobotTransportTest.test_successful_frames_are_observed_byte_for_byte_after_send
+    test_robot_transport_faults.RobotTransportFaultTest.test_send_failure_latches_fault_and_blocks_later_nonzero -v
+  observer_result: 2 errors; RobotTransport had no observe_sent_frames
+  ros_topic_command: >-
+    unset ROS_IP ROS_HOSTNAME ROS_MASTER_URI; source devel/setup.bash &&
+    rostest stair_supervisor stair_supervisor_node.test
+  ros_topic_result: 1 intended failure; exact frame absent from websocket_tx subscriber
+  preview_and_recording_command: >-
+    python3 -m unittest
+    test.test_run_script_contract.RunScriptContractTest.test_replay_ignores_environment_attempt_to_select_live_command_topic
+    test.test_run_script_contract.RunScriptContractTest.test_replay_rejects_ros_remap_arguments_before_rosbag
+    test.test_command_provenance_contract -v
+  preview_and_recording_result: >-
+    hostile SENSOR_JOY_TOPIC selected /navigation/cmd_vel and the production profile lacked required provenance topics;
+    explicit extra remap rejection already passed
+
+verification:
+  focused_transport:
+    command: >-
+      source devel/setup.bash && python3 -m unittest discover -s
+      src/stair_supervisor/test/robot_transport -p 'test_robot_*.py' -v
+    result: 22 tests, 0 failures
+  focused_operator_and_topology:
+    command: >-
+      python3 -m unittest test.test_run_script_contract
+      test.test_command_provenance_contract
+      test.test_system_operator_contract.SystemOperatorContractTest.test_system_launch_owns_exactly_three_custom_nodes
+      test.test_workspace_layout.WorkspaceLayoutTest.test_only_three_package_entrypoints_initialize_ros_nodes -v
+    result: 8 tests, 0 failures
+  ros_surface:
+    command: >-
+      unset ROS_IP ROS_HOSTNAME ROS_MASTER_URI; source devel/setup.bash &&
+      rostest stair_supervisor stair_supervisor_node.test
+    result: 4 tests, 0 failures
+  registered_stair_package:
+    command: >-
+      unset ROS_IP ROS_HOSTNAME ROS_MASTER_URI; source devel/setup.bash &&
+      catkin_make run_tests_stair_supervisor &&
+      catkin_test_results --verbose build/test_results/stair_supervisor
+    result: 50 tests, 0 errors, 0 failures, 0 skipped
+  build:
+    command: catkin_make
+    result: exit 0; three packages traversed
+  operator_check:
+    command: ./run.sh --check
+    result: '[CHECK] bundle, fixture, packages, and local software: OK'
+  bundle:
+    command: python3 validate_bundle.py --site-config-root test/fixtures/building_valid
+    result: 'SITE_CONFIG_OK floors=3 locations=7 edges=9; BUNDLE_OK'
+  diagnostics:
+    command: LSP diagnostics on src/stair_supervisor and test
+    result: 57 Python files scanned, 0 files with errors
+  shell_syntax:
+    command: bash -n run.sh && bash -n replay_joy_preview.sh
+    result: exit 0
+  no_excuse_audit:
+    result: >-
+      No new violation. The checker reports four pre-existing Python-3.8-compatible manual __slots__ dataclasses
+      as missing dataclass(slots=True), which is unavailable on Python 3.8.
+  pure_loc:
+    production:
+      robot_client.py: 169
+      robot_transport.py: 239
+      ros_node.py: 165
+    note: robot_transport.py is in the 200-250 warning band; split before the next line-adding change.
+
+manual_qa:
+  fake_websocket_invocation: >-
+    .omo/evidence/5f-rf-autonomous-route-repetition/task-1/manual-fake-websocket-qa.sh
+  fake_websocket_observation:
+    topic: /stair_supervisor/websocket_tx
+    echo: >-
+      data: '{"accid":"WF_QA_ZERO","title":"request_twist","timestamp":1700000000430,
+      "guid":"087f1246-4bae-4f46-91f1-29e74f8e3424","data":{"x":0.0,"y":0.0,"z":0.0}}'
+    transcript: 'FAKE_WS_TX_COUNT=10; FAKE_WS_CONNECTIONS=1; every request_twist data was complete zero'
+    note: The retained QA script and registered rostest both exited 0.
+  preview_invocation: >-
+    ROS_MASTER_URI=http://127.0.0.1:11311 ROS_IP=127.0.0.1
+    ./run.sh --replay-joy manual_captures/manual-5F-rooftop_route_1788918551828137154.bag 0 3 0.5
+  preview_observation:
+    banner: '[REPLAY PREVIEW] source=/tron/sensor_joy output=/replay/tron/sensor_joy start=0s duration=3s rate=0.5x'
+    topic_type: sensor_msgs/Joy
+    publisher: rosbag play under /replay/tron/sensor_joy
+    sample: 'axes=[0.0, 0.0, 0.0, 0.0]; buttons=18 zeros'
+    forbidden_live_surface_intersection: '[]'
+
+adversarial_probes:
+  malformed_input:
+    evidence: test_malformed_response_latches_fault
+    result: pass; malformed response latched FAULT
+  stale_state:
+    evidence: test_stale_post_request_status_cannot_arm_motion plus watchdog ROS test
+    result: pass; stale status cannot arm and stale command publishes exact zero
+  dirty_workspace:
+    result: >-
+      No git metadata exists. Baseline/final hashes prove ros_entrypoint.py, CMakeLists.txt, and package.xml were preserved.
+      Concurrent unrelated Task 3 edits and extra non-node utility scripts were observed and not changed.
+  misleading_success:
+    evidence: test_correlated_success_without_expected_walk_status_faults
+    result: pass; a success response without WALK status cannot arm motion
+  mid_operation_interruption:
+    evidence: test_send_failure_latches_fault_and_blocks_later_nonzero and websocket_tx_surface rostest
+    result: pass; failed frame was absent from TX topic, FAULT latched, reconnect count remained one
+  generated_artifact_cleanup:
+    result: >-
+      /tmp/tron1-* had no matches; ports/processes 11421-11423, task1_fake_websocket_qa, and rosbag play had no matches.
+      Two manual_captures/*.bag.active.invalid files predated this task and were preserved.
+  not_applicable:
+    browser_ui: no UI or browser surface changed
+    performance_load: one callback and bounded ROS queue; functional provenance, not throughput, is the acceptance surface
+    physical_motion: expressly prohibited for Task 1; fake socket carried zero only
+    live_network_robot: expressly prohibited; no robot host or SSH tunnel was contacted
+    database_persistence: no database exists in this path
+
+full_suite_exception:
+  command: catkin_make run_tests; catkin_test_results --verbose build/test_results
+  result: 213 tests, 0 errors, 1 failure, 0 skipped
+  classification: unrelated environment gate
+  runtime_evidence: >-
+    isolated mission_system.test returned MissionResult.SCAN_FAILED with reason 'insufficient free space';
+    df -h /tmp showed 71G available on 234G (30% free), below the existing fixture free_space_min=0.35.
+    Task 1 package and focused suites are green; the disk safety gate was not weakened.
+
+scope_clarifications:
+  no_motion: >-
+    Task 1 explicitly requires a no-motion run, so successful frame evidence is intentionally zero-only;
+    nonzero physical-command evidence belongs to hardware gate Task 7.
+  recording: >-
+    This task extends the existing route recording profile so future record_route bags persist the TX topic;
+    it does not create a recorder or claim that a route bag was produced during this no-motion task.
+
+cleanup_receipts:
+  debug_instrumentation: temporary assertion detail and this task's debug journal were removed
+  temporary_artifacts: no /tmp/tron1-* matches
+  qa_processes: no task1 fake node, ROS master on ports 11421-11423, or rosbag play remains
+  preserved_processes: pre-existing ROS masters dated Sep 4 and Sep 8 were not terminated
+  generated_build_outputs: retained as requested catkin test evidence

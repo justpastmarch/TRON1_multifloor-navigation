@@ -1,0 +1,52 @@
+START 2026-08-24T10:26:04+09:00
+total 948
+-rw-rw-r-- 1 m3tron m3tron   3577  8월 24 10:20 baseline.json
+-rw-rw-r-- 1 m3tron m3tron 605382  8월 24 10:21 build-manifest.json
+-rw-rw-r-- 1 m3tron m3tron    474  8월 24 10:23 cleanup.json
+-rw-rw-r-- 1 m3tron m3tron   9386  8월 24 10:25 commands.txt
+-rw-rw-r-- 1 m3tron m3tron      2  8월 24 10:16 devel-import.exit.txt
+-rw-rw-r-- 1 m3tron m3tron      0  8월 24 10:18 devel-import.stderr.txt
+-rw-rw-r-- 1 m3tron m3tron    189  8월 24 10:18 devel-import.stdout.txt
+-rw-rw-r-- 1 m3tron m3tron  55447  8월 24 10:21 devel-manifest.json
+-rw-rw-r-- 1 m3tron m3tron      2  8월 24 10:16 devel-rospack.exit.txt
+-rw-rw-r-- 1 m3tron m3tron      0  8월 24 10:18 devel-rospack.stderr.txt
+-rw-rw-r-- 1 m3tron m3tron    149  8월 24 10:18 devel-rospack.stdout.txt
+-rw-rw-r-- 1 m3tron m3tron   1958  8월 24 10:23 diff-inventory.json
+-rw-rw-r-- 1 m3tron m3tron      2  8월 24 10:16 install-import.exit.txt
+-rw-rw-r-- 1 m3tron m3tron      0  8월 24 10:18 install-import.stderr.txt
+-rw-rw-r-- 1 m3tron m3tron    196  8월 24 10:18 install-import.stdout.txt
+-rw-rw-r-- 1 m3tron m3tron  73956  8월 24 10:21 install-manifest.json
+-rw-rw-r-- 1 m3tron m3tron      2  8월 24 10:16 install-rospack.exit.txt
+-rw-rw-r-- 1 m3tron m3tron      0  8월 24 10:18 install-rospack.stderr.txt
+-rw-rw-r-- 1 m3tron m3tron    159  8월 24 10:18 install-rospack.stdout.txt
+-rw-rw-r-- 1 m3tron m3tron      0  8월 24 10:26 ls.stderr.txt
+-rw-rw-r-- 1 m3tron m3tron     32  8월 24 10:26 ls.stdout.txt
+-rw-rw-r-- 1 m3tron m3tron   2552  8월 24 10:21 manifest_capture.py
+-rw-rw-r-- 1 m3tron m3tron      2  8월 24 10:17 manifests.exit.txt
+-rw-rw-r-- 1 m3tron m3tron      0  8월 24 10:21 manifests.stderr.txt
+-rw-rw-r-- 1 m3tron m3tron    822  8월 24 10:21 manifests.stdout.txt
+-rw-rw-r-- 1 m3tron m3tron      0  8월 24 10:23 original-command.stderr.txt
+-rw-rw-r-- 1 m3tron m3tron    265  8월 24 10:23 original-command.stdout.txt
+-rw-rw-r-- 1 m3tron m3tron      0  8월 24 10:23 original-exploratory.stderr.txt
+-rw-rw-r-- 1 m3tron m3tron    416  8월 24 10:23 original-exploratory.stdout.txt
+-rw-rw-r-- 1 m3tron m3tron   2224  8월 24 10:25 receipt.yaml
+-rw-rw-r-- 1 m3tron m3tron   1206  8월 24 10:22 result_xml_capture.py
+-rw-rw-r-- 1 m3tron m3tron  10967  8월 24 10:22 result-xml-manifest.json
+-rw-rw-r-- 1 m3tron m3tron      0  8월 24 10:22 result-xml.stderr.txt
+-rw-rw-r-- 1 m3tron m3tron    175  8월 24 10:22 result-xml.stdout.txt
+-rw-rw-r-- 1 m3tron m3tron   4231  8월 24 10:21 runtime-manifest.json
+-rw-rw-r-- 1 m3tron m3tron   1423  8월 24 10:23 self_check.py
+-rw-rw-r-- 1 m3tron m3tron      0  8월 24 10:25 self-check.stderr.txt
+-rw-rw-r-- 1 m3tron m3tron    180  8월 24 10:25 self-check.stdout.txt
+-rw-rw-r-- 1 m3tron m3tron      2  8월 24 10:16 source-import.exit.txt
+-rw-rw-r-- 1 m3tron m3tron      0  8월 24 10:18 source-import.stderr.txt
+-rw-rw-r-- 1 m3tron m3tron    189  8월 24 10:18 source-import.stdout.txt
+-rw-rw-r-- 1 m3tron m3tron  35191  8월 24 10:21 source-manifest.json
+-rw-rw-r-- 1 m3tron m3tron  23622  8월 24 10:21 test-manifest.json
+-rw-rw-r-- 1 m3tron m3tron   5498  8월 24 10:20 test-results.txt
+-rw-rw-r-- 1 m3tron m3tron    853  8월 24 10:21 xml_failure_capture.py
+-rw-rw-r-- 1 m3tron m3tron      2  8월 24 10:17 xml-failures.exit.txt
+-rw-rw-r-- 1 m3tron m3tron      0  8월 24 10:21 xml-failures.stderr.txt
+-rw-rw-r-- 1 m3tron m3tron  20033  8월 24 10:21 xml-failures.stdout.txt
+END 2026-08-24T10:26:04+09:00
+EXIT 0

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="0" failures="0" name="unittest.suite.TestSuite" tests="1" time="0.265"><testcase classname="__main__.DisabledStairSupervisorRostest" name="test_live_disabled_action_and_state_never_arm_transport" time="0.1284" /><system-out>&lt;![CDATA[
+
+]]&gt;</system-out><system-err>&lt;![CDATA[
+
+]]&gt;</system-err></testsuite>

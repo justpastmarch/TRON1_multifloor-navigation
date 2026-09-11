@@ -1,0 +1,4 @@
+START 2026-08-24T10:22:34+09:00
+{"file_count": 37, "manifest_sha256": "b9d613d8245fdf20cbadaaef3366495d23cedd2c905fb8b0dc5ee7456309b21a"}
+END 2026-08-24T10:22:34+09:00
+EXIT 0

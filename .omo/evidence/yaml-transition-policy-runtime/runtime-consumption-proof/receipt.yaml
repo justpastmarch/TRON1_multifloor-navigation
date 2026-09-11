@@ -1,0 +1,27 @@
+schema_version: 2
+plan: .omo/plans/yaml-transition-policy-runtime.md
+task: "7"
+task_id: runtime-consumption-proof
+attempt_id: runtime-consumption-proof-2026-08-24
+workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+workspace_is_git: false
+allowed_paths:
+  - src/multifloor_manager/CMakeLists.txt
+  - src/multifloor_manager/test/test_floor_transition_ros.py
+  - src/multifloor_manager/test/floor_transition_policy_blocked_ros.test
+  - test/test_policy_fixture_parity.py
+  - test/fixtures/building_policy_blocked/*
+  - .omo/evidence/yaml-transition-policy-runtime/runtime-consumption-proof/*
+  - .omo/plans/yaml-transition-policy-runtime.md
+implementation:
+  - added a parity fixture identical to building_valid except transitions.yaml freshness_sec 0.01
+  - registered a second rostest using the same production multifloor_manager node and action test surface
+  - valid fixture reaches SUCCEEDED/READY with POLICY_READY after COSTMAP_READY
+  - blocked fixture reaches ABORTED/FAULT with no target-floor READY
+verification:
+  fixture_parity: 1 passed
+  blocked_rostest: 1 passed; no errors or failures
+  full_multifloor_target: exit 0; valid and blocked action surfaces passed
+  hardware_qa: not required; mocked ROS peers used
+status: complete
+plan_checkbox: updated

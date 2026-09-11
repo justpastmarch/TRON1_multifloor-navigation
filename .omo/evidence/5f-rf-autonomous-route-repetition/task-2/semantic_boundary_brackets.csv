@@ -1,0 +1,5 @@
+boundary,earliest_s,latest_s,status,provenance
+5F_to_stair,24.934160470962524,49.972673177719116,exact_boundary_unavailable,inferred
+stair_to_RF,175.00631093978882,200.0065610408783,exact_boundary_unavailable,inferred
+RF_to_return_indoor,300.01064014434814,324.9909932613373,exact_boundary_unavailable,inferred
+return_stair_to_5F,375.00666666030884,399.9833469390869,exact_boundary_unavailable,inferred

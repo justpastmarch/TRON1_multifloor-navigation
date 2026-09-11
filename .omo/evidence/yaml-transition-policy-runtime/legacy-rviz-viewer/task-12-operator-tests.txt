@@ -1,0 +1,34 @@
+test_manual_viewer_preserves_every_display_from_pre_tool_viewer (test.test_legacy_rviz_viewer_contract.LegacyRvizViewerContractTest) ... ok
+test_manual_viewer_preserves_legacy_goal_tools_and_managed_viewer_stays_clean (test.test_legacy_rviz_viewer_contract.LegacyRvizViewerContractTest) ... ok
+test_operator_blocks_have_exact_environment_prefix (test.test_legacy_rviz_viewer_contract.LegacyRvizViewerContractTest) ... ok
+test_operator_blocks_have_exact_lane_tokens_and_exclusions (test.test_legacy_rviz_viewer_contract.LegacyRvizViewerContractTest) ... ok
+test_robot_yaml_has_operator_calibration_and_preserved_interface (test.test_legacy_rviz_viewer_contract.LegacyRvizViewerContractTest) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.080s
+
+OK
+test_disabled_empty_profiles_load_as_empty_tuple (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+test_disabled_nonempty_stair_profiles_reject (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+test_empty_profiles_reject_before_existing_traversal_lock (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+test_empty_profiles_reject_before_ownership_state_or_motion (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+test_fresh_nav_forwards_through_existing_transport_seam (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+test_robot_configured_false_rejects (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.009s
+
+OK
+test_bridge_and_fast_lio_references_are_rejected (test.test_bundle_contract.BundleContractTest) ... ok
+test_duplicate_scan_publisher_is_rejected (test.test_bundle_contract.BundleContractTest) ... ok
+test_fourth_top_level_node_is_rejected (test.test_bundle_contract.BundleContractTest) ... ok
+test_generated_and_test_only_misleading_references_are_ignored (test.test_bundle_contract.BundleContractTest) ... ok
+test_missing_map_tag_and_action_artifacts_are_rejected (test.test_bundle_contract.BundleContractTest) ... ok
+test_navigation_rviz_uses_mission_only_without_direct_goal_tools (test.test_bundle_contract.BundleContractTest) ... ok
+test_parent_traversal_remains_precise_and_generated_safe (test.test_bundle_contract.BundleContractTest) ... ok
+test_troubleshooting_markdown_parent_example_is_accepted (test.test_bundle_contract.BundleContractTest) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.371s
+
+OK

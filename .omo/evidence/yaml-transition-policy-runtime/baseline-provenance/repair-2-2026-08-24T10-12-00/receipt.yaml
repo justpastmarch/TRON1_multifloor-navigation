@@ -1,0 +1,48 @@
+schema_version: 3
+plan: .omo/plans/yaml-transition-policy-runtime.md
+task: "1"
+task_id: baseline-provenance
+attempt_id: baseline-provenance-repair-2-2026-08-24T10-18:01+09:00
+session_id: codex:yaml-transition-policy-runtime-todo-1-repair-2
+status: complete
+status_meaning: evidence complete; known baseline commands are nonzero and tests are not green
+supersedes:
+  - .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/receipt.yaml
+workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+workspace_is_git: false
+changed_paths:
+  - .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/
+  - .omo/start-work/ledger.jsonl
+immutable_prior_evidence: true
+source_inventory: source-manifest.json
+test_inventory: test-manifest.json
+generated_inventory:
+  - build-manifest.json
+  - devel-manifest.json
+  - install-manifest.json
+  - runtime-manifest.json
+  - result-xml-manifest.json
+commands: commands.txt
+test_results: test-results.txt
+manual_qa:
+  - artifact: source-import.stdout.txt
+    result: src/multifloor_manager/src/multifloor_manager/configuration.py
+  - artifact: devel-import.stdout.txt
+    result: src/multifloor_manager/src/multifloor_manager/configuration.py
+  - artifact: install-import.stdout.txt
+    result: install/lib/python3/dist-packages/multifloor_manager/configuration.py; generated/non-authoritative
+  - artifact: devel-rospack.stdout.txt
+    result: src/multifloor_manager
+  - artifact: install-rospack.stdout.txt
+    result: install/share/multifloor_manager; generated/non-authoritative
+adversarial_classes:
+  dirty_worktree: confirmed non-Git preservation; no product/generated deletion
+  stale_state: confirmed independent SHA-256 path manifests and source/install provenance
+  misleading_success_output: confirmed catkin target exit 0 versus result exit 1 and raw XML failures
+  malformed_input: not applicable at baseline; no parser mutation
+  cancel_resume: not applicable at baseline; no resumable flow
+  repeated_interruptions: not applicable at baseline; no interruption probe
+  hung_commands: no repair command stalled or timed out
+cleanup: cleanup.json
+known_failures: test-results.txt
+next_safe_task: Todo 2 remains not started

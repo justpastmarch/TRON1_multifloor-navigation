@@ -1,0 +1,700 @@
+{
+  "schema_version": 2,
+  "class": "test",
+  "roots": [
+    "test",
+    "src/mission_manager/test",
+    "src/multifloor_manager/test",
+    "src/stair_supervisor/test"
+  ],
+  "explicit_exclusions": [
+    ".git/**",
+    ".omo/**",
+    "**/__pycache__/**",
+    "**/*.pyc",
+    "**/*.pyo"
+  ],
+  "file_count": 97,
+  "manifest_sha256": "7af12a45d3adb24b8442b2ec77af4a6260317a3ef0899868ae67ec31163cb71c",
+  "files": [
+    {
+      "path": "src/mission_manager/test/bin/rosbag",
+      "sha256": "243ae0dbc4fc1c961485c7f7b33291c6a4ab29742627dc8b874c2c54b7cfbbd3",
+      "mtime_ns": 1787144582301891852,
+      "size": 1884,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/manual_mission.test",
+      "sha256": "6a90a868b25fd7ba4150398358a88fe05daf1ea78293a33bfba59124adf56d61",
+      "mtime_ns": 1787139087578707993,
+      "size": 1086,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/manual_mission_client.py",
+      "sha256": "20980f0a7efc0ed884baaa8f7818a1936e360af0b637be3f23813f21f3145481",
+      "mtime_ns": 1787139087574708060,
+      "size": 3121,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/mission_system.test",
+      "sha256": "4416a7c8c016d5d96c025f29796176d72c95b2201e1a2075d0551d5f3bebec35",
+      "mtime_ns": 1787138776480099188,
+      "size": 1128,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/mock_mission_children.py",
+      "sha256": "f708e0632165eef541dd286f406cf6c85608b0051ab572004f895183290603a4",
+      "mtime_ns": 1787142799236757112,
+      "size": 8360,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/mock_peer_server.py",
+      "sha256": "dcf57127a43fc1e0e172b38a4352694433a39798a919ab2733c617438ac048ce",
+      "mtime_ns": 1787123192221791039,
+      "size": 6900,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/navigation_executor_fakes.py",
+      "sha256": "718baf59b69b2c76a9dabe5070123cbdef80018b53f0fbc82fce232c3df4d426",
+      "mtime_ns": 1787139212236666389,
+      "size": 2494,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/process_boundaries.test",
+      "sha256": "917b036b69555bbfb2a618d16551064eea00747075b5360c1875a1ff04c63d4f",
+      "mtime_ns": 1787123192225790980,
+      "size": 159,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/rostest_python.sh",
+      "sha256": "24a03d75358861a9cf10de7441b7ff8026f01babfe03f428b942fa2756fb6566",
+      "mtime_ns": 1787123560664324861,
+      "size": 413,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/scan_recorder_ros.test",
+      "sha256": "8e247e061cc5355f0c501b349138a983c09009540caf1c553fa4aacbb6d7bc82",
+      "mtime_ns": 1787129193157023753,
+      "size": 159,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/test_fixture_discovery.py",
+      "sha256": "2b44ff3226b4e0c866909b33697740935e53f100b59c9c0d0b3734627b6d8392",
+      "mtime_ns": 1787122330502586012,
+      "size": 1172,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/test_fsm.py",
+      "sha256": "2fdf459d7d244644dbc4d53db7cfb39354d357daeaf2669c744608a1d266da48",
+      "mtime_ns": 1787128605888869019,
+      "size": 6305,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/test_mission_action_ros.py",
+      "sha256": "26539a3d87e9053cb62d6f7474f947c35b846f9b5bb3f0227283de018d3bfd1a",
+      "mtime_ns": 1787142635091428241,
+      "size": 15500,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/test_mission_orchestrator.py",
+      "sha256": "dce89d389eb583c3ae3b9e8b1216961412ecb44e6f5a79b1af171abe09ade69f",
+      "mtime_ns": 1787268362565091256,
+      "size": 12289,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/test_navigation_executor.py",
+      "sha256": "20352aed5d1719484e3d4c4f403c6fc4efc34fdfa918594873f1ae332d6b11fc",
+      "mtime_ns": 1787139212236666389,
+      "size": 14961,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/test_process_boundaries.py",
+      "sha256": "f7460cf34cf395becfb9a3c2a2d0052a46844b53cfb77cd7b14af44806b31161",
+      "mtime_ns": 1787123192225790980,
+      "size": 6013,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/test_ros_segments.py",
+      "sha256": "c7b41522fac6b5954981f38b3c63a0b6665280996d17c8b1b1b4409790af80ec",
+      "mtime_ns": 1787268179515742925,
+      "size": 6747,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/test_route_planner.py",
+      "sha256": "f27b2a77e82b5b0cb0a6a563032d3bf5002a9725d1e3f01fc1061a1b0da79018",
+      "mtime_ns": 1787128445995003787,
+      "size": 8998,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/test_runtime_gating.py",
+      "sha256": "a85918d30f9d4f212076878c77b80e13bd84c6bf56f0973b6811bab3d808097d",
+      "mtime_ns": 1787139271995704870,
+      "size": 1582,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/test_scan_recorder.py",
+      "sha256": "ea3d522e939b9ce32e42fe934e0a794548b06a1b65942446c1914b80759eecc6",
+      "mtime_ns": 1787267646707498535,
+      "size": 18230,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/test_scan_recorder_ros.py",
+      "sha256": "b4e71f4d6ad3f8adb4099a0b57711f617e31189f2ff63b04dc72b883a8c3ec04",
+      "mtime_ns": 1787129193157023753,
+      "size": 4428,
+      "kind": "file"
+    },
+    {
+      "path": "src/mission_manager/test/test_transitions.py",
+      "sha256": "3866775b77aa8091213834f7cfbccef6c76417924ca742f69398485dfd2c445a",
+      "mtime_ns": 1787128570297344272,
+      "size": 8627,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/test/floor_transition_cancel_ros.test",
+      "sha256": "53805ce821967165a9be20f8c14d4791166164f986a6a5ebe1744b6dd8f42dbe",
+      "mtime_ns": 1787131745782436265,
+      "size": 574,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/test/floor_transition_delayed_pose_ros.test",
+      "sha256": "716485e3b78bdecefd50cdfbc95374c304ff004db2075472f29e0cb313fdfd47",
+      "mtime_ns": 1787136537175503295,
+      "size": 186,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/test/floor_transition_epoch_ros.test",
+      "sha256": "6902bf3e8fdad6c416bfdd352a833c962b784db6194c43d6f2376044cefce7e7",
+      "mtime_ns": 1787134820624090749,
+      "size": 161,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/test/floor_transition_late_map_ros.test",
+      "sha256": "69df8cdb705f5edad165b9f3cb550b38bada68c0e475d3020cf37d40239c2d7b",
+      "mtime_ns": 1787133280129562819,
+      "size": 602,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/test/floor_transition_ros.test",
+      "sha256": "b03cd6f03b227998cbbbc444da200aeebb9c31a7650bf53f7276fc073dc748d5",
+      "mtime_ns": 1787133587589124105,
+      "size": 608,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/test/floor_transition_test_messages.py",
+      "sha256": "50ff905ba2818a750c71f4d6c419c4c4c65f7b81611b5e5b0d677e85a1379a3a",
+      "mtime_ns": 1787135127756334618,
+      "size": 4335,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/test/rostest_python.sh",
+      "sha256": "24a03d75358861a9cf10de7441b7ff8026f01babfe03f428b942fa2756fb6566",
+      "mtime_ns": 1787131715490899183,
+      "size": 413,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/test/test_fixture_discovery.py",
+      "sha256": "3a69960b40b35ebf724ae71836dddfe48c209336a6bba9dc5d3ce62998614137",
+      "mtime_ns": 1787122330502586012,
+      "size": 1342,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/test/test_floor_transition_cancel_ros.py",
+      "sha256": "c2710a2193f8298bd035bdff13869621ac75064cce841f4300ee66a3218243d6",
+      "mtime_ns": 1787135223435125596,
+      "size": 3016,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/test/test_floor_transition_delayed_pose_ros.py",
+      "sha256": "c336183c97c21c989d643658733d383f6d0ec633aa156e23cbe7fc4b582d854e",
+      "mtime_ns": 1787136912015088784,
+      "size": 7228,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/test/test_floor_transition_epoch_ros.py",
+      "sha256": "025717a9f3a6c936ef08d715d013d1101518e8d63872d5c79a95dad291ad4e21",
+      "mtime_ns": 1787136607266698620,
+      "size": 8612,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/test/test_floor_transition_late_map_ros.py",
+      "sha256": "b82241e90f09b901237235f9b89bd72749d606b2e388351dfab117531be97455",
+      "mtime_ns": 1787133280129562819,
+      "size": 4384,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/test/test_floor_transition_ros.py",
+      "sha256": "59b7abbf2b36531924ecb7f59da5d3441dc7930a9724643b064d946df079549d",
+      "mtime_ns": 1787151031528953749,
+      "size": 12624,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/test/test_map_loader.py",
+      "sha256": "007cb25e96a16964039f3edce10dd4dd4fc98e9228001053bc3391e260489cc6",
+      "mtime_ns": 1787131545805502076,
+      "size": 1632,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/test/test_readiness.py",
+      "sha256": "94b25866b04e9c3879240e7327203c685e44e1ca08b1cd6b3b9e0e17b0e426ad",
+      "mtime_ns": 1787131880244387690,
+      "size": 4872,
+      "kind": "file"
+    },
+    {
+      "path": "src/multifloor_manager/test/test_ros_services.py",
+      "sha256": "8d5442d8e1c3858660a75a580c3dff4593a681ad6d0982b1912c521100d047d7",
+      "mtime_ns": 1787151031532953693,
+      "size": 2038,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/test/robot_transport/__init__.py",
+      "sha256": "7401b2fd1cefe10a6b8fd76f138c768716fce1dbc482b30611a15bbf9d6cf51f",
+      "mtime_ns": 1787127334501788008,
+      "size": 36,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/test/robot_transport/test_robot_config.py",
+      "sha256": "560ec4fb1e562280bebed5a5cf68a5d2d7f969b1ca20893dba48598c5686c4b6",
+      "mtime_ns": 1787127334501788008,
+      "size": 1250,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/test/robot_transport/test_robot_conversion.py",
+      "sha256": "3ba2325e2509ad9ea01650ecd477bcf55e700b420b905a05483d8ae57aa72c29",
+      "mtime_ns": 1787127334505787955,
+      "size": 1284,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/test/robot_transport/test_robot_protocol.py",
+      "sha256": "810e6ce991cfec9d2338a6cbfeb62675832696fc397779f7b2344f019fc8a997",
+      "mtime_ns": 1787286824477069125,
+      "size": 3110,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/test/robot_transport/test_robot_transport.py",
+      "sha256": "214d6d0339c2cf4390b1dba6f287606672a478235246743cb4599eb845e83de4",
+      "mtime_ns": 1787286933506644824,
+      "size": 6534,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/test/robot_transport/test_robot_transport_fakes.py",
+      "sha256": "04c4d13ed35ce408dd226d05defe7ebd1461a6b11a43516cc6a0b98699558a45",
+      "mtime_ns": 1787127334529787639,
+      "size": 4595,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/test/robot_transport/test_robot_transport_faults.py",
+      "sha256": "59c75c2d1db51858836b2036185763d8c107397b8ce432042ed3afd7992d00aa",
+      "mtime_ns": 1787286977017694937,
+      "size": 6904,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/test/robot_transport/test_yaw_calibration_cli.py",
+      "sha256": "90cf5aaba10f294f2cc2a0cd6cca3df4ebdbd24aea9281d25e85126ac0b8d65a",
+      "mtime_ns": 1787287182137324402,
+      "size": 1013,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/test/rostest_python.sh",
+      "sha256": "24a03d75358861a9cf10de7441b7ff8026f01babfe03f428b942fa2756fb6566",
+      "mtime_ns": 1787131480166514217,
+      "size": 413,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/test/stair_supervisor_node.test",
+      "sha256": "f652835cb59834b7e14217d6b888f62aad32d5fdafdbb324e086b3993a1a5128",
+      "mtime_ns": 1787131368168249710,
+      "size": 169,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/test/test_fixture_discovery.py",
+      "sha256": "0b454e3385bcf584c37d780f5c9ea3f0bdceedd2fd221f56ae577a3fd9e75e50",
+      "mtime_ns": 1787122330502586012,
+      "size": 1945,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/test/test_stair_supervisor_node.py",
+      "sha256": "f45b84bd6a76806b8a8b0d0ed57c5434d4c38bf29f1f007644a94fd1e7ae6cb4",
+      "mtime_ns": 1787132712349625458,
+      "size": 9151,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/test/test_supervisor.py",
+      "sha256": "e77a8f7a1735bba35976f1987a7dc680c9ff665a77763c2bb757c5f7cac3b05e",
+      "mtime_ns": 1787298329134932909,
+      "size": 12520,
+      "kind": "file"
+    },
+    {
+      "path": "src/stair_supervisor/test/test_supervisor_safety.py",
+      "sha256": "0eccdb084bd94defc419810bb9bf502f4eea02d1cb2f7aac67ed215c32a02866",
+      "mtime_ns": 1787132801980371310,
+      "size": 3062,
+      "kind": "file"
+    },
+    {
+      "path": "test/__init__.py",
+      "sha256": "a7b53168e96f316ee3976d29f7ac0baf0684761a7eb46f81a1a485a613be89f7",
+      "mtime_ns": 1787118643420247159,
+      "size": 40,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixture_models.py",
+      "sha256": "8b46c16355b4f8b540c51b9f5db592ab2de4d9b3a6a223149bbf6a66614658bc",
+      "mtime_ns": 1787122330486586250,
+      "size": 1243,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixture_support.py",
+      "sha256": "bbd1d9429f4240ee7d440f1f028f5229dae9a55ed84d8a25d865700913dd1d8f",
+      "mtime_ns": 1787122378629870617,
+      "size": 9083,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/building_valid/apriltag_ros_tags.yaml",
+      "sha256": "66c3806c986a163aef71e8f4cf1dbd87762862c8510874a81e235b346fa93659",
+      "mtime_ns": 1787124517421615815,
+      "size": 85,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/building_valid/apriltags.yaml",
+      "sha256": "be858014346d112ba556818cc0d2bc90eafcb8d9bcf2b0a356dca1a5065d51c6",
+      "mtime_ns": 1787120954291242841,
+      "size": 241,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/building_valid/building_graph.yaml",
+      "sha256": "6f85430de068879fd53ea791124d173f5021013f8c859d67d792b58f6a446908",
+      "mtime_ns": 1787120954251243457,
+      "size": 795,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/building_valid/floors.yaml",
+      "sha256": "e9054df7d17aeaa51c0bb93fcb036276ec6be3f281b64344118e5fd82a0d07b9",
+      "mtime_ns": 1787120954275243087,
+      "size": 208,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/building_valid/locations.yaml",
+      "sha256": "6837e02055a71d31af0176c217f86632d24e0a322a8c2d6b687bfb9a0d405493",
+      "mtime_ns": 1787120954239243639,
+      "size": 603,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/building_valid/maps/floor_3f.pgm",
+      "sha256": "e520cfd2495cd038edfb902853d8a7da574c85d9a9620172dd6a7756b9f42597",
+      "mtime_ns": 1787120954895233573,
+      "size": 23,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/building_valid/maps/floor_3f.yaml",
+      "sha256": "ef21e4a39dd7ad842bbeb7a03554c9cf86bd2bf125cf611c9a750a2219586bca",
+      "mtime_ns": 1787120954847234310,
+      "size": 112,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/building_valid/maps/floor_4f.pgm",
+      "sha256": "48715b4d6cea25c5b2f3cfdf543f372d6499f53b71a882c8a3d3e99867d2aaa1",
+      "mtime_ns": 1787120954899233513,
+      "size": 31,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/building_valid/maps/floor_4f.yaml",
+      "sha256": "102b868c470b0745c2a581c317158ba50f990faf43e7303aa4fdc41b4bf88f16",
+      "mtime_ns": 1787120954875233879,
+      "size": 113,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/building_valid/maps/floor_rf.pgm",
+      "sha256": "186d4bc8766da6f2a5e26f95a7777b0270cd18ec8adee0eb2bd0590bd6bce33f",
+      "mtime_ns": 1787120954899233513,
+      "size": 30,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/building_valid/maps/floor_rf.yaml",
+      "sha256": "a9400e5ea917b4db8b4d540861150dc39f17aa4e18e9475681cdf274cabea2b7",
+      "mtime_ns": 1787120954883233756,
+      "size": 113,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/building_valid/robot.yaml",
+      "sha256": "3c9de3991801b37e903737dff474b459c2fdeb96bfc69de2dd9381827ff8f610",
+      "mtime_ns": 1787120954347241983,
+      "size": 270,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/building_valid/scan_profiles.yaml",
+      "sha256": "97a0bfd0e1538dbf3e2e76b95b7d2f777527b1f505c73ce94a3c114d5767440a",
+      "mtime_ns": 1787138776480099188,
+      "size": 305,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/building_valid/stair_profiles.yaml",
+      "sha256": "b0a0e217ae8fc3eeb78fa979067b31653d01fc9eee240e40787ade2ecd5016a8",
+      "mtime_ns": 1787120954331242229,
+      "size": 501,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/building_valid/stairs.yaml",
+      "sha256": "1d60342a0ca9b148262b4536cef0287c33ca44d9980c9fd36fa541da69680bd5",
+      "mtime_ns": 1787120954291242841,
+      "size": 899,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/building_valid/transitions.yaml",
+      "sha256": "3826ec018b3a1a10035d26ecff6245c377746b69b9742a2d12bc286ea6d94721",
+      "mtime_ns": 1787128559597487142,
+      "size": 274,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/clock/frozen_time.json",
+      "sha256": "d2e9694e764d9dae1566f2c7eb2ea105d04069e5675c6bc91376d9ff78d38905",
+      "mtime_ns": 1787120887048277201,
+      "size": 95,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/graphs/asymmetric_3f_4f_roof.json",
+      "sha256": "03b0ae741586cfa03a15380f34d95cc18cce978300df29a829501d6084970489",
+      "mtime_ns": 1787120887052277138,
+      "size": 230,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/inputs/localization_cases.json",
+      "sha256": "e2993af1332480f33445e4109baf87107f1520c0b0380663433f93812c68cc84",
+      "mtime_ns": 1787122330498586071,
+      "size": 1080,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/maps/3F.pgm",
+      "sha256": "e3ab113c48ff01fdd1564bbbc39539deac7c0ad550d5ce6efa15c4c5d78b909d",
+      "mtime_ns": 1787120887092276521,
+      "size": 115,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/maps/3F.yaml",
+      "sha256": "cae912a4f294fe3e5291aa57c0aea7c9d222ae61b1785cd6048aabca5508aec0",
+      "mtime_ns": 1787120887108276276,
+      "size": 105,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/maps/4F.pgm",
+      "sha256": "511f0b8cb6fc7f3c37f71f46fc305d3dfea391184a9abe74608e03bfc596f0b6",
+      "mtime_ns": 1787120887112276213,
+      "size": 115,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/maps/4F.yaml",
+      "sha256": "02276ba6501c34e62df46cad628250449f066dd933efc45e479f0804ee8e460b",
+      "mtime_ns": 1787120887120276091,
+      "size": 106,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/maps/roof.pgm",
+      "sha256": "a7d8232839a554fc2fee026c8ec53c48dd44981f555e396550ee64157e7d8359",
+      "mtime_ns": 1787120887120276091,
+      "size": 113,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/maps/roof.yaml",
+      "sha256": "9d6b16f88228d1ad7dc40ab424e2d2cc974de6ab2c4c003192f1383034de4491",
+      "mtime_ns": 1787120887124276028,
+      "size": 109,
+      "kind": "file"
+    },
+    {
+      "path": "test/fixtures/websocket/robot_session.ndjson",
+      "sha256": "5457099538ae92342ae39711ae4b3e60930e40181dfe757756c76ce259a6bd5d",
+      "mtime_ns": 1787122330498586071,
+      "size": 547,
+      "kind": "file"
+    },
+    {
+      "path": "test/mock_peer_harness.py",
+      "sha256": "aef5b0e5a21792ef443e34ec95a1734b2b5258927e9ad37857cbacf0aa6b3850",
+      "mtime_ns": 1787122330502586012,
+      "size": 1534,
+      "kind": "file"
+    },
+    {
+      "path": "test/mock_peers.py",
+      "sha256": "95b1fa97083f275f9dd80e59f9ba680968c1cba4fc2d442a4150f68ab6dcefe9",
+      "mtime_ns": 1787121303417934369,
+      "size": 2114,
+      "kind": "file"
+    },
+    {
+      "path": "test/test_bundle_contract.py",
+      "sha256": "373ffe7285b4b6b22e49279ad57e1cfd3be1bb1eee174af5b069b2ec2f04a290",
+      "mtime_ns": 1787141120180405044,
+      "size": 5968,
+      "kind": "file"
+    },
+    {
+      "path": "test/test_fixture_contract.py",
+      "sha256": "499eb12d11089d453a1fbb288bef58a35b793c11ed382966d5d417ce5ed1094b",
+      "mtime_ns": 1787120851028833367,
+      "size": 1054,
+      "kind": "file"
+    },
+    {
+      "path": "test/test_fixture_loader.py",
+      "sha256": "c8997b8360dd2dfb310e27100e02323623fdcaa060f7d92c32e388a4e99c6e0f",
+      "mtime_ns": 1787122245491850064,
+      "size": 6603,
+      "kind": "file"
+    },
+    {
+      "path": "test/test_harness_registration.py",
+      "sha256": "96d2c5acb7f6a729ae8834b815ab2162136236bbbc423276efadc24e7177cfb1",
+      "mtime_ns": 1787122366038057776,
+      "size": 2549,
+      "kind": "file"
+    },
+    {
+      "path": "test/test_interface_contract.py",
+      "sha256": "a9d6f72cd05298e6e6e5a01e2f94082051f35d2cc10429dc4bf5970eda2bc436",
+      "mtime_ns": 1787120851016833555,
+      "size": 3809,
+      "kind": "file"
+    },
+    {
+      "path": "test/test_launch_contract.py",
+      "sha256": "656388f1d4dbd3560169dcf0fbfec18d4696d8cd50a5e7703807515ed8fe0b48",
+      "mtime_ns": 1787298825847660885,
+      "size": 10685,
+      "kind": "file"
+    },
+    {
+      "path": "test/test_map_evidence.py",
+      "sha256": "8f714c2b4b083b4b4ceac1a6415b875c9b261c1721dfe6b1a6b225b8fe881fa3",
+      "mtime_ns": 1787126689062206951,
+      "size": 6282,
+      "kind": "file"
+    },
+    {
+      "path": "test/test_mock_peers.py",
+      "sha256": "b51f4ee52cf57173ee3868ad49b6f24bf6c22eb8cdf8e2c3e0c5f96cdeaf97d2",
+      "mtime_ns": 1787121018970252237,
+      "size": 2111,
+      "kind": "file"
+    },
+    {
+      "path": "test/test_process_boundary_contract.py",
+      "sha256": "069ba2eb5fc43d22ed1c9d606da0a8317a72f039372946b671410a1e8349461d",
+      "mtime_ns": 1787123339155610995,
+      "size": 2409,
+      "kind": "file"
+    },
+    {
+      "path": "test/test_run_script_contract.py",
+      "sha256": "b216865d29bf56b75ea7d645d0011aed46d88a3666f0947c525d50f95a9cd271",
+      "mtime_ns": 1787150679778005688,
+      "size": 673,
+      "kind": "file"
+    },
+    {
+      "path": "test/test_site_configuration.py",
+      "sha256": "4ade24f8c023ecbb5c25a8dbd5744affc013480f73d5a59e64b1affc8ae14899",
+      "mtime_ns": 1787121436863924586,
+      "size": 5539,
+      "kind": "file"
+    },
+    {
+      "path": "test/test_system_operator_contract.py",
+      "sha256": "49145db32b4bb27c6d13f11442f350a450c29526a7c05e2df6d1bc6c672b0359",
+      "mtime_ns": 1787141443904895771,
+      "size": 4748,
+      "kind": "file"
+    },
+    {
+      "path": "test/test_tag_evidence.py",
+      "sha256": "7961394b5d4f5d11ce293aa3241874edd7b25d3ce088522030b71592b568781f",
+      "mtime_ns": 1787130103550169912,
+      "size": 9854,
+      "kind": "file"
+    },
+    {
+      "path": "test/test_workspace_layout.py",
+      "sha256": "93e48b12cabde0d7c49378da20d099b8cb32dd766b29713e3571a74967ab3683",
+      "mtime_ns": 1787123192229790921,
+      "size": 6914,
+      "kind": "file"
+    }
+  ]
+}

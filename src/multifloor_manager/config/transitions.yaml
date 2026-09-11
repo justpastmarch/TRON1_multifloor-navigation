@@ -1,0 +1,22 @@
+# Production transition evidence is intentionally disabled until tuned on site.
+# Keys: id, enabled, conditions, optional_count, freshness_sec, dwell_sec, timeout_sec.
+# FUTURE NON-SAFETY EXAMPLE ONLY; keep commented until a pure producer, registry entry, and tests exist.
+# Must be safe when false; never place commands, URLs, IPs, or payloads here.
+# After support exists, add this entry under a configured policy's conditions list:
+#   - name: T_ARRIVAL_ANNOUNCEMENT_DONE
+#     enabled: 1
+#     required: 0
+# Raise optional_count only if this operational evidence should delay READY.
+schema_version: 1
+configured: true
+transitions:
+  - id: floor_transition_ready
+    enabled: 1
+    conditions:
+      - {name: T_FLOOR_CONFIRMED, enabled: 1, required: 1}
+      - {name: T_LOCALIZED, enabled: 1, required: 1}
+      - {name: T_COSTMAP_READY, enabled: 1, required: 1}
+    optional_count: 0
+    freshness_sec: 10.0
+    dwell_sec: 0.2
+    timeout_sec: 8.0

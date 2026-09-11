@@ -1,0 +1,14 @@
+# SYNTHETIC NON-PRODUCTION FIXTURE: topology is invented for no-motion ROS tests.
+schema_version: 1
+configured: true
+edges:
+  - {id: leave_home_5f, from: home_5f, to: stair_entry_5f, type: NAV}
+  - {id: stair_5f_rf_up, from: stair_entry_5f, to: roof_landing, type: STAIR_UP, stair_id: stair_5f_rf}
+  - {id: roof_loop_north, from: roof_landing, to: roof_loop_north, type: NAV}
+  - {id: roof_loop_east, from: roof_loop_north, to: roof_loop_east, type: NAV}
+  - {id: roof_loop_south, from: roof_loop_east, to: roof_loop_south, type: NAV}
+  - {id: roof_loop_close, from: roof_loop_south, to: roof_loop_complete, type: NAV}
+  - {id: roof_to_return_stair, from: roof_loop_complete, to: roof_return_entry, type: NAV}
+  - {id: stair_5f_rf_down, from: roof_return_entry, to: stair_return_5f, type: STAIR_DOWN, stair_id: stair_5f_rf}
+  - {id: return_home_5f, from: stair_return_5f, to: home_5f, type: NAV}
+  - {id: reset_before_stair, from: stair_entry_5f, to: home_5f, type: NAV}

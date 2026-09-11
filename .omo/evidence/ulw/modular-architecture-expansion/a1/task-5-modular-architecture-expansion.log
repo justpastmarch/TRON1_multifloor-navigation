@@ -1,0 +1,97 @@
+Task: Todo 5 - immutable condition types, registry composition, explicit policy compilation
+Target: /home/m3tron/Desktop/TRON1_Modular_Navigation
+Python runtime: CPython 3.8 (unittest traceback and cpython-38 compile artifacts)
+
+RED (tests written before production API)
+Command:
+  PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/tron1_condition_engine/src python3 -B -m unittest discover -s src/tron1_condition_engine/test -p 'test_policy*.py' -v
+Result: exit 1, 2 import errors for missing AllExpression and ConditionEvidence. This was the expected missing-API failure.
+
+IMPLEMENTED CONTRACT
+- Frozen Python 3.8-compatible dataclasses (manual __slots__) for condition definitions, evidence, condition/group traces, expressions, named groups, and compiled plans.
+- Stable NewType IDs for policy, condition, group, and producer; independent classification and required/optional/ignored mode enums.
+- Instance-scoped ProducerRegistry.bind(...) stores immutable tuple bindings; duplicate and unknown keys are typed errors; there is no singleton or global registry.
+- compile_policy(...) accepts an already-parsed mapping only. It does not accept a path and imports no YAML/ROS/filesystem/network modules.
+- The sole root must be explicit `all`. Required leaves occur once as direct root members. Optional leaves occur once below exactly one all/any/quorum subtree. Ignored leaves stay outside root for later trace evaluation.
+- Named expression references resolve explicitly; unknown condition/group/producer IDs, cycles, duplicate/unreachable leaves, invalid quorum bounds, malformed timing, and callable/import-path producer values are typed compilation errors.
+- No implicit prerequisite graph or second gate was introduced.
+
+FINAL REQUIRED UNIT COMMAND
+Command:
+  PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/tron1_condition_engine/src python3 -B -m unittest discover -s src/tron1_condition_engine/test -p 'test_policy*.py' -v
+Result: exit 0
+  Ran 10 tests in 0.017s
+  OK
+Direct passing assertions:
+  test_compile_explicit_root_with_optional_subtree_and_ignored_trace
+  test_missing_and_non_all_roots_are_rejected
+  test_wrong_membership_is_rejected
+  test_unknown_ids_and_producers_are_rejected
+  test_expression_cycles_are_rejected
+  test_invalid_quorum_bounds_are_rejected
+  test_dynamic_producer_values_are_rejected
+  test_engine_import_contract_is_ros_io_and_dynamic_import_free
+  test_registry_binding_is_explicit_immutable_and_callable
+  test_registry_rejects_duplicates_and_unknown_keys
+
+LIBRARY DRIVER / REPEAT EQUALITY
+Command:
+  PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/tron1_condition_engine/src:src/tron1_condition_engine/test python3 -B -c '<compile valid fixture twice; assert equality/root; compile missing-root fixture>'
+Result: exit 0
+  DRIVER policy=transition_ready conditions=4 root=all members=2 repeat_equal=True
+  MALFORMED missing_root code=missing_root path=root detail=one explicit root is required
+
+MALFORMED FIXTURE OUTCOMES (direct unittest typed-error assertions)
+- missing root -> missing_root
+- root `any` -> root_not_all
+- required nested -> required_not_direct
+- required membership mismatch -> required_membership
+- direct optional or wrong optional topology -> optional_subtree
+- duplicate optional -> duplicate_optional
+- unreachable optional -> optional_unreachable
+- ignored root leaf -> ignored_in_root
+- unknown condition/group/producer -> unknown_condition/unknown_group/unknown_producer
+- cyclic group references -> expression_cycle
+- quorum 0 or greater than members -> invalid_quorum
+- callable or module:path producer value -> invalid_producer_key
+
+AST / IMPORT CONTRACT
+Executed by test_engine_import_contract_is_ros_io_and_dynamic_import_free using ast.parse over every engine module.
+Result: exit 0; forbidden imports=[], dynamic calls=[], mutable module containers=[]
+Forbidden roots asserted: rospy, roslib, actionlib, yaml, pathlib, os, io, socket, subprocess, requests, httpx, urllib, importlib.
+Dynamic operations asserted absent: eval, exec, __import__.
+
+LINT
+Command:
+  ruff check src/tron1_condition_engine/src/tron1_condition_engine src/tron1_condition_engine/test
+Result: exit 0, All checks passed!
+
+PYTHON 3.8 COMPILATION
+Command:
+  PYTHONPYCACHEPREFIX=/tmp/opencode/task5-pyc python3 -m compileall -q -f src/tron1_condition_engine/src/tron1_condition_engine src/tron1_condition_engine/test
+Result: exit 0, no output.
+
+SIZE REVIEW
+Pure LOC per engine module: compiler 74, errors 26, identifiers 17, __init__ 49, parsing 114, raw_types 9, records 88, registry 32, validation 88. All are below 200 and below the 250-line defect threshold.
+Single responsibility: each module owns one noun phrase (identity, errors, records, registry, boundary parsing, compilation, or validation).
+Boundary purity: parsed mappings are consumed only by parsing/compiler; compiled interior values are typed and immutable.
+Variant discrimination: Python 3.8 precludes match syntax; expression parsing is a boundary operator dispatch, while immutable expression variants are not evaluated in Todo 5.
+Escape hatches: no Any, object annotations, cast, type-ignore, broad except, dynamic import, eval, or exec.
+Defensive/helper review: no hidden gate, no one-off service abstraction, no destructive verification, no negative public names, and no logging added.
+Tests: red first, then 10/10 green; reverting the public API or membership/compiler behavior fails the suite.
+
+TOOL AVAILABILITY NOTES
+- basedpyright executable is not installed (`basedpyright: command not found`).
+- LSP diagnostics are scoped to the immutable request cwd and rejected the separate target path; no target files were altered to work around that boundary.
+- The shared no-excuse checker itself uses Python 3.10 match syntax and fails to parse under required Python 3.8 at its line 519. Ruff, AST contracts, runtime tests, and Python 3.8 compileall were used instead.
+
+CLEANUP
+Command:
+  rm -rf src/tron1_condition_engine/src/tron1_condition_engine/__pycache__ src/tron1_condition_engine/test/__pycache__ /tmp/opencode/task5-pyc
+Post-cleanup glob results:
+  **/__pycache__/** -> No files found
+  **/*.pyc -> No files found
+  /tmp/opencode/task5-* -> No files found
+No YAML/temp fixtures were written; malformed fixtures existed only as in-memory mappings.
+
+DoneClaim: Todo 5 is complete. The target now has a Python 3.8-compatible ROS-free immutable condition model, explicit immutable registry binding, and deterministic explicit-all-root policy compiler. All requested valid and malformed policy contracts pass, repeated compilation is equal, forbidden imports/dynamic loading/global mutable registries are absent, and generated bytecode/temp artifacts are cleaned.

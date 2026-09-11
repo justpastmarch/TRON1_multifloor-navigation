@@ -1,0 +1,19 @@
+test_composition_binds_explicit_keys_and_freezes_registry (test_multifloor_producers.MultifloorProducerTest) ... ok
+test_false_observations_remain_evidence_without_side_effects (test_multifloor_producers.MultifloorProducerTest) ... ok
+test_producers_return_typed_evidence_from_one_immutable_snapshot (test_multifloor_producers.MultifloorProducerTest) ... ok
+test_stale_epoch_and_inconsistent_identity_are_rejected (test_multifloor_producers.MultifloorProducerTest) ... ok
+test_wrong_floor_identity_is_rejected (test_multifloor_producers.MultifloorProducerTest) ... ok
+test_boundary_rejects_disabled_shape_and_membership_errors (test_policy_configuration.PolicyConfigurationTest) ... ok
+test_fixture_parses_once_into_equal_immutable_engine_plans (test_policy_configuration.PolicyConfigurationTest) ... ok
+test_unknown_producer_is_rejected_after_yaml_parse (test_policy_configuration.PolicyConfigurationTest) ... ok
+test_yaml_only_mode_and_membership_edit_changes_root_behavior (test_policy_configuration.PolicyConfigurationTest) ... ok
+test_callback_readiness_cannot_veto_true_root (test_ros_adapter_contract.RosAdapterContractTest) ... ok
+test_cancel_terminally_stops_and_late_callbacks_are_inert (test_ros_adapter_contract.RosAdapterContractTest) ... ok
+test_root_false_reaches_evaluator_timeout_without_callback_veto (test_ros_adapter_contract.RosAdapterContractTest) ... ok
+test_service_failure_faults_and_invalidates_epoch (test_ros_adapter_contract.RosAdapterContractTest) ... ok
+test_success_is_the_explicit_root_result_and_preserves_operation_phases (test_ros_adapter_contract.RosAdapterContractTest) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.097s
+
+OK

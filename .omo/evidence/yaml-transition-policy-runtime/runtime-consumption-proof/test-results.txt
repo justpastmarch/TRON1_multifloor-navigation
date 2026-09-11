@@ -1,0 +1,4 @@
+Fixture parity: 1 passed; all manager-consumed files match except transitions.yaml.
+Valid action surface: SUCCEEDED/READY; POLICY_READY follows COSTMAP_READY.
+Freshness-only blocked action surface: ABORTED/FAULT; no 4F READY state; POLICY_READY observed.
+Registered multifloor manager target: exit 0.

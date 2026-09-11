@@ -1,0 +1,6 @@
+# SYNTHETIC NON-PRODUCTION FIXTURE: maps are 2x2 placeholders for schema validation only.
+schema_version: 1
+configured: true
+floors:
+  - {id: 5F, map_yaml: maps/floor_5f.yaml, frame: map}
+  - {id: RF, map_yaml: maps/floor_rf.yaml, frame: map}

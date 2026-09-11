@@ -1,0 +1,97 @@
+Task 14: zero-node bringup and single production launch graph
+Date: 2026-08-26
+Target: /home/m3tron/Desktop/TRON1_Modular_Navigation
+
+Changed target files
+- src/tron1_bringup/launch/system.launch
+- src/tron1_bringup/test/mock_hardware.launch
+- test/test_launch_contract.py
+
+Red proof
+Command: python3 -B -m unittest test.test_launch_contract -v
+Result: exit 1; 8 tests ran. The new contract failed because mission_config_root was absent and src/tron1_bringup/test/mock_hardware.launch did not exist. The duplicate-scan, fourth-node, unresolved-asset, and outside-transport probes already passed, showing that the failures were the intended missing production behavior.
+
+Required contract command
+Command: python3 -B -m unittest test.test_launch_contract -v
+Result: exit 0; 9/9 passed in 0.010s.
+Passing contract/probe inventory:
+- test_capability_launch_probe_is_detected
+- test_duplicate_scan_and_fourth_node_probes_are_detected
+- test_unresolved_asset_and_outside_transport_probes_are_detected
+- test_assets_and_owner_configuration_arguments_resolve
+- test_bringup_installs_no_executable
+- test_mock_fixture_selects_system_without_adding_nodes
+- test_production_inventory_is_exact
+- test_scan_and_transport_ownership_are_unique
+- test_system_is_the_only_production_top_level
+
+Launch resolution
+Command: source /opt/ros/noetic/setup.bash && source devel/setup.bash && ROS_MASTER_URI=http://127.0.0.1:11311 ROS_HOSTNAME=127.0.0.1 roslaunch --nodes tron1_bringup system.launch use_mock_hardware:=true
+Result: exit 0.
+Exact node output:
+/pointcloud_to_laserscan
+/apriltag_ros_continuous_node
+/map_server
+/amcl
+/move_base
+/multifloor_manager
+/stair_supervisor
+/mission_manager
+/rviz
+Inventory result: exactly 9 nodes: the three approved project nodes and map_server, AMCL, move_base, pointcloud-to-laserscan, apriltag_ros, and managed RViz. No optional ROS package was missing; live roslaunch XML resolution was available and succeeded.
+
+XML/static adversarial evidence
+- Duplicate /scan: malformed launch fixture declares two scan-output remaps; scan_publishers reports length 2. Repository graph reports exactly one publisher declaration, pointcloud_to_laserscan_node.
+- Fourth project node: malformed fixture adds mission_manager/fourth_node.py; inventory differs from APPROVED_NODES. Repository inventory equals the approved nine-node set.
+- Capability launch duplication: fixture places system.launch under mission_manager/launch; capability_launches reports it. Repository capability launch directories contain no .launch files.
+- Unresolved asset: fixture references $(find tron1_bringup)/launch/missing.launch; unresolved_project_assets reports one failure. Repository project-owned $(find ...) references all resolve, and roslaunch resolves external package assets.
+- Outside robot transport: fixture constructs RobotTransport under mission_manager; transport_owners reports it. Repository production ownership is exactly src/stair_supervisor/scripts/stair_supervisor_node.py.
+- Future door launch: recursive launch inventory is empty for *door*.launch.
+- Bringup executable: CMake contains no catkin_install_python and tron1_bringup has no scripts directory.
+- Mock fixture: src/tron1_bringup/test/mock_hardware.launch includes only the production system.launch with use_mock_hardware=true and declares no node. The production root resolves robot ACCID/WebSocket parameters to empty strings in mock mode, so the sole stair transport owner exposes its existing non-connecting disabled surface instead of touching hardware.
+- Single production root: src/tron1_bringup/launch/system.launch is the only production top-level; navigation/perception files are included components and contain no project nodes.
+
+Package DAG and interface inventory
+Command: source /opt/ros/noetic/setup.bash && source devel/setup.bash && python3 -B -m unittest test.test_package_dag test.test_interface_contract -v
+Result: exit 0; 13/13 passed in 0.218s. Six-package DAG and exactly three installed project entrypoints remain intact; all shared generated interfaces resolve from tron1_interfaces.
+
+Build
+Command: source /opt/ros/noetic/setup.bash && catkin_make
+Result: exit 0; tron1_interfaces generation and all workspace targets built successfully.
+
+Source provenance and old-workspace boundary
+Command: python3 -B tools/source_provenance.py --manifest docs/migration/source-selection.json --output /home/m3tron/Desktop/TRON1_Modular_Navigation/src/tron1_bringup/launch/system.launch --output /home/m3tron/Desktop/TRON1_Modular_Navigation/src/tron1_bringup/test/mock_hardware.launch --output /home/m3tron/Desktop/TRON1_Modular_Navigation/test/test_launch_contract.py --output /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/ulw/modular-architecture-expansion/a1/task-14-modular-architecture-expansion.log
+Result: exit 0; {"output_count": 4, "source_count": 104, "status": "ok"}. All 104 authoritative source hashes still match. Product writes are confined to the target; the only old-workspace product-adjacent write is this approved a1 evidence file.
+
+Generated-artifact cleanup
+- Tests used python3 -B.
+- Removed Python __pycache__ directories generated in devel/lib/python3/dist-packages by the sourced interface probe.
+- Final glob **/__pycache__/** returned no files.
+- roslaunch --nodes started no ROS master or node process, so there was no runtime PID, port, or process to terminate.
+- catkin build/devel outputs were retained because catkin_make was an explicit verification requirement and these roots pre-existed as target-generated roots.
+
+Code-size/tooling review
+- Pure LOC: test/test_launch_contract.py 184; system.launch 75; mock_hardware.launch 6. All are below 200 lines.
+- The shared no-excuse checker could not execute under the host's Python 3.8 because the checker itself uses Python 3.10 match syntax; the changed test was instead executed directly and passed 9/9. LSP diagnostics could not address a path outside the caller workspace root. These are tooling-surface limitations, not launch/test failures.
+- Responsibility: system.launch owns production composition; mock_hardware.launch owns test selection; test_launch_contract.py owns launch-boundary verification.
+- Boundaries: owner configuration roots remain mission_manager/config, multifloor_manager/config, and stair_supervisor/config; bringup owns navigation/perception launch parameters and RViz.
+- No escape hatch, variant-discrimination, defensive layer, one-off production helper, parameter-bloat production API, redundant post-action verification, negative production naming, or logging change was introduced.
+
+DoneClaim
+task: 14. Compose the zero-node bringup package and single production launch graph
+changed_files:
+- /home/m3tron/Desktop/TRON1_Modular_Navigation/src/tron1_bringup/launch/system.launch
+- /home/m3tron/Desktop/TRON1_Modular_Navigation/src/tron1_bringup/test/mock_hardware.launch
+- /home/m3tron/Desktop/TRON1_Modular_Navigation/test/test_launch_contract.py
+tests:
+- python3 -B -m unittest test.test_launch_contract -v => PASS 9/9
+- roslaunch --nodes tron1_bringup system.launch use_mock_hardware:=true with localhost ROS settings => PASS, exact 9-node approved inventory
+- sourced python3 -B -m unittest test.test_package_dag test.test_interface_contract -v => PASS 13/13
+- catkin_make => PASS
+- source_provenance.py => PASS, 104 sources and 4 approved outputs
+manual_qa:
+- roslaunch --nodes exact output recorded above
+cleanup:
+- no ROS runtime started; generated devel __pycache__ removed; final cache glob empty
+risks:
+- none for Todo 14 static/launch-resolution scope; powered hardware behavior was not claimed or exercised

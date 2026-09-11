@@ -1,0 +1,135 @@
+Task: Todo 16 - resolved architecture-as-code, Mermaid views, traceability, automatic-door example
+Target: /home/m3tron/Desktop/TRON1_Modular_Navigation
+Evidence attempt: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/ulw/modular-architecture-expansion/a1
+Date: 2026-08-26
+
+SCOPE AND SOURCE PROVENANCE
+- Product edits were confined to /home/m3tron/Desktop/TRON1_Modular_Navigation.
+- The old product/source tree was not edited. This evidence file is the permitted attempt-directory write.
+- Approved requirements came from Todo 16 in .omo/plans/modular-architecture-expansion.md and architecture/door decisions in .omo/drafts/modular-architecture-expansion.md lines 84-102.
+- The target inventory was resolved from package manifests, CMake install declarations, source ASTs, interfaces, launch XML, configs, and tests.
+- Stale manifest path src/tron1_condition_engine/test/test_policy.py was replaced by the real src/tron1_condition_engine/test/test_policy_compiler.py path.
+- A second stale test path discovered during resolved validation, src/stair_supervisor/test/test_supervisor.py, was replaced by src/stair_supervisor/test/test_stream_supervisor.py.
+
+RESOLVED TRACE REPORT
+- Canonical report: docs/architecture/traceability.md
+- Canonical manifest: docs/architecture/architecture.yaml
+- Resolved records: deployed=75, documentation-only examples=16.
+- Deployed package inventory: exactly 6.
+  pkg.tron1_interfaces, pkg.tron1_condition_engine, pkg.mission_manager,
+  pkg.multifloor_manager, pkg.stair_supervisor, pkg.tron1_bringup
+- Deployed project runtime-node inventory: exactly 3.
+  node.mission_manager, node.multifloor_manager, node.stair_supervisor
+- Shared interfaces: iface.mission, iface.floor_transition, iface.floor_state,
+  iface.stair_traversal, iface.supervisor_state.
+- Producers/conditions resolve to multifloor-owned source symbols and one explicit-root evaluator:
+  producer.floor_tag_vote -> condition.floor_confirmed -> symbol.produce_floor_confirmation
+  producer.localization_ready -> condition.localized -> symbol.produce_localization_readiness
+  producer.costmap_ready -> condition.costmap_ready -> symbol.produce_costmap_readiness
+  config.transition_policy -> symbol.evaluate_cycle
+- Runtime symbols resolve to MissionOrchestrator.run, mission/multifloor/stair main entry composition,
+  compose_producer_registry, produce_evidence, and StairSupervisor.stream_navigation.
+- Every deployed package/node/interface/module/config/test path exists. Every declared deployed
+  Python function/class symbol is present in the target AST.
+
+MERMAID VIEW IDS AND EDGES
+1. docs/architecture/package-dependencies.mmd
+   IDs: pkg.tron1_interfaces pkg.tron1_condition_engine pkg.mission_manager
+        pkg.multifloor_manager pkg.stair_supervisor pkg.tron1_bringup
+   Edges: edge.package.mission_interfaces edge.package.multifloor_interfaces
+          edge.package.multifloor_engine edge.package.stair_interfaces
+          edge.package.bringup_mission edge.package.bringup_multifloor
+          edge.package.bringup_stair
+2. docs/architecture/runtime-nodes.mmd
+   IDs: config.system_launch node.mission_manager node.multifloor_manager
+        node.stair_supervisor iface.mission iface.floor_transition iface.stair_traversal
+   Edges: edge.runtime.launch_mission edge.runtime.launch_multifloor
+          edge.runtime.launch_stair edge.runtime.mission_action
+          edge.runtime.floor_action edge.runtime.stair_action
+3. docs/architecture/condition-evaluation.mmd
+   IDs: producer.floor_tag_vote producer.localization_ready producer.costmap_ready
+        condition.floor_confirmed condition.localized condition.costmap_ready
+        config.transition_policy symbol.evaluate_cycle
+   Edges: edge.condition.floor_producer edge.condition.localization_producer
+          edge.condition.costmap_producer edge.condition.root_evaluator
+4. docs/architecture/mission-sequence.mmd
+   IDs: node.mission_manager symbol.run_mission iface.floor_transition iface.stair_traversal
+   Edges: edge.mission.entrypoint edge.mission.floor_child edge.mission.stair_child
+5. docs/architecture/floor-transition.mmd
+   IDs: node.multifloor_manager symbol.produce_evidence symbol.evaluate_cycle iface.floor_state
+   Edges: edge.floor.node_producers edge.floor.evidence_root edge.floor.result_state
+6. docs/architecture/command-ownership.mmd
+   IDs: node.stair_supervisor symbol.stream_navigation iface.supervisor_state
+   Edges: edge.command.stair_owner edge.command.transport_surface
+7. Documentation-only docs/architecture/examples/automatic-door.mmd
+   IDs: example.pkg.door_adapter example.node.door_adapter example.iface.open_door
+        example.iface.door_state example.producer.door_command_acceptance
+        example.producer.door_open_confirmation example.condition.door_command_accepted
+        example.condition.door_open_confirmed example.config.door_endpoint
+   Edges: example.edge.door.acceptance example.edge.door.state
+          example.edge.door.confirmation
+- Resolved validation proved every marked ID and edge resolves, every edge has the declared view,
+  every edge endpoint is marked, and all deployed diagram edges occur across the six views.
+
+AUTOMATIC-DOOR CONTRACT
+- docs/architecture/examples/automatic-door.yaml is standalone and documentation_only.
+- Typed OpenDoor.action endpoint and DoorState.msg publication are declared.
+- DOOR_ENDPOINT is capability-owned provisioned configuration, outside condition policy.
+- HTTP is represented as executable /usr/bin/curl plus a fixed argv list, shell=false,
+  positive timeout_sec, and a provisioned endpoint argument. There is no runtime door code.
+- example.producer.door_command_acceptance and
+  example.producer.door_open_confirmation are distinct; the local confirmation producer is
+  explicitly registered and consumes DoorState rather than HTTP acceptance.
+- T_DOOR_COMMAND_ACCEPTED and T_DOOR_OPEN_CONFIRMED map to distinct stable condition IDs.
+- The sole policy root is an explicit all with those two members exactly once.
+- The condition policy contains no command, IP, URL, endpoint, headers, or payload.
+- All example topology IDs remain example-scoped; no door package/interface/node is deployed.
+
+MALFORMED FIXTURE EVIDENCE
+- test_stale_mermaid_id_fixture_is_rejected: condition.retired fails as unresolved reference.
+- test_command_and_ip_in_condition_policy_fixture_is_rejected: injected curl command and
+  http://192.0.2.10/open fail with condition policy cannot contain command/IP/URL/payload.
+- test_accepted_and_open_conflation_fixture_is_rejected: sharing the confirmation producer
+  fails with accepted/open conditions must use distinct producers.
+- test_example_leakage_fixture_is_rejected: adding a deployed namespace to standalone example
+  fails the exact example-root boundary.
+
+EXACT FINAL COMMANDS AND RESULTS
+1. python3 -B tools/validate_architecture.py --resolved docs/architecture/architecture.yaml
+   exit 0: resolved validation passed: deployed=75 examples=16
+2. python3 -B tools/validate_architecture.py --example docs/architecture/examples/automatic-door.yaml
+   exit 0: example validation passed: deployed=0 examples=16
+3. python3 -m unittest test.test_architecture_schema test.test_architecture_resolution -v
+   exit 0: Ran 19 tests in 1.735s; OK
+4. python3 -m unittest test.test_package_dag test.test_launch_contract -v
+   exit 0: Ran 15 tests in 0.115s; OK
+   This independently proves exactly six packages, three installed/launched project nodes,
+   approved dependency edges, one top-level bringup launch, and no automatic-door deployment.
+5. python3 tools/source_provenance.py
+   exit 0: {"output_count": 0, "source_count": 104, "status": "ok"}
+6. ./run.sh --cleanup
+   exit 0; no output; no wrapper-owned process remained to report.
+7. ruff check tools/validate_architecture.py tools/architecture_types.py tools/architecture_artifacts.py tools/architecture_example.py test/test_architecture_schema.py test/test_architecture_resolution.py
+   exit 0: All checks passed!
+8. uv run --python 3.12 /home/m3tron/.cache/opencode/packages/oh-my-openagent@latest/node_modules/oh-my-openagent/dist/skills/programming/scripts/python/check-no-excuse-rules.py tools/validate_architecture.py tools/architecture_types.py tools/architecture_artifacts.py tools/architecture_example.py test/test_architecture_schema.py test/test_architecture_resolution.py
+   exit 0: no violations in 6 file(s)
+9. python3 -m compileall -q tools test/test_architecture_schema.py test/test_architecture_resolution.py
+   exit 0; no output.
+
+TOOLING NOTE
+- LSP diagnostics could not attach because the target is outside this session's configured cwd.
+- basedpyright was not installed (/bin/bash: basedpyright: command not found). This unavailable
+  optional check is not substituted as success; executable Python 3.8 compileall, Ruff, the
+  no-excuse audit, 34 focused contract tests, and both real CLI surfaces passed.
+
+CLEANUP
+- ./run.sh --cleanup exited 0.
+- Test fixtures used TemporaryDirectory and registered cleanup.
+- No automatic-door runtime source, package, node, interface definition, launch declaration,
+  generated build output, credential, Kimi agent, Git repository, commit, or old-product edit was added.
+
+DoneClaim: Todo 16 is complete. Architecture-as-code is fully resolved; the six deployed Mermaid
+views and traceability report reconcile with real target paths/symbols; the automatic-door example
+is typed, fixed-argv, capability-owned, locally confirmed, explicitly all-gated, policy-pure, and
+documentation-only; both required validator commands exit 0; deployed inventory remains exactly
+six packages and three project runtime nodes.

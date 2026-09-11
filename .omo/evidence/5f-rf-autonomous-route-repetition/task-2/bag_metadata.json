@@ -1,0 +1,25 @@
+{
+  "provenance": "measured_by_rosbag_info",
+  "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/manual_captures/manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+  "sha256": "d28f40a9a4c0c30906ff835b643f4893f4f652642a0c97d27157a0d0c7651a02",
+  "version": "2.0",
+  "indexed": true,
+  "compression": "none",
+  "duration_s": 508.439235,
+  "start_epoch_s": 1788920856.977572,
+  "end_epoch_s": 1788921365.416807,
+  "size_bytes": 1500070288,
+  "message_count": 463540,
+  "finalization_status": "invalid/incomplete but indexed and readable",
+  "topic_counts": {
+    "/camera1/color/camera_info": 14777,
+    "/camera1/color/image_raw/compressed": 10407,
+    "/livox/imu": 95998,
+    "/livox/lidar": 2690,
+    "/scan": 4912,
+    "/tf": 48615,
+    "/tf_static": 5,
+    "/tron/sensor_joy": 238381,
+    "/tron/wheel_odom_raw": 47755
+  }
+}

@@ -1,0 +1,6 @@
+# SYNTHETIC NON-PRODUCTION FIXTURE: IDs are reserved test values, not deployed tags.
+schema_version: 1
+configured: true
+tags:
+  - {id: 950, family: tag36h11, size_m: 0.16, role: STAIR_LANDING, floor_id: 5F, stair_id: stair_5f_rf}
+  - {id: 951, family: tag36h11, size_m: 0.16, role: STAIR_LANDING, floor_id: RF, stair_id: stair_5f_rf}

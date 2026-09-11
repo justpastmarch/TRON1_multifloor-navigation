@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="config_profile" default="production"/>
+  <arg name="allow_test_fixture" default="false"/>
+  <arg name="fixture_config_root" default=""/>
+  <arg name="map_yaml" default="$(find multifloor_manager)/config/maps/floor_3F.yaml"/>
+  <arg name="nav_params_dir" default="$(find multifloor_manager)/config/nav"/>
+  <arg name="cloud_in"/>
+  <arg name="image_rect"/>
+  <arg name="camera_info"/>
+  <arg name="tag_config" default="$(find multifloor_manager)/config/apriltag_ros_tags.yaml"/>
+  <arg name="tag_topic" default="/tag_detections"/>
+  <arg name="initial_floor"/>
+  <arg name="home_location_id"/>
+  <arg name="initial_location_id"/>
+  <arg name="inspect_profile_id"/>
+  <arg name="scan_output_base" default="/var/lib/tron1/scans"/>
+  <arg name="accid"/>
+  <arg name="websocket_url"/>
+  <arg name="initial_x" default="0.0"/>
+  <arg name="initial_y" default="0.0"/>
+  <arg name="initial_yaw" default="0.0"/>
+  <arg name="max_vel_x" default="0.35"/>
+  <arg name="max_vel_theta" default="1.57"/>
+  <arg name="min_in_place_vel_theta" default="0.4"/>
+  <arg name="acc_lim_x" default="0.4"/>
+  <arg name="acc_lim_theta" default="2.0"/>
+  <arg name="rviz" default="true"/>
+
+  <include file="$(find multifloor_manager)/launch/pointcloud_to_laserscan.launch">
+    <arg name="cloud_in" value="$(arg cloud_in)"/>
+  </include>
+  <include file="$(find multifloor_manager)/launch/apriltag.launch">
+    <arg name="image_rect" value="$(arg image_rect)"/>
+    <arg name="camera_info" value="$(arg camera_info)"/>
+    <arg name="tag_config" value="$(arg tag_config)"/>
+    <arg name="tag_topic" value="$(arg tag_topic)"/>
+  </include>
+  <include file="$(find multifloor_manager)/launch/navigation.launch">
+    <arg name="map_yaml" value="$(arg map_yaml)"/>
+    <arg name="nav_params_dir" value="$(arg nav_params_dir)"/>
+    <arg name="initial_x" value="$(arg initial_x)"/>
+    <arg name="initial_y" value="$(arg initial_y)"/>
+    <arg name="initial_yaw" value="$(arg initial_yaw)"/>
+    <arg name="max_vel_x" value="$(arg max_vel_x)"/>
+    <arg name="max_vel_theta" value="$(arg max_vel_theta)"/>
+    <arg name="min_in_place_vel_theta" value="$(arg min_in_place_vel_theta)"/>
+    <arg name="acc_lim_x" value="$(arg acc_lim_x)"/>
+    <arg name="acc_lim_theta" value="$(arg acc_lim_theta)"/>
+  </include>
+
+  <node pkg="multifloor_manager" type="multifloor_manager_node.py"
+        name="multifloor_manager" output="screen">
+    <param name="config_root" value="$(find multifloor_manager)/config"
+           unless="$(arg allow_test_fixture)"/>
+    <param name="config_root" value="$(arg fixture_config_root)"
+           if="$(arg allow_test_fixture)"/>
+    <param name="initial_floor" value="$(arg initial_floor)"/>
+    <param name="tag_topic" value="$(arg tag_topic)"/>
+  </node>
+  <node pkg="stair_supervisor" type="stair_supervisor_node.py"
+        name="stair_supervisor" output="screen">
+    <param name="config_dir" value="$(find stair_supervisor)/config"
+           unless="$(arg allow_test_fixture)"/>
+    <param name="config_dir" value="$(arg fixture_config_root)"
+           if="$(arg allow_test_fixture)"/>
+    <param name="accid" value="$(arg accid)"/>
+    <param name="websocket_url" value="$(arg websocket_url)"/>
+  </node>
+  <node pkg="mission_manager" type="mission_manager_node.py"
+        name="mission_manager" output="screen">
+    <param name="config_profile" value="$(arg config_profile)"/>
+    <param name="allow_test_fixture" value="$(arg allow_test_fixture)"/>
+    <param name="fixture_config_root" value="$(arg fixture_config_root)"
+           if="$(arg allow_test_fixture)"/>
+    <param name="home_location_id" value="$(arg home_location_id)"/>
+    <param name="initial_location_id" value="$(arg initial_location_id)"/>
+    <param name="inspect_profile_id" value="$(arg inspect_profile_id)"/>
+    <param name="scan_output_base" value="$(arg scan_output_base)"/>
+  </node>
+
+  <node pkg="rviz" type="rviz" name="rviz" if="$(arg rviz)"
+        args="-d $(find multifloor_manager)/rviz/wf_navigation.rviz"/>
+</launch>

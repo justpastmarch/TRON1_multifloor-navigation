@@ -1,0 +1,20 @@
+# SYNTHETIC NON-PRODUCTION FIXTURE: stair geometry and tags are invented test data.
+schema_version: 1
+configured: true
+stairs:
+  - id: stair_5f_rf
+    from_floor: 5F
+    to_floor: RF
+    endpoints:
+      5F:
+        entry_location_id: stair_entry_5f
+        target_landing: {x: 1.0, y: 0.0, orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}
+        covariance: [0.25, 0, 0, 0, 0, 0, 0, 0.25, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.16]
+        expected_tag_ids: [950]
+      RF:
+        entry_location_id: roof_return_entry
+        target_landing: {x: 0.0, y: 1.0, orientation: {x: 0.0, y: 0.0, z: 1.0, w: 0.0}}
+        covariance: [0.25, 0, 0, 0, 0, 0, 0, 0.25, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.16]
+        expected_tag_ids: [951]
+    up_profile_id: synthetic_up
+    down_profile_id: synthetic_down

@@ -1,0 +1,104 @@
+{
+  "task": 11,
+  "scope": "operational stair_supervisor node and StairTraversal action server only",
+  "baseline_red": {
+    "command": "/usr/bin/python3 -m unittest src/stair_supervisor/test/test_supervisor.py -v",
+    "observed": "ModuleNotFoundError: No module named 'stair_supervisor.supervisor'"
+  },
+  "safety_fix_done_claim": {
+    "files": [
+      "src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "src/stair_supervisor/test/test_supervisor_safety.py",
+      "src/stair_supervisor/test/test_stair_supervisor_node.py",
+      "src/stair_supervisor/CMakeLists.txt",
+      ".omo/evidence/task-11-tron1-multifloor-mvp.json"
+    ],
+    "baseline_before_edits": [
+      "/usr/bin/python3 -m unittest src/stair_supervisor/test/test_supervisor.py -v -> 8 passed",
+      "stair_supervisor_node.test -> 1 passed"
+    ],
+    "failing_first": {
+      "command": "/usr/bin/python3 -m unittest discover -s src/stair_supervisor/test -p 'test_supervisor_safety.py' -v",
+      "cancel_in_wait": "FAIL: result.cancelled was false after VERIFY_ENTRY cancellation",
+      "close_interruption": "ERROR: TransportFault('close interrupted') escaped StairSupervisor.shutdown"
+    },
+    "green": {
+      "same_regression_command": "2 tests, 0 errors, 0 failures",
+      "behavior": [
+        "cancellation is polled and latched inside evidence waits",
+        "pending cancellation completes at VERIFY_ENTRY/LANDING/EXIT_CONFIRM safe checkpoints with cancelled semantics",
+        "TransportFault from close is absorbed, state remains FAULT, and repeated shutdown does not retry close",
+        "enabled UP and enabled DOWN mocked actions both succeed in seven-phase order"
+      ]
+    }
+  },
+  "build": {
+    "command": "catkin_make",
+    "result": "success; exactly stair_supervisor, multifloor_manager, mission_manager packages"
+  },
+  "focused_unit": {
+    "command": "/usr/bin/python3 -m unittest src/stair_supervisor/test/test_supervisor.py -v",
+    "result": "8 tests, 0 errors, 0 failures",
+    "covers": [
+      "zero barriers",
+      "NAV suppression during STAIR",
+      "in-flight NAV tick serialization before STAIR handoff",
+      "stale and nonfinite NAV rejection",
+      "seven-phase profile order",
+      "disabled capability before mode/nonzero output",
+      "timeout FAULT without retry",
+      "safe-checkpoint cancellation",
+      "disconnect terminal FAULT/no restart",
+      "shutdown zero before close"
+    ]
+  },
+  "focused_catkin": {
+    "command": "catkin_make run_tests_stair_supervisor -j1 && catkin_test_results --verbose build/test_results/stair_supervisor",
+    "result": "32 tests, 0 errors, 0 failures, 0 skipped"
+  },
+  "rostest_mock_transcript": {
+    "command": "src/stair_supervisor/test/rostest_python.sh /opt/ros/noetic/bin/rostest --pkgdir=${PWD}/src/stair_supervisor --package=stair_supervisor ${PWD}/src/stair_supervisor/test/stair_supervisor_node.test",
+    "result": "1 generated-action boundary test passed",
+    "observed": [
+      "one mocked transport start/owner",
+      "entry and exit zero barriers",
+      "competing /navigation/cmd_vel absent from STAIR wire segment",
+      "post-handoff stale NAV emits zero",
+      "VERIFY_ENTRY, ALIGN, FORWARD_SEGMENT_1, LANDING, TURN_TO_NEXT_FLIGHT, FORWARD_SEGMENT_2, EXIT_CONFIRM order",
+      "enabled UP and DOWN goals both return OK/SUCCEEDED",
+      "disabled action has no mode/nonzero command",
+      "preemption returns WALK at safe checkpoint",
+      "timeout aborts, latches FAULT, closes once"
+    ]
+  },
+  "manual_ros_cli": {
+    "surface": "installed stair_supervisor_node.py with production default YAML",
+    "state": "latched DISARMED=0, connected=false, ownership_epoch=0",
+    "action_goal": "raw DOWN /stair_traversal/goal StairTraversalActionGoal",
+    "action_result": "ABORTED status=4, CAPABILITY_DISABLED result_code=3; no accid/WebSocket parameters required"
+  },
+  "adversarial": {
+    "malformed_nonfinite": "unit test converts NaN NAV to complete zero; existing robot protocol suite rejects malformed frames",
+    "stale": "unit and rostest reject stale pre-handoff NAV by ownership epoch/freshness",
+    "repeated_interruption": "close-interruption regression calls shutdown twice, catches TransportFault, preserves FAULT, and proves one close; existing transport suite proves no reconnect",
+    "generated": "catkin regenerated StairTraversal/SupervisorState and real actionlib round-trip passed",
+    "dirty": "generated __pycache__, /tmp/todo11-fix-* files, and manual ROS processes removed",
+    "misleading": "enabled DOWN is proven separately from disabled DOWN; disabled test permits watchdog zero traffic but rejects every mode/nonzero command"
+  },
+  "workspace": {
+    "root_unittest": "65 tests, 0 errors, 0 failures",
+    "validate_bundle": "BUNDLE_OK",
+    "run_check": "BUNDLE_OK; local bundle and software OK",
+    "production_init_node_calls": 3,
+    "aggregate_catkin": "ROS_IP=127.0.0.1 ROS_HOSTNAME=127.0.0.1 catkin_make run_tests -j1 -> 134 tests, 0 errors, 0 failures, 0 skipped"
+  },
+  "static": {
+    "lsp": "no diagnostics in all changed Python files",
+    "compileall": "success on production and test Python",
+    "pure_loc": {
+      "supervisor.py": 239,
+      "ros_node.py": 152,
+      "ros_entrypoint.py": 110
+    }
+  }
+}

@@ -1,0 +1,26 @@
+RED: python3 -m unittest test.test_legacy_rviz_viewer_contract -v
+GREEN: python3 -m unittest test.test_legacy_rviz_viewer_contract test.test_bundle_contract test.test_system_operator_contract -v
+GREEN: ./run.sh --check
+GREEN: python3 -c 'import yaml; from pathlib import Path; yaml.safe_load(Path("src/multifloor_manager/rviz/wf_navigation_manual.rviz").read_text(encoding="utf-8"))'
+GREEN: cmp -s fork2_TRON1_RViz_Navigation/.../wf_navigation.rviz src/multifloor_manager/rviz/wf_navigation_manual.rviz
+GREEN: source/path checks for managed viewer and system.launch default
+ATTEMPTED: timeout 10s rosrun rviz rviz -d src/multifloor_manager/rviz/wf_navigation_manual.rviz
+RED: in-memory removal of rviz/SetInitialPose and rviz/SetGoal; expected assertion failure, exit 1
+GREEN: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test.test_legacy_rviz_viewer_contract -v; 2 tests, exit 0
+GREEN: Displays content/order equality check; exit 0
+GREEN: ./run.sh --check; exit 0
+AUDIT: pre-existing roslaunch PIDs 4473 and 373344 plus managed RViz PID 374255 observed; no task process terminated; no task processes left
+BASELINE: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test.test_rviz_tf_reconnect -v; existing TF assertion, 1 test, exit 0
+RED: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test.test_rviz_tf_reconnect -v; missing /amcl /initialpose callback assertion, 1 test, exit 1
+GREEN: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test.test_rviz_tf_reconnect -v; 2 tests, exit 0
+GREEN: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test.test_rviz_tf_reconnect test.test_legacy_rviz_viewer_contract test.test_bundle_contract test.test_system_operator_contract test.test_launch_contract -v; 24 tests, exit 0
+GREEN: PYTHONDONTWRITEBYTECODE=1 ./run.sh --check; exit 0
+LSP: diagnostics on src/multifloor_manager/scripts/rviz_tf_reconnect.py and test/test_rviz_tf_reconnect.py; no diagnostics
+ATTEMPTED: timeout 10s rosrun multifloor_manager rviz_tf_reconnect.py; exit 2 because the unsourced shell could not find multifloor_manager
+LIVE GREEN: source devel/setup.bash && timeout 10s rosrun multifloor_manager rviz_tf_reconnect.py; exit 0; [READY] RViz subscribed to 4 current /tf publishers
+LIVE PROOF: timeout 5s rosnode info /amcl; inbound /initialpose from /rviz_navigation, TCPROS
+LIVE PROOF: timeout 5s rosnode info /move_base; inbound /move_base_simple/goal from /rviz_navigation, TCPROS
+LIVE PROOF: timeout 5s rosnode info /rviz_navigation; outbound /initialpose to /amcl and /move_base_simple/goal to /move_base, TCPROS
+HASH: sha256sum source script, focused test, troubleshooting doc, both RViz files, and system.launch; exit 0
+CHECKER BLOCKED: python3 check-no-excuse-rules.py changed Python paths; Python 3.8 cannot parse the checker's match syntax; exit 1 before target inspection
+AUDIT: pgrep -af rviz_tf_reconnect.py; only the pgrep command itself observed, no helper process left

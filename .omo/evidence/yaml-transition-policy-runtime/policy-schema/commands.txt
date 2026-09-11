@@ -1,0 +1,101 @@
+Attempt: policy-schema-2026-08-24T12:00:35+09:00
+Workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+Source authority: src/ and test/ only; no install-generated import was executed.
+
+1. Pre-edit timestamp (exit 0)
+   date --iso-8601=seconds
+   stdout: 2026-08-24T12:00:35+09:00
+
+2. Pre-edit task/concurrent path inventory (exit 0)
+   sha256sum src/multifloor_manager/src/multifloor_manager/configuration.py test/fixtures/building_valid/transitions.yaml src/multifloor_manager/config/transitions.yaml src/mission_manager/src/mission_manager/site_config.py test/test_site_configuration.py src/multifloor_manager/rviz/wf_navigation.rviz test/test_bundle_contract.py
+   Result: hashes recorded in baseline.json. src/multifloor_manager/src/multifloor_manager/transitions.py did not exist.
+
+3. Baseline characterization on unchanged production/parser (exit 0)
+   PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test.test_site_configuration.SiteConfigurationTest.test_current_transition_fixture_loads_through_site_boundary -v
+   Result: Ran 1 test; OK.
+
+4. Failing-first strict schema suite before production changes (exit 1, expected red)
+   PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test/test_site_configuration.py -v
+   Result: Ran 26 tests; FAILED (failures=35, errors=1). The approved schema failed at the old exact-key set and TransitionPolicy had no conditions attribute. Full red summary is in test-results.txt.
+
+5. First green attempt after implementation (exit 1, retained)
+   PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test/test_site_configuration.py -v
+   Result: Ran 26 tests; one test still assumed the fixture itself used the old schema. The test was corrected to construct an old-schema mutation explicitly; production behavior was not weakened.
+
+6. Required focused verification after test correction (exit 0)
+   PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test/test_site_configuration.py -v
+   Result: Ran 26 tests; OK.
+
+7. Flake probe, three independent identical commands (all exit 0)
+   PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test/test_site_configuration.py -v
+   PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test/test_site_configuration.py -v
+   PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test/test_site_configuration.py -v
+   Results: Ran 26 tests; OK in 1.433s, 1.586s, and 1.588s.
+
+8. LSP diagnostics (all clean)
+   lsp_diagnostics src/multifloor_manager/src/multifloor_manager/transitions.py severity=all
+   lsp_diagnostics src/multifloor_manager/src/multifloor_manager/configuration.py severity=all
+   lsp_diagnostics src/mission_manager/src/mission_manager/site_config.py severity=all
+   lsp_diagnostics test/test_site_configuration.py severity=all
+   Result: No diagnostics found for every file.
+
+9. Pure line counts (exit 0)
+   awk 'FNR==1 {if (NR>1) print previous, count; previous=FILENAME; count=0} !/^[[:space:]]*$/ && !/^[[:space:]]*#/ {count++} END {print previous, count}' src/multifloor_manager/src/multifloor_manager/transitions.py src/multifloor_manager/src/multifloor_manager/configuration.py src/mission_manager/src/mission_manager/site_config.py test/test_site_configuration.py
+   Result: transitions.py=34; configuration.py=257; site_config.py=180; test_site_configuration.py=190. The plan expressly permits changed existing modules through 300 lines; the new pure module is below 250.
+
+10. Post-edit path inventory and Todo 10 preservation (exit 0)
+    sha256sum src/multifloor_manager/src/multifloor_manager/transitions.py src/multifloor_manager/src/multifloor_manager/configuration.py test/fixtures/building_valid/transitions.yaml src/multifloor_manager/config/transitions.yaml src/mission_manager/src/mission_manager/site_config.py test/test_site_configuration.py src/multifloor_manager/rviz/wf_navigation.rviz test/test_bundle_contract.py
+    Result: hashes recorded in diff-inventory.json; both Todo 10 paths are byte-identical to task start.
+
+11. Source-direct parser/manual-QA driver (exit 0)
+    PYTHONDONTWRITEBYTECODE=1 python3 - <<'PY'
+    [Driver prepended src/{mission_manager,multifloor_manager,stair_supervisor}/src, loaded the valid fixture, asserted exact root/policy/condition keys, asserted production configured:false/transitions:[], and used TemporaryDirectory copies for malformed probes.]
+    [Probes: unsupported placeholder, Boolean policy flag, string condition flag, duplicate name, missing name, nonzero optional_count, dwell==timeout, configured integer, and old required/optional schema.]
+    PY
+    Exact observable output is retained in test-results.txt.
+
+12. Exact production placeholder text check (7 matches)
+    grep exact anchored alternatives for the seven required comment-only lines in src/multifloor_manager/config/transitions.yaml
+    Result: lines 3-9 matched exactly.
+
+13. Generated-staleness probe without generated imports
+    glob install/**/multifloor_manager/transitions.py
+    Result: no generated multifloor_manager/transitions.py exists.
+    sha256sum src/multifloor_manager/src/multifloor_manager/configuration.py install/lib/python3/dist-packages/multifloor_manager/configuration.py
+    Result: source=064f0edcd62ba9ee64eaf1869c6c5a134707ebdd73b5928e09df6bb21d3a4055; generated install=16004d5bd255e2d8a62f42a827446203e1f83230637a02ff0845d51afe064820. Install is stale/non-authoritative and was not imported or edited.
+
+14. Misleading-success command probe (exit 1, intentionally retained)
+    sha256sum build devel install
+    Result: sha256sum correctly rejected all three directory operands. This command is not claimed as generated-tree evidence.
+
+15. Read-only generated directory metadata (exit 0)
+    stat -c '%n mtime=%Y' build devel install
+    Result: build=1787287294; devel=1787287290; install=1787145898. No generated build command or generated import ran in this attempt.
+
+16. Cleanup/cache audit
+    glob **/__pycache__
+    Original result: no matches. Independent verification proved this was a false negative; it is superseded by command 19. All parser-driver TemporaryDirectory resources exited normally.
+
+17. End timestamp (exit 0)
+    date --iso-8601=seconds
+    stdout: 2026-08-24T12:50:39+09:00
+
+18. Evidence integrity and final post-receipt test (both exit 0)
+    PYTHONDONTWRITEBYTECODE=1 python3 [inline JSON/YAML/JSONL parser asserting exactly the six required evidence files, receipt status complete, and matching attempt ID]
+    Result: EVIDENCE_OK for baseline.json, cleanup.json, commands.txt, diff-inventory.json, receipt.yaml, test-results.txt; RECEIPT_STATUS complete.
+    PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test/test_site_configuration.py -v
+    Result: Ran 26 tests in 1.727s; OK. LSP diagnostics were rerun for all four changed Python files and remained clean.
+
+19. Cleanup evidence repair (exit 0)
+    date --iso-8601=seconds
+    Result: 2026-08-24T13:00:36+09:00.
+    stat -c '%n type=%F size=%s mtime_epoch=%Y mtime=%y' __pycache__ __pycache__/*
+    Result: root __pycache__/ and its newest entry have mtime_epoch=1787535802 (2026-08-24 10:43:22.076993794 +0900), before Todo 2 start at 2026-08-24T12:00:35+09:00. Three other entries have mtime_epoch=1787147607 (2026-08-19). Todo 2 created no new cache. The pre-existing directory was preserved and not deleted.
+    sha256sum src/multifloor_manager/src/multifloor_manager/transitions.py src/multifloor_manager/src/multifloor_manager/configuration.py test/fixtures/building_valid/transitions.yaml src/multifloor_manager/config/transitions.yaml src/mission_manager/src/mission_manager/site_config.py test/test_site_configuration.py
+    Result: all six product/test hashes match diff-inventory.json exactly.
+    sha256sum src/multifloor_manager/rviz/wf_navigation.rviz test/test_bundle_contract.py
+    Result: Todo 10 hashes remain 9123997acc99313f4b62afb437a86a5c13a02eee5b169572a715dce6649a3d64 and 28fc0e22e2e3072517ed024f262623d03140984c953df014d9a266d24fa8d9cd.
+
+20. Corrected-evidence integrity verification
+    First inline verifier exit 1: it incorrectly compared fractional Path.stat().st_mtime directly with stat's integer mtime_epoch. This was a verifier assertion bug, not an evidence mismatch, and is retained rather than presented as success.
+    Corrected verifier uses int(Path('__pycache__').stat().st_mtime) == 1787535802, validates exactly six evidence files, parses all JSON/YAML/JSONL, compares every product/test and Todo 10 digest with diff-inventory.json, confirms the corrective ledger event is last, and confirms Todo 3 remains unchecked.

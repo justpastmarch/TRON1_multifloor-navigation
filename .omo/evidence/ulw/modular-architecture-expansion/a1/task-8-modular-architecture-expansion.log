@@ -1,0 +1,157 @@
+Task 8 - stair supervision straightforward stream-loop command handling
+Date: 2026-08-25
+Target: /home/m3tron/Desktop/TRON1_Modular_Navigation
+Immutable source: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+
+IMPLEMENTED TARGET FILES
+- src/stair_supervisor/src/stair_supervisor/robot_protocol.py
+  Typed five-field robot request/response JSON boundary and strict correlated response parsing.
+- src/stair_supervisor/src/stair_supervisor/robot_transport.py
+  One process-lifetime WebSocket, monotonic last-valid receipt, stale-to-zero selection on send_current(), nonfinite-to-current-zero replacement, bounded zero close, and terminal FAULT.
+- src/stair_supervisor/src/stair_supervisor/supervisor.py
+  Direct NAV/STAIR ownership path, epoch advancement, cancellation/finish zeros, shutdown close, and loop-stop boolean on transport fault.
+- src/stair_supervisor/test/stream_fakes.py
+- src/stair_supervisor/test/test_stream_supervisor.py
+
+RED EVIDENCE (TESTS WRITTEN BEFORE PRODUCTION MODULES)
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/stair_supervisor/src python3 -B -m unittest discover -s src/stair_supervisor/test -p 'test_*.py' -v
+Result: exit 1 as expected.
+Failure: ModuleNotFoundError: No module named 'stair_supervisor.robot_transport'
+
+Additional red/green fault-boundary checks:
+1. Actual websocket.WebSocketConnectionClosedException initially escaped the receive boundary; focused test exited 1. The receive boundary now catches websocket.WebSocketException, latches FAULT, closes, and the test passes.
+2. A close-zero send failure initially left SupervisorState.DISARMED; focused test exited 1 with DISARMED != FAULT. Shutdown now reflects terminal transport FAULT and the test passes.
+3. Stair completion initially lacked finish_stair(); focused test exited 1 with AttributeError. Completion now uses the same zero/mode/zero ownership-release path as cancellation and advances the epoch.
+
+FINAL REQUIRED UNIT COMMAND
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/stair_supervisor/src python3 -B -m unittest discover -s src/stair_supervisor/test -p 'test_*.py' -v
+Result: exit 0; Ran 7 tests in 0.002s; OK.
+Passing cases:
+- stale normal iteration sends complete zero
+- NaN and Inf replace current command with zero and never reach JSON/wire
+- cancel zeros while connected and shutdown emits exactly 3 configured close zeros
+- completed stair advances ownership epoch and does not replay old NAV
+- send error enters FAULT, returns loop-stop false, and blocks reconnect/replay
+- websocket receive error enters FAULT and blocks later commands
+- close-zero send error remains FAULT while closing the socket
+
+DIRECT FAKE CLOCK/SOCKET DRIVER
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/stair_supervisor/src:src/stair_supervisor/test python3 -B - <<'PY'
+[construct RobotTransport + StairSupervisor with FakeClock/FakeSocket; run NAV, advance 0.251s, run stale tick, enter/command/finish stair, shutdown; assert one factory call and closed socket]
+PY
+Result: exit 0.
+Transcript:
+{"factory_calls": 1, "final_state": "DISARMED", "socket_closed": true, "titles": ["request_twist", "request_twist", "request_twist", "request_stair_mode", "request_twist", "request_twist", "request_stair_mode", "request_twist", "request_twist", "request_twist", "request_twist"], "twists": [{"x": 0.3, "y": 0.0, "z": -0.2}, {"x": 0.0, "y": 0.0, "z": 0.0}, {"x": 0.0, "y": 0.0, "z": 0.0}, {"x": 0.15, "y": 0.0, "z": 0.0}, {"x": 0.0, "y": 0.0, "z": 0.0}, {"x": 0.0, "y": 0.0, "z": 0.0}, {"x": 0.0, "y": 0.0, "z": 0.0}, {"x": 0.0, "y": 0.0, "z": 0.0}, {"x": 0.0, "y": 0.0, "z": 0.0}]}
+
+STATIC / IMPORT / OWNERSHIP VERIFICATION
+Command:
+ruff check src/stair_supervisor/src/stair_supervisor src/stair_supervisor/test
+Result: exit 0; All checks passed!
+
+Command:
+PYTHONPYCACHEPREFIX=/tmp/opencode/task8-pyc PYTHONPATH=src/stair_supervisor/src python3 -m compileall -q src/stair_supervisor/src/stair_supervisor src/stair_supervisor/test
+Result: exit 0; no output.
+
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/stair_supervisor/src python3 -B -c '[import protocol, transport, supervisor; assert every __file__ is below target cwd]'
+Result: exit 0; IMPORT_OK for all three modules under target src/stair_supervisor/src/stair_supervisor.
+
+Ownership scan:
+Search across target src for import websocket, create_connection(, request_twist, and class RobotTransport.
+Result: all production matches are under src/stair_supervisor/src/stair_supervisor; remaining matches are stair package tests. No other package owns robot transport or emits robot command payloads.
+
+Complexity/shape:
+- robot_protocol.py: 92 pure LOC before final RequestEnvelope refactor; below 200.
+- robot_transport.py: 210 pure LOC; warning band, single responsibility is one robot stream. Split before adding substantial future behavior.
+- supervisor.py: 100 pure LOC; below 200.
+- stream_fakes.py: 64 pure LOC; below 200.
+- test_stream_supervisor.py: 148 pure LOC before final two focused cases; below 200.
+- Five-parameter encode_request was replaced by immutable RequestEnvelope; no modified function has more than three parameters.
+
+Tool availability notes:
+- basedpyright is not installed (`/bin/bash: basedpyright: command not found`).
+- The shared no-excuse checker uses match syntax and cannot run under this workspace's Python 3.8 (`SyntaxError` at its own line 519). Ruff, compileall, direct imports, unit tests, and runtime smoke all passed instead.
+- LSP diagnostics are scoped to the control workspace cwd and rejected target paths as outside request cwd; no LSP installation or workspace mutation was attempted.
+
+CLEANUP
+- PYTHONDONTWRITEBYTECODE=1/-B prevented test/import caches in target.
+- compileall output was redirected with PYTHONPYCACHEPREFIX=/tmp/opencode/task8-pyc.
+- Removed /tmp/opencode/task8-pyc after verification.
+- Glob under target src/stair_supervisor found no __pycache__ artifacts.
+- No old product/source file was edited; this evidence file is the permitted old-workspace write.
+
+ARCHITECTURAL REVIEW
+- Single responsibility: protocol owns frame parsing; transport owns one socket stream; supervisor owns command ownership.
+- Boundary purity: untrusted frames parse into RobotMessage before correlation.
+- No reconnect, replay, watchdog thread, command guard, delivery/ack state model, helper node, or extra transport owner exists.
+- No broad exception, Any/object annotation, cast, type-ignore, mutable registry, logging addition, or redundant post-action verification was introduced.
+- Every new behavior is locked by a fake clock/socket test that failed before its implementation.
+
+INDEPENDENT VERIFIER FINDINGS CORRECTION (2026-08-25)
+
+Corrected target files:
+- src/stair_supervisor/src/stair_supervisor/robot_transport.py
+  Added Clock.wall_time_ms(); SystemClock uses time.time() epoch milliseconds for RequestEnvelope.timestamp_ms. Monotonic remains only at last-valid receipt and stale-age calculations.
+- src/stair_supervisor/src/stair_supervisor/supervisor.py
+  command_stair() now preserves update_twist() acceptance, always calls send_current(), and returns false after nonfinite input while the replacement zero reaches the wire.
+- src/stair_supervisor/test/stream_fakes.py
+  Fake wall-clock epoch milliseconds are independent from controllable monotonic time.
+- src/stair_supervisor/test/test_verifier_findings.py
+  Checked-in public nonfinite rejection/zero, wall-clock wire timestamp, and malformed-response terminal FAULT tests.
+
+Runtime baseline before correction:
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/stair_supervisor/src:src/stair_supervisor/test python3 -B - <<'PY'
+[drive public nonfinite stair command, inspect last payload/timestamp, then inject malformed response]
+PY
+Result: exit 0 with observed defects and malformed-response baseline:
+{"monotonic": 100.0, "nonfinite_return": true, "replacement": {"x": 0.0, "y": 0.0, "z": 0.0}, "timestamp": 100000}
+{"closed": true, "malformed_exception": "WebSocket receive failed", "state": "FAULT"}
+
+Failing-first focused tests:
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/stair_supervisor/src:src/stair_supervisor/test python3 -B -m unittest test_verifier_findings -v
+Result before correction: exit 1; Ran 3 tests; FAILED (failures=2).
+- timestamp failure: 100000 != 1700123456789
+- public nonfinite failure: True is not false
+- malformed-response FAULT test already passed and is now checked in as a regression lock.
+
+Focused green tests:
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/stair_supervisor/src:src/stair_supervisor/test python3 -B -m unittest test_verifier_findings -v
+Result: exit 0; Ran 3 tests in 0.001s; OK.
+
+Final package tests:
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/stair_supervisor/src python3 -B -m unittest discover -s src/stair_supervisor/test -p 'test_*.py' -v
+Result: exit 0; Ran 10 tests in 0.002s; OK.
+
+Corrected direct fake stream smoke:
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/stair_supervisor/src:src/stair_supervisor/test python3 -B - <<'PY'
+[use wall epoch 1700123456789 and monotonic 100.0; send finite NAV, advance monotonic 0.251 for stale zero, enter stair, submit NaN publicly, finish and shutdown; assert one connection, false rejection, zero replacement, epoch timestamps]
+PY
+Result: exit 0.
+Transcript:
+{"factory_calls": 1, "final_state": "DISARMED", "nonfinite_accepted": false, "socket_closed": true, "timestamps": [1700123456789], "twists": [{"x": 0.3, "y": 0.0, "z": -0.2}, {"x": 0.0, "y": 0.0, "z": 0.0}, {"x": 0.0, "y": 0.0, "z": 0.0}, {"x": 0.0, "y": 0.0, "z": 0.0}, {"x": 0.0, "y": 0.0, "z": 0.0}, {"x": 0.0, "y": 0.0, "z": 0.0}, {"x": 0.0, "y": 0.0, "z": 0.0}, {"x": 0.0, "y": 0.0, "z": 0.0}, {"x": 0.0, "y": 0.0, "z": 0.0}]}
+
+Compile, import, ownership, and provenance:
+- `ruff check src/stair_supervisor/src/stair_supervisor src/stair_supervisor/test` -> exit 0; All checks passed!
+- `PYTHONPYCACHEPREFIX=/tmp/opencode/task8-fix-pyc PYTHONPATH=src/stair_supervisor/src python3 -m compileall -q src/stair_supervisor/src/stair_supervisor src/stair_supervisor/test` -> exit 0; no output.
+- `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/stair_supervisor/src python3 -B -c '[import protocol/transport/supervisor; assert target origins and no TRON1_Control origin]'` -> exit 0; IMPORT_PROVENANCE_OK for all three target modules.
+- `PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_workspace_boundary -v` -> exit 0; Ran 13 tests in 0.554s; OK. Authoritative immutable-source hashes and output roots remain valid.
+- Ownership search for `import websocket|create_connection\(|request_twist|class RobotTransport` -> all production transport matches remain only under target `src/stair_supervisor/src/stair_supervisor`; other matches are stair tests.
+- Clock-use search -> monotonic only at last-valid receipt and stale-age lines; wall_time_ms only at RequestEnvelope timestamp construction.
+- Forbidden-model search -> no watchdog, command guard, delivery/acknowledgement, replay, or reconnect implementation; only shutdown docstring states "without reconnecting".
+
+Post-write shape and cleanup:
+- robot_transport.py: 216 pure LOC, warning band, still one responsibility (single robot stream); split before substantial future behavior.
+- supervisor.py: 100 pure LOC; stream_fakes.py: 69; test_verifier_findings.py: 45.
+- Removed `/tmp/opencode/task8-fix-pyc` and temporary `.debug-journal.md`.
+- No target `__pycache__`, debugger statement, debug print, or marker was found.
+- No old product/source file was modified; this same permitted evidence log is the only old-workspace write.
+
+Corrected DoneClaim: Todo 8 is complete with both independent verifier findings closed. `StairSupervisor.command_stair()` returns false for nonfinite input after sending the required current-command replacement zero; every outbound request timestamp uses wall-clock epoch milliseconds while monotonic time is used exclusively for last-valid freshness/stale selection. Malformed responses are covered by a checked-in public-path test and terminally FAULT/close the sole stream. The package passes 10/10 stair tests, corrected direct fake-stream smoke, compile/import/ownership/provenance checks, and retains one stair-owned transport with no watchdog/guard/delivery/reconnect/replay model.

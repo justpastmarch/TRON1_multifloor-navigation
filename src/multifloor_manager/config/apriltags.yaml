@@ -1,0 +1,12 @@
+# Installed tag survey is recorded; production remains gated by stair/transition commissioning.
+# Tag keys: id, family, size_m, role, floor_id, stair_id.
+schema_version: 1
+configured: true
+tags:
+  - {id: 300, family: tagStandard41h12, size_m: 0.18, role: STAIR_UP_LANDING, floor_id: 3F, stair_id: stair_3f_4f}
+  - {id: 301, family: tagStandard41h12, size_m: 0.18, role: STAIR_DOWN_LANDING, floor_id: 3F, stair_id: stair_3f_4f}
+  - {id: 400, family: tagStandard41h12, size_m: 0.18, role: STAIR_UP_LANDING, floor_id: 4F, stair_id: stair_3f_4f}
+  - {id: 401, family: tagStandard41h12, size_m: 0.18, role: STAIR_DOWN_LANDING, floor_id: 4F, stair_id: stair_4f_5f}
+  - {id: 500, family: tagStandard41h12, size_m: 0.18, role: STAIR_UP_LANDING, floor_id: 5F, stair_id: stair_4f_5f}
+  - {id: 501, family: tagStandard41h12, size_m: 0.18, role: STAIR_DOWN_LANDING, floor_id: 5F, stair_id: stair_5f_rf}
+  - {id: 600, family: tagStandard41h12, size_m: 0.18, role: STAIR_UP_LANDING, floor_id: RF, stair_id: stair_5f_rf}

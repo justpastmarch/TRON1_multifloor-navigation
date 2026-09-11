@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "scope": "Todo 10 run-rviz-fix product fix and evidence completion",
+  "workspace_non_git": true,
+  "comparison_basis": "pre-edit hashes from the prior Todo 10 receipt compared with this syntax-repair attempt",
+  "files": [
+    {"path": "bundle_source_contract.py", "kind": "product_source", "pre_sha256": "42c08b6457ebe0c04037f094fd228fad9ab4a494a7dbddf1832853550a697f97", "post_sha256": "42c08b6457ebe0c04037f094fd228fad9ab4a494a7dbddf1832853550a697f97", "attribution": "pre-existing product fix; not edited by this repair"},
+    {"path": "test/test_bundle_contract.py", "kind": "regression_test", "pre_sha256": "3f41fe01d982be0bd0fa9e87f8e6528d1b2667db40556f47fc0092fbaf33cb05", "post_sha256": "28fc0e22e2e3072517ed024f262623d03140984c953df014d9a266d24fa8d9cd", "attribution": "focused parsed RViz contract strengthened in this syntax-repair attempt"},
+    {"path": "src/multifloor_manager/rviz/wf_navigation.rviz", "kind": "product_config", "pre_sha256": "633dc8a69fd640166b9c4071a17cb6540b76201ed31ba97a0a52bc96c6dcc586", "post_sha256": "9123997acc99313f4b62afb437a86a5c13a02eee5b169572a715dce6649a3d64", "attribution": "single extra indentation removed before Value: true; no architecture change"},
+    {"path": ".omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/cleanup.json", "kind": "evidence", "pre_sha256": "72b295488e9550598a21734bc63dacb243becf007f8895fea20624650113572c", "post_sha256": "bfac93dddf94f87e9bdbe787204f796046113d39f0a0e975ab321aac8ddc689c"},
+    {"path": ".omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/baseline.json", "kind": "evidence", "pre_sha256": null, "post_sha256": "10d3aef79eed6876e6d9a5d8314d7c57ee81f4aedffdc5d738df2d0a005efcca", "attribution": "new task-start inventory"},
+    {"path": ".omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/commands.txt", "kind": "evidence", "pre_sha256": "02a61d04278a68e05e4827a4962fc2ea486e4041f448e8f1634bc1c0c4cbede9", "post_sha256": "b99cdf151c6e06afd6864e69df7a34167f95c46010c102e1903d9594a493e767"},
+    {"path": ".omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/receipt.yaml", "kind": "evidence", "pre_sha256": "33a100e23f3c97560faee8d3989bbd8b328c69e74ef1dad3e3968744bd4beed1", "post_sha256": "96427b277751c0e54ff6b52a0a5f8b5d94de569c43d42a1adfa44319d23677cc"},
+    {"path": ".omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/test-results.txt", "kind": "evidence", "pre_sha256": "7a2cc0e7f87736aa46bf790506273398b6e62bcc77a117fa1eb83f77f433d295", "post_sha256": "8c8d64a607952765ba93ac2717b64cbe5f28a8d456b025dce692c50301cd4238"},
+    {"path": ".omo/start-work/ledger.jsonl", "kind": "ledger", "pre_sha256": "054d27994a4b7289d1edc5cef2bdfe7897d8bf53dacc06e11e593886de494189", "post_sha256": "398c8badf13b42d7bdc369ec062c05362b6237e084ce6c354d9eaa65ea2f87ee"}
+  ],
+  "self_reference": {"path": ".omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/diff-inventory.json", "hash": "excluded_to_avoid_self_referential_hash"},
+  "validation": {"json_yaml_jsonl": "passed final verification", "manifest_checks": "historical manifests preserved; syntax-repair paths explicitly attributed", "todo_2_started": false, "task_processes_remaining": false, "non_task_owned_rviz_pid_4599_untouched": true}
+}

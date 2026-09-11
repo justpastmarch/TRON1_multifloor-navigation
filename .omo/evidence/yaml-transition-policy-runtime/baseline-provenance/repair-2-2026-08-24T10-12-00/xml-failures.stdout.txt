@@ -1,0 +1,313 @@
+START 2026-08-24T10:21:19+09:00
+PATH=build/test_results/stair_supervisor/nosetests-test.robot_transport.xml
+TESTCASE_ID=classname:nose.failure.Failure name:runTest
+KIND=error TYPE=builtins.ModuleNotFoundError MESSAGE=No module named 'stair_supervisor'
+RAW_NODE=<error type="builtins.ModuleNotFoundError" message="No module named 'stair_supervisor'">Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 676, in run
+    self._callTestMethod(testMethod)
+  File "/usr/lib/python3.8/unittest/case.py", line 633, in _callTestMethod
+    method()
+  File "/usr/lib/python3/dist-packages/nose/failure.py", line 39, in runTest
+    raise self.exc_val.with_traceback(self.tb)
+  File "/usr/lib/python3/dist-packages/nose/loader.py", line 416, in loadTestsFromName
+    module = self.importer.importFromPath(
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 47, in importFromPath
+    return self.importFromDir(dir_path, fqname)
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 94, in importFromDir
+    mod = load_module(part_fqname, fh, filename, desc)
+  File "/usr/lib/python3.8/imp.py", line 234, in load_module
+    return load_source(name, filename, file)
+  File "/usr/lib/python3.8/imp.py", line 171, in load_source
+    module = _load(spec)
+  File "&lt;frozen importlib._bootstrap&gt;", line 702, in _load
+  File "&lt;frozen importlib._bootstrap&gt;", line 671, in _load_unlocked
+  File "&lt;frozen importlib._bootstrap_external&gt;", line 848, in exec_module
+  File "&lt;frozen importlib._bootstrap&gt;", line 219, in _call_with_frames_removed
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_robot_config.py", line 5, in &lt;module&gt;
+    from stair_supervisor.robot_config import (
+ModuleNotFoundError: No module named 'stair_supervisor'
+</error>
+---
+PATH=build/test_results/stair_supervisor/nosetests-test.robot_transport.xml
+TESTCASE_ID=classname:nose.failure.Failure name:runTest
+KIND=error TYPE=builtins.ModuleNotFoundError MESSAGE=No module named 'stair_supervisor'
+RAW_NODE=<error type="builtins.ModuleNotFoundError" message="No module named 'stair_supervisor'">Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 676, in run
+    self._callTestMethod(testMethod)
+  File "/usr/lib/python3.8/unittest/case.py", line 633, in _callTestMethod
+    method()
+  File "/usr/lib/python3/dist-packages/nose/failure.py", line 39, in runTest
+    raise self.exc_val.with_traceback(self.tb)
+  File "/usr/lib/python3/dist-packages/nose/loader.py", line 416, in loadTestsFromName
+    module = self.importer.importFromPath(
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 47, in importFromPath
+    return self.importFromDir(dir_path, fqname)
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 94, in importFromDir
+    mod = load_module(part_fqname, fh, filename, desc)
+  File "/usr/lib/python3.8/imp.py", line 234, in load_module
+    return load_source(name, filename, file)
+  File "/usr/lib/python3.8/imp.py", line 171, in load_source
+    module = _load(spec)
+  File "&lt;frozen importlib._bootstrap&gt;", line 702, in _load
+  File "&lt;frozen importlib._bootstrap&gt;", line 671, in _load_unlocked
+  File "&lt;frozen importlib._bootstrap_external&gt;", line 848, in exec_module
+  File "&lt;frozen importlib._bootstrap&gt;", line 219, in _call_with_frames_removed
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_robot_conversion.py", line 6, in &lt;module&gt;
+    from stair_supervisor.configuration import WebSocketCalibration
+ModuleNotFoundError: No module named 'stair_supervisor'
+</error>
+---
+PATH=build/test_results/stair_supervisor/nosetests-test.robot_transport.xml
+TESTCASE_ID=classname:nose.failure.Failure name:runTest
+KIND=error TYPE=builtins.ModuleNotFoundError MESSAGE=No module named 'stair_supervisor'
+RAW_NODE=<error type="builtins.ModuleNotFoundError" message="No module named 'stair_supervisor'">Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 676, in run
+    self._callTestMethod(testMethod)
+  File "/usr/lib/python3.8/unittest/case.py", line 633, in _callTestMethod
+    method()
+  File "/usr/lib/python3/dist-packages/nose/failure.py", line 39, in runTest
+    raise self.exc_val.with_traceback(self.tb)
+  File "/usr/lib/python3/dist-packages/nose/loader.py", line 416, in loadTestsFromName
+    module = self.importer.importFromPath(
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 47, in importFromPath
+    return self.importFromDir(dir_path, fqname)
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 94, in importFromDir
+    mod = load_module(part_fqname, fh, filename, desc)
+  File "/usr/lib/python3.8/imp.py", line 234, in load_module
+    return load_source(name, filename, file)
+  File "/usr/lib/python3.8/imp.py", line 171, in load_source
+    module = _load(spec)
+  File "&lt;frozen importlib._bootstrap&gt;", line 702, in _load
+  File "&lt;frozen importlib._bootstrap&gt;", line 671, in _load_unlocked
+  File "&lt;frozen importlib._bootstrap_external&gt;", line 848, in exec_module
+  File "&lt;frozen importlib._bootstrap&gt;", line 219, in _call_with_frames_removed
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_robot_protocol.py", line 6, in &lt;module&gt;
+    from stair_supervisor.robot_protocol import (
+ModuleNotFoundError: No module named 'stair_supervisor'
+</error>
+---
+PATH=build/test_results/stair_supervisor/nosetests-test.robot_transport.xml
+TESTCASE_ID=classname:nose.failure.Failure name:runTest
+KIND=error TYPE=builtins.ModuleNotFoundError MESSAGE=No module named 'stair_supervisor'
+RAW_NODE=<error type="builtins.ModuleNotFoundError" message="No module named 'stair_supervisor'">Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 676, in run
+    self._callTestMethod(testMethod)
+  File "/usr/lib/python3.8/unittest/case.py", line 633, in _callTestMethod
+    method()
+  File "/usr/lib/python3/dist-packages/nose/failure.py", line 39, in runTest
+    raise self.exc_val.with_traceback(self.tb)
+  File "/usr/lib/python3/dist-packages/nose/loader.py", line 416, in loadTestsFromName
+    module = self.importer.importFromPath(
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 47, in importFromPath
+    return self.importFromDir(dir_path, fqname)
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 94, in importFromDir
+    mod = load_module(part_fqname, fh, filename, desc)
+  File "/usr/lib/python3.8/imp.py", line 234, in load_module
+    return load_source(name, filename, file)
+  File "/usr/lib/python3.8/imp.py", line 171, in load_source
+    module = _load(spec)
+  File "&lt;frozen importlib._bootstrap&gt;", line 702, in _load
+  File "&lt;frozen importlib._bootstrap&gt;", line 671, in _load_unlocked
+  File "&lt;frozen importlib._bootstrap_external&gt;", line 848, in exec_module
+  File "&lt;frozen importlib._bootstrap&gt;", line 219, in _call_with_frames_removed
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_robot_transport.py", line 11, in &lt;module&gt;
+    from test_robot_transport_fakes import (
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_robot_transport_fakes.py", line 8, in &lt;module&gt;
+    from stair_supervisor.configuration import WebSocketCalibration
+ModuleNotFoundError: No module named 'stair_supervisor'
+</error>
+---
+PATH=build/test_results/stair_supervisor/nosetests-test.robot_transport.xml
+TESTCASE_ID=classname:nose.failure.Failure name:runTest
+KIND=error TYPE=builtins.ModuleNotFoundError MESSAGE=No module named 'stair_supervisor'
+RAW_NODE=<error type="builtins.ModuleNotFoundError" message="No module named 'stair_supervisor'">Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 676, in run
+    self._callTestMethod(testMethod)
+  File "/usr/lib/python3.8/unittest/case.py", line 633, in _callTestMethod
+    method()
+  File "/usr/lib/python3/dist-packages/nose/failure.py", line 39, in runTest
+    raise self.exc_val.with_traceback(self.tb)
+  File "/usr/lib/python3/dist-packages/nose/loader.py", line 416, in loadTestsFromName
+    module = self.importer.importFromPath(
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 47, in importFromPath
+    return self.importFromDir(dir_path, fqname)
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 94, in importFromDir
+    mod = load_module(part_fqname, fh, filename, desc)
+  File "/usr/lib/python3.8/imp.py", line 234, in load_module
+    return load_source(name, filename, file)
+  File "/usr/lib/python3.8/imp.py", line 171, in load_source
+    module = _load(spec)
+  File "&lt;frozen importlib._bootstrap&gt;", line 702, in _load
+  File "&lt;frozen importlib._bootstrap&gt;", line 671, in _load_unlocked
+  File "&lt;frozen importlib._bootstrap_external&gt;", line 848, in exec_module
+  File "&lt;frozen importlib._bootstrap&gt;", line 219, in _call_with_frames_removed
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_robot_transport_fakes.py", line 8, in &lt;module&gt;
+    from stair_supervisor.configuration import WebSocketCalibration
+ModuleNotFoundError: No module named 'stair_supervisor'
+</error>
+---
+PATH=build/test_results/stair_supervisor/nosetests-test.robot_transport.xml
+TESTCASE_ID=classname:nose.failure.Failure name:runTest
+KIND=error TYPE=builtins.ModuleNotFoundError MESSAGE=No module named 'stair_supervisor'
+RAW_NODE=<error type="builtins.ModuleNotFoundError" message="No module named 'stair_supervisor'">Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 676, in run
+    self._callTestMethod(testMethod)
+  File "/usr/lib/python3.8/unittest/case.py", line 633, in _callTestMethod
+    method()
+  File "/usr/lib/python3/dist-packages/nose/failure.py", line 39, in runTest
+    raise self.exc_val.with_traceback(self.tb)
+  File "/usr/lib/python3/dist-packages/nose/loader.py", line 416, in loadTestsFromName
+    module = self.importer.importFromPath(
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 47, in importFromPath
+    return self.importFromDir(dir_path, fqname)
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 94, in importFromDir
+    mod = load_module(part_fqname, fh, filename, desc)
+  File "/usr/lib/python3.8/imp.py", line 234, in load_module
+    return load_source(name, filename, file)
+  File "/usr/lib/python3.8/imp.py", line 171, in load_source
+    module = _load(spec)
+  File "&lt;frozen importlib._bootstrap&gt;", line 702, in _load
+  File "&lt;frozen importlib._bootstrap&gt;", line 671, in _load_unlocked
+  File "&lt;frozen importlib._bootstrap_external&gt;", line 848, in exec_module
+  File "&lt;frozen importlib._bootstrap&gt;", line 219, in _call_with_frames_removed
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_robot_transport_faults.py", line 11, in &lt;module&gt;
+    from test_robot_transport_fakes import (
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_robot_transport_fakes.py", line 8, in &lt;module&gt;
+    from stair_supervisor.configuration import WebSocketCalibration
+ModuleNotFoundError: No module named 'stair_supervisor'
+</error>
+---
+PATH=build/test_results/stair_supervisor/nosetests-test.robot_transport.xml
+TESTCASE_ID=classname:robot_transport.test_yaw_calibration_cli.YawCalibrationCliTest name:test_help_exposes_safe_calibration_controls
+KIND=failure TYPE=builtins.AssertionError MESSAGE=1 != 0 : Traceback (most recent call last):
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/scripts/calibrate_yaw_rate.py", line 11, in <module>
+    from stair_supervisor.configuration import WebSocketCalibration
+ModuleNotFoundError: No module named 'stair_supervisor'
+
+RAW_NODE=<failure type="builtins.AssertionError" message="1 != 0 : Traceback (most recent call last):&#10;  File &quot;/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/scripts/calibrate_yaw_rate.py&quot;, line 11, in &lt;module&gt;&#10;    from stair_supervisor.configuration import WebSocketCalibration&#10;ModuleNotFoundError: No module named 'stair_supervisor'&#10;">Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 676, in run
+    self._callTestMethod(testMethod)
+  File "/usr/lib/python3.8/unittest/case.py", line 633, in _callTestMethod
+    method()
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_yaw_calibration_cli.py", line 24, in test_help_exposes_safe_calibration_controls
+    self.assertEqual(completed.returncode, 0, completed.stderr)
+  File "/usr/lib/python3.8/unittest/case.py", line 912, in assertEqual
+    assertion_func(first, second, msg=msg)
+  File "/usr/lib/python3.8/unittest/case.py", line 905, in _baseAssertEqual
+    raise self.failureException(msg)
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/scripts/calibrate_yaw_rate.py", line 11, in &lt;module&gt;
+    from stair_supervisor.configuration import WebSocketCalibration
+ModuleNotFoundError: No module named 'stair_supervisor'
+
+</failure>
+---
+PATH=build/test_results/mission_manager/nosetests-test.test_navigation_executor.py.xml
+TESTCASE_ID=classname:nose.failure.Failure name:runTest
+KIND=error TYPE=builtins.ModuleNotFoundError MESSAGE=No module named 'multifloor_manager'
+RAW_NODE=<error type="builtins.ModuleNotFoundError" message="No module named 'multifloor_manager'">Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 676, in run
+    self._callTestMethod(testMethod)
+  File "/usr/lib/python3.8/unittest/case.py", line 633, in _callTestMethod
+    method()
+  File "/usr/lib/python3/dist-packages/nose/failure.py", line 39, in runTest
+    raise self.exc_val.with_traceback(self.tb)
+  File "/usr/lib/python3/dist-packages/nose/loader.py", line 416, in loadTestsFromName
+    module = self.importer.importFromPath(
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 47, in importFromPath
+    return self.importFromDir(dir_path, fqname)
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 94, in importFromDir
+    mod = load_module(part_fqname, fh, filename, desc)
+  File "/usr/lib/python3.8/imp.py", line 234, in load_module
+    return load_source(name, filename, file)
+  File "/usr/lib/python3.8/imp.py", line 171, in load_source
+    module = _load(spec)
+  File "&lt;frozen importlib._bootstrap&gt;", line 702, in _load
+  File "&lt;frozen importlib._bootstrap&gt;", line 671, in _load_unlocked
+  File "&lt;frozen importlib._bootstrap_external&gt;", line 848, in exec_module
+  File "&lt;frozen importlib._bootstrap&gt;", line 219, in _call_with_frames_removed
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/test/test_navigation_executor.py", line 18, in &lt;module&gt;
+    from multifloor_manager.msg import FloorState  # noqa: E402
+ModuleNotFoundError: No module named 'multifloor_manager'
+</error>
+---
+PATH=build/test_results/mission_manager/nosetests-test.test_ros_segments.py.xml
+TESTCASE_ID=classname:nose.failure.Failure name:runTest
+KIND=error TYPE=builtins.ModuleNotFoundError MESSAGE=No module named 'multifloor_manager'
+RAW_NODE=<error type="builtins.ModuleNotFoundError" message="No module named 'multifloor_manager'">Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 676, in run
+    self._callTestMethod(testMethod)
+  File "/usr/lib/python3.8/unittest/case.py", line 633, in _callTestMethod
+    method()
+  File "/usr/lib/python3/dist-packages/nose/failure.py", line 39, in runTest
+    raise self.exc_val.with_traceback(self.tb)
+  File "/usr/lib/python3/dist-packages/nose/loader.py", line 416, in loadTestsFromName
+    module = self.importer.importFromPath(
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 47, in importFromPath
+    return self.importFromDir(dir_path, fqname)
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 94, in importFromDir
+    mod = load_module(part_fqname, fh, filename, desc)
+  File "/usr/lib/python3.8/imp.py", line 234, in load_module
+    return load_source(name, filename, file)
+  File "/usr/lib/python3.8/imp.py", line 171, in load_source
+    module = _load(spec)
+  File "&lt;frozen importlib._bootstrap&gt;", line 702, in _load
+  File "&lt;frozen importlib._bootstrap&gt;", line 671, in _load_unlocked
+  File "&lt;frozen importlib._bootstrap_external&gt;", line 848, in exec_module
+  File "&lt;frozen importlib._bootstrap&gt;", line 219, in _call_with_frames_removed
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/test/test_ros_segments.py", line 13, in &lt;module&gt;
+    from multifloor_manager.msg import FloorState, FloorTransitionResult
+ModuleNotFoundError: No module named 'multifloor_manager'
+</error>
+---
+PATH=build/test_results/mission_manager/nosetests-test.test_runtime_gating.py.xml
+TESTCASE_ID=classname:nose.failure.Failure name:runTest
+KIND=error TYPE=builtins.ModuleNotFoundError MESSAGE=No module named 'mission_manager'
+RAW_NODE=<error type="builtins.ModuleNotFoundError" message="No module named 'mission_manager'">Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 676, in run
+    self._callTestMethod(testMethod)
+  File "/usr/lib/python3.8/unittest/case.py", line 633, in _callTestMethod
+    method()
+  File "/usr/lib/python3/dist-packages/nose/failure.py", line 39, in runTest
+    raise self.exc_val.with_traceback(self.tb)
+  File "/usr/lib/python3/dist-packages/nose/loader.py", line 416, in loadTestsFromName
+    module = self.importer.importFromPath(
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 47, in importFromPath
+    return self.importFromDir(dir_path, fqname)
+  File "/usr/lib/python3/dist-packages/nose/importer.py", line 94, in importFromDir
+    mod = load_module(part_fqname, fh, filename, desc)
+  File "/usr/lib/python3.8/imp.py", line 234, in load_module
+    return load_source(name, filename, file)
+  File "/usr/lib/python3.8/imp.py", line 171, in load_source
+    module = _load(spec)
+  File "&lt;frozen importlib._bootstrap&gt;", line 702, in _load
+  File "&lt;frozen importlib._bootstrap&gt;", line 671, in _load_unlocked
+  File "&lt;frozen importlib._bootstrap_external&gt;", line 848, in exec_module
+  File "&lt;frozen importlib._bootstrap&gt;", line 219, in _call_with_frames_removed
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/test/test_runtime_gating.py", line 9, in &lt;module&gt;
+    from mission_manager.ros_runtime import _configuration_roots
+ModuleNotFoundError: No module named 'mission_manager'
+</error>
+---
+END 2026-08-24T10:21:19+09:00
+EXIT 0

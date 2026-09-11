@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "plan": ".omo/plans/yaml-transition-policy-runtime.md",
+  "task": "run-rviz-fix",
+  "attempt_id": "run-rviz-fix-2026-08-24T10:30:00+09:00",
+  "workspace": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation",
+  "workspace_non_git": true,
+  "snapshot_basis": "task-start state represented by the preserved pre-repair hashes in diff-inventory.json and the authoritative baseline-provenance manifests",
+  "explicit_exclusions": [
+    ".git/**",
+    ".omo/**",
+    "**/__pycache__/**",
+    "**/*.pyc",
+    "**/*.pyo",
+    "generated outputs were inventoried but not treated as source authority",
+    "PID 348555 and all unrelated ROS/user processes were not modified by the initial task-start snapshot"
+  ],
+  "source_manifest": {
+    "path": ".omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/source-manifest.json",
+    "sha256": "59d07e3ce33096ddeaa64bbb651e34caef47b965f1d9b631160803b60136c192",
+    "file_count": 142,
+    "scope": "src/",
+    "note": "bundle_source_contract.py is a root-level source path outside this historical src/ manifest and is therefore attributed separately"
+  },
+  "test_manifest": {
+    "path": ".omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/test-manifest.json",
+    "sha256": "ceab20d9658662cbdf88f1fe3bcf5281039f79dab40b7430f6fa5954e5250f2e",
+    "file_count": 97,
+    "scope": "test/ plus package test roots",
+    "historical_entry": {"path": "test/test_bundle_contract.py", "sha256": "373ffe7285b4b6b22e49279ad57e1cfd3be1bb1eee174af5b069b2ec2f04a290"},
+    "note": "the regression test changed after this historical manifest and is attributed as post-baseline"
+  },
+  "generated_manifests": [
+    {"path": ".omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/build-manifest.json", "sha256": "bff6c4b2aa8da889aed5b8e5cb449fa237b87113ccccbbdd258b99e32244422e", "file_count": 2187, "classification": "pre-existing generated; preserved"},
+    {"path": ".omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/devel-manifest.json", "sha256": "956d4b548ab7f10c35a490d1237ec7d48dc5132aeca2271537b57fe5fb5ea8fd", "file_count": 213, "classification": "pre-existing generated; preserved"},
+    {"path": ".omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/install-manifest.json", "sha256": "3928461172ebfedae39f776692829a1cb4a9fda5d202262832fbe75099c1a2a4", "file_count": 283, "classification": "pre-existing generated; non-authoritative"},
+    {"path": ".omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/runtime-manifest.json", "sha256": "77890268abdaab5d14d85534fef7ab2c050c3470b8c6be6604d748d42daa65fc", "file_count": 15, "classification": "pre-existing runtime inventory; preserved"},
+    {"path": ".omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/result-xml-manifest.json", "sha256": "629534c41c8992ac9a119cead3d500bb849fdb1cbaab1e42c54f76899a5d045b", "file_count": 37, "classification": "pre-existing generated test result inventory; no new result XML run claimed"}
+  ],
+  "post_baseline_paths": [
+    {"path": "bundle_source_contract.py", "sha256_at_task_start": "42c08b6457ebe0c04037f094fd228fad9ab4a494a7dbddf1832853550a697f97", "classification": "post-baseline product source change; root-level and outside src/ manifest"},
+    {"path": "test/test_bundle_contract.py", "sha256_at_task_start": "93e39b898cb9af88876331cfbaf5f6f5dc1f8a506f4ce535c1eae0076e7deffb", "classification": "post-baseline regression test change; differs from historical test manifest entry"}
+  ],
+  "evidence_inventory_at_task_start": [
+    {"path": ".omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/commands.txt", "sha256": "02a61d04278a68e05e4827a4962fc2ea486e4041f448e8f1634bc1c0c4cbede9"},
+    {"path": ".omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/test-results.txt", "sha256": "7a2cc0e7f87736aa46bf790506273398b6e62bcc77a117fa1eb83f77f433d295"},
+    {"path": ".omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/receipt.yaml", "sha256": "33a100e23f3c97560faee8d3989bbd8b328c69e74ef1dad3e3968744bd4beed1"},
+    {"path": ".omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/cleanup.json", "sha256": "72b295488e9550598a21734bc63dacb243becf007f8895fea20624650113572c"},
+    {"path": ".omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/diff-inventory.json", "exists": false, "sha256": null},
+    {"path": ".omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/baseline.json", "exists": false, "sha256": null}
+  ],
+  "authority": "This baseline records attribution only. It does not assert that unavailable per-command timestamps, fixture-launch invocations, or live publisher prerequisites existed."
+}

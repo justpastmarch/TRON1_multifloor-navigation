@@ -1,0 +1,26 @@
+<launch>
+  <!-- Synthetic, non-production, no-motion Mission.action fixture. -->
+  <param name="/mission_test/scenario" value="default" />
+
+  <node pkg="mission_manager" type="mock_mission_children.py"
+        name="mock_5f_rf_children" required="true" output="screen">
+    <param name="initial_floor" value="5F" />
+  </node>
+
+  <node pkg="mission_manager" type="mission_manager_node.py"
+        name="mission_manager_5f_rf_synthetic" required="true" output="screen">
+    <env name="PATH" value="$(find mission_manager)/test/bin:$(env PATH)" />
+    <param name="config_profile" value="test_fixture" />
+    <param name="allow_test_fixture" value="true" />
+    <param name="fixture_config_root" value="$(find mission_manager)/../../test/fixtures/building_5f_rf_synthetic" />
+    <param name="home_location_id" value="home_5f" />
+    <param name="initial_location_id" value="home_5f" />
+    <param name="inspect_profile_id" value="synthetic_roof_scan_profile" />
+    <param name="scan_output_base" value="/dev/shm/tron1-synthetic-$(anon mission-5f-rf)" />
+    <param name="state_freshness_sec" value="0.5" />
+    <param name="child_wait_timeout" value="2.0" />
+  </node>
+
+  <test test-name="mission_5f_rf_synthetic" pkg="mission_manager"
+        type="test_mission_5f_rf_synthetic_ros.py" time-limit="120" />
+</launch>

@@ -1,0 +1,5 @@
+# SYNTHETIC NON-PRODUCTION FIXTURE: detector entries match only the test tags.
+standalone_tags:
+  - {id: 950, size: 0.16}
+  - {id: 951, size: 0.16}
+tag_bundles: []

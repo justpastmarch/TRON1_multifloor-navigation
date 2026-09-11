@@ -1,0 +1,12 @@
+schema_version: 1
+configured: true
+move_base:
+  max_vel_x: 0.35
+  max_vel_theta: 1.57
+  min_in_place_vel_theta: 0.4
+  acc_lim_x: 0.4
+  acc_lim_theta: 2.0
+websocket_full_scale:
+  linear_mps: 0.55
+  angular_radps: 1.8
+command_topics: [/navigation/cmd_vel, /stair/cmd_vel]

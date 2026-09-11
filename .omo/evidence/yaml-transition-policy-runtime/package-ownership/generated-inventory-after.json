@@ -1,0 +1,15 @@
+{
+  "captured_at": "2026-08-24T16:53:26+09:00",
+  "scope": "Todo 4 stale generated mission evaluator artifacts",
+  "paths": {
+    "build/mission_manager/lib/mission_manager/transitions.py": {"exists": false, "sha256": null},
+    "install/lib/python3/dist-packages/mission_manager/transitions.py": {"exists": false, "sha256": null},
+    "build/test_results/mission_manager/nosetests-test.test_transitions.py.xml": {"exists": false, "sha256": null},
+    "build/test_results/multifloor_manager/nosetests-test.test_transitions.py.xml": {"exists": true, "size": 2373, "sha256": "1e9494f3d3cf877431936ff5c3e1385028c050de5fd5a2181a909fde2b590bbc", "tests": 16, "errors": 0, "failures": 0, "classification": "fresh registered multifloor evaluator XML"}
+  },
+  "import_scan": {
+    "source_direct": {"exit_code": 0, "importable_paths": []},
+    "devel_sourced": {"exit_code": 0, "importable_paths": []},
+    "install_sourced": {"exit_code": 0, "importable_paths": []}
+  }
+}

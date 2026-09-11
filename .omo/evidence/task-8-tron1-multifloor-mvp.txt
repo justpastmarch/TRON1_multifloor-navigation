@@ -1,0 +1,197 @@
+DoneClaim: Todo 8 only — pure AprilTag temporal evidence and map fingerprint/generation models.
+
+Exact files added:
+- src/multifloor_manager/src/multifloor_manager/tag_evidence.py
+- src/multifloor_manager/src/multifloor_manager/map_evidence.py
+- test/test_tag_evidence.py
+- test/test_map_evidence.py
+- .omo/evidence/task-8-tron1-multifloor-mvp.txt
+
+Scope exclusions confirmed:
+- No node, action server, map service, launch, mission FSM, ROS publisher, or FloorState runtime implementation.
+- Future /multifloor/debug/<predicate> publishers receive stable DebugPredicate(name, bool) tuples only.
+
+Baseline / failing first:
+- python3 -m unittest test.test_tag_evidence -v
+  RED: ModuleNotFoundError: multifloor_manager.tag_evidence
+- python3 -m unittest test.test_map_evidence -v
+  RED: ModuleNotFoundError: multifloor_manager.map_evidence
+
+Focused green tests:
+- test/test_tag_evidence.py: 9/9 pass.
+  Accepts three ordered fresh expected detections after arming within one second.
+  Rejects unknown, stale, replayed/non-monotonic, intermittent, pre-arm, wrong-route,
+  timed-out, malformed, and mixed dirty detections; equal wrong-floor vote aborts.
+- test/test_map_evidence.py: 5/5 pass.
+  Fingerprints frame/width/height/resolution/origin/SHA-256 data/map_load_time,
+  distinguishes changed data, rejects malformed/dirty/future maps, ignores current and
+  pre-arm maps, and increments a one-shot generation monotonically for the target only.
+
+CLI/manual fixture replay:
+- python3 test/fixture_support.py inspect
+  PASS: floors/maps 3F,4F,roof; localization_case_count=7; frozen now_ns=1700000010000000000.
+- python3 -m unittest \
+    test.test_tag_evidence.AprilTagEvidenceTest.test_three_consecutive_fresh_route_detections_accept \
+    test.test_map_evidence.MapEvidenceTest.test_valid_target_fingerprint_advances_generation_once -v
+  PASS: 2/2 happy replay scenarios.
+- python3 -m unittest \
+    test.test_tag_evidence.AprilTagEvidenceTest.test_timeout_and_dirty_mixed_array_are_rejected \
+    test.test_tag_evidence.AprilTagEvidenceTest.test_fresh_pre_arm_detection_does_not_vote \
+    test.test_map_evidence.MapEvidenceTest.test_pre_arm_target_map_is_ignored_until_new_generation_arrives \
+    test.test_map_evidence.MapEvidenceTest.test_malformed_dirty_and_future_maps_are_rejected_at_boundary -v
+  PASS: 4/4 adversarial stale/pre-arm/malformed/generated/dirty probes.
+- Misleading fresh wrong-hash/current-map probes pass in
+  MapEvidenceTest.test_wrong_target_and_current_fingerprint_do_not_advance.
+
+Quality gates:
+- LSP diagnostics: no diagnostics in all four Python files.
+- python3 -m ruff check <four files>: All checks passed.
+- python3 -m py_compile <four files>: exit 0.
+- python3 -m unittest discover -s test -v: 63 tests, 0 failures/errors.
+- catkin_make: exit 0.
+- catkin_make run_tests: exit 0.
+- catkin_test_results --verbose build/test_results: 52 tests, 0 errors, 0 failures, 0 skipped.
+- python3 validate_bundle.py: BUNDLE_OK.
+- Pure LOC: tag_evidence.py=245, map_evidence.py=246, test_tag_evidence.py=121,
+  test_map_evidence.py=120. Production modules are in the 200-250 warning band, not over
+  the 250 defect ceiling; add future ROS adapters/publishers as separate modules.
+- The shared no-excuse helper could not run under ROS Noetic Python 3.8 because the helper
+  itself contains Python 3.10 match syntax. Ruff, py_compile, LSP, explicit LOC, tests,
+  catkin tests, and bundle validation ran instead.
+
+Cleanup:
+- No temporary fixtures, rosbag outputs, nodes, sockets, services, actions, or launch
+  processes were created by Todo 8. Python cache files are excluded generated artifacts.
+
+Finalization debug journal:
+- Runtime: CPython 3.8.10 through python3; pure unittest seam, no process attachment.
+- Baseline: `python3 -m unittest test.test_tag_evidence test.test_map_evidence -v`
+  passed 14/14 before edits.
+- Confirmed root cause repro: a tag stamped `NOW+1ns` parsed successfully, produced
+  `future_fresh=False`, advanced `last_observed_stamp_ns` to the future value, then made
+  the valid `NOW` frame `monotonic_stamp=False` with `consecutive_count=0`.
+- Hypotheses resolved: boundary admission confirmed; temporal age correctly marked the
+  sample non-fresh but updated state afterward; catkin registration was absent.
+- Planned source artifacts are the boundary fix, regression test, safe catkin registration,
+  and this scope-owned evidence update. No debugger, temporary fixture, port, process, or
+  environment override will be created.
+
+Finalization DoneClaim:
+- Exact files modified:
+  - src/multifloor_manager/src/multifloor_manager/tag_evidence.py
+  - test/test_tag_evidence.py
+  - src/multifloor_manager/CMakeLists.txt
+  - .omo/evidence/task-8-tron1-multifloor-mvp.txt
+- Boundary fix: `parse_apriltag_detection_array` rejects `stamp_ns > received_at_ns`
+  before constructing an observation, so no future value can reach or update vote state.
+- Regression: `test_future_timestamp_is_rejected_before_it_can_poison_vote_state` proves
+  both boundary rejection and that the unchanged state counts the next valid frame as vote 1.
+- Catkin registration resolves the workspace root from CMake source metadata and registers
+  the existing root tag/map test files without copying them or using parent traversal.
+- Scope remains model-only: no ROS publisher, FloorState publisher, node, action, service,
+  launch file, mission FSM, score, or continuous confidence framework was added.
+
+Finalization red/green proof:
+- Before fix:
+  `python3 -m unittest test.test_tag_evidence.AprilTagEvidenceTest.test_future_timestamp_is_rejected_before_it_can_poison_vote_state -v`
+  failed with `AssertionError: TagBoundaryError not raised`.
+- After fix: the same command passed 1/1.
+- `python3 -m unittest test.test_tag_evidence test.test_map_evidence -v`: 15/15 passed.
+- `python3 -m unittest discover -s test -v`: 64/64 passed.
+- `catkin_make run_tests_multifloor_manager`: 17/17 passed (2 fixture, 10 tag, 5 map).
+- `catkin_test_results --verbose build/test_results/multifloor_manager`:
+  17 tests, 0 errors, 0 failures, 0 skipped.
+- `catkin_make`: exit 0.
+- `python3 -m ruff check <four evidence Python files>`: All checks passed.
+- `python3 -m py_compile <four evidence Python files>`: exit 0.
+- LSP diagnostics: no diagnostics in the changed source or regression test.
+- `python3 validate_bundle.py`: BUNDLE_OK, including unchanged three-node inventory.
+
+Manual CLI replay:
+- A direct ROS-shaped replay printed:
+  `future_rejected=AprilTagDetectionArray.header.stamp: must not be in the future`
+  then `valid_monotonic=True valid_count=1 last_stamp=1700000010000000000`.
+- `python3 test/fixture_support.py inspect` retained maps 3F/4F/roof, seven localization
+  cases, five WebSocket frames, and frozen now_ns 1700000010000000000.
+- Adversarial unittest replay passed 5/5 for future-poisoning, stale/replayed tags,
+  timed-out/dirty mixed tags, malformed/generated maps, and misleading wrong/current maps.
+- Existing unknown/intermittent/wrong-route/wrong-floor/pre-arm tests remain green.
+
+Workspace-wide catkin note:
+- `catkin_make run_tests` completed its targets, but `catkin_test_results --verbose
+  build/test_results` reports two unrelated mission_manager errors: missing
+  `TransitionPolicy.from_config` and malformed raw FSM event formatting. Todo 8 did not
+  modify mission_manager; those failures were not changed to respect the no-unrelated-files
+  constraint. The multifloor_manager catkin target and result directory are fully green.
+
+Final cleanup and architecture review:
+- No temporary files, debugger statements, debug processes, ports, environment overrides,
+  nodes, actions, services, publishers, or launch processes were created.
+- Debug-marker scan found no breakpoint/ipdb/pdb/DEBUG/HACK/XXX residue in changed code.
+- Pure LOC is tag_evidence.py=247 and test_tag_evidence.py=131. The evidence module remains
+  below the 250 defect ceiling but in the warning band; its next feature should split the
+  ROS-shaped boundary from the temporal policy rather than add lines.
+- Single responsibility remains AprilTag evidence; external data is parsed at one typed
+  boundary; models remain immutable; no type escape hatch, defensive duplicate layer,
+  parameter bloat, negative naming, logging change, or score framework was introduced.
+
+High-water finalization debug journal:
+- Baseline focused evidence suite: 15/15 passed before edits.
+- Confirmed repro sequence: NOW-100ms set count 1; NOW-400ms was non-monotonic but lowered
+  `last_observed_stamp_ns`; NOW-300/-200/-150ms then appeared monotonic and reached count 3,
+  `accepted=True` at NOW-150ms.
+- Root cause is confined to next-state construction; freshness, future-boundary rejection,
+  candidate reset, route checks, and temporal thresholds behaved as configured.
+- Planned artifacts: one regression in test/test_tag_evidence.py, one high-water state fix in
+  tag_evidence.py, and this scope-owned evidence update. No temporary fixture or debugger.
+
+High-water DoneClaim:
+- Exact files modified for this fix:
+  - src/multifloor_manager/src/multifloor_manager/tag_evidence.py
+  - test/test_tag_evidence.py
+  - .omo/evidence/task-8-tron1-multifloor-mvp.txt
+- Fix: non-monotonic observations still clear candidate floor, first vote, and count, but
+  retain the prior `last_observed_stamp_ns` high-water mark. A strictly newer observation
+  is required before voting can resume.
+- Future-stamp boundary rejection, three-vote/window/age/timeout/pre-arm/wrong-floor rules,
+  map fingerprint/generation behavior, and Boolean evidence remain unchanged.
+- No node, action, service, publisher, launch, mission FSM, or score code was edited.
+
+High-water red/green proof:
+- Baseline: `python3 -m unittest test.test_tag_evidence test.test_map_evidence -v`
+  passed 15/15 before the new regression.
+- Live pre-fix replay observed NOW-100ms count 1, NOW-400ms lowering the stored timestamp,
+  then NOW-300/-200/-150ms reaching count 3 and `accepted=True`.
+- Red command:
+  `python3 -m unittest test.test_tag_evidence.AprilTagEvidenceTest.test_delayed_frames_cannot_lower_timestamp_high_water_or_rebuild_vote -v`
+  failed with `1700000009600000000 != 1700000009900000000`.
+- After the one-line next-state fix, the same test passed 1/1.
+
+Final commands and results:
+- Focused tag/map suite: 16 tests, 0 failures/errors.
+- `python3 -m unittest discover -s test -v`: 65 tests, 0 failures/errors.
+- `catkin_make`: exit 0.
+- `catkin_make run_tests_multifloor_manager` and scoped results: 18 tests, 0 errors,
+  0 failures, 0 skipped.
+- `catkin_make run_tests`; `catkin_test_results --verbose build/test_results`:
+  95 tests, 0 errors, 0 failures, 0 skipped.
+- Ruff: All checks passed. Python compile: exit 0. Changed-file LSP: no diagnostics.
+- `python3 validate_bundle.py`: BUNDLE_OK.
+- Production tag module remains 247 pure LOC, below the 250 defect ceiling.
+
+Manual CLI and adversarial evidence:
+- Exact sequence NOW-100/-400/-300/-200/-150ms printed
+  `delayed_accepted=[False, False, False, False, False]`, retained high-water
+  `1700000009900000000`, and count 0.
+- NOW-50ms then printed `recovered_monotonic=True recovered_count=1`.
+- NOW+1ns still printed `future_rejected=AprilTagDetectionArray.header.stamp: must not be in the future`.
+- Seven adversarial tests passed for delayed high-water, future poisoning, stale/replay,
+  timeout/dirty tags, wrong-floor vote, malformed/generated maps, and misleading maps.
+- Fixture CLI still reports 3F/4F/roof maps, seven localization cases, and frozen clock.
+
+High-water cleanup and architecture review:
+- Debug-marker scan found no breakpoint/ipdb/pdb/DEBUG/HACK/XXX residue.
+- No temporary files, debugger processes, ports, environment overrides, nodes, actions,
+  publishers, services, launches, or rosbag artifacts were created.
+- The file still owns one concept, AprilTag evidence; boundary and immutable reducer types
+  remain strict, and the fix adds no helper, escape hatch, parameter, logging, or score.

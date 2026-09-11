@@ -1,0 +1,23 @@
+<launch>
+  <param name="/mission_test/scenario" value="default" />
+
+  <node pkg="mission_manager" type="mock_mission_children.py"
+        name="mock_mission_children" required="true" output="screen" />
+
+  <node pkg="mission_manager" type="mission_manager_node.py"
+        name="mission_manager" required="true" output="screen">
+    <env name="PATH" value="$(find mission_manager)/test/bin:$(env PATH)" />
+    <param name="config_profile" value="test_fixture" />
+    <param name="allow_test_fixture" value="true" />
+    <param name="fixture_config_root" value="$(find mission_manager)/../../test/fixtures/building_valid" />
+    <param name="home_location_id" value="home_3f" />
+    <param name="initial_location_id" value="home_3f" />
+    <param name="inspect_profile_id" value="roof_scan_profile" />
+    <param name="scan_output_base" value="/dev/shm/tron1-$(anon mission-system)" />
+    <param name="state_freshness_sec" value="0.5" />
+    <param name="child_wait_timeout" value="2.0" />
+  </node>
+
+  <test test-name="mission_action_ros" pkg="mission_manager"
+        type="test_mission_action_ros.py" time-limit="90" />
+</launch>

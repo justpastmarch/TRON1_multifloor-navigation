@@ -1,0 +1,3 @@
+catkin_make: build completed with source/build/devel/install paths printed.
+catkin_make run_tests: target completed; individual nose import failures were emitted in command stdout.
+catkin_test_results --verbose: Summary: 150 tests, 9 errors, 1 failures, 0 skipped.

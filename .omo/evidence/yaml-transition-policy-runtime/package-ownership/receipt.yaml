@@ -1,0 +1,90 @@
+schema_version: 2
+plan: .omo/plans/yaml-transition-policy-runtime.md
+task: "4"
+task_id: package-ownership
+attempt_id: package-ownership-generated-cleanup-2026-08-24T16:48:00+09:00
+executor_session_id: codex:yaml-transition-policy-runtime-todo-4-generated-cleanup-2026-08-24
+workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+workspace_is_git: false
+model_policy: GPT-family direct work only; no Kimi-family delegation
+dependency_receipts:
+  - path: .omo/evidence/yaml-transition-policy-runtime/policy-evaluator/receipt.yaml
+    task_id: policy-evaluator
+    status: complete
+allowed_paths:
+  - src/mission_manager/CMakeLists.txt
+  - src/multifloor_manager/CMakeLists.txt
+  - src/mission_manager/src/mission_manager/transitions.py
+  - src/mission_manager/test/test_transitions.py
+  - .omo/evidence/yaml-transition-policy-runtime/package-ownership/*
+  - .omo/start-work/ledger.jsonl
+  - build/mission_manager/lib/mission_manager/transitions.py
+  - install/lib/python3/dist-packages/mission_manager/transitions.py
+  - build/test_results/mission_manager/nosetests-test.test_transitions.py.xml
+changed_product_paths: []
+changed_generated_paths:
+  - build/mission_manager/lib/mission_manager/transitions.py
+  - install/lib/python3/dist-packages/mission_manager/transitions.py
+  - build/test_results/mission_manager/nosetests-test.test_transitions.py.xml
+source_inventory: baseline-scan.txt
+generated_inventory_before: generated-inventory-before.json
+generated_inventory_after: generated-inventory-after.json
+diff_inventory: diff-inventory.json
+commands: commands.txt
+tests: test-results.txt
+cleanup: cleanup.json
+status: complete
+status_meaning: Stale importable generated evaluator and stale mission XML were removed narrowly after inventory; fresh catkin build/install and registered multifloor evaluator pass. Todo 4 plan checkbox intentionally unchanged.
+implementation:
+  - destination evaluator test registered with catkin_add_nosetests
+  - mission evaluator registration removed
+  - old mission evaluator and test deleted after recursive source scan
+  - site_config import already pointed to multifloor_manager.transitions
+  - package manifests unchanged; mission_manager -> multifloor_manager remains one-way
+verification:
+  source_scan: pass; no source references after deletion
+  source_direct: pass; destination evaluator 16 tests
+  catkin_build: pass
+  registered_destination_xml: pass; fresh XML contains 16 passing evaluator tests
+  package_target: pass; catkin_make run_tests_multifloor_manager exit 0
+  full_catkin_results: not claimed; Todo 5 and unrelated runtime failures were not run
+  catkin_build_exit_code: 0
+  catkin_install_exit_code: 0
+  stale_generated_import_scan: pass; source-direct, devel-sourced, and install-sourced scans exit 0 with no importable mission_manager.transitions path
+  registered_destination_xml: build/test_results/multifloor_manager/nosetests-test.test_transitions.py.xml; 16 tests, 0 errors, 0 failures; sha256 1e9494f3d3cf877431936ff5c3e1385028c050de5fd5a2181a909fde2b590bbc
+adversarial_classes:
+  stale_state: pass; before/after generated inventories distinguish stale artifacts from fresh XML
+  dirty_worktree: pass; unrelated ROS hotfix files and bags preserved
+  misleading_success_output: pass; exact claimed exits recorded and full catkin results explicitly not claimed
+  malformed_input: not_applicable
+  flaky_tests: pass; deterministic evaluator test, no sleeps
+  hung_commands: pass; bounded build/test commands
+  repeated_interruptions: not_applicable
+  cancel_resume: not_applicable
+cleanup_result: complete; only three inventoried generated artifacts removed; no generated module contents manually edited
+next_safe_tasks:
+  - Todo 5 epoch-observations
+  - Todo 5 epoch-observations remains separate and untouched
+DoneClaim:
+  task: "4 package-ownership"
+  changed_files:
+   - build/mission_manager/lib/mission_manager/transitions.py (deleted; before hash recorded)
+   - install/lib/python3/dist-packages/mission_manager/transitions.py (deleted; before hash recorded)
+   - build/test_results/mission_manager/nosetests-test.test_transitions.py.xml (deleted; before hash recorded)
+   - .omo/evidence/yaml-transition-policy-runtime/package-ownership/receipt.yaml
+   - .omo/evidence/yaml-transition-policy-runtime/package-ownership/commands.txt
+   - .omo/evidence/yaml-transition-policy-runtime/package-ownership/baseline-scan.txt
+   - .omo/evidence/yaml-transition-policy-runtime/package-ownership/test-results.txt
+   - .omo/evidence/yaml-transition-policy-runtime/package-ownership/diff-inventory.json
+   - .omo/evidence/yaml-transition-policy-runtime/package-ownership/cleanup.json
+   - .omo/evidence/yaml-transition-policy-runtime/package-ownership/generated-inventory-before.json
+   - .omo/evidence/yaml-transition-policy-runtime/package-ownership/generated-inventory-after.json
+  tests:
+    - "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest src/multifloor_manager/test/test_transitions.py -v: 16 passed"
+    - "catkin_make: exit 0"
+    - "catkin_make run_tests_multifloor_manager: exit 0"
+    - "catkin_make install: exit 0"
+    - "registered evaluator XML: 16 tests, 0 errors, 0 failures"
+    - "source/devel/install import scans: exit 0; no mission_manager.transitions"
+  known_blocker: "full catkin_test_results intentionally not claimed because Todo 5 runtime is out of scope"
+  plan_checkbox: unchanged

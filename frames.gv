@@ -1,0 +1,26 @@
+digraph G {
+"odom" -> "camera_init"[label="Broadcaster: /sensor_tf_odom_to_camera_init\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1787197447.425 sec old)\nBuffer length: 0.000 sec\n"];
+"odom" -> "base_Link"[label="Broadcaster: /tron1_wf_odom_bridge\nAverage rate: 100.214 Hz\nMost recent transform: 1787197446.836 ( 0.590 sec old)\nBuffer length: 4.500 sec\n"];
+"base_Link" -> "camera1_link"[label="Broadcaster: /sensor_tf_base_to_camera1\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1787197447.425 sec old)\nBuffer length: 0.000 sec\n"];
+"base_Link" -> "mid360_link"[label="Broadcaster: /sensor_tf_base_to_mid360\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1787197447.425 sec old)\nBuffer length: 0.000 sec\n"];
+"camera1_link" -> "camera1_depth_frame"[label="Broadcaster: /camera1/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1787197447.425 sec old)\nBuffer length: 0.000 sec\n"];
+"camera1_depth_frame" -> "camera1_depth_optical_frame"[label="Broadcaster: /camera1/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1787197447.425 sec old)\nBuffer length: 0.000 sec\n"];
+"camera1_link" -> "camera1_color_frame"[label="Broadcaster: /camera1/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1787197447.425 sec old)\nBuffer length: 0.000 sec\n"];
+"camera1_color_frame" -> "camera1_color_optical_frame"[label="Broadcaster: /camera1/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1787197447.425 sec old)\nBuffer length: 0.000 sec\n"];
+"camera1_link" -> "camera1_infra1_frame"[label="Broadcaster: /camera1/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1787197447.425 sec old)\nBuffer length: 0.000 sec\n"];
+"camera1_infra1_frame" -> "camera1_infra1_optical_frame"[label="Broadcaster: /camera1/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1787197447.425 sec old)\nBuffer length: 0.000 sec\n"];
+"camera1_link" -> "camera1_infra2_frame"[label="Broadcaster: /camera1/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1787197447.425 sec old)\nBuffer length: 0.000 sec\n"];
+"camera1_infra2_frame" -> "camera1_infra2_optical_frame"[label="Broadcaster: /camera1/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1787197447.425 sec old)\nBuffer length: 0.000 sec\n"];
+"camera0_link" -> "camera0_depth_frame"[label="Broadcaster: /camera0/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1787197447.425 sec old)\nBuffer length: 0.000 sec\n"];
+"camera0_depth_frame" -> "camera0_depth_optical_frame"[label="Broadcaster: /camera0/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1787197447.425 sec old)\nBuffer length: 0.000 sec\n"];
+"camera0_link" -> "camera0_color_frame"[label="Broadcaster: /camera0/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1787197447.425 sec old)\nBuffer length: 0.000 sec\n"];
+"camera0_color_frame" -> "camera0_color_optical_frame"[label="Broadcaster: /camera0/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1787197447.425 sec old)\nBuffer length: 0.000 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1787197447.425"[ shape=plaintext ] ;
+ }->"odom";
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1787197447.425"[ shape=plaintext ] ;
+ }->"camera0_link";
+}

@@ -1,0 +1,6 @@
+yaml.safe_load(src/multifloor_manager/rviz/wf_navigation_manual.rviz): PASS
+Fixed Frame: map: PASS
+Map Topic: /map: PASS
+Tools: rviz/SetInitialPose, rviz/SetGoal: PASS
+Direct goal topic: /move_base_simple/goal: PASS
+Displays content/order equality against pre-tool baseline: PASS

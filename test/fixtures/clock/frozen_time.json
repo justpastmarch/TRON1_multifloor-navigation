@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "now_ns": 1700000010000000000,
+  "freshness_limit_ns": 5000000000
+}

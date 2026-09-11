@@ -1,0 +1,175 @@
+Task 15 corrected evidence — independent verification fixes
+Date: 2026-08-26
+Target: /home/m3tron/Desktop/TRON1_Modular_Navigation
+Old workspace: immutable except this bound evidence file.
+
+CORRECTIONS
+1. Added real behavioral modules required by the plan:
+   - test/test_run_script_contract.py
+   - test/test_system_operator_contract.py
+   - test/test_process_boundary_contract.py
+   Shared setup lives in test/operator_test_support.py; none of the prescribed
+   modules is an import-only alias.
+2. tools/operator/common.sh rejects ACCID provisioning sentinels
+   PROVISION_ME, CHANGEME, REPLACE_ME, and TODO before config validation,
+   timedatectl, SSH, ROS, sensor, route, tunnel, or robot action.
+3. tools/operator/readiness.sh now requires:
+   - expected type and a non-empty `rostopic echo -n 1` full message for every
+     action status, sensor, map, and costmap topic;
+   - a full /multifloor/floor_state message containing state: 2;
+   - a full /stair_supervisor/state message containing state: 1;
+   - exactly one /scan publisher;
+   - a finite positive TRON1_READINESS_ATTEMPTS bound.
+   Scalar field paths and type-only output cannot satisfy readiness.
+4. Existing fakes and README operator documentation were updated. No ROS node,
+   transport owner, bridge, mux, watchdog, or safety layer was added.
+
+FAILING-FIRST EVIDENCE
+Command:
+  bash -n run.sh && PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest \
+    test.test_run_script_contract test.test_system_operator_contract \
+    test.test_process_boundary_contract -v
+Initial result: FAILED (failures=5).
+Observed intended failures:
+  - ACCID=PROVISION_ME preflight returned 0;
+  - placeholder launch reached readiness instead of rejecting ACCID;
+  - types plus scalar states emitted READY without topic payloads;
+  - valid full-state fake failed because full state messages were not requested;
+  - mocked launch failed the new full-message readiness contract.
+This established both production defects before implementation.
+
+EXACT PLAN COMMAND
+Command exactly as prescribed:
+  bash -n run.sh && python3 -m unittest test.test_run_script_contract \
+    test.test_system_operator_contract test.test_process_boundary_contract -v
+Result: exit 0; Ran 8 tests in 5.057s; OK.
+Passing behavioral cases:
+  - help/unknown mode and offline --check subprocess boundary;
+  - placeholder preflight and launch rejection with absent command log;
+  - mocked valid one-graph launch and approved sensor/tunnel hooks;
+  - types/scalar states without payloads rejected;
+  - valid full payload/state messages accepted;
+  - recorded process cleanup preserves an unrelated process;
+  - stale PID start-time record preserves the live process.
+
+HELP
+Command:
+  ./run.sh --help
+Result: exit 0. Output lists --help, --check,
+--preflight --mini-pc-only, --cleanup, and no-argument launch. It documents
+read-only preflight and wrapper-owned local cleanup.
+
+OFFLINE CHECK
+Command:
+  ./run.sh --check
+Result: exit 0; Ran 45 tests in 1.690s; OK.
+Additional results:
+  schema-only validation passed: deployed=41 examples=12
+  {"status": "ok"}
+  [PASS] offline operator checks complete (no SSH, ROS master, robot, or sensors started)
+Coverage includes six packages, three project nodes, schema, map, tag, shared
+action/message semantics, sole launch graph, forbidden nodes, one /scan owner,
+one RobotTransport owner, managed RViz, and known-good fixture.
+
+INVALID PLACEHOLDER PREFLIGHT / LAUNCH WITH SIDE-EFFECT LOG
+Executed by:
+  python3 -m unittest \
+    test.test_run_script_contract.RunScriptContractTest.\
+test_provisioning_accid_stops_preflight_and_launch_before_commands -v
+The same case is included in the exact plan command above.
+Result: pass for both argument sets:
+  ./run.sh --preflight --mini-pc-only
+  ./run.sh
+Each returned nonzero with:
+  [ERROR] ACCID contains a provisioning placeholder
+The temporary command log did not exist, proving no timedatectl, SSH,
+roslaunch, rostopic, sensor hook, route check, tunnel, or robot action ran.
+
+MOCKED VALID PREFLIGHT / LAUNCH / CLEANUP
+Covered by exact plan tests and legacy target equivalent:
+  test_mocked_launch_uses_one_graph_and_approved_remote_hooks
+  test_valid_full_messages_and_states_satisfy_readiness
+  test_cleanup_terminates_recorded_child_and_preserves_unowned_process
+  test_mocked_preflight_is_read_only_and_defers_powered_robot_gates
+Results: all passed. One local `roslaunch tron1_bringup system.launch` was
+recorded, the approved wf_mapping and `ssh -N` hooks were present, full topic
+payloads produced READY, and cleanup removed only identity-matched owned state.
+
+FULL ROOT SUITE
+An intentionally unsourced discovery first produced 70 passes and two expected
+ModuleNotFoundError results for generated tron1_interfaces. The required sourced
+command was then run:
+  source /opt/ros/noetic/setup.bash && source devel/setup.bash && \
+  PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s test -v
+Result: exit 0; Ran 72 tests in 9.879s; OK.
+
+CATKIN TESTS WITH LOOPBACK ROS
+Command:
+  export ROS_MASTER_URI=http://127.0.0.1:11311 \
+    ROS_IP=127.0.0.1 ROS_HOSTNAME=127.0.0.1 && \
+  source /opt/ros/noetic/setup.bash && \
+  catkin_make run_tests && catkin_test_results --verbose build/test_results
+Result: exit 0.
+  Summary: 21 tests, 0 errors, 0 failures, 0 skipped
+Rostest summaries included multifloor floor-transition 5/5 and node-wiring 1/1.
+
+SHELL / STATIC
+Command:
+  if command -v shellcheck >/dev/null 2>&1; then
+    shellcheck run.sh tools/operator/*.sh
+  else
+    printf 'shellcheck: unavailable; bash -n used\n'
+  fi
+  bash -n run.sh tools/operator/*.sh
+Result: exit 0. shellcheck remains unavailable and is not claimed; bash -n
+passed all maintained operator shell files.
+Static operator scan found no unbounded while/until retry, killall, pkill,
+bridge, mux, safety-node, shell=True, or eval implementation. The sole text hit
+for forbidden node names is check.sh's rejection pattern itself.
+
+INVENTORY / OWNERSHIP
+Static source inventory remains:
+  - project launch nodes: mission_manager, multifloor_manager, stair_supervisor
+  - /scan declaration: one pointcloud_to_laserscan remap
+  - production RobotTransport constructor: stair_supervisor_node.py only
+No extra node or robot transport route was introduced.
+
+PROVENANCE
+Command:
+  python3 tools/source_provenance.py
+Result: exit 0:
+  {"output_count": 0, "source_count": 104, "status": "ok"}
+
+WORKSPACE-WIDE CLEANUP
+Command:
+  ./run.sh --cleanup
+Result: exit 0.
+Process scan:
+  ps -eo pid=,ppid=,args= | grep -E \
+    '[r]oscore|[r]osmaster|[r]oslaunch|[s]sh -N .*127.0.0.1:|[w]f_mapping.launch'
+Result: no matches.
+Catkin and exact-command runs generated 69 ignored Python bytecode files; all
+were removed. Final glob scans for `**/*.pyc` and `**/__pycache__/*`: no files.
+
+SIZE / ARCHITECTURAL REVIEW
+Changed production shell files remain small:
+  common.sh 98 physical lines; readiness.sh 54 physical lines.
+New test support/module files are 61–122 physical lines; existing
+test/test_run_contract.py is 203 physical lines. Each file has one named
+responsibility, environment/config is parsed at the shell boundary, retries are
+finite, and no production Python or ROS node was added.
+
+HARDWARE CLAIM
+No real mini-PC, powered TRON navigation, stair traversal, actuator, E-stop,
+sensor behavior, or physical behavior validation was performed or passed.
+Remote behavior used controlled fakes; ROS tests used loopback only. Physical
+gates remain DEFERRED, and an immediately accessible physical stop remains
+required for dead connection, SIGKILL, kernel failure, or host power loss.
+
+DoneClaim: PASS — corrected Todo 15 software contract.
+The exact plan command passes with the three prescribed real behavioral modules;
+provisioning placeholders fail before side effects; readiness requires actual
+full messages and full state values while preserving bounded attempts and the
+single /scan publisher gate; mocked lifecycle, full sourced root suite, loopback
+catkin tests, provenance, and workspace cleanup all pass. Shellcheck and hardware
+readiness are explicitly not claimed.

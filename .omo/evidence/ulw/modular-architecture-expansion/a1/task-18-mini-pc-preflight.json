@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "task": "Todo 18 - mini-PC-only preflight and operations documentation",
+  "observed_at": "2026-08-26",
+  "target": "m3localtron@192.168.1.56",
+  "safety": {
+    "robot_motion_started": false,
+    "sensor_launch_started": false,
+    "ssh_tunnel_started": false,
+    "production_launch_started": false
+  },
+  "operator_preflight": {
+    "command": "./run.sh --preflight --mini-pc-only",
+    "working_directory": "/home/m3tron/Desktop/TRON1_Modular_Navigation",
+    "exit_code": 1,
+    "status": "blocked_not_passed",
+    "stage": "require_environment_before_network",
+    "reason": "config.env is absent and required operator variables are missing; the repository production profile is not commissioned"
+  },
+  "read_only_observations": {
+    "local_ntp_synchronized": true,
+    "ssh_batch_access": true,
+    "ubuntu_id": "ubuntu",
+    "ubuntu_version": "20.04",
+    "ros_distro": "noetic",
+    "remote_ntp_synchronized": true,
+    "remote_workspace_setup": "/home/m3localtron/catkin_ws/devel/setup.bash",
+    "sensor_package": "/home/m3localtron/catkin_ws/src/sensor_integration",
+    "wf_mapping_launch_resolved": true,
+    "d435f_launch_resolved": true,
+    "launch_resolution_environment": {
+      "D435F_SERIAL": "244622071832"
+    },
+    "declared_topics": [
+      "/livox/lidar",
+      "/camera1/color/image_raw",
+      "/camera1/color/camera_info",
+      "/tag_detections",
+      "/tron/wheel_odom_raw"
+    ],
+    "robot_route": {
+      "host": "192.168.1.10",
+      "probe": "ping -c 1 -W 2",
+      "exit_code": 1,
+      "status": "blocked_not_passed",
+      "received_packets": 0
+    },
+    "mid360_acceptance": "deferred_unverified_in_remote_configuration"
+  },
+  "source_provenance": {
+    "command": "python3 -B tools/source_provenance.py",
+    "status": "ok",
+    "source_count": 104,
+    "manifest_sha256": "7e5beffba6dbf935b8e88b30232a2348793a6f65ca022bf9d02f028fb4fdf195"
+  },
+  "powered_tron": {
+    "navigation": "not_executed_deferred",
+    "stair_traversal": "not_executed_deferred",
+    "actuator": "not_executed_deferred",
+    "e_stop": "not_executed_deferred",
+    "physical_behavior": "not_executed_deferred"
+  },
+  "overall": "blocked_not_passed"
+}

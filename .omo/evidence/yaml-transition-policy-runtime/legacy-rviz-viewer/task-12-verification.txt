@@ -1,0 +1,28 @@
+Task 12 independent automated verification
+
+PASS  python3 -m unittest -v src/stair_supervisor/test/test_configuration_transition.py
+      6 tests
+PASS  python3 -m unittest -v src/stair_supervisor/test/test_supervisor.py src/stair_supervisor/test/test_supervisor_safety.py
+      11 tests
+PASS  sourced devel + PYTHONPATH source robot_transport discovery
+      21 tests
+PASS  python3 -m unittest -v test/test_legacy_rviz_viewer_contract.py test/test_bundle_contract.py test/test_launch_contract.py test/test_process_boundary_contract.py
+      22 tests
+PASS  ./run.sh --check
+      SITE_CONFIG_OK; BUNDLE_OK; [CHECK] bundle, fixture, packages, and local software: OK
+PASS  catkin_make
+PASS  source devel/setup.bash && catkin_make run_tests_stair_supervisor
+PASS  catkin_test_results --verbose build/test_results/stair_supervisor
+      44 tests, 0 errors, 0 failures, 0 skipped after handshake characterization
+PASS  LSP diagnostics
+      No diagnostics found: configuration.py
+      No diagnostics found: supervisor.py
+      No diagnostics found: test_configuration_transition.py
+      No diagnostics found: test_legacy_rviz_viewer_contract.py
+PASS  source import provenance
+      configuration and supervisor resolved under src/stair_supervisor/src/stair_supervisor
+PASS  command cadence
+      stream_rate_hz remains 40.0; period remains 0.025 seconds
+
+Independent AdversarialVerify: confirmed, confidence 0.99.
+No ROS node, tunnel, goal, topic publication, or robot command was started by this verification lane.

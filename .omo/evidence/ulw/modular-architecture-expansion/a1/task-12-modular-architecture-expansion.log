@@ -1,0 +1,176 @@
+Todo 12 — mission ROS node and child-action adapters
+Date: 2026-08-26
+Target: /home/m3tron/Desktop/TRON1_Modular_Navigation
+Evidence-only old-workspace write: this file
+
+OUTCOME
+Implemented the sole mission_manager_node.py and /mission ActionServer composition, ROS state cache,
+correlated move_base/stair/floor child adapters, domain SegmentExecutor bridge, rosbag recording/finalization,
+per-segment cancellation, one-active-mission admission, generated-message translation, and deterministic
+fake action driver. Domain route/anchor/result decisions remain in Todo 7 modules. Only ros_node.py imports
+tron1_interfaces generated messages.
+
+RED -> GREEN PROOF
+1. Before production modules existed:
+   PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/mission_manager/src python3 -B -m unittest discover -s src/mission_manager/test -p 'test_*ros*.py' -v
+   Result: FAILED, ModuleNotFoundError: No module named 'mission_manager.ros_adapter'.
+2. Final identical command:
+   Result: OK, Ran 9 tests in 0.028s.
+
+EXACT VERIFICATION COMMANDS / RESULTS
+- PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/mission_manager/src python3 -B -m unittest discover -s src/mission_manager/test -p 'test_*ros*.py' -v
+  PASS: 9/9.
+- PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/mission_manager/src python3 -B -m unittest discover -s src/mission_manager/test -p 'test_*.py' -v
+  PASS: 30/30.
+- PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_package_dag -v
+  PASS: 6/6.
+- PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/mission_manager/src python3 -B -m compileall -q src/mission_manager/src src/mission_manager/scripts src/mission_manager/test
+  PASS: exit 0. Generated source __pycache__/pyc artifacts were subsequently removed.
+- PYTHONDONTWRITEBYTECODE=1 python3 -B -c '<AST parse all mission package modules and node script>'
+  PASS: AST_OK 13.
+- PYTHONDONTWRITEBYTECODE=1 bash -lc 'source devel/setup.bash && python3 -B -c "import mission_manager.ros_node; ... load_node_configuration(building_valid)"'
+  PASS: printed `7 9 2 1` (locations, edges, stairs, scan specs), proving generated-interface import and fixture composition.
+- catkin_make
+  PASS: six packages configured and built; tron1_interfaces generated; mission node wrapper installed.
+- catkin_make run_tests_mission_manager
+  PASS after nosetest path correction: mission node inventory 1/1 and direct adapter 8/8.
+- catkin_make run_tests
+  First environment run completed targets but its multifloor rostests recorded two infrastructure errors because ROS advertised unreachable host 10.192.1.200.
+- ROS_MASTER_URI=http://127.0.0.1:11311 ROS_IP=127.0.0.1 ROS_HOSTNAME=localhost catkin_make run_tests
+  PASS: mission nosetests 9/9, stair nosetests 4/4, loopback multifloor rostests 6/6.
+- catkin_test_results --verbose build/test_results
+  PASS: Summary: 21 tests, 0 errors, 0 failures, 0 skipped.
+- ps -C roscore -C rosmaster -C roslaunch -C rostest -C mission_manager_node.py -o pid=,comm=,args=
+  PASS cleanup receipt: no output.
+
+DIRECT MOCK ACTION DRIVER
+`DirectMissionDriver` in src/mission_manager/test/test_mission_ros_adapter.py calls the same
+MissionActionAdapter admission/execute/cancel boundary used by ros_node.py. FakeChildClient drives
+wait_for_server, send_goal(done_cb), bounded wait polling, server connectivity, terminal callbacks,
+late callbacks, and cancel_goal without importing ROS. FakeScanBackend drives `.active` creation,
+finalization metadata, startup failure, and cleanup.
+
+FAILURE / BEHAVIOR MATRIX
+- navigate success: one correlated move_base terminal -> OK.
+- inspect + return: outbound navigation, validated scan, fresh directed return -> OK + .bag artifact.
+- record_route + return: one recording brackets both directions -> OK + one finalized artifact.
+- one active mission: second admission -> BUSY; active goal remains owner.
+- malformed/unknown destination or mission type -> INVALID_GOAL before child dispatch.
+- correlation: stale callback from prior generation ignored; current abort remains NAVIGATION_FAILED.
+- child disconnect: unavailable move_base/server connectivity -> COMMUNICATION_LOST.
+- shared stair/floor clients: coherent generated-interface-equivalent results cross both adapters once -> OK.
+- stair child abort -> STAIR_FAILED; floor transition not dispatched.
+- per-segment cancellation: only active move_base goal cancelled once -> CANCELLED/MISSION_ABORT; anchor remains home.
+- empty scan metadata -> SCAN_FAILED; return not dispatched; no `.active` remains.
+- rosbag start failure -> SCAN_FAILED; no `.active` remains.
+- failed return (two move_base aborts) -> NAVIGATION_FAILED; successfully reached outbound anchor remains committed.
+- confirmed anchors: only SegmentExecution.SUCCESS invokes Todo 7 LogicalAnchor.after_segment.
+
+NODE / INTERFACE / IMPORT INVENTORY
+Inventory command result:
+NODES ['mission_manager/scripts/mission_manager_node.py',
+       'multifloor_manager/scripts/multifloor_manager_node.py',
+       'stair_supervisor/scripts/stair_supervisor_node.py']
+MISSION_SERVERS [('src/mission_manager/src/mission_manager/ros_node.py', 1)]
+FORBIDDEN_PRODUCT_REFERENCES []
+GENERATED_MESSAGE_IMPORTS ['src/mission_manager/src/mission_manager/ros_node.py']
+
+Public child endpoints used:
+- /move_base (MoveBaseAction), never /move_base_simple/goal
+- /stair_traversal (tron1_interfaces/StairTraversalAction)
+- /multifloor/floor_transition (tron1_interfaces/FloorTransitionAction)
+- /multifloor/floor_state and /stair_supervisor/state subscriptions
+No /initialpose publisher, robot WebSocket, sibling-capability Python import, extra ROS node, or old-product edit exists.
+
+CHANGED TARGET FILES
+- src/mission_manager/src/mission_manager/{child_actions,ros_adapter,ros_configuration,ros_node,ros_segments,ros_state,scan_adapter}.py
+- src/mission_manager/scripts/mission_manager_node.py
+- src/mission_manager/src/mission_manager/__init__.py
+- src/mission_manager/test/{test_mission_ros_adapter,test_mission_node_ros,test_import_boundary}.py
+- src/mission_manager/{CMakeLists.txt,package.xml}
+
+PROVENANCE — IMMUTABLE LEGACY REFERENCES READ
+fe6b5146317619e55091e43d785eade84a57d0f39093ca6be19cc2cbe28d9f77 navigation_executor.py
+b7778349580efb2010c2170c0bea5834316fa3e56b69ee8a751776ea53fe3550 ros_state.py
+b55b89d0db2ac420671ed96471a8955b525943cabc444cb327b83971ab537987 ros_segments.py
+bc7fd4c9398da733d6b260812ac8cb9488c1467a2a3ad79b1d3cf0c16ba0a1f0 mission_action_server.py
+fa2320b07fbf225f8ceb99a1cf9d26a7e9160e153ea4b800a304c86f38a82a53 scan_recorder.py
+20352aed5d1719484e3d4c4f403c6fc4efc34fdfa918594873f1ae332d6b11fc test_navigation_executor.py
+26539a3d87e9053cb62d6f7474f947c35b846f9b5bb3f0227283de018d3bfd1a test_mission_action_ros.py
+
+TARGET IMPLEMENTATION HASHES
+c941d70d01704835ae2997fc2347d5b2832b7f9db9d2b8decd3876376c12f9fd ros_state.py
+584af648fe5043f1324522b28a9588a4edef6e02f00286fdc4dbde82138203c2 child_actions.py
+64d2da5334d7789c8c0bae9ac0f97bc63319ba8696797ba4f99231d76fe67f4d scan_adapter.py
+1a5291f125ffd7986e34a26e9e5e84e1836306c5d1ba6a10a9f698f0aba74876 ros_segments.py
+851740eeb033ad04d3323addd9886ca20f9632a19f8a43344131c12660ddb16c ros_adapter.py
+dce54634840c40b85eafaf1da6efebd83a0a77359276c1aef465b5180314a6bd ros_configuration.py
+942f4fdcee4ecc0ab9218bec8649a889b136fc82542bbfce45dee1e4000e8f84 ros_node.py
+f5ee47e1b7645b653fc15bcaae73104be79d8f09d7ca9956d289a1b7d3b0c7ef test_mission_ros_adapter.py
+6014d935ffa9b07aa30ceeb05ba11bfcf7acf543a0db7c6edda52f603064a762 test_mission_node_ros.py
+6df446914ac596a4f670908e7c908aa2d3df88ee50d6488e9464b3fd77517c4a mission_manager_node.py
+
+SIZE / ARCHITECTURE REVIEW
+Pure LOC: ros_state 73; child_actions 66; scan_adapter 123; ros_segments 161;
+ros_adapter 100; ros_configuration 103; ros_node 168; adapter test 240; inventory test 33.
+All production modules are <=200 pure LOC. The adapter test is in the 200-250 warning band;
+split it by child/scan concerns before materially extending Todo 12 coverage.
+Single responsibilities: cache, correlation, recording, segment translation, mission admission,
+configuration parsing, and ROS composition are separate modules. Untrusted goal/config data is parsed
+at adapters. Generated messages do not cross into domain modules. No dynamic sibling imports or
+cross-capability Python dependencies exist. Mutable classes are explicit state/cache/session owners.
+
+CLEANUP
+ACTIVE []
+SOURCE_CACHES []
+SOURCE_PYC []
+DEBUG_ARTIFACTS []
+ROS/process inventory after loopback tests: empty.
+No test bag, temporary scan root, debug journal, roscore, rosmaster, roslaunch, rostest, or mission node remains.
+
+LIMITATION
+The powered robot and production profile remain unavailable/disabled, so no physical navigation,
+stair, sensor, or rosbag capture was attempted. ROS Noetic is installed and existing workspace rostests
+were run successfully on loopback. Todo 14/17 mock bringup is not yet present, so Todo 12's mission
+surface is proven by deterministic fake actionlib/rospy boundary tests rather than a full mission launch rostest.
+
+DoneClaim:
+{
+  "task": "12. Rebuild the mission ROS node and child-action adapters on shared interfaces",
+  "changed_files": [
+    "src/mission_manager/src/mission_manager/child_actions.py",
+    "src/mission_manager/src/mission_manager/ros_adapter.py",
+    "src/mission_manager/src/mission_manager/ros_configuration.py",
+    "src/mission_manager/src/mission_manager/ros_node.py",
+    "src/mission_manager/src/mission_manager/ros_segments.py",
+    "src/mission_manager/src/mission_manager/ros_state.py",
+    "src/mission_manager/src/mission_manager/scan_adapter.py",
+    "src/mission_manager/scripts/mission_manager_node.py",
+    "src/mission_manager/src/mission_manager/__init__.py",
+    "src/mission_manager/test/test_mission_ros_adapter.py",
+    "src/mission_manager/test/test_mission_node_ros.py",
+    "src/mission_manager/test/test_import_boundary.py",
+    "src/mission_manager/CMakeLists.txt",
+    "src/mission_manager/package.xml"
+  ],
+  "tests": [
+    "requested ROS adapter unittest: 9/9 pass",
+    "full mission suite: 30/30 pass",
+    "package DAG: 6/6 pass",
+    "catkin build: pass",
+    "loopback catkin tests: 21/21 pass"
+  ],
+  "manual_qa": [
+    "DirectMissionDriver exercised navigate/inspect/record-route/return and failure matrix",
+    "devel-space generated-interface import and building_valid composition printed 7 9 2 1"
+  ],
+  "cleanup": [
+    "no .active artifacts",
+    "no source pycache/pyc/debug journal",
+    "no ROS test processes"
+  ],
+  "risks": [
+    "physical hardware and production-profile behavior deferred",
+    "full mission launch rostest depends on future Todo 14/17 mock bringup"
+  ]
+}

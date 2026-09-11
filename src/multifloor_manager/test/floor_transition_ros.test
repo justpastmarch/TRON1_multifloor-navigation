@@ -1,0 +1,21 @@
+<launch>
+  <node
+    pkg="multifloor_manager"
+    type="multifloor_manager_node.py"
+    name="multifloor_manager"
+    output="screen"
+    required="true">
+    <param name="config_root" value="$(find multifloor_manager)/../../test/fixtures/building_valid"/>
+    <param name="initial_floor" value="3F"/>
+    <param name="service_timeout" value="3.0"/>
+    <param name="tag_timeout" value="2.0"/>
+    <param name="transaction_timeout" value="2.0"/>
+  </node>
+
+  <test
+    test-name="floor_transition_ros"
+    pkg="multifloor_manager"
+    type="test_floor_transition_ros.py"
+    time-limit="30.0"
+  />
+</launch>

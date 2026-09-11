@@ -1,0 +1,135 @@
+schema_version: 2
+plan: .omo/plans/yaml-transition-policy-runtime.md
+task: run-rviz-fix
+task_id: run-rviz-fix
+attempt_id: run-rviz-fix-syntax-repair-2026-08-24T12:00:00+09:00
+status: complete
+status_meaning: RViz YAML syntax repair, parsed focused regression, focused bundle, and ./run.sh --check pass; broader suite status is unchanged from prior evidence
+workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+workspace_is_git: false
+depends_on:
+  path: .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/receipt.yaml
+  status: complete
+allowed_paths:
+  - .omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/**
+  - .omo/start-work/ledger.jsonl
+forbidden_paths:
+  - bundle_source_contract.py
+  - validate_bundle.py
+  - build/**
+  - devel/**
+  - install/**
+  - ROS/robot/user processes except explicitly authorized PID 348555 cleanup already recorded
+changed_paths:
+  - src/multifloor_manager/rviz/wf_navigation.rviz
+  - test/test_bundle_contract.py
+  - .omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/baseline.json
+  - .omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/commands.txt
+  - .omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/receipt.yaml
+  - .omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/test-results.txt
+  - .omo/start-work/ledger.jsonl
+evidence:
+  commands: commands.txt
+  tests: test-results.txt
+  cleanup: cleanup.json
+  diff_inventory: diff-inventory.json
+source_digests:
+  src/multifloor_manager/rviz/wf_navigation.rviz: 9123997acc99313f4b62afb437a86a5c13a02eee5b169572a715dce6649a3d64
+  test/test_bundle_contract.py: 28fc0e22e2e3072517ed024f262623d03140984c953df014d9a266d24fa8d9cd
+generated_digests:
+  source_manifest: 59d07e3ce33096ddeaa64bbb651e34caef47b965f1d9b631160803b60136c192
+  test_manifest: ceab20d9658662cbdf88f1fe3bcf5281039f79dab40b7430f6fa5954e5250f2e
+  build_manifest: bff6c4b2aa8da889aed5b8e5cb449fa237b87113ccccbbdd258b99e32244422e
+  devel_manifest: 956d4b548ab7f10c35a490d1237ec7d48dc5132aeca2271537b57fe5fb5ea8fd
+  install_manifest: 3928461172ebfedae39f776692829a1cb4a9fda5d202262832fbe75099c1a2a4
+verification:
+  - command: parser red then green
+    exit_code: 0
+    result: yaml.safe_load failed with ParserError at line 250 before edit and passed after the one-space indentation fix
+  - command: focused parsed RViz contract
+    exit_code: 0
+    result: parsed YAML asserts map Topic /map, Fixed Frame map, and forbidden goal tools absent
+  - command: focused bundle/launch/run-script contracts
+    exit_code: 0
+    result: 16 tests passed
+  - command: ./run.sh --check
+    exit_code: 0
+    result: SITE_CONFIG_OK; BUNDLE_OK; local software check OK
+  - command: task process/temp audit
+    exit_code: 0
+    result: no task-owned processes or temp paths remained; existing non-task-owned RViz PID 4599 was untouched
+  - command: focused RViz regression red then green
+    exit_code: 0
+    result: red exact forbidden-token failure captured; green 1 test passed
+  - command: focused bundle/launch/run-script contracts
+    exit_code: 0
+    result: 16 tests passed
+  - command: ./run.sh --check
+    exit_code: 0
+    result: SITE_CONFIG_OK; BUNDLE_OK; local software check OK
+  - command: source-direct RViz inspection and task process/temp audit
+    exit_code: 0
+    result: forbidden tokens absent; map contract preserved; no task-owned processes/temp paths
+  - command: broader root suite
+    exit_code: 1
+    result: 81 tests; 2 pre-existing workspace-entrypoint count failures unrelated to this fix
+  - command: JSON/YAML/JSONL validation
+    exit_code: 0
+    result: evidence and ledger valid
+  - command: PYTHONDONTWRITEBYTECODE=1 focused regression tests
+    exit_code: 0
+    result: 2 tests passed
+  - command: PYTHONDONTWRITEBYTECODE=1 focused contract tests
+    exit_code: 0
+    result: 15 tests passed
+  - command: PYTHONDONTWRITEBYTECODE=1 ./run.sh --check
+    exit_code: 1
+    result: pre-baseline RViz forbidden-tool contract failure retained
+  - command: PYTHONDONTWRITEBYTECODE=1 rostopic info /map
+    exit_code: 0
+    result: Publishers None; live publisher evidence blocked/unavailable
+  - command: PYTHONDONTWRITEBYTECODE=1 JSON/YAML/JSONL/hash/manifest validation
+    exit_code: 0
+    result: evidence and manifests consistent
+  - command: PID 348555 exact-command cleanup verification
+    exit_code: 0
+    result: PID gone; no other task-owned process remained
+root_cause: "wf_navigation.rviz line 250 had one extra indentation before Value: true, causing yaml.safe_load ParserError."
+rviz_map_result: standalone RViz had no /map publisher; supported system.launch expanded to map_server and published nav_msgs/OccupancyGrid.
+manual_qa: partial
+blocked_reason: production-style launch could not complete because the fixture launch's robot WebSocket endpoint was unavailable; map publisher verification succeeded before that failure.
+adversarial_classes:
+  dirty_worktree: non-Git workspace; unrelated generated/source paths preserved
+  stale_state: source-direct validator provenance captured; no generated validator used
+  misleading_success_output: exact nonzero wrapper/root-suite results retained
+  malformed_input: YAML parent traversal rejection remains green
+  cancel_resume: not applicable
+  repeated_interruptions: not applicable
+  hung_commands: ROS commands bounded and task launch cleaned
+cleanup: cleanup.json
+journal: .debug-journal.md
+journal_status: removed_after_cleanup; absent_at_verification
+cleanup_status: complete
+latest_attempt:
+  changed_paths:
+    - src/multifloor_manager/rviz/wf_navigation.rviz
+    - test/test_bundle_contract.py
+  rviz_contract: clean_and_yaml_parseable
+  map_contract: preserved
+  task_processes_remaining: false
+  task_temp_paths_remaining: false
+authorized_pid_348555:
+  exact_command: /opt/ros/noetic/lib/rviz/rviz -d src/multifloor_manager/rviz/wf_navigation.rviz
+  action: terminated
+  signal: SIGTERM
+  verified_gone: true
+  other_task_owned_processes_remaining: false
+publisher_evidence: partial_blocked
+publisher_result: "rostopic info /map reported Publishers: None; no live map publisher prerequisite was available"
+scope_note: Only the source RViz indentation and source-direct focused test were product changes; no action/message/node architecture changed.
+baseline_attribution:
+  source_path: bundle_source_contract.py
+  test_path: test/test_bundle_contract.py
+  note: both are post-baseline task changes; historical manifests remain unchanged
+next_safe_tasks:
+  - policy-schema

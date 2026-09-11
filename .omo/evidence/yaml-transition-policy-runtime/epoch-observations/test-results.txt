@@ -1,0 +1,9 @@
+Focused evaluator: 16 passed, exit 0.
+Focused epoch rostest: 6 passed, 0 errors, 0 failures, exit 0 through registered catkin target.
+Focused delayed-pose rostest: 1 passed, 0 errors, 0 failures, exit 0 through registered catkin target.
+Registered multifloor_manager target: exit 0.
+Build: catkin_make exit 0.
+Runtime commit regression: commit_ready() false before begin and before evaluation; true only after successful current-epoch evaluation.
+Static checks: Ruff exit 0; LSP clean on the two changed Python files.
+Direct unittest collection: exit 1 because apriltag_ros.msg is unavailable in the unsourced host environment; registered ROS target passed.
+Manual QA: barrier-controlled writer blocked on the existing reentrant runtime Condition; N finished and N+1 rearmed before release; stale N writer was rejected and N+1 remained empty.

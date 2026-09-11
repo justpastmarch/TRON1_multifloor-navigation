@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="0" failures="0" name="unittest.suite.TestSuite" tests="5" time="0.033"><testcase classname="__main__.RosAdapterContractTest" name="test_callback_readiness_cannot_veto_true_root" time="0.0140" /><testcase classname="__main__.RosAdapterContractTest" name="test_cancel_terminally_stops_and_late_callbacks_are_inert" time="0.0029" /><testcase classname="__main__.RosAdapterContractTest" name="test_root_false_reaches_evaluator_timeout_without_callback_veto" time="0.0106" /><testcase classname="__main__.RosAdapterContractTest" name="test_service_failure_faults_and_invalidates_epoch" time="0.0027" /><testcase classname="__main__.RosAdapterContractTest" name="test_success_is_the_explicit_root_result_and_preserves_operation_phases" time="0.0026" /><system-out>&lt;![CDATA[
+
+]]&gt;</system-out><system-err>&lt;![CDATA[
+
+]]&gt;</system-err></testsuite>

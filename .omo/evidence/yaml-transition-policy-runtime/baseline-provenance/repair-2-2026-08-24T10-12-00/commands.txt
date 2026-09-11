@@ -1,0 +1,129 @@
+attempt_id: baseline-provenance-repair-2-2026-08-24T10-18:01+09:00
+session_id: codex:yaml-transition-policy-runtime-todo-1-repair-2
+receipt: .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/receipt.yaml
+
+ORIGINAL BASELINE COMMANDS, PRESERVED AND NOT RERUN DURING REPAIR:
+COMMAND: python3 -m unittest discover -s test -v
+START: 2026-08-24T09:52:45+09:00
+END: 2026-08-24T09:52:45+09:00
+EXIT: 1
+STDOUT_ARTIFACT: original-command.stdout.txt and prior test-results.txt
+STDERR_ARTIFACT: original-command.stderr.txt
+COMMAND: catkin_make
+START: 2026-08-24T09:53:26+09:00
+END: 2026-08-24T09:53:26+09:00
+EXIT: 0
+STDOUT_ARTIFACT: original-command.stdout.txt
+STDERR_ARTIFACT: original-command.stderr.txt
+COMMAND: catkin_make run_tests
+START: 2026-08-24T09:53:26+09:00
+END: 2026-08-24T09:53:54+09:00
+EXIT: 0
+STDOUT_ARTIFACT: original-command.stdout.txt and xml-failures.stdout.txt
+STDERR_ARTIFACT: original-command.stderr.txt
+COMMAND: catkin_test_results --verbose
+START: 2026-08-24T09:53:54+09:00
+END: 2026-08-24T09:53:54+09:00
+EXIT: 1
+STDOUT_ARTIFACT: original-command.stdout.txt and test-results.txt
+STDERR_ARTIFACT: original-command.stderr.txt
+COMMAND: python3 -c 'import inspect,multifloor_manager.configuration; print(inspect.getfile(multifloor_manager.configuration))'
+START: 2026-08-24T09:52:45+09:00
+END: 2026-08-24T09:52:45+09:00
+EXIT: 1
+STDOUT_ARTIFACT: original-command.stdout.txt
+STDERR_ARTIFACT: original-command.stderr.txt and prior commands.txt
+COMMAND: rospack find multifloor_manager
+START: 2026-08-24T09:52:45+09:00
+END: 2026-08-24T09:52:45+09:00
+EXIT: 1
+STDOUT_ARTIFACT: original-command.stdout.txt
+STDERR_ARTIFACT: original-command.stderr.txt and prior commands.txt
+EXPLORATORY COMMAND LITERAL: date --iso-8601=seconds
+START: 2026-08-24T09:52:45+09:00
+END: 2026-08-24T09:52:45+09:00
+EXIT: 0
+STDOUT_ARTIFACT: original-exploratory.stdout.txt
+STDERR_ARTIFACT: original-exploratory.stderr.txt
+EXPLORATORY COMMAND LITERAL: python3 - <<'PY'
+import hashlib, json, os
+root='.'
+roots=['src','test','README.md','validate_bundle.py','.catkin_workspace']
+for top in roots:
+    paths=[]
+    if os.path.isfile(top): paths=[top]
+    elif os.path.isdir(top):
+        for d, ds, fs in os.walk(top):
+            ds[:] = [x for x in ds if x not in {'.git','.omo','__pycache__'}]
+            paths.extend(os.path.join(d,f) for f in fs)
+    print(json.dumps({'scope':top,'files':len(paths),'sha256':{p:hashlib.sha256(open(p,'rb').read()).hexdigest() for p in sorted(paths)}}))
+for top in ['build','devel','install']:
+    print(json.dumps({'generated_scope':top,'exists':os.path.exists(top),'files':sum(len(fs) for _,_,fs in os.walk(top)) if os.path.isdir(top) else 0}))
+PY
+START: 2026-08-24T09:52:45+09:00
+END: 2026-08-24T09:52:45+09:00
+EXIT: 0
+STDOUT_ARTIFACT: original-exploratory.stdout.txt
+STDERR_ARTIFACT: original-exploratory.stderr.txt
+
+REPAIR COMMANDS, ALL NON-MUTATING AND BYTECODE-DISABLED:
+COMMAND: { printf 'START '; date --iso-8601=seconds; PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$PWD/src/multifloor_manager/src:$PWD/src/mission_manager/src:$PWD/src/stair_supervisor/src" python3 -c 'import inspect,multifloor_manager.configuration; print(inspect.getfile(multifloor_manager.configuration))'; rc=$?; printf 'END '; date --iso-8601=seconds; printf 'EXIT %s\n' "$rc"; exit $rc; } > .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/source-import.stdout.txt 2> .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/source-import.stderr.txt
+START: 2026-08-24T10:18:01+09:00
+END: 2026-08-24T10:18:02+09:00
+EXIT: 0
+STDOUT_ARTIFACT: source-import.stdout.txt
+STDERR_ARTIFACT: source-import.stderr.txt
+COMMAND: { printf 'START '; date --iso-8601=seconds; PYTHONDONTWRITEBYTECODE=1 bash -c 'source devel/setup.bash && python3 -c '\''import inspect,multifloor_manager.configuration; print(inspect.getfile(multifloor_manager.configuration))'\'''; rc=$?; printf 'END '; date --iso-8601=seconds; printf 'EXIT %s\n' "$rc"; exit $rc; } > .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/devel-import.stdout.txt 2> .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/devel-import.stderr.txt
+START: 2026-08-24T10:18:01+09:00
+END: 2026-08-24T10:18:02+09:00
+EXIT: 0
+STDOUT_ARTIFACT: devel-import.stdout.txt
+STDERR_ARTIFACT: devel-import.stderr.txt
+COMMAND: { printf 'START '; date --iso-8601=seconds; PYTHONDONTWRITEBYTECODE=1 bash -c 'source install/setup.bash && python3 -c '\''import inspect,multifloor_manager.configuration; print(inspect.getfile(multifloor_manager.configuration))'\'''; rc=$?; printf 'END '; date --iso-8601=seconds; printf 'EXIT %s\n' "$rc"; exit $rc; } > .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/install-import.stdout.txt 2> .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/install-import.stderr.txt
+START: 2026-08-24T10:18:01+09:00
+END: 2026-08-24T10:18:02+09:00
+EXIT: 0
+STDOUT_ARTIFACT: install-import.stdout.txt
+STDERR_ARTIFACT: install-import.stderr.txt
+COMMAND: { printf 'START '; date --iso-8601=seconds; PYTHONDONTWRITEBYTECODE=1 bash -c 'source devel/setup.bash && rospack find multifloor_manager'; rc=$?; printf 'END '; date --iso-8601=seconds; printf 'EXIT %s\n' "$rc"; exit $rc; } > .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/devel-rospack.stdout.txt 2> .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/devel-rospack.stderr.txt
+START: 2026-08-24T10:18:01+09:00
+END: 2026-08-24T10:18:02+09:00
+EXIT: 0
+STDOUT_ARTIFACT: devel-rospack.stdout.txt
+STDERR_ARTIFACT: devel-rospack.stderr.txt
+COMMAND: { printf 'START '; date --iso-8601=seconds; PYTHONDONTWRITEBYTECODE=1 bash -c 'source install/setup.bash && rospack find multifloor_manager'; rc=$?; printf 'END '; date --iso-8601=seconds; printf 'EXIT %s\n' "$rc"; exit $rc; } > .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/install-rospack.stdout.txt 2> .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/install-rospack.stderr.txt
+START: 2026-08-24T10:18:01+09:00
+END: 2026-08-24T10:18:02+09:00
+EXIT: 0
+STDOUT_ARTIFACT: install-rospack.stdout.txt
+STDERR_ARTIFACT: install-rospack.stderr.txt
+COMMAND: { printf 'START '; date --iso-8601=seconds; PYTHONDONTWRITEBYTECODE=1 python3 .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/manifest_capture.py; rc=$?; printf 'END '; date --iso-8601=seconds; printf 'EXIT %s\n' "$rc"; exit $rc; } > .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/manifests.stdout.txt 2> .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/manifests.stderr.txt
+START: 2026-08-24T10:21:58+09:00
+END: 2026-08-24T10:21:59+09:00
+EXIT: 0
+STDOUT_ARTIFACT: manifests.stdout.txt
+STDERR_ARTIFACT: manifests.stderr.txt
+COMMAND: { printf 'START '; date --iso-8601=seconds; PYTHONDONTWRITEBYTECODE=1 python3 .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/xml_failure_capture.py; rc=$?; printf 'END '; date --iso-8601=seconds; printf 'EXIT %s\n' "$rc"; exit $rc; } > .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/xml-failures.stdout.txt 2> .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/xml-failures.stderr.txt
+START: 2026-08-24T10:21:19+09:00
+END: 2026-08-24T10:21:19+09:00
+EXIT: 0
+STDOUT_ARTIFACT: xml-failures.stdout.txt
+STDERR_ARTIFACT: xml-failures.stderr.txt
+COMMAND: { printf 'START '; date --iso-8601=seconds; PYTHONDONTWRITEBYTECODE=1 python3 .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/result_xml_capture.py; rc=$?; printf 'END '; date --iso-8601=seconds; printf 'EXIT %s\n' "$rc"; exit $rc; } > .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/result-xml.stdout.txt 2> .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/result-xml.stderr.txt
+START: 2026-08-24T10:22:34+09:00
+END: 2026-08-24T10:22:34+09:00
+EXIT: 0
+STDOUT_ARTIFACT: result-xml.stdout.txt
+STDERR_ARTIFACT: result-xml.stderr.txt
+COMMAND: { printf 'START '; date --iso-8601=seconds; PYTHONDONTWRITEBYTECODE=1 python3 .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/self_check.py; rc=$?; printf 'END '; date --iso-8601=seconds; printf 'EXIT %s\n' "$rc"; exit $rc; } > .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/self-check.stdout.txt 2> .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/self-check.stderr.txt
+START: 2026-08-24T10:30:17+09:00
+END: 2026-08-24T10:30:17+09:00
+EXIT: 0
+STDOUT_ARTIFACT: self-check.stdout.txt
+STDERR_ARTIFACT: self-check.stderr.txt
+COMMAND: { printf 'START '; date --iso-8601=seconds; ls -l .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00; rc=$?; printf 'END '; date --iso-8601=seconds; printf 'EXIT %s\n' "$rc"; exit $rc; } > .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/ls.stdout.txt 2> .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/ls.stderr.txt
+START: 2026-08-24T10:26:04+09:00
+END: 2026-08-24T10:26:04+09:00
+EXIT: 0
+STDOUT_ARTIFACT: ls.stdout.txt
+STDERR_ARTIFACT: ls.stderr.txt

@@ -1,0 +1,129 @@
+TASK: Todo 18 mini-PC-only preflight and operations documentation
+RESULT: COMPLETE_WITH_BLOCKED_PREFLIGHT (NOT PASSED)
+DATE: 2026-08-26
+TARGET_ROOT: /home/m3tron/Desktop/TRON1_Modular_Navigation
+ATTEMPT_PATH: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/ulw/modular-architecture-expansion/a1
+
+SAFETY RECEIPT
+- Robot motion started: false
+- Sensor launch started: false
+- SSH tunnel started: false
+- Production launch started: false
+- Only bounded read-only local/SSH/file-resolution/NTP/ICMP probes ran.
+
+EXACT OPERATOR PREFLIGHT
+Command from target root:
+  ./run.sh --preflight --mini-pc-only
+Result:
+  exit 1
+  [ERROR] missing required variables: MINI_PC_HOST MINI_PC_USER MINI_PC_WORKSPACE ROS_MASTER_PORT ROS_MASTER_HOST MINI_PC_ROS_IP D435F_SERIAL ROBOT_HOST ROBOT_WS_PORT LOCAL_WS_PORT ACCID POINTCLOUD_TOPIC CAMERA_IMAGE_TOPIC CAMERA_INFO_TOPIC TAG_DETECTIONS_TOPIC INITIAL_FLOOR HOME_LOCATION_ID INITIAL_LOCATION_ID INSPECT_PROFILE_ID SCAN_OUTPUT_BASE
+Classification:
+  BLOCKED_NOT_PASSED at the fail-closed environment gate, before SSH/network/runtime work. config.env is absent and most repository production domain YAML remains configured:false.
+
+READ-ONLY MINI-PC COMMANDS AND OUTCOMES
+1. Local clock:
+   timedatectl show -p NTPSynchronized --value
+   -> exit 0; yes
+2. Bounded batch SSH baseline (ConnectTimeout=5) read /etc/os-release, sourced ROS/workspace setup, queried rosversion/NTP, rospack, and resolved launch files with roslaunch --files.
+   -> SSH reached m3localtron@192.168.1.56
+   -> Ubuntu 20.04
+   -> ROS distro noetic
+   -> remote NTPSynchronized=yes
+   -> /home/m3localtron/catkin_ws/devel/setup.bash present
+   -> sensor_integration=/home/m3localtron/catkin_ws/src/sensor_integration
+   -> first resolution was blocked because D435F_SERIAL was absent in the noninteractive shell
+3. Launch declaration resolution repeated with the configured declaration only:
+   export D435F_SERIAL=244622071832
+   roslaunch --files sensor_integration wf_mapping.launch
+   roslaunch --files sensor_integration d435f.launch
+   -> exit 0; both launch graphs resolved; no launch was started
+4. Read-only launch/config review:
+   -> wf_mapping.launch declares /tron/wheel_odom_raw, MID360, sensor TF, D435F, and camera1
+   -> target deployment declares /livox/lidar, /camera1/color/image_raw, /camera1/color/camera_info, and /tag_detections
+   -> remote MID360 config records device/network/timestamp physical acceptance as unverified/deferred
+5. Bounded remote robot-route probe:
+   ssh ... 'ping -c 1 -W 2 192.168.1.10'
+   -> exit 1; 1 transmitted, 0 received
+   -> BLOCKED_NOT_PASSED; no robot connection or command was attempted
+
+SOURCE COMPARISON / PROVENANCE
+Command:
+  python3 -B tools/source_provenance.py
+Result:
+  exit 0
+  {"output_count": 0, "source_count": 104, "status": "ok"}
+Manifest:
+  docs/migration/source-selection.json
+  SHA-256 7e5beffba6dbf935b8e88b30232a2348793a6f65ca022bf9d02f028fb4fdf195
+Conclusion:
+  All and only the 104 authoritative Todo 1 source selections still match.
+
+OLD-WORKSPACE WRITE BOUNDARY
+Audit threshold was the earliest new operations-document mtime: 1787686558475494938 ns.
+Read-only scan result:
+  old_non_omo_files_written_since_threshold=0
+This task writes in the old workspace only to the exact approved a1 evidence attempt and the selected plan checkbox/status field. No old product/source path was edited.
+
+DOCUMENTATION
+Created:
+- docs/operations/cutover.md
+- docs/operations/rollback.md
+- docs/operations/hardware-commissioning.md
+The docs explicitly require stop-old -> source-new -> check -> preflight -> launch-new; forbid old/new concurrent launch; require rollback to stop new before sourcing old; require the accessible physical stop for dead connection/process/kernel/host cases; list exact evidence paths; and mark navigation, stair traversal, actuator, E-stop, and physical behavior NOT EXECUTED / DEFERRED.
+
+AUTOMATED VERIFICATION
+Command:
+  python3 -B -m unittest test.test_workspace_boundary test.test_system_operator_contract -v
+Result:
+  exit 0; Ran 16 tests in 1.333s; OK
+Command:
+  bash -n run.sh tools/operator/preflight.sh tools/operator/common.sh
+Result:
+  exit 0
+Documentation assertion driver:
+  three_docs=true
+  cutover_order=true
+  never_parallel=true
+  rollback_stop_first=true
+  physical_stop=true
+  evidence_paths=true
+  deferred_rows=true
+  blocked_not_passed=true
+
+PROVENANCE OF CREATED DOCS
+- cutover.md SHA-256 88c512ef0b7a4569b582bc1f6499225b93e92dd955e49569c4f77b461bbcc2ef
+- rollback.md SHA-256 fc4d5eca75c3261c5b8b09e2c49a18c86ffcbb205925ca42ebf76105a0e5a44f
+- hardware-commissioning.md SHA-256 4f52d63424d1b727f74186c6a02dd1e8121ad750cd07fbb73ef3e52043133501
+
+CLEANUP RECEIPT
+Process inspection searched for roslaunch tron1_bringup, ssh -N, and wf_mapping.launch.
+Result:
+  task18_runtime_process_matches=0
+No runtime process, tunnel, temporary config, remote file, or test fixture was created by this task; no cleanup action was required.
+
+POWERED-TRON GATES
+- Navigation: NOT EXECUTED / DEFERRED
+- Stair traversal: NOT EXECUTED / DEFERRED
+- Actuator: NOT EXECUTED / DEFERRED
+- E-stop: NOT EXECUTED / DEFERRED
+- Physical behavior: NOT EXECUTED / DEFERRED
+
+DoneClaim:
+  task: Todo 18
+  changed_files:
+    - /home/m3tron/Desktop/TRON1_Modular_Navigation/docs/operations/cutover.md
+    - /home/m3tron/Desktop/TRON1_Modular_Navigation/docs/operations/rollback.md
+    - /home/m3tron/Desktop/TRON1_Modular_Navigation/docs/operations/hardware-commissioning.md
+    - /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/ulw/modular-architecture-expansion/a1/task-18-mini-pc-preflight.json
+    - /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/ulw/modular-architecture-expansion/a1/task-18-modular-architecture-expansion.log
+  tests:
+    - 104/104 authoritative source hashes valid
+    - 16/16 prescribed unittests passed
+    - shell syntax and all documentation assertions passed
+  manual_qa:
+    - bounded read-only SSH/NTP/OS/Noetic/workspace/package/launch/config/route probes recorded above
+  cleanup:
+    - zero task runtime process matches; nothing spawned
+  risks:
+    - operator preflight remains BLOCKED_NOT_PASSED pending commissioned local environment/profile
+    - robot route did not answer; MID360 physical acceptance remains deferred

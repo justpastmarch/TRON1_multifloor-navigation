@@ -1,0 +1,5 @@
+env ROS_IP=127.0.0.1 catkin_make
+source-direct import with ROS setup and canonical package src roots
+source devel/setup.bash; import provenance
+source devel/setup.bash; rospack find mission_manager multifloor_manager stair_supervisor
+sha256sum of final source/test modules and valid/blocked fixtures

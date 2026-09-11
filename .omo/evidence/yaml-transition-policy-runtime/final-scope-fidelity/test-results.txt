@@ -1,0 +1,4 @@
+Focused site/parity checks: 27 passed.
+Evaluator: 16 passed.
+Root suite: exit 1, 100 tests, 2 failures; both are the recorded baseline entrypoint-count failures for multifloor_manager and stair_supervisor.
+Speed-limit contract: 1 test passed after asserting the 0.40 planner fallback and 0.50 effective runtime override separately.

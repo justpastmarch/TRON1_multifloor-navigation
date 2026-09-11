@@ -1,0 +1,162 @@
+Todo 11 — multifloor ROS node around the pure condition boundary
+Date: 2026-08-26
+Target: /home/m3tron/Desktop/TRON1_Modular_Navigation
+Immutable source/product tree: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+
+OUTCOME
+- Implemented the sole installed multifloor_manager_node.py and package-local ROS adapter.
+- Added an epoch-owned snapshot store. All tag/map/AMCL/costmap callbacks reduce observations into immutable snapshots and return false when their epoch is terminal.
+- Added bounded change_map, initial-pose/request_nomotion_update, and clear_costmaps operations.
+- The runner calls all configured producers against one immutable snapshot and passes that evidence to tron1_condition_engine.evaluate_cycle. There is no callback readiness gate after or beside the explicit root.
+- Action feedback preserves ARM_TARGET, CHANGE_MAP, MAP_CONFIRM, INITIALPOSE, AMCL_READY, CLEAR_COSTMAPS, COSTMAP_READY, POLICY_READY.
+- Success is emitted only for EvaluationCycle.result. Cancellation and operation failure finish FAULT/PREEMPTED or FAULT/ABORTED, invalidate the epoch, and reject late callback writes.
+- Project-generated ROS imports in ros_node.py are exactly tron1_interfaces.msg. No old capability-generated type is imported.
+
+CHANGED TARGET FILES
+- src/multifloor_manager/src/multifloor_manager/ros_adapter.py
+- src/multifloor_manager/src/multifloor_manager/ros_configuration.py
+- src/multifloor_manager/src/multifloor_manager/ros_node.py
+- src/multifloor_manager/scripts/multifloor_manager_node.py
+- src/multifloor_manager/test/test_ros_adapter_contract.py
+- src/multifloor_manager/test/floor_transition.test
+- src/multifloor_manager/CMakeLists.txt
+- src/multifloor_manager/package.xml
+
+RED -> GREEN
+1. RED command:
+   PYTHONPATH=src/tron1_condition_engine/src:src/multifloor_manager/src python3 -m unittest src/multifloor_manager/test/test_ros_adapter_contract.py -v
+   Result: ERROR, ModuleNotFoundError: No module named 'multifloor_manager.ros_adapter'.
+2. GREEN focused suite:
+   PYTHONPATH=src/tron1_condition_engine/src:src/multifloor_manager/src python3 -m unittest discover -s src/multifloor_manager/test -p 'test_*.py' -v
+   Result after independent-verification fix: PASS, Ran 14 tests, OK.
+
+DIRECT ROOT-VS-CALLBACK VETO PROBE
+Command:
+  PYTHONPATH=src/tron1_condition_engine/src:src/multifloor_manager/src python3 -m unittest src.multifloor_manager.test.test_ros_adapter_contract.RosAdapterContractTest.test_callback_readiness_cannot_veto_true_root -v
+Result: PASS, Ran 1 test, OK.
+Probe detail: localization and costmap callbacks wrote false. The test changed only YAML modes to ignored and removed those leaves from root. The floor-confirmation-only explicit root evaluated true and the action succeeded. No callback boolean was consulted as a second gate.
+
+CANCELLATION / LATE-CALLBACK PROBE
+Command:
+  PYTHONPATH=src/tron1_condition_engine/src:src/multifloor_manager/src python3 -m unittest src.multifloor_manager.test.test_ros_adapter_contract.RosAdapterContractTest.test_cancel_terminally_stops_and_late_callbacks_are_inert -v
+Result: PASS, Ran 1 test, OK.
+Probe detail: cancellation during clear-costmaps produced PREEMPTED+FAULT, invalidated the epoch, and a later costmap write returned false without changing public terminal state. The same suite proves change_map failure produces ABORTED+FAULT and rejects a late map write.
+
+ROS / ROSTEST CONTRACT
+Initial inherited deployment environment had ROS_MASTER_URI=http://10.192.1.2:11311 and ROS_IP=10.192.1.200. Two diagnostic attempts timed out before isolated execution; no pass was claimed. The executable also initially lacked a Python shebang and used unittest.main; direct rosrun exposed the shell parse error. Both test-launch defects were fixed.
+Final command:
+  source devel/setup.bash && ROS_MASTER_URI=http://127.0.0.1:11311 ROS_IP=127.0.0.1 rostest multifloor_manager floor_transition.test --results-filename task11.xml
+Result after correction: SUCCESS; adapter TESTS 5 plus node-wiring TESTS 1, ERRORS 0, FAILURES 0.
+XML: task-11-rostest.xml and task-11-node-wiring-rostest.xml are exact detailed rosunit XML copies; task-11-node-wiring-launch.xml preserves the ROS launch parameters/node result.
+Catkin test command:
+  ROS_MASTER_URI=http://127.0.0.1:11311 ROS_IP=127.0.0.1 catkin_make run_tests_multifloor_manager
+Result: PASS; run_tests_multifloor_manager target built, rostest 4/4.
+Command:
+  catkin_test_results --verbose build/test_results/multifloor_manager
+Result after correction: Summary: 8 tests, 0 errors, 0 failures, 0 skipped (two outer rostests plus six detailed test cases).
+
+BUILD / IMPORT / INVENTORY
+Command: catkin_make
+Result: PASS; six packages traversed; tron1_interfaces generated 23 messages; multifloor_manager_node.py devel wrapper installed; build 100%.
+Command: python3 -m compileall -q src/multifloor_manager/src src/multifloor_manager/scripts src/multifloor_manager/test
+Result: PASS, exit 0.
+Command: source devel/setup.bash && python3 -c "from multifloor_manager.ros_node import MultifloorManagerNode; from tron1_interfaces.msg import FloorState, FloorTransitionAction; print(...)"
+Result: MultifloorManagerNode tron1_interfaces/FloorState FloorTransitionAction.
+Command: python3 -m unittest test.test_package_dag -v
+Result: PASS, Ran 6 tests, OK; exactly six packages and exactly mission_manager_node.py, multifloor_manager_node.py, stair_supervisor_node.py.
+Project-generated-type AST scan result: ['tron1_interfaces.msg'].
+Cross-capability import AST scan result: [].
+Old generated multifloor_manager.msg import scan result: [].
+
+SIZE / ARCHITECTURAL REVIEW
+- ros_adapter.py: 241 pure LOC (warning band, below 250 ceiling). It owns the ROS-independent transition boundary; split store/runner before adding substantial behavior.
+- ros_node.py: 243 pure LOC (warning band, below 250 ceiling). It owns ROS adaptation; split ROS operations/node composition before the next edit that adds lines.
+- ros_configuration.py: 80 pure LOC; owns ROS configuration parsing.
+- test_ros_adapter_contract.py: 136 pure LOC; owns adapter behavioral contracts.
+- Boundary purity: YAML and ROS messages are parsed at package boundaries; the engine receives typed snapshots/evidence only.
+- Variant discrimination: no new tagged union was implemented.
+- Escape hatches: no Any, cast, type-ignore, pyright-ignore, breakpoint, pdb, or cross-capability import was introduced.
+- Defensive/one-off layers: no readiness gate, safety node, extra node, or producer side effect was added.
+- Logging: no logger behavior was added or changed.
+- The shared no-excuse checker itself requires Python match syntax and fails under the workspace's required Python 3.8 (`SyntaxError` at checker line 519); Python 3.12 is not installed. This is recorded as a tooling limitation, not a source pass. Direct LOC, import, escape-hatch, compile, unit, rostest, and catkin checks were run instead.
+
+PROVENANCE
+Old reference SHA-256:
+- b04ae79028038bba8e185192cefc58733cd63ddd8d62a978339830aea527fe08  old ros_node.py
+- 6c49b572f412b468e815bf78ce4bbff1805a2d0084ceff3a3412df461e0e0b0a  old ros_runtime.py
+- 62371b0feda1abdde7b73c52d8b595c8beff199726e6675ca2f42c10eeb71ffb  old ros_callbacks.py
+- eee7a8da9a329d4e783a7805c210c537cd7b0eb467da8a516dde9728abea400f  old ros_services.py
+- d82d7495961c528527d4e2e12e21519c318ef511b193b1a2a80022a139f5a0de  old test_floor_transition_ros.py
+- c2710a2193f8298bd035bdff13869621ac75064cce841f4300ee66a3218243d6  old test_floor_transition_cancel_ros.py
+- 65930e4599a2298536fa2a2146a344f94d8b9115e11170b63f495de07026b83a  old test_floor_transition_epoch_ros.py
+New key SHA-256:
+- e0cf44d9a17e7b43350016b11d5e9794a052b9ce244f5ad2321b140f0ff98aec  ros_adapter.py
+- 77505fc44b1ee11bacf3fda86568b4056e7509a6dfb6ac1c367144fba1d7147a  ros_configuration.py
+- e322a8dd6edf283c9bd1acca02099ee561a56dde616674eb8ff12200ced9e6e5  ros_node.py
+- 2595709f8bd34243584b3ddf1d3a8542aa1c91379b305fe85e8ceb9dc7e29036  multifloor_manager_node.py
+- 74da1f10189df4a1cf2bd79c3d212b9bd48829efcc30dd56e07935d81807bdc3  test_ros_adapter_contract.py
+- 3de496aea50feaddcb45605f4cecfe59ec55e88e01fd88aaca4004d82ce18721  floor_transition.test
+
+INDEPENDENT VERIFICATION CORRECTION
+- Confirmed defect: `system.launch` supplied `~tag_topic`, but the runtime node hardcoded `/tag_detections`; map, AMCL, and global costmap subscriptions were also literals.
+- Red node-level command: `source devel/setup.bash && ROS_MASTER_URI=http://127.0.0.1:11311 ROS_IP=127.0.0.1 rostest multifloor_manager node_wiring.test --results-filename task11-wiring-red.xml`.
+- Red result: 1 failure. Live graph subscribers were `/tag_detections`, `/map`, `/amcl_pose`, and `/move_base/global_costmap/costmap`; none of the supplied `/fixture/*` topics were registered.
+- Fix: runtime subscriptions now honor `~tag_topic`, `~map_topic`, `~amcl_pose_topic`, and `~global_costmap_topic`, preserving source-compatible defaults and queue sizes. Existing private parameters remain in force for action name, initial-pose publisher, service timeout, change-map, nomotion, and clear-costmaps services. Fixed `/multifloor/floor_state` remains the declared public state endpoint.
+- Green node-level rostest launched the real sole node with non-default topics and passed 1/1. No extra node or readiness gate was added.
+- Added root-false regression: required false observations continue through the sole explicit root until the evaluator's timeout, producing ABORTED/FAULT with trace reason `timeout`.
+- Preserved adapter cases: true explicit root and eight feedback phases; ignored false callback observations cannot veto; cancellation preempts and fences late writes; service failure aborts and fences late writes.
+- Full sourced root unittest suite: 49/49 pass. Condition engine: 23/23 pass. Multifloor package: 14/14 pass. Interface/package focused suite: 13/13 pass. `catkin_make`: pass. `catkin_make run_tests`: pass.
+- New target provenance: bb0be25f8c9c63e00c5833b4a2072005274b0d5b023616bbcc8afefeebe755d5 node_wiring_rostest.py; d8d3ae36589df2e4686a0fae627ef435ddcc2552c068f483ef6db0afdafbd842 node_wiring.test; b88f8f39a3e341b67d190e2cc82f9502c341f57de9776c54515e88738afb0b51 CMakeLists.txt.
+- Detailed XML archive verification: byte-for-byte `cmp` passed for the 5-case adapter rosunit XML, 1-case live-node wiring rosunit XML, and outer node-wiring rostest launch XML against `build/test_results/multifloor_manager`.
+- Final cleanup: removed every `__pycache__` under target `src/`, root `test/`, and `tools/`; removed transient `~/.ros/test_results/multifloor_manager/*task11*.xml`; removed the debug journal; source/test pyc, task11 transient XML, journal, and ROS-process scans all returned empty.
+
+CLEANUP RECEIPT
+- Removed compile/test __pycache__ directories under src/multifloor_manager; follow-up glob found no *.pyc.
+- Removed temporary .debug-journal.md after recording the confirmed shebang/result-protocol/network root causes here; follow-up glob found no journal.
+- `pgrep -af "roscore|rosmaster|roslaunch|rostest"` returned no process after successful rostest teardown.
+- Debug-marker scan returned [].
+- No old product/source file was edited; old-workspace writes are this bound attempt evidence/XML and the permitted Todo 11 plan checkbox update.
+
+DoneClaim
+{
+  "task": "11. Rebuild the multifloor ROS node around the pure condition boundary",
+  "changed_files": [
+    "src/multifloor_manager/src/multifloor_manager/ros_adapter.py",
+    "src/multifloor_manager/src/multifloor_manager/ros_configuration.py",
+    "src/multifloor_manager/src/multifloor_manager/ros_node.py",
+    "src/multifloor_manager/scripts/multifloor_manager_node.py",
+    "src/multifloor_manager/test/test_ros_adapter_contract.py",
+    "src/multifloor_manager/test/floor_transition.test",
+    "src/multifloor_manager/test/node_wiring_rostest.py",
+    "src/multifloor_manager/test/node_wiring.test",
+    "src/multifloor_manager/CMakeLists.txt",
+    "src/multifloor_manager/package.xml"
+  ],
+  "tests": [
+    "multifloor unittest discover: 14/14 pass",
+    "adapter rostest: 5/5 detailed cases pass",
+    "real-node private-topic wiring rostest: 1/1 pass",
+    "catkin test results: 8 tests, 0 errors/failures/skips",
+    "sourced root unittest suite: 49/49 pass",
+    "condition engine suite: 23/23 pass",
+    "package DAG: 6/6 pass",
+    "catkin_make: exit 0"
+  ],
+  "manual_qa": [
+    "task-11-rostest.xml",
+    "task-11-node-wiring-rostest.xml",
+    "task-11-node-wiring-launch.xml",
+    "direct root-vs-callback veto probe",
+    "direct cancellation/late-callback probe",
+    "generated-message import smoke"
+  ],
+  "cleanup": [
+    "no ROS test processes",
+    "no pyc caches under multifloor_manager",
+    "no debug journal/markers"
+  ],
+  "risks": [
+    "No powered robot or production-configured live navigation graph was exercised; Todo 11 acceptance is mocked/offline ROS only.",
+    "ros_adapter.py and ros_node.py are in the 200-250 LOC warning band; ros_node.py is 243 pure LOC and must be split before the next line-adding edit."
+  ]
+}

@@ -1,0 +1,911 @@
+[33m[WARN] [1787113795.790099541]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1787113796.371180418]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1787113796.712786051]: Trajectory Rollout planner initialized with param meter_scoring not set. Set it to true to make your settings robust against changes of costmap resolution.[0m
+[33m[WARN] [1787113888.304513512]: Costmap2DROS transform timeout. Current time: 1787113888.3045, global_pose stamp: 1787113887.7762, tolerance: 0.5000[0m
+[33m[WARN] [1787113890.177766533]: Costmap2DROS transform timeout. Current time: 1787113890.1777, global_pose stamp: 1787113889.4962, tolerance: 0.5000[0m
+[33m[WARN] [1787113896.577788116]: Costmap2DROS transform timeout. Current time: 1787113896.5777, global_pose stamp: 1787113896.0565, tolerance: 0.5000[0m
+[33m[WARN] [1787114291.177780113]: Costmap2DROS transform timeout. Current time: 1787114291.1777, global_pose stamp: 1787114290.6312, tolerance: 0.5000[0m
+[33m[WARN] [1787114292.177795327]: Costmap2DROS transform timeout. Current time: 1787114292.1777, global_pose stamp: 1787114291.2913, tolerance: 0.5000[0m
+[33m[WARN] [1787114354.377813855]: Costmap2DROS transform timeout. Current time: 1787114354.3778, global_pose stamp: 1787114353.8134, tolerance: 0.5000[0m
+[33m[WARN] [1787120728.304474489]: Costmap2DROS transform timeout. Current time: 1787120728.3044, global_pose stamp: 1787120727.6655, tolerance: 0.5000[0m
+[33m[WARN] [1787120730.304478257]: Costmap2DROS transform timeout. Current time: 1787120730.3044, global_pose stamp: 1787120729.6656, tolerance: 0.5000[0m
+[33m[WARN] [1787120923.177759902]: Costmap2DROS transform timeout. Current time: 1787120923.1777, global_pose stamp: 1787120922.5207, tolerance: 0.5000[0m
+[33m[WARN] [1787120959.777790525]: Costmap2DROS transform timeout. Current time: 1787120959.7777, global_pose stamp: 1787120959.2317, tolerance: 0.5000[0m
+[33m[WARN] [1787120963.777783259]: Costmap2DROS transform timeout. Current time: 1787120963.7777, global_pose stamp: 1787120963.2521, tolerance: 0.5000[0m
+[33m[WARN] [1787121219.780065436]: Costmap2DROS transform timeout. Current time: 1787121219.7800, global_pose stamp: 1787121219.2320, tolerance: 0.5000[0m
+[33m[WARN] [1787121244.304472829]: Costmap2DROS transform timeout. Current time: 1787121244.3044, global_pose stamp: 1787121243.7648, tolerance: 0.5000[0m
+[33m[WARN] [1787121246.304487701]: Costmap2DROS transform timeout. Current time: 1787121246.3044, global_pose stamp: 1787121245.4656, tolerance: 0.5000[0m
+[33m[WARN] [1787121248.304466917]: Costmap2DROS transform timeout. Current time: 1787121248.3044, global_pose stamp: 1787121247.7647, tolerance: 0.5000[0m
+[33m[WARN] [1787121254.977753951]: Costmap2DROS transform timeout. Current time: 1787121254.9777, global_pose stamp: 1787121254.4632, tolerance: 0.5000[0m
+[33m[WARN] [1787121255.977760090]: Costmap2DROS transform timeout. Current time: 1787121255.9777, global_pose stamp: 1787121255.3831, tolerance: 0.5000[0m
+[33m[WARN] [1787121275.577780739]: Costmap2DROS transform timeout. Current time: 1787121275.5777, global_pose stamp: 1787121275.0740, tolerance: 0.5000[0m
+[33m[WARN] [1787121276.777775300]: Costmap2DROS transform timeout. Current time: 1787121276.7777, global_pose stamp: 1787121276.0039, tolerance: 0.5000[0m
+[33m[WARN] [1787121391.777769114]: Costmap2DROS transform timeout. Current time: 1787121391.7777, global_pose stamp: 1787121391.1584, tolerance: 0.5000[0m
+[33m[WARN] [1787122324.577759543]: Costmap2DROS transform timeout. Current time: 1787122324.5777, global_pose stamp: 1787122324.0738, tolerance: 0.5000[0m
+[33m[WARN] [1787122355.378057881]: Costmap2DROS transform timeout. Current time: 1787122355.3780, global_pose stamp: 1787122354.8750, tolerance: 0.5000[0m
+[33m[WARN] [1787122641.377754108]: Costmap2DROS transform timeout. Current time: 1787122641.3777, global_pose stamp: 1787122640.8759, tolerance: 0.5000[0m
+[33m[WARN] [1787123667.977766051]: Costmap2DROS transform timeout. Current time: 1787123667.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123668.977792316]: Costmap2DROS transform timeout. Current time: 1787123668.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123670.177761544]: Costmap2DROS transform timeout. Current time: 1787123670.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123671.177776291]: Costmap2DROS transform timeout. Current time: 1787123671.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123672.304433400]: Costmap2DROS transform timeout. Current time: 1787123672.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123673.304570721]: Costmap2DROS transform timeout. Current time: 1787123673.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123674.377762128]: Costmap2DROS transform timeout. Current time: 1787123674.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123675.577737316]: Costmap2DROS transform timeout. Current time: 1787123675.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123676.777764270]: Costmap2DROS transform timeout. Current time: 1787123676.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123677.777793936]: Costmap2DROS transform timeout. Current time: 1787123677.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123678.977768813]: Costmap2DROS transform timeout. Current time: 1787123678.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123680.177766537]: Costmap2DROS transform timeout. Current time: 1787123680.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123681.177760728]: Costmap2DROS transform timeout. Current time: 1787123681.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123682.177782918]: Costmap2DROS transform timeout. Current time: 1787123682.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123683.304452832]: Costmap2DROS transform timeout. Current time: 1787123683.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123684.304474919]: Costmap2DROS transform timeout. Current time: 1787123684.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123685.377757836]: Costmap2DROS transform timeout. Current time: 1787123685.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123686.377777263]: Costmap2DROS transform timeout. Current time: 1787123686.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123687.377768635]: Costmap2DROS transform timeout. Current time: 1787123687.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123688.577752283]: Costmap2DROS transform timeout. Current time: 1787123688.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123689.577774126]: Costmap2DROS transform timeout. Current time: 1787123689.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123690.779750812]: Costmap2DROS transform timeout. Current time: 1787123690.7797, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123691.977754564]: Costmap2DROS transform timeout. Current time: 1787123691.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123692.977774939]: Costmap2DROS transform timeout. Current time: 1787123692.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123694.177749343]: Costmap2DROS transform timeout. Current time: 1787123694.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123695.177770539]: Costmap2DROS transform timeout. Current time: 1787123695.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123695.547720807]: No laser scan received (and thus no pose updates have been published) for 27.933803 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123696.177780829]: Costmap2DROS transform timeout. Current time: 1787123696.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123697.177882806]: Costmap2DROS transform timeout. Current time: 1787123697.1778, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123698.304469404]: Costmap2DROS transform timeout. Current time: 1787123698.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123699.304667639]: Costmap2DROS transform timeout. Current time: 1787123699.3046, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123700.377748775]: Costmap2DROS transform timeout. Current time: 1787123700.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123701.577758724]: Costmap2DROS transform timeout. Current time: 1787123701.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123702.777797162]: Costmap2DROS transform timeout. Current time: 1787123702.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123703.977795489]: Costmap2DROS transform timeout. Current time: 1787123703.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123705.177844757]: Costmap2DROS transform timeout. Current time: 1787123705.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123706.304489220]: Costmap2DROS transform timeout. Current time: 1787123706.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123707.304502586]: Costmap2DROS transform timeout. Current time: 1787123707.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123708.377786272]: Costmap2DROS transform timeout. Current time: 1787123708.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123709.577773578]: Costmap2DROS transform timeout. Current time: 1787123709.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123710.547726935]: No laser scan received (and thus no pose updates have been published) for 42.933808 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123710.777761940]: Costmap2DROS transform timeout. Current time: 1787123710.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123711.777781328]: Costmap2DROS transform timeout. Current time: 1787123711.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123712.977800141]: Costmap2DROS transform timeout. Current time: 1787123712.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123714.177775942]: Costmap2DROS transform timeout. Current time: 1787123714.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123715.304467436]: Costmap2DROS transform timeout. Current time: 1787123715.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123716.304486400]: Costmap2DROS transform timeout. Current time: 1787123716.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123717.304493630]: Costmap2DROS transform timeout. Current time: 1787123717.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123718.377782660]: Costmap2DROS transform timeout. Current time: 1787123718.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123719.577777636]: Costmap2DROS transform timeout. Current time: 1787123719.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123720.580792025]: Costmap2DROS transform timeout. Current time: 1787123720.5807, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123721.777767099]: Costmap2DROS transform timeout. Current time: 1787123721.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123722.977769939]: Costmap2DROS transform timeout. Current time: 1787123722.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123723.977773727]: Costmap2DROS transform timeout. Current time: 1787123723.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123724.977885265]: Costmap2DROS transform timeout. Current time: 1787123724.9778, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123725.547713993]: No laser scan received (and thus no pose updates have been published) for 57.933794 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123726.177778255]: Costmap2DROS transform timeout. Current time: 1787123726.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123727.304474878]: Costmap2DROS transform timeout. Current time: 1787123727.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123728.377763971]: Costmap2DROS transform timeout. Current time: 1787123728.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123729.577754415]: Costmap2DROS transform timeout. Current time: 1787123729.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123730.577760542]: Costmap2DROS transform timeout. Current time: 1787123730.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123731.577788336]: Costmap2DROS transform timeout. Current time: 1787123731.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123732.777775677]: Costmap2DROS transform timeout. Current time: 1787123732.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123733.977759925]: Costmap2DROS transform timeout. Current time: 1787123733.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123734.977769497]: Costmap2DROS transform timeout. Current time: 1787123734.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123735.977779456]: Costmap2DROS transform timeout. Current time: 1787123735.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123737.177759469]: Costmap2DROS transform timeout. Current time: 1787123737.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123738.177775561]: Costmap2DROS transform timeout. Current time: 1787123738.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123739.304488302]: Costmap2DROS transform timeout. Current time: 1787123739.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123740.377776391]: Costmap2DROS transform timeout. Current time: 1787123740.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123740.547704588]: No laser scan received (and thus no pose updates have been published) for 72.933796 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123741.577780432]: Costmap2DROS transform timeout. Current time: 1787123741.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123742.577794006]: Costmap2DROS transform timeout. Current time: 1787123742.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123743.777764146]: Costmap2DROS transform timeout. Current time: 1787123743.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123744.977756494]: Costmap2DROS transform timeout. Current time: 1787123744.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123745.977759508]: Costmap2DROS transform timeout. Current time: 1787123745.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123746.977760199]: Costmap2DROS transform timeout. Current time: 1787123746.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123747.977792962]: Costmap2DROS transform timeout. Current time: 1787123747.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123749.177761464]: Costmap2DROS transform timeout. Current time: 1787123749.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123750.177994797]: Costmap2DROS transform timeout. Current time: 1787123750.1779, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123751.305386261]: Costmap2DROS transform timeout. Current time: 1787123751.3051, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123752.377792322]: Costmap2DROS transform timeout. Current time: 1787123752.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123753.577767776]: Costmap2DROS transform timeout. Current time: 1787123753.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123754.777724709]: Costmap2DROS transform timeout. Current time: 1787123754.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123755.547687134]: No laser scan received (and thus no pose updates have been published) for 87.933780 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123755.777771421]: Costmap2DROS transform timeout. Current time: 1787123755.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123756.777755984]: Costmap2DROS transform timeout. Current time: 1787123756.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123757.777776927]: Costmap2DROS transform timeout. Current time: 1787123757.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123758.777779775]: Costmap2DROS transform timeout. Current time: 1787123758.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123759.977755369]: Costmap2DROS transform timeout. Current time: 1787123759.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123760.977780636]: Costmap2DROS transform timeout. Current time: 1787123760.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123762.177755435]: Costmap2DROS transform timeout. Current time: 1787123762.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123763.177770733]: Costmap2DROS transform timeout. Current time: 1787123763.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123764.177794522]: Costmap2DROS transform timeout. Current time: 1787123764.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123765.304484250]: Costmap2DROS transform timeout. Current time: 1787123765.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123766.377758191]: Costmap2DROS transform timeout. Current time: 1787123766.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123767.578736089]: Costmap2DROS transform timeout. Current time: 1787123767.5787, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123768.778427548]: Costmap2DROS transform timeout. Current time: 1787123768.7784, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123769.977776003]: Costmap2DROS transform timeout. Current time: 1787123769.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123770.547687710]: No laser scan received (and thus no pose updates have been published) for 102.933784 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123771.177770321]: Costmap2DROS transform timeout. Current time: 1787123771.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123772.304471811]: Costmap2DROS transform timeout. Current time: 1787123772.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123773.304485889]: Costmap2DROS transform timeout. Current time: 1787123773.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123774.377757444]: Costmap2DROS transform timeout. Current time: 1787123774.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123775.377768851]: Costmap2DROS transform timeout. Current time: 1787123775.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123776.577793602]: Costmap2DROS transform timeout. Current time: 1787123776.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123777.777764280]: Costmap2DROS transform timeout. Current time: 1787123777.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123778.977781568]: Costmap2DROS transform timeout. Current time: 1787123778.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123780.177780623]: Costmap2DROS transform timeout. Current time: 1787123780.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123781.177925490]: Costmap2DROS transform timeout. Current time: 1787123781.1779, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123782.304471477]: Costmap2DROS transform timeout. Current time: 1787123782.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123783.304473663]: Costmap2DROS transform timeout. Current time: 1787123783.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123784.304472233]: Costmap2DROS transform timeout. Current time: 1787123784.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123785.304486178]: Costmap2DROS transform timeout. Current time: 1787123785.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123785.547696598]: No laser scan received (and thus no pose updates have been published) for 117.933787 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123786.377775996]: Costmap2DROS transform timeout. Current time: 1787123786.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123787.377777810]: Costmap2DROS transform timeout. Current time: 1787123787.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123788.377802178]: Costmap2DROS transform timeout. Current time: 1787123788.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123789.577749170]: Costmap2DROS transform timeout. Current time: 1787123789.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123790.577783237]: Costmap2DROS transform timeout. Current time: 1787123790.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123791.777710206]: Costmap2DROS transform timeout. Current time: 1787123791.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123792.777758273]: Costmap2DROS transform timeout. Current time: 1787123792.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123793.777776716]: Costmap2DROS transform timeout. Current time: 1787123793.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123794.977772874]: Costmap2DROS transform timeout. Current time: 1787123794.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123796.177767079]: Costmap2DROS transform timeout. Current time: 1787123796.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123797.177787666]: Costmap2DROS transform timeout. Current time: 1787123797.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123798.304474620]: Costmap2DROS transform timeout. Current time: 1787123798.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123799.304500929]: Costmap2DROS transform timeout. Current time: 1787123799.3045, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123800.377761636]: Costmap2DROS transform timeout. Current time: 1787123800.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123800.547720121]: No laser scan received (and thus no pose updates have been published) for 132.933794 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123801.577780631]: Costmap2DROS transform timeout. Current time: 1787123801.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123802.777757195]: Costmap2DROS transform timeout. Current time: 1787123802.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123803.777767241]: Costmap2DROS transform timeout. Current time: 1787123803.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123804.777778633]: Costmap2DROS transform timeout. Current time: 1787123804.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123805.977753353]: Costmap2DROS transform timeout. Current time: 1787123805.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123807.177773465]: Costmap2DROS transform timeout. Current time: 1787123807.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123808.177787471]: Costmap2DROS transform timeout. Current time: 1787123808.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123809.304486517]: Costmap2DROS transform timeout. Current time: 1787123809.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123810.377758095]: Costmap2DROS transform timeout. Current time: 1787123810.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123811.377772561]: Costmap2DROS transform timeout. Current time: 1787123811.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123812.577829545]: Costmap2DROS transform timeout. Current time: 1787123812.5778, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123813.777761865]: Costmap2DROS transform timeout. Current time: 1787123813.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123814.777768766]: Costmap2DROS transform timeout. Current time: 1787123814.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123815.547655758]: No laser scan received (and thus no pose updates have been published) for 147.933743 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123815.777769251]: Costmap2DROS transform timeout. Current time: 1787123815.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123816.977720989]: Costmap2DROS transform timeout. Current time: 1787123816.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123817.977756330]: Costmap2DROS transform timeout. Current time: 1787123817.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123819.177755481]: Costmap2DROS transform timeout. Current time: 1787123819.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123820.177781087]: Costmap2DROS transform timeout. Current time: 1787123820.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123821.177782259]: Costmap2DROS transform timeout. Current time: 1787123821.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123822.177782730]: Costmap2DROS transform timeout. Current time: 1787123822.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123823.304490291]: Costmap2DROS transform timeout. Current time: 1787123823.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123824.377765070]: Costmap2DROS transform timeout. Current time: 1787123824.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123825.577769486]: Costmap2DROS transform timeout. Current time: 1787123825.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123826.777771584]: Costmap2DROS transform timeout. Current time: 1787123826.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123827.977707085]: Costmap2DROS transform timeout. Current time: 1787123827.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123828.980780671]: Costmap2DROS transform timeout. Current time: 1787123828.9807, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123830.177769832]: Costmap2DROS transform timeout. Current time: 1787123830.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123830.547697795]: No laser scan received (and thus no pose updates have been published) for 162.933792 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123831.304472364]: Costmap2DROS transform timeout. Current time: 1787123831.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123832.304483145]: Costmap2DROS transform timeout. Current time: 1787123832.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123833.377771835]: Costmap2DROS transform timeout. Current time: 1787123833.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123834.577759241]: Costmap2DROS transform timeout. Current time: 1787123834.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123835.577771576]: Costmap2DROS transform timeout. Current time: 1787123835.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123836.577771999]: Costmap2DROS transform timeout. Current time: 1787123836.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123837.777769988]: Costmap2DROS transform timeout. Current time: 1787123837.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123838.977759421]: Costmap2DROS transform timeout. Current time: 1787123838.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123839.977778057]: Costmap2DROS transform timeout. Current time: 1787123839.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123840.977793170]: Costmap2DROS transform timeout. Current time: 1787123840.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123841.977793472]: Costmap2DROS transform timeout. Current time: 1787123841.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123843.177758937]: Costmap2DROS transform timeout. Current time: 1787123843.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123844.304470604]: Costmap2DROS transform timeout. Current time: 1787123844.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123845.304518736]: Costmap2DROS transform timeout. Current time: 1787123845.3045, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123845.547730606]: No laser scan received (and thus no pose updates have been published) for 177.933828 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123846.379110590]: Costmap2DROS transform timeout. Current time: 1787123846.3791, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123847.577769943]: Costmap2DROS transform timeout. Current time: 1787123847.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123848.579276838]: Costmap2DROS transform timeout. Current time: 1787123848.5792, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123849.777771308]: Costmap2DROS transform timeout. Current time: 1787123849.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123850.777792046]: Costmap2DROS transform timeout. Current time: 1787123850.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123851.977768160]: Costmap2DROS transform timeout. Current time: 1787123851.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123853.177766609]: Costmap2DROS transform timeout. Current time: 1787123853.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123854.304520513]: Costmap2DROS transform timeout. Current time: 1787123854.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123855.377781748]: Costmap2DROS transform timeout. Current time: 1787123855.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123856.577720731]: Costmap2DROS transform timeout. Current time: 1787123856.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123857.577788304]: Costmap2DROS transform timeout. Current time: 1787123857.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123858.777772797]: Costmap2DROS transform timeout. Current time: 1787123858.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123859.977733672]: Costmap2DROS transform timeout. Current time: 1787123859.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123860.547714487]: No laser scan received (and thus no pose updates have been published) for 192.933810 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123860.977779049]: Costmap2DROS transform timeout. Current time: 1787123860.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123862.177773263]: Costmap2DROS transform timeout. Current time: 1787123862.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123863.177830270]: Costmap2DROS transform timeout. Current time: 1787123863.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123864.177781936]: Costmap2DROS transform timeout. Current time: 1787123864.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123865.177794085]: Costmap2DROS transform timeout. Current time: 1787123865.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123866.304499898]: Costmap2DROS transform timeout. Current time: 1787123866.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123867.304522654]: Costmap2DROS transform timeout. Current time: 1787123867.3045, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123868.377781434]: Costmap2DROS transform timeout. Current time: 1787123868.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123869.377780168]: Costmap2DROS transform timeout. Current time: 1787123869.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123870.577759789]: Costmap2DROS transform timeout. Current time: 1787123870.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123871.577775364]: Costmap2DROS transform timeout. Current time: 1787123871.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123872.577868410]: Costmap2DROS transform timeout. Current time: 1787123872.5778, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123873.777770769]: Costmap2DROS transform timeout. Current time: 1787123873.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123874.777785033]: Costmap2DROS transform timeout. Current time: 1787123874.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123875.547652821]: No laser scan received (and thus no pose updates have been published) for 207.933741 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123875.777778091]: Costmap2DROS transform timeout. Current time: 1787123875.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123876.777779395]: Costmap2DROS transform timeout. Current time: 1787123876.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123877.977779705]: Costmap2DROS transform timeout. Current time: 1787123877.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123879.177765343]: Costmap2DROS transform timeout. Current time: 1787123879.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123880.177767293]: Costmap2DROS transform timeout. Current time: 1787123880.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123881.304466753]: Costmap2DROS transform timeout. Current time: 1787123881.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123882.304516910]: Costmap2DROS transform timeout. Current time: 1787123882.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123883.377739163]: Costmap2DROS transform timeout. Current time: 1787123883.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123884.377771113]: Costmap2DROS transform timeout. Current time: 1787123884.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123885.377792072]: Costmap2DROS transform timeout. Current time: 1787123885.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123886.577769814]: Costmap2DROS transform timeout. Current time: 1787123886.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123887.577776525]: Costmap2DROS transform timeout. Current time: 1787123887.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123888.777777642]: Costmap2DROS transform timeout. Current time: 1787123888.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123889.977753930]: Costmap2DROS transform timeout. Current time: 1787123889.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123890.547703234]: No laser scan received (and thus no pose updates have been published) for 222.933794 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123890.977761674]: Costmap2DROS transform timeout. Current time: 1787123890.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123891.977763805]: Costmap2DROS transform timeout. Current time: 1787123891.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123893.177763396]: Costmap2DROS transform timeout. Current time: 1787123893.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123894.304464327]: Costmap2DROS transform timeout. Current time: 1787123894.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123895.304470848]: Costmap2DROS transform timeout. Current time: 1787123895.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123896.304492655]: Costmap2DROS transform timeout. Current time: 1787123896.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123897.304497813]: Costmap2DROS transform timeout. Current time: 1787123897.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123898.377774631]: Costmap2DROS transform timeout. Current time: 1787123898.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123899.577760594]: Costmap2DROS transform timeout. Current time: 1787123899.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123900.777757165]: Costmap2DROS transform timeout. Current time: 1787123900.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123901.777755252]: Costmap2DROS transform timeout. Current time: 1787123901.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123902.777772879]: Costmap2DROS transform timeout. Current time: 1787123902.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123903.977759484]: Costmap2DROS transform timeout. Current time: 1787123903.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123904.977771875]: Costmap2DROS transform timeout. Current time: 1787123904.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123905.547694338]: No laser scan received (and thus no pose updates have been published) for 237.933782 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123906.177756124]: Costmap2DROS transform timeout. Current time: 1787123906.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123907.177785693]: Costmap2DROS transform timeout. Current time: 1787123907.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123908.304481582]: Costmap2DROS transform timeout. Current time: 1787123908.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123909.377727956]: Costmap2DROS transform timeout. Current time: 1787123909.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123910.377770323]: Costmap2DROS transform timeout. Current time: 1787123910.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123911.377781820]: Costmap2DROS transform timeout. Current time: 1787123911.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123912.577777727]: Costmap2DROS transform timeout. Current time: 1787123912.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123913.777759209]: Costmap2DROS transform timeout. Current time: 1787123913.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123914.779447675]: Costmap2DROS transform timeout. Current time: 1787123914.7794, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123915.977762929]: Costmap2DROS transform timeout. Current time: 1787123915.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123916.977764964]: Costmap2DROS transform timeout. Current time: 1787123916.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123918.177777908]: Costmap2DROS transform timeout. Current time: 1787123918.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123919.304491754]: Costmap2DROS transform timeout. Current time: 1787123919.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123920.380812671]: Costmap2DROS transform timeout. Current time: 1787123920.3807, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123920.547709820]: No laser scan received (and thus no pose updates have been published) for 252.933794 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123921.577747907]: Costmap2DROS transform timeout. Current time: 1787123921.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123922.577767567]: Costmap2DROS transform timeout. Current time: 1787123922.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123923.777786174]: Costmap2DROS transform timeout. Current time: 1787123923.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123924.777779506]: Costmap2DROS transform timeout. Current time: 1787123924.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123925.977764385]: Costmap2DROS transform timeout. Current time: 1787123925.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123926.977790851]: Costmap2DROS transform timeout. Current time: 1787123926.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123928.177781943]: Costmap2DROS transform timeout. Current time: 1787123928.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123929.304432909]: Costmap2DROS transform timeout. Current time: 1787123929.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123930.304476157]: Costmap2DROS transform timeout. Current time: 1787123930.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123931.304490324]: Costmap2DROS transform timeout. Current time: 1787123931.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123932.377771889]: Costmap2DROS transform timeout. Current time: 1787123932.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123933.577775352]: Costmap2DROS transform timeout. Current time: 1787123933.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123934.777779870]: Costmap2DROS transform timeout. Current time: 1787123934.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123935.547725691]: No laser scan received (and thus no pose updates have been published) for 267.933810 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123935.977763379]: Costmap2DROS transform timeout. Current time: 1787123935.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123936.977775809]: Costmap2DROS transform timeout. Current time: 1787123936.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123938.177755179]: Costmap2DROS transform timeout. Current time: 1787123938.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123939.177761643]: Costmap2DROS transform timeout. Current time: 1787123939.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123940.177772056]: Costmap2DROS transform timeout. Current time: 1787123940.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123941.304486958]: Costmap2DROS transform timeout. Current time: 1787123941.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123942.377792095]: Costmap2DROS transform timeout. Current time: 1787123942.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123943.377813127]: Costmap2DROS transform timeout. Current time: 1787123943.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123944.577772877]: Costmap2DROS transform timeout. Current time: 1787123944.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123945.777787801]: Costmap2DROS transform timeout. Current time: 1787123945.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123946.977771753]: Costmap2DROS transform timeout. Current time: 1787123946.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123948.177755595]: Costmap2DROS transform timeout. Current time: 1787123948.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123949.177759104]: Costmap2DROS transform timeout. Current time: 1787123949.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123950.304491459]: Costmap2DROS transform timeout. Current time: 1787123950.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123950.547699208]: No laser scan received (and thus no pose updates have been published) for 282.933794 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123951.377764201]: Costmap2DROS transform timeout. Current time: 1787123951.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123952.377772786]: Costmap2DROS transform timeout. Current time: 1787123952.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123953.577750228]: Costmap2DROS transform timeout. Current time: 1787123953.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123954.577754301]: Costmap2DROS transform timeout. Current time: 1787123954.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123955.577771642]: Costmap2DROS transform timeout. Current time: 1787123955.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123956.577793722]: Costmap2DROS transform timeout. Current time: 1787123956.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123957.777759380]: Costmap2DROS transform timeout. Current time: 1787123957.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123958.977755688]: Costmap2DROS transform timeout. Current time: 1787123958.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123959.977783885]: Costmap2DROS transform timeout. Current time: 1787123959.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123961.177781383]: Costmap2DROS transform timeout. Current time: 1787123961.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123962.304463520]: Costmap2DROS transform timeout. Current time: 1787123962.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123963.377768284]: Costmap2DROS transform timeout. Current time: 1787123963.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123964.377779191]: Costmap2DROS transform timeout. Current time: 1787123964.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123965.547693986]: No laser scan received (and thus no pose updates have been published) for 297.933788 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123965.577774286]: Costmap2DROS transform timeout. Current time: 1787123965.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123966.777768945]: Costmap2DROS transform timeout. Current time: 1787123966.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123967.777771195]: Costmap2DROS transform timeout. Current time: 1787123967.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123968.977785518]: Costmap2DROS transform timeout. Current time: 1787123968.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123970.177767894]: Costmap2DROS transform timeout. Current time: 1787123970.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123971.304467520]: Costmap2DROS transform timeout. Current time: 1787123971.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123972.304489064]: Costmap2DROS transform timeout. Current time: 1787123972.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123973.377780526]: Costmap2DROS transform timeout. Current time: 1787123973.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123974.577770017]: Costmap2DROS transform timeout. Current time: 1787123974.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123975.777795821]: Costmap2DROS transform timeout. Current time: 1787123975.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123976.977752838]: Costmap2DROS transform timeout. Current time: 1787123976.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123977.977757773]: Costmap2DROS transform timeout. Current time: 1787123977.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123978.977770906]: Costmap2DROS transform timeout. Current time: 1787123978.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123980.177770233]: Costmap2DROS transform timeout. Current time: 1787123980.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123980.547713792]: No laser scan received (and thus no pose updates have been published) for 312.933809 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123981.304478547]: Costmap2DROS transform timeout. Current time: 1787123981.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123982.377768937]: Costmap2DROS transform timeout. Current time: 1787123982.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123983.577827109]: Costmap2DROS transform timeout. Current time: 1787123983.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123984.577857088]: Costmap2DROS transform timeout. Current time: 1787123984.5778, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123985.777773968]: Costmap2DROS transform timeout. Current time: 1787123985.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123986.777773137]: Costmap2DROS transform timeout. Current time: 1787123986.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123987.977767848]: Costmap2DROS transform timeout. Current time: 1787123987.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123988.977773174]: Costmap2DROS transform timeout. Current time: 1787123988.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123990.177763017]: Costmap2DROS transform timeout. Current time: 1787123990.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123991.304481360]: Costmap2DROS transform timeout. Current time: 1787123991.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123992.304472295]: Costmap2DROS transform timeout. Current time: 1787123992.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123993.377777943]: Costmap2DROS transform timeout. Current time: 1787123993.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123994.577758435]: Costmap2DROS transform timeout. Current time: 1787123994.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123995.547698535]: No laser scan received (and thus no pose updates have been published) for 327.933788 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787123995.577768914]: Costmap2DROS transform timeout. Current time: 1787123995.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123996.777760374]: Costmap2DROS transform timeout. Current time: 1787123996.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123997.777768121]: Costmap2DROS transform timeout. Current time: 1787123997.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123998.777783706]: Costmap2DROS transform timeout. Current time: 1787123998.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787123999.977767093]: Costmap2DROS transform timeout. Current time: 1787123999.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124000.977775819]: Costmap2DROS transform timeout. Current time: 1787124000.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124001.977778228]: Costmap2DROS transform timeout. Current time: 1787124001.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124003.177766296]: Costmap2DROS transform timeout. Current time: 1787124003.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124004.304512721]: Costmap2DROS transform timeout. Current time: 1787124004.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124005.304523229]: Costmap2DROS transform timeout. Current time: 1787124005.3045, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124006.377758388]: Costmap2DROS transform timeout. Current time: 1787124006.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124007.377765920]: Costmap2DROS transform timeout. Current time: 1787124007.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124008.377781962]: Costmap2DROS transform timeout. Current time: 1787124008.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124009.377773454]: Costmap2DROS transform timeout. Current time: 1787124009.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124010.377783677]: Costmap2DROS transform timeout. Current time: 1787124010.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124010.547732043]: No laser scan received (and thus no pose updates have been published) for 342.933806 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124011.377834126]: Costmap2DROS transform timeout. Current time: 1787124011.3778, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124012.577762952]: Costmap2DROS transform timeout. Current time: 1787124012.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124013.577777904]: Costmap2DROS transform timeout. Current time: 1787124013.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124014.577769954]: Costmap2DROS transform timeout. Current time: 1787124014.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124015.777772773]: Costmap2DROS transform timeout. Current time: 1787124015.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124016.777792609]: Costmap2DROS transform timeout. Current time: 1787124016.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124017.977764040]: Costmap2DROS transform timeout. Current time: 1787124017.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124018.977768476]: Costmap2DROS transform timeout. Current time: 1787124018.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124019.977778157]: Costmap2DROS transform timeout. Current time: 1787124019.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124021.177766455]: Costmap2DROS transform timeout. Current time: 1787124021.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124022.304450113]: Costmap2DROS transform timeout. Current time: 1787124022.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124023.304511400]: Costmap2DROS transform timeout. Current time: 1787124023.3045, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124024.377732254]: Costmap2DROS transform timeout. Current time: 1787124024.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124025.377760818]: Costmap2DROS transform timeout. Current time: 1787124025.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124025.547726840]: No laser scan received (and thus no pose updates have been published) for 357.933806 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124026.377770145]: Costmap2DROS transform timeout. Current time: 1787124026.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124027.377836531]: Costmap2DROS transform timeout. Current time: 1787124027.3778, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124028.577761344]: Costmap2DROS transform timeout. Current time: 1787124028.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124029.777775784]: Costmap2DROS transform timeout. Current time: 1787124029.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124030.977772142]: Costmap2DROS transform timeout. Current time: 1787124030.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124032.177726006]: Costmap2DROS transform timeout. Current time: 1787124032.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124033.304484749]: Costmap2DROS transform timeout. Current time: 1787124033.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124034.304488390]: Costmap2DROS transform timeout. Current time: 1787124034.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124035.304492724]: Costmap2DROS transform timeout. Current time: 1787124035.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124036.377769550]: Costmap2DROS transform timeout. Current time: 1787124036.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124037.577729481]: Costmap2DROS transform timeout. Current time: 1787124037.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124038.577756958]: Costmap2DROS transform timeout. Current time: 1787124038.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124039.577759396]: Costmap2DROS transform timeout. Current time: 1787124039.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124040.547706892]: No laser scan received (and thus no pose updates have been published) for 372.933806 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124040.577768745]: Costmap2DROS transform timeout. Current time: 1787124040.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124041.577782168]: Costmap2DROS transform timeout. Current time: 1787124041.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124042.777776782]: Costmap2DROS transform timeout. Current time: 1787124042.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124043.777775542]: Costmap2DROS transform timeout. Current time: 1787124043.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124044.777788096]: Costmap2DROS transform timeout. Current time: 1787124044.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124045.777803463]: Costmap2DROS transform timeout. Current time: 1787124045.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124046.977779805]: Costmap2DROS transform timeout. Current time: 1787124046.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124048.177759181]: Costmap2DROS transform timeout. Current time: 1787124048.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124049.177761790]: Costmap2DROS transform timeout. Current time: 1787124049.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124050.177764938]: Costmap2DROS transform timeout. Current time: 1787124050.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124051.304493191]: Costmap2DROS transform timeout. Current time: 1787124051.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124052.377768884]: Costmap2DROS transform timeout. Current time: 1787124052.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124053.577762699]: Costmap2DROS transform timeout. Current time: 1787124053.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124054.777776763]: Costmap2DROS transform timeout. Current time: 1787124054.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124055.547694347]: No laser scan received (and thus no pose updates have been published) for 387.933786 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124055.977782048]: Costmap2DROS transform timeout. Current time: 1787124055.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124057.177775465]: Costmap2DROS transform timeout. Current time: 1787124057.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124058.304469944]: Costmap2DROS transform timeout. Current time: 1787124058.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124059.304490478]: Costmap2DROS transform timeout. Current time: 1787124059.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124060.377756159]: Costmap2DROS transform timeout. Current time: 1787124060.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124061.377750019]: Costmap2DROS transform timeout. Current time: 1787124061.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124062.377759898]: Costmap2DROS transform timeout. Current time: 1787124062.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124063.377762029]: Costmap2DROS transform timeout. Current time: 1787124063.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124064.577759809]: Costmap2DROS transform timeout. Current time: 1787124064.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124065.577777436]: Costmap2DROS transform timeout. Current time: 1787124065.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124066.580765899]: Costmap2DROS transform timeout. Current time: 1787124066.5807, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124067.777773333]: Costmap2DROS transform timeout. Current time: 1787124067.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124068.777782437]: Costmap2DROS transform timeout. Current time: 1787124068.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124069.977785759]: Costmap2DROS transform timeout. Current time: 1787124069.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124070.547728626]: No laser scan received (and thus no pose updates have been published) for 402.933810 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124071.177782725]: Costmap2DROS transform timeout. Current time: 1787124071.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124072.177779664]: Costmap2DROS transform timeout. Current time: 1787124072.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124073.177782121]: Costmap2DROS transform timeout. Current time: 1787124073.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124074.177800641]: Costmap2DROS transform timeout. Current time: 1787124074.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124075.304485872]: Costmap2DROS transform timeout. Current time: 1787124075.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124076.377760966]: Costmap2DROS transform timeout. Current time: 1787124076.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124077.577773953]: Costmap2DROS transform timeout. Current time: 1787124077.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124078.577770840]: Costmap2DROS transform timeout. Current time: 1787124078.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124079.777766398]: Costmap2DROS transform timeout. Current time: 1787124079.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124080.977758634]: Costmap2DROS transform timeout. Current time: 1787124080.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124082.177766350]: Costmap2DROS transform timeout. Current time: 1787124082.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124083.304484931]: Costmap2DROS transform timeout. Current time: 1787124083.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124084.377764233]: Costmap2DROS transform timeout. Current time: 1787124084.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124085.377768277]: Costmap2DROS transform timeout. Current time: 1787124085.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124085.547692255]: No laser scan received (and thus no pose updates have been published) for 417.933788 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124086.377769810]: Costmap2DROS transform timeout. Current time: 1787124086.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124087.577762007]: Costmap2DROS transform timeout. Current time: 1787124087.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124088.577785580]: Costmap2DROS transform timeout. Current time: 1787124088.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124089.777776917]: Costmap2DROS transform timeout. Current time: 1787124089.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124090.777790904]: Costmap2DROS transform timeout. Current time: 1787124090.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124091.977764647]: Costmap2DROS transform timeout. Current time: 1787124091.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124092.977768698]: Costmap2DROS transform timeout. Current time: 1787124092.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124094.177800714]: Costmap2DROS transform timeout. Current time: 1787124094.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124095.304478712]: Costmap2DROS transform timeout. Current time: 1787124095.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124096.377777327]: Costmap2DROS transform timeout. Current time: 1787124096.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124097.377793685]: Costmap2DROS transform timeout. Current time: 1787124097.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124098.577774162]: Costmap2DROS transform timeout. Current time: 1787124098.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124099.577781900]: Costmap2DROS transform timeout. Current time: 1787124099.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124100.547715375]: No laser scan received (and thus no pose updates have been published) for 432.933805 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124100.577784771]: Costmap2DROS transform timeout. Current time: 1787124100.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124101.577784995]: Costmap2DROS transform timeout. Current time: 1787124101.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124102.777765167]: Costmap2DROS transform timeout. Current time: 1787124102.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124103.977808698]: Costmap2DROS transform timeout. Current time: 1787124103.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124105.177758383]: Costmap2DROS transform timeout. Current time: 1787124105.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124106.177772697]: Costmap2DROS transform timeout. Current time: 1787124106.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124107.304490159]: Costmap2DROS transform timeout. Current time: 1787124107.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124108.304537973]: Costmap2DROS transform timeout. Current time: 1787124108.3045, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124109.377761659]: Costmap2DROS transform timeout. Current time: 1787124109.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124110.577769918]: Costmap2DROS transform timeout. Current time: 1787124110.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124111.777774429]: Costmap2DROS transform timeout. Current time: 1787124111.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124112.777785531]: Costmap2DROS transform timeout. Current time: 1787124112.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124113.977780584]: Costmap2DROS transform timeout. Current time: 1787124113.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124115.177791945]: Costmap2DROS transform timeout. Current time: 1787124115.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124115.547684810]: No laser scan received (and thus no pose updates have been published) for 447.933782 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124116.304491204]: Costmap2DROS transform timeout. Current time: 1787124116.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124117.304491159]: Costmap2DROS transform timeout. Current time: 1787124117.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124118.377756917]: Costmap2DROS transform timeout. Current time: 1787124118.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124119.377757263]: Costmap2DROS transform timeout. Current time: 1787124119.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124120.377771159]: Costmap2DROS transform timeout. Current time: 1787124120.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124121.377781705]: Costmap2DROS transform timeout. Current time: 1787124121.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124122.577770249]: Costmap2DROS transform timeout. Current time: 1787124122.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124123.777730617]: Costmap2DROS transform timeout. Current time: 1787124123.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124124.777764694]: Costmap2DROS transform timeout. Current time: 1787124124.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124125.977771554]: Costmap2DROS transform timeout. Current time: 1787124125.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124126.977766724]: Costmap2DROS transform timeout. Current time: 1787124126.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124128.177755160]: Costmap2DROS transform timeout. Current time: 1787124128.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124129.177782052]: Costmap2DROS transform timeout. Current time: 1787124129.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124130.304488507]: Costmap2DROS transform timeout. Current time: 1787124130.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124130.547705835]: No laser scan received (and thus no pose updates have been published) for 462.933802 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124131.304521844]: Costmap2DROS transform timeout. Current time: 1787124131.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124132.377776190]: Costmap2DROS transform timeout. Current time: 1787124132.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124133.577760818]: Costmap2DROS transform timeout. Current time: 1787124133.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124134.577793519]: Costmap2DROS transform timeout. Current time: 1787124134.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124135.777771828]: Costmap2DROS transform timeout. Current time: 1787124135.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124136.777780336]: Costmap2DROS transform timeout. Current time: 1787124136.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124137.977753890]: Costmap2DROS transform timeout. Current time: 1787124137.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124139.177760519]: Costmap2DROS transform timeout. Current time: 1787124139.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124140.177810979]: Costmap2DROS transform timeout. Current time: 1787124140.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124141.304488782]: Costmap2DROS transform timeout. Current time: 1787124141.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124142.377756829]: Costmap2DROS transform timeout. Current time: 1787124142.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124143.377768768]: Costmap2DROS transform timeout. Current time: 1787124143.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124144.377773290]: Costmap2DROS transform timeout. Current time: 1787124144.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124145.547706902]: No laser scan received (and thus no pose updates have been published) for 477.933805 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124145.577798717]: Costmap2DROS transform timeout. Current time: 1787124145.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124146.777784867]: Costmap2DROS transform timeout. Current time: 1787124146.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124147.977754584]: Costmap2DROS transform timeout. Current time: 1787124147.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124148.977760510]: Costmap2DROS transform timeout. Current time: 1787124148.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124149.977807607]: Costmap2DROS transform timeout. Current time: 1787124149.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124151.177754911]: Costmap2DROS transform timeout. Current time: 1787124151.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124152.177762880]: Costmap2DROS transform timeout. Current time: 1787124152.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124153.177772500]: Costmap2DROS transform timeout. Current time: 1787124153.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124154.304467273]: Costmap2DROS transform timeout. Current time: 1787124154.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124155.304472003]: Costmap2DROS transform timeout. Current time: 1787124155.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124156.304495782]: Costmap2DROS transform timeout. Current time: 1787124156.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124157.377767744]: Costmap2DROS transform timeout. Current time: 1787124157.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124158.577789305]: Costmap2DROS transform timeout. Current time: 1787124158.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124159.777771017]: Costmap2DROS transform timeout. Current time: 1787124159.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124160.547730830]: No laser scan received (and thus no pose updates have been published) for 492.933810 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124160.977762009]: Costmap2DROS transform timeout. Current time: 1787124160.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124161.977775292]: Costmap2DROS transform timeout. Current time: 1787124161.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124162.977820817]: Costmap2DROS transform timeout. Current time: 1787124162.9778, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124164.177775994]: Costmap2DROS transform timeout. Current time: 1787124164.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124165.304476523]: Costmap2DROS transform timeout. Current time: 1787124165.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124166.377761544]: Costmap2DROS transform timeout. Current time: 1787124166.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124167.377766704]: Costmap2DROS transform timeout. Current time: 1787124167.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124168.577750892]: Costmap2DROS transform timeout. Current time: 1787124168.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124169.577751776]: Costmap2DROS transform timeout. Current time: 1787124169.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124170.577758752]: Costmap2DROS transform timeout. Current time: 1787124170.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124171.777757960]: Costmap2DROS transform timeout. Current time: 1787124171.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124172.777767441]: Costmap2DROS transform timeout. Current time: 1787124172.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124173.777772463]: Costmap2DROS transform timeout. Current time: 1787124173.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124174.977784608]: Costmap2DROS transform timeout. Current time: 1787124174.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124175.547698984]: No laser scan received (and thus no pose updates have been published) for 507.933784 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124175.977784831]: Costmap2DROS transform timeout. Current time: 1787124175.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124177.177780876]: Costmap2DROS transform timeout. Current time: 1787124177.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124178.304465760]: Costmap2DROS transform timeout. Current time: 1787124178.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124179.304469371]: Costmap2DROS transform timeout. Current time: 1787124179.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124180.304487694]: Costmap2DROS transform timeout. Current time: 1787124180.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124181.304496720]: Costmap2DROS transform timeout. Current time: 1787124181.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124182.377781183]: Costmap2DROS transform timeout. Current time: 1787124182.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124183.580769464]: Costmap2DROS transform timeout. Current time: 1787124183.5807, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124184.777782676]: Costmap2DROS transform timeout. Current time: 1787124184.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124185.977724182]: Costmap2DROS transform timeout. Current time: 1787124185.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124186.977758775]: Costmap2DROS transform timeout. Current time: 1787124186.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124187.977767979]: Costmap2DROS transform timeout. Current time: 1787124187.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124189.177773578]: Costmap2DROS transform timeout. Current time: 1787124189.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124190.304486413]: Costmap2DROS transform timeout. Current time: 1787124190.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124190.547754595]: No laser scan received (and thus no pose updates have been published) for 522.933842 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124191.377773309]: Costmap2DROS transform timeout. Current time: 1787124191.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124192.378583034]: Costmap2DROS transform timeout. Current time: 1787124192.3785, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124193.577760770]: Costmap2DROS transform timeout. Current time: 1787124193.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124194.577767627]: Costmap2DROS transform timeout. Current time: 1787124194.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124195.777764900]: Costmap2DROS transform timeout. Current time: 1787124195.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124196.977769968]: Costmap2DROS transform timeout. Current time: 1787124196.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124198.177746098]: Costmap2DROS transform timeout. Current time: 1787124198.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124199.177758422]: Costmap2DROS transform timeout. Current time: 1787124199.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124200.177843762]: Costmap2DROS transform timeout. Current time: 1787124200.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124201.304541437]: Costmap2DROS transform timeout. Current time: 1787124201.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124202.377757084]: Costmap2DROS transform timeout. Current time: 1787124202.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124203.377784626]: Costmap2DROS transform timeout. Current time: 1787124203.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124204.577776399]: Costmap2DROS transform timeout. Current time: 1787124204.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124205.547666206]: No laser scan received (and thus no pose updates have been published) for 537.933749 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124205.580600689]: Costmap2DROS transform timeout. Current time: 1787124205.5805, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124206.777774425]: Costmap2DROS transform timeout. Current time: 1787124206.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124207.777773937]: Costmap2DROS transform timeout. Current time: 1787124207.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124208.977768405]: Costmap2DROS transform timeout. Current time: 1787124208.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124210.177753903]: Costmap2DROS transform timeout. Current time: 1787124210.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124211.177774119]: Costmap2DROS transform timeout. Current time: 1787124211.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124212.177769755]: Costmap2DROS transform timeout. Current time: 1787124212.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124213.304471733]: Costmap2DROS transform timeout. Current time: 1787124213.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124214.304476827]: Costmap2DROS transform timeout. Current time: 1787124214.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124215.377770236]: Costmap2DROS transform timeout. Current time: 1787124215.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124216.377767553]: Costmap2DROS transform timeout. Current time: 1787124216.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124217.577767410]: Costmap2DROS transform timeout. Current time: 1787124217.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124218.577783115]: Costmap2DROS transform timeout. Current time: 1787124218.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124219.777767525]: Costmap2DROS transform timeout. Current time: 1787124219.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124220.547674299]: No laser scan received (and thus no pose updates have been published) for 552.933770 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124220.777772332]: Costmap2DROS transform timeout. Current time: 1787124220.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124221.777818219]: Costmap2DROS transform timeout. Current time: 1787124221.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124222.977787857]: Costmap2DROS transform timeout. Current time: 1787124222.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124224.177759435]: Costmap2DROS transform timeout. Current time: 1787124224.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124225.177767942]: Costmap2DROS transform timeout. Current time: 1787124225.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124226.304539658]: Costmap2DROS transform timeout. Current time: 1787124226.3045, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124227.377757982]: Costmap2DROS transform timeout. Current time: 1787124227.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124228.377801094]: Costmap2DROS transform timeout. Current time: 1787124228.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124229.577770291]: Costmap2DROS transform timeout. Current time: 1787124229.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124230.777725959]: Costmap2DROS transform timeout. Current time: 1787124230.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124231.777765132]: Costmap2DROS transform timeout. Current time: 1787124231.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124232.777776171]: Costmap2DROS transform timeout. Current time: 1787124232.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124233.977823022]: Costmap2DROS transform timeout. Current time: 1787124233.9778, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124235.177786904]: Costmap2DROS transform timeout. Current time: 1787124235.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124235.547655601]: No laser scan received (and thus no pose updates have been published) for 567.933753 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124236.304494545]: Costmap2DROS transform timeout. Current time: 1787124236.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124237.377787122]: Costmap2DROS transform timeout. Current time: 1787124237.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124238.577769094]: Costmap2DROS transform timeout. Current time: 1787124238.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124239.777785858]: Costmap2DROS transform timeout. Current time: 1787124239.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124240.977758271]: Costmap2DROS transform timeout. Current time: 1787124240.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124241.977762785]: Costmap2DROS transform timeout. Current time: 1787124241.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124243.177764105]: Costmap2DROS transform timeout. Current time: 1787124243.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124244.177775380]: Costmap2DROS transform timeout. Current time: 1787124244.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124245.304495406]: Costmap2DROS transform timeout. Current time: 1787124245.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124246.377756548]: Costmap2DROS transform timeout. Current time: 1787124246.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124247.377783901]: Costmap2DROS transform timeout. Current time: 1787124247.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124248.577756679]: Costmap2DROS transform timeout. Current time: 1787124248.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124249.777775050]: Costmap2DROS transform timeout. Current time: 1787124249.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124250.547704834]: No laser scan received (and thus no pose updates have been published) for 582.933796 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124250.977771183]: Costmap2DROS transform timeout. Current time: 1787124250.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124251.977778028]: Costmap2DROS transform timeout. Current time: 1787124251.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124253.177775931]: Costmap2DROS transform timeout. Current time: 1787124253.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124254.304485903]: Costmap2DROS transform timeout. Current time: 1787124254.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124255.377754191]: Costmap2DROS transform timeout. Current time: 1787124255.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124256.377770120]: Costmap2DROS transform timeout. Current time: 1787124256.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124257.577758305]: Costmap2DROS transform timeout. Current time: 1787124257.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124258.577772684]: Costmap2DROS transform timeout. Current time: 1787124258.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124259.777758849]: Costmap2DROS transform timeout. Current time: 1787124259.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124260.977760662]: Costmap2DROS transform timeout. Current time: 1787124260.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124261.977828519]: Costmap2DROS transform timeout. Current time: 1787124261.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124262.978357875]: Costmap2DROS transform timeout. Current time: 1787124262.9783, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124264.177769472]: Costmap2DROS transform timeout. Current time: 1787124264.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124265.304435730]: Costmap2DROS transform timeout. Current time: 1787124265.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124265.547715127]: No laser scan received (and thus no pose updates have been published) for 597.933812 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124266.304491982]: Costmap2DROS transform timeout. Current time: 1787124266.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124267.377761365]: Costmap2DROS transform timeout. Current time: 1787124267.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124268.377774188]: Costmap2DROS transform timeout. Current time: 1787124268.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124269.577771967]: Costmap2DROS transform timeout. Current time: 1787124269.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124270.777725022]: Costmap2DROS transform timeout. Current time: 1787124270.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124271.777767386]: Costmap2DROS transform timeout. Current time: 1787124271.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124272.977782550]: Costmap2DROS transform timeout. Current time: 1787124272.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124273.977769514]: Costmap2DROS transform timeout. Current time: 1787124273.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124275.177768619]: Costmap2DROS transform timeout. Current time: 1787124275.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124276.177786514]: Costmap2DROS transform timeout. Current time: 1787124276.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124277.177771089]: Costmap2DROS transform timeout. Current time: 1787124277.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124278.304462878]: Costmap2DROS transform timeout. Current time: 1787124278.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124279.304485148]: Costmap2DROS transform timeout. Current time: 1787124279.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124280.304551135]: Costmap2DROS transform timeout. Current time: 1787124280.3045, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124280.547719397]: No laser scan received (and thus no pose updates have been published) for 612.933807 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124281.304559644]: Costmap2DROS transform timeout. Current time: 1787124281.3045, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124282.377765371]: Costmap2DROS transform timeout. Current time: 1787124282.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124283.377775564]: Costmap2DROS transform timeout. Current time: 1787124283.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124284.377785681]: Costmap2DROS transform timeout. Current time: 1787124284.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124285.577757643]: Costmap2DROS transform timeout. Current time: 1787124285.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124286.577776998]: Costmap2DROS transform timeout. Current time: 1787124286.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124287.577771929]: Costmap2DROS transform timeout. Current time: 1787124287.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124288.777709533]: Costmap2DROS transform timeout. Current time: 1787124288.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124289.777765186]: Costmap2DROS transform timeout. Current time: 1787124289.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124290.977781953]: Costmap2DROS transform timeout. Current time: 1787124290.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124292.177740901]: Costmap2DROS transform timeout. Current time: 1787124292.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124293.177804937]: Costmap2DROS transform timeout. Current time: 1787124293.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124294.304495244]: Costmap2DROS transform timeout. Current time: 1787124294.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124295.305034532]: Costmap2DROS transform timeout. Current time: 1787124295.3050, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124295.547680024]: No laser scan received (and thus no pose updates have been published) for 627.933774 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124296.306332203]: Costmap2DROS transform timeout. Current time: 1787124296.3063, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124297.377729741]: Costmap2DROS transform timeout. Current time: 1787124297.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124298.378333579]: Costmap2DROS transform timeout. Current time: 1787124298.3783, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124299.577760963]: Costmap2DROS transform timeout. Current time: 1787124299.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124300.577775962]: Costmap2DROS transform timeout. Current time: 1787124300.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124301.777763375]: Costmap2DROS transform timeout. Current time: 1787124301.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124302.977751841]: Costmap2DROS transform timeout. Current time: 1787124302.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124303.977772139]: Costmap2DROS transform timeout. Current time: 1787124303.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124304.977790156]: Costmap2DROS transform timeout. Current time: 1787124304.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124306.177759900]: Costmap2DROS transform timeout. Current time: 1787124306.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124307.177758968]: Costmap2DROS transform timeout. Current time: 1787124307.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124308.177764135]: Costmap2DROS transform timeout. Current time: 1787124308.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124309.177763374]: Costmap2DROS transform timeout. Current time: 1787124309.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124310.304466158]: Costmap2DROS transform timeout. Current time: 1787124310.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124310.547655528]: No laser scan received (and thus no pose updates have been published) for 642.933744 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124311.304468116]: Costmap2DROS transform timeout. Current time: 1787124311.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124312.304483994]: Costmap2DROS transform timeout. Current time: 1787124312.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124313.304487417]: Costmap2DROS transform timeout. Current time: 1787124313.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124314.377759808]: Costmap2DROS transform timeout. Current time: 1787124314.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124315.577765603]: Costmap2DROS transform timeout. Current time: 1787124315.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124316.777767122]: Costmap2DROS transform timeout. Current time: 1787124316.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124317.777766174]: Costmap2DROS transform timeout. Current time: 1787124317.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124318.777784138]: Costmap2DROS transform timeout. Current time: 1787124318.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124319.977767171]: Costmap2DROS transform timeout. Current time: 1787124319.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124321.177778740]: Costmap2DROS transform timeout. Current time: 1787124321.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124322.177770906]: Costmap2DROS transform timeout. Current time: 1787124322.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124323.304516389]: Costmap2DROS transform timeout. Current time: 1787124323.3045, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124324.377776684]: Costmap2DROS transform timeout. Current time: 1787124324.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124325.377780117]: Costmap2DROS transform timeout. Current time: 1787124325.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124325.547698962]: No laser scan received (and thus no pose updates have been published) for 657.933790 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124326.577774476]: Costmap2DROS transform timeout. Current time: 1787124326.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124327.577776499]: Costmap2DROS transform timeout. Current time: 1787124327.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124328.777774777]: Costmap2DROS transform timeout. Current time: 1787124328.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124329.777864828]: Costmap2DROS transform timeout. Current time: 1787124329.7778, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124330.977769378]: Costmap2DROS transform timeout. Current time: 1787124330.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124331.977795590]: Costmap2DROS transform timeout. Current time: 1787124331.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124333.177754970]: Costmap2DROS transform timeout. Current time: 1787124333.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124334.304525414]: Costmap2DROS transform timeout. Current time: 1787124334.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124335.377761155]: Costmap2DROS transform timeout. Current time: 1787124335.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124336.377761441]: Costmap2DROS transform timeout. Current time: 1787124336.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124337.377768596]: Costmap2DROS transform timeout. Current time: 1787124337.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124338.577767555]: Costmap2DROS transform timeout. Current time: 1787124338.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124339.777770371]: Costmap2DROS transform timeout. Current time: 1787124339.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124340.547645101]: No laser scan received (and thus no pose updates have been published) for 672.933741 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124340.977759802]: Costmap2DROS transform timeout. Current time: 1787124340.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124342.177747996]: Costmap2DROS transform timeout. Current time: 1787124342.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124343.177767636]: Costmap2DROS transform timeout. Current time: 1787124343.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124344.177764886]: Costmap2DROS transform timeout. Current time: 1787124344.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124345.177774318]: Costmap2DROS transform timeout. Current time: 1787124345.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124346.177779406]: Costmap2DROS transform timeout. Current time: 1787124346.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124347.304494769]: Costmap2DROS transform timeout. Current time: 1787124347.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124348.377753378]: Costmap2DROS transform timeout. Current time: 1787124348.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124349.577772341]: Costmap2DROS transform timeout. Current time: 1787124349.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124350.577796180]: Costmap2DROS transform timeout. Current time: 1787124350.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124351.777769072]: Costmap2DROS transform timeout. Current time: 1787124351.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124352.777769884]: Costmap2DROS transform timeout. Current time: 1787124352.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124353.777771023]: Costmap2DROS transform timeout. Current time: 1787124353.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124354.977755509]: Costmap2DROS transform timeout. Current time: 1787124354.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124355.549527065]: No laser scan received (and thus no pose updates have been published) for 687.935613 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124355.977773179]: Costmap2DROS transform timeout. Current time: 1787124355.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124357.177757067]: Costmap2DROS transform timeout. Current time: 1787124357.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124358.177766664]: Costmap2DROS transform timeout. Current time: 1787124358.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124359.304489193]: Costmap2DROS transform timeout. Current time: 1787124359.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124360.377765529]: Costmap2DROS transform timeout. Current time: 1787124360.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124361.577778539]: Costmap2DROS transform timeout. Current time: 1787124361.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124362.577780070]: Costmap2DROS transform timeout. Current time: 1787124362.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124363.777765355]: Costmap2DROS transform timeout. Current time: 1787124363.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124364.977770774]: Costmap2DROS transform timeout. Current time: 1787124364.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124366.177783756]: Costmap2DROS transform timeout. Current time: 1787124366.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124367.304470386]: Costmap2DROS transform timeout. Current time: 1787124367.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124368.304487605]: Costmap2DROS transform timeout. Current time: 1787124368.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124369.304492715]: Costmap2DROS transform timeout. Current time: 1787124369.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124370.377770602]: Costmap2DROS transform timeout. Current time: 1787124370.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124370.547690430]: No laser scan received (and thus no pose updates have been published) for 702.933781 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124371.577761622]: Costmap2DROS transform timeout. Current time: 1787124371.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124372.577785355]: Costmap2DROS transform timeout. Current time: 1787124372.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124373.777771568]: Costmap2DROS transform timeout. Current time: 1787124373.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124374.777787464]: Costmap2DROS transform timeout. Current time: 1787124374.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124375.977764227]: Costmap2DROS transform timeout. Current time: 1787124375.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124376.977769512]: Costmap2DROS transform timeout. Current time: 1787124376.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124378.177730097]: Costmap2DROS transform timeout. Current time: 1787124378.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124379.177764733]: Costmap2DROS transform timeout. Current time: 1787124379.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124380.177767107]: Costmap2DROS transform timeout. Current time: 1787124380.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124381.304500724]: Costmap2DROS transform timeout. Current time: 1787124381.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124382.377764362]: Costmap2DROS transform timeout. Current time: 1787124382.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124383.377784949]: Costmap2DROS transform timeout. Current time: 1787124383.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124384.577758686]: Costmap2DROS transform timeout. Current time: 1787124384.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124385.547713674]: No laser scan received (and thus no pose updates have been published) for 717.933796 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124385.577770838]: Costmap2DROS transform timeout. Current time: 1787124385.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124386.577776580]: Costmap2DROS transform timeout. Current time: 1787124386.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124387.777749770]: Costmap2DROS transform timeout. Current time: 1787124387.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124388.777755027]: Costmap2DROS transform timeout. Current time: 1787124388.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124389.777827299]: Costmap2DROS transform timeout. Current time: 1787124389.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124390.977763581]: Costmap2DROS transform timeout. Current time: 1787124390.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124391.977818130]: Costmap2DROS transform timeout. Current time: 1787124391.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124393.177768479]: Costmap2DROS transform timeout. Current time: 1787124393.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124394.304500947]: Costmap2DROS transform timeout. Current time: 1787124394.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124395.377755920]: Costmap2DROS transform timeout. Current time: 1787124395.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124396.377758088]: Costmap2DROS transform timeout. Current time: 1787124396.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124397.377765372]: Costmap2DROS transform timeout. Current time: 1787124397.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124398.577772942]: Costmap2DROS transform timeout. Current time: 1787124398.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124399.777749050]: Costmap2DROS transform timeout. Current time: 1787124399.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124400.547711317]: No laser scan received (and thus no pose updates have been published) for 732.933805 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124400.777749018]: Costmap2DROS transform timeout. Current time: 1787124400.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124401.777771521]: Costmap2DROS transform timeout. Current time: 1787124401.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124402.977770871]: Costmap2DROS transform timeout. Current time: 1787124402.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124403.977773416]: Costmap2DROS transform timeout. Current time: 1787124403.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124405.177752879]: Costmap2DROS transform timeout. Current time: 1787124405.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124406.177753499]: Costmap2DROS transform timeout. Current time: 1787124406.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124407.304466243]: Costmap2DROS transform timeout. Current time: 1787124407.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124408.304537156]: Costmap2DROS transform timeout. Current time: 1787124408.3045, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124409.377777952]: Costmap2DROS transform timeout. Current time: 1787124409.3777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124410.577762825]: Costmap2DROS transform timeout. Current time: 1787124410.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124411.577761049]: Costmap2DROS transform timeout. Current time: 1787124411.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124412.577771717]: Costmap2DROS transform timeout. Current time: 1787124412.5777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124413.777796970]: Costmap2DROS transform timeout. Current time: 1787124413.7777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124414.977778604]: Costmap2DROS transform timeout. Current time: 1787124414.9777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124415.547706714]: No laser scan received (and thus no pose updates have been published) for 747.933787 seconds.  Verify that data is being published on the /scan topic.[0m
+[33m[WARN] [1787124416.177774412]: Costmap2DROS transform timeout. Current time: 1787124416.1777, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[33m[WARN] [1787124417.304488550]: Costmap2DROS transform timeout. Current time: 1787124417.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000[0m
+[0m[INFO] [1787113795.284552852]: Subscribed to map topic.[0m
+[0m[INFO] [1787113795.547961263]: Received a 333 X 575 map @ 0.050 m/pix
+[0m
+[0m[INFO] [1787113795.582393516]: Initializing likelihood field model; this can take some time on large maps...[0m
+[0m[INFO] [1787113795.597768982]: Done initializing likelihood field model.[0m
+[0m[INFO] [1787113799.925825446]: Setting pose (1787113799.925807): 0.093 -1.680 -0.000[0m
+[0m[INFO] [1787113805.805652643]: Setting pose (1787113805.805634): -0.025 -1.916 0.464[0m
+[0m[INFO] [1787113810.236036779]: Setting pose (1787113810.236009): -0.183 -1.803 0.000[0m
+[0m[INFO] [1787113813.388074267]: Setting pose (1787113813.388043): -0.078 -1.908 0.187[0m
+[0m[INFO] [1787120658.181546369]: Setting pose (1787120658.181518): 0.017 -1.792 0.000[0m
+[0m[INFO] [1787120662.623809155]: Setting pose (1787120662.623780): -0.008 -2.165 0.393[0m
+[0m[INFO] [1787120667.045304589]: Setting pose (1787120667.045277): -0.008 -1.940 0.300[0m
+[0m[INFO] [1787113795.800679908]: global_costmap: Using plugin "static_layer"[0m
+[0m[INFO] [1787113795.828876125]: Requesting the map...[0m
+[0m[INFO] [1787113796.039025292]: Resizing costmap to 333 X 575 at 0.050000 m/pix[0m
+[0m[INFO] [1787113796.138808241]: Received a 333 X 575 map at 0.050000 m/pix[0m
+[0m[INFO] [1787113796.153840159]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1787113796.376062962]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1787113796.402419472]:     Subscribed to Topics: [0m
+[0m[INFO] [1787113796.436498993]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1787113796.618887592]: Created local_planner base_local_planner/TrajectoryPlannerROS[0m
+[0m[INFO] [1787113796.663484126]: Sim period is set to 0.20[0m
+[0m[INFO] [1787113797.406769872]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1787113797.449440179]: Recovery behavior will clear layer 'obstacles'[0m
+... logging to /home/m3tron/.ros/log/11546448-9b82-11f1-8eb1-151ebead3531/roslaunch-m3tron-All-Series-10175.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/launch/navigation.launch
+[1mstarted roslaunch server http://192.168.1.26:33857/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /amcl/base_frame_id: base_Link
+ * /amcl/global_frame_id: map
+ * /amcl/gui_publish_rate: 2.0
+ * /amcl/initial_cov_aa: 0.01
+ * /amcl/initial_cov_xx: 0.01
+ * /amcl/initial_cov_yy: 0.01
+ * /amcl/initial_pose_a: 0.0
+ * /amcl/initial_pose_x: 0.0
+ * /amcl/initial_pose_y: 0.0
+ * /amcl/laser_max_range: 1.35
+ * /amcl/laser_min_range: 0.3
+ * /amcl/max_beams: 60
+ * /amcl/max_particles: 500
+ * /amcl/min_particles: 100
+ * /amcl/odom_frame_id: odom
+ * /amcl/recovery_alpha_fast: 0.0
+ * /amcl/recovery_alpha_slow: 0.0
+ * /amcl/resample_interval: 1
+ * /amcl/save_pose_rate: 0.5
+ * /amcl/scan_topic: /scan
+ * /amcl/transform_tolerance: 0.3
+ * /amcl/update_min_a: 0.1
+ * /amcl/update_min_d: 0.1
+ * /amcl/use_map_topic: True
+ * /map_server/frame_id: map
+ * /move_base/TrajectoryPlannerROS/acc_lim_theta: 2.0
+ * /move_base/TrajectoryPlannerROS/acc_lim_x: 0.4
+ * /move_base/TrajectoryPlannerROS/acc_lim_y: 0.0
+ * /move_base/TrajectoryPlannerROS/gdist_scale: 0.4
+ * /move_base/TrajectoryPlannerROS/heading_lookahead: 0.6
+ * /move_base/TrajectoryPlannerROS/holonomic_robot: False
+ * /move_base/TrajectoryPlannerROS/latch_xy_goal_tolerance: True
+ * /move_base/TrajectoryPlannerROS/max_vel_theta: 1.57
+ * /move_base/TrajectoryPlannerROS/max_vel_x: 0.35
+ * /move_base/TrajectoryPlannerROS/min_in_place_vel_theta: 0.4
+ * /move_base/TrajectoryPlannerROS/min_vel_theta: -1.57
+ * /move_base/TrajectoryPlannerROS/min_vel_x: 0.0
+ * /move_base/TrajectoryPlannerROS/pdist_scale: 0.8
+ * /move_base/TrajectoryPlannerROS/sim_granularity: 0.05
+ * /move_base/TrajectoryPlannerROS/sim_time: 1.2
+ * /move_base/TrajectoryPlannerROS/vtheta_samples: 24
+ * /move_base/TrajectoryPlannerROS/vx_samples: 12
+ * /move_base/TrajectoryPlannerROS/xy_goal_tolerance: 0.25
+ * /move_base/TrajectoryPlannerROS/yaw_goal_tolerance: 0.2
+ * /move_base/base_global_planner: navfn/NavfnROS
+ * /move_base/base_local_planner: base_local_planne...
+ * /move_base/controller_frequency: 5.0
+ * /move_base/global_costmap/cost_scaling_factor: 4.0
+ * /move_base/global_costmap/footprint_padding: 0.02
+ * /move_base/global_costmap/global_frame: map
+ * /move_base/global_costmap/inflation_radius: 0.55
+ * /move_base/global_costmap/observation_sources: scan
+ * /move_base/global_costmap/obstacle_range: 1.3
+ * /move_base/global_costmap/plugins: [{'name': 'static...
+ * /move_base/global_costmap/publish_frequency: 1.0
+ * /move_base/global_costmap/raytrace_range: 1.4
+ * /move_base/global_costmap/resolution: 0.05
+ * /move_base/global_costmap/robot_base_frame: base_Link
+ * /move_base/global_costmap/robot_radius: 0.28
+ * /move_base/global_costmap/rolling_window: False
+ * /move_base/global_costmap/scan/clearing: True
+ * /move_base/global_costmap/scan/data_type: LaserScan
+ * /move_base/global_costmap/scan/marking: True
+ * /move_base/global_costmap/scan/sensor_frame: base_Link
+ * /move_base/global_costmap/scan/topic: /scan
+ * /move_base/global_costmap/static_map: True
+ * /move_base/global_costmap/transform_tolerance: 0.5
+ * /move_base/global_costmap/update_frequency: 1.0
+ * /move_base/local_costmap/cost_scaling_factor: 4.0
+ * /move_base/local_costmap/footprint_padding: 0.02
+ * /move_base/local_costmap/global_frame: odom
+ * /move_base/local_costmap/height: 4.0
+ * /move_base/local_costmap/inflation_radius: 0.55
+ * /move_base/local_costmap/observation_sources: scan
+ * /move_base/local_costmap/obstacle_range: 1.3
+ * /move_base/local_costmap/plugins: [{'name': 'obstac...
+ * /move_base/local_costmap/publish_frequency: 2.0
+ * /move_base/local_costmap/raytrace_range: 1.4
+ * /move_base/local_costmap/resolution: 0.05
+ * /move_base/local_costmap/robot_base_frame: base_Link
+ * /move_base/local_costmap/robot_radius: 0.28
+ * /move_base/local_costmap/rolling_window: True
+ * /move_base/local_costmap/scan/clearing: True
+ * /move_base/local_costmap/scan/data_type: LaserScan
+ * /move_base/local_costmap/scan/marking: True
+ * /move_base/local_costmap/scan/sensor_frame: base_Link
+ * /move_base/local_costmap/scan/topic: /scan
+ * /move_base/local_costmap/static_map: False
+ * /move_base/local_costmap/transform_tolerance: 0.5
+ * /move_base/local_costmap/update_frequency: 5.0
+ * /move_base/local_costmap/width: 4.0
+ * /move_base/oscillation_distance: 0.2
+ * /move_base/oscillation_timeout: 10.0
+ * /move_base/planner_patience: 5.0
+ * /rosdistro: noetic
+ * /rosversion: 1.17.4
+
+NODES
+  /
+    amcl (amcl/amcl)
+    map_server (map_server/map_server)
+    move_base (move_base/move_base)
+
+[1mROS_MASTER_URI=http://192.168.1.56:11311[0m
+]2;/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/launch/navigation.launch http://192.168.1.56:11311
+[1mprocess[map_server-1]: started with pid [10235][0m
+[1mprocess[amcl-2]: started with pid [10236][0m
+[1mprocess[move_base-3]: started with pid [10237][0m
+[move_base-3] killing on exit
+[amcl-2] killing on exit
+[map_server-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m

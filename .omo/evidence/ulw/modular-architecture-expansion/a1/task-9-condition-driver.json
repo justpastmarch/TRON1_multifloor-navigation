@@ -1,0 +1,53 @@
+{
+  "conditions": [
+    {
+      "condition_id": "T_REQUIRED",
+      "reason": "true",
+      "result": true
+    },
+    {
+      "condition_id": "T_OPTIONAL_A",
+      "reason": "true",
+      "result": true
+    },
+    {
+      "condition_id": "T_OPTIONAL_B",
+      "reason": "false",
+      "result": false
+    },
+    {
+      "condition_id": "T_IGNORED",
+      "reason": "ignored",
+      "result": false
+    }
+  ],
+  "deadline_sec": 18.0,
+  "dwell_elapsed_sec": 0.0,
+  "dwell_started_at_sec": 10.0,
+  "epoch": 4,
+  "groups": [
+    {
+      "group_id": "optional_gate",
+      "matched": 1,
+      "operator": "any",
+      "reason": "any_true",
+      "required": 1,
+      "result": true
+    },
+    {
+      "group_id": null,
+      "matched": 2,
+      "operator": "all",
+      "reason": "all_true",
+      "required": 2,
+      "result": true
+    }
+  ],
+  "now_sec": 10.0,
+  "policy_id": "transition_ready",
+  "reason": "success",
+  "result": true,
+  "root_result": true,
+  "started_at_sec": 10.0,
+  "timed_out": false
+}

@@ -1,0 +1,6 @@
+segment_id,semantic_label,observed_start_s,observed_end_s,boundary_status,provenance,evidence
+outbound_5f_observed,5F_planar,0.0005478858947753906,24.934160470962524,coarse_window_only,inferred,"RGB shows indoor elevator/corridor and wall marker; no surveyed floor correspondence"
+outbound_stair_observed,stair,49.972673177719116,175.00631093978882,coarse_window_only,inferred,"RGB shows stair rails/treads; exact entry and exit are between sampled frames"
+rf_planar_observed,RF_planar,200.0065610408783,300.01064014434814,coarse_window_only,inferred,"RGB shows rooftop doorway, turf, furniture, parapet, and skyline; no surveyed floor correspondence"
+return_indoor_ambiguous,indoor_return,324.9909932613373,375.00666666030884,semantic_floor_unavailable,inferred,"RGB is indoors with directional markings; return stair transition is not visible"
+return_5f_observed,5F_planar,399.9833469390869,494.4028308391571,coarse_window_only,inferred,"RGB includes a landing marked 5 and later corridor/elevator views"

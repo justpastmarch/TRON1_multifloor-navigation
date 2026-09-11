@@ -1,0 +1,47 @@
+schema_version: 2
+plan: .omo/plans/yaml-transition-policy-runtime.md
+task: "1"
+task_id: baseline-provenance
+attempt_id: baseline-provenance-repair-2026-08-24T10:02:19+09:00
+supersedes_attempt_id: baseline-provenance-2026-08-24T09:52:45+09:00
+session_id: codex:yaml-transition-policy-runtime-todo-1-repair
+status: complete
+status_meaning: completed evidence task; baseline tests retain known nonzero failures
+workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+workspace_is_git: false
+allowed_paths:
+  - .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/*
+  - .omo/start-work/ledger.jsonl
+changed_paths:
+  - .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/receipt.yaml
+  - .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/commands.txt
+  - .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/baseline.json
+  - .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/diff-inventory.json
+  - .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/test-results.txt
+  - .omo/evidence/yaml-transition-policy-runtime/baseline-provenance/cleanup.json
+  - .omo/start-work/ledger.jsonl
+dependency_receipts: []
+source_inventory: baseline.json
+generated_manifest: diff-inventory.json
+commands: commands.txt
+tests: test-results.txt
+manual_qa:
+  - source-direct inspect.getfile: src/multifloor_manager/src/multifloor_manager/configuration.py
+  - devel-sourced inspect.getfile: src/multifloor_manager/src/multifloor_manager/configuration.py
+  - install-sourced inspect.getfile: install/lib/python3/dist-packages/multifloor_manager/configuration.py (generated/non-authoritative)
+  - devel-sourced rospack: src/multifloor_manager
+  - install-sourced rospack: install/share/multifloor_manager (generated/non-authoritative)
+adversarial_classes:
+  dirty_worktree: non-Git workspace; source/generated/unrelated paths preserved
+  stale_state: complete 37-path XML manifest with SHA-256, mtime, and counts; install output separated from source
+  misleading_success_output: catkin_make run_tests exit 0 distinguished from catkin_test_results exit 1 and XML failures
+  malformed_input: not applicable at baseline; no parser execution/change
+  cancel_resume: not applicable at baseline; no resumable flow
+  repeated_interruptions: not applicable at baseline; no interruption probe
+  hung_commands: no required command stalled or timed out
+cleanup: cleanup.json
+risks:
+  - Known root suite failures and registered import failures predate Todo 2.
+  - Generated output is stale/non-authoritative relative to source by design and was not modified during repair.
+next_safe_tasks:
+  - Do not begin Todo 2 from this repair; retain this superseding receipt as the baseline handoff.

@@ -1,0 +1,92 @@
+cd /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+
+RED defect reproduction before repair:
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest src/multifloor_manager/test/test_transitions.py -v
+Observed: 16 tests; epoch bypass, mutable conditions, decimal dwell failed; malformed entry errored with AttributeError; reset assertion was corrected in the repair test before production repair.
+
+RED focused proof after adding all repair tests and before production repair:
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest src/multifloor_manager/test/test_transitions.py -v
+Observed exact defects:
+- test_evaluate_rejects_epoch_different_from_begun_epoch: AssertionError, no exception
+- test_policy_rejects_mutable_conditions_container: AssertionError, no exception
+- test_malformed_entry_is_domain_error_and_does_not_commit_time: AttributeError: object has no attribute value
+- test_decimal_dwell_uses_absolute_threshold: AssertionError: False is not true
+
+GREEN focused suite:
+python3 -m unittest src/multifloor_manager/test/test_transitions.py -v
+Exit code: 0; 16 tests passed.
+
+Adversarial driver:
+PYTHONDONTWRITEBYTECODE=1 python3 - <<'PY'
+import sys
+sys.path.insert(0, 'src/multifloor_manager/src')
+from multifloor_manager.transitions import (InvalidPredicateObservationError, InvalidTransitionPolicyError, PredicateObservation, TransitionCondition, TransitionManager, TransitionPolicy)
+def make_policy(dwell=2.0, timeout=5.0):
+    return TransitionPolicy(id='driver', enabled=True, conditions=(TransitionCondition('ready', True, True),), optional_count=0, freshness_sec=1.0, dwell_sec=dwell, timeout_sec=timeout)
+manager = TransitionManager(make_policy()); manager.begin(0.0, 4)
+try: manager.evaluate({'ready': PredicateObservation(True, 0.0, 5)}, 0.0, 5)
+except InvalidPredicateObservationError: print('epoch-fence: pass')
+else: raise AssertionError('epoch bypass')
+try: TransitionPolicy('list', True, [TransitionCondition('ready', True, True)], 0, 1.0, 0.0, 2.0)
+except InvalidTransitionPolicyError: print('immutable-conditions: pass')
+else: raise AssertionError('mutable conditions accepted')
+try: manager.evaluate({'ready': object()}, 2.0, 4)
+except InvalidPredicateObservationError: print('malformed-domain-error: pass')
+else: raise AssertionError('malformed entry accepted')
+result, evidence = manager.evaluate({'ready': PredicateObservation(True, 1.0, 4)}, 1.0, 4)
+assert result is False and evidence.dwell_started_at_sec == 1.0
+print('exception-atomicity: pass')
+manager = TransitionManager(make_policy()); manager.begin(0.0, 4); manager.evaluate({'ready': PredicateObservation(True, 2.1, 4)}, 2.1, 4)
+result, evidence = manager.evaluate({'ready': PredicateObservation(True, 4.1, 4)}, 4.1, 4)
+assert result is True; print('decimal-absolute-dwell: pass')
+manager = TransitionManager(make_policy()); manager.begin(0.0, 4); result, evidence = manager.evaluate({'ready': PredicateObservation(True, 5.0, 4)}, 5.0, 4)
+assert result is False and evidence.timed_out is True; print('exact-timeout-terminal: pass')
+PY
+
+Quality:
+ruff check src/multifloor_manager/src/multifloor_manager/transitions.py src/multifloor_manager/test/test_transitions.py
+awk '!/^[[:space:]]*$/ && !/^[[:space:]]*#/ {n++} END {print "pure_loc=" n}' src/multifloor_manager/src/multifloor_manager/transitions.py
+python3 -c 'import json; from pathlib import Path; import yaml; root=Path(".omo/evidence/yaml-transition-policy-runtime/policy-evaluator"); [json.loads(p.read_text()) for p in root.glob("*.json")]; yaml.safe_load((root/"receipt.yaml").read_text()); [json.loads(line) for line in Path(".omo/start-work/ledger.jsonl").read_text().splitlines()]; print("evidence and ledger parse: pass")'
+LSP diagnostics: src/multifloor_manager/src/multifloor_manager/transitions.py and src/multifloor_manager/test/test_transitions.py, severity all
+
+Cleanup:
+rm -f src/multifloor_manager/src/multifloor_manager/__pycache__/transitions.cpython-38.pyc src/multifloor_manager/test/__pycache__/test_transitions.cpython-38.pyc
+test ! -e src/multifloor_manager/src/multifloor_manager/__pycache__/transitions.cpython-38.pyc && test ! -e src/multifloor_manager/test/__pycache__/test_transitions.cpython-38.pyc
+
+Evidence correction and independent re-run:
+Started: 2026-08-24T15:36:09+09:00
+Completed: 2026-08-24T15:36:09+09:00
+Exit code: 0
+Exact command:
+PYTHONDONTWRITEBYTECODE=1 python3 - <<'PY'
+import sys
+sys.path.insert(0, 'src/multifloor_manager/src')
+from multifloor_manager.transitions import (InvalidPredicateObservationError, InvalidTransitionPolicyError, PredicateObservation, TransitionCondition, TransitionManager, TransitionPolicy)
+def make_policy(dwell=2.0, timeout=5.0):
+    return TransitionPolicy(id='driver', enabled=True, conditions=(TransitionCondition('ready', True, True),), optional_count=0, freshness_sec=1.0, dwell_sec=dwell, timeout_sec=timeout)
+manager = TransitionManager(make_policy()); manager.begin(0.0, 4)
+try: manager.evaluate({'ready': PredicateObservation(True, 0.0, 5)}, 0.0, 5)
+except InvalidPredicateObservationError: print('epoch-fence: pass')
+else: raise AssertionError('epoch bypass')
+try: TransitionPolicy('list', True, [TransitionCondition('ready', True, True)], 0, 1.0, 0.0, 2.0)
+except InvalidTransitionPolicyError: print('immutable-conditions: pass')
+else: raise AssertionError('mutable conditions accepted')
+try: manager.evaluate({'ready': object()}, 2.0, 4)
+except InvalidPredicateObservationError: print('malformed-domain-error: pass')
+else: raise AssertionError('malformed entry accepted')
+result, evidence = manager.evaluate({'ready': PredicateObservation(True, 1.0, 4)}, 1.0, 4)
+assert result is False and evidence.dwell_started_at_sec == 1.0
+print('exception-atomicity: pass')
+manager = TransitionManager(make_policy()); manager.begin(0.0, 4); manager.evaluate({'ready': PredicateObservation(True, 2.1, 4)}, 2.1, 4)
+result, evidence = manager.evaluate({'ready': PredicateObservation(True, 4.1, 4)}, 4.1, 4)
+assert result is True; print('decimal-absolute-dwell: pass')
+manager = TransitionManager(make_policy()); manager.begin(0.0, 4); result, evidence = manager.evaluate({'ready': PredicateObservation(True, 5.0, 4)}, 5.0, 4)
+assert result is False and evidence.timed_out is True; print('exact-timeout-terminal: pass')
+PY
+Observed output:
+epoch-fence: pass
+immutable-conditions: pass
+malformed-domain-error: pass
+exception-atomicity: pass
+decimal-absolute-dwell: pass
+exact-timeout-terminal: pass

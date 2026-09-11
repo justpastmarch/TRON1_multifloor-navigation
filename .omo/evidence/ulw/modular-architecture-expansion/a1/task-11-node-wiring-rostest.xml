@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="0" failures="0" name="unittest.suite.TestSuite" tests="1" time="0.248"><testcase classname="__main__.MultifloorNodeWiringTest" name="test_private_topic_parameters_drive_runtime_subscriptions" time="0.0931" /><system-out>&lt;![CDATA[
+
+]]&gt;</system-out><system-err>&lt;![CDATA[
+
+]]&gt;</system-err></testsuite>

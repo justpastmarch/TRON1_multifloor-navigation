@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="0" failures="0" name="unittest.suite.TestSuite" tests="1" time="0.373"><testcase classname="__main__.SystemSmokeMissionTest" name="test_happy_navigation_crosses_live_mission_and_move_base_actions" time="0.2198" /><system-out>&lt;![CDATA[
+]]&gt;</system-out><system-err>&lt;![CDATA[
+]]&gt;</system-err></testsuite>

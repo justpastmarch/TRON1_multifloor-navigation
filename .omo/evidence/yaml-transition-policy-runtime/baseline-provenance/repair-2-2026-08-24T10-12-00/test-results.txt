@@ -1,0 +1,54 @@
+BASELINE STATUS: completed evidence task; tests are not green.
+
+ROOT COMMAND AND RAW FAILURE OUTPUT:
+COMMAND: python3 -m unittest discover -s test -v
+EXIT: 1
+RAW SUMMARY: Ran 79 tests in 0.903s; FAILED (failures=3).
+1. TESTCASE ID: test_system_operator_contract.SystemOperatorContractTest.test_managed_rviz_is_visualization_only
+   RAW OUTPUT: AssertionError: 'Class: rviz/SetGoal' unexpectedly found in wf_navigation.rviz; the same raw output includes 'Class: rviz/SetInitialPose'.
+2. TESTCASE ID: test_workspace_layout.WorkspaceLayoutTest.test_one_runtime_entrypoint_exists_when_each_package_is_inspected (package='multifloor_manager')
+   RAW OUTPUT: AssertionError: 2 != 1.
+3. TESTCASE ID: test_workspace_layout.WorkspaceLayoutTest.test_one_runtime_entrypoint_exists_when_each_package_is_inspected (package='stair_supervisor')
+   RAW OUTPUT: AssertionError: 2 != 1.
+
+REGISTERED RESULT COMMANDS:
+COMMAND: catkin_make run_tests
+EXIT: 0
+COMMAND: catkin_test_results --verbose
+EXIT: 1
+RAW SUMMARY: Summary: 150 tests, 9 errors, 1 failures, 0 skipped
+RAW XML FAILURE ARTIFACT: xml-failures.stdout.txt
+
+EXACT XML TESTCASE IDS AND RAW OUTPUT EXCERPTS, IN XML ORDER:
+4. XML: build/test_results/mission_manager/nosetests-test.test_runtime_gating.py.xml
+   TESTCASE ID: classname="nose.failure.Failure" name="runTest"
+   RAW OUTPUT: ModuleNotFoundError: No module named 'mission_manager'; source line: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/test/test_runtime_gating.py:9; import: from mission_manager.ros_runtime import _configuration_roots
+5. XML: build/test_results/mission_manager/nosetests-test.test_ros_segments.py.xml
+   TESTCASE ID: classname="nose.failure.Failure" name="runTest"
+   RAW OUTPUT: ModuleNotFoundError: No module named 'multifloor_manager'; source line: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/test/test_ros_segments.py:13; import: from multifloor_manager.msg import FloorState, FloorTransitionResult
+6. XML: build/test_results/mission_manager/nosetests-test.test_navigation_executor.py.xml
+   TESTCASE ID: classname="nose.failure.Failure" name="runTest"
+   RAW OUTPUT: ModuleNotFoundError: No module named 'multifloor_manager'; source line: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/test/test_navigation_executor.py:18; import: from multifloor_manager.msg import FloorState
+7. XML: build/test_results/stair_supervisor/nosetests-test.robot_transport.xml, error occurrence 1
+   TESTCASE ID: classname="nose.failure.Failure" name="runTest"
+   RAW OUTPUT: ModuleNotFoundError: No module named 'stair_supervisor'; source line: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_robot_config.py:5; import: from stair_supervisor.robot_config import (
+8. XML: build/test_results/stair_supervisor/nosetests-test.robot_transport.xml, error occurrence 2
+   TESTCASE ID: classname="nose.failure.Failure" name="runTest"
+   RAW OUTPUT: ModuleNotFoundError: No module named 'stair_supervisor'; source line: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_robot_conversion.py:6; import: from stair_supervisor.configuration import WebSocketCalibration
+9. XML: build/test_results/stair_supervisor/nosetests-test.robot_transport.xml, error occurrence 3
+   TESTCASE ID: classname="nose.failure.Failure" name="runTest"
+   RAW OUTPUT: ModuleNotFoundError: No module named 'stair_supervisor'; source line: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_robot_protocol.py:6; import: from stair_supervisor.robot_protocol import (
+10. XML: build/test_results/stair_supervisor/nosetests-test.robot_transport.xml, error occurrence 4
+    TESTCASE ID: classname="nose.failure.Failure" name="runTest"
+    RAW OUTPUT: ModuleNotFoundError: No module named 'stair_supervisor'; outer source line: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_robot_transport.py:11; nested source line: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_robot_transport_fakes.py:8; import: from stair_supervisor.configuration import WebSocketCalibration
+11. XML: build/test_results/stair_supervisor/nosetests-test.robot_transport.xml, error occurrence 5
+    TESTCASE ID: classname="nose.failure.Failure" name="runTest"
+    RAW OUTPUT: ModuleNotFoundError: No module named 'stair_supervisor'; source line: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_robot_transport_fakes.py:8; import: from stair_supervisor.configuration import WebSocketCalibration
+12. XML: build/test_results/stair_supervisor/nosetests-test.robot_transport.xml, error occurrence 6
+    TESTCASE ID: classname="nose.failure.Failure" name="runTest"
+    RAW OUTPUT: ModuleNotFoundError: No module named 'stair_supervisor'; outer source line: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_robot_transport_faults.py:11; nested source line: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/robot_transport/test_robot_transport_fakes.py:8; import: from stair_supervisor.configuration import WebSocketCalibration
+13. XML: build/test_results/stair_supervisor/nosetests-test.robot_transport.xml, failure occurrence 1
+    TESTCASE ID: classname="robot_transport.test_yaw_calibration_cli.YawCalibrationCliTest" name="test_help_exposes_safe_calibration_controls"
+    RAW OUTPUT: AssertionError: 1 != 0; subprocess stderr: File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/scripts/calibrate_yaw_rate.py", line 11, in <module>; from stair_supervisor.configuration import WebSocketCalibration; ModuleNotFoundError: No module named 'stair_supervisor'
+
+The six robot_transport import errors are six separate XML <error> nodes. Their testcase IDs are identical because nose emitted classname="nose.failure.Failure" name="runTest"; occurrence and source-line excerpts distinguish them without inventing labels. The full serialized error/failure nodes are in xml-failures.stdout.txt.

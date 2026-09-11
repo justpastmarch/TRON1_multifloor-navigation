@@ -1,0 +1,14 @@
+# SYNTHETIC NON-PRODUCTION FIXTURE: policy mirrors the required test contract only.
+schema_version: 1
+configured: true
+transitions:
+  - id: floor_transition_ready
+    enabled: 1
+    conditions:
+      - {name: T_FLOOR_CONFIRMED, enabled: 1, required: 1}
+      - {name: T_LOCALIZED, enabled: 1, required: 1}
+      - {name: T_COSTMAP_READY, enabled: 1, required: 1}
+    optional_count: 0
+    freshness_sec: 10.0
+    dwell_sec: 0.2
+    timeout_sec: 8.0

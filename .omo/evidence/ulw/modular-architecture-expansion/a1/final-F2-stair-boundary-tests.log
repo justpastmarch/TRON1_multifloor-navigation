@@ -1,0 +1,19 @@
+test_cancel_shutdown_and_transport_errors_publish_terminal_state (test_stair_ros_node.StairRosNodeTest) ... ok
+test_disabled_configuration_exposes_surface_without_transport (test_stair_ros_node.StairRosNodeTest) ... ok
+test_malformed_stair_response_aborts_communication_lost (test_stair_ros_node.StairRosNodeTest) ... ok
+test_navigation_timer_and_action_handoff_advance_epoch_without_replay (test_stair_ros_node.StairRosNodeTest) ... ok
+test_cancel_and_shutdown_send_bounded_zero_while_connected (test_stream_supervisor.StreamSupervisorTest) ... ok
+test_finished_stair_advances_epoch_without_replaying_old_navigation (test_stream_supervisor.StreamSupervisorTest) ... ok
+test_nonfinite_input_replaces_current_command_with_zero (test_stream_supervisor.StreamSupervisorTest) ... ok
+test_normal_iteration_sends_zero_when_last_valid_receipt_is_stale (test_stream_supervisor.StreamSupervisorTest) ... ok
+test_receive_error_faults_and_blocks_later_commands (test_stream_supervisor.StreamSupervisorTest) ... ok
+test_send_error_faults_and_stops_without_reconnect_or_replay (test_stream_supervisor.StreamSupervisorTest) ... ok
+test_shutdown_zero_send_error_remains_faulted (test_stream_supervisor.StreamSupervisorTest) ... ok
+test_malformed_response_latches_supervisor_fault (test_verifier_findings.VerifierFindingsTest) ... ok
+test_outbound_timestamp_uses_wall_clock_epoch_milliseconds (test_verifier_findings.VerifierFindingsTest) ... ok
+test_public_nonfinite_stair_command_rejects_after_sending_zero (test_verifier_findings.VerifierFindingsTest) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.061s
+
+OK

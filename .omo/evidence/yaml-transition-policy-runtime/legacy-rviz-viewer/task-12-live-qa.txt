@@ -1,0 +1,63 @@
+Task 12 zero-only live QA - final handshake investigation
+
+Environment and provenance:
+  ROS_MASTER_URI=http://10.192.1.2:11311
+  route-derived ROS_IP=192.168.1.26
+  ROS_HOSTNAME unset
+  rospack find stair_supervisor succeeded
+  runtime import: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py
+
+Three hypotheses and results:
+  1. WALK status arrives before its correlated response and is discarded: REFUTED live.
+     STAND notify arrived before STAND response, but STAND has no expected-status
+     gate. WALK response arrived before the fresh WALK robot-info notification.
+  2. SSH endpoint or robot WebSocket unavailable: REFUTED. The local listener was
+     owned by the task SSH PID and valid correlated robot frames were received.
+  3. Process blocked/crashed on stale runtime: REFUTED. The process remained alive
+     beyond the 8-second request timeout and imported the workspace source.
+  Confirmed root cause: the previous QA captured the initial latched STARTING state
+  too early and terminated the healthy process before bounded readiness waiting.
+
+Sanitized real startup timeline (no ACCID, GUID, or payload logged):
+  client request_stand_mode sent_at_ms=1787550761872
+  robot notify_robot_info timestamp_ms=1787550701992 status=WALK correlated=false
+  robot response_stand_mode timestamp_ms=1787550702072 correlated=true
+  client request_walk_mode sent_at_ms=1787550761881
+  robot response_walk_mode timestamp_ms=1787550702079 correlated=true
+  robot notify_robot_info timestamp_ms=1787550702325 status=WALK correlated=false
+  The roughly 60-second client/robot clock offset is why freshness is evaluated in
+  robot response order; no client-clock comparison or correlation rule was relaxed.
+
+Characterization test:
+  test_start_accepts_observed_firmware_frame_order
+  STAND notify-before-response plus WALK response-before-notify reaches readiness.
+  The hypothetical WALK notify-before-response test failed against current policy,
+  but that order was not observed live and was removed without changing production.
+
+Final uninstrumented run after 11 seconds:
+  tunnel PID 396782 listening on 127.0.0.1:5000
+  supervisor PID 396799 alive
+  state: 1
+  connected: True
+  detail: "navigation owns commands"
+  ownership_epoch: 0
+
+rostopic info /navigation/cmd_vel:
+  Type: geometry_msgs/Twist
+  Publishers:
+   * /move_base (http://192.168.1.26:40665/)
+  Subscribers:
+   * /stair_supervisor (http://192.168.1.26:43261/)
+
+Safety:
+  no goal, Twist, service, stair action, or other ROS message was published
+  only startup zero and STAND/WALK handshake were permitted
+  no legacy bridge or second WebSocket owner was started
+
+Cleanup:
+  supervisor PID 396799 ended after SIGINT
+  tunnel PID 396782 required SIGTERM after SIGINT and ended
+  port 5000 has no listener
+  /stair_supervisor absent after cleanup
+  temporary sanitized and final logs removed
+  pre-existing processes untouched

@@ -1,0 +1,1 @@
+Read-only audit of plan Must have/Must NOT have requirements, canonical src implementation, launch/CMake surfaces, and historical receipts.

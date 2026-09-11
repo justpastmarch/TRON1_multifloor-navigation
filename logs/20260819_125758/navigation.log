@@ -1,0 +1,149 @@
+[33m[WARN] [1787111884.385663834]: global_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1787111884.992717383]: local_costmap: Pre-Hydro parameter "static_map" unused since "plugins" is provided[0m
+[33m[WARN] [1787111885.386525779]: Parameter pdist_scale is deprecated. Please use the name path_distance_bias instead.[0m
+[33m[WARN] [1787111885.400987565]: Parameter gdist_scale is deprecated. Please use the name goal_distance_bias instead.[0m
+[33m[WARN] [1787111885.417148431]: Trajectory Rollout planner initialized with param meter_scoring not set. Set it to true to make your settings robust against changes of costmap resolution.[0m
+[33m[WARN] [1787111949.936025903]: Clearing both costmaps outside a square (3.00m) large centered on the robot.[0m
+[0m[INFO] [1787111883.936007293]: Subscribed to map topic.[0m
+[0m[INFO] [1787111884.286447675]: Received a 477 X 232 map @ 0.050 m/pix
+[0m
+[0m[INFO] [1787111884.318864121]: Initializing likelihood field model; this can take some time on large maps...[0m
+[0m[INFO] [1787111884.335029515]: Done initializing likelihood field model.[0m
+[0m[INFO] [1787111892.113812823]: Setting pose (1787111892.113797): -0.056 0.074 -1.594[0m
+[0m[INFO] [1787111884.400804019]: global_costmap: Using plugin "static_layer"[0m
+[0m[INFO] [1787111884.432007245]: Requesting the map...[0m
+[0m[INFO] [1787111884.647626675]: Resizing costmap to 477 X 232 at 0.050000 m/pix[0m
+[0m[INFO] [1787111884.747542032]: Received a 477 X 232 map at 0.050000 m/pix[0m
+[0m[INFO] [1787111884.762035962]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1787111884.997780418]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1787111885.019627008]:     Subscribed to Topics: [0m
+[0m[INFO] [1787111885.060138335]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1787111885.307534157]: Created local_planner base_local_planner/TrajectoryPlannerROS[0m
+[0m[INFO] [1787111885.363414005]: Sim period is set to 0.20[0m
+[0m[INFO] [1787111886.098957996]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1787111886.133846276]: Recovery behavior will clear layer 'obstacles'[0m
+... logging to /home/m3tron/.ros/log/11546448-9b82-11f1-8eb1-151ebead3531/roslaunch-m3tron-All-Series-5329.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/launch/navigation.launch
+[1mstarted roslaunch server http://192.168.1.26:35515/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /amcl/base_frame_id: base_Link
+ * /amcl/global_frame_id: map
+ * /amcl/gui_publish_rate: 2.0
+ * /amcl/initial_cov_aa: 0.01
+ * /amcl/initial_cov_xx: 0.01
+ * /amcl/initial_cov_yy: 0.01
+ * /amcl/initial_pose_a: 0.0
+ * /amcl/initial_pose_x: 0.0
+ * /amcl/initial_pose_y: 0.0
+ * /amcl/laser_max_range: 1.35
+ * /amcl/laser_min_range: 0.3
+ * /amcl/max_beams: 60
+ * /amcl/max_particles: 500
+ * /amcl/min_particles: 100
+ * /amcl/odom_frame_id: odom
+ * /amcl/recovery_alpha_fast: 0.0
+ * /amcl/recovery_alpha_slow: 0.0
+ * /amcl/resample_interval: 1
+ * /amcl/save_pose_rate: 0.5
+ * /amcl/scan_topic: /scan
+ * /amcl/transform_tolerance: 0.3
+ * /amcl/update_min_a: 0.1
+ * /amcl/update_min_d: 0.1
+ * /amcl/use_map_topic: True
+ * /map_server/frame_id: map
+ * /move_base/TrajectoryPlannerROS/acc_lim_theta: 2.0
+ * /move_base/TrajectoryPlannerROS/acc_lim_x: 0.6
+ * /move_base/TrajectoryPlannerROS/acc_lim_y: 0.0
+ * /move_base/TrajectoryPlannerROS/gdist_scale: 0.4
+ * /move_base/TrajectoryPlannerROS/heading_lookahead: 0.6
+ * /move_base/TrajectoryPlannerROS/holonomic_robot: False
+ * /move_base/TrajectoryPlannerROS/latch_xy_goal_tolerance: True
+ * /move_base/TrajectoryPlannerROS/max_vel_theta: 1.57
+ * /move_base/TrajectoryPlannerROS/max_vel_x: 0.55
+ * /move_base/TrajectoryPlannerROS/min_in_place_vel_theta: 0.4
+ * /move_base/TrajectoryPlannerROS/min_vel_theta: -1.57
+ * /move_base/TrajectoryPlannerROS/min_vel_x: 0.0
+ * /move_base/TrajectoryPlannerROS/pdist_scale: 0.8
+ * /move_base/TrajectoryPlannerROS/sim_granularity: 0.05
+ * /move_base/TrajectoryPlannerROS/sim_time: 1.2
+ * /move_base/TrajectoryPlannerROS/vtheta_samples: 24
+ * /move_base/TrajectoryPlannerROS/vx_samples: 12
+ * /move_base/TrajectoryPlannerROS/xy_goal_tolerance: 0.25
+ * /move_base/TrajectoryPlannerROS/yaw_goal_tolerance: 0.2
+ * /move_base/base_global_planner: navfn/NavfnROS
+ * /move_base/base_local_planner: base_local_planne...
+ * /move_base/controller_frequency: 5.0
+ * /move_base/global_costmap/cost_scaling_factor: 4.0
+ * /move_base/global_costmap/footprint_padding: 0.02
+ * /move_base/global_costmap/global_frame: map
+ * /move_base/global_costmap/inflation_radius: 0.55
+ * /move_base/global_costmap/observation_sources: scan
+ * /move_base/global_costmap/obstacle_range: 1.3
+ * /move_base/global_costmap/plugins: [{'name': 'static...
+ * /move_base/global_costmap/publish_frequency: 1.0
+ * /move_base/global_costmap/raytrace_range: 1.4
+ * /move_base/global_costmap/resolution: 0.05
+ * /move_base/global_costmap/robot_base_frame: base_Link
+ * /move_base/global_costmap/robot_radius: 0.28
+ * /move_base/global_costmap/rolling_window: False
+ * /move_base/global_costmap/scan/clearing: True
+ * /move_base/global_costmap/scan/data_type: LaserScan
+ * /move_base/global_costmap/scan/marking: True
+ * /move_base/global_costmap/scan/sensor_frame: base_Link
+ * /move_base/global_costmap/scan/topic: /scan
+ * /move_base/global_costmap/static_map: True
+ * /move_base/global_costmap/transform_tolerance: 0.5
+ * /move_base/global_costmap/update_frequency: 1.0
+ * /move_base/local_costmap/cost_scaling_factor: 4.0
+ * /move_base/local_costmap/footprint_padding: 0.02
+ * /move_base/local_costmap/global_frame: odom
+ * /move_base/local_costmap/height: 4.0
+ * /move_base/local_costmap/inflation_radius: 0.55
+ * /move_base/local_costmap/observation_sources: scan
+ * /move_base/local_costmap/obstacle_range: 1.3
+ * /move_base/local_costmap/plugins: [{'name': 'obstac...
+ * /move_base/local_costmap/publish_frequency: 2.0
+ * /move_base/local_costmap/raytrace_range: 1.4
+ * /move_base/local_costmap/resolution: 0.05
+ * /move_base/local_costmap/robot_base_frame: base_Link
+ * /move_base/local_costmap/robot_radius: 0.28
+ * /move_base/local_costmap/rolling_window: True
+ * /move_base/local_costmap/scan/clearing: True
+ * /move_base/local_costmap/scan/data_type: LaserScan
+ * /move_base/local_costmap/scan/marking: True
+ * /move_base/local_costmap/scan/sensor_frame: base_Link
+ * /move_base/local_costmap/scan/topic: /scan
+ * /move_base/local_costmap/static_map: False
+ * /move_base/local_costmap/transform_tolerance: 0.5
+ * /move_base/local_costmap/update_frequency: 5.0
+ * /move_base/local_costmap/width: 4.0
+ * /move_base/oscillation_distance: 0.2
+ * /move_base/oscillation_timeout: 10.0
+ * /move_base/planner_patience: 5.0
+ * /rosdistro: noetic
+ * /rosversion: 1.17.4
+
+NODES
+  /
+    amcl (amcl/amcl)
+    map_server (map_server/map_server)
+    move_base (move_base/move_base)
+
+[1mROS_MASTER_URI=http://192.168.1.56:11311[0m
+]2;/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/launch/navigation.launch http://192.168.1.56:11311
+[1mprocess[map_server-1]: started with pid [5392][0m
+[1mprocess[amcl-2]: started with pid [5393][0m
+[1mprocess[move_base-3]: started with pid [5396][0m
+[move_base-3] killing on exit
+[amcl-2] killing on exit
+[map_server-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m

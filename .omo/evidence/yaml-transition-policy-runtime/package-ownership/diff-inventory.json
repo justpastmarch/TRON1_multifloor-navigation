@@ -1,0 +1,40 @@
+{
+  "task": "package-ownership",
+  "attempt_id": "package-ownership-generated-cleanup-2026-08-24T16:48:00+09:00",
+  "executor_session_id": "codex:yaml-transition-policy-runtime-todo-4-generated-cleanup-2026-08-24",
+  "changed_source_paths": [
+    "src/mission_manager/CMakeLists.txt",
+    "src/multifloor_manager/CMakeLists.txt",
+    "src/mission_manager/src/mission_manager/transitions.py",
+    "src/mission_manager/test/test_transitions.py"
+  ],
+  "deleted_paths": [
+    "src/mission_manager/src/mission_manager/transitions.py",
+    "src/mission_manager/test/test_transitions.py"
+  ],
+  "unchanged_dependency_manifests": [
+    "src/mission_manager/package.xml",
+    "src/multifloor_manager/package.xml"
+  ],
+  "destination_hashes": {
+    "src/multifloor_manager/src/multifloor_manager/transitions.py": "e8dfb77c982fb47d9c238e693fcec3cc651f3a8c634dc539c3f3a148a037b783",
+    "src/multifloor_manager/test/test_transitions.py": "1f038d3dfdc306bc21874f43e73a8e30d70ce87e205c5620616f4f05bcff4de8",
+    "src/mission_manager/package.xml": "d4197e9524547707ea4beff569938ae67116b63bafaa74dea91d6167a1a4e9ba",
+    "src/multifloor_manager/package.xml": "5a118b98544612320e76a07f14c5f47807c24ff6527f1bcaee073d6df0d13c7e"
+  },
+  "generated_deleted_paths": {
+    "build/mission_manager/lib/mission_manager/transitions.py": "e07fe850e755480132e50d9e3debf931f3ba73b8dd33b84f082c30bf1b6844cf -> absent",
+    "install/lib/python3/dist-packages/mission_manager/transitions.py": "e07fe850e755480132e50d9e3debf931f3ba73b8dd33b84f082c30bf1b6844cf -> absent",
+    "build/test_results/mission_manager/nosetests-test.test_transitions.py.xml": "84fb46ba96bf30d78e3fbc62bc7369a7651827f91eb9beeb8b0d90ed980d1245 -> absent"
+  },
+  "generated_regenerated_paths": {
+    "build/test_results/multifloor_manager/nosetests-test.test_transitions.py.xml": {"sha256": "1e9494f3d3cf877431936ff5c3e1385028c050de5fd5a2181a909fde2b590bbc", "tests": 16, "errors": 0, "failures": 0}
+  },
+  "source_hashes_unchanged": {
+    "src/multifloor_manager/src/multifloor_manager/transitions.py": "e8dfb77c982fb47d9c238e693fcec3cc651f3a8c634dc539c3f3a148a037b783",
+    "src/multifloor_manager/test/test_transitions.py": "1f038d3dfdc306bc21874f43e73a8e30d70ce87e205c5620616f4f05bcff4de8",
+    "src/mission_manager/CMakeLists.txt": "cb3866be52086ef75cdab55db39294941a812b926d96a4774e8424ed21e9eff5",
+    "src/multifloor_manager/CMakeLists.txt": "cd8301b884abea3a2a174e0ed8452a5a508c36d21b42921520013f2c7f35f7cf"
+  },
+  "generated_paths": "only the three inventoried stale artifacts removed; all other generated paths preserved"
+}

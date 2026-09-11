@@ -1,0 +1,4 @@
+Site configuration suite: 26 passed, 0 failures, exit 0.
+Bundle/local contract check: SITE_CONFIG_OK, BUNDLE_OK, exit 0.
+Production transition config remains configured false with empty transitions.
+README contains the exact production comment-only future condition placeholder.

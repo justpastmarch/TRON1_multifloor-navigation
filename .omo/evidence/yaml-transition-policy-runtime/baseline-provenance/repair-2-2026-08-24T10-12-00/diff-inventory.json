@@ -1,0 +1,20 @@
+{
+  "schema_version": 3,
+  "attempt_id": "baseline-provenance-repair-2-2026-08-24T10-18:01+09:00",
+  "source_manifest": {"path": "source-manifest.json", "count": 142, "sha256": "63972ff751865072c72eda5a428d915ec0e8a5713faa674562a44f008a00c6be"},
+  "test_manifest": {"path": "test-manifest.json", "count": 97, "sha256": "7af12a45d3adb24b8442b2ec77af4a6260317a3ef0899868ae67ec31163cb71c"},
+  "generated_manifests": {
+    "build": {"path": "build-manifest.json", "count": 2187, "sha256": "5d938a0828f8d0e432e9edde1cf83dcceb0416221427e11270d05583d2fd433c"},
+    "devel": {"path": "devel-manifest.json", "count": 213, "sha256": "5828e27e7f6c277f5b92d1386882623b95473381e1a68d0bc67d8dc5fb74de48"},
+    "install": {"path": "install-manifest.json", "count": 283, "sha256": "567e07680e9b89152046d83edb00002c80581306418f8cd5252d6b8dc978b4ae"},
+    "runtime": {"path": "runtime-manifest.json", "count": 15, "sha256": "572e20e5261c7ccb7d632c476031c66c8537cae357dd84495c75cde86fcdb054"}
+  },
+  "result_xml_manifest": {"path": "result-xml-manifest.json", "count": 37, "sha256": "b9d613d8245fdf20cbadaaef3366495d23cedd2c905fb8b0dc5ee7456309b21a"},
+  "explicit_exclusions": [".git/**", ".omo/**", "**/__pycache__/**", "**/*.pyc", "**/*.pyo", "result manifest non-XML files"],
+  "hash_algorithm": "SHA-256; regular-file bytes and symlink target text are hashed; mtime_ns and size recorded per path",
+  "generated_state": {"pre_existing": true, "modified_by_repair": false, "deleted_by_repair": false, "devel_prior_coarse_count": 242, "devel_current_manifest_count": 213, "interpretation": "pre-existing inventory-method/state difference; preserved and not reconciled destructively"},
+  "product_paths_changed": [],
+  "evidence_paths_changed": ["repair-2-2026-08-24T10-12-00/*"],
+  "dirty_worktree": "non-Git workspace; no unrelated path was removed or modified",
+  "stale_state": "source and generated classes have independent path manifests; install is non-authoritative"
+}

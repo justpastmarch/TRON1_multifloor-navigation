@@ -1,0 +1,64 @@
+Todo 1 needs-fix evidence - exact three ROS node entrypoints
+Date: 2026-08-19
+
+BASELINE FAILURE
+- `python3 -m unittest discover -s test -v`: 4 existing tests passed despite
+  the violation.
+- Read-only scan found cmd_vel_bridge.py calling
+  rospy.init_node("tron1_cmd_vel_bridge").
+- run.sh contained cmd_vel_bridge.py, command_bridge, and bridge_pid launch/readiness
+  paths.
+
+RED PROOF
+- Added exact initializer ownership and wrapper launch tests.
+- `python3 -m unittest discover -s test -v`: 6 tests ran; failures reported the
+  root bridge initializer, all three missing package initializers, and all three
+  forbidden wrapper tokens.
+- Added library-only source proof; it failed while cmd_vel_bridge.py retained a
+  script shebang.
+
+GREEN PROOF
+- `python3 -m unittest discover -s test -v`: Ran 8 tests, OK.
+- `python3 validate_bundle.py`: BUNDLE_OK.
+- `catkin_make`: exit 0; traversed mission_manager, multifloor_manager, and
+  stair_supervisor only.
+- `rospack find mission_manager`:
+  /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager
+- `rospack find multifloor_manager`:
+  /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager
+- `rospack find stair_supervisor`:
+  /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor
+- `bash -n run.sh`: exit 0, no output.
+- Read-only AST source scan:
+  NODE_INITIALIZERS=src/mission_manager/scripts/mission_manager_node.py:mission_manager,src/multifloor_manager/scripts/multifloor_manager_node.py:multifloor_manager,src/stair_supervisor/scripts/stair_supervisor_node.py:stair_supervisor
+- LSP diagnostics: no diagnostics in modified Python files or src/.
+
+REAL CLI QA
+- `./run.sh --help`: exit 0; operator modes displayed.
+- `./run.sh --check`: exit 0; BUNDLE_OK and local software OK.
+- Wrapper readiness now says RViz/map/AMCL/move_base are ready and explicitly
+  states robot forwarding awaits stair_supervisor integration.
+
+ADVERSARIAL PROBES
+- External temporary helper.py with rospy.init_node("helper") was rejected with
+  BUNDLE_ERROR: project node entrypoint mismatch.
+- cmd_vel_bridge.py is mode 0644 with no shebang, main boundary, or init_node;
+  direct OS execution returned 126 Permission denied rather than false success.
+- Tests were run directly with unittest discovery; no success was claimed from
+  an empty catkin test target.
+- update_rviz_report_workspace_paths.py was not present during this fix session;
+  no concurrent helper or other unrelated source file was modified or deleted.
+- After acceptance verification, concurrent `add_rqt_rgb_section.py` appeared.
+  It was preserved unchanged. Current `python3 -B validate_bundle.py` exits 1
+  solely with `inventory mismatch; missing=[], extra=['add_rqt_rgb_section.py']`;
+  inventory validation was not weakened to hide the external helper.
+
+SIZE REVIEW
+- cmd_vel_bridge.py: 171 pure LOC; test: 110 pure LOC.
+- validate_bundle.py: 214 and run.sh: 201 pure LOC, both in the warning band;
+  split before substantive future expansion.
+
+CLEANUP
+- Removed build/, devel/, install/, .catkin_workspace, root/test Python caches,
+  and the temporary debug journal after final QA.
+- Cleanup probe confirmed all listed generated/debug paths absent.

@@ -1,0 +1,134 @@
+Task: 7 - Rebuild the mission domain core behind package-local protocols
+Date: 2026-08-26
+Target: /home/m3tron/Desktop/TRON1_Modular_Navigation
+Evidence boundary: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/ulw/modular-architecture-expansion/a1
+
+Scope delivered
+---------------
+- Added Python 3.8-compatible immutable mission-local configuration/domain models and Protocols.
+- Added deterministic directed BFS planning with lexical edge-ID tie-breaking and canonical route bytes.
+- Added logical anchors that commit only a successful segment's confirmed location.
+- Added NAV, stair, floor-transition, inspect scan, return, and record-route orchestration.
+- Added route-wide recording lifecycle: start before navigation, active check after each successful segment, COMPLETED/PREEMPTED/INTERRUPTED finalize, and discard on unfinished failures.
+- Added domain result mapping using the Mission.action numeric contract without importing generated ROS types.
+- Added failing-first unittest coverage for success, malformed configuration, unknown/disconnected routes, child/cancel/scan/return failures, deterministic output, confirmed-anchor retention, and import boundaries.
+
+Files added in target
+---------------------
+src/mission_manager/src/mission_manager/domain_models.py
+src/mission_manager/src/mission_manager/route_planner.py
+src/mission_manager/src/mission_manager/record_route_runner.py
+src/mission_manager/src/mission_manager/mission_orchestrator.py
+src/mission_manager/test/support.py
+src/mission_manager/test/test_route_planner.py
+src/mission_manager/test/test_mission_orchestrator.py
+src/mission_manager/test/test_record_route.py
+src/mission_manager/test/test_import_boundary.py
+
+Failing-first evidence
+----------------------
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/mission_manager/src python3 -B -m unittest discover -s src/mission_manager/test -p 'test_*.py' -v
+
+Initial result: exit 1. Import-boundary test passed; route, mission, and record-route suites failed to import because mission_manager.domain_models did not exist. This was the intended missing-domain red failure, not a fixture or syntax failure.
+
+Final required test command
+---------------------------
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/mission_manager/src python3 -B -m unittest discover -s src/mission_manager/test -p 'test_*.py' -v
+
+Result: exit 0; Ran 21 tests in 0.011s; OK.
+Passing coverage included:
+- NAV/stair/floor-transition/scan ordering
+- inspect and fresh directed return
+- record-route outbound plus origin return under one recording
+- unknown origin/destination/profile
+- disconnected directed return
+- wrong-floor NAV rejection
+- child stair failure and pre-dispatch cancellation
+- scan segment, recording start, recording-active, and final artifact failures
+- return planning failure after outbound commit
+- child cancellation and recording PREEMPTED
+- child failure and recording INTERRUPTED
+- confirmed-anchor retention
+- deterministic lexical route selection/canonical bytes
+- package import boundary
+
+Deterministic repeat driver
+---------------------------
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/mission_manager/src:src/mission_manager/test python3 -B -c '<100-repeat deterministic route driver>'
+
+Output:
+{"repeat_count": 100, "segment_order": ["NAVIGATION", "STAIR", "FLOOR_TRANSITION", "NAVIGATION", "SCAN"], "sha256": "0dd1d4896afca459840a9c7df7c979046f72f70454d117029799cee61db15ad1", "unique_outputs": 1}
+Result: exit 0.
+
+Malformed/error driver
+----------------------
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/mission_manager/src:src/mission_manager/test python3 -B -c '<unknown/disconnected/wrong-floor driver>'
+
+Output:
+unknown:RoutePlanningError:home -> missing: unknown location 'missing'
+disconnected:RoutePlanningError:work_4 -> home: no directed route
+wrong_floor:RouteValidationError:edge 'bad' violates NAV floor continuity
+Result: exit 0.
+
+Mission failure driver
+----------------------
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/mission_manager/src:src/mission_manager/test python3 -B -c '<child/cancel/scan/return/record driver>'
+
+Output:
+{"cancel": {"anchor": "home", "artifact": "", "code": 9, "events": [], "status": "CANCELLED", "targets": []}, "child_failure": {"anchor": "entry_3", "artifact": "", "code": 5, "events": ["execute:entry_3", "execute:landing_4"], "status": "FAILED", "targets": ["entry_3", "landing_4"]}, "record_cancel": {"anchor": "home", "artifact": "/tmp/route.bag", "code": 9, "events": ["start:work_4", "execute:entry_3", "finish:PREEMPTED"], "status": "CANCELLED", "targets": ["entry_3"]}, "record_start_failure": {"anchor": "home", "artifact": "", "code": 7, "events": ["start:work_4"], "status": "FAILED", "targets": []}, "return_failure": {"anchor": "work_4", "artifact": "", "code": 9, "events": ["execute:entry_3", "execute:landing_4", "execute:landing_4", "execute:work_4"], "status": "ABORT", "targets": ["entry_3", "landing_4", "landing_4", "work_4"]}, "scan_failure": {"anchor": "work_4", "artifact": "", "code": 7, "events": ["execute:entry_3", "execute:landing_4", "execute:landing_4", "execute:work_4", "execute:work_4"], "status": "FAILED", "targets": ["entry_3", "landing_4", "landing_4", "work_4", "work_4"]}}
+Result: exit 0.
+
+Import-boundary scan
+--------------------
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/mission_manager/src python3 -B -c '<AST import scan>'
+
+Output:
+{"files_scanned": 5, "forbidden_imports": []}
+Result: exit 0. No multifloor_manager, stair_supervisor, rospy, actionlib, or tron1_interfaces import exists in mission domain modules.
+
+Source provenance
+-----------------
+Authoritative source selection: docs/migration/source-selection.json.
+Command recomputed SHA-256 for the six Todo 7 references and compared each to the manifest.
+Output:
+{"src/mission_manager/src/mission_manager/mission_orchestrator.py": true, "src/mission_manager/src/mission_manager/record_route_runner.py": true, "src/mission_manager/src/mission_manager/route_planner.py": true, "src/mission_manager/src/mission_manager/site_config.py": true, "src/mission_manager/test/test_mission_orchestrator.py": true, "src/mission_manager/test/test_route_planner.py": true}
+Result: exit 0. Old product/source files were read only and not edited.
+
+Static and architectural checks
+-------------------------------
+Command:
+uv run --python 3.12 python /home/m3tron/.cache/opencode/packages/oh-my-openagent@latest/node_modules/oh-my-openagent/dist/skills/programming/scripts/python/check-no-excuse-rules.py <nine changed Python paths>
+Output: no violations in 9 file(s)
+Result: exit 0. No changed file exceeds the 250 pure-LOC ceiling.
+
+Command:
+PYTHONPATH=src/mission_manager/src uvx basedpyright src/mission_manager/src/mission_manager
+Output summary: 0 errors, 70 warnings, 0 notes.
+Result: exit 0. Warnings are the checker defaults for deliberate Python 3.8 compatibility (typing.Tuple/Union and explicit __slots__) plus package-local missing-stub/unannotated-final notices; there are no type errors.
+
+The workspace LSP tool could not inspect the target because the session cwd is the immutable source workspace; basedpyright was therefore run directly from the target.
+
+Cleanup
+-------
+Pattern scan under src/mission_manager for **/{__pycache__,*.pyc,*.pyo,.pytest_cache}: No files found.
+All verification used PYTHONDONTWRITEBYTECODE=1 and python3 -B. No ROS process, child process, network connection, or scan artifact was created. Fake artifact paths in tests were never written.
+
+Architectural self-review
+-------------------------
+- Single responsibility: domain_models owns values/contracts; route_planner owns route expansion; mission_orchestrator owns ordinary mission flow; record_route_runner owns recording-bracketed flow.
+- Boundary purity: domain receives immutable typed values; YAML and generated ROS interfaces remain outside these modules.
+- Variant handling: Python 3.8 compatibility precludes match/case; closed Enum identity branches are explicit and test-covered.
+- Escape hatches: no Any, cast, type-ignore, broad exception handler, dynamic import, or sibling capability import.
+- Defensive layers: none added; operation contracts are trusted.
+- Recording ownership: exactly one session is finalized or discarded; no post-action re-query was added.
+- Logging: none added, matching the pure domain boundary.
+
+DoneClaim
+---------
+DONE: Todo 7 is complete. The mission domain core is rebuilt solely in /home/m3tron/Desktop/TRON1_Modular_Navigation behind package-local immutable models and Protocols. Required mission tests pass 21/21; deterministic route output has one unique byte sequence across 100 runs; malformed and failure drivers produce typed/mapped outcomes while retaining the last confirmed anchor; AST import scan finds zero forbidden sibling/ROS imports; source provenance matches all six selected hashes; and cleanup finds no generated Python cache or scan artifacts.

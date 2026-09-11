@@ -1,0 +1,10 @@
+# Generated from the installed tag survey in apriltags.yaml.
+standalone_tags:
+  - {id: 300, size: 0.18}
+  - {id: 301, size: 0.18}
+  - {id: 400, size: 0.18}
+  - {id: 401, size: 0.18}
+  - {id: 500, size: 0.18}
+  - {id: 501, size: 0.18}
+  - {id: 600, size: 0.18}
+tag_bundles: []

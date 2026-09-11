@@ -1,0 +1,67 @@
+{
+  "DoneClaim": {
+    "task": 9,
+    "status": "DONE",
+    "scope": "Typed fail-closed TRON1 transport, protocol, configuration, and twist conversion library only",
+    "excluded": [
+      "StairTraversal action server",
+      "stair traversal FSM",
+      "new ROS node entrypoint",
+      "automatic reconnect or command resume"
+    ]
+  },
+  "failing_first": {
+    "command": "PYTHONPATH=src/stair_supervisor/src:src/stair_supervisor/test python3 -m unittest discover -s src/stair_supervisor/test -p 'test_robot_*.py' -v",
+    "observed": "4 import errors for the intentionally absent robot_config, robot_conversion, robot_protocol, and robot_transport modules"
+  },
+  "tests": {
+    "focused": {
+      "result": "17 tests, 0 failures",
+      "behaviors": [
+        "documented five-field GUID envelope",
+        "30 Hz minimum and bounded receive timeout",
+        "normalized clipping and nonfinite-to-zero on mocked wire",
+        "fresh STAND then WALK status verification",
+        "watchdog zero and four close zeros",
+        "timeout correlation cleanup",
+        "malformed, dirty, generated, and nonfinite response rejection",
+        "stale and misleading status rejection",
+        "send failure and disconnect fault latching",
+        "three repeated restart/resume attempts emit no command and open no connection",
+        "typed stair, emergency-stop, odometry, and IMU requests"
+      ]
+    },
+    "catkin": "20 tests, 0 errors, 0 failures, 0 skipped",
+    "workspace": "63 tests, 0 failures",
+    "diagnostics": "0 diagnostics across stair_supervisor library and transport tests",
+    "build": "catkin_make exited 0",
+    "bundle": "./run.sh --check emitted BUNDLE_OK"
+  },
+  "mock_websocket_cli": {
+    "command": "PYTHONPATH=src/stair_supervisor/src:src/stair_supervisor/test/robot_transport python3 -c '<construct fake peer; start; send 0.25 m/s,-1.0 rad/s; close; print JSON>'",
+    "observed_titles": [
+      "request_twist",
+      "request_twist",
+      "request_stand_mode",
+      "request_walk_mode",
+      "request_twist",
+      "request_twist",
+      "request_twist",
+      "request_twist",
+      "request_twist"
+    ],
+    "bounded_motion": {"x": 0.5, "y": 0.0, "z": -0.5},
+    "close_zero_count": 4
+  },
+  "invariants": {
+    "root_bridge": "compatibility-only, non-executable, no rospy.init_node",
+    "runtime_nodes": "exact-three invariant passed workspace contract test",
+    "fault_policy": "disconnect permanently latches FAULT; no reconnect or replay path exists",
+    "calibration": "move_base limits remain in configuration.py while transport receives independent WebSocket full-scale calibration"
+  },
+  "cleanup": {
+    "source_pycache_files": 0,
+    "temporary_sdk_download": "removed",
+    "generated_runtime_sources_added": 0
+  }
+}

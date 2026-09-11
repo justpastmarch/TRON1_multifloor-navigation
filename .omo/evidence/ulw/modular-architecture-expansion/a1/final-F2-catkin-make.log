@@ -1,0 +1,50 @@
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_StairTraversalFeedback
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_StairTraversalResult
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_StairTraversalGoal
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_StairTraversalActionResult
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_FloorTransitionAction
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_MissionFeedback
+[  0%] Built target actionlib_msgs_generate_messages_cpp
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_FloorTransitionGoal
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_FloorTransitionFeedback
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_FloorTransitionActionResult
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_FloorTransitionActionGoal
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_MissionActionGoal
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_FloorState
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_FloorTransitionResult
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_MissionAction
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_FloorTransitionActionFeedback
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_SupervisorState
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_StairTraversalActionFeedback
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_MissionActionFeedback
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_MissionResult
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_MissionActionResult
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_MissionGoal
+[  0%] Built target std_msgs_generate_messages_lisp
+[  0%] Built target actionlib_msgs_generate_messages_eus
+[  0%] Built target actionlib_msgs_generate_messages_lisp
+[  0%] Built target std_msgs_generate_messages_eus
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_StairTraversalAction
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target actionlib_msgs_generate_messages_nodejs
+[  0%] Built target actionlib_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target _tron1_interfaces_generate_messages_check_deps_StairTraversalActionGoal
+[ 19%] Built target tron1_interfaces_generate_messages_lisp
+[ 38%] Built target tron1_interfaces_generate_messages_nodejs
+[ 59%] Built target tron1_interfaces_generate_messages_eus
+[ 78%] Built target tron1_interfaces_generate_messages_cpp
+[100%] Built target tron1_interfaces_generate_messages_py
+[100%] Built target tron1_interfaces_generate_messages
+Base path: /home/m3tron/Desktop/TRON1_Modular_Navigation
+Source space: /home/m3tron/Desktop/TRON1_Modular_Navigation/src
+Build space: /home/m3tron/Desktop/TRON1_Modular_Navigation/build
+Devel space: /home/m3tron/Desktop/TRON1_Modular_Navigation/devel
+Install space: /home/m3tron/Desktop/TRON1_Modular_Navigation/install
+####
+#### Running command: "make cmake_check_build_system" in "/home/m3tron/Desktop/TRON1_Modular_Navigation/build"
+####
+####
+#### Running command: "make -j8 -l8" in "/home/m3tron/Desktop/TRON1_Modular_Navigation/build"
+####

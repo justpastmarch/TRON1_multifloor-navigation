@@ -1,0 +1,35 @@
+schema_version: 1
+configured: true
+stairs:
+  - id: stair_a
+    from_floor: 3F
+    to_floor: 4F
+    endpoints:
+      3F:
+        entry_location_id: stair_a_entry_3f
+        target_landing: {x: 0.25, y: -0.5, orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}
+        covariance: [0.16, 0, 0, 0, 0, 0, 0, 0.16, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.09]
+        expected_tag_ids: [100]
+      4F:
+        entry_location_id: stair_a_landing_4f
+        target_landing: {x: -1.0, y: 2.0, orientation: {x: 0.0, y: 0.0, z: -0.70710678, w: 0.70710678}}
+        covariance: [0.25, 0, 0, 0, 0, 0, 0, 0.25, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.16]
+        expected_tag_ids: [101]
+    up_profile_id: cautious_up
+    down_profile_id: cautious_down
+  - id: stair_b
+    from_floor: 4F
+    to_floor: RF
+    endpoints:
+      4F:
+        entry_location_id: stair_b_entry_4f
+        target_landing: {x: 3.0, y: 4.0, orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}
+        covariance: [0.25, 0, 0, 0, 0, 0, 0, 0.25, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.16]
+        expected_tag_ids: [201]
+      RF:
+        entry_location_id: roof_landing
+        target_landing: {x: 1.5, y: 3.0, orientation: {x: 0.0, y: 0.0, z: 0.24740396, w: 0.96891242}}
+        covariance: [0.36, 0, 0, 0, 0, 0, 0, 0.36, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.25]
+        expected_tag_ids: [202]
+    up_profile_id: standard_up
+    down_profile_id: standard_down

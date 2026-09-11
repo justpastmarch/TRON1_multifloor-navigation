@@ -1,0 +1,7 @@
+schema_version: 1
+configured: true
+tags:
+  - {id: 100, family: tag36h11, size_m: 0.16, role: STAIR_LANDING, floor_id: 3F, stair_id: stair_a}
+  - {id: 101, family: tag36h11, size_m: 0.16, role: STAIR_LANDING, floor_id: 4F, stair_id: stair_a}
+  - {id: 201, family: tag36h11, size_m: 0.20, role: STAIR_LANDING, floor_id: 4F, stair_id: stair_b}
+  - {id: 202, family: tag36h11, size_m: 0.20, role: STAIR_LANDING, floor_id: RF, stair_id: stair_b}

@@ -1,0 +1,32 @@
+test_disabled_empty_profiles_load_as_empty_tuple (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+test_disabled_nonempty_stair_profiles_reject (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+test_empty_profiles_reject_before_existing_traversal_lock (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+test_empty_profiles_reject_before_ownership_state_or_motion (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+test_fresh_nav_forwards_through_existing_transport_seam (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+test_robot_configured_false_rejects (test_configuration_transition.StairConfigurationTransitionTest) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.005s
+
+OK
+test_cancel_is_honored_at_safe_checkpoint (test_supervisor.StairSupervisorTest) ... ok
+test_disabled_profile_changes_neither_mode_nor_motion (test_supervisor.StairSupervisorTest) ... ok
+test_disconnect_latches_fault_and_shutdown_never_restarts (test_supervisor.StairSupervisorTest) ... ok
+test_inflight_nav_tick_finishes_before_stair_handoff (test_supervisor.StairSupervisorTest) ... ok
+test_shutdown_sends_zero_before_closing (test_supervisor.StairSupervisorTest) ... ok
+test_stair_profile_speed_is_not_capped_by_flat_navigation_limit (test_supervisor.StairSupervisorTest) ... ok
+test_stale_and_nonfinite_navigation_are_zeroed (test_supervisor.StairSupervisorTest) ... ok
+test_timeout_latches_fault_without_retry (test_supervisor.StairSupervisorTest) ... ok
+test_traversal_owns_commands_and_advances_epoch (test_supervisor.StairSupervisorTest) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.052s
+
+OK
+test_cancel_during_safe_evidence_wait_preempts_without_fault (test_supervisor_safety.StairSupervisorSafetyTest) ... ok
+test_close_interruption_is_latched_and_shutdown_is_idempotent (test_supervisor_safety.StairSupervisorSafetyTest) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK

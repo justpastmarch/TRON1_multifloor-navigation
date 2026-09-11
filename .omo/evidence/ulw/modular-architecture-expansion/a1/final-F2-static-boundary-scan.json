@@ -1,0 +1,51 @@
+{
+  "bare_noqa_directives": [],
+  "command_bearing_policy_hits": [],
+  "extra_safety_watchdog_recovery_abstractions": [],
+  "forbidden_engine_imports": [],
+  "interface_definitions": [
+    "src/tron1_interfaces/action/FloorTransition.action",
+    "src/tron1_interfaces/action/Mission.action",
+    "src/tron1_interfaces/action/StairTraversal.action",
+    "src/tron1_interfaces/msg/FloorState.msg",
+    "src/tron1_interfaces/msg/SupervisorState.msg"
+  ],
+  "largest_product_modules": [
+    [
+      "src/multifloor_manager/src/multifloor_manager/ros_node.py",
+      243
+    ],
+    [
+      "src/stair_supervisor/src/stair_supervisor/ros_node.py",
+      242
+    ],
+    [
+      "src/multifloor_manager/src/multifloor_manager/ros_adapter.py",
+      241
+    ],
+    [
+      "src/tron1_condition_engine/src/tron1_condition_engine/evaluator.py",
+      222
+    ],
+    [
+      "src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+      216
+    ]
+  ],
+  "mutable_module_registry_assignments": [],
+  "oversized_product_modules_over_250_logical_lines": {},
+  "product_robot_transport_constructors": [
+    {
+      "line": 53,
+      "path": "src/stair_supervisor/scripts/stair_supervisor_node.py"
+    }
+  ],
+  "shell_true_calls": [],
+  "status": "pass",
+  "transition_runner_evaluate_cycle_lines": [
+    266
+  ],
+  "transition_runner_result_gate_lines": [
+    270
+  ]
+}

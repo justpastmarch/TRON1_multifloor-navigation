@@ -1,0 +1,6 @@
+schema_version: 1
+configured: true
+floors:
+  - {id: 3F, map_yaml: maps/floor_3f.yaml, frame: map}
+  - {id: 4F, map_yaml: maps/floor_4f.yaml, frame: map}
+  - {id: RF, map_yaml: maps/floor_rf.yaml, frame: map}

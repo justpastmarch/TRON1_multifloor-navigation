@@ -1,0 +1,118 @@
+schema_version: 2
+plan: .omo/plans/yaml-transition-policy-runtime.md
+task: "11"
+task_id: legacy-rviz-viewer
+attempt_id: late-rviz-tcpros-2026-08-24T13:53:12+09:00
+session_id: opencode:late-rviz-tcpros
+status: complete
+status_meaning: Manual viewer and late-RViz TF, initial-pose, and simple-goal TCPROS repair are verified
+workspace: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+workspace_is_git: false
+model_policy: GPT-family direct work only; no agents or reviewers delegated
+changed_product_test_docs:
+  - src/multifloor_manager/scripts/rviz_tf_reconnect.py
+  - test/test_rviz_tf_reconnect.py
+  - docs/ros-noetic-amcl-rviz-late-publisher-troubleshooting.md
+preserved_runtime_contracts:
+  - src/multifloor_manager/rviz/wf_navigation.rviz
+  - src/multifloor_manager/rviz/wf_navigation_manual.rviz
+  - src/mission_manager/launch/system.launch
+  - src/multifloor_manager/launch/navigation.launch
+  - src/multifloor_manager/scripts/wait_for_tf_exec.sh
+artifacts:
+  commands: commands.txt
+  tests: test-results.txt
+  source_check: source-check.txt
+  live_qa: ros-qa.txt
+  diff_inventory: diff-inventory.json
+  cleanup: cleanup.json
+tdd:
+  baseline: Existing RViz TF callback test passed before production edit
+  red: AMCL initialpose callback assertion failed against the unchanged helper
+  green: Two reconnect tests and 24-test focused aggregate passed
+verification:
+  focused_unittest: pass; 24 tests
+  run_check: pass
+  lsp_diagnostics: clean on both changed Python files
+  live_helper: pass; exit 0 after sourcing devel setup
+  amcl_initialpose_tcpros: pass
+  move_base_simple_goal_tcpros: pass
+  published_pose_or_goal: false
+  no_excuse_checker: blocked; checker requires Python 3.10 match syntax but ROS Noetic runtime is Python 3.8.10
+  line_counts:
+    rviz_tf_reconnect.py: 41
+    test_rviz_tf_reconnect.py: 89
+adversarial_classes:
+  stale_state: live rosnode transport state inspected immediately after the callback
+  misleading_success_output: callback exit, both subscriber inbound connections, and RViz outbound connections inspected
+  dirty_worktree: non-Git path-scoped inventory; unrelated files preserved
+  missing_nodes: RViz, AMCL, and move_base each fail the one-shot helper closed; shell gate remains nonfatal
+  hung_commands: all ROS probes bounded with timeout
+  prompt_injection: no external content or delegation used
+cleanup_result: complete; debug journal removed and no task process or publication exists
+DoneClaim:
+  task: "11 legacy-rviz-viewer late-RViz TCPROS fix"
+  result: complete
+  observed_connection_proof:
+    - /amcl inbound /initialpose from /rviz_navigation over TCPROS
+    - /move_base inbound /move_base_simple/goal from /rviz_navigation over TCPROS
+  tests:
+    - baseline TF callback passed
+    - missing subscriber callback failed before fix
+    - focused aggregate passed 24 tests
+    - ./run.sh --check passed
+  cleanup:
+    - no pose or goal published
+    - no user process terminated
+    - no helper process left
+task_12_addendum:
+  task: "12 legacy-rviz-flat-nav-transport"
+  status: complete
+  status_meaning: Source, configuration, operator contract, build, focused tests, real tunnel handshake, NAV readiness, and sole topic ownership are verified
+  changed_product_test_docs:
+    - src/stair_supervisor/src/stair_supervisor/configuration.py
+    - src/stair_supervisor/src/stair_supervisor/supervisor.py
+    - src/stair_supervisor/test/test_configuration_transition.py
+    - src/stair_supervisor/CMakeLists.txt
+    - src/stair_supervisor/config/robot.yaml
+    - docs/legacy-rviz-viewer.md
+    - test/test_legacy_rviz_viewer_contract.py
+    - src/stair_supervisor/test/robot_transport/test_robot_transport.py
+  preserved:
+    - src/stair_supervisor/config/stair_profiles.yaml remains configured false with profiles []
+    - src/stair_supervisor/src/stair_supervisor/robot_transport.py unchanged
+    - src/stair_supervisor/src/stair_supervisor/robot_client.py unchanged
+    - src/stair_supervisor/src/stair_supervisor/ros_node.py unchanged at 40 Hz
+    - managed RViz files and production launch ownership unchanged
+  legacy_scale_provenance:
+    - /home/m3tron/Desktop/TRON1_Control/ex_TRON1_RViz_Navigation (1)/cmd_vel_bridge.py defaults 0.55 linear and 1.57 angular
+    - /home/m3tron/Desktop/TRON1_Control/tron1-control-center/cmd_vel_bridge.py defaults 0.55 linear and 1.57 angular
+  tdd:
+    red: task-12-red.txt; disabled empty profiles failed to load, disabled nonempty reported the wrong field, empty capability returned INVALID_GOAL/BUSY, and robot validation was unreachable
+    green: task-12-green.txt; 6 focused plus 11 existing supervisor/safety tests passed
+  verification:
+    operator_contract: task-12-operator-tests.txt; 5 operator, 6 configuration, and 8 bundle tests passed
+    independent: task-12-verification.txt; focused, transport, root contracts, run check, build, 44 registered tests, source provenance, 40 Hz, and LSP passed
+    live: task-12-live-qa.txt; exactly one subscriber /stair_supervisor and NAV connected true proven after bounded wait
+    required_live_state: pass; state 1 connected true detail navigation owns commands
+    handshake_characterization: observed STAND notify-before-response and WALK response-before-notify locked by focused fake-WebSocket test
+    handshake_code_change: none; live order is accepted by the existing correlated-response and fresh-status policy
+    published_pose_goal_or_twist: false
+  adversarial_classes:
+    malformed_input: disabled nonempty stair YAML and robot configured false reject at exact fields
+    stale_state: source imports verified and catkin result XML regenerated after build
+    misleading_success_output: final claim requires process alive after 11 seconds plus NAV/connected state and subscriber proof
+    dirty_worktree: non-Git workspace; unrelated files and existing processes preserved
+    hung_commands: live waits bounded; failed attempts and final attempt cleaned
+    repeated_interruptions: startup attempts cleaned supervisor-first and tunnel-second
+  cleanup:
+    - final owned supervisor PID 396799 ended
+    - final owned tunnel PID 396782 ended
+    - earlier failed-attempt PIDs ended
+    - port 5000 clear and /stair_supervisor absent
+    - temporary logs removed
+    - existing roslaunch and RViz processes untouched
+  DoneClaim:
+    result: complete
+    root_cause: previous live QA sampled the latched STARTING state prematurely; endpoint, runtime drift, and WALK frame-order bug were refuted
+    live_state: NAV (1), connected true

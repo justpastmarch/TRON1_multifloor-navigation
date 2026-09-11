@@ -1,0 +1,6 @@
+Valid action: RESULT SUCCESS; action SUCCEEDED; terminal READY.
+Blocked freshness action: RESULT SUCCESS; action ABORTED; terminal FAULT; no later target READY.
+Cancellation: RESULT SUCCESS; PREEMPTED; terminal FAULT.
+Delayed pose: 1 test passed.
+Epoch: 6 tests passed.
+Late map: 1 test passed.

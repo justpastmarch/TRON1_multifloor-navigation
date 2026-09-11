@@ -1,0 +1,3 @@
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test.test_site_configuration -v: exit 0; 26 passed
+PYTHONDONTWRITEBYTECODE=1 ./run.sh --check: exit 0; SITE_CONFIG_OK and BUNDLE_OK
+production transitions disabled and README placeholder exact-match probe: exit 0

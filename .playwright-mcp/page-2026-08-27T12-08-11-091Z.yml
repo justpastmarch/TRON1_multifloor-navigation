@@ -1,0 +1,259 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]: Loading [MathJax]/extensions/Safe.js
+  - navigation "Top Menu" [ref=e3]:
+    - generic [ref=e4]:
+      - link [ref=e6] [cursor=pointer]:
+        - /url: /tree
+        - img "Jupyter Notebook" [ref=e7]
+      - generic [ref=e8]:
+        - generic [ref=e9]: 02_pose_and_nav_goal
+        - generic "no checkpoint"
+        - generic [ref=e10]: (unsaved changes)
+      - img "Current Kernel Logo" [ref=e12]
+    - generic [ref=e14]:
+      - navigation [ref=e16]:
+        - generic [ref=e17]:
+          - text: 
+          - paragraph [ref=e18]:
+            - text: Python 3
+            - generic "Kernel Busy" [ref=e19]: 
+          - text:  
+          - generic "Command Mode" [ref=e20]
+          - generic [ref=e21]:
+            - generic [ref=e22] [cursor=pointer]: Kernel starting, please wait...
+            - generic [ref=e23] [cursor=pointer]: Saving every 120 sec.
+            - button "Not Trusted" [ref=e24] [cursor=pointer]
+          - list [ref=e26]:
+            - listitem [ref=e27]:
+              - link "File" [ref=e28] [cursor=pointer]:
+                - /url: "#"
+              - text:    
+            - listitem [ref=e29]:
+              - link "Edit" [ref=e30] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e31]:
+              - link "View" [ref=e32] [cursor=pointer]:
+                - /url: "#"
+              - text: 
+            - listitem [ref=e33]:
+              - link "Insert" [ref=e34] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e35]:
+              - link "Cell" [ref=e36] [cursor=pointer]:
+                - /url: "#"
+              - text:   
+            - listitem [ref=e37]:
+              - link "Kernel" [ref=e38] [cursor=pointer]:
+                - /url: "#"
+              - text: 
+            - listitem [ref=e39]:
+              - link "Widgets" [ref=e40] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e41]:
+              - link "Help" [ref=e42] [cursor=pointer]:
+                - /url: "#"
+              - text:  
+      - generic [ref=e45]:
+        - button "" [ref=e47] [cursor=pointer]
+        - button "" [ref=e50] [cursor=pointer]
+        - generic [ref=e52]:
+          - button "" [ref=e53] [cursor=pointer]
+          - button "" [ref=e55] [cursor=pointer]
+          - button "" [ref=e57] [cursor=pointer]
+        - generic [ref=e59]:
+          - button "" [ref=e60] [cursor=pointer]
+          - button "" [ref=e62] [cursor=pointer]
+        - generic [ref=e64]:
+          - button " Run" [ref=e65] [cursor=pointer]:
+            - generic [ref=e66]: 
+            - text: Run
+          - button "" [ref=e67] [cursor=pointer]
+          - button "" [ref=e69] [cursor=pointer]
+          - button "" [ref=e71] [cursor=pointer]
+        - combobox "combobox, select cell type" [ref=e73]:
+          - option "Code"
+          - option "Markdown" [selected]
+          - option "Raw NBConvert"
+          - option "Heading"
+        - button "" [ref=e75] [cursor=pointer]
+  - generic [ref=e81]:
+    - generic [ref=e85]:
+      - heading "02. 2D Pose Estimate와 Nav Goal" [level=1] [ref=e86]
+      - heading "이 Notebook으로 하는 일" [level=2] [ref=e87]
+      - paragraph [ref=e88]:
+        - text: 이미 실행 중인
+        - strong [ref=e89]: 수동 navigation lane
+        - text: 에 AMCL 초기 pose를 보내고
+        - code [ref=e90]: /move_base
+        - text: action으로 목적지를 전송합니다. RViz의
+        - code [ref=e91]: 2D Pose Estimate
+        - text: 와
+        - code [ref=e92]: 2D Nav Goal
+        - text: 에 해당하지만 action client를 사용해 성공·실패·취소 상태를 확인합니다.
+      - heading "셀 실행 방법" [level=2] [ref=e93]
+      - paragraph [ref=e94]:
+        - text: 회색 code cell은
+        - strong [ref=e95]: Python 코드
+        - text: 입니다. 일반 terminal에 붙여 넣지 말고 Jupyter에서
+        - code [ref=e96]: Shift+Enter
+        - text: 로 한 셀씩 실행하십시오. 각 셀은 앞 셀의
+        - code [ref=e97]: CONFIG
+        - text: ","
+        - code [ref=e98]: ROS_ENV
+        - text: ", ROS publisher/client를 사용하므로 중간 셀부터 실행하지 않습니다. 오류가 나오면 다음 셀로 넘어가지 말고 원인을 수정한 뒤 실패한 셀부터 다시 실행합니다."
+    - generic [ref=e102]:
+      - heading "시작 전 필수 조건" [level=2] [ref=e103]
+      - list [ref=e104]:
+        - listitem [ref=e105]:
+          - link [ref=e106] [cursor=pointer]:
+            - /url: README.md
+            - code [ref=e107]: notebooks/README.md
+          - text: 의 수동 navigation 순서대로 별도 terminal의 sensor, navigation, robot tunnel/supervisor를 시작합니다.
+        - listitem [ref=e108]:
+          - text: Jupyter를 시작한 terminal에서
+          - code [ref=e109]: bash notebooks/check_environment.sh navigation
+          - text: 을 실행해
+          - code [ref=e110]: "[FAIL]"
+          - text: 이 없는지 확인합니다.
+        - listitem [ref=e111]:
+          - code [ref=e112]: ./run.sh
+          - text: managed system이나 mapping Notebook과 함께 사용하지 않습니다. code cell도 충돌 node를 다시 검사합니다.
+        - listitem [ref=e113]: 로봇을 정지시키고 물리적 비상 정지를 손에 둡니다.
+        - listitem [ref=e114]:
+          - text: 첫 code cell의
+          - code [ref=e115]: INITIAL_X/Y/YAW
+          - text: 는 현재 위치의 승인된 map 좌표,
+          - code [ref=e116]: GOAL_X/Y/YAW
+          - text: 는 목적지의 승인된 map 좌표인지 확인합니다. 기본 goal은 3F 계단 시작점 commissioning 값입니다.
+        - listitem [ref=e117]:
+          - code [ref=e118]: ARM_MOTION
+          - text: 은 localization과 경로를 확인할 때까지
+          - code [ref=e119]: "False"
+          - text: 로 둡니다.
+      - paragraph [ref=e120]:
+        - text: 이 Notebook은 navigation process를 시작하거나 robot tunnel을 만들지 않습니다. readiness 실패 시
+        - link [ref=e121] [cursor=pointer]:
+          - /url: ../docs/ROSBAG-RECORD
+          - code [ref=e122]: docs/ROSBAG-RECORD
+        - text: 의 해당 terminal을 수정한 뒤 검사부터 다시 실행합니다.
+    - generic [ref=e123]:
+      - generic [ref=e124]:
+        - generic [ref=e125]:
+          - generic [ref=e126]: "In [ ]:"
+          - text: 
+        - generic "Edit code here" [ref=e128]:
+          - generic [ref=e129]:
+            - textbox [ref=e130]
+            - generic [ref=e133]: "from pathlib import Path import math import os import subprocess import sys import time WORKSPACE = Path.cwd().parent if Path.cwd().name == \"notebooks\" else Path.cwd() CONFIG_PATH = WORKSPACE / \"config.env\" ROS_SETUP = Path(\"/opt/ros/noetic/setup.bash\") DEVEL_SETUP = WORKSPACE / \"devel/setup.bash\" if not CONFIG_PATH.is_file() or not ROS_SETUP.is_file() or not DEVEL_SETUP.is_file(): raise RuntimeError(\"workspace, config.env, or ROS Noetic setup is missing\") def read_config(path): values = {} for raw_line in path.read_text(encoding=\"utf-8\").splitlines(): line = raw_line.strip() if line and not line.startswith(\"#\"): key, value = line.split(\"=\", 1) values[key] = value return values def sourced_environment(): command = f\"source {ROS_SETUP} && source {DEVEL_SETUP} && env -0\" completed = subprocess.run([\"bash\", \"-lc\", command], check=True, stdout=subprocess.PIPE) environment = os.environ.copy() for entry in completed.stdout.split(b\"\\0\"): if entry and b\"=\" in entry: key, value = entry.split(b\"=\", 1) environment[key.decode()] = value.decode() return environment CONFIG = read_config(CONFIG_PATH) ROS_ENV = sourced_environment() ROS_ENV[\"ROS_MASTER_URI\"] = f\"http://{CONFIG['ROS_MASTER_HOST']}:{CONFIG['ROS_MASTER_PORT']}\" route = subprocess.run([\"ip\", \"-4\", \"route\", \"get\", CONFIG[\"ROS_MASTER_HOST\"]], check=True, text=True, stdout=subprocess.PIPE).stdout.split() ROS_ENV[\"ROS_IP\"] = route[route.index(\"src\") + 1] ROS_ENV.pop(\"ROS_HOSTNAME\", None) os.environ.update(ROS_ENV) for path in (Path(\"/opt/ros/noetic/lib/python3/dist-packages\"), WORKSPACE / \"devel/lib/python3/dist-packages\"): if str(path) not in sys.path: sys.path.insert(0, str(path)) INITIAL_X = float(CONFIG[\"NAV_START_X\"]) INITIAL_Y = float(CONFIG[\"NAV_START_Y\"]) INITIAL_YAW = float(CONFIG[\"NAV_START_YAW\"]) GOAL_X = 10.054808 GOAL_Y = -6.652934 GOAL_YAW = 1.395796 GOAL_TIMEOUT_SEC = 180.0 ARM_MOTION = False MOVE_BASE_CLIENT = None print(f\"ROS_MASTER_URI={ROS_ENV['ROS_MASTER_URI']}\")"
+      - generic:
+        - generic "click to expand output; double click to hide output"
+    - generic [ref=e140]:
+      - 'heading "Gate 1: ROS graph readiness" [level=2] [ref=e141]'
+      - paragraph [ref=e142]:
+        - text: 이 셀은 읽기 전용 검사입니다. 필수 node와 topic type을 확인하고 managed mission node가 있으면 거부합니다.
+        - code [ref=e143]: /stair_supervisor/state
+        - text: 가 NAV(1), connected=True여야 move_base의
+        - code [ref=e144]: /navigation/cmd_vel
+        - text: 이 실제 로봇으로 전달됩니다. 성공하면 supervisor message가 출력됩니다. 실패하면 다음 셀로 넘어가지 말고 외부 terminal을 복구한 뒤 이 셀을 다시 실행합니다.
+    - generic [ref=e145]:
+      - generic [ref=e146]:
+        - generic [ref=e147]:
+          - generic [ref=e148]: "In [ ]:"
+          - text: 
+        - generic "Edit code here" [ref=e150]:
+          - generic [ref=e151]:
+            - textbox [ref=e152]
+            - generic [ref=e155]: "def ros_output(argv, timeout=10): return subprocess.run(argv, env=ROS_ENV, check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout).stdout.strip() nodes = set(ros_output([\"rosnode\", \"list\"]).splitlines()) managed = {\"/mission_manager\", \"/multifloor_manager\"} & nodes if managed: raise RuntimeError(f\"managed mission mode와 direct navigation을 섞을 수 없습니다: {sorted(managed)}\") required_nodes = {\"/map_server\", \"/amcl\", \"/move_base\", \"/stair_supervisor\"} missing_nodes = required_nodes - nodes if missing_nodes: raise RuntimeError(f\"docs/ROSBAG-RECORD의 수동 navigation 단계를 먼저 실행하십시오: {sorted(missing_nodes)}\") required_topics = { \"/scan\": \"sensor_msgs/LaserScan\", \"/tron/wheel_odom_raw\": \"nav_msgs/Odometry\", \"/map\": \"nav_msgs/OccupancyGrid\", \"/amcl_pose\": \"geometry_msgs/PoseWithCovarianceStamped\", \"/stair_supervisor/state\": \"stair_supervisor/SupervisorState\", } for topic, expected in required_topics.items(): actual = ros_output([\"rostopic\", \"type\", topic], timeout=3) if actual != expected: raise RuntimeError(f\"topic type mismatch: {topic} expected={expected} actual={actual}\") print(ros_output([\"rostopic\", \"echo\", \"-n\", \"1\", \"/stair_supervisor/state\"], timeout=10))"
+      - generic:
+        - generic "click to expand output; double click to hide output"
+    - generic [ref=e162]:
+      - 'heading "Gate 2: AMCL 초기 pose와 localization" [level=2] [ref=e163]'
+      - paragraph [ref=e164]:
+        - text: 로봇이 정지한 상태에서
+        - code [ref=e165]: INITIAL_X/Y/YAW
+        - text: 가 현재 실제 위치와 같은지 마지막으로 확인한 뒤 실행합니다. 이 셀은
+        - code [ref=e166]: /initialpose
+        - text: 를 실제로 세 번 publish하지만 로봇을 움직이지는 않습니다. 다음 localization 셀에서 AMCL 위치와 covariance를 확인하고 값이 틀리거나 계속 크면 goal 셀로 넘어가지 말고 초기 pose부터 다시 설정합니다.
+    - generic [ref=e167]:
+      - generic [ref=e168]:
+        - generic [ref=e169]:
+          - generic [ref=e170]: "In [ ]:"
+          - text: 
+        - generic "Edit code here" [ref=e172]:
+          - generic [ref=e173]:
+            - textbox [ref=e174]
+            - generic [ref=e177]: "import rospy from geometry_msgs.msg import PoseWithCovarianceStamped from std_srvs.srv import Empty if not rospy.core.is_initialized(): rospy.init_node(\"tron1_pose_goal_notebook\", anonymous=True, disable_signals=True) pose = PoseWithCovarianceStamped() pose.header.frame_id = \"map\" pose.pose.pose.position.x = INITIAL_X pose.pose.pose.position.y = INITIAL_Y pose.pose.pose.orientation.z = math.sin(INITIAL_YAW / 2.0) pose.pose.pose.orientation.w = math.cos(INITIAL_YAW / 2.0) pose.pose.covariance[0] = 0.01 pose.pose.covariance[7] = 0.01 pose.pose.covariance[35] = 0.01 publisher = rospy.Publisher(\"/initialpose\", PoseWithCovarianceStamped, queue_size=1, latch=True) deadline = time.monotonic() + 5.0 while publisher.get_num_connections() == 0 and time.monotonic() < deadline: rospy.sleep(0.1) if publisher.get_num_connections() == 0: raise RuntimeError(\"AMCL is not subscribed to /initialpose\") for _ in range(3): pose.header.stamp = rospy.Time.now() publisher.publish(pose) rospy.sleep(0.2) try: rospy.wait_for_service(\"/request_nomotion_update\", timeout=2.0) rospy.ServiceProxy(\"/request_nomotion_update\", Empty)() except (rospy.ROSException, rospy.ServiceException): print(\"nomotion update service unavailable; AMCL will update from normal scan input\") print(f\"initial pose published: x={INITIAL_X} y={INITIAL_Y} yaw={INITIAL_YAW}\")"
+      - generic:
+        - generic "click to expand output; double click to hide output"
+    - generic [ref=e184]:
+      - heading "localization 확인" [level=2] [ref=e185]
+      - paragraph [ref=e186]: AMCL pose가 목표 초기 위치 근처인지 확인하십시오. 값이 크게 다르거나 covariance가 계속 크면 goal을 보내지 말고 pose를 다시 설정합니다.
+    - generic [ref=e187]:
+      - generic [ref=e188]:
+        - generic [ref=e189]:
+          - generic [ref=e190]: "In [ ]:"
+          - text: 
+        - generic "Edit code here" [ref=e192]:
+          - generic [ref=e193]:
+            - textbox [ref=e194]
+            - generic [ref=e197]: "amcl_message = rospy.wait_for_message(\"/amcl_pose\", PoseWithCovarianceStamped, timeout=10.0) print(f\"AMCL x={amcl_message.pose.pose.position.x:.3f} y={amcl_message.pose.pose.position.y:.3f}\") print(f\"covariance xx={amcl_message.pose.covariance[0]:.4f} yy={amcl_message.pose.covariance[7]:.4f} yaw={amcl_message.pose.covariance[35]:.4f}\")"
+      - generic:
+        - generic "click to expand output; double click to hide output"
+    - generic [ref=e204]:
+      - 'heading "Gate 3: Nav Goal 전송" [level=2] [ref=e205]'
+      - paragraph [ref=e206]:
+        - text: 아래 항목을 모두 직접 확인한 뒤에만 첫 code cell의
+        - code [ref=e207]: ARM_MOTION = True
+        - text: 를 적용하고 이 셀을 실행합니다.
+      - list [ref=e208]:
+        - listitem [ref=e209]: 로봇이 올바른 map과 floor에 있다.
+        - listitem [ref=e210]: AMCL pose와 covariance가 현재 실제 위치와 맞는다.
+        - listitem [ref=e211]:
+          - code [ref=e212]: GOAL_X/Y/YAW
+          - text: 가 이 map에서 승인된 목적지다.
+        - listitem [ref=e213]: 예상 경로에 사람과 장애물이 없고 물리적 비상 정지를 즉시 사용할 수 있다.
+        - listitem [ref=e214]: supervisor가 NAV(1), connected=True다.
+      - paragraph [ref=e215]:
+        - text: 이 셀은 실제
+        - code [ref=e216]: /move_base
+        - text: action goal을 보내므로 새 좌표 탐색용으로 사용하지 않습니다. 완료까지 기다리고, timeout이면 같은 goal을 자동 취소합니다. 성공 기준은
+        - code [ref=e217]: navigation succeeded
+        - text: 출력입니다.
+    - generic [ref=e218]:
+      - generic [ref=e219]:
+        - generic [ref=e220]:
+          - generic [ref=e221]: "In [ ]:"
+          - text: 
+        - generic "Edit code here" [ref=e223]:
+          - generic [ref=e224]:
+            - textbox [ref=e225]
+            - generic [ref=e228]: "import actionlib from actionlib_msgs.msg import GoalStatus from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal from stair_supervisor.msg import SupervisorState if not ARM_MOTION: raise RuntimeError(\"motion is disarmed; verify the site and set ARM_MOTION = True\") supervisor = rospy.wait_for_message(\"/stair_supervisor/state\", SupervisorState, timeout=5.0) if supervisor.state != 1 or not supervisor.connected: raise RuntimeError(f\"stair supervisor must be NAV(1) and connected: {supervisor}\") MOVE_BASE_CLIENT = actionlib.SimpleActionClient(\"/move_base\", MoveBaseAction) if not MOVE_BASE_CLIENT.wait_for_server(rospy.Duration(10.0)): raise RuntimeError(\"/move_base action server is unavailable\") goal = MoveBaseGoal() goal.target_pose.header.frame_id = \"map\" goal.target_pose.header.stamp = rospy.Time.now() goal.target_pose.pose.position.x = GOAL_X goal.target_pose.pose.position.y = GOAL_Y goal.target_pose.pose.orientation.z = math.sin(GOAL_YAW / 2.0) goal.target_pose.pose.orientation.w = math.cos(GOAL_YAW / 2.0) MOVE_BASE_CLIENT.send_goal(goal) finished = MOVE_BASE_CLIENT.wait_for_result(rospy.Duration(GOAL_TIMEOUT_SEC)) if not finished: MOVE_BASE_CLIENT.cancel_goal() raise RuntimeError(f\"navigation timed out after {GOAL_TIMEOUT_SEC}s and was cancelled\") state = MOVE_BASE_CLIENT.get_state() if state != GoalStatus.SUCCEEDED: raise RuntimeError(f\"navigation failed: state={state} text={MOVE_BASE_CLIENT.get_goal_status_text()}\") print(f\"navigation succeeded: x={GOAL_X} y={GOAL_Y} yaw={GOAL_YAW}\")"
+      - generic:
+        - generic "click to expand output; double click to hide output"
+    - generic [ref=e235]:
+      - heading "긴급 goal 취소와 종료" [level=2] [ref=e236]
+      - paragraph [ref=e237]:
+        - text: 위 goal 셀이 기다리는 중이면 Jupyter 메뉴의
+        - strong [ref=e238]: Kernel → Interrupt Kernel
+        - text: 을 누른 뒤 아래 셀을 실행합니다. 이 셀은 action client가 있으면 현재 goal만 취소하고, client가 없으면
+        - code [ref=e239]: /move_base/cancel
+        - text: 로 모든 move_base goal 취소를 요청합니다. Kernel이 응답하지 않거나 로봇이 안전하지 않으면 Notebook보다 물리적 비상 정지를 먼저 사용하십시오.
+      - paragraph [ref=e240]:
+        - text: 취소 또는 성공 후 navigation, supervisor, tunnel은 이 Notebook 소유가 아니므로 계속 실행됩니다. 작업을 끝낼 때는
+        - link [ref=e241] [cursor=pointer]:
+          - /url: ../docs/ROSBAG-RECORD
+          - code [ref=e242]: docs/ROSBAG-RECORD
+        - text: 의 역순으로 각 소유 terminal에서
+        - code [ref=e243]: Ctrl+C
+        - text: 를 누릅니다.
+    - generic [ref=e244]:
+      - generic [ref=e245]:
+        - generic [ref=e246]:
+          - generic [ref=e247]: "In [ ]:"
+          - text: 
+        - generic "Edit code here" [ref=e249]:
+          - generic [ref=e250]:
+            - textbox [ref=e251]
+            - generic [ref=e254]: "if MOVE_BASE_CLIENT is not None: MOVE_BASE_CLIENT.cancel_goal() print(\"move_base goal cancel requested\") else: subprocess.run([\"rostopic\", \"pub\", \"-1\", \"/move_base/cancel\", \"actionlib_msgs/GoalID\", \"{}\"], env=ROS_ENV, check=True, timeout=5) print(\"move_base cancel topic published\")"
+      - generic:
+        - generic "click to expand output; double click to hide output"

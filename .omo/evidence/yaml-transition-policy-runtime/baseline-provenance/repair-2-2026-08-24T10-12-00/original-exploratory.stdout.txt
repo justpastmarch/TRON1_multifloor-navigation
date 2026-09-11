@@ -1,0 +1,5 @@
+{"scope": "src", "files": 142, "manifest_sha256": "41b2170fa007b5babac16d5f20dbc8b8c2dbbdd98d1884c1363039678d9b65a5"}
+{"scope": "test", "files": 45, "manifest_sha256": "55647069314c0d756ec3b2c6ea385fd97c44756be732fadccc66aebf7b5c1184"}
+{"generated_scope": "build", "exists": true, "files": 2187}
+{"generated_scope": "devel", "exists": true, "files": 242}
+{"generated_scope": "install", "exists": true, "files": 283}

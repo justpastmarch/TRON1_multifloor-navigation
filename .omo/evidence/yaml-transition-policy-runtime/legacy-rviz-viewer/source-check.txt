@@ -1,0 +1,11 @@
+fork2 source to manual viewer cmp: PASS
+managed wf_navigation.rviz direct-goal tokens: ABSENT
+system.launch default viewer: wf_navigation.rviz PASS
+No nodes/topics/remaps/action/message fields changed: PASS
+manual Displays content/order equality against managed baseline plus existing Navigation Goal: PASS
+manual rviz/SetInitialPose and rviz/SetGoal entries present; no display edits made: PASS
+managed wf_navigation.rviz SHA-256 unchanged from prior receipt: 9123997acc99313f4b62afb437a86a5c13a02eee5b169572a715dce6649a3d64
+manual wf_navigation_manual.rviz not edited; SHA-256: f99a1388831c3dfb23c6bf4bbda955c40f33b57c2ec3c3fff980af2f889fe0d8
+managed system.launch not edited; SHA-256: db926f0a04cccfaf570025195b0b34444f07a3d6186dafbb889e85c71853e69a
+reconnect helper remains one-shot and contains no rospy.init_node or subscriber loop: PASS
+reconnect callback order is RViz TF first, then AMCL /initialpose, then move_base /move_base_simple/goal: PASS

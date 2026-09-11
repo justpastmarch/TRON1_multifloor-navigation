@@ -1,0 +1,11 @@
+{
+  "task": "runtime-final-gate",
+  "changed_product_paths": [
+    "src/multifloor_manager/src/multifloor_manager/ros_node.py",
+    "src/multifloor_manager/test/test_floor_transition_ros.py",
+    "src/multifloor_manager/test/test_floor_transition_delayed_pose_ros.py"
+  ],
+  "generated_paths": [],
+  "hardware_processes_started": false,
+  "hardware_processes_stopped": false
+}

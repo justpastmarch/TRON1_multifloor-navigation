@@ -1,0 +1,150 @@
+Task 6 - capability-owned configuration, maps, bringup assets, and fixtures
+Date: 2026-08-25
+Target: /home/m3tron/Desktop/TRON1_Modular_Navigation
+Immutable source: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation
+
+BOUNDARY AND SOURCE PROVENANCE
+- Only manifest-selected source files were explicitly copied; no package tree was copied wholesale.
+- Excluded: build, devel, install, cache, logs, bags, credentials, config.env, generated Python, and .omo product data.
+- `PYTHONDONTWRITEBYTECODE=1 python3 -B tools/source_provenance.py`
+  Result: `{"output_count": 0, "source_count": 104, "status": "ok"}`.
+  This re-hashed every authoritative source-selection entry after implementation and proves the selected immutable source files were unchanged.
+- Relevant selected source SHA-256 provenance:
+  - validate_bundle.py: 7d95ea0c1f349b1fe3457f1751d1b48874b51bb85d40e88da3e7b1545cfeeedf
+  - mission locations/building_graph/scan_profiles: 8fe6b7a4f9dfd72db7659cce7abdf8eab9b179a35d51b127cde52a9f038a65c8 / be69c3f3b710321d0eb0186ca73a35a6692c531b96d6d491df5a2fe6c16c3623 / ebdbedac0f27622caecbf24625adba06ddf5d673ce9ec5eb29a7f2eceb969638
+  - multifloor transitions/floors/stairs/apriltags: d1381a47c80ed28e90f5b6543574636abfed442b0e501f42ae1c02e97f7585f9 / ddcec7cff80ec1d24f9f909a19aff0917fa4ebb558310a884ef642d559e7a211 / b3b77c1534f5c310b08baea0a8dc6b5ee246d8464ffffa4f37c7f14a3eb8b7ed / 2c1a5a4e98ff276a34979c4fcc1fa862d942f36823b2972463e9ffa51abcfed4
+  - detector tags: 4b3390918bee7f049f8eb3156d2b8d507f8c0b99ec7ea2579f81371ebd4b9ca0
+  - robot/stair profiles: 2c303f6b0ebf6d7cb1debc88aad07be4a4238d00df04c204d03473df6dea9e0a / 8edba7a27fd7786707d61e90a03d702d4c1e12b7055bd1432a3f19a0cc2d0c9f
+  - system/navigation/pointcloud/apriltag launches: db926f0a04cccfaf570025195b0b34444f07a3d6186dafbb889e85c71853e69a / 64b1db0d38e7c37fb13f7de6476462a12c790479ed51b3aa09516756aefec000 / 52318c49698d26ccc047a502d7fbc14b0f26e878816ed310008aa605598dfdc2 / 568907085ac4d37cb12ef4cfcb7ec3bf7d53761215a47e029461e95b1aa6228b
+  - managed/manual RViz: 9123997acc99313f4b62afb437a86a5c13a02eee5b169572a715dce6649a3d64 / f99a1388831c3dfb23c6bf4bbda955c40f33b57c2ec3c3fff980af2f889fe0d8
+  - map YAML/PGM pairs were selected and hash-validated for 3F, 4F, 5F, and RF; the separately selected fixture includes 3f, 4f, and rf pairs.
+
+RECREATED OWNERSHIP
+- mission_manager/config: locations.yaml, building_graph.yaml, scan_profiles.yaml.
+- multifloor_manager/config: floors.yaml, stairs.yaml, apriltags.yaml, transitions.yaml, and config/maps/*.yaml|*.pgm.
+- stair_supervisor/config: robot.yaml, stair_profiles.yaml.
+- tron1_bringup: config/nav/*.yaml, config/apriltag_ros_tags.yaml, launch/{system,navigation,pointcloud_to_laserscan,apriltag}.launch, and rviz/{wf_navigation,wf_navigation_manual}.rviz.
+- test/fixtures/building_valid is a separate explicit fixture, never a production fallback.
+- Copied launch sources were ownership-adjusted only: include/nav/detector/RViz references now resolve through tron1_bringup. The unselected legacy wait_for_tf_exec.sh was not copied or installed.
+- Bringup CMake installs config, launch, and rviz; capability packages contain no nav directory, RViz asset, or launch asset.
+
+FAILING-FIRST EVIDENCE
+Command:
+`PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_configuration_contract -v`
+Before asset recreation result: exit 1, 8 tests run, FAILED (failures=2, errors=6).
+Named cause: missing target production floors/config files, missing known-good fixture, and absent bundle CLI/assets.
+
+REQUIRED CONTRACT VERIFICATION
+Command:
+`PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_configuration_contract -v`
+Result: exit 0, 8 tests run, OK.
+Passing invalid-fixture outcomes:
+- absolute map image -> map_image_relative
+- missing detector tag -> tag_parity
+- missing scan profile -> scan_profile_reference
+- missing directed graph edge set -> graph_connectivity
+- capability/bringup ownership mixing -> ownership violation
+
+FIXTURE AND PRODUCTION LOADER SMOKE
+Command:
+`PYTHONDONTWRITEBYTECODE=1 python3 -B tools/configuration_bundle.py --site-config-root test/fixtures/building_valid`
+Result: exit 0, `{"status": "ok"}`.
+Command:
+`PYTHONDONTWRITEBYTECODE=1 python3 -B tools/configuration_bundle.py --workspace-root .`
+Result: exit 0, `{"status": "ok"}`.
+
+MALFORMED CLI AND NORMALIZATION QA
+- A target-local temporary copy with one detector tag removed returned exit 2 and `tag_parity: survey and detector tags differ`; temporary root was removed.
+- A target-local temporary map with `image: /legacy/maps/floor_3f.pgm` returned exit 0 from `--normalize-map`; reload asserted `image == floor_3f.pgm`; temporary root was removed.
+- `--normalize-map /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/maps/floor_3F.yaml` returned exit 2 and `normalize_source_forbidden`, before any write.
+- Repository map scan found no absolute `image:` values and no old-workspace absolute path in target launch/YAML/RViz files.
+
+OWNERSHIP INVENTORY
+Command: Python inventory through test.test_configuration_contract.
+Result:
+- domain owners: mission_manager=3 YAML, multifloor_manager=4 root YAML plus package maps, stair_supervisor=2 YAML.
+- bringup assets: 11 expected YAML/launch/RViz files.
+- violations: `[]`.
+- Searches found no nav/RViz/launch assets in multifloor_manager and no domain-data root keys in bringup YAML.
+
+BUILD, REGRESSION, AND STATIC CHECKS
+- `catkin_make`: exit 0; all six packages traversed; tron1_interfaces messages generated; build reached 100%.
+- `source devel/setup.bash && PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s test -p 'test_*.py' -v`: exit 0, 47 tests run, OK.
+- `PYTHONDONTWRITEBYTECODE=1 python3 -B -m py_compile tools/configuration_bundle.py test/test_configuration_contract.py`: exit 0.
+- `ruff check tools/configuration_bundle.py test/test_configuration_contract.py`: exit 0, `All checks passed!`.
+- Pure LOC: tools/configuration_bundle.py=194; test/test_configuration_contract.py=144; both below 250.
+- The bundled no-excuse checker could not execute under ROS Python 3.8 because the checker itself contains Python 3.10 match syntax; python3.12 was not installed. The changed files were instead checked by Python 3.8 compile, ruff, unit tests, CLI execution, and catkin build.
+- basedpyright was not installed. LSP diagnostics were unavailable because the target is outside the session cwd boundary.
+
+CLEANUP
+- All `.task6-fixture.*` and `.task6-normalize.*` roots were removed.
+- Exact py_compile outputs `tools/__pycache__/configuration_bundle.cpython-38.pyc` and `test/__pycache__/test_configuration_contract.cpython-38.pyc` were removed.
+- No product/source file was written in the immutable workspace; this evidence log is within the plan-approved attempt directory.
+
+ARCHITECTURAL SELF-REVIEW
+- configuration_bundle.py owns bundle parsing/validation/normalization only; test_configuration_contract.py owns configuration contracts only.
+- YAML is parsed once at the CLI boundary into typed recursive values; stable ConfigurationViolation codes reach stderr.
+- No dynamic imports, network/ROS calls, extra nodes, mutable registry, broad exception, Any/cast/type-ignore, or source-workspace write path was added.
+- Reverting the recreated assets/tool/ownership edits makes the failing-first contract suite fail.
+
+Prior DoneClaim superseded by the independent-verifier closure below.
+
+INDEPENDENT VERIFIER FIX - 2026-08-25
+
+Findings closed:
+1. The previous graph check rejected only an empty edge list. A configured graph now validates directed reachability from every location to every other location after all edge references are known valid.
+2. An explicitly loaded fixture now requires every schema document to have `configured: true`; production loading keeps its separate boundary and permits the approved mixed posture (commissioned robot settings plus disabled site data).
+
+Files changed for the verifier fix:
+- `/home/m3tron/Desktop/TRON1_Modular_Navigation/test/test_configuration_contract.py`
+  - Replaced the all-edges-cleared probe with removal of only `stair_b_up`, asserting the other eight edges remain.
+  - Added production `floors.yaml` replacement under an explicitly loaded fixture and required typed `fixture_posture` failure.
+  - Added production mixed-posture CLI success coverage.
+- `/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/configuration_bundle.py`
+  - Added immutable `Bundle.requires_configured` boundary metadata.
+  - Added fail-closed fixture posture validation.
+  - Added configured directed-graph strong-connectivity validation.
+
+Failing-first commands/results:
+- `PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_configuration_contract.ConfigurationFailureFixtureTest.test_missing_critical_graph_edge_is_rejected test.test_configuration_contract.ConfigurationFailureFixtureTest.test_production_document_mixed_into_fixture_is_rejected -v`
+  - Before implementation: exit 1, 2 tests run, 2 failures.
+  - Critical-edge case incorrectly returned exit 0.
+  - Mixed fixture failed later as `config_read` rather than fail-closed `fixture_posture`.
+- Production-posture correction was also locked red:
+  `PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_configuration_contract.ConfigurationRepositoryTest.test_production_mixed_posture_loads_through_cli -v`
+  - Before configured-scope correction: exit 1; production was incorrectly rejected as `graph_connectivity`.
+
+Focused green results:
+- The two verifier tests: exit 0, 2 tests run, OK.
+- Critical edge + mixed fixture + production posture: exit 0, 3 tests run, OK.
+- `PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_configuration_contract -v`
+  - exit 0, 10 tests run, OK.
+
+Direct CLI observables:
+- Known-good fixture:
+  `PYTHONDONTWRITEBYTECODE=1 python3 -B tools/configuration_bundle.py --site-config-root test/fixtures/building_valid`
+  - exit 0, `{"status": "ok"}`.
+- Approved production mixed posture:
+  `PYTHONDONTWRITEBYTECODE=1 python3 -B tools/configuration_bundle.py --workspace-root .`
+  - exit 0, `{"status": "ok"}`.
+- Target-local fixture copy with only `stair_b_up` removed and eight edges retained:
+  - exit 2, `graph_connectivity: home_3f cannot reach every location`.
+  - temporary `.task6-connectivity.*` root removed.
+- Target-local fixture copy with production `src/multifloor_manager/config/floors.yaml` replacing fixture `floors.yaml`:
+  - exit 2, `fixture_posture: floors is not configured`.
+  - temporary `.task6-mixing.*` root removed.
+
+Full verification after correction:
+- `catkin_make`: exit 0; six packages traversed and build reached 100%.
+- `source devel/setup.bash && PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s test -p 'test_*.py' -v`: exit 0, 49 tests run, OK.
+- `ruff check tools/configuration_bundle.py test/test_configuration_contract.py`: exit 0, `All checks passed!`.
+- `PYTHONDONTWRITEBYTECODE=1 python3 -B tools/source_provenance.py`: exit 0, `{"output_count": 0, "source_count": 104, "status": "ok"}`.
+- Pure LOC: `tools/configuration_bundle.py` 219; `test/test_configuration_contract.py` 172; both below 250.
+- Final cleanup inventory: `empty_cache_dirs=[]`, `task6_temp_paths=[]`.
+
+Residual limitations:
+- Directed completeness is enforced only when `building_graph.yaml` is configured. This is intentional: disabled production site data remains structurally cross-reference checked but is not claimed operationally route-complete before commissioning.
+- The environment still lacks basedpyright, and the bundled no-excuse checker still requires newer Python syntax than ROS Noetic Python 3.8. Ruff, Python 3.8 execution, focused/full unittests, direct CLI probes, and catkin build are green.
+- No powered robot, navigation, stair, actuator, E-stop, or physical behavior claim is made by this configuration-only fix.
+
+DoneClaim: PASS - Both independent verifier findings are closed: removing one critical edge while retaining the other eight fails closed with typed graph_connectivity; replacing a known-good fixture document with disabled production data fails closed at the explicit fixture boundary with typed fixture_posture; approved production mixed posture still loads; focused tests pass 10/10, full tests pass 49/49, catkin and both valid CLI modes pass, malformed CLI probes return exit 2, provenance remains 104/104 valid, temporary/cache artifacts are absent, and immutable old product source remains untouched.

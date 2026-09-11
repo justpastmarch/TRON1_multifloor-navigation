@@ -1,0 +1,197 @@
+TASK: Todo 3 - canonical architecture manifest schema and schema-only validator
+RESULT: PASS
+ATTEMPT_STATUS: omo_unavailable (bound by plan fallback)
+ATTEMPT_PATH: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/ulw/modular-architecture-expansion/a1
+
+CHANGED TARGET FILES
+- /home/m3tron/Desktop/TRON1_Modular_Navigation/docs/architecture/architecture.yaml
+- /home/m3tron/Desktop/TRON1_Modular_Navigation/docs/architecture/schema.md
+- /home/m3tron/Desktop/TRON1_Modular_Navigation/tools/validate_architecture.py
+- /home/m3tron/Desktop/TRON1_Modular_Navigation/test/test_architecture_schema.py
+
+OLD-WORKSPACE WRITE
+- This evidence receipt is the only Todo 3 old-workspace write.
+- No old product/source file was modified.
+- No orchestration/status file was modified by Todo 3.
+
+FAILING-FIRST BASELINE
+Command from target root:
+  python3 -m unittest test.test_architecture_schema -v
+Result before validator implementation:
+  exit 1
+  Ran 1 test in 0.000s
+  FAILED (errors=1)
+  ModuleNotFoundError: No module named 'tools.validate_architecture'
+The duplicate-ID, unresolved-reference, package-cycle, traversal, example-node-leakage, bad-ID, and malformed-YAML fixtures existed before production implementation. Failure was for the intended missing validator boundary.
+
+IMPLEMENTED CONTRACT
+- YAML is parsed once into frozen ArchitectureManifest, ArchitectureNamespace, Entity, and EntitySpec records.
+- Stable category IDs and exact record fields are enforced for packages, runtime nodes, interfaces, producers, conditions, modules/symbols, configs, tests, and diagram edges.
+- References, globally duplicate IDs, package dependency cycles, normalized relative paths, and example/deployed separation are validated.
+- Deployed inventory is the approved six packages and three project nodes.
+- Future automatic-door records exist only beneath the manifest's examples namespace; example paths are constrained to docs/architecture/examples/ and cannot create deployed source or node inventory.
+- --schema-only deliberately does not resolve planned paths or Python symbols.
+- --resolved adds deployed path and Python symbol resolution for the later reconciliation task.
+- --example accepts an example-only root and preserves example ID/path isolation.
+
+REQUIRED ACCEPTANCE COMMAND
+Command from target root:
+  python3 tools/validate_architecture.py --schema-only docs/architecture/architecture.yaml && python3 -m unittest test.test_architecture_schema -v
+Result:
+  exit 0
+  schema-only validation passed: deployed=41 examples=12
+  Ran 11 tests in 0.654s
+  OK
+Direct count command:
+  python3 -c 'import ast, pathlib; p=pathlib.Path("test/test_architecture_schema.py"); tree=ast.parse(p.read_text()); calls=sum(isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr.startswith("assert") for n in ast.walk(tree)); tests=sum(isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)) and n.name.startswith("test_") for n in ast.walk(tree)); print(f"direct_unittest_assertions={calls} test_methods={tests}")'
+Result:
+  exit 0
+  direct_unittest_assertions=12 test_methods=11
+
+MANUAL VALIDATOR SMOKE
+Happy command:
+  python3 tools/validate_architecture.py --schema-only docs/architecture/architecture.yaml
+Happy result:
+  exit 0
+  stdout: schema-only validation passed: deployed=41 examples=12
+  stderr: <empty>
+Failure command against worker-owned test/task3-malformed-smoke.yaml containing `deployed: [`:
+  python3 tools/validate_architecture.py --schema-only test/task3-malformed-smoke.yaml
+Failure result:
+  exit 2
+  stdout: <empty>
+  stderr: invalid YAML: while parsing a flow node; expected the node content, but found '<stream end>'
+
+ADVERSARIAL PROBES
+- malformed_input: test_malformed_yaml_cli_fails_without_success_output, test_bad_identifier_is_rejected, and test_path_traversal_is_rejected passed. Bad YAML exits 2; malformed IDs and non-normalized/traversing paths raise ArchitectureValidationError.
+- duplicate IDs: test_duplicate_ids_are_rejected passed.
+- unresolved refs: test_unresolved_references_are_rejected passed.
+- cycles: test_package_dependency_cycles_are_rejected passed.
+- example-node leakage: test_example_node_leakage_into_deployed_topology_is_rejected passed.
+- generated_artifacts: test_example_paths_cannot_create_generated_source_artifacts passed; all future door paths are docs/architecture/examples/, not src/, build/, devel/, or install/.
+- dirty_worktree/source immutability command: python3 tools/source_provenance.py
+  Result: exit 0; {"output_count": 0, "source_count": 98, "status": "ok"}
+- stale_state: canonical target manifest additions are deliberate target product writes; --schema-only tolerates planned paths while --resolved rejects the current first missing planned path.
+- misleading_success_output: the failure CLI returned exit 2 with empty stdout; only success emitted `validation passed`; 11 test methods and 12 direct unittest assertion call sites were counted by AST.
+- prompt_injection: source documentation was treated only as migration reference data. The validator accepts typed schema fields only and performs no dynamic import, eval, exec, shell, command, URL, or external-document dispatch.
+
+STATIC AND COMPATIBILITY CHECKS
+Command:
+  ruff check --no-cache tools/validate_architecture.py test/test_architecture_schema.py
+Result:
+  exit 0; All checks passed!
+Command:
+  python3 -m compileall -q tools test
+Result:
+  exit 0
+Command:
+  basedpyright tools/validate_architecture.py test/test_architecture_schema.py
+Result:
+  unavailable; /bin/bash: basedpyright: command not found
+Command:
+  python3 .../check-no-excuse-rules.py tools/validate_architecture.py test/test_architecture_schema.py
+Result:
+  checker unavailable under required Python 3.8 because the checker itself contains Python 3.10 match syntax (SyntaxError at checker line 519). This is a checker/tool incompatibility, not a target-file failure.
+Pure LOC measurement:
+  tools/validate_architecture.py: 232 (warning band, below the mandatory 250 ceiling; split before adding substantial future behavior)
+  test/test_architecture_schema.py: 111
+
+POST-WRITE ARCHITECTURAL REVIEW
+- Single responsibility: validator owns architecture-manifest parsing and validation; test module owns its behavioral contract.
+- Boundary purity: raw YAML is converted immediately to typed immutable records.
+- Variant discrimination: no tagged domain union was introduced.
+- Escape hatches: no Any, cast, type-ignore, broad exception, dynamic import, eval, exec, or shell execution.
+- Defensive layers: schema checks exist only at the untrusted YAML boundary and resolved filesystem boundary.
+- One-off helpers: parser helpers each serve repeated fields/records or distinct boundary responsibilities.
+- Tests: reverting/removing the validator restores the observed red import failure; invalid classes are behaviorally locked.
+- Parameter bloat: no function has more than three parameters.
+- Redundant verification: none.
+- Negative naming: none introduced.
+- Logging: no logging added; CLI has deterministic stdout success and stderr failure only.
+
+CLEANUP
+- Deleted worker-owned test/task3-malformed-smoke.yaml after the direct failure smoke.
+- Deleted Todo 3-generated bytecode under target tools/__pycache__ and test/__pycache__; did not delete pycache artifacts owned by concurrent package-skeleton work under src/.
+- Ruff used --no-cache; no .ruff_cache was created.
+- No process remains running.
+- Retained only the four requested target files and this exact allowed evidence receipt.
+
+TODO 3 VALIDATOR FINDINGS CORRECTION
+Changed target files:
+- /home/m3tron/Desktop/TRON1_Modular_Navigation/tools/validate_architecture.py
+- /home/m3tron/Desktop/TRON1_Modular_Navigation/test/test_architecture_schema.py
+
+Failing-first command:
+  PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_architecture_schema.ArchitectureSchemaTest.test_dot_path_with_no_components_is_rejected test.test_architecture_schema.ArchitectureSchemaTest.test_reference_to_wrong_record_kind_is_rejected -v
+Failing-first result:
+  exit 1; Ran 2 tests in 0.114s; FAILED (failures=2)
+  - dot path: ArchitectureValidationError not raised
+  - wrong reference kind: ArchitectureValidationError not raised
+
+Correction:
+- A normalized path is valid only when PurePosixPath.parts is nonempty. Input `.` is rejected as `expected normalized relative path`.
+- Each reference field now declares allowed target record categories. Existing resolution and deployed/example checks remain active, but a resolved ID of the wrong category is rejected as `wrong reference kind`.
+- `runtime_nodes.package` accepts only package records; `runtime_nodes.interfaces` accepts only interface records. Equivalent category contracts cover package dependencies, producer/condition/module/config ownership, symbols, tests, and diagram endpoints.
+- No manifest content, deployed package/node inventory, runtime node, safety layer, or example topology changed.
+
+Focused green command:
+  PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_architecture_schema.ArchitectureSchemaTest.test_dot_path_with_no_components_is_rejected test.test_architecture_schema.ArchitectureSchemaTest.test_reference_to_wrong_record_kind_is_rejected -v
+Result:
+  exit 0; Ran 2 tests in 0.126s; OK
+
+Required schema command:
+  python3 -B tools/validate_architecture.py --schema-only docs/architecture/architecture.yaml
+Result:
+  exit 0
+  schema-only validation passed: deployed=41 examples=12
+
+Required unittest command:
+  PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest test.test_architecture_schema -v
+Result:
+  exit 0; Ran 13 tests in 0.907s; OK
+  New regressions passed:
+  - test_dot_path_with_no_components_is_rejected
+  - test_reference_to_wrong_record_kind_is_rejected
+Direct AST count:
+  direct_unittest_assertions=12 test_methods=13
+
+EXACT MALFORMED FIXTURE PROBES
+Fixture creation used canonical manifest copies at target-owned paths test/task3-dot-path.yaml and test/task3-wrong-reference-kind.yaml.
+Command:
+  python3 -B tools/validate_architecture.py --schema-only test/task3-dot-path.yaml
+Result:
+  exit 2; stdout=<empty>
+  stderr=pkg.tron1_interfaces.path: expected normalized relative path
+Command:
+  python3 -B tools/validate_architecture.py --schema-only test/task3-wrong-reference-kind.yaml
+Result:
+  exit 2; stdout=<empty>
+  stderr=node.mission_manager.package: wrong reference kind interfaces
+
+Additional verification:
+  ruff check --no-cache tools/validate_architecture.py test/test_architecture_schema.py
+  -> exit 0; All checks passed!
+  python3 -B tools/source_provenance.py
+  -> exit 0; {"output_count": 0, "source_count": 104, "status": "ok"}
+  pure LOC: tools/validate_architecture.py=235 (warning band, below 250 ceiling); test/test_architecture_schema.py=125
+
+Correction cleanup:
+- Deleted test/task3-dot-path.yaml and test/task3-wrong-reference-kind.yaml after their exact CLI probes.
+- Verification used `-B`, `PYTHONDONTWRITEBYTECODE=1`, and Ruff `--no-cache`; no correction-owned bytecode or Ruff cache was created.
+- No process remains running.
+- No old product source or orchestration/status file was modified; only this allowed evidence receipt was updated.
+
+Updated DoneClaim:
+  task: Todo 3 validator findings correction
+  status: DONE
+  schema_only_cli: PASS (exit 0; deployed=41; examples=12)
+  architecture_tests: PASS (13/13; 12 direct assertion call sites)
+  dot_path_rejection: PASS (CLI exit 2; no path components rejected)
+  reference_kind_enforcement: PASS (CLI exit 2; node package cannot reference interface)
+  deployed_example_semantics: PRESERVED
+  deployed_topology: UNCHANGED (six packages; three project nodes)
+  runtime_nodes_or_safety_layers_added: NONE
+  authoritative_source_hashes: PASS (104/104)
+  old_product_workspace: READ_ONLY
+  malformed_fixture_cleanup: PASS
+  hardware_runtime_or_later_todo_claims: NONE

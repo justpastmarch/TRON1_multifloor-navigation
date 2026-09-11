@@ -1,0 +1,7 @@
+START 2026-08-24T10:30:17+09:00
+structured_evidence=valid
+jsonl=valid
+result_xml_manifest_matches_filesystem=37
+baseline_nonzero_status=honest
+END 2026-08-24T10:30:17+09:00
+EXIT 0

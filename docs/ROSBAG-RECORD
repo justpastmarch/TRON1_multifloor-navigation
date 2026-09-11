@@ -1,0 +1,228 @@
+아래는 깨끗하게 다시 시작할 때 사용하는 수동 계단 녹화 순서입니다. 계단 시작점은 실제 설정값 x=10.054808, y=-6.652934, yaw=1.395796입니다.
+
+> **실행 모드 주의:** 이 문서는 `navigation.launch`와 `apriltag.launch`를 각각
+> 직접 실행하는 수동 녹화 모드입니다. `./run.sh` 또는
+> `roslaunch mission_manager system.launch`를 동시에 실행하지 마십시오.
+> `system.launch`도 `apriltag.launch`를 포함하므로, 두 모드를 섞으면
+> `/apriltag_ros_continuous_node`가 중복 실행됩니다. 관리형 모드를 사용할 때는
+> 이 문서의 터미널 2와 2.5를 건너뛰십시오.
+
+터미널 0: 이전 local runtime 정리
+새로 시작하기 전에 이전 navigation/RViz/supervisor를 종료합니다. ROS master와 mini PC
+센서 프로세스는 유지할 수 있습니다.
+
+```bash
+source /opt/ros/noetic/setup.bash
+source ~/Desktop/TRON1_Control/TRON1_RViz_Navigation/devel/setup.bash
+export ROS_MASTER_URI=http://10.192.1.2:11311
+export ROS_IP=192.168.1.26
+unset ROS_HOSTNAME
+
+rosnode kill /move_base /amcl /map_server /stair_supervisor /rviz_navigation 2>/dev/null || true
+rosnode kill /apriltag_ros_continuous_node 2>/dev/null || true
+```
+
+이전 rosbag playback이 stale node로 남아 있으면 해당 node를 정리하고, 이전 navigation
+터미널이 열려 있으면 그 터미널에서도 `Ctrl+C`를 누릅니다.
+
+```bash
+rosnode kill /play_1787553343574290643 2>/dev/null || true
+rosnode cleanup
+```
+
+`rosnode cleanup`에서는 실제로 연결할 수 없는 stale node만 삭제합니다. 새 실행 전
+`/scan`과 `/tron/wheel_odom_raw`의 publisher가 각각 하나인지 확인합니다.
+터미널 1: mini PC 센서
+이미 wf_mapping.launch가 실행 중이면 이 터미널은 생략합니다.
+ssh -t m3localtron@192.168.1.56 \
+  "source /opt/ros/noetic/setup.bash; \
+   source /home/m3localtron/catkin_ws/devel/setup.bash; \
+   export ROS_MASTER_URI=http://10.192.1.2:11311; \
+   export ROS_IP=10.192.1.20; \
+   export D435F_SERIAL=244622071832; \
+   unset ROS_HOSTNAME; \
+   exec roslaunch sensor_integration wf_mapping.launch"
+터미널 2: map + AMCL + move_base (수동 녹화 모드 전용)
+cd ~/Desktop/TRON1_Control/TRON1_RViz_Navigation
+source /opt/ros/noetic/setup.bash
+source devel/setup.bash
+export ROS_MASTER_URI=http://10.192.1.2:11311
+export ROS_IP=192.168.1.26
+unset ROS_HOSTNAME
+
+roslaunch multifloor_manager navigation.launch \
+  map_yaml:="$(rospack find multifloor_manager)/config/maps/floor_3F.yaml" \
+  nav_params_dir:="$(rospack find multifloor_manager)/config/nav" \
+  initial_x:=2.599130 \
+  initial_y:=-1.983942 \
+  initial_yaw:=1.455898 \
+  max_vel_x:=0.50 \
+  max_vel_theta:=0.80 \
+  min_in_place_vel_theta:=0.25 \
+  acc_lim_x:=0.4 \
+  acc_lim_theta:=2.0
+
+터미널 2.5: AprilTag detector (수동 녹화 모드 전용)
+카메라 topic이 올라온 뒤 이 터미널을 실행합니다. 이 단계를 생략하면
+`/tag_detections`가 생성되지 않아 층 도착 tag 검증과 tag 녹화가 불가능합니다.
+
+```bash
+cd ~/Desktop/TRON1_Control/TRON1_RViz_Navigation
+source /opt/ros/noetic/setup.bash
+source devel/setup.bash
+export ROS_MASTER_URI=http://10.192.1.2:11311
+export ROS_IP=192.168.1.26
+unset ROS_HOSTNAME
+
+roslaunch multifloor_manager apriltag.launch \
+  image_rect:=/camera1/color/image_raw \
+  camera_info:=/camera1/color/camera_info \
+  tag_config:="$(rospack find multifloor_manager)/config/apriltag_ros_tags.yaml" \
+  tag_topic:=/tag_detections
+```
+
+AprilTag는 `transport_hint=compressed`로 camera image를 구독합니다. detector가
+시작된 뒤 mini PC의 JPEG 압축 품질을 100으로 설정합니다. 압축 topic이 아직 생성되지
+않았으면 detector launch 후 다시 실행합니다.
+
+```bash
+rosrun dynamic_reconfigure dynparam set \
+  /camera1/color/image_raw/compressed jpeg_quality 100
+```
+
+정상 실행 확인:
+
+```bash
+rosnode list
+rostopic info /tag_detections
+rostopic hz /tag_detections
+rostopic echo -n 1 /tag_detections
+```
+
+`/apriltag_ros_continuous_node`가 실행 중이고 `/tag_detections`에 실제 message가
+도착한 뒤 다음 터미널로 진행합니다.
+
+터미널 3: 로봇 WebSocket + 이동 전달
+cd ~/Desktop/TRON1_Control/TRON1_RViz_Navigation
+source /opt/ros/noetic/setup.bash
+source devel/setup.bash
+export ROS_MASTER_URI=http://10.192.1.2:11311
+export ROS_IP=192.168.1.26
+unset ROS_HOSTNAME
+
+ssh -N -o ExitOnForwardFailure=yes \
+  -L 127.0.0.1:5000:10.192.1.2:5000 \
+  m3localtron@192.168.1.56 &
+TUNNEL_PID=$!
+trap 'kill "$TUNNEL_PID" 2>/dev/null' EXIT
+
+sleep 2
+
+rosrun stair_supervisor stair_supervisor_node.py \
+  _config_dir:="$(rospack find stair_supervisor)/config" \
+  _accid:=WF_TRON1A_632 \
+  _websocket_url:=ws://127.0.0.1:5000
+약 10초 후 다른 터미널에서 다음 상태가 나와야 합니다.
+rostopic echo -n 1 /stair_supervisor/state
+rostopic info /navigation/cmd_vel
+정상 기준:
+state: 1
+connected: True
+detail: "navigation owns commands"
+Subscribers:
+ * /stair_supervisor
+터미널 4: RViz
+cd ~/Desktop/TRON1_Control/TRON1_RViz_Navigation
+source /opt/ros/noetic/setup.bash
+source devel/setup.bash
+export ROS_MASTER_URI=http://10.192.1.2:11311
+export ROS_IP=192.168.1.26
+unset ROS_HOSTNAME
+
+rosrun rviz rviz \
+  __name:=rviz_navigation \
+  -d "$(rospack find multifloor_manager)/rviz/wf_navigation_manual.rviz" &
+RVIZ_PID=$!
+
+# 필수: RViz late publisher를 AMCL/move_base의 현재 subscriber에 재연결한다.
+sleep 3
+rosrun multifloor_manager rviz_tf_reconnect.py
+wait "$RVIZ_PID"
+터미널 5: 계단 녹화 시작
+이 명령을 먼저 실행한 뒤 이동 명령을 보냅니다.
+cd ~/Desktop/TRON1_Control/TRON1_RViz_Navigation
+source /opt/ros/noetic/setup.bash
+source devel/setup.bash
+export ROS_MASTER_URI=http://10.192.1.2:11311
+export ROS_IP=192.168.1.26
+unset ROS_HOSTNAME
+
+mkdir -p stair_captures
+
+rosbag record \
+  --buffsize=1024 \
+  --chunksize=768 \
+  -O "stair_captures/stair_3F_to_4F_UP_$(date +%Y%m%d_%H%M%S).bag" \
+  /map \
+  /amcl_pose \
+  /particlecloud \
+  /tag_detections \
+  /initialpose \
+  /move_base_simple/goal \
+  /move_base/status \
+  /move_base/feedback \
+  /move_base/result \
+  /navigation/cmd_vel \
+  /stair/cmd_vel \
+  /camera1/color/image_raw/compressed \
+  /camera1/color/camera_info \
+  /livox/lidar \
+  /livox/imu \
+  /tron/wheel_odom_raw \
+  /scan \
+  /tf \
+  /tf_static
+터미널 6: 계단 시작점으로 이동
+
+기본 경로는 RViz입니다. `2D Pose Estimate`를 먼저 설정하고, `rviz_tf_reconnect.py`
+실행 후 다음 goal을 RViz의 `2D Nav Goal`로 지정합니다.
+
+```text
+frame: map
+x: 10.054808
+y: -6.652934
+yaw: 1.395796 rad
+```
+
+RViz tool 연결을 확인하려면 다음을 실행합니다.
+
+```bash
+rosnode info /rviz_navigation | grep -A 5 -B 1 -E \
+  'topic: /initialpose|topic: /move_base_simple/goal'
+```
+
+다음 TCPROS 연결이 보여야 합니다.
+
+```text
+/initialpose -> /amcl
+/move_base_simple/goal -> /move_base
+```
+
+직접 `/move_base_simple/goal`에 one-shot `rostopic pub`을 보내는 방식은 새 Python
+publisher의 TCPROS 연결 race로 유실될 수 있으므로 기본 녹화 경로로 사용하지 않습니다.
+아래는 호환용 참고 명령입니다.
+
+source /opt/ros/noetic/setup.bash
+source ~/Desktop/TRON1_Control/TRON1_RViz_Navigation/devel/setup.bash
+export ROS_MASTER_URI=http://10.192.1.2:11311
+export ROS_IP=192.168.1.26
+unset ROS_HOSTNAME
+
+rostopic pub -1 /move_base_simple/goal geometry_msgs/PoseStamped \
+"{header: {stamp: now, frame_id: map},
+  pose: {
+    position: {x: 10.054808, y: -6.652934, z: 0.0},
+    orientation: {x: 0.0, y: 0.0, z: 0.642608567, w: 0.766194642}
+  }}"
+이동을 즉시 취소하려면:
+rostopic pub -1 /move_base/cancel actionlib_msgs/GoalID "{}"

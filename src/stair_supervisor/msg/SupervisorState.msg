@@ -1,0 +1,9 @@
+std_msgs/Header header
+uint8 DISARMED=0
+uint8 NAV=1
+uint8 STAIR=2
+uint8 FAULT=3
+uint8 state
+bool connected
+string detail
+uint64 ownership_epoch

@@ -1,0 +1,22 @@
+{
+  "repair_attempt_id": "policy-evaluator-repair-2026-08-24T15:25:02+09:00",
+  "executor_session_id": "ses_fcda31262ffe2m5qp9Iw8ZUWwo",
+  "allowed_paths": [
+    "src/multifloor_manager/src/multifloor_manager/transitions.py",
+    "src/multifloor_manager/test/test_transitions.py",
+    ".omo/evidence/yaml-transition-policy-runtime/policy-evaluator/*",
+    ".omo/start-work/ledger.jsonl"
+  ],
+  "changed_paths": [
+    "src/multifloor_manager/src/multifloor_manager/transitions.py",
+    "src/multifloor_manager/test/test_transitions.py",
+    ".omo/evidence/yaml-transition-policy-runtime/policy-evaluator/*",
+    ".omo/start-work/ledger.jsonl"
+  ],
+  "sha256_after": {
+    "src/multifloor_manager/src/multifloor_manager/transitions.py": "e8dfb77c982fb47d9c238e693fcec3cc651f3a8c634dc539c3f3a148a037b783",
+    "src/multifloor_manager/test/test_transitions.py": "1f038d3dfdc306bc21874f43e73a8e30d70ce87e205c5620616f4f05bcff4de8"
+  },
+  "unrelated_product_paths_modified": false,
+  "todo_4_or_5_paths_modified": false
+}

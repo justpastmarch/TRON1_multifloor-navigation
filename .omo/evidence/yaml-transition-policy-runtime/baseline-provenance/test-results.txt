@@ -1,0 +1,37 @@
+STATUS: completed evidence task; baseline tests are NOT green.
+
+Root command: python3 -m unittest discover -s test -v
+Exit: 1; Ran 79 tests in 0.903s; FAILED (3 failures).
+1. test_system_operator_contract.SystemOperatorContractTest.test_managed_rviz_is_visualization_only
+   output: AssertionError: rviz/SetGoal unexpectedly found in src/multifloor_manager/rviz/wf_navigation.rviz; rviz/SetInitialPose also present.
+2. test_workspace_layout.WorkspaceLayoutTest.test_one_runtime_entrypoint_exists_when_each_package_is_inspected (package='multifloor_manager')
+   output: AssertionError: expected 1 runtime script, found 2.
+3. test_workspace_layout.WorkspaceLayoutTest.test_one_runtime_entrypoint_exists_when_each_package_is_inspected (package='stair_supervisor')
+   output: AssertionError: expected 1 runtime script, found 2.
+
+Registered command: catkin_make run_tests
+Exit: 0 (catkin target status only; individual result XML failures are authoritative below).
+Registered summary command: catkin_test_results --verbose
+Exit: 1; Summary: 150 tests, 9 errors, 1 failures, 0 skipped.
+
+Every failing registered testcase/output:
+4. build/test_results/mission_manager/nosetests-test.test_runtime_gating.py.xml::nose.failure.Failure.runTest
+   error: builtins.ModuleNotFoundError: No module named 'mission_manager'; src/mission_manager/test/test_runtime_gating.py:9, from mission_manager.ros_runtime import _configuration_roots.
+5. build/test_results/mission_manager/nosetests-test.test_ros_segments.py.xml::nose.failure.Failure.runTest
+   error: builtins.ModuleNotFoundError: No module named 'multifloor_manager'; src/mission_manager/test/test_ros_segments.py:13, from multifloor_manager.msg import FloorState, FloorTransitionResult.
+6. build/test_results/mission_manager/nosetests-test.test_navigation_executor.py.xml::nose.failure.Failure.runTest
+   error: builtins.ModuleNotFoundError: No module named 'multifloor_manager'; src/mission_manager/test/test_navigation_executor.py:18, from multifloor_manager.msg import FloorState.
+7. build/test_results/stair_supervisor/nosetests-test.robot_transport.xml::nose.failure.Failure.runTest[robot_config]
+   error: builtins.ModuleNotFoundError: No module named 'stair_supervisor'; test/robot_transport/test_robot_config.py:5, from stair_supervisor.robot_config.
+8. build/test_results/stair_supervisor/nosetests-test.robot_transport.xml::nose.failure.Failure.runTest[robot_conversion]
+   error: builtins.ModuleNotFoundError: No module named 'stair_supervisor'; test/robot_transport/test_robot_conversion.py:6, from stair_supervisor.configuration.
+9. build/test_results/stair_supervisor/nosetests-test.robot_transport.xml::nose.failure.Failure.runTest[robot_protocol]
+   error: builtins.ModuleNotFoundError: No module named 'stair_supervisor'; test/robot_transport/test_robot_protocol.py:6, from stair_supervisor.robot_protocol.
+10. build/test_results/stair_supervisor/nosetests-test.robot_transport.xml::nose.failure.Failure.runTest[robot_transport]
+    error: builtins.ModuleNotFoundError: No module named 'stair_supervisor'; test_robot_transport_fakes.py:8 imports stair_supervisor.configuration.
+11. build/test_results/stair_supervisor/nosetests-test.robot_transport.xml::nose.failure.Failure.runTest[robot_transport_faults]
+    error: builtins.ModuleNotFoundError: No module named 'stair_supervisor'; test_robot_transport_fakes.py:8 imports stair_supervisor.configuration.
+12. build/test_results/stair_supervisor/nosetests-test.robot_transport.xml::robot_transport.test_yaw_calibration_cli.YawCalibrationCliTest.test_help_exposes_safe_calibration_controls
+    failure: AssertionError: subprocess exit 1; calibrate_yaw_rate.py:11 cannot import stair_supervisor.configuration; ModuleNotFoundError: No module named 'stair_supervisor'.
+
+All other 30 XML result files report zero errors and zero failures. The authoritative path-level count is 37 XML files; see diff-inventory.json.

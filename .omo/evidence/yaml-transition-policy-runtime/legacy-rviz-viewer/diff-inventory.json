@@ -1,0 +1,27 @@
+{
+  "attempt_id": "late-rviz-tcpros-2026-08-24T13:53:12+09:00",
+  "workspace_is_git": false,
+  "changed_product_test_docs": {
+    "src/multifloor_manager/scripts/rviz_tf_reconnect.py": "c89c43942d1c103170134564fdd421d265684f09f889339a2d5309f50374c283",
+    "test/test_rviz_tf_reconnect.py": "7733c81d684f7ec46db216f19ace6e89a4d3534e0ee2a90cd77dded6e109db04",
+    "docs/ros-noetic-amcl-rviz-late-publisher-troubleshooting.md": "a89cc88e3924e8712df965f517efaac03425f70791a51f0f10ca45ca8ef8407a"
+  },
+  "changed_plan_evidence": [
+    ".omo/plans/yaml-transition-policy-runtime.md",
+    ".omo/evidence/yaml-transition-policy-runtime/legacy-rviz-viewer/commands.txt",
+    ".omo/evidence/yaml-transition-policy-runtime/legacy-rviz-viewer/ledger.txt",
+    ".omo/evidence/yaml-transition-policy-runtime/legacy-rviz-viewer/test-results.txt",
+    ".omo/evidence/yaml-transition-policy-runtime/legacy-rviz-viewer/source-check.txt",
+    ".omo/evidence/yaml-transition-policy-runtime/legacy-rviz-viewer/ros-qa.txt",
+    ".omo/evidence/yaml-transition-policy-runtime/legacy-rviz-viewer/diff-inventory.json",
+    ".omo/evidence/yaml-transition-policy-runtime/legacy-rviz-viewer/cleanup.json",
+    ".omo/evidence/yaml-transition-policy-runtime/legacy-rviz-viewer/receipt.yaml",
+    ".omo/start-work/ledger.jsonl"
+  ],
+  "preserved": {
+    "src/multifloor_manager/rviz/wf_navigation.rviz": "9123997acc99313f4b62afb437a86a5c13a02eee5b169572a715dce6649a3d64",
+    "src/multifloor_manager/rviz/wf_navigation_manual.rviz": "f99a1388831c3dfb23c6bf4bbda955c40f33b57c2ec3c3fff980af2f889fe0d8",
+    "src/mission_manager/launch/system.launch": "db926f0a04cccfaf570025195b0b34444f07a3d6186dafbb889e85c71853e69a"
+  },
+  "generated_paths_edited_directly": []
+}

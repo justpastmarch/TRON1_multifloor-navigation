@@ -1,0 +1,46 @@
+{
+  "schema_version": 2,
+  "plan": ".omo/plans/yaml-transition-policy-runtime.md",
+  "task": "1",
+  "attempt_id": "baseline-provenance-repair-2026-08-24T10:02:19+09:00",
+  "supersedes_attempt_id": "baseline-provenance-2026-08-24T09:52:45+09:00",
+  "workspace_non_git": true,
+  "source_authority": "src/",
+  "inventories": {
+    "source": {"root": "src", "files": 142, "manifest_sha256": "41b2170fa007b5babac16d5f20dbc8b8c2dbbdd98d1884c1363039678d9b65a5"},
+    "tests": {"root": "test", "files": 45, "manifest_sha256": "55647069314c0d756ec3b2c6ea385fd97c44756be732fadccc66aebf7b5c1184"},
+    "docs": {"files": ["README.md"], "sha256": "36b52e411579ad4f250aa33a8ac580260054181e4268175d7be9c4575d66a427"},
+    "config": {"sha256": {"src/multifloor_manager/config/transitions.yaml": "79a796b18c925831d8cb87bef14ff258d3592b5e9b69b992f8cea094d42d58b9", "test/fixtures/building_valid/transitions.yaml": "3826ec018b3a1a10035d26ecff6245c377746b69b9742a2d12bc286ea6d94721"}},
+    "plan": {"file": ".omo/plans/yaml-transition-policy-runtime.md", "sha256": "0004e24b2a07fd1964877990a0b8cdfb837bf9126b61d136e1fed8ae9cea0b62"},
+    "validator": {"file": "validate_bundle.py", "sha256": "7d95ea0c1f349b1fe3457f1751d1b48874b51bb85d40e88da3e7b1545cfeeedf"}
+  },
+  "generated_runtime": {
+    "build": {"exists": true, "files": 2187, "manifest_sha256": "f0e10a74f68478b068e6bea5f87761d755017e718feb5b753f4ac7c03008f377"},
+    "devel": {"exists": true, "files": 242, "manifest_sha256": "600eca756f2d93bd3d4138f337fff3eb81fd9f7b6afaf451fabc8fe44411a391"},
+    "install": {"exists": true, "files": 283, "manifest_sha256": "bfc7e9aa7236560d73c4b55f58f2743420675140cddc97af7ff70e905643642c"},
+    "test_results": {"root": "build/test_results", "result_files": 37, "manifest_file": "diff-inventory.json", "fresh_run_summary": "150 tests, 9 errors, 1 failure, 0 skipped"}
+  },
+  "canonical_imports": {
+    "source_direct": {"command": "PYTHONPATH=src/*/src python3 -c 'import inspect,multifloor_manager.configuration; print(inspect.getfile(multifloor_manager.configuration))'", "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/configuration.py", "authoritative": true},
+    "devel_sourced": {"path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/configuration.py", "authoritative": true},
+    "install_sourced": {"path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/install/lib/python3/dist-packages/multifloor_manager/configuration.py", "authoritative": false, "classification": "generated/non-authoritative"},
+    "devel_rospack": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager",
+    "install_rospack": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/install/share/multifloor_manager"
+  },
+  "key_digests": {"configuration.py": "16004d5bd255e2d8a62f42a827446203e1f83230637a02ff0845d51afe064820", "production_transitions.yaml": "79a796b18c925831d8cb87bef14ff258d3592b5e9b69b992f8cea094d42d58b9", "valid_fixture_transitions.yaml": "3826ec018b3a1a10035d26ecff6245c377746b69b9742a2d12bc286ea6d94721"},
+  "preexisting_failures": [
+    {"id": "test_system_operator_contract.SystemOperatorContractTest.test_managed_rviz_is_visualization_only", "output": "AssertionError: rviz/SetGoal unexpectedly found; rviz/SetInitialPose also present."},
+    {"id": "test_workspace_layout.WorkspaceLayoutTest.test_one_runtime_entrypoint_exists_when_each_package_is_inspected[ multifloor_manager ]", "output": "AssertionError: expected 1 runtime script, found 2."},
+    {"id": "test_workspace_layout.WorkspaceLayoutTest.test_one_runtime_entrypoint_exists_when_each_package_is_inspected[ stair_supervisor ]", "output": "AssertionError: expected 1 runtime script, found 2."},
+    {"id": "build/test_results/mission_manager/nosetests-test.test_runtime_gating.py.xml::nose.failure.Failure.runTest", "output": "error builtins.ModuleNotFoundError: No module named 'mission_manager' at src/mission_manager/test/test_runtime_gating.py:9."},
+    {"id": "build/test_results/mission_manager/nosetests-test.test_ros_segments.py.xml::nose.failure.Failure.runTest", "output": "error builtins.ModuleNotFoundError: No module named 'multifloor_manager' at src/mission_manager/test/test_ros_segments.py:13."},
+    {"id": "build/test_results/mission_manager/nosetests-test.test_navigation_executor.py.xml::nose.failure.Failure.runTest", "output": "error builtins.ModuleNotFoundError: No module named 'multifloor_manager' at src/mission_manager/test/test_navigation_executor.py:18."},
+    {"id": "build/test_results/stair_supervisor/nosetests-test.robot_transport.xml::nose.failure.Failure.runTest[robot_config]", "output": "error builtins.ModuleNotFoundError: No module named 'stair_supervisor' at test/robot_transport/test_robot_config.py:5."},
+    {"id": "build/test_results/stair_supervisor/nosetests-test.robot_transport.xml::nose.failure.Failure.runTest[robot_conversion]", "output": "error builtins.ModuleNotFoundError: No module named 'stair_supervisor' at test/robot_transport/test_robot_conversion.py:6."},
+    {"id": "build/test_results/stair_supervisor/nosetests-test.robot_transport.xml::nose.failure.Failure.runTest[robot_protocol]", "output": "error builtins.ModuleNotFoundError: No module named 'stair_supervisor' at test/robot_transport/test_robot_protocol.py:6."},
+    {"id": "build/test_results/stair_supervisor/nosetests-test.robot_transport.xml::nose.failure.Failure.runTest[robot_transport]", "output": "error builtins.ModuleNotFoundError: No module named 'stair_supervisor' via test_robot_transport_fakes.py:8."},
+    {"id": "build/test_results/stair_supervisor/nosetests-test.robot_transport.xml::nose.failure.Failure.runTest[robot_transport_faults]", "output": "error builtins.ModuleNotFoundError: No module named 'stair_supervisor' via test_robot_transport_fakes.py:8."},
+    {"id": "build/test_results/stair_supervisor/nosetests-test.robot_transport.xml::robot_transport.test_yaw_calibration_cli.YawCalibrationCliTest.test_help_exposes_safe_calibration_controls", "output": "failure AssertionError: subprocess exit 1; calibrate_yaw_rate.py:11 cannot import stair_supervisor.configuration."}
+  ],
+  "not_applicable": {"malformed_input": "baseline only; no parser change", "cancel_resume": "no baseline flow exercised", "repeated_interruptions": "no interruption probe", "hung_commands": "no command stalled or timed out"}
+}

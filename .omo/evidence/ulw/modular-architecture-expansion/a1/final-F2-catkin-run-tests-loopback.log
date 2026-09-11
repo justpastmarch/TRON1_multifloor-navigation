@@ -1,0 +1,151 @@
+Built target tests
+Removing test result files from '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rosunit-multifloor_node_wiring.xml'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rosunit-floor_transition_contract.xml'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rostest-test_floor_transition.xml'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rostest-test_node_wiring.xml'
+Removing test result files from '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor/rosunit-stair_supervisor_disabled_surface.xml'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor/nosetests-test.test_stair_ros_node.py.xml'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor/rostest-test_stair_supervisor.xml'
+Removing test result files from '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager/nosetests-test.test_mission_ros_adapter.py.xml'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager/nosetests-test.test_mission_node_ros.py.xml'
+Removing test result files from '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/tron1_bringup'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/tron1_bringup/rosunit-system_smoke_mission.xml'
+- removing '/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/tron1_bringup/rostest-test_system_smoke.xml'
+Built target clean_test_results_multifloor_manager
+Built target clean_test_results_tron1_bringup
+Built target clean_test_results_mission_manager
+Built target clean_test_results_stair_supervisor
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.032s
+
+OK
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.089s
+
+OK
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.012s
+
+OK
+-- run_tests.py: execute commands
+  "/usr/bin/cmake" -E make_directory /home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor
+  /usr/bin/nosetests3 -P --process-timeout=60 /home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor/test/test_stair_ros_node.py --with-xunit --xunit-file=/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor/nosetests-test.test_stair_ros_node.py.xml
+-- run_tests.py: verify result "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor/nosetests-test.test_stair_ros_node.py.xml"
+-- run_tests.py: execute commands
+  "/usr/bin/cmake" -E make_directory /home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager
+  /usr/bin/nosetests3 -P --process-timeout=60 /home/m3tron/Desktop/TRON1_Modular_Navigation/src/mission_manager/test/test_mission_node_ros.py --with-xunit --xunit-file=/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager/nosetests-test.test_mission_node_ros.py.xml
+-- run_tests.py: verify result "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager/nosetests-test.test_mission_node_ros.py.xml"
+-- run_tests.py: execute commands
+  "/usr/bin/cmake" -E make_directory /home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager
+  /usr/bin/nosetests3 -P --process-timeout=60 /home/m3tron/Desktop/TRON1_Modular_Navigation/src/mission_manager/test/test_mission_ros_adapter.py --with-xunit --xunit-file=/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager/nosetests-test.test_mission_ros_adapter.py.xml
+-- run_tests.py: verify result "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/mission_manager/nosetests-test.test_mission_ros_adapter.py.xml"
+Built target _run_tests_stair_supervisor_nosetests_test.test_stair_ros_node.py
+Built target _run_tests_mission_manager_nosetests_test.test_mission_node_ros.py
+Built target _run_tests_mission_manager_nosetests_test.test_mission_ros_adapter.py
+Built target _run_tests_mission_manager_nosetests
+Built target _run_tests_stair_supervisor_nosetests
+Built target _run_tests_mission_manager
+... logging to /home/m3tron/.ros/log/rostest-m3tron-All-Series-736311.log
+[ROSUNIT] Outputting test results to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rostest-test_floor_transition.xml
+[Testcase: testfloor_transition_contract] ... ok
+
+[ROSTEST]-----------------------------------------------------------------------
+
+[multifloor_manager.rosunit-floor_transition_contract/test_callback_readiness_cannot_veto_true_root][passed]
+[multifloor_manager.rosunit-floor_transition_contract/test_cancel_terminally_stops_and_late_callbacks_are_inert][passed]
+[multifloor_manager.rosunit-floor_transition_contract/test_root_false_reaches_evaluator_timeout_without_callback_veto][passed]
+[multifloor_manager.rosunit-floor_transition_contract/test_service_failure_faults_and_invalidates_epoch][passed]
+[multifloor_manager.rosunit-floor_transition_contract/test_success_is_the_explicit_root_result_and_preserves_operation_phases][passed]
+
+SUMMARY
+[32m * RESULT: SUCCESS[0m
+ * TESTS: 5
+ * ERRORS: 0
+ * FAILURES: 0
+
+rostest log file is in /home/m3tron/.ros/log/rostest-m3tron-All-Series-736311.log
+-- run_tests.py: execute commands
+  /usr/bin/python3 /opt/ros/noetic/share/rostest/cmake/../../../bin/rostest --pkgdir=/home/m3tron/Desktop/TRON1_Modular_Navigation/src/multifloor_manager --package=multifloor_manager --results-filename test_floor_transition.xml --results-base-dir "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results" /home/m3tron/Desktop/TRON1_Modular_Navigation/src/multifloor_manager/test/floor_transition.test 
+-- run_tests.py: verify result "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rostest-test_floor_transition.xml"
+Built target _run_tests_multifloor_manager_rostest_test_floor_transition.test
+... logging to /home/m3tron/.ros/log/rostest-m3tron-All-Series-736310.log
+[ROSUNIT] Outputting test results to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rostest-test_node_wiring.xml
+[Testcase: testmultifloor_node_wiring] ... ok
+
+[ROSTEST]-----------------------------------------------------------------------
+
+[multifloor_manager.rosunit-multifloor_node_wiring/test_private_topic_parameters_drive_runtime_subscriptions][passed]
+
+SUMMARY
+[32m * RESULT: SUCCESS[0m
+ * TESTS: 1
+ * ERRORS: 0
+ * FAILURES: 0
+
+rostest log file is in /home/m3tron/.ros/log/rostest-m3tron-All-Series-736310.log
+... logging to /home/m3tron/.ros/log/rostest-m3tron-All-Series-736315.log
+[ROSUNIT] Outputting test results to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor/rostest-test_stair_supervisor.xml
+[Testcase: teststair_supervisor_disabled_surface] ... ok
+
+[ROSTEST]-----------------------------------------------------------------------
+
+[stair_supervisor.rosunit-stair_supervisor_disabled_surface/test_live_disabled_action_and_state_never_arm_transport][passed]
+
+SUMMARY
+[32m * RESULT: SUCCESS[0m
+ * TESTS: 1
+ * ERRORS: 0
+ * FAILURES: 0
+
+rostest log file is in /home/m3tron/.ros/log/rostest-m3tron-All-Series-736315.log
+-- run_tests.py: execute commands
+  /usr/bin/python3 /opt/ros/noetic/share/rostest/cmake/../../../bin/rostest --pkgdir=/home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor --package=stair_supervisor --results-filename test_stair_supervisor.xml --results-base-dir "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results" /home/m3tron/Desktop/TRON1_Modular_Navigation/src/stair_supervisor/test/stair_supervisor.test 
+-- run_tests.py: verify result "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/stair_supervisor/rostest-test_stair_supervisor.xml"
+-- run_tests.py: execute commands
+  /usr/bin/python3 /opt/ros/noetic/share/rostest/cmake/../../../bin/rostest --pkgdir=/home/m3tron/Desktop/TRON1_Modular_Navigation/src/multifloor_manager --package=multifloor_manager --results-filename test_node_wiring.xml --results-base-dir "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results" /home/m3tron/Desktop/TRON1_Modular_Navigation/src/multifloor_manager/test/node_wiring.test 
+-- run_tests.py: verify result "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/multifloor_manager/rostest-test_node_wiring.xml"
+Built target _run_tests_stair_supervisor_rostest_test_stair_supervisor.test
+Built target _run_tests_multifloor_manager_rostest_test_node_wiring.test
+Built target _run_tests_stair_supervisor_rostest
+... logging to /home/m3tron/.ros/log/rostest-m3tron-All-Series-736317.log
+[ROSUNIT] Outputting test results to /home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/tron1_bringup/rostest-test_system_smoke.xml
+[Testcase: testsystem_smoke_mission] ... ok
+
+[ROSTEST]-----------------------------------------------------------------------
+
+[tron1_bringup.rosunit-system_smoke_mission/test_happy_navigation_crosses_live_mission_and_move_base_actions][passed]
+
+SUMMARY
+[32m * RESULT: SUCCESS[0m
+ * TESTS: 1
+ * ERRORS: 0
+ * FAILURES: 0
+
+rostest log file is in /home/m3tron/.ros/log/rostest-m3tron-All-Series-736317.log
+Built target _run_tests_multifloor_manager_rostest
+Built target _run_tests_stair_supervisor
+Built target _run_tests_multifloor_manager
+-- run_tests.py: execute commands
+  /usr/bin/python3 /opt/ros/noetic/share/rostest/cmake/../../../bin/rostest --pkgdir=/home/m3tron/Desktop/TRON1_Modular_Navigation/src/tron1_bringup --package=tron1_bringup --results-filename test_system_smoke.xml --results-base-dir "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results" /home/m3tron/Desktop/TRON1_Modular_Navigation/src/tron1_bringup/test/system_smoke.test 
+-- run_tests.py: verify result "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/test_results/tron1_bringup/rostest-test_system_smoke.xml"
+Built target _run_tests_tron1_bringup_rostest_test_system_smoke.test
+Built target _run_tests_tron1_bringup_rostest
+Built target _run_tests_tron1_bringup
+Built target run_tests
+Base path: /home/m3tron/Desktop/TRON1_Modular_Navigation
+Source space: /home/m3tron/Desktop/TRON1_Modular_Navigation/src
+Build space: /home/m3tron/Desktop/TRON1_Modular_Navigation/build
+Devel space: /home/m3tron/Desktop/TRON1_Modular_Navigation/devel
+Install space: /home/m3tron/Desktop/TRON1_Modular_Navigation/install
+####
+#### Running command: "make cmake_check_build_system" in "/home/m3tron/Desktop/TRON1_Modular_Navigation/build"
+####
+####
+#### Running command: "make run_tests -j8 -l8" in "/home/m3tron/Desktop/TRON1_Modular_Navigation/build"
+####

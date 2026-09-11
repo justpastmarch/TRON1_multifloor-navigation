@@ -1,0 +1,24 @@
+{
+  "plan": ".omo/plans/yaml-transition-policy-runtime.md",
+  "task": "3",
+  "task_id": "policy-evaluator",
+  "repair_attempt_id": "policy-evaluator-repair-2026-08-24T14:30:00+09:00",
+  "executor_session_id": "ses_fcda31262ffe2m5qp9Iw8ZUWwo",
+  "workspace_is_git": false,
+  "pre_repair_product_sha256": {
+    "src/multifloor_manager/src/multifloor_manager/transitions.py": "e76327be8140dc00061c2a6c48d3d54f9234ed02d4210b4b2bb8f6f4480d21e5",
+    "src/multifloor_manager/test/test_transitions.py": "beb0cc6d16dc51036fbf2d8dfc55d4cdf34ee91d3b0893a2030a6196ecfc4d10"
+  },
+  "original_todo3_baseline": {
+    "source_schema_sha256": "0957655e8de4a350095fc64f81e725eafd6af682f1553c60b9b56eeb9ecae61c",
+    "legacy_evaluator_sha256": "e07fe850e755480132e50d9e3debf931f3ba73b8dd33b84f082c30bf1b6844cf",
+    "legacy_test_sha256": "3866775b77aa8091213834f7cfbccef6c76417924ca742f69398485dfd2c445a",
+    "legacy_suite": "10 passed, 1 pre-existing schema-adapter error"
+  },
+  "independent_repro": {
+    "epoch_bypass": "evaluate(epoch=5) was accepted after begin(epoch=4)",
+    "mutable_conditions": "caller list.clear() could remove the required condition",
+    "malformed_entry": "object() raised raw AttributeError and advanced last time",
+    "decimal_dwell": "4.1 - 2.1 evaluated as 1.9999999999999996 and returned false"
+  }
+}

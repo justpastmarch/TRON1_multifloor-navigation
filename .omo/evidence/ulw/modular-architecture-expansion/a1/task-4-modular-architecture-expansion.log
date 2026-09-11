@@ -1,0 +1,126 @@
+TASK: Todo 4 - Centralize all shared ROS actions and messages in tron1_interfaces
+TARGET: /home/m3tron/Desktop/TRON1_Modular_Navigation
+DATE: 2026-08-25
+
+SCOPE
+- Read Todo 4 and docs/migration/source-selection.json.
+- Read only the five selected immutable source definitions and the selected old contract test.
+- Created exactly three .action and two .msg definitions under target tron1_interfaces.
+- Configured message generation/export in target tron1_interfaces only.
+- Added no bridge, runtime node, safety logic, or capability-owned interface definition.
+- Modified no old product/source file. This evidence log is the sole old-workspace write.
+
+FAILING-FIRST EVIDENCE
+Command:
+  python3 -m unittest test.test_interface_contract -v
+Working directory:
+  /home/m3tron/Desktop/TRON1_Modular_Navigation
+Result before implementation:
+  Ran 7 tests in 0.005s
+  FAILED (errors=7)
+  Expected failures were five FileNotFoundError results for absent target definitions and
+  two ModuleNotFoundError results for unresolved generated tron1_interfaces types.
+
+IMPLEMENTED DEFINITIONS
+- src/tron1_interfaces/action/Mission.action
+- src/tron1_interfaces/action/FloorTransition.action
+- src/tron1_interfaces/action/StairTraversal.action
+- src/tron1_interfaces/msg/FloorState.msg
+- src/tron1_interfaces/msg/SupervisorState.msg
+- src/tron1_interfaces/CMakeLists.txt: add_action_files, add_message_files,
+  generate_messages, and CATKIN_DEPENDS exports.
+- src/tron1_interfaces/package.xml: actionlib_msgs/message_generation/std_msgs build
+  dependencies and actionlib_msgs/message_runtime/std_msgs runtime exports.
+- README.md: coordinated package-qualified datatype cutover; explicitly not old wire-package
+  compatibility and no bridge.
+
+EXACT ACCEPTANCE COMMAND
+  catkin_make && source devel/setup.bash && python3 -m unittest test.test_interface_contract -v && rosmsg show tron1_interfaces/FloorState && rosmsg show tron1_interfaces/SupervisorState
+
+RESULT
+- Exit status: 0
+- catkin_make: PASS; 6 packages traversed; tron1_interfaces generated 23 messages;
+  target tron1_interfaces_generate_messages reached 100%.
+- unittest: PASS; Ran 7 tests in 0.110s; OK.
+- Direct contract assertion count: 17 runtime assertions across 7 tests
+  (five normalized parity comparisons, one generated inventory assertion, six generated
+  constant/result semantic assertions, one real duplicate-ownership assertion, two mutation
+  assertions, one injected duplicate assertion, and one malformed-format assertion).
+
+ROSMG OUTPUT: tron1_interfaces/FloorState
+  uint8 UNKNOWN=0
+  uint8 TRANSITIONING=1
+  uint8 READY=2
+  uint8 FAULT=3
+  std_msgs/Header header
+    uint32 seq
+    time stamp
+    string frame_id
+  string floor_id
+  uint64 map_generation
+  uint8 state
+  string detail
+
+ROSMG OUTPUT: tron1_interfaces/SupervisorState
+  uint8 DISARMED=0
+  uint8 NAV=1
+  uint8 STAIR=2
+  uint8 FAULT=3
+  std_msgs/Header header
+    uint32 seq
+    time stamp
+    string frame_id
+  uint8 state
+  bool connected
+  string detail
+  uint64 ownership_epoch
+
+NEGATIVE PROBES
+1. Field and constant mutation
+   Command:
+     source devel/setup.bash && python3 -m unittest test.test_interface_contract.InterfaceContractTest.test_field_and_constant_mutation_probes_are_detected -v
+   Fixture mutations:
+   - removed MissionResult MISSION_ABORT=9
+   - changed FloorState map_generation from uint64 to uint32
+   Result: PASS; Ran 1 test; both mutations were rejected by normalized parity.
+
+2. Duplicate definition
+   Command:
+     source devel/setup.bash && python3 -m unittest test.test_interface_contract.InterfaceContractTest.test_duplicate_definition_probe_is_detected -v
+   Fixture mutation: injected mission_manager/msg/FloorState.msg.
+   Result: PASS; Ran 1 test; the duplicate was detected exactly once.
+   Real target result: mission_manager, multifloor_manager, and stair_supervisor contain zero
+   .action/.msg definitions.
+
+3. Malformed interface
+   Command:
+     source devel/setup.bash && python3 -m unittest test.test_interface_contract.InterfaceContractTest.test_malformed_action_fixture_is_rejected -v
+   Fixture mutation: action with two sections instead of required goal/result/feedback three.
+   Result: PASS; Ran 1 test; InterfaceFormatError matched "expected 3 sections".
+
+ADDITIONAL VERIFICATION AND CLEANUP
+- python3 -m compileall test/test_interface_contract.py: exit 0.
+- Source import probe for mission_manager.msg, multifloor_manager.msg, and
+  stair_supervisor.msg under target src/**/*.py: no matches found.
+- test/test_interface_contract.py pure LOC: 166 (healthy, below 200).
+- Removed test/__pycache__ after verification.
+- TemporaryDirectory fixtures self-cleaned.
+- Retained build/ and devel/ because they pre-existed from the package skeleton and are the
+  required catkin generated output proving this task; no old-workspace build/cache was created.
+
+ARCHITECTURAL REVIEW
+- Single responsibility: the test file owns shared ROS interface contracts.
+- Boundary purity: interface text is normalized at file-read boundaries.
+- Variant discrimination/escape hatches/defensive layers: none added.
+- One-off helpers: both normalization and duplicate inventory have multiple production-fixture
+  and mutation-fixture callers.
+- Parameter bloat/redundant verification/negative naming/logging changes: none.
+- Semantic behavior is failing-first locked by normalized old-to-new parity and generated-class
+  constants; generated package-qualified types instantiate from tron1_interfaces.
+
+DoneClaim: Todo 4 is DONE. catkin_make exits 0; all five generated tron1_interfaces types
+resolve; 7/7 semantic contract tests and 17 runtime assertions pass; FloorState and
+SupervisorState rosmsg surfaces resolve with preserved fields/constants; field, constant,
+duplicate, and malformed-interface probes are rejected; target capability packages own no
+duplicate interface files; no old product files, bridges, extra runtime nodes, or safety logic
+were created or modified.

@@ -1,0 +1,5 @@
+catkin_make: exit 0
+Source-direct imports: exit 0
+Devel-sourced imports: exit 0
+rospack package resolution: exit 0
+Generated install runtime copies matched source for transitions.py, configuration.py, ros_runtime.py, and ros_node.py.

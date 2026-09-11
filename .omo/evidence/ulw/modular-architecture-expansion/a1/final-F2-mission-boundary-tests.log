@@ -1,0 +1,35 @@
+test_domain_modules_do_not_import_sibling_capability_or_ros_packages (test_import_boundary.ImportBoundaryTest) ... ok
+test_sole_mission_server_and_generated_message_boundary (test_mission_node_ros.MissionNodeRosInventoryTest) ... ok
+test_cancellation_before_child_dispatch_retains_anchor (test_mission_orchestrator.MissionOrchestratorTest) ... ok
+test_child_stair_failure_retains_last_confirmed_anchor (test_mission_orchestrator.MissionOrchestratorTest) ... ok
+test_failed_scan_does_not_start_return_and_retains_scan_anchor (test_mission_orchestrator.MissionOrchestratorTest) ... ok
+test_inspect_returns_via_fresh_directed_route_after_scan (test_mission_orchestrator.MissionOrchestratorTest) ... ok
+test_navigate_commits_each_successful_logical_anchor (test_mission_orchestrator.MissionOrchestratorTest) ... ok
+test_return_planning_failure_maps_abort_after_outbound_commit (test_mission_orchestrator.MissionOrchestratorTest) ... ok
+test_unknown_destination_maps_invalid_goal_without_dispatch (test_mission_orchestrator.MissionOrchestratorTest) ... ok
+test_busy_and_invalid_goals_never_touch_children (test_mission_ros_adapter.MissionRosAdapterTest) ... ok
+test_correlated_child_ignores_late_callback_and_maps_abort_disconnect (test_mission_ros_adapter.MissionRosAdapterTest) ... ok
+test_direct_driver_navigate_inspect_record_route_and_return (test_mission_ros_adapter.MissionRosAdapterTest) ... ok
+test_empty_or_failed_scan_cleans_active_and_skips_return (test_mission_ros_adapter.MissionRosAdapterTest) ... ok
+test_failed_return_preserves_last_successfully_confirmed_anchor (test_mission_ros_adapter.MissionRosAdapterTest) ... ok
+test_multifloor_and_stair_clients_use_shared_terminal_results (test_mission_ros_adapter.MissionRosAdapterTest) ... ok
+test_per_segment_cancel_cancels_only_correlated_child_and_retains_anchor (test_mission_ros_adapter.MissionRosAdapterTest) ... ok
+test_stair_child_abort_translates_without_floor_dispatch (test_mission_ros_adapter.MissionRosAdapterTest) ... ok
+test_child_cancel_finalizes_preempted_and_retains_anchor (test_record_route.RecordRouteTest) ... ok
+test_child_failure_finalizes_interrupted_and_retains_anchor (test_record_route.RecordRouteTest) ... ok
+test_final_artifact_failure_maps_scan_failed_after_route_completion (test_record_route.RecordRouteTest) ... ok
+test_record_route_brackets_outbound_and_return_with_one_artifact (test_record_route.RecordRouteTest) ... ok
+test_recording_active_failure_discards_generation_and_keeps_committed_anchor (test_record_route.RecordRouteTest) ... ok
+test_recording_start_failure_maps_scan_failed_without_navigation (test_record_route.RecordRouteTest) ... ok
+test_anchor_rejects_commit_from_unrelated_source (test_route_planner.BuildingPlannerTest) ... ok
+test_confirmed_anchor_commits_only_logical_success (test_route_planner.BuildingPlannerTest) ... ok
+test_disconnected_route_does_not_invent_reverse_edges (test_route_planner.BuildingPlannerTest) ... ok
+test_equal_length_routes_use_lexical_edge_order_and_stable_bytes (test_route_planner.BuildingPlannerTest) ... ok
+test_nav_stair_transition_and_scan_order_when_inspecting (test_route_planner.BuildingPlannerTest) ... ok
+test_unknown_origin_destination_and_scan_profile_are_rejected (test_route_planner.BuildingPlannerTest) ... ok
+test_wrong_floor_nav_edge_is_rejected_before_search (test_route_planner.BuildingPlannerTest) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 0.050s
+
+OK

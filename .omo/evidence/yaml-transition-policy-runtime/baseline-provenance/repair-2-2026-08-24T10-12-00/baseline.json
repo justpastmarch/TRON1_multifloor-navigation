@@ -1,0 +1,39 @@
+{
+  "schema_version": 3,
+  "attempt_id": "baseline-provenance-repair-2-2026-08-24T10-18:01+09:00",
+  "supersedes": ["baseline-provenance-2026-08-24T09:52:45+09:00", "baseline-provenance-repair-2026-08-24T10:02:19+09:00"],
+  "plan": ".omo/plans/yaml-transition-policy-runtime.md",
+  "task": "1",
+  "workspace": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation",
+  "workspace_non_git": true,
+  "source_authority": "src/",
+  "manifests": {
+    "source": {"file": "source-manifest.json", "count": 142, "sha256": "63972ff751865072c72eda5a428d915ec0e8a5713faa674562a44f008a00c6be"},
+    "test": {"file": "test-manifest.json", "count": 97, "sha256": "7af12a45d3adb24b8442b2ec77af4a6260317a3ef0899868ae67ec31163cb71c"},
+    "build": {"file": "build-manifest.json", "count": 2187, "sha256": "5d938a0828f8d0e432e9edde1cf83dcceb0416221427e11270d05583d2fd433c"},
+    "devel": {"file": "devel-manifest.json", "count": 213, "sha256": "5828e27e7f6c277f5b92d1386882623b95473381e1a68d0bc67d8dc5fb74de48"},
+    "install": {"file": "install-manifest.json", "count": 283, "sha256": "567e07680e9b89152046d83edb00002c80581306418f8cd5252d6b8dc978b4ae"},
+    "runtime": {"file": "runtime-manifest.json", "count": 15, "sha256": "572e20e5261c7ccb7d632c476031c66c8537cae357dd84495c75cde86fcdb054"},
+    "result_xml": {"file": "result-xml-manifest.json", "count": 37}
+  },
+  "manifest_exclusions": [".git/**", ".omo/**", "**/__pycache__/**", "**/*.pyc", "**/*.pyo"],
+  "source_config_test_doc_digests": {
+    "src/multifloor_manager/src/multifloor_manager/configuration.py": "16004d5bd255e2d8a62f42a827446203e1f83230637a02ff0845d51afe064820",
+    "src/multifloor_manager/config/transitions.yaml": "79a796b18c925831d8cb87bef14ff258d3592b5e9b69b992f8cea094d42d58b9",
+    "test/fixtures/building_valid/transitions.yaml": "3826ec018b3a1a10035d26ecff6245c377746b69b9742a2d12bc286ea6d94721",
+    "README.md": "36b52e411579ad4f250aa33a8ac580260054181e4268175d7be9c4575d66a427",
+    "validate_bundle.py": "7d95ea0c1f349b1fe3457f1751d1b48874b51bb85d40e88da3e7b1545cfeeedf"
+  },
+  "provenance": {
+    "source_direct_import": {"path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/configuration.py", "rospack": "not run ambient", "authoritative": true},
+    "devel_sourced_import": {"path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/configuration.py", "rospack": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager", "authoritative": true},
+    "install_sourced_import": {"path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/install/lib/python3/dist-packages/multifloor_manager/configuration.py", "rospack": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/install/share/multifloor_manager", "authoritative": false, "classification": "generated/non-authoritative"},
+    "bytecode": "PYTHONDONTWRITEBYTECODE=1 on all repair commands; no repair-created __pycache__ or .pyc"
+  },
+  "preexisting_generated_state": {"build": "pre-existing; preserved", "devel": "pre-existing; current manifest count 213 versus prior coarse inventory 242; preserved", "install": "pre-existing; preserved", "result_xml": "pre-existing; 37 current XML paths preserved"},
+  "baseline_status": {"root_unittest_exit": 1, "root_unittest_tests": 79, "root_unittest_failures": 3, "catkin_make_exit": 0, "catkin_make_run_tests_exit": 0, "catkin_test_results_exit": 1, "catkin_test_results_summary": "150 tests, 9 errors, 1 failure, 0 skipped", "tests_green": false},
+  "post_baseline_changes": [
+    {"path": "bundle_source_contract.py", "classification": "task-10 product source change; outside historical src/ source manifest"},
+    {"path": "test/test_bundle_contract.py", "classification": "task-10 regression test change; historical test manifest entry is intentionally pre-task"}
+  ]
+}

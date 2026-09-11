@@ -1,0 +1,100 @@
+Task: Todo 9 - deterministic expression evaluation, temporal state, concise immutable traces
+Target: /home/m3tron/Desktop/TRON1_Modular_Navigation
+Evidence root: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/ulw/modular-architecture-expansion/a1
+Date: 2026-08-26
+
+IMPLEMENTED
+- Added pure begin_evaluation/evaluate_cycle API. Each accepted cycle returns a new frozen EvaluationState, EvaluationCycle, and EvaluationTrace; malformed calls cannot mutate caller state.
+- Evaluates CompiledPolicy.root exactly once. Cycle-local condition/group memo tables ensure shared DAG dependencies are evaluated/traced once.
+- Evaluator accepts evidence only and has no registry/producer dependency or call path.
+- Preserved condition reasons: true, false, missing, wrong_epoch, stale, future, ignored.
+- Preserved group results/reasons for all, any, quorum, named leaf references, and the anonymous explicit root.
+- Preserved temporal reasons: root_false, dwell_pending, dwell_reset, timeout, success. Freshness is inclusive; the exact deadline is timed out; clock order is monotonic.
+- Full evidence is validated before root traversal. Invalid clocks, epochs, containers, evidence records/identity, unknown evidence, duplicate compiled IDs, non-all roots, unknown graph references, and graph cycles raise InvalidEvaluationError without a state commit.
+- Ignored evidence remains in condition traces as result=false/reason=ignored and is never part of root truth.
+
+CHANGED TARGET FILES
+- src/tron1_condition_engine/src/tron1_condition_engine/evaluator.py (new)
+- src/tron1_condition_engine/src/tron1_condition_engine/records.py
+- src/tron1_condition_engine/src/tron1_condition_engine/errors.py
+- src/tron1_condition_engine/src/tron1_condition_engine/__init__.py
+- src/tron1_condition_engine/test/evaluator_fixtures.py (new)
+- src/tron1_condition_engine/test/test_evaluator_truth.py (new)
+- src/tron1_condition_engine/test/test_evaluator_expressions.py (new)
+- src/tron1_condition_engine/test/test_evaluator_temporal.py (new)
+
+RED EVIDENCE
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/tron1_condition_engine/src python3 -B -m unittest discover -s src/tron1_condition_engine/test -p 'test_evaluator*.py' -v
+Result before implementation: exit 1; 3 import errors for absent InvalidEvaluationError/begin_evaluation. This was the expected missing-surface failure.
+
+FINAL SCOPED EVALUATOR SUITE
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/tron1_condition_engine/src python3 -B -m unittest discover -s src/tron1_condition_engine/test -p 'test_evaluator*.py' -v
+Result: exit 0; Ran 13 tests in 0.006s; OK.
+Coverage includes the complete required/optional/ignored Boolean table, missing/false/wrong-epoch/stale/future/ignored reasons, nested all/any/quorum, dependency order, memoized shared group, exact freshness/deadline boundaries, interrupted dwell, terminal timeout, malformed evidence/clock, atomic error, expression-cycle rejection, trace/state immutability, and repeat equality.
+
+FULL CONDITION ENGINE SUITE
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/tron1_condition_engine/src python3 -B -m unittest discover -s src/tron1_condition_engine/test -p 'test_*.py' -v
+Result: exit 0; Ran 23 tests in 0.022s; OK.
+
+REPEAT EVALUATION EQUALITY
+Command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/tron1_condition_engine/src:src/tron1_condition_engine/test python3 -B -c "from evaluator_fixtures import compiled_policy,evidence; from tron1_condition_engine import begin_evaluation,evaluate_cycle; p=compiled_policy(dwell=0.0); s=begin_evaluation(p,10.0,4); values=evidence(10.0); a=evaluate_cycle(p,s,values,10.0,4); b=evaluate_cycle(p,s,values,10.0,4); assert a==b; print('repeat_equal:',a==b,'root_result:',a.trace.root_result,'result:',a.result,'reason:',a.trace.reason)"
+Result: exit 0; repeat_equal: True root_result: True result: True reason: success
+
+TRACE JSON / DRIVER OUTPUT
+Driver artifact: task-9-condition-driver.json
+Driver result: {"condition_reasons": ["true", "true", "false", "ignored"], "equal": true, "group_operators": ["any", "all"], "reason": "success", "result": true}
+Artifact records policy_id=transition_ready, epoch=4, deadline_sec=18.0, root_result=true, success, all four condition traces, optional_gate any_true, and sole anonymous root all_true.
+
+MALFORMED PROBES
+Command: Python 3.8 -B probe constructed a non-mapping evidence input, NaN clock, backward clock, and cyclic manually forged CompiledPolicy, then printed InvalidEvaluationError.code.
+Result: exit 0; [('container', 'invalid_evidence'), ('clock', 'invalid_clock'), ('backward', 'backward_clock'), ('cycle', 'expression_cycle')]
+
+IMPORT / AST SCAN
+Command: Python 3.8 ast scan over src/tron1_condition_engine/src/tron1_condition_engine/*.py for ROS/YAML/filesystem/network/subprocess/importlib imports, eval/exec/__import__, and producer symbols in evaluator.py.
+Result: exit 0; {'forbidden_imports': [], 'dynamic_calls': [], 'evaluator_producer_symbols': []}
+Contract command:
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src/tron1_condition_engine/src python3 -B -m unittest src/tron1_condition_engine/test/test_policy_contract.py -v
+Result: exit 0; Ran 3 tests in 0.012s; OK.
+
+PYTHON 3.8 / STATIC TOOLING
+- All final test and probe commands ran with system Python 3.8 and -B.
+- python3 -B -m compileall -q completed with exit 0 during verification; generated source/test bytecode was then removed.
+- basedpyright command was unavailable (/bin/bash: basedpyright: command not found).
+- LSP diagnostics could not address the separate target repo because the session workspace is the immutable source repo. Runtime parsing and all tests above provide the executable syntax/type-shape evidence.
+- The generic no-excuse checker is not Python-3.8-aware: it flags every existing manual __slots__ dataclass because dataclass(slots=True) is Python 3.10+, and flags required isinstance dispatch because match/case is Python 3.10+. The implementation retains the target's established Python 3.8-compatible manual __slots__ and expression dispatch pattern.
+
+PURE LOC REVIEW
+- evaluator.py: 222 (warning band; split traversal from temporal evaluation before the next substantial expansion)
+- records.py: 130
+- errors.py: 34
+- __init__.py: 64
+- evaluator_fixtures.py: 82
+- test_evaluator_truth.py: 58 at measurement before final truth-table simplification; remains under 200
+- test_evaluator_expressions.py: 91
+- test_evaluator_temporal.py: 88
+
+ARCHITECTURAL SELF-REVIEW
+1. Single responsibility: evaluator.py owns one noun phrase, explicit-root cycle evaluation; records.py owns immutable records; errors.py owns typed failures.
+2. Boundary purity: evidence uses Mapping[ConditionId, ConditionEvidence] and is fully parsed before traversal; no raw untyped mapping crosses into expression logic.
+3. Variant discrimination: Python 3.8 cannot parse match/case. The evaluator uses the existing engine's Python-3.8-compatible isinstance expression dispatch and rejects unknown variants with a typed error.
+4. Escape hatches: no Any, object annotation, cast, type-ignore, broad exception, dynamic import, or mutable module registry.
+5. Defensive layer: checks are confined to externally forgeable evaluation/evidence/clock/compiled-plan boundaries.
+6. Helpers: validation/time/error helpers have repeated callers; no one-off abstraction was introduced.
+7. Tests: every introduced behavior is covered by tests that failed before the evaluator API existed.
+8. Parameter shape: evaluate_cycle keeps policy, prior state, evidence snapshot, monotonic now, and epoch explicit because each is an independent proof input; no dict/kwargs/options smuggling is used.
+9. Redundant verification: none in production code.
+10. Negative naming: none introduced.
+11. Logging: none; the pure engine preserves the package's no-logging practice.
+
+CLEANUP
+- Removed src/tron1_condition_engine/src/tron1_condition_engine/__pycache__ and src/tron1_condition_engine/test/__pycache__ created by compileall.
+- Final glob results: no __pycache__ entries in engine source or tests; no *.pyc/*.pyo under src/tron1_condition_engine; no .pytest_cache in target.
+- No ROS, YAML, filesystem, network, subprocess, or dynamic-import dependency was added to the engine.
+- No product/source file in /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation was edited; writes there are limited to this required attempt evidence and task-9-condition-driver.json.
+- No Kimi-family agent or any subagent was launched.
+
+DoneClaim: Todo 9 is complete. The condition engine now evaluates only the compiled explicit all-root once per cycle, memoizes DAG dependencies, advances monotonic temporal state immutably and atomically, emits concise immutable condition/group/temporal traces with every required reason, never calls producers, passes 13/13 evaluator tests and 23/23 full condition-engine tests, produces repeat-equal results and the required JSON driver trace, rejects malformed/cyclic inputs with typed errors, and leaves no source/test cache artifacts.

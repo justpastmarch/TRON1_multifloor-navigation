@@ -1,0 +1,52 @@
+{
+  "status": "complete",
+  "journal": ".debug-journal.md",
+  "journal_exists_at_verification": false,
+  "journal_removed_after_cleanup": true,
+  "temporary_ros_launch": "stopped",
+  "temporary_log": "/tmp/run-rviz-fix-roslaunch.log",
+  "temporary_log_removed": true,
+  "task_nodes_remaining": [],
+  "terminated_authorized_processes": [
+    {
+      "pid": 348555,
+      "user": "m3tron",
+      "exact_command": "/opt/ros/noetic/lib/rviz/rviz -d src/multifloor_manager/rviz/wf_navigation.rviz",
+      "start_time": "Mon Aug 24 10:32:55 2026",
+      "parent_pid": 348472,
+      "parent_command": "/bin/bash",
+      "parent_start_time": "Mon Aug 24 10:32:47 2026",
+      "working_directory": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation",
+      "ownership": "task-owned_by-explicit-user-authorization",
+      "decision": "terminated",
+      "termination": "SIGTERM",
+      "verified_gone": true,
+      "reason": "The exact authorized command matched; only PID 348555 was terminated."
+    }
+  ],
+  "debugger_ports": [],
+  "source_instrumentation_removed": true,
+  "generated_paths_modified": [],
+  "retained": [
+    "bundle_source_contract.py",
+    "test/test_bundle_contract.py",
+    ".omo/evidence/yaml-transition-policy-runtime/run-rviz-fix/"
+  ],
+  "journal_cleanup_record_completed": true,
+  "latest_attempt": {
+    "attempt_id": "run-rviz-fix-syntax-repair-2026-08-24T12:00:00+09:00",
+    "task_owned_processes_remaining": [],
+    "task_temp_paths_remaining": [],
+    "rviz_forbidden_tokens_remaining": [],
+    "map_contract": "preserved_and_parsed",
+    "non_task_owned_rviz_pid_4599": "observed_and_untouched"
+  },
+  "cleanup_verification_commands": [
+    "ps -p 348555 -o pid,ppid,sid,pgid,user,lstart,args",
+    "readlink /proc/348555/cwd",
+    "tr '\\0' ' ' < /proc/348555/cmdline",
+    "rostopic info /map",
+    "pgrep -af -- '/opt/ros/noetic/lib/rviz/rviz -d src/multifloor_manager/rviz/wf_navigation.rviz'",
+    "pgrep -af -- 'run-rviz-fix|roslaunch.*mission_manager system.launch'"
+  ]
+}

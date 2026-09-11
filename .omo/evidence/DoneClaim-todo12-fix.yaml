@@ -1,0 +1,109 @@
+done_claim: todo12-literal-causal-nomotion-contract
+date: 2026-08-19
+final_fix_files:
+  - src/multifloor_manager/src/multifloor_manager/ros_node.py
+  - src/multifloor_manager/test/test_floor_transition_delayed_pose_ros.py
+  - src/multifloor_manager/test/floor_transition_delayed_pose_ros.test
+  - src/multifloor_manager/test/test_floor_transition_epoch_ros.py
+  - src/multifloor_manager/CMakeLists.txt
+  - .omo/evidence/DoneClaim-todo12-fix.yaml
+preserved_contracts:
+  initialpose_topic: /initialpose
+  initialpose_subscriber: /amcl
+  localization_timeout_origin: immediately after initialpose publication
+  no_motion_calls: 3
+  rollback_or_resume: false
+  epoch_fence_callbacks: [map, tag, pose, scan, odometry, costmap]
+root_cause:
+  mechanism: >-
+    The old loop captured only the highest AMCL pose already committed after a
+    service response. A pose stamped before that response but queued until the
+    wait began was absent from the snapshot, then committed with a stamp newer
+    than the prior accepted pose and incorrectly satisfied the handshake.
+  red_command: >-
+    source devel/setup.bash &&
+    src/multifloor_manager/test/rostest_python.sh /opt/ros/noetic/bin/rostest
+    --pkgdir="$PWD/src/multifloor_manager" --package=multifloor_manager
+    "$PWD/src/multifloor_manager/test/floor_transition_delayed_pose_ros.test"
+  red_observed: "Lists differ: [True, True, True] != [False, False, False]"
+fix:
+  response_boundary: captured with rospy.Time.now().to_nsec immediately after each successful request_nomotion_update response
+  required_fence: max(prior_accepted_pose_stamp, response_boundary_stamp)
+  acceptance: AMCL pose stamp must be strictly greater than the required fence
+  valid_commit: accepted high-water becomes the prior stamp for the next iteration
+manual_delayed_pose_artifact:
+  fixture: src/multifloor_manager/test/test_floor_transition_delayed_pose_ros.py
+  launch: src/multifloor_manager/test/floor_transition_delayed_pose_ros.test
+  synchronization: threading.Event marks each queued pose; no timing-only sleep controls callback release
+  sequence:
+    - stamp unsolicited pose before service response
+    - return successful service response
+    - commit queued pose only when the response-side wait begins
+    - record whether it satisfied the exact production predicate
+    - commit one valid pose strictly newer than the observed fence
+  red_delayed_acceptance: [true, true, true]
+  green_delayed_acceptance: [false, false, false]
+  green_amcl_ready_valid_commit_counts: [3]
+  green_result: "1 test, 0 errors, 0 failures"
+blocked_costmap_artifact:
+  test: test_costmap_identity_finishing_after_fault_cannot_advance_sequence
+  synchronization: costmap MapIdentity construction blocks on threading.Event and resumes after finish_transition(FAULT)
+  observed: {costmap_sequence: 0, costmap_identity: null, state: FAULT}
+runtime_graph:
+  command: >-
+    ROS_MASTER_URI=http://127.0.0.1:11311 rostopic info /initialpose &&
+    rosnode info /amcl
+  observed:
+    publishers: [/multifloor_manager]
+    subscribers: [/amcl]
+    amcl_subscription: /initialpose
+manual_action_cli:
+  command: >-
+    rostopic pub -1 /multifloor/floor_transition/goal
+    multifloor_manager/FloorTransitionActionGoal <manual-todo12-final-invalid-goal>
+  observed:
+    goal_id: manual-todo12-final
+    action_status: 4
+    result_code: 2
+    map_generation: 0
+    reason: goal is not the current directed stair
+adversarial_evidence:
+  stale:
+    map: pre-arm and stale-load-time target maps cannot advance generation
+    pose: initialpose-stamped and pre-response-stamped AMCL poses cannot satisfy no-motion
+    callback: tag/map/pose/costmap work released after FAULT cannot commit
+  cancel: cancelled action remains PREEMPTED with blank-floor FAULT and no resume
+  hanging: no-motion/change-map response timeout fails closed
+  late: delayed target map after terminal FAULT cannot increment generation
+  generated: generated ROS action/message interfaces and catkin registration pass the full suite
+  dirty: malformed occupancy values and dirty mixed tag arrays remain rejected by root tests
+  misleading:
+    wrong_map: matching metadata with wrong data hash cannot advance generation
+    wrong_tf: scan without the required transform chain cannot localize
+    wrong_costmap: mismatched costmap metadata cannot complete the action
+  repeated_evidence: fresh timestamped TF, odometry, and scan publication remains event-driven until acknowledged
+verification:
+  focused_matrix:
+    command: two sequential cycles of floor_transition_ros, cancel, late_map, delayed_pose, and epoch rostests
+    result: every test passed in both cycles
+    coverage: [success, failure, cancel, hanging_service, late_map, delayed_pose, tag_epoch, map_epoch, pose_epoch, costmap_epoch]
+  delayed_pose_after_final_assertion: "PASS - 1 test, 0 errors, 0 failures"
+  root: "PASS - python3 -m unittest discover -s test -v - 65 tests"
+  sequential_catkin:
+    command: catkin_make -j1 run_tests && catkin_test_results --verbose build/test_results
+    repetitions_after_final_edit: 2
+    each_result: "145 tests, 0 errors, 0 failures, 0 skipped"
+  bundle: "PASS - ./run.sh --check - BUNDLE_OK"
+  diagnostics: 0 diagnostics in every final-fix Python file
+  pure_loc:
+    ros_node.py: 246
+    test_floor_transition_delayed_pose_ros.py: 164
+    test_floor_transition_epoch_ros.py: 183
+  production_init_nodes: [mission_manager, multifloor_manager, stair_supervisor]
+cleanup:
+  roslaunch_fixture_stopped: true
+  temporary_launch_removed: true
+  temporary_log_removed: true
+  temporary_pid_removed: true
+  temporary_action_output_removed: true
+  debug_journal_removed: true

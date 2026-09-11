@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "directed": true,
+  "floors": ["3F", "4F", "roof"],
+  "edges": [
+    {"from": "3F", "to": "4F", "cost": 12},
+    {"from": "4F", "to": "3F", "cost": 17},
+    {"from": "4F", "to": "roof", "cost": 9}
+  ]
+}

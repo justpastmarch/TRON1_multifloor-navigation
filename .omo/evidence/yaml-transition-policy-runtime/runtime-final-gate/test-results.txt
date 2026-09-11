@@ -1,0 +1,9 @@
+Final registered multifloor target: exit 0.
+Policy evaluator: 16 passed.
+Transition integration action: passed; action SUCCEEDED/READY and POLICY_READY feedback followed COSTMAP_READY.
+Epoch rostest: 6 passed, 0 errors, 0 failures.
+Delayed-pose rostest: 1 passed, 0 errors, 0 failures.
+Cancellation rostest: passed.
+Late-map rostest: passed.
+Readiness/fixture/map/tag/service targets: passed.
+Hardware manual QA: blocked by powered-off TRON and mini PC.

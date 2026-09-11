@@ -1,0 +1,5 @@
+{"at_ns":1700000006000000000,"direction":"client_to_robot","payload":{"action":"subscribe","accid":"WF_TEST_001"}}
+{"at_ns":1700000007000000000,"direction":"robot_to_client","payload":{"event":"subscribed","ok":true}}
+{"at_ns":1700000008000000000,"direction":"client_to_robot","payload":{"action":"velocity","linear":0.2,"angular":-0.1}}
+{"at_ns":1700000008500000000,"direction":"robot_to_client","payload":{"event":"accepted","sequence":1}}
+{"at_ns":1700000009000000000,"direction":"robot_to_client","payload":{"event":"disconnect","code":1001}}

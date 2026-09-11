@@ -1,0 +1,45 @@
+Task start: 2026-08-24T16:12:53+09:00
+
+Pre-deletion:
+- source scan found only src/mission_manager/test/test_transitions.py as a source caller
+- multifloor source-direct evaluator test: exit 0, 16 passed
+- mission source-direct evaluator test: exit 1, 10 passed and 1 pre-existing error in YAML adaptation
+
+Post-deletion:
+- source scan with --exclude='*.pyc': exit 0, no mission_manager.transitions references
+- source-direct destination evaluator: exit 0, 16 passed
+- catkin_make: exit 0
+- catkin_make run_tests_multifloor_manager: exit 0
+- fresh registered XML: build/test_results/multifloor_manager/nosetests-test.test_transitions.py.xml
+- registered destination evaluator XML: 16 tests, 0 errors, 0 failures
+- catkin_test_results --verbose: exit 1, 189 tests, 4 errors
+
+The four package result errors are outside Todo 4: three mission tests fail to
+import packages under the catkin test environment, and the delayed-pose ROS
+test calls RosEvidenceRuntime without the new Todo 5 policy argument. No Todo 5
+runtime or unrelated test was changed.
+
+Adversarial applicability:
+- stale generated state: raw grep still reports only pre-existing mission test
+  bytecode; source-authoritative scan excludes generated *.pyc and is empty
+- misleading output: package target exit 0 is not treated as full-suite green;
+  catkin_test_results errors are recorded above
+- dirty/unrelated files: no generated build/devel/install path edited manually;
+  user ROS hotfix files and bags were not touched
+- flaky/hung/repeated interruption/cancel: not applicable; commands were bounded
+  and the evaluator suite uses deterministic timestamps/no sleeps
+
+Repair verification:
+- attempt: package-ownership-generated-cleanup-2026-08-24T16:48:00+09:00
+- executor session: codex:yaml-transition-policy-runtime-todo-4-generated-cleanup-2026-08-24
+- exact cleanup command: exit 0; three stale generated artifacts removed after inventory
+- catkin_make: exit 0
+- catkin_make run_tests_multifloor_manager: exit 0
+- catkin_make install: exit 0
+- source-direct importable mission_manager.transitions scan: exit 0; []
+- devel-sourced importable mission_manager.transitions scan: exit 0; []
+- install-sourced importable mission_manager.transitions scan: exit 0; []
+- fresh registered XML: build/test_results/multifloor_manager/nosetests-test.test_transitions.py.xml; 16 tests, 0 errors, 0 failures
+- before/after generated inventories and hashes: generated-inventory-before.json, generated-inventory-after.json, diff-inventory.json
+- user ROS processes and bags: not started, stopped, inspected, or removed
+- Todo 5 runtime: not touched or tested as part of this repair

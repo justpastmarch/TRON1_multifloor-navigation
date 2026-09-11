@@ -1,0 +1,4 @@
+robot_base_frame: base_Link
+robot_radius: 0.28
+footprint_padding: 0.02
+rolling_window: false

@@ -1,0 +1,22 @@
+{
+  "workspace_is_git": false,
+  "baseline_source_sha256_before_repair": {
+    "ros_runtime.py": "bf4c04cae76a0f8f9a73a6c91df2a0be4b2b8322ad1bdb800aae32b173774b15",
+    "test_floor_transition_epoch_ros.py": "3257bc676860c0230bf7c200a1a185dd31383bb68f6c31657174df1108df2f91"
+  },
+  "source_sha256_after_repair": {
+    "ros_runtime.py": "6c49b572f412b468e815bf78ce4bbff1805a2d0084ceff3a3412df461e0e0b0a",
+    "test_floor_transition_epoch_ros.py": "65930e4599a2298536fa2a2146a344f94d8b9115e11170b63f495de07026b83a"
+  },
+  "generated_sha256": {
+    "install/lib/python3/dist-packages/multifloor_manager/ros_runtime.py": "6c49b572f412b468e815bf78ce4bbff1805a2d0084ceff3a3412df461e0e0b0a",
+    "devel/lib/python3/dist-packages/multifloor_manager/ros_runtime.py": "absent"
+  },
+  "generated_paths_policy": "build/, devel/, and install/ preserved; never manually edited or removed",
+  "product_paths_changed_by_repair": [
+    "src/multifloor_manager/src/multifloor_manager/ros_runtime.py",
+    "src/multifloor_manager/test/test_floor_transition_epoch_ros.py"
+  ],
+  "todo4_paths_touched": false,
+  "user_ros_processes_or_bags_touched": false
+}

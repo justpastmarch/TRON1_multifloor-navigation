@@ -1,0 +1,6 @@
+{
+  "task": "race-temporal-regressions",
+  "temporary_files": [],
+  "runtime_processes": "catkin/rostest-owned processes exited",
+  "hardware_processes": "none"
+}

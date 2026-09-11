@@ -1,0 +1,263 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]: Loading [MathJax]/extensions/Safe.js
+  - navigation "Top Menu" [ref=e3]:
+    - generic [ref=e4]:
+      - link [ref=e6] [cursor=pointer]:
+        - /url: /tree
+        - img "Jupyter Notebook" [ref=e7]
+      - generic [ref=e8]:
+        - generic [ref=e9]: 03_rosbag_recording
+        - generic [ref=e10]: (unsaved changes)
+      - img "Current Kernel Logo" [ref=e12]
+    - generic [ref=e14]:
+      - navigation [ref=e16]:
+        - generic [ref=e17]:
+          - text: 
+          - paragraph [ref=e18]:
+            - text: Python 3
+            - generic "Kernel Busy" [ref=e19]: 
+          - text:  
+          - generic "Command Mode" [ref=e20]
+          - generic [ref=e21]:
+            - generic [ref=e22] [cursor=pointer]: Saving every 120 sec.
+            - button "Not Trusted" [ref=e23] [cursor=pointer]
+          - list [ref=e25]:
+            - listitem [ref=e26]:
+              - link "File" [ref=e27] [cursor=pointer]:
+                - /url: "#"
+              - text:    
+            - listitem [ref=e28]:
+              - link "Edit" [ref=e29] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e30]:
+              - link "View" [ref=e31] [cursor=pointer]:
+                - /url: "#"
+              - text: 
+            - listitem [ref=e32]:
+              - link "Insert" [ref=e33] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e34]:
+              - link "Cell" [ref=e35] [cursor=pointer]:
+                - /url: "#"
+              - text:   
+            - listitem [ref=e36]:
+              - link "Kernel" [ref=e37] [cursor=pointer]:
+                - /url: "#"
+              - text: 
+            - listitem [ref=e38]:
+              - link "Help" [ref=e39] [cursor=pointer]:
+                - /url: "#"
+              - text:  
+      - generic [ref=e42]:
+        - button "" [ref=e44] [cursor=pointer]
+        - button "" [ref=e47] [cursor=pointer]
+        - generic [ref=e49]:
+          - button "" [ref=e50] [cursor=pointer]
+          - button "" [ref=e52] [cursor=pointer]
+          - button "" [ref=e54] [cursor=pointer]
+        - generic [ref=e56]:
+          - button "" [ref=e57] [cursor=pointer]
+          - button "" [ref=e59] [cursor=pointer]
+        - generic [ref=e61]:
+          - button " Run" [ref=e62] [cursor=pointer]:
+            - generic [ref=e63]: 
+            - text: Run
+          - button "" [ref=e64] [cursor=pointer]
+          - button "" [ref=e66] [cursor=pointer]
+          - button "" [ref=e68] [cursor=pointer]
+        - combobox "combobox, select cell type" [ref=e70]:
+          - option "Code"
+          - option "Markdown" [selected]
+          - option "Raw NBConvert"
+          - option "Heading"
+        - button "" [ref=e72] [cursor=pointer]
+  - generic [ref=e78]:
+    - generic [ref=e82]:
+      - heading "03. 계단 주행 rosbag 녹화" [level=1] [ref=e83]
+      - heading "이 Notebook으로 하는 일" [level=2] [ref=e84]
+      - paragraph [ref=e85]:
+        - text: 현재 ROS graph의 map, localization, AprilTag, navigation command, compressed camera, LiDAR, odometry, TF를 하나의 bag에 기록합니다. 다른 Notebook이나 mission recorder와 독립된
+        - strong [ref=e86]: 수동 기록 전용
+        - text: 도구입니다.
+      - heading "셀 실행 방법" [level=2] [ref=e87]
+      - paragraph [ref=e88]:
+        - text: 회색 code cell은
+        - strong [ref=e89]: Python 코드
+        - text: 입니다. 일반 terminal에 붙여 넣지 말고 Jupyter에서
+        - code [ref=e90]: Shift+Enter
+        - text: 로 한 셀씩 실행하십시오. 각 셀은 앞 셀에서 만든
+        - code [ref=e91]: CONFIG
+        - text: ","
+        - code [ref=e92]: ROS_ENV
+        - text: ", artifact 경로와 recorder process를 사용하므로 중간 셀부터 실행하지 않습니다. Kernel을 닫으면 recorder 소유권을 잃으므로 반드시 정상 종료 셀을 먼저 실행합니다."
+    - generic [ref=e96]:
+      - heading "녹화 mode 선택과 실행 순서" [level=2] [ref=e97]
+      - paragraph [ref=e98]: 이 Notebook은 process를 시작하지 않고 현재 graph만 기록합니다. 먼저 필요한 mode를 선택합니다.
+      - list [ref=e99]:
+        - listitem [ref=e100]:
+          - strong [ref=e101]: "센서만 기록:"
+          - text: sensor stack을 실행한 뒤
+          - code [ref=e102]: bash notebooks/check_environment.sh recording
+          - text: 을 통과합니다.
+        - listitem [ref=e103]:
+          - strong [ref=e104]: "평면 navigation 기록:"
+          - link [ref=e105] [cursor=pointer]:
+            - /url: ../docs/ROSBAG-RECORD
+            - code [ref=e106]: docs/ROSBAG-RECORD
+          - text: 의 sensor, navigation, robot tunnel/supervisor terminal을 실행한 뒤
+          - code [ref=e107]: navigation
+          - text: 과
+          - code [ref=e108]: recording
+          - text: 검사를 모두 통과합니다.
+        - listitem [ref=e109]:
+          - strong [ref=e110]: "AprilTag 포함 기록:"
+          - text: 위 과정에 detector terminal을 추가하고
+          - code [ref=e111]: /tag_detections
+          - text: message도 확인합니다.
+      - paragraph [ref=e112]:
+        - text: 그 다음 첫 code cell의
+        - code [ref=e113]: RUN_LABEL
+        - text: 을 실제 층·방향·작업명으로 바꾸고 위에서 아래로 실행합니다. Preflight가 통과하면 녹화 시작 셀을 한 번만 실행하고,
+        - code [ref=e114]: .bag.active
+        - text: 가 표시된 뒤에만 외부 이동 작업을 시작합니다. 주행이 끝나면 로봇을 먼저 정지시키고 정상 종료 셀, 최종 검증 셀 순서로 실행합니다.
+    - generic [ref=e115]:
+      - generic [ref=e116]:
+        - generic [ref=e117]:
+          - generic [ref=e118]: "In [ ]:"
+          - text: 
+        - generic "Edit code here" [ref=e120]:
+          - generic [ref=e121]:
+            - textbox [ref=e122]
+            - generic [ref=e125]: "from datetime import datetime from pathlib import Path import os import shutil import signal import subprocess import time import yaml WORKSPACE = Path.cwd().parent if Path.cwd().name == \"notebooks\" else Path.cwd() CONFIG_PATH = WORKSPACE / \"config.env\" ROS_SETUP = Path(\"/opt/ros/noetic/setup.bash\") DEVEL_SETUP = WORKSPACE / \"devel/setup.bash\" if not CONFIG_PATH.is_file() or not ROS_SETUP.is_file() or not DEVEL_SETUP.is_file(): raise RuntimeError(\"workspace, config.env, or ROS Noetic setup is missing\") def read_config(path): values = {} for raw_line in path.read_text(encoding=\"utf-8\").splitlines(): line = raw_line.strip() if line and not line.startswith(\"#\"): key, value = line.split(\"=\", 1) values[key] = value return values def sourced_environment(): command = f\"source {ROS_SETUP} && source {DEVEL_SETUP} && env -0\" completed = subprocess.run([\"bash\", \"-lc\", command], check=True, stdout=subprocess.PIPE) environment = os.environ.copy() for entry in completed.stdout.split(b\"\\0\"): if entry and b\"=\" in entry: key, value = entry.split(b\"=\", 1) environment[key.decode()] = value.decode() return environment CONFIG = read_config(CONFIG_PATH) ROS_ENV = sourced_environment() ROS_ENV[\"ROS_MASTER_URI\"] = f\"http://{CONFIG['ROS_MASTER_HOST']}:{CONFIG['ROS_MASTER_PORT']}\" route = subprocess.run([\"ip\", \"-4\", \"route\", \"get\", CONFIG[\"ROS_MASTER_HOST\"]], check=True, text=True, stdout=subprocess.PIPE).stdout.split() ROS_ENV[\"ROS_IP\"] = route[route.index(\"src\") + 1] ROS_ENV.pop(\"ROS_HOSTNAME\", None) OUTPUT_DIR = WORKSPACE / \"stair_captures\" RUN_LABEL = \"stair_3F_to_4F_UP\" # 실제 층, 방향, 작업명으로 변경 BAG_STEM = f\"{RUN_LABEL}_{datetime.now().strftime('%Y%m%d_%H%M%S')}\" ARTIFACT = OUTPUT_DIR / f\"{BAG_STEM}.bag\" RECORD_PROCESS = None print(f\"artifact={ARTIFACT}\")"
+      - generic:
+        - generic "click to expand output; double click to hide output"
+    - generic [ref=e129]:
+      - generic [ref=e130]:
+        - generic [ref=e131]:
+          - generic [ref=e132]: "In [ ]:"
+          - text: 
+        - generic "Edit code here" [ref=e134]:
+          - generic [ref=e135]:
+            - textbox [ref=e136]
+            - generic [ref=e137]: "POINTCLOUD_TOPIC = CONFIG[\"POINTCLOUD_TOPIC\"] CAMERA_IMAGE_TOPIC = CONFIG[\"CAMERA_IMAGE_TOPIC\"].rstrip(\"/\") CAMERA_COMPRESSED_TOPIC = f\"{CAMERA_IMAGE_TOPIC}/compressed\" CAMERA_INFO_TOPIC = CONFIG[\"CAMERA_INFO_TOPIC\"] TAG_TOPIC = CONFIG[\"TAG_DETECTIONS_TOPIC\"] print(f\"camera={CAMERA_COMPRESSED_TOPIC}\") print(f\"lidar={POINTCLOUD_TOPIC}\") print(f\"tags={TAG_TOPIC}\")"
+      - generic:
+        - generic "click to expand output; double click to hide output"
+    - generic [ref=e144]:
+      - heading "기록 topic" [level=2] [ref=e145]
+      - paragraph [ref=e146]:
+        - text: 위 설정 셀은
+        - code [ref=e147]: config.env
+        - text: 의 실제 camera, LiDAR, tag topic을 사용합니다. 영상은 detector가 소비하는 compressed stream으로 변환합니다. 필요 없는
+        - code [ref=e148]: "-a"
+        - text: 전체 기록 대신 재현에 필요한 topic을 명시해 용량과 분석 범위를 통제합니다.
+        - code [ref=e149]: TOPICS
+        - text: 는 기록 시도 목록이고
+        - code [ref=e150]: MANDATORY_TOPICS
+        - text: 는 최종 bag에 반드시 message가 있어야 하는 sensor evidence입니다.
+    - generic [ref=e151]:
+      - generic [ref=e152]:
+        - generic [ref=e153]:
+          - generic [ref=e154]: "In [ ]:"
+          - text: 
+        - generic "Edit code here" [ref=e156]:
+          - generic [ref=e157]:
+            - textbox [ref=e158]
+            - generic [ref=e159]: "TOPICS = [ \"/map\", \"/amcl_pose\", \"/particlecloud\", TAG_TOPIC, \"/initialpose\", \"/move_base_simple/goal\", \"/move_base/status\", \"/move_base/feedback\", \"/move_base/result\", \"/navigation/cmd_vel\", \"/stair/cmd_vel\", CAMERA_COMPRESSED_TOPIC, CAMERA_INFO_TOPIC, POINTCLOUD_TOPIC, \"/livox/imu\", \"/tron/wheel_odom_raw\", \"/scan\", \"/tf\", \"/tf_static\", ] MANDATORY_TOPICS = { CAMERA_COMPRESSED_TOPIC, CAMERA_INFO_TOPIC, POINTCLOUD_TOPIC, \"/tron/wheel_odom_raw\", \"/scan\", \"/tf\", \"/tf_static\", } print(\"topics:\", *TOPICS, sep=\"\\n- \")"
+      - generic:
+        - generic "click to expand output; double click to hide output"
+    - generic [ref=e166]:
+      - heading "사전 검사" [level=2] [ref=e167]
+      - paragraph [ref=e168]: 필수 topic의 type, 다른 rosbag recorder 유무, 파일 충돌, 디스크 여유 공간을 확인합니다. 10 GiB 미만이면 고해상도 영상과 LiDAR 기록을 시작하지 않습니다.
+    - generic [ref=e169]:
+      - generic [ref=e170]:
+        - generic [ref=e171]:
+          - generic [ref=e172]: "In [ ]:"
+          - text: 
+        - generic "Edit code here" [ref=e174]:
+          - generic [ref=e175]:
+            - textbox [ref=e176]
+            - generic [ref=e179]: "expected_types = { CAMERA_COMPRESSED_TOPIC: \"sensor_msgs/CompressedImage\", CAMERA_INFO_TOPIC: \"sensor_msgs/CameraInfo\", POINTCLOUD_TOPIC: \"livox_ros_driver2/CustomMsg\", \"/tron/wheel_odom_raw\": \"nav_msgs/Odometry\", \"/scan\": \"sensor_msgs/LaserScan\", \"/tf\": \"tf2_msgs/TFMessage\", \"/tf_static\": \"tf2_msgs/TFMessage\", } for topic, expected in expected_types.items(): completed = subprocess.run([\"rostopic\", \"type\", topic], env=ROS_ENV, text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=3) actual = completed.stdout.strip() if actual != expected: raise RuntimeError(f\"topic unavailable or wrong type: {topic} expected={expected} actual={actual}\") recorder_pattern = \"[r]osbag record|/rosbag/[r]ecord\" other_recorders = subprocess.run([\"pgrep\", \"-af\", recorder_pattern], text=True, stdout=subprocess.PIPE).stdout.strip() if other_recorders: raise RuntimeError(f\"another rosbag recorder is already running:\\n{other_recorders}\") OUTPUT_DIR.mkdir(parents=True, exist_ok=True) active_path = ARTIFACT.with_suffix(ARTIFACT.suffix + \".active\") if ARTIFACT.exists() or active_path.exists(): raise RuntimeError(f\"artifact path already exists: {ARTIFACT}\") free_gib = shutil.disk_usage(OUTPUT_DIR).free / (1024 ** 3) if free_gib < 10.0: raise RuntimeError(f\"at least 10 GiB free space is required; free={free_gib:.2f} GiB\") print(f\"preflight OK; free={free_gib:.2f} GiB\")"
+      - generic:
+        - generic "click to expand output; double click to hide output"
+    - generic [ref=e186]:
+      - heading "녹화 시작" [level=2] [ref=e187]
+      - paragraph [ref=e188]:
+        - text: 이 셀을 한 번 실행합니다.
+        - code [ref=e189]: .bag.active
+        - text: 가 생성된 뒤에만 녹화가 준비된 것으로 판단합니다. 생성되지 않거나 process가 조기 종료되면 즉시 실패합니다.
+    - generic [ref=e190]:
+      - generic [ref=e191]:
+        - generic [ref=e192]:
+          - generic [ref=e193]: "In [ ]:"
+          - text: 
+        - generic "Edit code here" [ref=e195]:
+          - generic [ref=e196]:
+            - textbox [ref=e197]
+            - generic [ref=e200]: "if RECORD_PROCESS is not None and RECORD_PROCESS.poll() is None: raise RuntimeError(\"this kernel already owns a running recorder\") command = [\"rosbag\", \"record\", \"--buffsize=1024\", \"--chunksize=768\", \"-O\", str(ARTIFACT), *TOPICS] RECORD_PROCESS = subprocess.Popen(command, env=ROS_ENV, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, start_new_session=True) deadline = time.monotonic() + 10.0 while time.monotonic() < deadline and not active_path.is_file(): if RECORD_PROCESS.poll() is not None: raise RuntimeError(f\"rosbag exited before readiness: code={RECORD_PROCESS.returncode}\") time.sleep(0.2) if not active_path.is_file(): RECORD_PROCESS.send_signal(signal.SIGINT) RECORD_PROCESS.wait(timeout=10) raise RuntimeError(\"rosbag did not create .bag.active within 10 seconds\") print(f\"recording started: pid={RECORD_PROCESS.pid} active={active_path}\")"
+      - generic:
+        - generic "click to expand output; double click to hide output"
+    - generic [ref=e207]:
+      - heading "녹화 상태" [level=2] [ref=e208]
+      - paragraph [ref=e209]:
+        - text: 주행 중 필요할 때 반복 실행합니다. process가 살아 있고
+        - code [ref=e210]: .active
+        - text: 파일 크기가 증가해야 정상입니다.
+    - generic [ref=e211]:
+      - generic [ref=e212]:
+        - generic [ref=e213]:
+          - generic [ref=e214]: "In [ ]:"
+          - text: 
+        - generic "Edit code here" [ref=e216]:
+          - generic [ref=e217]:
+            - textbox [ref=e218]
+            - generic [ref=e219]: "if RECORD_PROCESS is None or RECORD_PROCESS.poll() is not None: raise RuntimeError(\"recorder is not running\") size_mib = active_path.stat().st_size / (1024 ** 2) print(f\"recording pid={RECORD_PROCESS.pid} size={size_mib:.1f} MiB path={active_path}\")"
+      - generic:
+        - generic "click to expand output; double click to hide output"
+    - generic [ref=e226]:
+      - heading "정상 종료와 finalize" [level=2] [ref=e227]
+      - paragraph [ref=e228]:
+        - text: 외부 이동을 먼저 정지시킨 뒤 실행합니다. rosbag에 SIGINT를 보내 index를 기록하고
+        - code [ref=e229]: .bag.active
+        - text: 를 최종
+        - code [ref=e230]: .bag
+        - text: 으로 finalize하도록 최대 15초 기다립니다. 성공 기준은
+        - code [ref=e231]: "recording finalized:"
+        - text: 와
+        - code [ref=e232]: .bag
+        - text: 경로 출력입니다. Kernel을 먼저 종료하지 마십시오.
+    - generic [ref=e233]:
+      - generic [ref=e234]:
+        - generic [ref=e235]:
+          - generic [ref=e236]: "In [ ]:"
+          - text: 
+        - generic "Edit code here" [ref=e238]:
+          - generic [ref=e239]:
+            - textbox [ref=e240]
+            - generic [ref=e243]: "if RECORD_PROCESS is None: raise RuntimeError(\"this kernel does not own a recorder\") if RECORD_PROCESS.poll() is None: RECORD_PROCESS.send_signal(signal.SIGINT) try: RECORD_PROCESS.wait(timeout=15) except subprocess.TimeoutExpired: RECORD_PROCESS.kill() RECORD_PROCESS.wait(timeout=5) raise RuntimeError(\"rosbag did not finalize after SIGINT\") if RECORD_PROCESS.returncode != 0: raise RuntimeError(f\"rosbag exited with code {RECORD_PROCESS.returncode}\") if active_path.exists() or not ARTIFACT.is_file(): raise RuntimeError(f\"bag finalization failed: active={active_path.exists()} final={ARTIFACT.exists()}\") print(f\"recording finalized: {ARTIFACT}\")"
+      - generic:
+        - generic "click to expand output; double click to hide output"
+    - generic [ref=e250]:
+      - heading "최종 bag 검증과 복구" [level=2] [ref=e251]
+      - paragraph [ref=e252]:
+        - text: 파일 존재만으로 성공 처리하지 않습니다.
+        - code [ref=e253]: rosbag info --yaml
+        - text: 이 읽을 수 있고 duration이 양수이며 모든 필수 topic에 실제 message가 있어야 합니다. 성공하면 duration과 topic별 message 수가 출력됩니다.
+      - paragraph [ref=e254]:
+        - text: Kernel이 종료돼 recorder 소유권을 잃었다면 새 recorder를 시작하지 마십시오. terminal에서
+        - code [ref=e255]: pgrep -af '/rosbag/record|rosbag.*record'
+        - text: 로 기존 process를 확인하고 그 process를 시작한 원래 terminal/kernel에서 정상 종료합니다.
+        - code [ref=e256]: .bag.active
+        - text: 만 남은 경우 원본을 보존한 채
+        - code [ref=e257]: rosbag reindex <file>.bag.active
+        - text: 복구 여부를 별도로 판단하며, 이 Notebook은 손상 파일을 자동 수정하거나 삭제하지 않습니다.
+    - generic [ref=e258]:
+      - generic [ref=e259]:
+        - generic [ref=e260]:
+          - generic [ref=e261]: "In [ ]:"
+          - text: 
+        - generic "Edit code here" [ref=e263]:
+          - generic [ref=e264]:
+            - textbox [ref=e265]
+            - generic [ref=e268]: "completed = subprocess.run([\"rosbag\", \"info\", \"--yaml\", str(ARTIFACT)], env=ROS_ENV, check=True, text=True, stdout=subprocess.PIPE, timeout=60) info = yaml.safe_load(completed.stdout) if not isinstance(info, dict) or float(info.get(\"duration\", 0.0)) <= 0.0: raise RuntimeError(\"bag has no positive duration\") message_counts = {entry[\"topic\"]: int(entry[\"messages\"]) for entry in info.get(\"topics\", [])} missing = sorted(topic for topic in MANDATORY_TOPICS if message_counts.get(topic, 0) <= 0) if missing: raise RuntimeError(f\"mandatory topics have no messages: {missing}\") print(f\"validated duration={info['duration']:.2f}s size={ARTIFACT.stat().st_size / (1024 ** 3):.2f} GiB\") for topic in sorted(message_counts): print(f\"{topic}: {message_counts[topic]}\")"
+      - generic:
+        - generic "click to expand output; double click to hide output"

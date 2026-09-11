@@ -1,0 +1,21 @@
+[     241ms] Invariant Violation: Minified React error #227; visit http://facebook.github.io/react/docs/error-decoder.html?invariant=227 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at c (http://127.0.0.1:8899/static/components/react/react-dom.production.min.js?v=dbc734e200d85090ca301fc67d29f674:1:1614)
+    at http://127.0.0.1:8899/static/components/react/react-dom.production.min.js?v=dbc734e200d85090ca301fc67d29f674:1:1683
+    at Object.<anonymous> (http://127.0.0.1:8899/static/components/react/react-dom.production.min.js?v=dbc734e200d85090ca301fc67d29f674:1:96987)
+    at n (http://127.0.0.1:8899/static/components/react/react-dom.production.min.js?v=dbc734e200d85090ca301fc67d29f674:1:123)
+    at http://127.0.0.1:8899/static/components/react/react-dom.production.min.js?v=dbc734e200d85090ca301fc67d29f674:1:922
+    at http://127.0.0.1:8899/static/components/react/react-dom.production.min.js?v=dbc734e200d85090ca301fc67d29f674:1:931
+[     387ms] [TABLE] {WARNING - You are using the DEBUG version. Use /dist/jquery.typeahead.min.js in production.: Object} @ http://127.0.0.1:8899/static/notebook/js/main.min.js?v=692e8d0cb3d28b2542e574948980f9af:25785
+[     420ms] [WARNING] actions jupyter-notebook:find-and-replace does not exist, still binding it in case it will be defined later... @ http://127.0.0.1:8899/static/notebook/js/main.min.js?v=692e8d0cb3d28b2542e574948980f9af:31176
+[     442ms] [LOG] load_extensions [jupyter-js-widgets/extension] @ http://127.0.0.1:8899/static/notebook/js/main.min.js?v=692e8d0cb3d28b2542e574948980f9af:10180
+[     447ms] [LOG] Loaded moment locale en @ http://127.0.0.1:8899/static/notebook/js/main.min.js?v=692e8d0cb3d28b2542e574948980f9af:32084
+[     681ms] [LOG] Session: kernel_created (e6dac26b-b899-4afc-9925-40466980b1e0) @ http://127.0.0.1:8899/static/notebook/js/main.min.js?v=692e8d0cb3d28b2542e574948980f9af:24387
+[     682ms] [LOG] Starting WebSockets: ws://127.0.0.1:8899/api/kernels/6cd29a32-7ca3-4fc6-ab7d-7607a2ae45d0 @ http://127.0.0.1:8899/static/notebook/js/main.min.js?v=692e8d0cb3d28b2542e574948980f9af:23545
+[     754ms] [LOG] Loading extension: jupyter-js-widgets/extension @ http://127.0.0.1:8899/static/notebook/js/main.min.js?v=692e8d0cb3d28b2542e574948980f9af:10157
+[     796ms] [LOG] loaded widgets @ http://127.0.0.1:8899/nbextensions/jupyter-js-widgets/extension.js?v=20260827210503:147
+[    1241ms] [LOG] Kernel: kernel_connected (6cd29a32-7ca3-4fc6-ab7d-7607a2ae45d0) @ http://127.0.0.1:8899/static/notebook/js/main.min.js?v=692e8d0cb3d28b2542e574948980f9af:23189
+[    1317ms] [LOG] Kernel: kernel_ready (6cd29a32-7ca3-4fc6-ab7d-7607a2ae45d0) @ http://127.0.0.1:8899/static/notebook/js/main.min.js?v=692e8d0cb3d28b2542e574948980f9af:23189
+[    4242ms] [WARNING] Could not cross validate the widget frontend and backend versions. Error: Timeout while trying to cross validate the widget frontend and backend versions.
+    at http://127.0.0.1:8899/nbextensions/jupyter-js-widgets/extension.js?v=20260827210503:14830:29 @ http://127.0.0.1:8899/nbextensions/jupyter-js-widgets/extension.js?v=20260827210503:271
+[    4242ms] [WARNING] Could not cross validate the widget frontend and backend versions. Error: Timeout while trying to cross validate the widget frontend and backend versions.
+    at http://127.0.0.1:8899/nbextensions/jupyter-js-widgets/extension.js?v=20260827210503:14830:29 @ http://127.0.0.1:8899/nbextensions/jupyter-js-widgets/extension.js?v=20260827210503:271
