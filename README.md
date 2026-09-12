@@ -22,6 +22,30 @@ global/local plan, costmap, TF를 보기만 하며 `SetGoal`과 `SetInitialPose`
 포함하지 않습니다. 계단 기록용 수동 viewer만 이 두 RViz 도구를 제공하며, 모든
 이동 요청은 `/mission`을 사용합니다.
 
+## 로직도와 상태머신
+
+### 전체 미션 로직
+
+목표는 `Mission.action` 하나로 들어오며, `BuildingPlanner`가 directed graph를 BFS로
+계획합니다. 계단 edge는 `STAIR` segment와 `FLOOR_TRANSITION` segment로 확장되고,
+각 segment는 순서대로 실행됩니다. `inspect`와 `record_route`만 scan artifact를
+생성하며, 실패·취소·timeout·stale evidence가 발생하면 안전하게 종료하고 복귀 경로를
+시작하지 않습니다.
+
+![TRON1 mission logic flow](docs/diagrams/mission-logic.svg)
+
+### 상태머신 구조
+
+상위 `MissionFSM`은 `WAIT_GOAL → PLAN_MISSION → EXECUTE_SEGMENT → NEXT_SEGMENT`를
+관리합니다. 층 전환과 계단 주행은 각각 별도의 safety state를 가지며, 하위 action이
+성공한 경우에만 상위 mission이 다음 segment로 진행합니다.
+
+![TRON1 mission and subsystem state machines](docs/diagrams/mission-state-machine.svg)
+
+상태 전이 조건과 evidence의 상세 계약은
+[전이 정책과 상태머신 개발·운영 가이드](docs/transition-policy-state-machine.md)에
+정리되어 있습니다.
+
 ## 최초 설치와 build
 
 노트북은 Ubuntu 20.04와 ROS Noetic을 사용합니다.
