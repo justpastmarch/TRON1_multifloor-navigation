@@ -2,7 +2,9 @@
   <param name="/mission_test/scenario" value="default" />
 
   <node pkg="mission_manager" type="mock_mission_children.py"
-        name="mock_mission_children" required="true" output="screen" />
+        name="mock_mission_children" required="true" output="screen">
+    <param name="fixture_config_root" value="$(find mission_manager)/../../test/fixtures/building_valid" />
+  </node>
 
   <node pkg="mission_manager" type="mission_manager_node.py"
         name="mission_manager" required="true" output="screen">

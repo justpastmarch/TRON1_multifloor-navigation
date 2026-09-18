@@ -25,6 +25,17 @@ from stair_supervisor.supervisor import (  # noqa: E402
     StairSupervisor,
     SupervisorState,
 )
+from stair_supervisor.supervisor_types import AdmissionDecision  # noqa: E402
+
+
+class FakeAdmission:
+    def __init__(self, decision: AdmissionDecision | None = None) -> None:
+        self.decision = decision or AdmissionDecision(True, False, "admitted")
+        self.calls: List[tuple[StairGoal, int]] = []
+
+    def validate(self, goal: StairGoal, ownership_epoch: int) -> AdmissionDecision:
+        self.calls.append((goal, ownership_epoch))
+        return self.decision
 
 
 class FakeClock:
@@ -151,6 +162,7 @@ class StairSupervisorTest(unittest.TestCase):
             evidence=evidence or ScriptedEvidence(),
             clock=clock,
             feedback=lambda report: phases.append(report.phase),
+            admission=FakeAdmission(),
             nav_freshness_sec=0.25,
             turn_linear_mps=turn_linear_mps,
         )
@@ -167,7 +179,7 @@ class StairSupervisorTest(unittest.TestCase):
         evidence.on_observe = lambda _phase: supervisor.accept_navigation(0.3, 0.2)
 
         # When: a complete stair profile runs while NAV keeps publishing.
-        result = supervisor.traverse(StairGoal("test_up", Direction.UP), lambda: False)
+        result = supervisor.traverse(StairGoal("test_up", Direction.UP, "valid"), lambda: False)
 
         # Then: phases are ordered, NAV was discarded, and the old epoch is stale.
         self.assertEqual(result.code, ResultCode.OK)
@@ -191,16 +203,59 @@ class StairSupervisorTest(unittest.TestCase):
             evidence=ScriptedEvidence(),
             clock=clock,
             feedback=lambda _report: None,
+            admission=FakeAdmission(),
             nav_freshness_sec=0.25,
         )
         supervisor.start()
 
         # When: the UP traversal executes its forward phases.
-        result = supervisor.traverse(StairGoal("test_up", Direction.UP), lambda: False)
+        result = supervisor.traverse(StairGoal("test_up", Direction.UP, "valid"), lambda: False)
 
         # Then: the commissioned stair speed reaches the transport unchanged.
         self.assertEqual(result.code, ResultCode.OK)
         self.assertIn(("update", 0.50, 0.0), transport.events)
+
+    def test_rejected_admission_cannot_take_ownership_or_touch_transport(self) -> None:
+        # Given: a ready supervisor whose mission admission rejects the token.
+        clock = FakeClock()
+        transport = FakeTransport()
+        supervisor = StairSupervisor(
+            configuration=make_configuration(),
+            transport=transport,
+            evidence=ScriptedEvidence(),
+            clock=clock,
+            feedback=lambda _report: None,
+            admission=FakeAdmission(AdmissionDecision(False, False, "token rejected")),
+            nav_freshness_sec=0.25,
+        )
+        supervisor.start()
+        before = list(transport.events)
+
+        # When: a direct child-action goal presents an untrusted token.
+        result = supervisor.traverse(StairGoal("test_up", Direction.UP, "bad"), lambda: False)
+
+        # Then: NAV ownership and the physical command surface remain untouched.
+        self.assertEqual(result.code, ResultCode.ENTRY_REJECTED)
+        self.assertEqual(supervisor.state, SupervisorState.NAV)
+        self.assertEqual(transport.events, before)
+
+    def test_align_is_observable_but_first_nonzero_stair_command_is_forward(self) -> None:
+        # Given: a legacy in-memory profile still carrying a nonzero alignment value.
+        supervisor, transport, _, phases = self.make_supervisor()
+        supervisor.start()
+
+        # When: an admitted traversal passes through ALIGN.
+        result = supervisor.traverse(StairGoal("test_up", Direction.UP, "valid"), lambda: False)
+
+        # Then: ALIGN is reported but cannot issue the removed fixed rotation.
+        self.assertEqual(result.code, ResultCode.OK)
+        self.assertIn(Phase.ALIGN, phases)
+        stair_start = transport.events.index(("stair", True))
+        nonzero = [
+            event for event in transport.events[stair_start:]
+            if event[0] == "update" and event[1:] != (0.0, 0.0)
+        ]
+        self.assertEqual(nonzero[0], ("update", 0.12, 0.0))
 
     def test_landing_turn_can_curve_to_the_return_flight(self) -> None:
         # Given: a SIM traversal configured to cross the landing while turning.
@@ -210,7 +265,7 @@ class StairSupervisorTest(unittest.TestCase):
         supervisor.start()
 
         # When: the state machine runs through the landing turn phase.
-        result = supervisor.traverse(StairGoal("test_up", Direction.UP), lambda: False)
+        result = supervisor.traverse(StairGoal("test_up", Direction.UP, "valid"), lambda: False)
 
         # Then: the turn phase emits a forward WebSocket command with angular steering.
         self.assertEqual(result.code, ResultCode.OK)
@@ -222,7 +277,7 @@ class StairSupervisorTest(unittest.TestCase):
         supervisor.start()
 
         # When: the disabled traversal is requested.
-        result = supervisor.traverse(StairGoal("test_up", Direction.UP), lambda: False)
+        result = supervisor.traverse(StairGoal("test_up", Direction.UP, "valid"), lambda: False)
 
         # Then: capability rejection precedes every mode or nonzero command.
         self.assertEqual(result.code, ResultCode.CAPABILITY_DISABLED)
@@ -253,7 +308,7 @@ class StairSupervisorTest(unittest.TestCase):
         supervisor.start()
 
         # When: traversal exhausts its bounded deadline.
-        result = supervisor.traverse(StairGoal("test_up", Direction.UP), lambda: False)
+        result = supervisor.traverse(StairGoal("test_up", Direction.UP, "valid"), lambda: False)
 
         # Then: the supervisor faults, zeros once, and never retries stair mode.
         self.assertEqual(result.code, ResultCode.STAIR_FAILED)
@@ -276,7 +331,7 @@ class StairSupervisorTest(unittest.TestCase):
         evidence.on_observe = observe
 
         # When: execution reaches the next configured safe checkpoint.
-        result = supervisor.traverse(StairGoal("test_up", Direction.UP), lambda: cancel_requested)
+        result = supervisor.traverse(StairGoal("test_up", Direction.UP, "valid"), lambda: cancel_requested)
 
         # Then: it preempts at LANDING, returns WALK, and advances ownership.
         self.assertTrue(result.cancelled)
@@ -291,7 +346,7 @@ class StairSupervisorTest(unittest.TestCase):
         transport.fail_on_stair = True
 
         # When: traversal fails and shutdown runs repeatedly.
-        result = supervisor.traverse(StairGoal("test_up", Direction.UP), lambda: False)
+        result = supervisor.traverse(StairGoal("test_up", Direction.UP, "valid"), lambda: False)
         supervisor.shutdown()
         supervisor.shutdown()
 

@@ -99,6 +99,7 @@ class MultifloorManagerNode:
             auto_start=False,
         )
         self.server.start()
+        self.state_timer = rospy.Timer(rospy.Duration(0.5), self.runtime.publish_heartbeat)
 
     def _feedback(self, phase: str, detail: str) -> None:
         self.server.publish_feedback(FloorTransitionFeedback(phase=phase, detail=detail))

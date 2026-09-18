@@ -47,7 +47,7 @@ class MissionActionRosTest(unittest.TestCase):
         )
 
     def setUp(self) -> None:
-        self._set_scenario("default")
+        self._restore_home()
 
     def _set_scenario(self, name: str) -> None:
         with self.state_condition:

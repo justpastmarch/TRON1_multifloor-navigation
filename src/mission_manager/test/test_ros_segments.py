@@ -23,6 +23,7 @@ from mission_manager.mission_orchestrator import RouteRecordingRequest, SegmentC
 from mission_manager.ros_segments import RosSegmentExecutor, RosSegmentResources  # noqa: E402
 from mission_manager.route_planner import RouteSegment  # noqa: E402
 from mission_manager.segment_types import SegmentType  # noqa: E402
+from mission_manager.stair_entry_gate import StairEntryDecision, StairEntryFence  # noqa: E402
 from stair_supervisor.configuration import Direction, StairProfile  # noqa: E402
 
 
@@ -61,6 +62,7 @@ class FakeState:
     def __init__(self) -> None:
         self._floor = FloorState(floor_id="3F", map_generation=4, state=FloorState.READY)
         self.waited_for_floor = None
+        self.entry_decision = StairEntryDecision(True, "aligned")
 
     def health(self) -> SimpleNamespace:
         return SimpleNamespace(healthy=True, reason="")
@@ -72,6 +74,29 @@ class FakeState:
         self.waited_for_floor = (floor_id, generation)
         return True
 
+    def begin_stair_entry(self) -> StairEntryFence:
+        return StairEntryFence("3F", 4, 10.0, 20.0, 1)
+
+    def wait_for_stair_entry(self, _fence, _expected) -> StairEntryDecision:
+        return self.entry_decision
+
+    def stair_entry_decision(self, _fence, _expected) -> StairEntryDecision:
+        return StairEntryDecision(True, "aligned")
+
+    def supervisor_state(self) -> SimpleNamespace:
+        return SimpleNamespace(ownership_epoch=3)
+
+
+class FakeAdmission:
+    def __init__(self) -> None:
+        self.cleared = []
+
+    def issue(self, _context, _recheck) -> str:
+        return "test-token"
+
+    def clear(self, token: str) -> None:
+        self.cleared.append(token)
+
 
 def resources(state: FakeState, scan_profiles=(), scan_recorder=None) -> RosSegmentResources:
     return RosSegmentResources(
@@ -81,10 +106,11 @@ def resources(state: FakeState, scan_profiles=(), scan_recorder=None) -> RosSegm
         scan_profiles=scan_profiles,
         stair_profiles=(StairProfile(
             "cautious_up", Direction.UP, True, 0.12, 0.25,
-            0.40, 1.00, 0.20, 0.50, 0.80, 0.20,
-            0.02, 0.02, 0.20, 0.05, 0.20, 0.15, 0.40, 0.30, 60.0,
+            0.0, 1.00, 0.20, 0.50, 0.80, 0.20,
+            0.02, 0.02, 0.20, 0.15, 0.40, 0.30, 60.0,
         ),),
         scan_recorder=scan_recorder,
+        stair_admission=FakeAdmission(),
     )
 
 
@@ -186,7 +212,45 @@ class RosSegmentIdentifierTest(unittest.TestCase):
 
         # Then: each child receives the identifier it actually indexes.
         self.assertEqual(stair_client.goals[0].stair_id, "cautious_up")
+        self.assertEqual(stair_client.goals[0].admission_token, "test-token")
         self.assertEqual(floor_client.goals[0].transition_id, "stair_a")
+
+    def test_stair_entry_mismatch_sends_no_child_goal(self) -> None:
+        # Given: stationary handoff succeeds but fresh AMCL rejects the canonical entry pose.
+        state = FakeState()
+        state.entry_decision = StairEntryDecision(False, "robot is outside the stair-entry heading tolerance")
+        stair_client = FakeActionClient(SimpleNamespace())
+        floor_client = FakeActionClient(SimpleNamespace())
+        segment = RouteSegment(
+            SegmentType.STAIR,
+            "home",
+            "stair_landing",
+            "3F",
+            "4F",
+            "edge_3f_4f",
+            "stair_a",
+            "cautious_up",
+            None,
+            "home",
+        )
+
+        # When: the mission tries to cross the NAV-to-stair boundary.
+        with mock.patch(
+            "mission_manager.ros_segments.actionlib.SimpleActionClient",
+            side_effect=(stair_client, floor_client),
+        ), mock.patch(
+            "mission_manager.ros_segments.rospy.get_param",
+            side_effect=lambda name, default: default,
+        ):
+            outcome = RosSegmentExecutor(resources(state)).execute(
+                segment,
+                SegmentContext("mission-unsafe", lambda: False),
+            )
+
+        # Then: mismatch is a navigation failure and the stair action is untouched.
+        self.assertEqual(outcome.status.value, "FAILED")
+        self.assertEqual(outcome.result_code, 4)
+        self.assertEqual(stair_client.goals, [])
 
 
 if __name__ == "__main__":

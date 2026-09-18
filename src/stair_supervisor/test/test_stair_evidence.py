@@ -25,7 +25,7 @@ def profile(direction: Direction = Direction.UP) -> StairProfile:
         enabled=True,
         linear_speed=0.12,
         angular_speed=0.20,
-        alignment_yaw_rad=sign * 0.40,
+        alignment_yaw_rad=0.0,
         flight_1_distance_m=sign * 1.00,
         landing_dwell_sec=0.20,
         landing_turn_yaw_rad=sign * 0.50,
@@ -78,8 +78,7 @@ class StairEvidenceHappyPathTest(unittest.TestCase):
                 # When/Then: each phase receives its independent synthetic physical evidence.
                 self.assertTrue(run.report(Phase.VERIFY_ENTRY).complete)
                 run.begin(Phase.ALIGN)
-                run.sample(dyaw=sign * 0.20)
-                run.sample(dyaw=sign * 0.20)
+                run.sample()
                 self.assertTrue(run.report(Phase.ALIGN).complete)
                 run.begin(Phase.FORWARD_SEGMENT_1)
                 run.sample(dx=sign * 0.35)
@@ -106,19 +105,18 @@ class StairEvidenceHappyPathTest(unittest.TestCase):
                     exit_report = run.report(Phase.EXIT_CONFIRM)
                 self.assertTrue(exit_report.complete)
 
-    def test_angle_wrap_accumulates_signed_yaw(self) -> None:
+    def test_align_completes_without_yaw_progress(self) -> None:
         # Given: ALIGN begins just below positive pi.
         run = SyntheticTraversal(Direction.UP, math.pi - 0.10)
         run.begin(Phase.ALIGN)
 
-        # When: yaw crosses the pi/-pi boundary in bounded steps.
-        run.sample(dyaw=0.20)
-        run.sample(dyaw=0.20)
+        # When: one fresh odometry sample arrives without rotation.
+        run.sample()
 
-        # Then: signed progress reaches +0.4 rather than jumping backward.
+        # Then: canonical map-pose admission makes relative yaw progress unnecessary.
         report = run.report(Phase.ALIGN)
         self.assertTrue(report.complete)
-        self.assertAlmostEqual(report.progress, 0.40)
+        self.assertEqual((report.progress, report.threshold), (0.0, 0.0))
 
     def test_flight_distance_uses_odometry_only(self) -> None:
         # Given: a first flight baseline.
@@ -180,7 +178,7 @@ class StairEvidenceFaultTest(unittest.TestCase):
         for direction in Direction:
             sign = 1.0 if direction is Direction.UP else -1.0
             for phase, movement in (
-                (Phase.ALIGN, {"dyaw": -sign * 0.03}),
+                (Phase.TURN_TO_NEXT_FLIGHT, {"dyaw": -sign * 0.03}),
                 (Phase.FORWARD_SEGMENT_1, {"dx": -sign * 0.03}),
             ):
                 with self.subTest(direction=direction, phase=phase):

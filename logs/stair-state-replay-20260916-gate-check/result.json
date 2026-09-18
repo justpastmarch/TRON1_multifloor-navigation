@@ -1,0 +1,10 @@
+{
+  "active_phase": "TURN_TO_NEXT_FLIGHT",
+  "bag": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_CLEAN_REPEAT_20260821_160211.bag",
+  "detail": "recorded odometry ended before the active phase completed",
+  "elapsed_sec": 140.92646145820618,
+  "outcome": "INCOMPLETE",
+  "profile": "stair_3f_4f_up",
+  "sample_count": 14092,
+  "supervisor_state": "FAULT"
+}

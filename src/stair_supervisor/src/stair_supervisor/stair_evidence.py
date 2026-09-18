@@ -157,7 +157,7 @@ class StairEvidenceTracker:
 
         handlers = {
             Phase.VERIFY_ENTRY: lambda: self._entry_report(phase, freshness),
-            Phase.ALIGN: lambda: self._yaw_report(phase, profile.alignment_yaw_rad, freshness),
+            Phase.ALIGN: lambda: self._alignment_report(phase, freshness),
             Phase.FORWARD_SEGMENT_1: lambda: self._distance_report(phase, profile.flight_1_distance_m, freshness),
             Phase.LANDING: lambda: self._dwell_report(phase, profile.landing_dwell_sec, now, freshness),
             Phase.TURN_TO_NEXT_FLIGHT: lambda: self._yaw_report(phase, profile.landing_turn_yaw_rad, freshness),
@@ -171,6 +171,11 @@ class StairEvidenceTracker:
         assert profile is not None
         complete = self._new_odom() and self._stationary(profile)
         detail = "stationary entry" if complete else "waiting for stationary entry"
+        return self._report(phase, complete, False, detail, 0.0, 0.0, freshness)
+
+    def _alignment_report(self, phase: Phase, freshness: float) -> EvidenceReport:
+        complete = self._new_odom()
+        detail = "entry alignment accepted" if complete else "waiting for aligned entry sample"
         return self._report(phase, complete, False, detail, 0.0, 0.0, freshness)
 
     def _new_odom(self) -> bool:

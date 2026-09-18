@@ -20,16 +20,15 @@
   <arg name="initial_x" default="0.0"/>
   <arg name="initial_y" default="0.0"/>
   <arg name="initial_yaw" default="0.0"/>
-  <arg name="max_vel_x" default="0.35"/>
+  <arg name="max_vel_x" default="0.30"/>
   <arg name="max_vel_theta" default="1.57"/>
   <arg name="min_in_place_vel_theta" default="0.4"/>
   <arg name="acc_lim_x" default="0.4"/>
   <arg name="acc_lim_theta" default="2.0"/>
   <arg name="rviz" default="true"/>
 
-  <include file="$(find multifloor_manager)/launch/pointcloud_to_laserscan.launch">
-    <arg name="cloud_in" value="$(arg cloud_in)"/>
-  </include>
+  <!-- /scan is published by the mini PC sensor stack (mid360s_laserscan).
+       Do not add a second publisher here. -->
   <include file="$(find multifloor_manager)/launch/apriltag.launch">
     <arg name="image_rect" value="$(arg image_rect)"/>
     <arg name="camera_info" value="$(arg camera_info)"/>

@@ -21,8 +21,10 @@ from stair_supervisor.msg import (
 
 from .configuration import Direction, StairSupervisorConfiguration
 from .robot_transport import RobotTransport, SystemClock, TransportFault
+from .stair_admission import RosStairAdmissionValidator
 from .stair_evidence import EvidenceReport, OdometrySample, StairEvidenceTracker
 from .supervisor import ResultCode, StairGoal, StairSupervisor, SupervisorState
+from .supervisor_types import AdmissionValidator
 
 
 @dataclass(frozen=True)
@@ -51,6 +53,7 @@ class RosStairSupervisorNode:
         configuration: StairSupervisorConfiguration,
         transport: RobotTransport,
         settings: RosNodeSettings,
+        admission: AdmissionValidator | None = None,
     ) -> None:
         self._state_publisher = rospy.Publisher(
             "~state",
@@ -78,6 +81,10 @@ class RosStairSupervisorNode:
             evidence=self._evidence,
             clock=self._clock,
             feedback=self._publish_feedback,
+            admission=admission or RosStairAdmissionValidator(
+                rospy.get_param("~admission_service", "/mission/validate_stair_admission"),
+                float(rospy.get_param("~admission_timeout_sec", 1.0)),
+            ),
             nav_freshness_sec=settings.nav_freshness_sec,
             turn_linear_mps=settings.turn_linear_mps,
         )
@@ -98,10 +105,12 @@ class RosStairSupervisorNode:
             self._stream_timer,
         )
         self._shutdown = False
+        self._state_detail = "starting"
         self._publish_state("starting")
         self._supervisor.start()
         self._publish_state("navigation owns commands")
         self._action.start()
+        self._state_timer = rospy.Timer(rospy.Duration(0.5), self._publish_heartbeat)
 
     @property
     def state(self) -> int:
@@ -147,6 +156,10 @@ class RosStairSupervisorNode:
             StairTraversalFeedback(phase=report.phase.value, detail=report.detail)
         )
 
+    def _publish_heartbeat(self, _event: rospy.timer.TimerEvent) -> None:
+        """Refresh ownership state while preserving its latest diagnostic detail."""
+        self._publish_state(self._state_detail)
+
     def _execute(self, message: StairTraversalGoal) -> None:
         directions = {
             StairTraversalGoal.UP: Direction.UP,
@@ -161,7 +174,7 @@ class RosStairSupervisorNode:
             self._action.set_aborted(result)
             return
         outcome = self._supervisor.traverse(
-            StairGoal(message.stair_id, direction),
+            StairGoal(message.stair_id, direction, message.admission_token),
             self._action.is_preempt_requested,
         )
         self._publish_state(outcome.reason)
@@ -178,6 +191,7 @@ class RosStairSupervisorNode:
             self._action.set_aborted(result)
 
     def _publish_state(self, detail: str) -> None:
+        self._state_detail = detail
         state = self._supervisor.state
         message = SupervisorStateMessage(
             state=int(state),
@@ -193,5 +207,6 @@ class RosStairSupervisorNode:
             return
         self._shutdown = True
         self._timer.shutdown()
+        self._state_timer.shutdown()
         self._supervisor.shutdown()
         self._publish_state("shutdown")

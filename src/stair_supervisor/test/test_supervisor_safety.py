@@ -21,7 +21,7 @@ from stair_supervisor.supervisor import (
     SupervisorState,
 )
 
-from test_supervisor import FakeClock, FakeTransport, ScriptedEvidence, make_configuration
+from test_supervisor import FakeAdmission, FakeClock, FakeTransport, ScriptedEvidence, make_configuration
 
 
 class CloseFaultTransport(FakeTransport):
@@ -78,6 +78,7 @@ class StairSupervisorSafetyTest(unittest.TestCase):
             evidence=ScriptedEvidence(observations_before_true=0),
             clock=clock,
             feedback=lambda _report: None,
+            admission=FakeAdmission(),
             nav_freshness_sec=0.25,
         )
         supervisor.start()
@@ -89,7 +90,7 @@ class StairSupervisorSafetyTest(unittest.TestCase):
         # When: STAIR requests ownership while that tick is in flight.
         stair_thread = threading.Thread(
             target=lambda: supervisor.traverse(
-                StairGoal("test_up", Direction.UP),
+                StairGoal("test_up", Direction.UP, "valid"),
                 lambda: False,
             )
         )
@@ -126,6 +127,7 @@ class StairSupervisorSafetyTest(unittest.TestCase):
                     evidence=evidence,
                     clock=clock,
                     feedback=lambda report: phases.append(report.phase),
+                    admission=FakeAdmission(),
                     nav_freshness_sec=0.25,
                 )
 
@@ -137,7 +139,7 @@ class StairSupervisorSafetyTest(unittest.TestCase):
                 supervisor.start()
 
                 # When: execution reaches the next safe checkpoint.
-                result = supervisor.traverse(StairGoal("test_up", Direction.UP), lambda: cancelled)
+                result = supervisor.traverse(StairGoal("test_up", Direction.UP, "valid"), lambda: cancelled)
 
                 # Then: PREEMPTED occurs there and no later phase command is emitted.
                 self.assertTrue(result.cancelled)
@@ -154,12 +156,13 @@ class StairSupervisorSafetyTest(unittest.TestCase):
             evidence=FaultAfterCommandEvidence(),
             clock=clock,
             feedback=lambda _report: None,
+            admission=FakeAdmission(),
             nav_freshness_sec=0.25,
         )
         supervisor.start()
 
         # When: the discontinuity faults the active flight.
-        result = supervisor.traverse(StairGoal("test_up", Direction.UP), lambda: False)
+        result = supervisor.traverse(StairGoal("test_up", Direction.UP, "valid"), lambda: False)
 
         # Then: the last nonzero is followed only by zero/close events.
         self.assertEqual(result.code, ResultCode.STAIR_FAILED)
@@ -185,6 +188,7 @@ class StairSupervisorSafetyTest(unittest.TestCase):
             evidence=evidence,
             clock=clock,
             feedback=lambda report: phases.append(report.phase),
+            admission=FakeAdmission(),
             nav_freshness_sec=0.25,
         )
         evidence.on_observe = lambda _phase: set_cancelled()
@@ -197,7 +201,7 @@ class StairSupervisorSafetyTest(unittest.TestCase):
 
         # When: cancellation arrives while waiting at the safe checkpoint.
         result = supervisor.traverse(
-            StairGoal("test_up", Direction.UP),
+            StairGoal("test_up", Direction.UP, "valid"),
             lambda: cancelled,
         )
 
@@ -217,6 +221,7 @@ class StairSupervisorSafetyTest(unittest.TestCase):
             evidence=ScriptedEvidence(),
             clock=clock,
             feedback=lambda _report: None,
+            admission=FakeAdmission(),
             nav_freshness_sec=0.25,
         )
         supervisor.start()

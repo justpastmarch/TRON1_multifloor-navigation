@@ -22,15 +22,29 @@ class ResultCode(IntEnum):
     BUSY = 1
     INVALID_GOAL = 2
     CAPABILITY_DISABLED = 3
+    ENTRY_REJECTED = 4
     STAIR_FAILED = 5
     COMMUNICATION_LOST = 8
 
 
 @dataclass(frozen=True)
 class StairGoal:
-    __slots__ = ("stair_id", "direction")
+    __slots__ = ("stair_id", "direction", "admission_token")
     stair_id: str
     direction: Direction
+    admission_token: str
+
+
+@dataclass(frozen=True)
+class AdmissionDecision:
+    __slots__ = ("accepted", "communication_error", "reason")
+    accepted: bool
+    communication_error: bool
+    reason: str
+
+
+class AdmissionValidator(Protocol):
+    def validate(self, goal: StairGoal, ownership_epoch: int) -> AdmissionDecision: ...
 
 
 @dataclass(frozen=True)

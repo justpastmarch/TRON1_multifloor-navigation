@@ -1,0 +1,7 @@
+string admission_token
+string stair_id
+uint8 direction
+uint64 ownership_epoch
+---
+bool accepted
+string reason

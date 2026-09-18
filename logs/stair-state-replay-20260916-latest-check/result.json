@@ -1,0 +1,10 @@
+{
+  "active_phase": "TURN_TO_NEXT_FLIGHT",
+  "bag": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_154342.bag",
+  "detail": "progress=-0.351996 threshold=2.964000 freshness=0.019105 reason=reverse yaw progress",
+  "elapsed_sec": 49.63029980659485,
+  "outcome": "FAULTED",
+  "profile": "stair_3f_4f_up",
+  "sample_count": 4954,
+  "supervisor_state": "FAULT"
+}

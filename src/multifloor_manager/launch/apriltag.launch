@@ -5,14 +5,26 @@
   <arg name="tag_config"/>
   <arg name="tag_topic" default="/tag_detections"/>
 
+  <!-- Synchronise image/camera_info stamps because the D435 currently
+       publishes them from different clocks.  Without this, apriltag_ros
+       receives no synchronised pair and crashes with zarray_size assertion. -->
+  <node pkg="multifloor_manager" type="camera_info_stamp_relay.py"
+        name="camera_info_stamp_relay" output="screen">
+    <remap from="~image" to="$(arg image_rect)"/>
+    <remap from="~camera_info" to="$(arg camera_info)"/>
+    <remap from="~image_out" to="/apriltag_camera/image_raw"/>
+    <remap from="~camera_info_out" to="/apriltag_camera/camera_info"/>
+  </node>
+
   <node pkg="apriltag_ros" type="apriltag_ros_continuous_node"
-        name="apriltag_ros_continuous_node" clear_params="true" output="screen">
+        name="apriltag_ros_continuous_node" clear_params="true" output="screen"
+        respawn="true" respawn_delay="3">
     <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
     <rosparam command="load" file="$(arg tag_config)"/>
     <param name="tag_family" value="tagStandard41h12"/>
-    <param name="transport_hint" value="compressed"/>
-    <remap from="image_rect" to="$(arg image_rect)"/>
-    <remap from="camera_info" to="$(arg camera_info)"/>
+    <param name="transport_hint" value="raw"/>
+    <remap from="image_rect" to="/apriltag_camera/image_raw"/>
+    <remap from="camera_info" to="/apriltag_camera/camera_info"/>
     <remap from="tag_detections" to="$(arg tag_topic)"/>
   </node>
 </launch>

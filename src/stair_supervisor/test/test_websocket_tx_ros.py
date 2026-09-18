@@ -29,6 +29,7 @@ from stair_supervisor.robot_config import (
 )
 from stair_supervisor.robot_transport import RobotTransport
 from stair_supervisor.ros_node import RosNodeSettings, RosStairSupervisorNode
+from stair_supervisor.stair_admission import AllowStairAdmissionValidator
 
 
 class FakeClock:
@@ -160,6 +161,7 @@ def make_node(action_name: str, profile: StairProfile | None = None):
             0.0,
             "/test/websocket_tx/odom",
         ),
+        AllowStairAdmissionValidator(),
     )
     return node, socket, factory, clock
 
@@ -224,19 +226,29 @@ class WebSocketTxRosTest(unittest.TestCase):
         self.assertEqual(factory.calls, 1)
         self.assertTrue(socket.closed)
 
-    def test_failed_send_is_not_published_and_latches_fault(self) -> None:
-        # Given: a ready no-motion node whose next fake socket send will fail.
-        node, socket, factory, _clock = make_node("/test/tx_failure")
+    def test_failed_send_is_tolerated_then_latches_fault_after_outage_budget(self) -> None:
+        # Given: a ready no-motion node whose socket sends will fail.
+        node, socket, factory, clock = make_node("/test/tx_failure")
         while node._websocket_tx_publisher.get_num_connections() < 1:
             rospy.sleep(0.01)
         published_before = len(self._snapshot())
         socket.fail_sends = True
 
-        # When: the next zero stream tick is interrupted during send.
+        # When: one zero stream tick fails inside the outage budget.
         node.stream_once()
         rospy.sleep(0.05)
 
-        # Then: no false-success frame appears and the session cannot reconnect.
+        # Then: no false-success frame appears and the node remains ready.
+        self.assertEqual(len(self._snapshot()), published_before)
+        self.assertEqual(node.state, SupervisorState.NAV)
+        self.assertFalse(socket.closed)
+
+        # When: the outage budget expires and another tick fails.
+        clock.sleep(0.26)
+        node.stream_once()
+        rospy.sleep(0.05)
+
+        # Then: the session finally latches fault with no reconnect.
         self.assertEqual(len(self._snapshot()), published_before)
         self.assertEqual(node.state, SupervisorState.FAULT)
         self.assertEqual(factory.calls, 1)

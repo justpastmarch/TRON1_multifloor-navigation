@@ -4,7 +4,7 @@
   <arg name="initial_x" default="0.0"/>
   <arg name="initial_y" default="0.0"/>
   <arg name="initial_yaw" default="0.0"/>
-  <arg name="max_vel_x" default="0.50"/>
+  <arg name="max_vel_x" default="0.30"/>
   <arg name="max_vel_theta" default="1.57"/>
   <arg name="min_in_place_vel_theta" default="0.4"/>
   <arg name="acc_lim_x" default="0.6"/>

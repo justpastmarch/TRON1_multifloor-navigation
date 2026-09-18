@@ -1,0 +1,218 @@
+[WAIT] waiting for TF map -> base_Link before starting /opt/ros/noetic/lib/move_base/move_base
+[33m[WARN] [1789523302.062270847]: remove_duplicates parameter not provided. Defaulting to true[0m
+[READY] TF map -> base_Link
+Traceback (most recent call last):
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/scripts/rviz_tf_reconnect.py", line 51, in <module>
+    sys.exit(main())
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/scripts/rviz_tf_reconnect.py", line 25, in main
+    rviz_uri = master.lookupNode(RVIZ_NODE)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rosgraph/masterapi.py", line 433, in lookupNode
+    return self._succeed(self.handle.lookupNode(self.caller_id, node_name))        
+  File "/opt/ros/noetic/lib/python3/dist-packages/rosgraph/masterapi.py", line 154, in _succeed
+    raise Error(msg)
+rosgraph.masterapi.MasterError: unknown node [/rviz_navigation]
+[WARN] RViz TF resync skipped; navigation will continue
+[33m[WARN] [1789523305.336378007]: Parameter pdist_scale is deprecated. Please use the name path_distance_bias instead.[0m
+[33m[WARN] [1789523305.343601998]: Parameter gdist_scale is deprecated. Please use the name goal_distance_bias instead.[0m
+[33m[WARN] [1789523305.369458131]: Trajectory Rollout planner initialized with param meter_scoring not set. Set it to true to make your settings robust against changes of costmap resolution.[0m
+apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.
+[0m[INFO] [1789523302.178474017]: Subscribed to map topic.[0m
+[0m[INFO] [1789523302.587894255]: Received a 475 X 661 map @ 0.050 m/pix
+[0m
+[0m[INFO] [1789523302.630847337]: Initializing likelihood field model; this can take some time on large maps...[0m
+[0m[INFO] [1789523302.655352776]: Done initializing likelihood field model.[0m
+[0m[INFO] [1789523301.788238018]: Initializing nodelet with 8 worker threads.[0m
+[0m[INFO] [1789523302.264030125]: Got a subscriber to scan, starting subscriber to pointcloud[0m
+[0m[INFO] [1789523302.716024249]: Got a subscriber to scan, starting subscriber to pointcloud[0m
+[0m[INFO] [1789523303.003806673]: Got a subscriber to scan, starting subscriber to pointcloud[0m
+[0m[INFO] [1789523305.177365298]: Got a subscriber to scan, starting subscriber to pointcloud[0m
+[0m[INFO] [1789523308.398497290]: Got a subscriber to scan, starting subscriber to pointcloud[0m
+[INFO] [1789523302.619403]: mission manager action server ready
+[0m[INFO] [1789523304.216505199]: global_costmap: Using plugin "static_layer"[0m
+[0m[INFO] [1789523304.277868871]: Requesting the map...[0m
+[0m[INFO] [1789523304.490368703]: Resizing costmap to 475 X 661 at 0.050000 m/pix[0m
+[0m[INFO] [1789523304.590176016]: Received a 475 X 661 map at 0.050000 m/pix[0m
+[0m[INFO] [1789523304.603343287]: global_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1789523304.901382946]: local_costmap: Using plugin "obstacle_layer"[0m
+[0m[INFO] [1789523304.921184157]:     Subscribed to Topics: scan[0m
+[0m[INFO] [1789523305.026988158]: local_costmap: Using plugin "inflation_layer"[0m
+[0m[INFO] [1789523305.249647291]: Created local_planner base_local_planner/TrajectoryPlannerROS[0m
+[0m[INFO] [1789523305.308679483]: Sim period is set to 0.20[0m
+[0m[INFO] [1789523306.029417048]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1789523306.070697017]: Recovery behavior will clear layer 'obstacles'[0m
+[0m[INFO] [1789523306.297068712]: odom received![0m
+... logging to /home/m3tron/.ros/log/f8476b3a-b16b-11f1-93fb-43d9ff53ac12/roslaunch-m3tron-All-Series-40822.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/launch/system.launch
+[1mstarted roslaunch server http://192.168.1.26:41403/[0m
+
+SUMMARY
+========
+
+CLEAR PARAMETERS
+ * /apriltag_ros_continuous_node/
+
+PARAMETERS
+ * /amcl/base_frame_id: base_Link
+ * /amcl/first_map_only: False
+ * /amcl/force_update_after_initialpose: True
+ * /amcl/global_frame_id: map
+ * /amcl/gui_publish_rate: 2.0
+ * /amcl/initial_cov_aa: 0.01
+ * /amcl/initial_cov_xx: 0.01
+ * /amcl/initial_cov_yy: 0.01
+ * /amcl/initial_pose_a: 1.455898
+ * /amcl/initial_pose_x: 2.59913
+ * /amcl/initial_pose_y: -1.983942
+ * /amcl/laser_max_beams: 60
+ * /amcl/laser_max_range: 12.0
+ * /amcl/laser_min_range: 0.3
+ * /amcl/max_particles: 2000
+ * /amcl/min_particles: 500
+ * /amcl/odom_frame_id: odom
+ * /amcl/recovery_alpha_fast: 0.0
+ * /amcl/recovery_alpha_slow: 0.0
+ * /amcl/resample_interval: 1
+ * /amcl/save_pose_rate: 0.5
+ * /amcl/scan_topic: /scan
+ * /amcl/transform_tolerance: 0.3
+ * /amcl/update_min_a: 0.1
+ * /amcl/update_min_d: 0.1
+ * /amcl/use_map_topic: True
+ * /apriltag_ros_continuous_node/max_hamming_dist: 2
+ * /apriltag_ros_continuous_node/publish_tf: True
+ * /apriltag_ros_continuous_node/standalone_tags: [{'id': 300, 'siz...
+ * /apriltag_ros_continuous_node/tag_blur: 0.0
+ * /apriltag_ros_continuous_node/tag_bundles: []
+ * /apriltag_ros_continuous_node/tag_debug: 0
+ * /apriltag_ros_continuous_node/tag_decimate: 1.0
+ * /apriltag_ros_continuous_node/tag_family: tagStandard41h12
+ * /apriltag_ros_continuous_node/tag_refine_edges: 1
+ * /apriltag_ros_continuous_node/tag_threads: 2
+ * /apriltag_ros_continuous_node/transport_hint: compressed
+ * /map_server/frame_id: map
+ * /mission_manager/allow_test_fixture: False
+ * /mission_manager/config_profile: production
+ * /mission_manager/home_location_id: home_3f
+ * /mission_manager/initial_location_id: home_3f
+ * /mission_manager/inspect_profile_id: roof_scan_profile
+ * /mission_manager/scan_output_base: /var/lib/tron1/scans
+ * /move_base/TrajectoryPlannerROS/acc_lim_theta: 2.0
+ * /move_base/TrajectoryPlannerROS/acc_lim_x: 0.4
+ * /move_base/TrajectoryPlannerROS/acc_lim_y: 0.0
+ * /move_base/TrajectoryPlannerROS/gdist_scale: 0.4
+ * /move_base/TrajectoryPlannerROS/heading_lookahead: 0.6
+ * /move_base/TrajectoryPlannerROS/holonomic_robot: False
+ * /move_base/TrajectoryPlannerROS/latch_xy_goal_tolerance: True
+ * /move_base/TrajectoryPlannerROS/max_vel_theta: 0.8
+ * /move_base/TrajectoryPlannerROS/max_vel_x: 0.5
+ * /move_base/TrajectoryPlannerROS/min_in_place_vel_theta: 0.25
+ * /move_base/TrajectoryPlannerROS/min_vel_theta: -0.8
+ * /move_base/TrajectoryPlannerROS/min_vel_x: 0.0
+ * /move_base/TrajectoryPlannerROS/pdist_scale: 0.8
+ * /move_base/TrajectoryPlannerROS/sim_granularity: 0.05
+ * /move_base/TrajectoryPlannerROS/sim_time: 1.2
+ * /move_base/TrajectoryPlannerROS/vtheta_samples: 24
+ * /move_base/TrajectoryPlannerROS/vx_samples: 12
+ * /move_base/TrajectoryPlannerROS/xy_goal_tolerance: 0.25
+ * /move_base/TrajectoryPlannerROS/yaw_goal_tolerance: 0.2
+ * /move_base/base_global_planner: navfn/NavfnROS
+ * /move_base/base_local_planner: base_local_planne...
+ * /move_base/controller_frequency: 5.0
+ * /move_base/global_costmap/footprint_padding: 0.02
+ * /move_base/global_costmap/global_frame: map
+ * /move_base/global_costmap/inflation_layer/cost_scaling_factor: 4.0
+ * /move_base/global_costmap/inflation_layer/inflation_radius: 0.55
+ * /move_base/global_costmap/plugins: [{'name': 'static...
+ * /move_base/global_costmap/publish_frequency: 1.0
+ * /move_base/global_costmap/resolution: 0.05
+ * /move_base/global_costmap/robot_base_frame: base_Link
+ * /move_base/global_costmap/robot_radius: 0.28
+ * /move_base/global_costmap/rolling_window: False
+ * /move_base/global_costmap/transform_tolerance: 0.5
+ * /move_base/global_costmap/update_frequency: 1.0
+ * /move_base/local_costmap/footprint_padding: 0.02
+ * /move_base/local_costmap/global_frame: odom
+ * /move_base/local_costmap/height: 4.0
+ * /move_base/local_costmap/inflation_layer/cost_scaling_factor: 4.0
+ * /move_base/local_costmap/inflation_layer/inflation_radius: 0.55
+ * /move_base/local_costmap/obstacle_layer/observation_sources: scan
+ * /move_base/local_costmap/obstacle_layer/scan/clearing: True
+ * /move_base/local_costmap/obstacle_layer/scan/data_type: LaserScan
+ * /move_base/local_costmap/obstacle_layer/scan/marking: True
+ * /move_base/local_costmap/obstacle_layer/scan/obstacle_range: 1.3
+ * /move_base/local_costmap/obstacle_layer/scan/raytrace_range: 1.4
+ * /move_base/local_costmap/obstacle_layer/scan/sensor_frame: base_Link
+ * /move_base/local_costmap/obstacle_layer/scan/topic: /scan
+ * /move_base/local_costmap/plugins: [{'name': 'obstac...
+ * /move_base/local_costmap/publish_frequency: 2.0
+ * /move_base/local_costmap/resolution: 0.05
+ * /move_base/local_costmap/robot_base_frame: base_Link
+ * /move_base/local_costmap/robot_radius: 0.28
+ * /move_base/local_costmap/rolling_window: True
+ * /move_base/local_costmap/transform_tolerance: 0.5
+ * /move_base/local_costmap/update_frequency: 5.0
+ * /move_base/local_costmap/width: 4.0
+ * /move_base/oscillation_distance: 0.2
+ * /move_base/oscillation_timeout: 10.0
+ * /move_base/planner_patience: 5.0
+ * /move_base/recovery_behavior_enabled: False
+ * /multifloor_manager/config_root: /home/m3tron/Desk...
+ * /multifloor_manager/initial_floor: 3F
+ * /multifloor_manager/tag_topic: /tag_detections
+ * /pointcloud_to_laserscan/angle_increment: 0.00872665
+ * /pointcloud_to_laserscan/angle_max: 3.14159
+ * /pointcloud_to_laserscan/angle_min: -3.14159
+ * /pointcloud_to_laserscan/concurrency_level: 1
+ * /pointcloud_to_laserscan/inf_epsilon: 1.0
+ * /pointcloud_to_laserscan/max_height: 0.2
+ * /pointcloud_to_laserscan/min_height: -0.2
+ * /pointcloud_to_laserscan/range_max: 1.35
+ * /pointcloud_to_laserscan/range_min: 0.3
+ * /pointcloud_to_laserscan/scan_time: 0.1
+ * /pointcloud_to_laserscan/target_frame: base_Link
+ * /pointcloud_to_laserscan/transform_tolerance: 0.05
+ * /pointcloud_to_laserscan/use_inf: True
+ * /rosdistro: noetic
+ * /rosversion: 1.17.4
+ * /stair_supervisor/accid: WF_TRON1A_632
+ * /stair_supervisor/config_dir: /home/m3tron/Desk...
+ * /stair_supervisor/websocket_url: ws://127.0.0.1:5000
+
+NODES
+  /
+    amcl (amcl/amcl)
+    apriltag_ros_continuous_node (apriltag_ros/apriltag_ros_continuous_node)
+    map_server (map_server/map_server)
+    mission_manager (mission_manager/mission_manager_node.py)
+    move_base (move_base/move_base)
+    multifloor_manager (multifloor_manager/multifloor_manager_node.py)
+    pointcloud_to_laserscan (pointcloud_to_laserscan/pointcloud_to_laserscan_node)
+    rviz (rviz/rviz)
+    stair_supervisor (stair_supervisor/stair_supervisor_node.py)
+
+[1mROS_MASTER_URI=http://10.192.1.2:11311[0m
+]2;/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/launch/system.launch http://10.192.1.2:11311
+[1mprocess[pointcloud_to_laserscan-1]: started with pid [40894][0m
+[1mprocess[apriltag_ros_continuous_node-2]: started with pid [40895][0m
+[1mprocess[map_server-3]: started with pid [40896][0m
+[1mprocess[amcl-4]: started with pid [40900][0m
+[1mprocess[move_base-5]: started with pid [40901][0m
+[1mprocess[multifloor_manager-6]: started with pid [40908][0m
+[1mprocess[stair_supervisor-7]: started with pid [40915][0m
+[1mprocess[mission_manager-8]: started with pid [40916][0m
+[1mprocess[rviz-9]: started with pid [40919][0m
+[rviz-9] killing on exit
+[mission_manager-8] killing on exit
+[stair_supervisor-7] killing on exit
+[multifloor_manager-6] killing on exit
+[move_base-5] killing on exit
+[amcl-4] killing on exit
+[map_server-3] killing on exit
+[apriltag_ros_continuous_node-2] killing on exit
+[pointcloud_to_laserscan-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m

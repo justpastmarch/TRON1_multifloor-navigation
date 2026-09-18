@@ -2,11 +2,13 @@ string stair_id
 uint8 UP=1
 uint8 DOWN=2
 uint8 direction
+string admission_token
 ---
 uint8 OK=0
 uint8 BUSY=1
 uint8 INVALID_GOAL=2
 uint8 CAPABILITY_DISABLED=3
+uint8 ENTRY_REJECTED=4
 uint8 STAIR_FAILED=5
 uint8 COMMUNICATION_LOST=8
 uint8 result_code

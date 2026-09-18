@@ -41,6 +41,7 @@ catkin_install_python(
   PROGRAMS
     scripts/multifloor_manager_node.py
     scripts/rviz_tf_reconnect.py
+    scripts/camera_info_stamp_relay.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

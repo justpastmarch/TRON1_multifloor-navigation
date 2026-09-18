@@ -24,6 +24,12 @@ from stair_supervisor.supervisor import (  # noqa: E402
     StairGoal,
     StairSupervisor,
 )
+from stair_supervisor.supervisor_types import AdmissionDecision  # noqa: E402
+
+
+class AllowAdmission:
+    def validate(self, _goal: StairGoal, _ownership_epoch: int) -> AdmissionDecision:
+        return AdmissionDecision(True, False, "admitted")
 
 
 class FakeClock:
@@ -99,6 +105,18 @@ def empty_configuration() -> StairSupervisorConfiguration:
 
 
 class StairConfigurationTransitionTest(unittest.TestCase):
+    def test_nonzero_legacy_alignment_is_rejected(self) -> None:
+        # Given: an otherwise valid profile that still requests a fixed entry turn.
+        fixture = Path(__file__).resolve().parents[3] / "test" / "fixtures" / "building_valid" / "stair_profiles.yaml"
+        document = yaml.safe_load(fixture.read_text(encoding="utf-8"))
+        document["profiles"][0]["alignment_yaw_rad"] = 0.40
+        root = write_root(yaml.safe_dump(document), robot_yaml())
+
+        # When/Then: startup rejects the obsolete motion command.
+        with self.assertRaises(StairConfigurationError) as context:
+            load_stair_configuration(root)
+        self.assertEqual(context.exception.field, "profiles[0].alignment_yaw_rad")
+
     def test_required_measured_profile_field_is_rejected_when_missing(self) -> None:
         # Given: a configured fixture profile with one continuity bound removed.
         fixture = Path(__file__).resolve().parents[3] / "test" / "fixtures" / "building_valid" / "stair_profiles.yaml"
@@ -166,7 +184,8 @@ class StairConfigurationTransitionTest(unittest.TestCase):
         # Given: a supervisor with no available stair profiles.
         transport = RecordingTransport()
         supervisor = StairSupervisor(
-            empty_configuration(), transport, lambda: False, FakeClock(), lambda _phase: None, 0.25
+            empty_configuration(), transport, lambda: False, FakeClock(), lambda _phase: None,
+            AllowAdmission(), 0.25
         )
 
         supervisor.start()
@@ -175,7 +194,7 @@ class StairConfigurationTransitionTest(unittest.TestCase):
         before_epoch = supervisor.ownership_epoch
 
         # When: a stair goal is requested while NAV owns the transport.
-        result = supervisor.traverse(StairGoal("missing", Direction.UP), lambda: False)
+        result = supervisor.traverse(StairGoal("missing", Direction.UP, "unused"), lambda: False)
 
         # Then: capability rejection leaves NAV ownership and transport untouched.
         self.assertEqual(result.code, ResultCode.CAPABILITY_DISABLED)
@@ -189,12 +208,13 @@ class StairConfigurationTransitionTest(unittest.TestCase):
         # Given: an empty-profile supervisor whose traversal lock is already held.
         transport = RecordingTransport()
         supervisor = StairSupervisor(
-            empty_configuration(), transport, lambda: False, FakeClock(), lambda _phase: None, 0.25
+            empty_configuration(), transport, lambda: False, FakeClock(), lambda _phase: None,
+            AllowAdmission(), 0.25
         )
         supervisor._traversal_lock.acquire()
         try:
             # When: a stair goal is requested while another traversal owns the lock.
-            result = supervisor.traverse(StairGoal("missing", Direction.UP), lambda: False)
+            result = supervisor.traverse(StairGoal("missing", Direction.UP, "unused"), lambda: False)
         finally:
             supervisor._traversal_lock.release()
 
@@ -205,7 +225,8 @@ class StairConfigurationTransitionTest(unittest.TestCase):
         # Given: a started empty-profile supervisor and a fresh NAV command.
         transport = RecordingTransport()
         supervisor = StairSupervisor(
-            empty_configuration(), transport, lambda: False, FakeClock(), lambda _phase: None, 0.25
+            empty_configuration(), transport, lambda: False, FakeClock(), lambda _phase: None,
+            AllowAdmission(), 0.25
         )
         supervisor.start()
         supervisor.accept_navigation(0.2, -0.1)

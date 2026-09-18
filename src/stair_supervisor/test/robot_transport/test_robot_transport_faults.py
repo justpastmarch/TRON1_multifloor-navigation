@@ -123,20 +123,16 @@ class RobotTransportFaultTest(unittest.TestCase):
         with self.assertRaises(TransportFault):
             transport.start()
 
-    def test_send_failure_latches_fault_and_blocks_later_nonzero(self) -> None:
-        # Given: a ready peer that fails its first nonzero twist send.
+    def test_send_failure_is_tolerated_then_latches_fault_after_outage_budget(self) -> None:
+        # Given: a ready peer that fails every twist send.
         clock = FakeClock()
 
-        def fail_nonzero(request: dict[str, JsonValue], socket: FakeWebSocket) -> None:
+        def fail_twist(request: dict[str, JsonValue], socket: FakeWebSocket) -> None:
             successful_mode_handler(request, socket)
-            if request["title"] == "request_twist" and request["data"] != {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-            }:
+            if request["title"] == "request_twist":
                 raise OSError("scripted interruption")
 
-        socket = FakeWebSocket(fail_nonzero)
+        socket = FakeWebSocket(fail_twist)
         transport, factory = make_transport(socket, clock)
         observed = []
         transport.observe_sent_frames(observed.append)
@@ -144,7 +140,15 @@ class RobotTransportFaultTest(unittest.TestCase):
         transport.update_twist(0.2, 0.0)
         successful_frame_count = len(observed)
 
-        # When: sending fails and repeated callers attempt to restart or resume.
+        # When: the first stream tick fails inside the outage budget.
+        transport.send_current()
+
+        # Then: the transport stays ready and no false-success frame is observed.
+        self.assertEqual(transport.state, "READY")
+        self.assertEqual(len(observed), successful_frame_count)
+
+        # When: time advances beyond the outage budget and another tick fails.
+        clock.sleep(0.26)
         with self.assertRaises(TransportFault):
             transport.send_current()
         sent_at_fault = len(socket.sent)

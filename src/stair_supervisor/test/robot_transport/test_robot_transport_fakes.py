@@ -47,8 +47,12 @@ class FakeWebSocket:
         self.inbound: List[Union[str, None, BaseException]] = []
         self.closed = False
         self.receive_timeouts: List[float] = []
+        self.fail_next_send_count = 0
 
     def send(self, payload: str) -> None:
+        if self.fail_next_send_count > 0:
+            self.fail_next_send_count -= 1
+            raise OSError("scripted send failure")
         parsed = json.loads(payload)
         assert isinstance(parsed, dict)
         self.sent_payloads.append(payload)
@@ -88,7 +92,10 @@ class FakeFactory:
 
 
 def make_transport(
-    socket: FakeWebSocket, clock: FakeClock, request_timeout: float = 0.05
+    socket: FakeWebSocket,
+    clock: FakeClock,
+    request_timeout: float = 0.05,
+    mode_attempts: int = 3,
 ) -> tuple[RobotTransport, FakeFactory]:
     """Build one transport with deterministic test-only policy."""
     factory = FakeFactory(socket)
@@ -104,6 +111,7 @@ def make_transport(
             watchdog_sec=0.25,
             startup_zero_repeats=2,
             close_zero_repeats=4,
+            mode_attempts=mode_attempts,
         ),
     )
     return RobotTransport(

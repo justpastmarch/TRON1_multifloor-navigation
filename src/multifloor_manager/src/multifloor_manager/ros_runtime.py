@@ -93,6 +93,7 @@ class RosEvidenceRuntime(RosEvidenceCallbacks):
         self.debug_publishers: Dict[str, rospy.Publisher] = {}
         self.state = FloorState.UNKNOWN
         self.current_floor = ""
+        self.state_detail = "waiting for initial map"
         self.publish_floor(FloorState.UNKNOWN, "waiting for initial map")
 
     def publish_floor(self, state: int, detail: str, floor_id: str = "") -> None:
@@ -104,7 +105,13 @@ class RosEvidenceRuntime(RosEvidenceCallbacks):
         message.detail = detail
         self.state = state
         self.current_floor = floor_id
+        self.state_detail = detail
         self.floor_state_publisher.publish(message)
+
+    def publish_heartbeat(self, _event: rospy.timer.TimerEvent) -> None:
+        """Refresh the current state without changing transition ownership."""
+        with self.condition:
+            self.publish_floor(self.state, self.state_detail, self.current_floor)
 
     def _publish_predicates(self, predicates) -> None:
         for predicate in predicates:

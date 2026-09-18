@@ -1,0 +1,10 @@
+{
+  "active_phase": "FORWARD_SEGMENT_1",
+  "bag": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_154342.bag",
+  "detail": "progress=-0.535491 threshold=4.771000 freshness=0.004617 reason=reverse distance progress",
+  "elapsed_sec": 3.8280129432678223,
+  "outcome": "FAULTED",
+  "profile": "stair_3f_4f_up",
+  "sample_count": 383,
+  "supervisor_state": "FAULT"
+}

@@ -4,6 +4,7 @@ project(mission_manager)
 find_package(catkin REQUIRED COMPONENTS
   actionlib
   actionlib_msgs
+  geometry_msgs
   message_generation
   move_base_msgs
   multifloor_manager
@@ -28,7 +29,7 @@ generate_messages(
 )
 
 catkin_package(
-  CATKIN_DEPENDS actionlib actionlib_msgs message_runtime move_base_msgs multifloor_manager nav_msgs rospy stair_supervisor std_msgs std_srvs
+  CATKIN_DEPENDS actionlib actionlib_msgs geometry_msgs message_runtime move_base_msgs multifloor_manager nav_msgs rospy stair_supervisor std_msgs std_srvs
 )
 
   catkin_install_python(
@@ -50,6 +51,8 @@ if(CATKIN_ENABLE_TESTING)
   catkin_add_nosetests(test/test_fsm.py)
   catkin_add_nosetests(test/test_navigation_executor.py)
   catkin_add_nosetests(test/test_ros_segments.py)
+  catkin_add_nosetests(test/test_stair_admission.py)
+  catkin_add_nosetests(test/test_stair_entry_gate.py)
   catkin_add_nosetests(test/test_mission_orchestrator.py)
   catkin_add_nosetests(test/test_runtime_gating.py)
   set(_mission_python_executable "${PYTHON_EXECUTABLE}")
@@ -68,6 +71,10 @@ if(CATKIN_ENABLE_TESTING)
   )
   add_rostest(
     test/mission_5f_rf_synthetic.test
+    DEPENDENCIES ${PROJECT_NAME}_generate_messages_py
+  )
+  add_rostest(
+    test/full_system_synthetic.test
     DEPENDENCIES ${PROJECT_NAME}_generate_messages_py
   )
   set(PYTHON_EXECUTABLE "${_mission_python_executable}")

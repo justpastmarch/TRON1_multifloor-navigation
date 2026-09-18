@@ -8,6 +8,8 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+from stair_supervisor.robot_transport import TransportFault
+
 from test_robot_transport_fakes import (
     FakeClock,
     FakeWebSocket,
@@ -222,6 +224,97 @@ class RobotTransportTest(unittest.TestCase):
                 ("request_enable_imu", {"enable": False}),
             ],
         )
+
+    def test_transient_twist_send_failure_is_tolerated_inside_budget(self) -> None:
+        # Given: a ready transport and one failed twist send inside the watchdog budget.
+        clock = FakeClock()
+        socket = FakeWebSocket(successful_mode_handler)
+        transport, _ = make_transport(socket, clock)
+        transport.start()
+        transport.update_twist(linear_mps=0.25, angular_radps=0.0)
+        socket.fail_next_send_count = 1
+
+        # When: the first stream tick fails but the next tick recovers before the budget expires.
+        transport.send_current()
+        self.assertFalse(transport.faulted)
+        transport.send_current()
+
+        # Then: the transport stays ready and the recovered command is sent.
+        self.assertFalse(transport.faulted)
+        self.assertEqual(transport.state, "READY")
+        twists = [
+            payload["data"]
+            for payload in socket.sent
+            if payload["title"] == "request_twist"
+        ]
+        self.assertEqual(twists[-1], {"x": 0.5, "y": 0.0, "z": 0.0})
+
+    def test_twist_send_failure_latches_fault_when_outage_budget_is_exhausted(self) -> None:
+        # Given: a ready transport whose sends fail until the watchdog budget expires.
+        clock = FakeClock()
+        socket = FakeWebSocket(successful_mode_handler)
+        transport, _ = make_transport(socket, clock)
+        transport.start()
+        transport.update_twist(linear_mps=0.25, angular_radps=0.0)
+        socket.fail_next_send_count = 100
+
+        # When: time advances beyond the 0.25 s outage budget and a tick is attempted.
+        clock.sleep(0.26)
+
+        # Then: the transport latches FAULT and refuses further motion.
+        with self.assertRaisesRegex(
+            TransportFault, "twist send failed after watchdog budget"
+        ):
+            transport.send_current()
+        self.assertTrue(transport.faulted)
+        self.assertEqual(transport.state, "FAULT")
+
+    def test_mode_request_succeeds_after_one_transient_send_failure(self) -> None:
+        # Given: a ready transport whose first stair-mode send fails.
+        clock = FakeClock()
+        socket = FakeWebSocket(successful_mode_handler)
+        transport, _ = make_transport(socket, clock, request_timeout=0.05)
+        transport.start()
+        socket.fail_next_send_count = 1
+
+        # When: the stair mode request is issued.
+        transport.request_stair_mode(True)
+
+        # Then: the retry succeeds and the transport remains ready.
+        self.assertFalse(transport.faulted)
+        self.assertEqual(transport.state, "READY")
+        stair_sends = [
+            payload
+            for payload in socket.sent
+            if payload["title"] == "request_stair_mode"
+        ]
+        # Only the successful send is recorded; the failed attempt is not logged.
+        self.assertEqual(len(stair_sends), 1)
+
+    def test_mode_request_latches_fault_after_all_attempts_fail(self) -> None:
+        # Given: a ready transport whose mode sends never succeed.
+        clock = FakeClock()
+        socket = FakeWebSocket(successful_mode_handler)
+        transport, _ = make_transport(socket, clock, mode_attempts=3)
+        transport.start()
+        socket.fail_next_send_count = 100
+
+        # When: the stair mode request exhausts its configured attempts.
+        with self.assertRaisesRegex(
+            TransportFault, "request_stair_mode timed out before verified status"
+        ):
+            transport.request_stair_mode(True)
+
+        # Then: the transport latches FAULT after the configured number of sends.
+        self.assertTrue(transport.faulted)
+        self.assertEqual(transport.state, "FAULT")
+        stair_sends = [
+            payload
+            for payload in socket.sent
+            if payload["title"] == "request_stair_mode"
+        ]
+        # No successful sends were recorded; all attempts failed.
+        self.assertEqual(len(stair_sends), 0)
 
 
 if __name__ == "__main__":

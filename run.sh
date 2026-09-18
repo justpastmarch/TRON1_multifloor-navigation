@@ -97,7 +97,7 @@ local_check() {
     require_configuration
     python3 "${ROOT}/validate_bundle.py" --site-config-root "$FIXTURE_ROOT"
     local command_name
-    for command_name in python3 ssh timeout flock ip awk pgrep roslaunch rostopic rospack rosnode; do
+    for command_name in python3 ssh timeout flock ip awk pgrep roscore roslaunch rostopic rospack rosnode; do
         require_command "$command_name"
     done
     source_workspace
@@ -125,7 +125,7 @@ remote_check() {
     local remote_epoch local_epoch delta
     printf '[SSH] connecting to mini PC: %s\n' "$target"
     ssh -o BatchMode=yes -o ConnectTimeout=5 "$target" \
-        "test -r /opt/ros/noetic/setup.bash && test -r '${MINI_PC_WORKSPACE}/devel/setup.bash' && test -r '${MINI_PC_WORKSPACE}/src/sensor_integration/launch/wf_mapping.launch'"
+        "test -r /opt/ros/noetic/setup.bash && test -r '${MINI_PC_WORKSPACE}/devel/setup.bash' && test -r '${MINI_PC_WORKSPACE}/src/sensor_integration/launch/wf_mapping.launch' && command -v tmux >/dev/null"
     ssh -o BatchMode=yes -o ConnectTimeout=5 "$target" \
         "source /opt/ros/noetic/setup.bash; source '${MINI_PC_WORKSPACE}/devel/setup.bash'; export ROS_MASTER_URI=http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT}; export ROS_IP=${MINI_PC_ROS_IP}; export D435F_SERIAL=${D435F_SERIAL}; unset ROS_HOSTNAME; roslaunch --files sensor_integration wf_mapping.launch >/dev/null; roslaunch --files sensor_integration d435f.launch >/dev/null"
     if [[ "$(ssh -o BatchMode=yes "$target" 'timedatectl show -p NTPSynchronized --value')" != "yes" ]]; then
@@ -162,38 +162,22 @@ remote_check
 
 SSH_TARGET="${MINI_PC_USER}@${MINI_PC_HOST}"
 ROS_MASTER_URI="http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT}"
-ROS_IP="$(ip -4 route get "$ROS_MASTER_HOST" | awk '{for (i=1; i<=NF; i++) if ($i=="src") {print $(i+1); exit}}')"
+ROS_IP="$(ip -4 route get "$MINI_PC_HOST" | awk '{for (i=1; i<=NF; i++) if ($i=="src") {print $(i+1); exit}}')"
 if [[ -z "$ROS_IP" ]]; then
     printf 'Cannot determine the workstation ROS_IP.\n' >&2
+    exit 1
+fi
+if [[ "$ROS_MASTER_HOST" != "$ROS_IP" ]]; then
+    printf 'ROS master must use the workstation LAN address: expected=%s actual=%s\n' \
+        "$ROS_IP" "$ROS_MASTER_HOST" >&2
     exit 1
 fi
 export ROS_MASTER_URI ROS_IP
 unset ROS_HOSTNAME
 
-SENSOR_STACK_ACTION="$(ssh -o BatchMode=yes -o ConnectTimeout=5 "$SSH_TARGET" \
-     "mapping_status=; if pgrep -f '[r]oslaunch.*wf_mapping.launch' >/dev/null; then mapping_status=reused; else nohup setsid bash -lc 'source /opt/ros/noetic/setup.bash; source ${MINI_PC_WORKSPACE}/devel/setup.bash; export ROS_MASTER_URI=http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT}; export ROS_IP=${MINI_PC_ROS_IP}; export D435F_SERIAL=${D435F_SERIAL}; unset ROS_HOSTNAME; exec roslaunch sensor_integration wf_mapping.launch' >/tmp/tron1-system.log 2>&1 < /dev/null & mapping_status='start requested'; fi; printf 'mapping=%s' \"$mapping_status\"")"
-printf '[SSH] mini PC sensor stack: %s\n' "$SENSOR_STACK_ACTION"
-
-for _ in {1..30}; do
-    timeout 3s rostopic list >/dev/null 2>&1 && break
-    sleep 1
-done
-if ! timeout 3s rostopic list >/dev/null 2>&1; then
-    printf 'ROS master is unavailable: %s\n' "$ROS_MASTER_URI" >&2
-    exit 1
-fi
-
 exec 9>/tmp/tron1_system.lock
 if ! flock -n 9; then
     printf 'TRON1 mission system is already running.\n' >&2
-    exit 1
-fi
-
-if pgrep -f '[a]priltag_ros_continuous_node' >/dev/null 2>&1 || \
-   timeout 3s rosnode list 2>/dev/null | awk '$1 == "/apriltag_ros_continuous_node" {found=1} END {exit !found}'; then
-    printf '%s\n' \
-        'AprilTag detector is already running.' \
-        'Stop the existing detector launch first; system.launch owns exactly one detector.' >&2
     exit 1
 fi
 
@@ -224,6 +208,30 @@ cleanup() {
     done
 }
 trap cleanup INT TERM EXIT
+
+start_component ros_master roscore -p "$ROS_MASTER_PORT"
+master_pid="$LAST_PID"
+for _ in {1..30}; do
+    timeout 3s rostopic list >/dev/null 2>&1 && break
+    sleep 1
+done
+if ! kill -0 "$master_pid" 2>/dev/null || ! timeout 3s rostopic list >/dev/null 2>&1; then
+    printf 'Workstation ROS master failed to start: %s\n' "$ROS_MASTER_URI" >&2
+    exit 1
+fi
+printf '[START] workstation ROS master: %s\n' "$ROS_MASTER_URI"
+
+SENSOR_STACK_ACTION="$(ssh -o BatchMode=yes -o ConnectTimeout=5 "$SSH_TARGET" \
+     "mapping_status=; sensor_ready=1; source /opt/ros/noetic/setup.bash && source ${MINI_PC_WORKSPACE}/devel/setup.bash && export ROS_MASTER_URI=http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT} && export ROS_IP=${MINI_PC_ROS_IP} && unset ROS_HOSTNAME || sensor_ready=0; if [ \"\$sensor_ready\" = 1 ]; then for topic in /livox/lidar /tron/wheel_odom_raw /scan ${CAMERA_IMAGE_TOPIC} ${CAMERA_INFO_TOPIC}; do timeout 5s rostopic echo -n 1 \"\$topic\" >/dev/null 2>&1 || { sensor_ready=0; break; }; done; fi; if [ \"\$sensor_ready\" = 1 ]; then mapping_status=reused; else tmux kill-session -t wf_mapping 2>/dev/null || true; pkill -INT -f '^/usr/bin/python3 /opt/ros/noetic/bin/roslaunch sensor_integration wf_mapping.launch$' 2>/dev/null || true; sleep 5; pkill -TERM -f '^/usr/bin/python3 /opt/ros/noetic/bin/roslaunch sensor_integration wf_mapping.launch$' 2>/dev/null || true; tmux new-session -d -s wf_mapping 'source /opt/ros/noetic/setup.bash; source ${MINI_PC_WORKSPACE}/devel/setup.bash; export ROS_MASTER_URI=http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT}; export ROS_IP=${MINI_PC_ROS_IP}; export D435F_SERIAL=${D435F_SERIAL}; unset ROS_HOSTNAME; exec roslaunch sensor_integration wf_mapping.launch'; mapping_status='restart requested'; fi; printf 'mapping=%s' \"\$mapping_status\"")"
+printf '[SSH] mini PC sensor stack: %s\n' "$SENSOR_STACK_ACTION"
+
+if pgrep -f '[a]priltag_ros_continuous_node' >/dev/null 2>&1 || \
+   timeout 3s rosnode list 2>/dev/null | awk '$1 == "/apriltag_ros_continuous_node" {found=1} END {exit !found}'; then
+    printf '%s\n' \
+        'AprilTag detector is already running.' \
+        'Stop the existing detector launch first; system.launch owns exactly one detector.' >&2
+    exit 1
+fi
 
 start_component robot_tunnel ssh -N -o BatchMode=yes -o ExitOnForwardFailure=yes \
     -L "127.0.0.1:${LOCAL_WS_PORT}:${ROBOT_HOST}:${ROBOT_WS_PORT}" "$SSH_TARGET"
@@ -262,7 +270,7 @@ wait_for_value() {
     local topic="$1"
     local expected="$2"
     local actual
-    actual="$(timeout 30s rostopic echo -n 1 "$topic" 2>/dev/null | tr -d '[:space:]')"
+    actual="$(timeout 30s rostopic echo -n 1 "$topic" 2>/dev/null | tr -cd '[:digit:]' || true)"
     if [[ "$actual" != "$expected" ]]; then
         printf 'Readiness state mismatch: %s expected=%s actual=%s\n' \
             "$topic" "$expected" "$actual" >&2
@@ -280,7 +288,7 @@ wait_for_fresh_message() {
             "$topic" "$message_type" "$actual_type" >&2
         return 1
     fi
-    if ! timeout 12s rostopic echo -n 1 "$topic" 2>/dev/null | \
+    if ! timeout 20s rostopic echo -n 1 "$topic" 2>/dev/null | \
         python3 -c '
 import re
 import sys
@@ -302,9 +310,45 @@ if stamp == 0 or age > 2.0:
     fi
 }
 
+wait_for_action_server() {
+    local topic="$1"
+    local actual_type publishers
+    for _ in {1..60}; do
+    actual_type="$(timeout 15s rostopic type "$topic" 2>/dev/null || true)"
+        if [[ "$actual_type" == "actionlib_msgs/GoalStatusArray" ]]; then
+            break
+        fi
+        sleep 1
+    done
+    if [[ "$actual_type" != "actionlib_msgs/GoalStatusArray" ]]; then
+        printf 'Action status topic type mismatch: %s expected=actionlib_msgs/GoalStatusArray actual=%s\n' \
+            "$topic" "$actual_type" >&2
+        return 1
+    fi
+    local raw
+    for _ in {1..30}; do
+        raw="$(timeout 5s rostopic info "$topic" 2>/dev/null || true)"
+        if [[ -n "$raw" ]]; then
+            publishers="$(printf '%s' "$raw" | \
+                awk '/^Publishers:/{active=1; next} /^Subscribers:/{active=0} active && /^ \* /{count++} END{print count+0}')"
+        else
+            publishers=0
+        fi
+        if (( publishers >= 1 )); then
+            break
+        fi
+        sleep 1
+    done
+    if (( publishers < 1 )); then
+        printf 'Action server has no publisher: %s\n' "$topic" >&2
+        return 1
+    fi
+}
+
 for topic in /mission/status /multifloor/floor_transition/status /stair_traversal/status; do
-    wait_for_stream "$topic"
+    wait_for_action_server "$topic"
 done
+python3 "${ROOT}/verify_action_servers.py"
 wait_for_value /multifloor/floor_state/state 2
 wait_for_value /stair_supervisor/state/state 1
 for topic in /scan /tron/wheel_odom_raw /tf "$TAG_DETECTIONS_TOPIC"; do

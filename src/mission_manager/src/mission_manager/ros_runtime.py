@@ -7,6 +7,7 @@ from pathlib import Path
 
 import rospkg
 import rospy
+from multifloor_manager.readiness import DEFAULT_READINESS_POLICY
 
 from mission_manager.mission_action_server import MissionActionServer
 from mission_manager.mission_orchestrator import MissionOrchestrator, MissionOrchestratorSettings
@@ -16,6 +17,8 @@ from mission_manager.ros_state import RosStateMonitor
 from mission_manager.route_planner import BuildingPlanner
 from mission_manager.scan_recorder import ScanRecorder
 from mission_manager.site_config import ConfigurationRoots, load_site_configuration_from_roots
+from mission_manager.stair_admission import RosStairAdmissionBroker
+from mission_manager.stair_entry_gate import StairEntryPolicy
 
 
 @dataclass(frozen=True)
@@ -36,11 +39,13 @@ def _configuration_roots() -> ConfigurationRoots:
     profile = rospy.get_param("~config_profile", "production")
     packages = rospkg.RosPack()
     if profile == "production":
-        return ConfigurationRoots(
-            Path(packages.get_path("mission_manager")) / "config",
-            Path(packages.get_path("multifloor_manager")) / "config",
-            Path(packages.get_path("stair_supervisor")) / "config",
-        )
+        mission_root = Path(packages.get_path("mission_manager")) / "config"
+        multifloor_root = Path(packages.get_path("multifloor_manager")) / "config"
+        # Allow integration tests to substitute a validated stair fixture while
+        # keeping the shipped production stair profile fail-closed.
+        stair_override = rospy.get_param("~stair_config_root", "")
+        stair_root = Path(stair_override) if stair_override else Path(packages.get_path("stair_supervisor")) / "config"
+        return ConfigurationRoots(mission_root, multifloor_root, stair_root)
     if profile == "test_fixture":
         if not rospy.get_param("~allow_test_fixture", False):
             raise RuntimeError("test_fixture profile requires allow_test_fixture=true")
@@ -70,6 +75,17 @@ def create_mission_action_server() -> MissionActionServer:
         float(rospy.get_param("~state_freshness_sec", 2.0)),
         float(rospy.get_param("~stationary_speed_threshold", 0.02)),
         float(rospy.get_param("~handoff_timeout", 2.0)),
+        StairEntryPolicy(
+            float(rospy.get_param("/move_base/TrajectoryPlannerROS/xy_goal_tolerance", 0.25)),
+            float(rospy.get_param("/move_base/TrajectoryPlannerROS/yaw_goal_tolerance", 0.2)),
+            float(DEFAULT_READINESS_POLICY.max_age_ns) / 1_000_000_000.0,
+            DEFAULT_READINESS_POLICY.max_covariance_x,
+            DEFAULT_READINESS_POLICY.max_covariance_y,
+            DEFAULT_READINESS_POLICY.max_covariance_yaw,
+            DEFAULT_READINESS_POLICY.required_pose_samples,
+            DEFAULT_READINESS_POLICY.max_linear_speed,
+            DEFAULT_READINESS_POLICY.max_angular_speed,
+        ),
     )
     navigation = NavigationExecutor.create_ros(
         RosNavigationSources(state.floor_state, state.supervisor_state, state)
@@ -82,6 +98,10 @@ def create_mission_action_server() -> MissionActionServer:
             configuration.scan_profiles,
             configuration.stair_profiles,
             ScanRecorder(settings.scan_output_base),
+            RosStairAdmissionBroker(
+                rospy.get_param("~stair_admission_service", "/mission/validate_stair_admission"),
+                float(rospy.get_param("~stair_admission_lifetime_sec", 1.0)),
+            ),
         )
     )
     orchestrator = MissionOrchestrator(

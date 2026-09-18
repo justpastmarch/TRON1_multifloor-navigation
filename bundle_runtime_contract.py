@@ -55,20 +55,22 @@ def validate_launch(root: Path) -> None:
         fail(f"unexpected navigation nodes: {sorted(navigation_nodes)}")
     system = parse_xml(root / "src/mission_manager/launch/system.launch", root)
     includes = {include.get("file") for include in system.findall("include")}
-    expected_includes = {f"$(find multifloor_manager)/launch/{name}" for name in ("navigation.launch", "pointcloud_to_laserscan.launch", "apriltag.launch")}
+    expected_includes = {f"$(find multifloor_manager)/launch/{name}" for name in ("navigation.launch", "apriltag.launch")}
     if includes != expected_includes:
         fail(f"system launch include mismatch: {sorted(includes)}")
     direct_nodes = {(node.get("pkg"), node.get("type"), node.get("name")) for node in system.findall("node")}
     expected_nodes = {(name, f"{name}_node.py", name) for name in EXPECTED_PACKAGES} | {("rviz", "rviz", "rviz")}
     if direct_nodes != expected_nodes:
         fail(f"system launch node mismatch: {sorted(direct_nodes)}")
+    # /scan is produced by the mini PC sensor stack (mid360s_laserscan).
+    # The local launch graph must not add a second publisher.
     scan_publishers = []
     for launch_path in launch_root.glob("*.launch"):
         for node in parse_xml(launch_path, root).findall(".//node"):
             if any(remap.get("from") == "scan" and remap.get("to") == "/scan" for remap in node.findall("remap")):
                 scan_publishers.append((node.get("pkg"), node.get("type")))
-    if scan_publishers != [("pointcloud_to_laserscan", "pointcloud_to_laserscan_node")]:
-        fail(f"expected one /scan publisher declaration: {scan_publishers}")
+    if scan_publishers:
+        fail(f"local /scan publisher declarations must be empty; mini PC owns /scan: {scan_publishers}")
 
 
 def validate_forbidden_runtime(root: Path) -> None:

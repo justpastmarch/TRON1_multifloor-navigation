@@ -1,0 +1,10 @@
+{
+  "active_phase": "FORWARD_SEGMENT_1",
+  "bag": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_154342.bag",
+  "detail": "progress=0.000000 threshold=0.000000 freshness=inf reason=odometry step",
+  "elapsed_sec": 12.242274045944214,
+  "outcome": "FAULTED",
+  "profile": "stair_3f_4f_up",
+  "sample_count": 1222,
+  "supervisor_state": "FAULT"
+}

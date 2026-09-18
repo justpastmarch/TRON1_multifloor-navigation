@@ -207,7 +207,7 @@ def _load_profiles(root: Path) -> Tuple[StairProfile, ...]:
             item["enabled"],
             _positive(item, "linear_speed", path, field),
             _positive(item, "angular_speed", path, field),
-            _nonzero(item, "alignment_yaw_rad", path, field),
+            _number(item["alignment_yaw_rad"], path, field + ".alignment_yaw_rad"),
             _nonzero(item, "flight_1_distance_m", path, field),
             _positive(item, "landing_dwell_sec", path, field),
             _nonzero(item, "landing_turn_yaw_rad", path, field),
@@ -223,6 +223,8 @@ def _load_profiles(root: Path) -> Tuple[StairProfile, ...]:
         )
         if profile.max_sample_gap_sec > profile.sensor_freshness_sec:
             raise _error(path, field + ".max_sample_gap_sec", "must not exceed sensor_freshness_sec")
+        if profile.alignment_yaw_rad != 0.0:
+            raise _error(path, field + ".alignment_yaw_rad", "must be zero; entry heading is validated before stair ownership")
         result.append(profile)
     if not result:
         raise _error(path, "profiles", "must not be empty")

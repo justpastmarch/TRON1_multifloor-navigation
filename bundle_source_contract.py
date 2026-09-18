@@ -13,6 +13,7 @@ EXPECTED_PACKAGES = frozenset({"mission_manager", "multifloor_manager", "stair_s
 EXPECTED_NODE_INITIALIZERS = frozenset(
     {
         ("src/mission_manager/scripts/mission_manager_node.py", "mission_manager"),
+        ("src/multifloor_manager/scripts/camera_info_stamp_relay.py", "camera_info_stamp_relay"),
         ("src/multifloor_manager/scripts/multifloor_manager_node.py", "multifloor_manager"),
         ("src/stair_supervisor/scripts/stair_supervisor_node.py", "stair_supervisor"),
     }
@@ -35,10 +36,12 @@ ACTION_CONTRACTS = {
         "string floor_id", "uint64 map_generation", "string reason", "---", "string phase", "string detail",
     ),
     "src/stair_supervisor/action/StairTraversal.action": (
-        "string stair_id", "uint8 UP=1", "uint8 DOWN=2", "uint8 direction", "---", "uint8 OK=0",
+        "string stair_id", "uint8 UP=1", "uint8 DOWN=2", "uint8 direction",
+        "string admission_token", "---", "uint8 OK=0",
         "uint8 BUSY=1", "uint8 INVALID_GOAL=2", "uint8 CAPABILITY_DISABLED=3",
-        "uint8 STAIR_FAILED=5", "uint8 COMMUNICATION_LOST=8", "uint8 result_code",
-        "string reason", "uint64 ownership_epoch", "---", "string phase", "string detail",
+        "uint8 ENTRY_REJECTED=4", "uint8 STAIR_FAILED=5", "uint8 COMMUNICATION_LOST=8",
+        "uint8 result_code", "string reason", "uint64 ownership_epoch", "---",
+        "string phase", "string detail",
     ),
 }
 

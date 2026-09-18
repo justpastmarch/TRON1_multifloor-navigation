@@ -3,14 +3,14 @@ configured: true
 profiles:
   - &up
     {id: cautious_up, direction: UP, enabled: true, linear_speed: 0.12, angular_speed: 0.25,
-     alignment_yaw_rad: 0.40, flight_1_distance_m: 1.00, landing_dwell_sec: 0.20,
+     alignment_yaw_rad: 0.0, flight_1_distance_m: 1.00, landing_dwell_sec: 0.20,
      landing_turn_yaw_rad: 0.50, flight_2_distance_m: 0.80, exit_dwell_sec: 0.20,
      distance_tolerance_m: 0.02, yaw_tolerance_rad: 0.02, sensor_freshness_sec: 0.20,
      max_sample_gap_sec: 0.15,
      max_odom_step_m: 0.40, max_yaw_step_rad: 0.30, timeout_sec: 60.0}
   - &down
     {id: cautious_down, direction: DOWN, enabled: true, linear_speed: 0.10, angular_speed: 0.20,
-     alignment_yaw_rad: -0.40, flight_1_distance_m: -1.00, landing_dwell_sec: 0.20,
+     alignment_yaw_rad: 0.0, flight_1_distance_m: -1.00, landing_dwell_sec: 0.20,
      landing_turn_yaw_rad: -0.50, flight_2_distance_m: -0.80, exit_dwell_sec: 0.20,
      distance_tolerance_m: 0.02, yaw_tolerance_rad: 0.02, sensor_freshness_sec: 0.20,
      max_sample_gap_sec: 0.15,

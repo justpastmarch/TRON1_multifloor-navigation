@@ -10,6 +10,7 @@ from .configuration import StairProfile, StairSupervisorConfiguration
 from .robot_transport import TransportFault
 from .stair_evidence import EvidenceReport, Phase
 from .supervisor_types import (
+    AdmissionValidator,
     CommandTransport,
     PhaseEvidence,
     ResultCode,
@@ -34,6 +35,7 @@ class StairSupervisor:
         evidence: PhaseEvidence,
         clock: SupervisorClock,
         feedback: Callable[[EvidenceReport], None],
+        admission: AdmissionValidator,
         nav_freshness_sec: float,
         turn_linear_mps: float = 0.0,
     ) -> None:
@@ -43,6 +45,7 @@ class StairSupervisor:
         self._evidence = evidence
         self._clock = clock
         self._feedback = feedback
+        self._admission = admission
         self._nav_freshness_sec = nav_freshness_sec
         self._turn_linear_mps = turn_linear_mps
         self._state = SupervisorState.DISARMED
@@ -133,6 +136,18 @@ class StairSupervisor:
             with self._state_lock:
                 if self._state is not SupervisorState.NAV:
                     return TraversalResult(ResultCode.BUSY, "supervisor is not in NAV")
+                ownership_epoch = self._ownership_epoch
+            admission = self._admission.validate(goal, ownership_epoch)
+            if not admission.accepted:
+                code = (
+                    ResultCode.COMMUNICATION_LOST
+                    if admission.communication_error
+                    else ResultCode.ENTRY_REJECTED
+                )
+                return TraversalResult(code, admission.reason)
+            with self._state_lock:
+                if self._state is not SupervisorState.NAV or self._ownership_epoch != ownership_epoch:
+                    return TraversalResult(ResultCode.ENTRY_REJECTED, "stair admission ownership changed")
                 self._state = SupervisorState.STAIR
                 self._latest_nav = None
             return self._execute_profile(profile, cancellation_requested)
@@ -186,13 +201,12 @@ class StairSupervisor:
             profile.angular_speed,
             self._configuration.robot.websocket_full_scale.angular_radps,
         )
-        alignment_angular = math.copysign(angular, profile.alignment_yaw_rad)
         first_linear = math.copysign(linear, profile.flight_1_distance_m)
         landing_angular = math.copysign(angular, profile.landing_turn_yaw_rad)
         second_linear = math.copysign(linear, profile.flight_2_distance_m)
         commands = {
             Phase.VERIFY_ENTRY: (0.0, 0.0),
-            Phase.ALIGN: (0.0, alignment_angular),
+            Phase.ALIGN: (0.0, 0.0),
             Phase.FORWARD_SEGMENT_1: (first_linear, 0.0),
             Phase.LANDING: (0.0, 0.0),
             Phase.TURN_TO_NEXT_FLIGHT: (min(self._turn_linear_mps, linear), landing_angular),

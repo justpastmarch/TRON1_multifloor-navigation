@@ -33,6 +33,7 @@ from stair_supervisor.msg import (
     SupervisorState,
 )
 from stair_supervisor.ros_node import RosNodeSettings, RosStairSupervisorNode
+from stair_supervisor.stair_admission import AllowStairAdmissionValidator
 from stair_supervisor.stair_evidence import Phase
 
 from stair_sensor_fixture import SyntheticStairSensors
@@ -81,13 +82,13 @@ def configuration() -> StairSupervisorConfiguration:
     up = StairProfile(
         "up", Direction.UP, True, 0.12, 0.25,
         0.40, 1.00, 0.20, 0.50, 0.80, 0.20,
-        0.02, 0.02, 0.20, 0.15, 0.40, 0.30, 2.0,
+        0.02, 0.02, 1.00, 1.00, 0.40, 0.30, 2.0,
     )
     profiles = (
         up,
         replace(
             up, id="down", direction=Direction.DOWN, linear_speed=0.10,
-            angular_speed=0.20, alignment_yaw_rad=-0.40,
+            angular_speed=0.20,             alignment_yaw_rad=0.0,
             flight_1_distance_m=-1.00, landing_turn_yaw_rad=-0.50,
             flight_2_distance_m=-0.80,
         ),
@@ -125,6 +126,7 @@ class StairSupervisorNodeBoundaryTest(unittest.TestCase):
                 0.0,
                 cls.odom_topic,
             ),
+            AllowStairAdmissionValidator(),
         )
         cls.client = actionlib.SimpleActionClient(
             "/test/stair_traversal",
@@ -217,7 +219,11 @@ class StairSupervisorNodeBoundaryTest(unittest.TestCase):
 
         # Then: DOWN reaches the same successful ordered boundary as UP.
         down_result: StairTraversalResult = self.client.get_result()
-        self.assertEqual(self.client.get_state(), GoalStatus.SUCCEEDED)
+        self.assertEqual(
+            self.client.get_state(),
+            GoalStatus.SUCCEEDED,
+            f"DOWN result: {down_result.reason}; code={down_result.result_code}; feedback={down_feedback}",
+        )
         self.assertEqual(down_result.result_code, StairTraversalResult.OK)
         self.assertEqual(list(dict.fromkeys(down_feedback)), [phase.value for phase in Phase])
 

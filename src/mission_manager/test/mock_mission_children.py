@@ -3,23 +3,29 @@
 
 from __future__ import annotations
 
+import math
+from pathlib import Path
 import threading
 
 import actionlib
-from move_base_msgs.msg import MoveBaseAction, MoveBaseResult
+from geometry_msgs.msg import PoseWithCovarianceStamped
+from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal, MoveBaseResult
 from multifloor_manager.msg import (
     FloorState,
     FloorTransitionAction,
     FloorTransitionResult,
 )
+from multifloor_manager.readiness import DEFAULT_READINESS_POLICY
 from nav_msgs.msg import Odometry
 import rospy
 from stair_supervisor.msg import (
     StairTraversalAction,
+    StairTraversalGoal,
     StairTraversalResult,
     SupervisorState,
 )
 from std_srvs.srv import Empty, EmptyResponse, Trigger, TriggerResponse
+import yaml
 
 
 class MockMissionChildren:
@@ -28,9 +34,13 @@ class MockMissionChildren:
     def __init__(self) -> None:
         self._lock = threading.RLock()
         self._execution_lock = threading.RLock()
+        fixture_root = Path(rospy.get_param("~fixture_config_root", "test/fixtures/building_valid"))
+        self._locations = self._load_locations(fixture_root)
+        self._stairs = self._load_stairs(fixture_root)
         self._floor_id = rospy.get_param("~initial_floor", "3F")
         self._generation = 1
         self._nav_attempt = 0
+        self._current_location_id = rospy.get_param("~initial_location", "home_3f")
         self._floor_pub = rospy.Publisher(
             "/multifloor/floor_state", FloorState, queue_size=1, latch=True
         )
@@ -39,6 +49,9 @@ class MockMissionChildren:
         )
         self._odom_pub = rospy.Publisher(
             "/tron/wheel_odom_raw", Odometry, queue_size=1, latch=True
+        )
+        self._amcl_pub = rospy.Publisher(
+            "/amcl_pose", PoseWithCovarianceStamped, queue_size=1, latch=True
         )
         self._clear = rospy.Service("/move_base/clear_costmaps", Empty, self._clear_costmaps)
         self._nav = actionlib.SimpleActionServer(
@@ -66,6 +79,38 @@ class MockMissionChildren:
         )
         self._timer = rospy.Timer(rospy.Duration(0.05), self._publish_state)
         rospy.on_shutdown(self.shutdown)
+
+    @staticmethod
+    def _load_locations(root: Path) -> dict[str, dict[str, float]]:
+        path = root / "locations.yaml"
+        document = yaml.safe_load(path.read_text(encoding="utf-8"))
+        return {
+            item["id"]: {
+                "x": float(item["x"]),
+                "y": float(item["y"]),
+                "yaw": float(item["yaw"]),
+                "floor_id": str(item["floor_id"]),
+            }
+            for item in document["locations"]
+        }
+
+    @staticmethod
+    def _load_stairs(root: Path) -> dict[str, dict]:
+        path = root / "stairs.yaml"
+        document = yaml.safe_load(path.read_text(encoding="utf-8"))
+        stairs: dict[str, dict] = {}
+        for item in document["stairs"]:
+            stairs[item["id"]] = {
+                "from_floor": item["from_floor"],
+                "to_floor": item["to_floor"],
+                "up_profile_id": item.get("up_profile_id"),
+                "down_profile_id": item.get("down_profile_id"),
+                "endpoints": {
+                    floor: endpoint
+                    for floor, endpoint in item["endpoints"].items()
+                },
+            }
+        return stairs
 
     def shutdown(self) -> None:
         """Stop fixture timers before rospy closes their publishers."""
@@ -133,8 +178,43 @@ class MockMissionChildren:
             )
         )
         self._odom_pub.publish(Odometry())
+        self._publish_amcl_pose()
 
-    def _execute_nav(self, _goal: MoveBaseAction.Goal) -> None:
+    def _publish_amcl_pose(self) -> None:
+        location = self._locations.get(self._current_location_id)
+        if location is None:
+            return
+        pose = PoseWithCovarianceStamped()
+        pose.header.stamp = rospy.Time.now()
+        pose.header.frame_id = "map"
+        pose.pose.pose.position.x = location["x"]
+        pose.pose.pose.position.y = location["y"]
+        half_yaw = location["yaw"] / 2.0
+        z = math.sin(half_yaw)
+        w = math.cos(half_yaw)
+        norm = math.hypot(z, w)
+        pose.pose.pose.orientation.z = z / norm
+        pose.pose.pose.orientation.w = w / norm
+        pose.pose.covariance[0] = DEFAULT_READINESS_POLICY.max_covariance_x * 0.5
+        pose.pose.covariance[7] = DEFAULT_READINESS_POLICY.max_covariance_y * 0.5
+        pose.pose.covariance[35] = DEFAULT_READINESS_POLICY.max_covariance_yaw * 0.5
+        self._amcl_pub.publish(pose)
+
+    def _set_current_location(self, location_id: str) -> None:
+        if location_id in self._locations:
+            with self._lock:
+                self._current_location_id = location_id
+                self._floor_id = self._locations[location_id]["floor_id"]
+
+    def _location_id_from_nav_goal(self, goal: MoveBaseGoal) -> str | None:
+        x = goal.target_pose.pose.position.x
+        y = goal.target_pose.pose.position.y
+        for location_id, location in self._locations.items():
+            if abs(location["x"] - x) < 1e-3 and abs(location["y"] - y) < 1e-3:
+                return location_id
+        return None
+
+    def _execute_nav(self, goal: MoveBaseGoal) -> None:
         with self._execution_lock:
             attempt = self._increment("/mission_test/nav_count")
             scenario = self._scenario()
@@ -149,9 +229,10 @@ class MockMissionChildren:
             if scenario == "nav_failure":
                 self._nav.set_aborted(MoveBaseResult())
                 return
+            self._set_current_location(self._location_id_from_nav_goal(goal) or self._current_location_id)
             self._nav.set_succeeded(MoveBaseResult())
 
-    def _execute_stair(self, _goal: StairTraversalAction.Goal) -> None:
+    def _execute_stair(self, goal: StairTraversalAction.Goal) -> None:
         with self._execution_lock:
             self._increment("/mission_test/stair_count")
             scenario = self._scenario()
@@ -212,6 +293,9 @@ class MockMissionChildren:
                     )
                 )
                 return
+            stair = self._stairs.get(goal.transition_id, {})
+            endpoint = stair.get("endpoints", {}).get(goal.target_floor, {})
+            self._set_current_location(endpoint.get("entry_location_id", self._current_location_id))
             with self._lock:
                 self._floor_id = goal.target_floor
                 self._generation += 1

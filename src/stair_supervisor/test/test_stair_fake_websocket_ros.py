@@ -30,9 +30,24 @@ from test_websocket_tx_ros import make_node
 
 def synthetic_profile() -> StairProfile:
     return StairProfile(
-        "fake_ws_up", Direction.UP, True, 0.12, 0.20,
-        0.40, 1.00, 0.20, 0.50, 0.80, 0.20,
-        0.02, 0.02, 0.20, 0.05, 0.20, 0.15, 0.40, 0.30, 4.0,
+        id="fake_ws_up",
+        direction=Direction.UP,
+        enabled=True,
+        linear_speed=0.12,
+        angular_speed=0.20,
+        alignment_yaw_rad=0.40,
+        flight_1_distance_m=1.00,
+        landing_dwell_sec=0.20,
+        landing_turn_yaw_rad=0.50,
+        flight_2_distance_m=0.80,
+        exit_dwell_sec=0.20,
+        distance_tolerance_m=0.02,
+        yaw_tolerance_rad=0.02,
+        sensor_freshness_sec=0.20,
+        max_sample_gap_sec=0.15,
+        max_odom_step_m=0.40,
+        max_yaw_step_rad=0.30,
+        timeout_sec=4.0,
     )
 
 
@@ -46,10 +61,7 @@ class StairFakeWebSocketRosTest(unittest.TestCase):
         action_name = "/test/fake_websocket/stair_traversal"
         node, socket, factory, _clock = make_node(action_name, synthetic_profile())
         self.addCleanup(node.shutdown)
-        sensors = SyntheticStairSensors(
-            "/test/websocket_tx/odom",
-            "/test/websocket_tx/imu",
-        )
+        sensors = SyntheticStairSensors("/test/websocket_tx/odom")
         sensors.wait_for_connections()
         feedback: List[StairTraversalFeedback] = []
         states: List[SupervisorState] = []

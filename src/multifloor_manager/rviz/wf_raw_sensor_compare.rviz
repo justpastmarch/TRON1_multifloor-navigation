@@ -1,0 +1,181 @@
+Panels:
+  - Class: rviz/Displays
+    Name: Raw sensor displays
+    Property Tree Widget:
+      Expanded: ~
+      Splitter Ratio: 0.55
+    Tree Height: 620
+  - Class: rviz/Views
+    Name: Views
+    Expanded:
+      - /Current View1
+    Splitter Ratio: 0.5
+Preferences:
+  PromptSaveOnExit: false
+Toolbars:
+  toolButtonStyle: 2
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz/Grid
+      Name: Odom grid
+      Enabled: true
+      Alpha: 0.22
+      Cell Size: 2
+      Color: 100; 104; 112
+      Line Style:
+        Line Width: 0.03
+        Value: Lines
+      Normal Cell Count: 0
+      Offset: {X: 0, Y: 0, Z: 0}
+      Plane: XY
+      Plane Cell Count: 40
+      Reference Frame: <Fixed Frame>
+      Value: true
+    - Class: rviz/PointCloud2
+      Name: Raw LiDAR rolling history (5s, wheel odom only)
+      Enabled: true
+      Alpha: 0.18
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Channel Name: intensity
+      Color: 220; 225; 232
+      Color Transformer: FlatColor
+      Decay Time: 5
+      Position Transformer: XYZ
+      Queue Size: 40
+      Selectable: true
+      Size (Pixels): 1
+      Size (m): 0.025
+      Style: Points
+      Topic: /replay/livox/points
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: false
+      Value: true
+    - Class: rviz/Path
+      Name: Wheel odometry path
+      Enabled: true
+      Alpha: 1
+      Buffer Length: 1
+      Color: 40; 230; 100
+      Head Diameter: 0.2
+      Head Length: 0.15
+      Length: 0.3
+      Line Style: Billboards
+      Line Width: 0.025
+      Offset: {X: 0, Y: 0, Z: 0}
+      Pose Color: 40; 230; 100
+      Pose Style: None
+      Radius: 0.03
+      Shaft Diameter: 0.08
+      Shaft Length: 0.2
+      Topic: /replay/wheel_odom/path
+      Unreliable: false
+      Value: true
+    - Class: rviz/Odometry
+      Name: Wheel odometry poses
+      Enabled: false
+      Angle Tolerance: 0.08
+      Color: 40; 230; 100
+      Keep: 1000
+      Position Tolerance: 0.05
+      Shape: Arrow
+      Topic: /tron/wheel_odom_raw
+      Unreliable: false
+      Value: false
+    - Class: rviz/Marker
+      Name: Elevated wheel odometry trace
+      Enabled: true
+      Marker Topic: /replay/wheel_odom/path_marker
+      Queue Size: 10
+      Value: true
+    - Class: rviz/Marker
+      Name: Wheel odometry landmarks
+      Enabled: true
+      Marker Topic: /replay/wheel_odom/path_landmarks
+      Queue Size: 10
+      Value: true
+    - Class: rviz/Marker
+      Name: Raw IMU acceleration (display axes ×1.2)
+      Enabled: true
+      Marker Topic: /replay/imu/acceleration
+      Queue Size: 10
+      Value: true
+    - Class: rviz/Marker
+      Name: Raw IMU angular velocity (display axes ×20)
+      Enabled: true
+      Marker Topic: /replay/imu/angular_velocity
+      Queue Size: 10
+      Value: true
+    - Class: rviz/TF
+      Name: Replay TF (wheel odom + LiDAR calibration)
+      Enabled: true
+      Filter (blacklist): ""
+      Filter (whitelist): ""
+      Frame Timeout: 15
+      Frames:
+        All Enabled: false
+        base_Link:
+          Value: true
+        mid360_link:
+          Value: true
+        odom:
+          Value: true
+      Marker Alpha: 0.35
+      Marker Scale: 0.35
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Update Interval: 0
+      Value: true
+    - Class: rviz/Image
+      Name: Full original-bag camera
+      Enabled: true
+      Normalize Range: true
+      Queue Size: 2
+      Transport Hint: raw
+      Image Topic: /replay/camera/image_raw
+      Unreliable: false
+      Value: true
+    - Class: rviz/Image
+      Name: Raw sensor values (no fusion)
+      Enabled: true
+      Normalize Range: true
+      Queue Size: 2
+      Transport Hint: raw
+      Image Topic: /replay/status/image
+      Unreliable: false
+      Value: true
+  Enabled: true
+  Global Options:
+    Background Color: 18; 21; 27
+    Default Light: true
+    Fixed Frame: odom
+    Frame Rate: 30
+  Name: raw sensor comparison
+  Tools:
+    - Class: rviz/Interact
+      Hide Inactive Objects: true
+    - Class: rviz/MoveCamera
+    - Class: rviz/Select
+  Views:
+    Current:
+      Class: rviz/Orbit
+      Distance: 28
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0
+      Pitch: 0.45
+      Target Frame: base_Link
+      Yaw: 0.8
+    Saved: ~
+Window Geometry:
+  Height: 900
+  Width: 1600
+  X: 30
+  Y: 30

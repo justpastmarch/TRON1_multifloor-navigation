@@ -51,6 +51,7 @@ class CommandStreamConfig:
     watchdog_sec: float
     startup_zero_repeats: int = 3
     close_zero_repeats: int = 8
+    mode_attempts: int = 3
 
     def __post_init__(self) -> None:
         if not math.isfinite(self.rate_hz) or self.rate_hz < 30.0:
@@ -60,6 +61,8 @@ class CommandStreamConfig:
             raise RobotConfigError("startup_zero_repeats", "must be positive")
         if self.close_zero_repeats < 1:
             raise RobotConfigError("close_zero_repeats", "must be positive")
+        if not isinstance(self.mode_attempts, int) or self.mode_attempts < 1:
+            raise RobotConfigError("mode_attempts", "must be a positive integer")
 
     @property
     def period_sec(self) -> float:

@@ -1,0 +1,10 @@
+{
+  "active_phase": "FORWARD_SEGMENT_1",
+  "bag": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_CLEAN_REPEAT_20260821_160211.bag",
+  "detail": "progress=0.000000 threshold=0.000000 freshness=0.105938 reason=sensor sample gap",
+  "elapsed_sec": 20.01128101348877,
+  "outcome": "FAULTED",
+  "profile": "stair_3f_4f_up",
+  "sample_count": 1987,
+  "supervisor_state": "FAULT"
+}

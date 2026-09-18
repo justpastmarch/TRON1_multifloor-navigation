@@ -70,8 +70,8 @@ mini PC(`MINI_PC_USER@MINI_PC_HOST`)에는 Noetic workspace와
 provision합니다.
 
 ```bash
-ROS_MASTER_HOST=10.192.1.2
-MINI_PC_ROS_IP=10.192.1.20
+ROS_MASTER_HOST=192.168.1.26
+MINI_PC_ROS_IP=192.168.1.56
 D435F_SERIAL=244622071832
 POINTCLOUD_TOPIC=/livox/lidar
 CAMERA_IMAGE_TOPIC=/camera1/color/image_raw
@@ -186,12 +186,22 @@ evidence는 성공으로 처리되지 않습니다.
 
 ## 운영 시작과 readiness contract
 
+Mini PC의 기존 `astra-web.service`/`declan_ws` stack을 끄고 현재 TRON1 stack으로
+전환하거나, 재부팅 후 전체 시작·연결 확인·HOME에서 3F 계단 진입점 이동·종료·복구를
+수행하려면 [Mini PC ROS stack 전환 및 TRON1 전체 운용 가이드](docs/mini-pc-stack-switching-ko.md)를
+따릅니다. 두 stack은 동시에 실행하지 않습니다.
+
 ```bash
 ./run.sh
 ```
 
-wrapper는 workspace를 source하고 mini PC sensor launch를 재사용 또는 시작한 뒤
-robot WebSocket SSH tunnel을 만듭니다. 로컬에서는 다음 명령 하나만 시작합니다.
+wrapper는 workstation에서 ROS master를 시작하고 mini PC sensor launch를 재사용 또는
+시작한 뒤 robot WebSocket SSH tunnel을 만듭니다. ROS master와 mini PC는 서로 접근 가능한
+`192.168.1.x` LAN 주소를 advertise해야 새 action goal publisher도 양방향으로 연결됩니다.
+mini PC의 SSH key 로그인과 TRON 본체의 `${ROBOT_HOST}:${ROBOT_WS_PORT}` WebSocket service는
+사전에 준비되어 있어야 하며 wrapper가 본체 service를 시작하지는 않습니다. startup과
+action readiness probe는 goal을 전송하지 않으므로 로봇을 움직이지 않습니다.
+로컬 application graph는 다음 명령 하나로 시작합니다.
 
 ```bash
 roslaunch mission_manager system.launch ...
@@ -279,6 +289,8 @@ mini PC sensor stack은 다음 실행에서 재사용합니다.
 - stale input: 두 PC NTP와 sensor header timestamp 확인
 - tag 없음: camera remap, `TAG_DETECTIONS_TOPIC`, detector tag artifact 확인
 - action 없음: `roslaunch --nodes mission_manager system.launch ...`와 package build 확인
+- AprilTag assertion, ROS master/action 연결, 계단 진입 NAV oscillation과 후진 제약:
+  [인지·네트워크·평지 주행 장애 RCA와 복구 가이드](docs/navigation-perception-network-incident-rca-ko.md)
 - RViz Fixed Frame에 `map`이 없거나 AMCL `/tf` connection이 누락됨:
   [ROS Noetic AMCL/RViz late publisher 연결 문제](docs/ros-noetic-amcl-rviz-late-publisher-troubleshooting.md)
 
@@ -309,3 +321,56 @@ rviz -d src/multifloor_manager/rviz/wf_navigation_manual.rviz
 그리고 D435F `/camera1/color/image_raw`를 표시합니다. 수동 mapping/navigation
 commissioning에서만 직접 goal 도구를 사용하며, managed 운용의 이동 요청은
 `/mission`을 사용합니다.
+
+FAST-LIO 없이 같은 BAG의 raw 3D LiDAR, raw IMU 벡터, wheel odometry 경로와 카메라를
+비교하려면 다음 replay 전용 화면을 사용합니다. 세 번째 인자는 BAG 시작 이후 건너뛸
+시간(초)이며 생략하면 처음부터 재생합니다.
+
+```bash
+./replay_raw_sensors_rviz.sh manual_captures/manual-5F-rooftop_route_1788918551828137154.bag 1 0
+```
+
+회색 cloud는 frame당 최대 12,000점을 sampling한 뒤 `/tron/wheel_odom_raw`로 만든
+`odom → base_Link` TF와 BAG의 `base_Link → mid360_link` 정적 calibration만
+적용하며 scan matching이나 IMU integration을 하지 않습니다. IMU 화살표는
+`base_Link` 주변의 표시 전용 축에 원시 `livox_frame` 성분을 각각 1.2배와 20배로
+표현합니다. 실제 IMU 값·source frame·표시 배율과 recorded odometry 좌표는 3D
+장면과 겹치지 않는 고정 2D status panel에 표시합니다. 따라서 FAST-LIO 결과와 같은
+정확도의 map이 아니라, 각 raw sensor와 wheel-odometry drift를 확인하는 비교
+화면입니다.
+
+## 계단 상태머신 rosbag replay
+
+기록된 `/tron/wheel_odom_raw` 값을 실제 `RosStairSupervisorNode`와 production stair
+profile에 넣고, 현재 gate를 `rqt_image_view`에서 확인하려면 다음 명령을 사용합니다.
+이 도구는 별도 loopback ROS master와 in-memory WebSocket transport만 사용하므로 실제
+TRON에는 명령을 보내지 않습니다.
+
+```bash
+./replay_stair_state_machine.sh \
+  stair_captures/stair_3F_to_4F_UP_CLEAN_REPEAT_20260821_160211.bag \
+  stair_3f_4f_up \
+  1
+```
+
+화면에는 다음 일곱 phase가 표시됩니다.
+
+```text
+VERIFY_ENTRY → ALIGN → FORWARD_SEGMENT_1 → LANDING
+             → TURN_TO_NEXT_FLIGHT → FORWARD_SEGMENT_2 → EXIT_CONFIRM
+```
+
+각 node는 `WAIT`, `ACTIVE`, `DONE`, `FAULT`로 표시되며 하단에는 실제
+`progress`, `threshold`, sensor rejection reason이 출력됩니다. replay publisher는
+pose와 quaternion 값을 변경하지 않고 header timestamp만 현재 시각으로 바꿔 production
+freshness 검사를 통과시킵니다. 기록 간격은 그대로 유지하고 세 번째 인자 `RATE`로 재생
+속도만 조절합니다.
+
+현재 계단 capture가 production threshold와 일치하지 않으면 성공으로 꾸미지 않고 해당
+gate에서 `FAULT` 또는 `INCOMPLETE`로 종료합니다. 최종 화면과 machine-readable 결과는
+각 실행의 `logs/stair-state-replay-*/final-state.png`와 `result.json`에 저장됩니다.
+GUI 없이 빠르게 확인할 때는 다음과 같이 실행합니다.
+
+```bash
+SHOW_UI=0 ./replay_stair_state_machine.sh BAG PROFILE 20
+```

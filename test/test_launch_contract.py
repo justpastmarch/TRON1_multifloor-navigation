@@ -24,6 +24,12 @@ class LaunchContractTest(unittest.TestCase):
         # Given: every deployment-owned source of the flat-navigation speed limit.
         launch = parse_launch("navigation.launch")
         arguments = {argument.get("name"): argument.get("default") for argument in launch.findall("arg")}
+        system = ElementTree.parse(
+            ROOT / "src" / "mission_manager" / "launch" / "system.launch"
+        ).getroot()
+        system_arguments = {
+            argument.get("name"): argument.get("default") for argument in system.findall("arg")
+        }
         planner = yaml.safe_load(
             (PACKAGE / "config" / "nav" / "base_local_planner_params.yaml").read_text(encoding="utf-8")
         )
@@ -39,13 +45,14 @@ class LaunchContractTest(unittest.TestCase):
         # When: effective runtime values and the planner's conservative fallback are compared.
         effective_values = (
             float(arguments["max_vel_x"]),
+            float(system_arguments["max_vel_x"]),
             float(robot["move_base"]["max_vel_x"]),
             float(environment["MAX_VEL_X"]),
         )
 
         # Then: launch overrides the conservative YAML fallback with the commissioned flat limit.
-        self.assertEqual(effective_values, (0.50, 0.50, 0.50))
-        self.assertEqual(float(planner["TrajectoryPlannerROS"]["max_vel_x"]), 0.40)
+        self.assertEqual(effective_values, (0.30, 0.30, 0.30, 0.30))
+        self.assertEqual(float(planner["TrajectoryPlannerROS"]["max_vel_x"]), 0.30)
 
     def test_explicit_costmap_plugins_exclude_legacy_static_map_parameters(self) -> None:
         # Given: common and namespace-specific costmap parameter documents.
@@ -136,43 +143,18 @@ class LaunchContractTest(unittest.TestCase):
         self.assertIn("rviz_tf_reconnect.py", wait_script)
         self.assertLess(wait_script.index("rviz_tf_reconnect.py"), wait_script.index('exec "$@"'))
 
-    def test_pointcloud_converter_has_configurable_source_and_scan_geometry(self) -> None:
-        # Given: the standard PointCloud2-to-LaserScan launch description.
-        launch = parse_launch("pointcloud_to_laserscan.launch")
-        converter = node(launch, "pointcloud_to_laserscan")
-
-        # When: launch arguments, private parameters, and remaps are inspected.
-        arguments = {argument.get("name"): argument.get("default") for argument in launch.findall("arg")}
-        parameters = {param.get("name"): param.get("value") for param in converter.findall("param")}
-        remaps = {remap.get("from"): remap.get("to") for remap in converter.findall("remap")}
-
-        # Then: the source is required, the output is unique, and geometry is configurable.
-        self.assertIsNone(arguments["cloud_in"])
-        self.assertNotIn("target_frame", arguments)
-        for name in (
-            "min_height",
-            "max_height",
-            "angle_min",
-            "angle_max",
-            "angle_increment",
-            "range_min",
-            "range_max",
-        ):
-            self.assertEqual(parameters[name], f"$(arg {name})")
-        self.assertEqual(parameters["target_frame"], "base_Link")
-        self.assertEqual(remaps["cloud_in"], "$(arg cloud_in)")
-        self.assertEqual(remaps["scan"], "/scan")
-
     def test_apriltag_detector_uses_required_camera_topics_and_fixture_tag_config(self) -> None:
         # Given: the standard continuous detector launch and generated fixture config.
         launch = parse_launch("apriltag.launch")
+        relay = node(launch, "multifloor_manager")
         detector = node(launch, "apriltag_ros")
         tag_config = yaml.safe_load((FIXTURE / "apriltag_ros_tags.yaml").read_text(encoding="utf-8"))
 
         # When: required source arguments and detector remaps are inspected.
         arguments = {argument.get("name"): argument.get("default") for argument in launch.findall("arg")}
         parameters = {parameter.get("name"): parameter.get("value") for parameter in detector.findall("param")}
-        remaps = {remap.get("from"): remap.get("to") for remap in detector.findall("remap")}
+        relay_remaps = {remap.get("from"): remap.get("to") for remap in relay.findall("remap")}
+        detector_remaps = {remap.get("from"): remap.get("to") for remap in detector.findall("remap")}
         loaded_files = {rosparam.get("file") for rosparam in detector.findall("rosparam")}
 
         # Then: callers must supply both camera streams and an ID/size config generated from test data.
@@ -180,8 +162,12 @@ class LaunchContractTest(unittest.TestCase):
         self.assertIsNone(arguments["camera_info"])
         self.assertIsNone(arguments["tag_config"])
         self.assertEqual(parameters["tag_family"], "tagStandard41h12")
-        self.assertEqual(remaps["image_rect"], "$(arg image_rect)")
-        self.assertEqual(remaps["camera_info"], "$(arg camera_info)")
+        self.assertEqual(relay_remaps["~image"], "$(arg image_rect)")
+        self.assertEqual(relay_remaps["~camera_info"], "$(arg camera_info)")
+        self.assertEqual(relay_remaps["~image_out"], "/apriltag_camera/image_raw")
+        self.assertEqual(relay_remaps["~camera_info_out"], "/apriltag_camera/camera_info")
+        self.assertEqual(detector_remaps["image_rect"], "/apriltag_camera/image_raw")
+        self.assertEqual(detector_remaps["camera_info"], "/apriltag_camera/camera_info")
         self.assertIn("$(arg tag_config)", loaded_files)
         self.assertEqual(
             tag_config["standalone_tags"],
@@ -210,10 +196,8 @@ class LaunchContractTest(unittest.TestCase):
                     if any(remap.get("from") == "scan" and remap.get("to") == "/scan" for remap in candidate.findall("remap"))
                 )
 
-        # Then: one standard converter owns /scan and no FAST-LIO navigation input is referenced.
-        self.assertEqual([(publisher.get("pkg"), publisher.get("type")) for publisher in scan_publishers], [
-            ("pointcloud_to_laserscan", "pointcloud_to_laserscan_node"),
-        ])
+        # Then: the remote sensor stack owns /scan and no local converter competes with it.
+        self.assertEqual(scan_publishers, [])
         self.assertNotIn("fast_lio", source)
         self.assertNotIn("fast-lio", source)
 
