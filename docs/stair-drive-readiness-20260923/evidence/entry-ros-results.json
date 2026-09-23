@@ -1,0 +1,42 @@
+{
+  "records": [
+    {
+      "args": [
+        "preview",
+        "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/candidate/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "--placed-at-entry"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"preview\": \"captured; no goal or velocity sent\",\n  \"route\": \"stair_3f_4f_up\",\n  \"placement_xyz\": [\n    -0.45,\n    0.0,\n    0.0\n  ],\n  \"heading_deg\": 0.0,\n  \"preview_window_sec\": 120.0,\n  \"next\": \"Inspect entry/landing/exit overlay in RViz, then use run with the same configuration.\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "run",
+        "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/candidate/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"result_code\": 5,\n  \"reason\": \"phase test target reached; synthetic ROS boundary only\",\n  \"meaning\": \"phase test only; not a floor-arrival mission result\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "preview",
+        "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/candidate/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "--placed-at-entry"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"preview\": \"captured; no goal or velocity sent\",\n  \"route\": \"stair_3f_4f_up\",\n  \"placement_xyz\": [\n    -0.45,\n    0.0,\n    0.0\n  ],\n  \"heading_deg\": 0.0,\n  \"preview_window_sec\": 120.0,\n  \"next\": \"Inspect entry/landing/exit overlay in RViz, then use run with the same configuration.\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "operation": "interrupt",
+      "exit_code": -2,
+      "stdout": "",
+      "stderr": "Test handling termination acknowledged; physical stop is not verified.\nTraceback (most recent call last):\n  File \"<string>\", line 7, in <module>\n  File \"/usr/lib/python3.8/runpy.py\", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File \"/usr/lib/python3.8/runpy.py\", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File \"/usr/lib/python3.8/runpy.py\", line 87, in _run_code\n    exec(code, run_globals)\n  File \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/candidate/src/stair_supervisor/scripts/stair_entry_test.py\", line 178, in <module>\n    raise SystemExit(main())\n  File \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/candidate/src/stair_supervisor/scripts/stair_entry_test.py\", line 138, in main\n    if not client.wait_for_result(rospy.Duration(args.seconds+route['limits']['handoff_sec']+10.)):\n  File \"/opt/ros/noetic/lib/python3/dist-packages/actionlib/simple_action_client.py\", line 142, in wait_for_result\n    self.done_condition.wait(time_left.to_sec())\n  File \"/usr/lib/python3.8/threading.py\", line 306, in wait\n    gotit = waiter.acquire(True, timeout)\nKeyboardInterrupt\n"
+    }
+  ],
+  "goal_count": 2,
+  "robot_transports_created": 0,
+  "scope": "synthetic adapter/client ROS boundary; no closed-loop or hardware validation"
+}

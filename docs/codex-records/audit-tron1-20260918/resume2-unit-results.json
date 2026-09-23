@@ -1,0 +1,6 @@
+{
+  "tests_run": 60,
+  "failures": [],
+  "errors": [],
+  "provenance": "Observed unittest output of 60 tests in 0.386s OK; subsequent independent probe import failed, so results persisted from tool transcript without re-running suite."
+}

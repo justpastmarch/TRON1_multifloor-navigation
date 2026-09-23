@@ -1,0 +1,16 @@
+{
+  "at_utc": "2026-09-23T00:11:04.479440+00:00",
+  "hash_checked_file_count": 27,
+  "intended_changed_files": [
+    "src/stair_supervisor/scripts/stair_entry_test.py",
+    "src/stair_supervisor/test/test_stair_readiness.py"
+  ],
+  "other_checked_files_unchanged": true,
+  "git_status_entries_removed": [],
+  "git_status_entries_added": [],
+  "git_status_text_identical": true,
+  "note": "Both edited files were already untracked; identical porcelain text is not proof of identical content. SHA checks record the two changes. Existing changes were not reverted. This is a focused fix, not a full repository audit.",
+  "temporary_candidate_directory_removed": true,
+  "remaining_temporary_probe_directories": [],
+  "retained_artifacts": "Baseline, original files, test results, runtime samples, applied manifest, and verification are retained as evidence."
+}

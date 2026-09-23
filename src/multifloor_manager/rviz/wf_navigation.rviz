@@ -247,6 +247,11 @@ Visualization Manager:
     - Class: rviz/Select
     - Class: rviz/FocusCamera
     - Class: rviz/Measure
+    - Class: rviz/SetInitialPose
+      Theta std deviation: 0.2
+      Topic: /initialpose
+      X std deviation: 0.3
+      Y std deviation: 0.3
   Value: true
   Views:
     Current:

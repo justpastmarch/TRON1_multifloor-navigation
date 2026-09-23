@@ -1,0 +1,27 @@
+[
+  {
+    "file": "costmap_2d__include__costmap_2d__costmap_math.h",
+    "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/costmap_2d/include/costmap_2d/costmap_math.h",
+    "sha256": "8e5f68cb3b54902e069612b8520297d673154e1b750cf4455806197a83e30143"
+  },
+  {
+    "file": "costmap_2d__src__costmap_2d.cpp",
+    "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/costmap_2d/src/costmap_2d.cpp",
+    "sha256": "10d0c4116076e1f423ba89c8b11158f3edac7b72cfedc270a536a16dad4bd58d"
+  },
+  {
+    "file": "navfn__src__navfn_ros.cpp",
+    "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/navfn/src/navfn_ros.cpp",
+    "sha256": "bf9fcdfdc71e4d5f7eb8b45ed7d626132fe52c0447b9292ca18c317f7f3cf267"
+  },
+  {
+    "file": "navfn__src__navfn.cpp",
+    "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/navfn/src/navfn.cpp",
+    "sha256": "42d9b30c79ea0f8546fd0b0dcc324e993f4584832237910673e70643f9d89ed1"
+  },
+  {
+    "file": "base_local_planner__src__obstacle_cost_function.cpp",
+    "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/base_local_planner/src/obstacle_cost_function.cpp",
+    "sha256": "9410461d0348e0f7eafdd27e214006e4da7eddbe5d3e1a523d4dcae2ed7c80b9"
+  }
+]

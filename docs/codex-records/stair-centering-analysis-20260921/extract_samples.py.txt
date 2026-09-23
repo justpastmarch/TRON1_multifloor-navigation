@@ -1,0 +1,87 @@
+"""Read original bags without ROS initialization; retain reproducible geometry samples."""
+import os
+os.environ.setdefault('OPENBLAS_NUM_THREADS', '1')
+from pathlib import Path
+import json, struct, time, argparse
+import numpy as np
+from scipy.spatial.transform import Rotation
+import rosbag, cv2
+
+OUT=Path(__file__).resolve().parent
+OLD=OUT.parent/'sensor-recording-analysis-20260918'
+ROOT=Path('/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation')
+META=json.loads((OLD/'bag-metadata.json').read_text())
+DT=np.dtype([('offset','<u4'),('x','<f4'),('y','<f4'),('z','<f4'),('reflectivity','u1'),('tag','u1'),('line','u1')])
+
+def extract(index):
+    meta=META[index];p=ROOT/meta['path'];name=p.name
+    dst=OUT/'samples'/name;dst.mkdir(parents=True,exist_ok=True)
+    if (dst/'summary.json').exists():return
+    old=np.load(OLD/'bags'/name/'numeric.npz')
+    tf=old['/tf_static:base_Link>mid360_link']
+    t=tf[0,2:5];q=tf[0,5:9];rot=Rotation.from_quat(q).as_matrix()
+    matrices_identical=bool(np.max(np.abs(tf[:,2:]-tf[0,2:]))<1e-8)
+    before=p.stat();start=time.time();clouds=[];offsets=[0];rows=[];n=0;total_points=0
+    image_rows=[];image_next=-float('inf');decode_validation=False
+    topics=['/livox/lidar']+[tp for tp,v in meta['topics'].items() if v['type'] in ('sensor_msgs/Image','sensor_msgs/CompressedImage') and '/color/' in tp]
+    with rosbag.Bag(str(p),'r') as bag:
+        for topic,raw,bt in bag.read_messages(topics=topics,raw=True):
+            typ,data,md5,pos,cls=raw;rt=bt.to_sec()
+            if topic=='/livox/lidar':
+                seq,sec,nsec,length=struct.unpack_from('<IIII',data,0);off=16+length
+                tb,pn,lid=struct.unpack_from('<QIB',data,off);count=struct.unpack_from('<I',data,off+16)[0]
+                assert pn==count and len(data)==off+20+19*count
+                a=np.frombuffer(data,dtype=DT,count=count,offset=off+20)
+                if not decode_validation:
+                    msg=cls();msg.deserialize(data)
+                    for j in [0,count//2,count-1]:
+                        v=msg.points[j]
+                        assert tuple(a[j])==(v.offset_time,v.x,v.y,v.z,v.reflectivity,v.tag,v.line)
+                    decode_validation=True
+                n+=1;total_points+=count
+                if (n-1)%5:continue
+                xyz=np.column_stack([a['x'],a['y'],a['z']]).astype(np.float64)
+                good=np.isfinite(xyz).all(axis=1)&(np.linalg.norm(xyz,axis=1)>.25)
+                xyz=xyz[good]@rot.T+t
+                # Broad body-frame crop; estimator applies its own fixed ROI.
+                good=(xyz[:,0]>-1)&(xyz[:,0]<4)&(np.abs(xyz[:,1])<3)&(xyz[:,2]>-1.2)&(xyz[:,2]<2.5)
+                xyz=xyz[good]
+                if len(xyz):
+                    _,ix=np.unique(np.floor(xyz/.025).astype(np.int32),axis=0,return_index=True)
+                    xyz=xyz[ix]
+                clouds.append(xyz.astype(np.float32));offsets.append(offsets[-1]+len(xyz))
+                rows.append([rt,sec+nsec*1e-9,seq,pn,float(a['offset'].max())*1e-9 if count else 0,tb*1e-9])
+            elif rt>=image_next:
+                msg=cls();msg.deserialize(data)
+                if typ=='sensor_msgs/CompressedImage':img=cv2.imdecode(np.frombuffer(msg.data,np.uint8),cv2.IMREAD_COLOR)
+                else:
+                    assert msg.encoding in ('rgb8','bgr8')
+                    img=np.frombuffer(msg.data,np.uint8).reshape(msg.height,msg.step)[:,:msg.width*3].reshape(msg.height,msg.width,3)
+                    if msg.encoding=='rgb8':img=cv2.cvtColor(img,cv2.COLOR_RGB2BGR)
+                assert img is not None
+                rel=rt-meta['start'];fn=f'frame-{len(image_rows):04d}.jpg'
+                img=cv2.resize(img,(320,180));cv2.imwrite(str(dst/fn),img)
+                image_rows.append({'record_t':rt,'header_t':msg.header.stamp.to_sec(),'relative_t':rel,'file':fn})
+                image_next=rt+5.0
+    np.savez_compressed(dst/'clouds.npz',points=np.concatenate(clouds) if clouds else np.empty((0,3),np.float32),offsets=np.array(offsets,np.int64),rows=np.array(rows,np.float64).reshape(-1,6))
+    for page in range((len(image_rows)+19)//20):
+        entries=image_rows[page*20:(page+1)*20];sheet=np.full((len(range(0,len(entries),4))*205,1280,3),245,np.uint8)
+        for k,v in enumerate(entries):
+            x=(k%4)*320;y=(k//4)*205;sheet[y:y+180,x:x+320]=cv2.imread(str(dst/v['file']))
+            cv2.putText(sheet,f"{v['relative_t']:.2f}s",(x+4,y+198),cv2.FONT_HERSHEY_SIMPLEX,.5,(0,0,0),1)
+        cv2.imwrite(str(dst/f'contact-{page:02d}.jpg'),sheet)
+    after=p.stat();summary={'bag_index':index,'path':str(p),'start':meta['start'],'end':meta['end'],'raw_lidar_messages_read':n,'raw_points_in_messages':total_points,'sampled_clouds':len(rows),'sampling':'every fifth raw lidar message; no ROS replay and no odometry deskew','crop_voxel_m':.025,'transform_xyz_quat':tf[0,2:].tolist(),'static_transform_consistent':matrices_identical,'packed_decoder_verified':decode_validation,'selected_images':image_rows,'source_size_mtime_unchanged':before.st_size==after.st_size and before.st_mtime_ns==after.st_mtime_ns,'elapsed_s':time.time()-start}
+    assert n==meta['topics'].get('/livox/lidar',{}).get('count',0)
+    (dst/'summary.json').write_text(json.dumps(summary,indent=2))
+    state=json.loads((OUT/'analysis-state.json').read_text());v=state['inventory'][index]
+    v['status']='READ' if n or image_rows else 'METADATA_ONLY'
+    v['read_scope']=('all raw lidar packet payloads; geometry every fifth; RGB samples every >=5s; original topic index and prior numeric arrays' if n else
+                     'sampled RGB payload, original topic index and prior numeric arrays; no raw lidar' if image_rows else
+                     'original topic index and prior numeric arrays; no raw lidar or RGB payload available')
+    v['sampled_clouds']=len(rows);v['source_unchanged']=summary['source_size_mtime_unchanged']
+    (OUT/'analysis-state.json').write_text(json.dumps(state,ensure_ascii=False,indent=2)+'\n')
+    print('EXTRACTED',index,name,'clouds',len(rows),'images',len(image_rows),'s',round(time.time()-start,1),flush=True)
+
+if __name__=='__main__':
+    ap=argparse.ArgumentParser();ap.add_argument('indices',nargs='*',type=int);args=ap.parse_args()
+    for i in args.indices or range(len(META)):extract(i)

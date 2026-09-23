@@ -1,0 +1,74 @@
+{
+  "at_utc": "2026-09-23T01:26:21.097351+00:00",
+  "finding": "Entry admission rejected after estimated pose moved during preview-to-run wait",
+  "evidence_grade": "OBSERVED for result records, zero outgoing twists and second-run reference; first-run transform is reconstructed from the nearest recorded preview pose",
+  "Safety": "S1",
+  "Mobility": "M2",
+  "results": [
+    {
+      "result_time_kst": "2026-09-23T10:19:31.596482",
+      "reference_exact": false,
+      "preview_to_run_sec": 88.89378929138184,
+      "body_xyz": [
+        -0.2749311891940672,
+        -0.003606612189320185,
+        -0.046400211105727285
+      ],
+      "delta_from_declared_entry": [
+        0.17506881080593278,
+        -0.003606612189320185,
+        -0.046400211105727285
+      ],
+      "yaw_deg": 1.539185174444735,
+      "footprint_x_range": [
+        -0.5060319800135922,
+        -0.04383039837454222
+      ],
+      "footprint_y_range": [
+        -0.23430131904408621,
+        0.22708809466544586
+      ],
+      "inside_entry_raw": true,
+      "inside_entry_with_margin": false,
+      "height_ok": true,
+      "sample_stamp_delta_from_result_sec": 0.2941732406616211
+    },
+    {
+      "result_time_kst": "2026-09-23T10:22:00.793215",
+      "reference_exact": true,
+      "preview_to_run_sec": 103.49027848243713,
+      "body_xyz": [
+        -0.6667459560044404,
+        0.008283644676296033,
+        0.030132585100308446
+      ],
+      "delta_from_declared_entry": [
+        -0.2167459560044404,
+        0.008283644676296033,
+        0.030132585100308446
+      ],
+      "yaw_deg": -2.8139859017588917,
+      "footprint_x_range": [
+        -0.9024947539607154,
+        -0.4309971580481654
+      ],
+      "footprint_y_range": [
+        -0.22689291130822603,
+        0.24346020066081808
+      ],
+      "inside_entry_raw": true,
+      "inside_entry_with_margin": false,
+      "height_ok": true,
+      "sample_stamp_delta_from_result_sec": 0.29044151306152344
+    }
+  ],
+  "tx_titles": {
+    "request_twist": 16907
+  },
+  "all_recorded_twists_zero": true,
+  "actual_motion_vs_tracking_drift": "UNVERIFIED, awaiting operator observation; no independent physical ground truth",
+  "verify_entry_timeout": "Not present in this bag; cause not established for the pasted timeout",
+  "changes_to_control_or_config": [],
+  "runtime_actions": "Read-only subscriptions; no goal/mode/velocity commands. Temporary probe logs removed. BAG read-only, not reindexed or modified.",
+  "next_step": "Restore surveyed physical entry position, inspect overlay, recapture preview immediately before run. Do not expand geometry or automatically reanchor arbitrary position."
+}

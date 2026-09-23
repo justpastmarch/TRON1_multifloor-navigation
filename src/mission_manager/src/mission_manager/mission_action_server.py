@@ -53,9 +53,11 @@ class MissionActionServer:
         action_name: str,
         orchestrator: MissionOrchestrator,
         destinations: frozenset[str],
+        arrival_hold=None,
     ) -> None:
         self._orchestrator = orchestrator
         self._destinations = destinations
+        self._arrival_hold = arrival_hold
         self._lock = threading.RLock()
         self._active: ServerGoalHandle | None = None
         self._active_goal_id = ""
@@ -120,6 +122,8 @@ class MissionActionServer:
 
     def _execute(self, handle: ServerGoalHandle, request: MissionRunRequest) -> None:
         try:
+            if self._arrival_hold is not None:
+                self._arrival_hold.suspend()
             outcome = self._orchestrator.run(
                 request,
                 lambda progress: self._publish_feedback(handle, progress),
@@ -131,6 +135,8 @@ class MissionActionServer:
                 outcome.mission_id,
                 outcome.artifact_path,
             )
+            if self._arrival_hold is not None and outcome.status is SegmentExecutionStatus.SUCCESS:
+                self._arrival_hold.arm(self._orchestrator.confirmed_location_id)
             self._release(handle)
             if outcome.status is SegmentExecutionStatus.SUCCESS:
                 handle.set_succeeded(result, "mission complete")

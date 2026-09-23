@@ -1,0 +1,26 @@
+{
+  "at_utc": "2026-09-22T23:21:26.029513+00:00",
+  "files": [
+    {
+      "path": "docs/stair-drive-readiness-20260923/LIVE_READINESS.md",
+      "before_sha256": "e52f1cc0cd530df9058a85ed0fd0902848a057850b2c9f6e1ce19c3cb5190007",
+      "after_sha256": "3dfb424fd20489e2603206f72ddc3e4c5d176487281b39ce86c08964eb6bec6f"
+    },
+    {
+      "path": "docs/stair-drive-readiness-20260923/evidence/live-readiness.json",
+      "before_sha256": "fb1e6b09b77ceff2bdb7f841957cb17ee4ee887979cbab1d649425626c334a82",
+      "after_sha256": "009baa15389e8edb2b0ecb1270261f27e5bb10a70b30e29e8caa920fbb243de3"
+    },
+    {
+      "path": "docs/stair-drive-readiness-20260923/evidence/live-health-20260923.json",
+      "before_sha256": null,
+      "after_sha256": "6a52dec7e1f2e80fb2b266cc44bc6e064af16ad2f1fb4b26c435ea5499c5273f"
+    }
+  ],
+  "unrelated_hash_changes": [],
+  "baseline_git_entries_missing": [],
+  "source_or_launch_changes": false,
+  "git_status_identical": false,
+  "git_difference": "current runtime report and evidence only",
+  "existing_operational_session_kept_running": true
+}

@@ -1,0 +1,21 @@
+... logging to /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/ros-logs/rostest-m3tron-All-Series-132089.log
+[ROSUNIT] Outputting test results to /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/ros-home/test_results/stair_supervisor/rostest-test_stair_supervisor_node.xml
+[Testcase: teststair_fake_websocket_qa] ... ok
+[Testcase: teststair_supervisor_node_boundary] ... ok
+[Testcase: testwebsocket_tx_surface] ... ok
+
+[ROSTEST]-----------------------------------------------------------------------
+
+[stair_supervisor.rosunit-stair_fake_websocket_qa/test_action_feedback_state_and_tx_complete_without_robot_motion][passed]
+[stair_supervisor.rosunit-stair_supervisor_node_boundary/test_action_transcript_covers_ownership_and_fail_closed_paths][passed]
+[stair_supervisor.rosunit-stair_supervisor_node_boundary/test_successful_transport_frame_is_published_byte_for_byte][passed]
+[stair_supervisor.rosunit-websocket_tx_surface/test_failed_send_is_tolerated_then_latches_fault_after_outage_budget][passed]
+[stair_supervisor.rosunit-websocket_tx_surface/test_watchdog_and_close_success_frames_match_the_socket_bytes][passed]
+
+SUMMARY
+[32m * RESULT: SUCCESS[0m
+ * TESTS: 5
+ * ERRORS: 0
+ * FAILURES: 0
+
+rostest log file is in /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/ros-logs/rostest-m3tron-All-Series-132089.log

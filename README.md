@@ -1,5 +1,8 @@
 # TRON1 Multi-floor Mission System
 
+> 2026-09-23 최신 수정·실주행 결과: [현재 개발 상태](docs/development-status-20260923.md). 아래 기존 설명과 시점별 관측 기록은 해당 당시 범위로 해석하세요.
+
+
 이 workspace는 TRON1의 평면 주행, 층 전환, 계단 주행과 스캔을 하나의
 `Mission.action`으로 운영합니다. 운영 진입점은 루트의 `./run.sh` 하나이며 로컬
 ROS graph는 `mission_manager/launch/system.launch` 하나가 소유합니다.
@@ -18,9 +21,9 @@ ROS graph는 `mission_manager/launch/system.launch` 하나가 소유합니다.
 `pointcloud_to_laserscan`, `apriltag_ros`, RViz만 구성합니다. UI node, 별도
 `cmd_vel_bridge`, mux, safety node, localization manager, sensor fusion과 FAST-LIO
 navigation 입력은 없습니다. 관리형 `wf_navigation.rviz`는 map, scan, AMCL pose,
-global/local plan, costmap, TF를 보기만 하며 `SetGoal`과 `SetInitialPose` tool은
-포함하지 않습니다. 계단 기록용 수동 viewer만 이 두 RViz 도구를 제공하며, 모든
-이동 요청은 `/mission`을 사용합니다.
+global/local plan, costmap, TF와 `2D Pose Estimate`를 제공합니다. 기본 자동 측위와
+수동 위치 지정은 [시작 측위 안내](docs/startup-localization-ko.md)를 따릅니다.
+직접 이동하는 `SetGoal`은 수동 viewer에서만 제공하며, 관리형 이동 요청은 `/mission`을 사용합니다.
 
 ## 로직도와 상태머신
 
@@ -54,7 +57,7 @@ global/local plan, costmap, TF를 보기만 하며 `SetGoal`과 `SetInitialPose`
 sudo apt update
 sudo apt install ros-noetic-desktop-full ros-noetic-navigation \
   ros-noetic-pointcloud-to-laserscan ros-noetic-apriltag-ros \
-  python3-websocket python3-yaml openssh-client
+  python3-websocket python3-yaml python3-numpy python3-scipy openssh-client
 catkin_make
 source devel/setup.bash
 ```
@@ -251,8 +254,9 @@ segment 전에 rosbag을 시작하고 마지막 segment 뒤에 한 번만 finali
 
 취소는 같은 action goal ID에 actionlib cancel을 보내야 합니다. 운영 UI도 별도
 ROS node를 만들지 않고 `actionlib.SimpleActionClient('/mission', MissionAction)`로
-goal/feedback/result/cancel만 연결합니다. `/move_base_simple/goal`, `/initialpose`,
-child action 또는 robot WebSocket을 직접 호출하지 않습니다.
+goal/feedback/result/cancel을 연결합니다. 위치 지정은 `/initialpose`로 Floor Manager에
+요청하며 AMCL 입력은 관리자가 소유합니다. `/move_base_simple/goal`, child action 또는
+robot WebSocket으로 이동을 우회하지 않습니다.
 
 ## scan artifact
 

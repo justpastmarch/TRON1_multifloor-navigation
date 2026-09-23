@@ -15,9 +15,9 @@ from stair_supervisor.msg import (
     SupervisorState,
 )
 
-from .configuration import StairConfigurationError, load_stair_configuration
+from .configuration import StairConfigurationError, load_stair_configuration, load_lidar_configuration
 from .robot_config import CommandStreamConfig, RobotConnectionConfig, RobotTransportConfig
-from .robot_transport import RobotTransport
+from .robot_transport import RobotTransport, SystemClock
 from .ros_node import RosNodeSettings, RosStairSupervisorNode
 
 
@@ -85,6 +85,21 @@ def main() -> int:
             str(Path(__file__).resolve().parents[2] / "config"),
         )
     )
+    lidar = None
+    lidar_configuration = load_lidar_configuration(
+        Path(rospy.get_param("~lidar_config", str(config_root / "stair_lidar.yaml"))),
+        rospy.get_param("~lidar_mode", "off"),
+        rospy.get_param("~lidar_observe_only", True),
+    )
+    if lidar_configuration.mode != "off":
+        from .ros_lidar import RosLidarInterface
+        lidar = RosLidarInterface(lidar_configuration, SystemClock())
+        rospy.on_shutdown(lidar.shutdown)
+        if lidar_configuration.mode == "observe" and lidar_configuration.observe_only:
+            # No RobotTransport object, socket, mode request, or zero command.
+            rospy.loginfo("LiDAR observation only: no robot command transport")
+            rospy.spin()
+            return 0
     try:
         configuration = load_stair_configuration(config_root)
     except StairConfigurationError as error:
@@ -110,7 +125,7 @@ def main() -> int:
         ),
         configuration.robot.websocket_full_scale,
     )
-    node = RosStairSupervisorNode(configuration, transport, settings)
+    node = RosStairSupervisorNode(configuration, transport, settings, lidar=lidar)
     rospy.on_shutdown(node.shutdown)
     rospy.spin()
     return 0

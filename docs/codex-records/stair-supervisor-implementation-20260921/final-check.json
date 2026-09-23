@@ -1,0 +1,14 @@
+{
+  "observed_utc": "2026-09-20T22:27:54.895201+00:00",
+  "original_repository": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation",
+  "git_head_unchanged": true,
+  "changed_paths_match_manifest": true,
+  "delivered_files_sha256_match": true,
+  "unrelated_repository_files_unchanged": true,
+  "raw_logs_or_python_caches_remaining": 0,
+  "temporary_artifact_cleanup_pass": true,
+  "report_links_pass": true,
+  "report_visual_review": "PASS: screenshot inspected, Korean text/tables readable",
+  "software_delivery": "COMPLETE",
+  "physical_acceptance": "UNVERIFIED; off/uncommissioned by default"
+}

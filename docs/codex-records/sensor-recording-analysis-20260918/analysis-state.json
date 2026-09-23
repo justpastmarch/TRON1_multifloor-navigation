@@ -1,0 +1,784 @@
+{
+  "status": "RECORDING_ANALYSIS_COMPLETE",
+  "understood_as": "Offline direct inspection of all recorded bags, incomplete bags, video and associated capture sidecars inside the current repository, to investigate actual motion versus AMCL/map changes, apparent zero-command drift, sensor timing/gaps, and stair evidence. Preserve original recordings and worktree; no ROS publication/playback, actuation, or source changes.",
+  "root": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation",
+  "created_utc": "2026-09-18T08:19:35.605224+00:00",
+  "inventory": [
+    {
+      "path": "manual_captures/analysis/sensor_gap_rgb_214_242.mp4",
+      "bytes": 2888160,
+      "mtime_ns": 1788958908497772227,
+      "state": "READ",
+      "kind": "video",
+      "read_scope": "all 280 frames decoded; 12 visual samples; derived visualization, not independent camera recording"
+    },
+    {
+      "path": "manual_captures/manual-5F-rooftop_route_1788917683773755895.bag",
+      "bytes": 105529960,
+      "mtime_ns": 1788917727923826822,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "manual_captures/manual-5F-rooftop_route_1788917683773755895.bag.capture.json",
+      "bytes": 482,
+      "mtime_ns": 1788917730075790008,
+      "state": "READ",
+      "kind": "sidecar",
+      "read_scope": "full JSON contents"
+    },
+    {
+      "path": "manual_captures/manual-5F-rooftop_route_1788918199558502114.bag.INCOMPLETE.json",
+      "bytes": 683,
+      "mtime_ns": 1788918416924525468,
+      "state": "READ",
+      "kind": "sidecar",
+      "read_scope": "full JSON contents"
+    },
+    {
+      "path": "manual_captures/manual-5F-rooftop_route_1788918199558502114.bag.active.invalid",
+      "bytes": 922588033,
+      "mtime_ns": 1788918415756544098,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "manual_captures/manual-5F-rooftop_route_1788918551828137154.bag",
+      "bytes": 163403843,
+      "mtime_ns": 1788918606482436497,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "manual_captures/manual-5F-rooftop_route_1788918551828137154.bag.capture.json",
+      "bytes": 484,
+      "mtime_ns": 1788918608102429096,
+      "state": "READ",
+      "kind": "sidecar",
+      "read_scope": "full JSON contents"
+    },
+    {
+      "path": "manual_captures/manual-5F-rooftop_route_1788920816079496577.bag.INCOMPLETE.json",
+      "bytes": 686,
+      "mtime_ns": 1788921401946416954,
+      "state": "READ",
+      "kind": "sidecar",
+      "read_scope": "full JSON contents"
+    },
+    {
+      "path": "manual_captures/manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+      "bytes": 1500070288,
+      "mtime_ns": 1788921400958431730,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_FULL_20260916_210849.bag",
+      "bytes": 1047464539,
+      "mtime_ns": 1789560824504883764,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_FULL_20260916_231643.bag",
+      "bytes": 287498694,
+      "mtime_ns": 1789568415779904301,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_FULL_20260916_234018.bag",
+      "bytes": 1102331710,
+      "mtime_ns": 1789569925175795609,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260821_155022.bag",
+      "bytes": 2157341453,
+      "mtime_ns": 1787295224787339809,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260824_152128.bag",
+      "bytes": 91965707,
+      "mtime_ns": 1787552538051775791,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260824_152223.bag",
+      "bytes": 154793379,
+      "mtime_ns": 1787552559979488508,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260824_152248.bag",
+      "bytes": 2169929079,
+      "mtime_ns": 1787552749788994528,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260827_102101.bag",
+      "bytes": 3563871958,
+      "mtime_ns": 1787793888018227885,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260827_103200.bag",
+      "bytes": 1774155508,
+      "mtime_ns": 1787794390486650916,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260827_103313.bag",
+      "bytes": 4370811763,
+      "mtime_ns": 1787794667798558110,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260827_105713.bag",
+      "bytes": 1507746956,
+      "mtime_ns": 1787797116939047023,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260827_150034.bag",
+      "bytes": 1519550290,
+      "mtime_ns": 1787810658412186866,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260827_154342.bag",
+      "bytes": 1747637963,
+      "mtime_ns": 1787813243884085018,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_CLEAN_REPEAT_20260821_160211.bag",
+      "bytes": 2107960604,
+      "mtime_ns": 1787295877769317119,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/tag_calibration_20260827_134853.bag",
+      "bytes": 916786440,
+      "mtime_ns": 1787806322573160485,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/yaw_calibration_020_030_040_20260821_134549.bag",
+      "bytes": 11373716,
+      "mtime_ns": 1787287617500474942,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "stair_captures/yaw_calibration_20260821_132716.bag",
+      "bytes": 162953638,
+      "mtime_ns": 1787287405312718568,
+      "state": "READ",
+      "kind": "bag",
+      "read_scope": "all serialized messages and numeric payloads; sampled image decoding/visual review"
+    },
+    {
+      "path": "manual_captures/analysis/sensor_gap_rgb_contact_sheet.jpg",
+      "bytes": 318943,
+      "mtime_ns": 1788958908561770885,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        432,
+        1920,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827/frame_000s.jpg",
+      "bytes": 78635,
+      "mtime_ns": 1787797308062191815,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827/frame_030s.jpg",
+      "bytes": 64749,
+      "mtime_ns": 1787797308162189491,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827/frame_060s.jpg",
+      "bytes": 77817,
+      "mtime_ns": 1787797308234187818,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827/frame_090s.jpg",
+      "bytes": 34991,
+      "mtime_ns": 1787797308310186050,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827/frame_120s.jpg",
+      "bytes": 42232,
+      "mtime_ns": 1787797308354185028,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827/frame_150s.jpg",
+      "bytes": 66253,
+      "mtime_ns": 1787797308394184098,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827/frame_180s.jpg",
+      "bytes": 52030,
+      "mtime_ns": 1787797308434183168,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827/frame_200s.jpg",
+      "bytes": 50549,
+      "mtime_ns": 1787797308454182703,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_401_exact/401_exact_00_tplus_125.908s.jpg",
+      "bytes": 68569,
+      "mtime_ns": 1787811775632272389,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_401_exact/401_exact_01_tplus_125.942s.jpg",
+      "bytes": 68757,
+      "mtime_ns": 1787811775640272364,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_401_exact/401_exact_02_tplus_126.009s.jpg",
+      "bytes": 64866,
+      "mtime_ns": 1787811775644272350,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_00.jpg",
+      "bytes": 43491,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_01.jpg",
+      "bytes": 38078,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_02.jpg",
+      "bytes": 25954,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_03.jpg",
+      "bytes": 27997,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_04.jpg",
+      "bytes": 27978,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_05.jpg",
+      "bytes": 56853,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_06.jpg",
+      "bytes": 51586,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_07.jpg",
+      "bytes": 31394,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_08.jpg",
+      "bytes": 41714,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_09.jpg",
+      "bytes": 85778,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_10.jpg",
+      "bytes": 88436,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_11.jpg",
+      "bytes": 51700,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_12.jpg",
+      "bytes": 20480,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_13.jpg",
+      "bytes": 53323,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_14.jpg",
+      "bytes": 33011,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_15.jpg",
+      "bytes": 37579,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_16.jpg",
+      "bytes": 44464,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_17.jpg",
+      "bytes": 44151,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_18.jpg",
+      "bytes": 31086,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_19.jpg",
+      "bytes": 98120,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_20.jpg",
+      "bytes": 89693,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_21.jpg",
+      "bytes": 59958,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_22.jpg",
+      "bytes": 49401,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    },
+    {
+      "path": "stair_captures/visual_review_20260827_tag/frame_23.jpg",
+      "bytes": 52877,
+      "mtime_ns": 1787806676576068587,
+      "state": "READ",
+      "kind": "image",
+      "decode_shape": [
+        480,
+        640,
+        3
+      ],
+      "read_scope": "decoded and visually reviewed in existing-stills contact sheets"
+    }
+  ],
+  "inventory_count": 62,
+  "baseline": {
+    "head": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+    "status": "",
+    "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "staged_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "temporary_artifacts": [
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/payload-pass.log",
+      "kind": "temporary execution log or review copy",
+      "removed_utc": "2026-09-18T08:47:02.170584+00:00",
+      "sha256_before_removal": "ed587dc228122a1d3c311191bd47aaa198a670123c8213eb1704fa14a52176ad",
+      "exists_after": false
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/derive-pass.log",
+      "kind": "temporary execution log or review copy",
+      "removed_utc": "2026-09-18T08:47:02.170584+00:00",
+      "sha256_before_removal": "6f0dc7599badae2de7f68544b5f26312d77b3f30b9f9be2b6d0f1c9fcfb70efb",
+      "exists_after": false
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/validation-pass.log",
+      "kind": "temporary execution log or review copy",
+      "removed_utc": "2026-09-18T08:47:02.170584+00:00",
+      "sha256_before_removal": "ece3ea41f6e082e6f33cb7e02df651540cd8464d600ae301728f8996e11c6f3b",
+      "exists_after": false
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/_scratch",
+      "kind": "temporary cache directory",
+      "removed_utc": "2026-09-18T08:47:02.170584+00:00",
+      "files": [
+        "matplotlib/fontlist-v310.json"
+      ],
+      "exists_after": false
+    },
+    {
+      "path": "/tmp/tron1-sensor-report-cold-read-20260918.txt",
+      "kind": "temporary execution log or review copy",
+      "removed_utc": "2026-09-18T08:47:02.170584+00:00",
+      "sha256_before_removal": "6a3175230134e44d1e9105b46e299cd7a992734b6b19619920ff065199dd3658",
+      "exists_after": false
+    }
+  ],
+  "processes": [
+    {
+      "name": "offline payload pass",
+      "exec_session": 50594,
+      "status": "COMPLETED",
+      "ros_init": false
+    },
+    {
+      "name": "numeric derivation",
+      "exec_session": 40819,
+      "status": "COMPLETED",
+      "ros_init": false
+    },
+    {
+      "name": "numeric derivation with initialpose annotation",
+      "exec_session": 93852,
+      "status": "COMPLETED",
+      "ros_init": false
+    },
+    {
+      "name": "decoder validation and checksums",
+      "exec_session": 21278,
+      "status": "COMPLETED",
+      "ros_init": false
+    },
+    {
+      "name": "figure generation",
+      "exec_session": 57935,
+      "status": "COMPLETED",
+      "ros_init": false
+    },
+    {
+      "name": "corrected AMCL figure",
+      "exec_session": 56367,
+      "status": "COMPLETED",
+      "ros_init": false
+    },
+    {
+      "name": "figure wording refinement",
+      "exec_session": 54368,
+      "status": "COMPLETED",
+      "ros_init": false
+    },
+    {
+      "name": "inventory, metadata, sidecar/video/still reads and final artifact checks",
+      "status": "COMPLETED",
+      "ros_init": false
+    }
+  ],
+  "coverage_scope": "All files under manual_captures and stair_captures in current target repository, excluding sibling repositories.",
+  "state_counts": {
+    "READ": 62
+  },
+  "completed_utc": "2026-09-18T08:47:02.170584+00:00"
+}

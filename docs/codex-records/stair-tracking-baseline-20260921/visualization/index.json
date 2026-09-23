@@ -1,0 +1,17 @@
+{
+  "102101": {
+    "comparison_bag": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/visualization/102101/comparison.bag",
+    "lidar_bag": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/102101/lidar_registration.bag",
+    "original_bag": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_102101.bag"
+  },
+  "103313": {
+    "comparison_bag": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/visualization/103313/comparison.bag",
+    "lidar_bag": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/103313/lidar_registration.bag",
+    "original_bag": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_103313.bag"
+  },
+  "105713": {
+    "comparison_bag": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/visualization/105713/comparison.bag",
+    "lidar_bag": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/105713/lidar_registration.bag",
+    "original_bag": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_105713.bag"
+  }
+}

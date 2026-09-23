@@ -1,0 +1,331 @@
+[
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "events": [
+      {
+        "t": 1789560543.6888459,
+        "topic": "/multifloor/floor_state",
+        "data": {
+          "floor_id": "3F",
+          "map_generation": 0,
+          "state": 2,
+          "detail": "initial map observed"
+        },
+        "relative_s": 0.002523183822631836
+      },
+      {
+        "t": 1789560543.6895394,
+        "topic": "/stair_supervisor/state",
+        "data": {
+          "state": 1,
+          "connected": true,
+          "detail": "navigation owns commands",
+          "ownership_epoch": 0
+        },
+        "relative_s": 0.0032167434692382812
+      }
+    ]
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_231643.bag",
+    "events": [
+      {
+        "t": 1789568333.8910327,
+        "topic": "/multifloor/floor_state",
+        "data": {
+          "floor_id": "3F",
+          "map_generation": 0,
+          "state": 2,
+          "detail": "initial map observed"
+        },
+        "relative_s": 0.11970329284667969
+      },
+      {
+        "t": 1789568333.8961272,
+        "topic": "/stair_supervisor/state",
+        "data": {
+          "state": 1,
+          "connected": true,
+          "detail": "navigation owns commands",
+          "ownership_epoch": 0
+        },
+        "relative_s": 0.12479782104492188
+      }
+    ]
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "events": [
+      {
+        "t": 1789569619.2112389,
+        "topic": "/multifloor/floor_state",
+        "data": {
+          "floor_id": "3F",
+          "map_generation": 0,
+          "state": 2,
+          "detail": "initial map observed"
+        },
+        "relative_s": 0.18035364151000977
+      },
+      {
+        "t": 1789569619.215022,
+        "topic": "/stair_supervisor/state",
+        "data": {
+          "state": 1,
+          "connected": true,
+          "detail": "navigation owns commands",
+          "ownership_epoch": 0
+        },
+        "relative_s": 0.18413686752319336
+      },
+      {
+        "t": 1789569671.5906498,
+        "topic": "/move_base/goal",
+        "data": {
+          "goal_id": {
+            "stamp": {
+              "secs": 1789569671,
+              "nsecs": 590379714
+            },
+            "id": "/mission_manager-1-1789569671.590"
+          },
+          "goal": {
+            "target_pose": {
+              "pose": {
+                "position": {
+                  "x": 10.054808,
+                  "y": -6.652934,
+                  "z": 0.0
+                },
+                "orientation": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.6426085669374498,
+                  "w": 0.7661946421756008
+                }
+              }
+            }
+          }
+        },
+        "relative_s": 52.55976462364197
+      },
+      {
+        "t": 1789569700.3915107,
+        "topic": "/move_base/result",
+        "data": {
+          "status": {
+            "goal_id": {
+              "stamp": {
+                "secs": 1789569671,
+                "nsecs": 590379714
+              },
+              "id": "/mission_manager-1-1789569671.590"
+            },
+            "status": 4,
+            "text": "Robot is oscillating. Even after executing recovery behaviors."
+          },
+          "result": {}
+        },
+        "relative_s": 81.36062550544739
+      },
+      {
+        "t": 1789569700.404941,
+        "topic": "/move_base/goal",
+        "data": {
+          "goal_id": {
+            "stamp": {
+              "secs": 1789569700,
+              "nsecs": 404675245
+            },
+            "id": "/mission_manager-2-1789569700.405"
+          },
+          "goal": {
+            "target_pose": {
+              "pose": {
+                "position": {
+                  "x": 10.054808,
+                  "y": -6.652934,
+                  "z": 0.0
+                },
+                "orientation": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.6426085669374498,
+                  "w": 0.7661946421756008
+                }
+              }
+            }
+          }
+        },
+        "relative_s": 81.37405586242676
+      },
+      {
+        "t": 1789569710.6060052,
+        "topic": "/move_base/result",
+        "data": {
+          "status": {
+            "goal_id": {
+              "stamp": {
+                "secs": 1789569700,
+                "nsecs": 404675245
+              },
+              "id": "/mission_manager-2-1789569700.405"
+            },
+            "status": 4,
+            "text": "Robot is oscillating. Even after executing recovery behaviors."
+          },
+          "result": {}
+        },
+        "relative_s": 91.575119972229
+      },
+      {
+        "t": 1789569710.6061144,
+        "topic": "/mission/result",
+        "data": {
+          "status": {
+            "goal_id": {
+              "stamp": {
+                "secs": 1789569671,
+                "nsecs": 589302062
+              },
+              "id": "/mission_operator_client_161965_1789569671391-1-1789569671.589"
+            },
+            "status": 4,
+            "text": "move_base navigation failed"
+          },
+          "result": {
+            "result_code": 4,
+            "reason": "move_base navigation failed",
+            "mission_id": "mission_fee7be810ce24cb5b6e6302f14f93ccc",
+            "artifact_path": ""
+          }
+        },
+        "relative_s": 91.57522916793823
+      },
+      {
+        "t": 1789569765.2047112,
+        "topic": "/move_base/goal",
+        "data": {
+          "goal_id": {
+            "stamp": {
+              "secs": 1789569765,
+              "nsecs": 204415798
+            },
+            "id": "/mission_manager-3-1789569765.204"
+          },
+          "goal": {
+            "target_pose": {
+              "pose": {
+                "position": {
+                  "x": 10.054808,
+                  "y": -6.652934,
+                  "z": 0.0
+                },
+                "orientation": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.6426085669374498,
+                  "w": 0.7661946421756008
+                }
+              }
+            }
+          }
+        },
+        "relative_s": 146.1738259792328
+      },
+      {
+        "t": 1789569846.8052568,
+        "topic": "/move_base/result",
+        "data": {
+          "status": {
+            "goal_id": {
+              "stamp": {
+                "secs": 1789569765,
+                "nsecs": 204415798
+              },
+              "id": "/mission_manager-3-1789569765.204"
+            },
+            "status": 4,
+            "text": "Robot is oscillating. Even after executing recovery behaviors."
+          },
+          "result": {}
+        },
+        "relative_s": 227.77437162399292
+      },
+      {
+        "t": 1789569846.817564,
+        "topic": "/move_base/goal",
+        "data": {
+          "goal_id": {
+            "stamp": {
+              "secs": 1789569846,
+              "nsecs": 817330121
+            },
+            "id": "/mission_manager-4-1789569846.817"
+          },
+          "goal": {
+            "target_pose": {
+              "pose": {
+                "position": {
+                  "x": 10.054808,
+                  "y": -6.652934,
+                  "z": 0.0
+                },
+                "orientation": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.6426085669374498,
+                  "w": 0.7661946421756008
+                }
+              }
+            }
+          }
+        },
+        "relative_s": 227.78667879104614
+      },
+      {
+        "t": 1789569884.8179598,
+        "topic": "/move_base/result",
+        "data": {
+          "status": {
+            "goal_id": {
+              "stamp": {
+                "secs": 1789569846,
+                "nsecs": 817330121
+              },
+              "id": "/mission_manager-4-1789569846.817"
+            },
+            "status": 4,
+            "text": "Robot is oscillating. Even after executing recovery behaviors."
+          },
+          "result": {}
+        },
+        "relative_s": 265.78707456588745
+      },
+      {
+        "t": 1789569884.8185153,
+        "topic": "/mission/result",
+        "data": {
+          "status": {
+            "goal_id": {
+              "stamp": {
+                "secs": 1789569765,
+                "nsecs": 203291416
+              },
+              "id": "/mission_operator_client_162164_1789569765049-1-1789569765.203"
+            },
+            "status": 4,
+            "text": "move_base navigation failed"
+          },
+          "result": {
+            "result_code": 4,
+            "reason": "move_base navigation failed",
+            "mission_id": "mission_998c0df252be4602938792ddfe8f2d5c",
+            "artifact_path": ""
+          }
+        },
+        "relative_s": 265.78763008117676
+      }
+    ]
+  }
+]

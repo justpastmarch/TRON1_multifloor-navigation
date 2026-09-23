@@ -1,0 +1,17 @@
+{
+  "at_utc": "2026-09-23T00:52:57.744644+00:00",
+  "state": {
+    "state": 1,
+    "connected": true,
+    "detail": "navigation owns commands",
+    "stamp": 1790124777.4861898
+  },
+  "tracking": {
+    "state": "TRACKED",
+    "geometry_valid": true,
+    "geometry_age_sec": 0.43766344446339644,
+    "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337",
+    "worker_error": ""
+  },
+  "goals_sent": 0
+}

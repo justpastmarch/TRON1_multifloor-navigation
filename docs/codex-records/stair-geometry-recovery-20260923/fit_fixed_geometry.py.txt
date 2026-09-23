@@ -1,0 +1,50 @@
+"""Offline fixed-dimension surface registration; not live commissioning."""
+from pathlib import Path
+import json,math
+import numpy as np
+import open3d as o3d
+from scipy.spatial import cKDTree
+from scipy.optimize import least_squares
+ROOT=Path(__file__).resolve().parent
+geometry=json.loads((ROOT/'recovered-site.json').read_text())['geometry']
+d,h,w=geometry['tread_depth_m'],geometry['riser_height_m'],geometry['stair_width_m']
+a=geometry['flight_1_steps']*d;gap=geometry['landing_width_m']-w
+pieces=[];labels=[]
+def patch(x0,x1,y0,y1,z,label):
+ xs=np.arange(x0+.02,x1,.055);ys=np.arange(y0+.02,y1,.055)
+ x,y=np.meshgrid(xs,ys);points=np.column_stack((x.ravel(),y.ravel(),np.full(x.size,z)))
+ pieces.append(points);labels.extend([label]*len(points))
+for i in range(geometry['flight_1_steps']):patch(i*d,(i+1)*d,-w/2,w/2,(i+1)*h,'flight1_'+str(i+1))
+patch(a,a+geometry['landing_depth_m'],-w/2,-w/2+geometry['landing_width_m'],geometry['flight_1_steps']*h,'landing')
+for i in range(geometry['flight_2_steps']):patch(a-(i+1)*d,a-i*d,gap-w/2,gap+w/2,(geometry['flight_1_steps']+i+1)*h,'flight2_'+str(i+1))
+model=np.concatenate(pieces);labels=np.array(labels)
+def move(parameters):
+ x,y,z,yaw=parameters;c,s=np.cos(yaw),np.sin(yaw)
+ return model@np.array([[c,s,0],[-s,c,0],[0,0,1]])+np.array([x,y,z])
+result={}
+for bid in ['102101','105713']:
+ raw=np.load(ROOT/'geometry'/(bid+'-scans.npz'))['points'][:,:3]
+ cloud=o3d.geometry.PointCloud();cloud.points=o3d.utility.Vector3dVector(raw);cloud=cloud.voxel_down_sample(.035)
+ cloud.estimate_normals(o3d.geometry.KDTreeSearchParamHybrid(radius=.13,max_nn=24))
+ pts=np.asarray(cloud.points);normals=np.asarray(cloud.normals)
+ pts=pts[(np.abs(normals[:,2])>.985)&(pts[:,0]>-.8)&(pts[:,0]<4.8)&(pts[:,1]>-.9)&(pts[:,1]<2.7)&(pts[:,2]>-.8)&(pts[:,2]<3.0)]
+ tree=cKDTree(pts)
+ def residual(parameters):
+  positioned=move(parameters);dist,indices=tree.query(positioned)
+  # Fixed cutoff excludes unobserved model patches; robust loss reduces edge
+  # artifacts. No dimension, scale, roll, pitch or tracked pose is optimized.
+  delta=positioned-pts[indices]
+  delta*=np.minimum(1.,.2/np.maximum(dist,1e-9))[:,None]
+  return delta.ravel()
+ fits=[]
+ for initial_x in [-.1,.2,.5,.8]:
+  fit=least_squares(residual,[initial_x,0,-.75,0],bounds=([-1,-.4,-1.1,-.25],[1.5,.4,-.4,.25]),loss='soft_l1',f_scale=.04,max_nfev=70)
+  positioned=move(fit.x);dist,_=tree.query(positioned);bylabel={}
+  for label in sorted(set(labels)):
+   v=dist[labels==label];bylabel[label]=dict(model_points=len(v),fraction_within_10cm=float(np.mean(v<.1)),median_distance_m=float(np.median(v)))
+  fits.append(dict(parameters=fit.x.tolist(),loss=float(np.mean(np.minimum(dist,.2)**2)),fraction_model_within_10cm=float(np.mean(dist<.1)),per_surface=bylabel))
+ fits.sort(key=lambda f:f['loss']);result[bid]=dict(point_count=len(pts),fits=fits)
+ print(bid, 'fit', fits[0]['parameters'],'fraction',fits[0]['fraction_model_within_10cm'],flush=True)
+ np.save(ROOT/'geometry'/(bid+'-horizontal-fit.npy'),pts)
+result['definition']=dict(dimensions_fixed=geometry,parameters='observed_first_body_from_nominal_stair: tx,ty,tz,yaw',model_convention='9 tread rectangles then landing then 10 return tread rectangles, as existing simulation world; top tread and landing overlap in height, count convention not independent truth',evidence='INFERRED alignment; same LiDAR estimates provide observations; incomplete model coverage and repeated risers can alias; NOT a validated live entry anchor')
+(ROOT/'fixed-geometry-fit.json').write_text(json.dumps(result,indent=2))

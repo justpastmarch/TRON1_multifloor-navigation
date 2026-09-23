@@ -1,0 +1,9 @@
+........                                                                 [100%]
+=============================== warnings summary ===============================
+../../../../../usr/lib/python3/dist-packages/Cryptodome/Util/_raw_api.py:41
+  /usr/lib/python3/dist-packages/Cryptodome/Util/_raw_api.py:41: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
+    import imp
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/pytest.xml -
+8 passed, 1 warning in 0.63s

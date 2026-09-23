@@ -1,0 +1,155 @@
+{
+  "starts": {
+    "VERIFY_ENTRY": 1790124073.4742763,
+    "ALIGN": 1790124075.0006387,
+    "FORWARD_SEGMENT_1": 1790124076.0751514
+  },
+  "end": 1790124121.0910861,
+  "forward_duration_sec": 45.01593470573425,
+  "tx_x": {
+    "n": 957,
+    "min": 0.009030121360079977,
+    "median": 0.5,
+    "p95": 0.5,
+    "max": 0.5
+  },
+  "tx_nonzero_count": 957,
+  "debug_tracking_states": {
+    "TRACKED": 440,
+    "DEGRADED": 10
+  },
+  "boundary_adjusted_count": 0,
+  "below_floor_count": 18,
+  "first_debug": {
+    "elapsed": 0.07774066925048828,
+    "phase": "FORWARD_SEGMENT_1",
+    "tracking_state": "TRACKED",
+    "command": [
+      0.014274485848727635,
+      -0.005717386743096169
+    ],
+    "proposed_command": [
+      0.014274485848727635,
+      -0.005717386743096169
+    ],
+    "boundary_adjusted": false,
+    "below_flight_command_floor": true,
+    "clearance_m": 0.30878711221362565,
+    "pose": [
+      -0.4609154292481437,
+      -0.027165607570514703,
+      -0.0399147512361242
+    ],
+    "pitch": -0.14792706849180676,
+    "roll": 0.025790369265187053,
+    "epsi": 0.031162208174570487,
+    "velocity": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "progress": -0.010915429248143704,
+    "incomplete_conditions": [
+      "progress",
+      "ascent_seen",
+      "height",
+      "body_in_next_region",
+      "new_phase_observation"
+    ],
+    "phase_test": {
+      "state": "RUNNING",
+      "target_phase": "EXIT_CONFIRM",
+      "phases": [
+        "VERIFY_ENTRY",
+        "ALIGN",
+        "FORWARD_SEGMENT_1",
+        "LANDING",
+        "TURN_TO_NEXT_FLIGHT",
+        "FORWARD_SEGMENT_2",
+        "EXIT_CONFIRM"
+      ],
+      "max_duration_sec": 255.0,
+      "current_phase": "FORWARD_SEGMENT_1",
+      "phase_budget_sec": 45.0,
+      "elapsed_sec": 2.46032878299593,
+      "phase_elapsed_sec": 0.06206642001052387
+    }
+  },
+  "last_debug": {
+    "elapsed": 44.98861622810364,
+    "phase": "FORWARD_SEGMENT_1",
+    "tracking_state": "TRACKED",
+    "command": [
+      0.275,
+      -0.10163996663763232
+    ],
+    "proposed_command": [
+      0.275,
+      -0.10163996663763232
+    ],
+    "boundary_adjusted": false,
+    "below_flight_command_floor": false,
+    "clearance_m": 0.29149506809773884,
+    "pose": [
+      0.0339792561036805,
+      0.06556157688874512,
+      -0.03552679888009655
+    ],
+    "pitch": -0.05140029415710089,
+    "roll": 0.010898026565195396,
+    "epsi": 0.16027565039756253,
+    "velocity": [
+      0.01462335761691511,
+      0.005303563670017454,
+      -0.0241385044400553
+    ],
+    "progress": 0.48397925610368053,
+    "incomplete_conditions": [
+      "progress",
+      "ascent_seen",
+      "height",
+      "body_in_next_region"
+    ],
+    "phase_test": {
+      "state": "RUNNING",
+      "target_phase": "EXIT_CONFIRM",
+      "phases": [
+        "VERIFY_ENTRY",
+        "ALIGN",
+        "FORWARD_SEGMENT_1",
+        "LANDING",
+        "TURN_TO_NEXT_FLIGHT",
+        "FORWARD_SEGMENT_2",
+        "EXIT_CONFIRM"
+      ],
+      "max_duration_sec": 255.0,
+      "current_phase": "FORWARD_SEGMENT_1",
+      "phase_budget_sec": 45.0,
+      "elapsed_sec": 47.37135664699599,
+      "phase_elapsed_sec": 44.973094284010585
+    }
+  },
+  "evidence_grade": "OBSERVED for repository configuration, outgoing TX log and LiDAR estimates; torque response and minimum successful command remain UNVERIFIED.",
+  "finding": {
+    "safety": "S1",
+    "mobility": "M2",
+    "description": "First-flight trial sent normalized x=0.5 but timed out after 45 seconds without a measured step-height gain.",
+    "causal_inference": "The current normalized input may be insufficient for the operator-described tilt-triggered stair behavior; outgoing messages do not prove robot-side torque or command acceptance. Simultaneous turn correction and contact mechanics are not ruled out."
+  },
+  "configured_profile_linear_speed": 0.4,
+  "configured_lidar_max_v": 0.3,
+  "configured_lidar_min_flight_v": 0.275,
+  "websocket_linear_full_scale": 0.55,
+  "normalized_command_ceiling": 0.5454545454545454,
+  "normalization_note": "x is unitless input. It is not torque percentage and the nominal m/s input scale does not prove actual physical speed in STAIR mode.",
+  "ramp_and_hold": {
+    "first_x_0point5_after_sec": 1.8376946449279785,
+    "x_0point5_to_result_sec": 43.178240060806274,
+    "commands_after_ramp": 899,
+    "all_after_ramp_x_0point5": true
+  },
+  "repository_files_changed": [],
+  "goals_or_actuator_commands_sent": 0,
+  "temporary_processes_or_logs_created": false,
+  "retained_artifacts": "Read-only BAG extracts and calculated evidence JSON only."
+}

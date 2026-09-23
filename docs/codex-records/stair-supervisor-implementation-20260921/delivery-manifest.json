@@ -1,0 +1,257 @@
+{
+  "created_utc": "2026-09-20T22:16:13.650510+00:00",
+  "repository": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation",
+  "baseline_head": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+  "inventory_before": 1764,
+  "modified": 23,
+  "added": 18,
+  "files": [
+    {
+      "path": "docs/stair-lidar-integration.md",
+      "before_sha256": null,
+      "after_sha256": "4ed284c793f829f43f7f4e5e6ee50a1fa68d28a6a9948c8fbc375714d9a449bd",
+      "mode": 436
+    },
+    {
+      "path": "run.sh",
+      "before_sha256": "70bf3634e5fc1e5c155c3439e7074d23ee0686e2055ce388bc08cc5417141784",
+      "after_sha256": "6a93b44dd5ed449af5fdfd304a9d4871ba226b0319e393dc30961083d59bbce0",
+      "mode": 509
+    },
+    {
+      "path": "src/mission_manager/CMakeLists.txt",
+      "before_sha256": "385f862b8deeab2b86657d7b52f4feb8d3761575ac05faac28c847a0d458e611",
+      "after_sha256": "bb8b0ff53bfe6e8bc8b50f4785119ea01d970df5745794e2a13a0cdd1b428504",
+      "mode": 436
+    },
+    {
+      "path": "src/mission_manager/launch/system.launch",
+      "before_sha256": "5d44a98f4695b6090306575ab8fc541c0152aa9297b17c935b68baa8d8c4ecf0",
+      "after_sha256": "4836b9585ecd4d30a2c90bcc3fd9f6ff140cfbb7df61b0cacda18824b4695dff",
+      "mode": 436
+    },
+    {
+      "path": "src/mission_manager/src/mission_manager/mission_action_server.py",
+      "before_sha256": "bc7fd4c9398da733d6b260812ac8cb9488c1467a2a3ad79b1d3cf0c16ba0a1f0",
+      "after_sha256": "92ae3bd0f99c1eb4377200db713ad2377c5615ffea18751cb0ca2487a144baff",
+      "mode": 436
+    },
+    {
+      "path": "src/mission_manager/src/mission_manager/navigation_executor.py",
+      "before_sha256": "fe6b5146317619e55091e43d785eade84a57d0f39093ca6be19cc2cbe28d9f77",
+      "after_sha256": "026f6dadeb54566f6aa87c11ee6ac92b089b7765dd92b1bcf6de4cecf637b8f3",
+      "mode": 436
+    },
+    {
+      "path": "src/mission_manager/src/mission_manager/navigation_hold.py",
+      "before_sha256": null,
+      "after_sha256": "7adaab0962a85ca1fdf3231c9ded29988c83cf9c0e8e99b6912913a9fa528378",
+      "mode": 436
+    },
+    {
+      "path": "src/mission_manager/src/mission_manager/ros_runtime.py",
+      "before_sha256": "92555bb0988ed26dba4ac62cd04cbd7b469168ea167e751602b68e97a507484c",
+      "after_sha256": "4562c142f41c32e5781ad703c6fde62af2db720d545258c2be84717e854fb443",
+      "mode": 436
+    },
+    {
+      "path": "src/mission_manager/src/mission_manager/ros_state.py",
+      "before_sha256": "31e7b6abb88b18dc559138d7c0a3f6286c463c9b5cbd586c3aaf04782c8dc6a7",
+      "after_sha256": "89216e11edb1210abeebd45ac2d5ffe7328910cb8ea95e22c7b4b62006d0b9d4",
+      "mode": 436
+    },
+    {
+      "path": "src/mission_manager/test/mission_5f_rf_synthetic.test",
+      "before_sha256": "7deda347e0cd72d5f6218ac150b68db94b3fa49efa3e9aa0a11cda779dddd728",
+      "after_sha256": "cd1ca30f6cdb41913aa2b53ca7f28e7e82819701cb9b9efd7fface17b322c96d",
+      "mode": 436
+    },
+    {
+      "path": "src/mission_manager/test/mock_mission_children.py",
+      "before_sha256": "95de548408237fa7cbf70e6f88d17e7ec632dad6c2a7c922b0c09d7fde9c10e8",
+      "after_sha256": "2b60c5ca0e99c2af192a1a49c6bc5c60ce9d0c93fc4e743a4540fcf45dced08b",
+      "mode": 509
+    },
+    {
+      "path": "src/mission_manager/test/test_full_system_synthetic_ros.py",
+      "before_sha256": "befa46d71888dd2b9bc2c65301748b05edde59fc83f463d3d2b8d3be07ea25ba",
+      "after_sha256": "753ab30210b44f6ceb1aa00517275ed79264c38670ad692084fb3103d9743279",
+      "mode": 509
+    },
+    {
+      "path": "src/mission_manager/test/test_navigation_hold.py",
+      "before_sha256": null,
+      "after_sha256": "6666bd20f5c5bd2879d08c0902136ce41dae33cc45ffb0c8b3d5dd68ab84142e",
+      "mode": 436
+    },
+    {
+      "path": "src/mission_manager/test/test_runtime_gating.py",
+      "before_sha256": "a85918d30f9d4f212076878c77b80e13bd84c6bf56f0973b6811bab3d808097d",
+      "after_sha256": "a541d0b96e60d6806ec00e0b7447e4a750dd9070c850fb6bc4ea06cc38ec5a28",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/CMakeLists.txt",
+      "before_sha256": "d4fb7648a714005a5ed57c0ad8150987973ce6521fb2c7ee311c13d47b85f1b7",
+      "after_sha256": "2625702c9c8ce2341c5806a8a2e3345eb641b117818d07b243dde4f9a3f11855",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/config/lidar_imu_baseline.yaml",
+      "before_sha256": null,
+      "after_sha256": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/config/stair_lidar.yaml",
+      "before_sha256": null,
+      "after_sha256": "05b8f97be0b48a8f16026ee0e6859e10799f10f8d21674ebef7148141fd8fe95",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/package.xml",
+      "before_sha256": "9bbb1f2efe82c27bcbca97b9c21356a560f9caa1197e6cef97989e68046813ff",
+      "after_sha256": "9991fd127697d42f0524aff2cb061a530af43bb818bfe6aca6e5ea9c0532eb07",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/requirements-lidar.txt",
+      "before_sha256": null,
+      "after_sha256": "1c04613e04d8ef3120516a9fff56c0aecffafec574e6438e69e35929c44f1123",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/scripts/profile_lidar_stream.py",
+      "before_sha256": null,
+      "after_sha256": "b2372eb45825979714a1a97581e2d79afe1c4d1856e751b1892fae5997222328",
+      "mode": 493
+    },
+    {
+      "path": "src/stair_supervisor/scripts/replay_lidar_tracking.py",
+      "before_sha256": null,
+      "after_sha256": "7231e4fa3b12d59d6469518209c52ffc0d4bb509465b2f5bd0d74bd15d710420",
+      "mode": 493
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/configuration.py",
+      "before_sha256": "b033b272abe00ffc449585f12fde2fb9cf3df9f3502c55eeb5fd50a8fff483ef",
+      "after_sha256": "3768f9af50e83a061013c1216a7482c7c713a991f5237534b89721498f247275",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/lidar_process.py",
+      "before_sha256": null,
+      "after_sha256": "693805096d7af3ce76c9c38e92a46b2f0d09ed4856010202d341468247fce725",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/lidar_tracking.py",
+      "before_sha256": null,
+      "after_sha256": "9bab9bf6e38d87558a6c20a548e7d2ed393bb011bd985ef6c9447e2c672ca2ce",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/lidar_tracking_core.py",
+      "before_sha256": null,
+      "after_sha256": "1210ca227b1046750808aff118f9457179c290607c28ee790d829e9b1dd70d10",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/robot_client.py",
+      "before_sha256": "be701426c0c64883119b6e860f731303e56f06d8c733c6638e8be93ef9c1779f",
+      "after_sha256": "6afdf0872f76759163d2f12212ef74967f5bdd3d7a8226361881ebeca2f81435",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+      "before_sha256": "3fb0b7c10da6fd7072738fd639e616c6c1b6e607fef02773871931b81947bf8e",
+      "after_sha256": "ab58544c21fe808b7b28537d5bffbf8aea49ae40df3c3aa37d35ac3b75fe608c",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/ros_entrypoint.py",
+      "before_sha256": "264999a1d38de282040230a0b244bbe77a2848eed18393e00d60b478b542abda",
+      "after_sha256": "0adb6ff5a7d03326f6474e47f78a068c10a04cda6ae50cc065313971cd8b18fa",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/ros_lidar.py",
+      "before_sha256": null,
+      "after_sha256": "b7fe747d572c99a99cfdf0588b11253a67a092fb221d1548ab0730c40b8d172b",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/ros_node.py",
+      "before_sha256": "a35bc0e8896f6d91b8b37ea45e875a499c7725918252cbf8206db43f07b7a52a",
+      "after_sha256": "8e2693a69dfeec8ed51c361382db4a6d61ad17e1a757fdd859886169bae3ab8f",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/stair_feedback.py",
+      "before_sha256": null,
+      "after_sha256": "01493406a0d840f11d0c0b7959b8956777cca36a485051905c0dbbea5bcd88a4",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "before_sha256": "29b3aa30368e5c8db2e4b2d8527c70ab1e89ada5c20a4a398eff66e22ed41726",
+      "after_sha256": "cf4b9d25f8fc718ad15d3fea46cdec1a40783a2022e73f1d9b1e920f25c65549",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/supervisor_types.py",
+      "before_sha256": "5d53e26d0ce7481bc7d2307ff1ff2a5da7b210daf41522a9065c09fb30fc7a1d",
+      "after_sha256": "6e9c0e54a08fe7d05b256f7eacd053b5348b61800c6da68fa2c0010eb0d95da9",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/test/lidar_observe.test",
+      "before_sha256": null,
+      "after_sha256": "73348f327ecb81aa2b2bbd2794672d4bd3d550acc0d5c3f337bf5e64c88d58e7",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/test/robot_transport/test_robot_transport.py",
+      "before_sha256": "2a0927b409c13bc9ebe290b986a1f9abe0687bd051cbbff992144a7c3bf196af",
+      "after_sha256": "a71c4ad7ffae96208986eb46d80e994890f6b848f88af7c68a92f2a20ec77429",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/test/stair_sensor_fixture.py",
+      "before_sha256": "934e8c4bff97aa69bf0c0ea62d5fc0124457d9d3b80c8fe9a293fc2bdfe692f2",
+      "after_sha256": "04a33be99bbdca8d9aa505aa935bd4093bbc1063ad7de5549656145b5c68e3d8",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/test/test_lidar_control.py",
+      "before_sha256": null,
+      "after_sha256": "16bbb8ca39303af2135c975c9c808ff519fb3158b688f9fd643450d1d030e485",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/test/test_lidar_observe_ros.py",
+      "before_sha256": null,
+      "after_sha256": "b04f1a637c0da2685427f9a84d889fe50bef2ca51bcff073d0c18e25ab661597",
+      "mode": 509
+    },
+    {
+      "path": "src/stair_supervisor/test/test_lidar_process.py",
+      "before_sha256": null,
+      "after_sha256": "170030ffbf1ce7504ce0e17743927c330279979ad19a5958b8de8ab6074646aa",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/test/test_lidar_ros_adapter.py",
+      "before_sha256": null,
+      "after_sha256": "356d87ba31a8b6fde8753061ebcacbe0747fe0b127acf913693b4001d6c886b5",
+      "mode": 436
+    },
+    {
+      "path": "src/stair_supervisor/test/test_websocket_tx_ros.py",
+      "before_sha256": "f82495e0ffa1cb156f3aee1fc891de6386861f2868296ff08c4383ec410a52f7",
+      "after_sha256": "5eb48bd7c3db6dae29f8bd6f74f74257ecac083b6d690f8d74977c00bb258148",
+      "mode": 509
+    }
+  ],
+  "patch_sha256": "c508399c48b3b85d53bc9055cf2994d4c78cab835457f3900ca5a7700810966b"
+}

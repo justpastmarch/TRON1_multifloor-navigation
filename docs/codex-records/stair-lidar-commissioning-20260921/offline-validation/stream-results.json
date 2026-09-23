@@ -1,0 +1,22 @@
+{
+  "bag": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/rviz-nav-test-20260921/drive-recordings/stair_entry_20260921_110938.bag",
+  "elapsed_s": 20.259686298995803,
+  "samples": 97,
+  "geometry_samples": 93,
+  "age_p50_p95_max_s": [
+    0.18121506697207224,
+    0.2032824835972859,
+    0.34052793111186475
+  ],
+  "age_over_warn": 0,
+  "age_over_expire": 0,
+  "diagnostics": {
+    "epoch": 0,
+    "queue_length": 0,
+    "dropped_scans": 0,
+    "rejected_imu": 0,
+    "worker_error": "",
+    "backend": "process"
+  },
+  "limitation": "Laptop real-time replay at 1x; not robot-network latency or hardware actuation."
+}

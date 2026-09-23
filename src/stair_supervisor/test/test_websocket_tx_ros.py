@@ -201,6 +201,7 @@ class WebSocketTxRosTest(unittest.TestCase):
     def test_watchdog_and_close_success_frames_match_the_socket_bytes(self) -> None:
         # Given: the real ROS node boundary over a no-motion fake WebSocket.
         node, socket, factory, clock = make_node("/test/tx_success")
+        self.addCleanup(node.shutdown)
         while node._websocket_tx_publisher.get_num_connections() < 1:
             rospy.sleep(0.01)
         socket_start = len(socket.sent_payloads)
@@ -229,6 +230,7 @@ class WebSocketTxRosTest(unittest.TestCase):
     def test_failed_send_is_tolerated_then_latches_fault_after_outage_budget(self) -> None:
         # Given: a ready no-motion node whose socket sends will fail.
         node, socket, factory, clock = make_node("/test/tx_failure")
+        self.addCleanup(node.shutdown)
         while node._websocket_tx_publisher.get_num_connections() < 1:
             rospy.sleep(0.01)
         published_before = len(self._snapshot())

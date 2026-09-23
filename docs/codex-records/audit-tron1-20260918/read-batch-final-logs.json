@@ -1,0 +1,206 @@
+{
+  "created_utc": "2026-09-18T05:18:00.363280+00:00",
+  "repository": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation",
+  "files": [
+    {
+      "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-15-modular-architecture-expansion.log",
+      "sha256": "095d0ecd416f74ffba5ab709acd9d2902f1aa661a0c5cf890f3578a4e7e646e4",
+      "bytes": 8060,
+      "lines": 175,
+      "index_reconstruction_matches_current_source": true,
+      "unique_index_min": 452,
+      "unique_index_max": 1547,
+      "status_recommendation": "READ",
+      "scope": "Entire file semantics via lossless exact-line index; every original line reconstructs in original file order. Prior reviewed indices 0–1401 and 2770–3221 plus this pass 1402–2769 cover all file indices.",
+      "review_method": "All 1,368 previously unread unique lines displayed and semantically reviewed in seven untruncated batches: 1402–1599,1600–1799,1800–1999,2000–2199,2200–2399,2400–2599,2600–2769. No numeric or text normalization. Repeated source lines use the existing reviewed exact-line text.",
+      "current_source_unchanged_after_review": true
+    },
+    {
+      "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-16-modular-architecture-expansion.log",
+      "sha256": "ce26f17d140cfadfa6049800552bbcf482db60f2ce742dee7423a71eae6da13c",
+      "bytes": 9650,
+      "lines": 135,
+      "index_reconstruction_matches_current_source": true,
+      "unique_index_min": 452,
+      "unique_index_max": 1670,
+      "status_recommendation": "READ",
+      "scope": "Entire file semantics via lossless exact-line index; every original line reconstructs in original file order. Prior reviewed indices 0–1401 and 2770–3221 plus this pass 1402–2769 cover all file indices.",
+      "review_method": "All 1,368 previously unread unique lines displayed and semantically reviewed in seven untruncated batches: 1402–1599,1600–1799,1800–1999,2000–2199,2200–2399,2400–2599,2600–2769. No numeric or text normalization. Repeated source lines use the existing reviewed exact-line text.",
+      "current_source_unchanged_after_review": true
+    },
+    {
+      "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-17-modular-architecture-expansion.log",
+      "sha256": "ca66b2968d6ab732b17878eca3eaff56d4a1d811d377116e6e65d3821a0f345a",
+      "bytes": 13622,
+      "lines": 213,
+      "index_reconstruction_matches_current_source": true,
+      "unique_index_min": 452,
+      "unique_index_max": 1838,
+      "status_recommendation": "READ",
+      "scope": "Entire file semantics via lossless exact-line index; every original line reconstructs in original file order. Prior reviewed indices 0–1401 and 2770–3221 plus this pass 1402–2769 cover all file indices.",
+      "review_method": "All 1,368 previously unread unique lines displayed and semantically reviewed in seven untruncated batches: 1402–1599,1600–1799,1800–1999,2000–2199,2200–2399,2400–2599,2600–2769. No numeric or text normalization. Repeated source lines use the existing reviewed exact-line text.",
+      "current_source_unchanged_after_review": true
+    },
+    {
+      "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-18-modular-architecture-expansion.log",
+      "sha256": "6e21d8a92ca30613b29d2f63c81d458bc95d7cf0d8af62739427a85037758943",
+      "bytes": 6309,
+      "lines": 129,
+      "index_reconstruction_matches_current_source": true,
+      "unique_index_min": 452,
+      "unique_index_max": 1937,
+      "status_recommendation": "READ",
+      "scope": "Entire file semantics via lossless exact-line index; every original line reconstructs in original file order. Prior reviewed indices 0–1401 and 2770–3221 plus this pass 1402–2769 cover all file indices.",
+      "review_method": "All 1,368 previously unread unique lines displayed and semantically reviewed in seven untruncated batches: 1402–1599,1600–1799,1800–1999,2000–2199,2200–2399,2400–2599,2600–2769. No numeric or text normalization. Repeated source lines use the existing reviewed exact-line text.",
+      "current_source_unchanged_after_review": true
+    },
+    {
+      "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-2-modular-architecture-expansion.log",
+      "sha256": "b6e176752aea5fb9559a94cb562463002771614ce4071e02a20d6ae04b5f3661",
+      "bytes": 12741,
+      "lines": 168,
+      "index_reconstruction_matches_current_source": true,
+      "unique_index_min": 452,
+      "unique_index_max": 2082,
+      "status_recommendation": "READ",
+      "scope": "Entire file semantics via lossless exact-line index; every original line reconstructs in original file order. Prior reviewed indices 0–1401 and 2770–3221 plus this pass 1402–2769 cover all file indices.",
+      "review_method": "All 1,368 previously unread unique lines displayed and semantically reviewed in seven untruncated batches: 1402–1599,1600–1799,1800–1999,2000–2199,2200–2399,2400–2599,2600–2769. No numeric or text normalization. Repeated source lines use the existing reviewed exact-line text.",
+      "current_source_unchanged_after_review": true
+    },
+    {
+      "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-3-modular-architecture-expansion.log",
+      "sha256": "ae33275b7942b6577af8be96dcf566f709eb52da83642859ec716819f797d04c",
+      "bytes": 11833,
+      "lines": 197,
+      "index_reconstruction_matches_current_source": true,
+      "unique_index_min": 452,
+      "unique_index_max": 2214,
+      "status_recommendation": "READ",
+      "scope": "Entire file semantics via lossless exact-line index; every original line reconstructs in original file order. Prior reviewed indices 0–1401 and 2770–3221 plus this pass 1402–2769 cover all file indices.",
+      "review_method": "All 1,368 previously unread unique lines displayed and semantically reviewed in seven untruncated batches: 1402–1599,1600–1799,1800–1999,2000–2199,2200–2399,2400–2599,2600–2769. No numeric or text normalization. Repeated source lines use the existing reviewed exact-line text.",
+      "current_source_unchanged_after_review": true
+    },
+    {
+      "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-4-modular-architecture-expansion.log",
+      "sha256": "6552c91ea00c79ef3b6d9155d576f5f0b4295197e54f9cd1d972268150420700",
+      "bytes": 5935,
+      "lines": 126,
+      "index_reconstruction_matches_current_source": true,
+      "unique_index_min": 452,
+      "unique_index_max": 2313,
+      "status_recommendation": "READ",
+      "scope": "Entire file semantics via lossless exact-line index; every original line reconstructs in original file order. Prior reviewed indices 0–1401 and 2770–3221 plus this pass 1402–2769 cover all file indices.",
+      "review_method": "All 1,368 previously unread unique lines displayed and semantically reviewed in seven untruncated batches: 1402–1599,1600–1799,1800–1999,2000–2199,2200–2399,2400–2599,2600–2769. No numeric or text normalization. Repeated source lines use the existing reviewed exact-line text.",
+      "current_source_unchanged_after_review": true
+    },
+    {
+      "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-5-modular-architecture-expansion.log",
+      "sha256": "89460cd1e43ca0f90e33e74cdd7ac3f4965796d9d42a89fb8dab7536175618aa",
+      "bytes": 6668,
+      "lines": 97,
+      "index_reconstruction_matches_current_source": true,
+      "unique_index_min": 452,
+      "unique_index_max": 2386,
+      "status_recommendation": "READ",
+      "scope": "Entire file semantics via lossless exact-line index; every original line reconstructs in original file order. Prior reviewed indices 0–1401 and 2770–3221 plus this pass 1402–2769 cover all file indices.",
+      "review_method": "All 1,368 previously unread unique lines displayed and semantically reviewed in seven untruncated batches: 1402–1599,1600–1799,1800–1999,2000–2199,2200–2399,2400–2599,2600–2769. No numeric or text normalization. Repeated source lines use the existing reviewed exact-line text.",
+      "current_source_unchanged_after_review": true
+    },
+    {
+      "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-6-modular-architecture-expansion.log",
+      "sha256": "80e2e6a4309ce5474c9547ded69b58a2b4a0ecd3189ec8ff41b9690d9a131b4a",
+      "bytes": 12435,
+      "lines": 150,
+      "index_reconstruction_matches_current_source": true,
+      "unique_index_min": 452,
+      "unique_index_max": 2502,
+      "status_recommendation": "READ",
+      "scope": "Entire file semantics via lossless exact-line index; every original line reconstructs in original file order. Prior reviewed indices 0–1401 and 2770–3221 plus this pass 1402–2769 cover all file indices.",
+      "review_method": "All 1,368 previously unread unique lines displayed and semantically reviewed in seven untruncated batches: 1402–1599,1600–1799,1800–1999,2000–2199,2200–2399,2400–2599,2600–2769. No numeric or text normalization. Repeated source lines use the existing reviewed exact-line text.",
+      "current_source_unchanged_after_review": true
+    },
+    {
+      "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-7-modular-architecture-expansion.log",
+      "sha256": "7aa3b38bbdc9f27226cd9f7db5ed89e7d7944382d087a2777b05d85b27738076",
+      "bytes": 8928,
+      "lines": 134,
+      "index_reconstruction_matches_current_source": true,
+      "unique_index_min": 452,
+      "unique_index_max": 2593,
+      "status_recommendation": "READ",
+      "scope": "Entire file semantics via lossless exact-line index; every original line reconstructs in original file order. Prior reviewed indices 0–1401 and 2770–3221 plus this pass 1402–2769 cover all file indices.",
+      "review_method": "All 1,368 previously unread unique lines displayed and semantically reviewed in seven untruncated batches: 1402–1599,1600–1799,1800–1999,2000–2199,2200–2399,2400–2599,2600–2769. No numeric or text normalization. Repeated source lines use the existing reviewed exact-line text.",
+      "current_source_unchanged_after_review": true
+    },
+    {
+      "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-8-modular-architecture-expansion.log",
+      "sha256": "239039d6511850249ccba11af2e2827b52debec27682a2f058fb8f47e1d5bc39",
+      "bytes": 12241,
+      "lines": 157,
+      "index_reconstruction_matches_current_source": true,
+      "unique_index_min": 452,
+      "unique_index_max": 2696,
+      "status_recommendation": "READ",
+      "scope": "Entire file semantics via lossless exact-line index; every original line reconstructs in original file order. Prior reviewed indices 0–1401 and 2770–3221 plus this pass 1402–2769 cover all file indices.",
+      "review_method": "All 1,368 previously unread unique lines displayed and semantically reviewed in seven untruncated batches: 1402–1599,1600–1799,1800–1999,2000–2199,2200–2399,2400–2599,2600–2769. No numeric or text normalization. Repeated source lines use the existing reviewed exact-line text.",
+      "current_source_unchanged_after_review": true
+    },
+    {
+      "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-9-modular-architecture-expansion.log",
+      "sha256": "f5f7f1f3030befcb24474948c281ddd0632013c6812a6590ffc6a181dd34fc81",
+      "bytes": 9002,
+      "lines": 100,
+      "index_reconstruction_matches_current_source": true,
+      "unique_index_min": 452,
+      "unique_index_max": 2769,
+      "status_recommendation": "READ",
+      "scope": "Entire file semantics via lossless exact-line index; every original line reconstructs in original file order. Prior reviewed indices 0–1401 and 2770–3221 plus this pass 1402–2769 cover all file indices.",
+      "review_method": "All 1,368 previously unread unique lines displayed and semantically reviewed in seven untruncated batches: 1402–1599,1600–1799,1800–1999,2000–2199,2200–2399,2400–2599,2600–2769. No numeric or text normalization. Repeated source lines use the existing reviewed exact-line text.",
+      "current_source_unchanged_after_review": true
+    }
+  ],
+  "file_count": 12,
+  "original_lines_total": 1781,
+  "new_unique_lines_reviewed": 1368,
+  "new_unique_range_inclusive": [
+    1402,
+    2769
+  ],
+  "coverage_mutated": false,
+  "test_execution": 0,
+  "target_writes": 0,
+  "temporary_artifacts_created": [],
+  "retained_artifacts": [
+    "final-logs-source-verification.json",
+    "read-batch-final-logs.json",
+    "phase-E-final-logs.md"
+  ],
+  "observed_findings": [
+    "Logs explicitly document sibling TRON1_Modular_Navigation; software claims and results are historical record content, not current audit reproductions.",
+    "Task 15 corrected placeholder/readiness contracts and bounded attempts; no physical qualification claimed.",
+    "Task 17 mock mission invokes mocked move_base and loopback ROS; terminal WebSocket failure deliberately has no reconnect.",
+    "Task 18 is COMPLETE_WITH_BLOCKED_PREFLIGHT (NOT PASSED), with navigation, stairs, actuator, E-stop and physical behavior deferred.",
+    "Task 6 records intentional mixed disabled-production configuration and fixture-only configured enforcement; no current configuration correctness inferred.",
+    "Task 8 explicitly records corrected epoch-millisecond wire time versus monotonic freshness and nonfinite return semantics in sibling source."
+  ],
+  "corrections": [
+    "Do not count historical sibling test totals toward current 88 tests.",
+    "Do not import sibling readiness/graph/compiler/transport corrections into current repository findings.",
+    "Do not read COMPLETE_WITH_BLOCKED_PREFLIGHT as passed readiness.",
+    "Historical provenance count 98 in task3 precedes correction104; preserved task2/task3 correction resolves history without implying current target immutability."
+  ],
+  "related_findings": [
+    {
+      "id": "E-02",
+      "evidence": "OBSERVED historical record scope and explicit supersession; current behavior independently assessed elsewhere",
+      "Safety": "S2",
+      "Mobility": "M2"
+    },
+    {
+      "id": "E-03",
+      "evidence": "OBSERVED fake/loopback boundary and explicit hardware deferral; physical results UNVERIFIED",
+      "Safety": "S2",
+      "Mobility": "M2"
+    }
+  ]
+}

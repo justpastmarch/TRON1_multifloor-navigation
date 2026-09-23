@@ -1,0 +1,435 @@
+{
+  "observed_utc": "2026-09-20T22:25:11.727520+00:00",
+  "removed": [
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/worktree",
+      "type": "directory",
+      "file_count": 5556,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/ros-test-home",
+      "type": "directory",
+      "file_count": 196,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/implementation-review-copy.txt",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/prepare_delivery.py",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/apply_delivery.py",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/catkin-results.txt",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/build-final.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/build.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/legacy-supervisor-tests.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-adapter-final.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-adapter-tests.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-control-final.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-control-tests.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-final-unit-tests.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-observe-ros-final.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-observe-ros-test.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-process-final.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-process-tests.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/mission-5f-rf-retest.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/navigation-tests.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-105713.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-final-102101.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-process-105713.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-process-raw-105713.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-verified-102101.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-verified-105713.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/replay-final-103313.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/ros-final-verification.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/ros-tests-final.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/ros-tests.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/stair-boundary-retest.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/transport-tests.log",
+      "type": "file",
+      "file_count": 1,
+      "removed": true
+    }
+  ],
+  "raw_log_receipts": [
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/build-final.log",
+      "sha256": "ec7a29db5c4f67c3d8b2a2a3da7d140641e419245c8c8d5a9eed0937dc8c7157",
+      "bytes": 10960
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/build.log",
+      "sha256": "de813e32aeee773194784a0f92c86006acb062bd497d8661d30601d310591595",
+      "bytes": 10593
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/legacy-supervisor-tests.log",
+      "sha256": "b1772fb68935f1676fcc4aa55b4d480c0ce05f29c5b237ab0146c025a0863937",
+      "bytes": 1767
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-adapter-final.log",
+      "sha256": "8d3ad22b37c203cdc3164390f7cdd2faf0d51170130672fc04e32967bfef6da6",
+      "bytes": 846
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-adapter-tests.log",
+      "sha256": "1af02032f4d316261b5f82ccc838e94489a786db857b97a9b515ac4cf3779b66",
+      "bytes": 846
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-control-final.log",
+      "sha256": "6ef90c2091aa18fe127eae6b4b08b4b51706e0f6d6ee53d355501445e5bc6c9a",
+      "bytes": 2639
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-control-tests.log",
+      "sha256": "4cb2f8b345d85ad93584e9090507c42939221ea4354f0e1078d4e5e030023f93",
+      "bytes": 2440
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-final-unit-tests.log",
+      "sha256": "9d83147f61cfa7edc08662d12febb95fc8d40ad57e39edabfc7b88b53bfc1a8a",
+      "bytes": 2911
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-observe-ros-final.log",
+      "sha256": "9e7d47263e4c2b418ff18596266d9b66478da8fe64695b385dd46c8168817880",
+      "bytes": 1041
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-observe-ros-test.log",
+      "sha256": "5347049e8f6d774fa233d605d7a2721532fdf12af7d90eb2e47ad4907eabaf2b",
+      "bytes": 2173
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-process-final.log",
+      "sha256": "ef9242fbc2eeb0492e3ef70a5aafe2e9425f8b32d9e668cff09339919eb308a2",
+      "bytes": 552
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/lidar-process-tests.log",
+      "sha256": "56efc838958b58ce1829e4a05211a67352711cde9176cd54fa451bfa5422311f",
+      "bytes": 370
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/mission-5f-rf-retest.log",
+      "sha256": "c8bc48d40684d3de03288577ccc0649b2b6781a8d794545dea625041d890f93f",
+      "bytes": 4865
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/navigation-tests.log",
+      "sha256": "dd539cb4fcb631b805c08b751ff888d33277551a9be8d7b40ca6e5f79a54cdfe",
+      "bytes": 2677
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-105713.log",
+      "sha256": "847c612a245b3bd83b1d461c182d2d9a8334421841f68c792d704192953edd78",
+      "bytes": 963
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-final-102101.log",
+      "sha256": "f33576720bb86bcd33d352a12490612696a9179eb598846c914782267e2466f5",
+      "bytes": 1487
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-process-105713.log",
+      "sha256": "944055f7efc85c739c4f007bc85def63cff3fa124aa151686bfd1bcf93497244",
+      "bytes": 997
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-process-raw-105713.log",
+      "sha256": "ad8ef24777b4004c699ef5f1d48084f549a5df58d8095791a42802a5d0dac37c",
+      "bytes": 1143
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-verified-102101.log",
+      "sha256": "025b5399d91067f0a87e18aff807b40a6bfa42ef34389ec62a1b85bd004bde24",
+      "bytes": 1502
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-verified-105713.log",
+      "sha256": "a717eebe4c0d6369155b1ebc95a30dcf2bfeab06ea52fd366a23d1bc23739159",
+      "bytes": 1500
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/replay-final-103313.log",
+      "sha256": "899eedb632a07823fba6e6e4a0b09f72a0cceeae7dcf8c80d9d495af94f280f0",
+      "bytes": 891
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/ros-final-verification.log",
+      "sha256": "1414bd789c8739510fdd268db88f2547c6287c6095e36b9376151442d984a350",
+      "bytes": 82102
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/ros-tests-final.log",
+      "sha256": "0e1f0bd6d9f2364763687ef6f1afa7275a8784c31fbec0a131e250603a6e43d2",
+      "bytes": 94890
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/ros-tests.log",
+      "sha256": "320748769beda3b0d36fefc410a7af0d5b887e09c003520c7d0e12dbb491c4f0",
+      "bytes": 84468
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/stair-boundary-retest.log",
+      "sha256": "ec4d0fc78f8f4f39cff4c521c16b95bf321675299b3db2706c074439907f6901",
+      "bytes": 5271
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/transport-tests.log",
+      "sha256": "742b5ccb6645e8f17ae2bc232e6343f54afacff2eb4e98de3848ec215e9cee9d",
+      "bytes": 3095
+    }
+  ],
+  "external": {
+    "observed_utc": "2026-09-20T22:18:36.619120+00:00",
+    "external_temporary_candidates": [
+      {
+        "path": "/dev/shm/tron1-mission_system_m3tron_All_Series_54589_8334086252873975034",
+        "ctime": "2026-09-20T22:05:16.125220+00:00",
+        "children": [
+          "artifacts"
+        ]
+      },
+      {
+        "path": "/dev/shm/tron1-synthetic-mission_5f_rf_m3tron_All_Series_54223_5616462865432477331",
+        "ctime": "2026-09-20T22:05:08.313281+00:00",
+        "children": [
+          "artifacts"
+        ]
+      },
+      {
+        "path": "/dev/shm/tron1-synthetic-mission_5f_rf_m3tron_All_Series_47840_2754669404087071830",
+        "ctime": "2026-09-20T21:44:26.852668+00:00",
+        "children": [
+          "artifacts"
+        ]
+      },
+      {
+        "path": "/dev/shm/tron1-mission_system_m3tron_All_Series_44141_7520887248322811186",
+        "ctime": "2026-09-20T21:40:10.751765+00:00",
+        "children": [
+          "artifacts"
+        ]
+      },
+      {
+        "path": "/dev/shm/tron1-synthetic-mission_5f_rf_m3tron_All_Series_43713_8010314680164796267",
+        "ctime": "2026-09-20T21:39:50.372003+00:00",
+        "children": [
+          "artifacts"
+        ]
+      },
+      {
+        "path": "/dev/shm/tron1-mission_system_m3tron_All_Series_33284_3444231160095611231",
+        "ctime": "2026-09-20T21:09:27.956890+00:00",
+        "children": [
+          "artifacts"
+        ]
+      }
+    ],
+    "related_processes": [],
+    "cleanup_utc": "2026-09-20T22:19:20.366304+00:00",
+    "removed": [
+      {
+        "path": "/dev/shm/tron1-mission_system_m3tron_All_Series_54589_8334086252873975034",
+        "test_pid": 54589,
+        "files": 2,
+        "bytes": 22,
+        "removed": true
+      },
+      {
+        "path": "/dev/shm/tron1-synthetic-mission_5f_rf_m3tron_All_Series_54223_5616462865432477331",
+        "test_pid": 54223,
+        "files": 6,
+        "bytes": 66,
+        "removed": true
+      },
+      {
+        "path": "/dev/shm/tron1-synthetic-mission_5f_rf_m3tron_All_Series_47840_2754669404087071830",
+        "test_pid": 47840,
+        "files": 6,
+        "bytes": 66,
+        "removed": true
+      },
+      {
+        "path": "/dev/shm/tron1-mission_system_m3tron_All_Series_44141_7520887248322811186",
+        "test_pid": 44141,
+        "files": 2,
+        "bytes": 22,
+        "removed": true
+      },
+      {
+        "path": "/dev/shm/tron1-synthetic-mission_5f_rf_m3tron_All_Series_43713_8010314680164796267",
+        "test_pid": 43713,
+        "files": 6,
+        "bytes": 66,
+        "removed": true
+      },
+      {
+        "path": "/dev/shm/tron1-mission_system_m3tron_All_Series_33284_3444231160095611231",
+        "test_pid": 33284,
+        "files": 2,
+        "bytes": 22,
+        "removed": true
+      }
+    ]
+  },
+  "outputs_retained": "HTML/Markdown report, patch/manifest, structured test results and measurement evidence",
+  "temporary_render_profile": {
+    "observed_utc": "2026-09-20T22:26:44.343832+00:00",
+    "returncode": 0,
+    "preview": "report-preview.png",
+    "temporary_profile": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/html-render-11gr6_t2",
+    "temporary_profile_removed": true,
+    "stderr_tail": "324774 bytes written to file /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/report-preview.png\n"
+  },
+  "original_bags_modified": false,
+  "baseline_estimator_modified": false,
+  "synced_sources_modified": false,
+  "all_recorded_temporary_artifacts_removed": true
+}

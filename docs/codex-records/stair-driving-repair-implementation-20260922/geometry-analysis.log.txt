@@ -1,0 +1,3 @@
+102101 scans 100 points 925851
+105713 scans 68 points 686370
+103313 scans 94 points 837286

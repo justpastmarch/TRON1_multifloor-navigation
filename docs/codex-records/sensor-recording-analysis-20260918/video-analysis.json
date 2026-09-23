@@ -1,0 +1,12 @@
+{
+  "path": "manual_captures/analysis/sensor_gap_rgb_214_242.mp4",
+  "fps": 10.0,
+  "decoded_frames": 280,
+  "duration_s": 28.0,
+  "frame_mean_absolute_delta": {
+    "min": 0.060462239583333334,
+    "median": 0.13681315104166666,
+    "max": 65.84674153645834
+  },
+  "frame_timing": "video offset only; filename 214_242 is not verified bag clock mapping"
+}

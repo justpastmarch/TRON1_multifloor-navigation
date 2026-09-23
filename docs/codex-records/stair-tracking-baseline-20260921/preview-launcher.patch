@@ -1,0 +1,33 @@
+--- before/show_corrected.py
++++ after/show_corrected.py
+@@ -39,7 +39,13 @@
+     result = BASE.parent / 'stair-tracking-fix-20260921/validation' / run
+     spec = json.loads((result / 'spec.json').read_text())
+     original = Path(spec['bag_path'])
+-    for path in [original, result / 'lidar_registration.bag', result / 'comparison.bag']:
++    registry = BASE.parent / 'stair-tracking-baseline-20260921/visualization/index.json'
++    sources = json.loads(registry.read_text())[run]
++    lidar = Path(sources['lidar_bag'])
++    comparison = Path(sources['comparison_bag'])
++    if Path(sources['original_bag']) != original or lidar != result / 'lidar_registration.bag':
++        raise ValueError('Preview annotation inputs differ from the preserved tracking inputs')
++    for path in [original, lidar, comparison]:
+         if not path.is_file():
+             raise FileNotFoundError(path)
+     if SESSION.exists():
+@@ -77,12 +83,13 @@
+     env.update(ROS_PORT=str(port), ROS_HOME=str(runtime / 'ros_home'),
+                ROS_LOG_DIR=str(runtime / 'ros_logs'), XDG_CACHE_HOME=str(runtime / 'cache'),
+                KEEP_ALIVE='1', PLAY_RATE='1.0', PYTHONDONTWRITEBYTECODE='1')
+-    args = ['bash', str(copied_script), str(original), str(result / 'lidar_registration.bag'),
+-            str(result / 'comparison.bag'), str(spec['start_offset_s']), str(spec['duration_s'] + 5)]
++    args = ['bash', str(copied_script), str(original), str(lidar),
++            str(comparison), str(spec['start_offset_s']), str(spec['duration_s'] + 5)]
+     state = {'status': 'STARTING', 'started_utc': datetime.now(timezone.utc).isoformat(),
+              'run': run, 'launcher_pid': os.getpid(), 'runtime': str(runtime),
+              'ros_master_uri': 'http://127.0.0.1:' + str(port), 'args': args,
+              'source_script': str(TOOLS / 'replay_rviz.sh'),
++             'comparison_registry': str(registry),
+              'runtime_adjustments': 'log locations, script root, and hidden kilometer-scale overview labels; all comparison paths retained',
+              'cleanup': 'automatic after RViz closes', 'robot_command_topics': []}
+     save(state)

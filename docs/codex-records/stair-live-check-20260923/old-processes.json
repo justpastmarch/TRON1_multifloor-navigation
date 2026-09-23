@@ -1,0 +1,117 @@
+{
+  "at_utc": "2026-09-22T23:12:55.484334+00:00",
+  "processes": [
+    {
+      "pid": 65539,
+      "ppid": 890,
+      "args": [
+        "/usr/bin/python3",
+        "/opt/ros/noetic/bin/roscore",
+        "-p",
+        "11311",
+        ""
+      ]
+    },
+    {
+      "pid": 65578,
+      "ppid": 65539,
+      "args": [
+        "/usr/bin/python3",
+        "/opt/ros/noetic/bin/rosmaster",
+        "--core",
+        "-p",
+        "11311",
+        "-w",
+        "3",
+        "__log:=/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-live-check-20260921/session-20260920T231114Z/ros-log/93a346fa-b548-11f1-9ddd-ad494f4288ef/master.log",
+        ""
+      ]
+    },
+    {
+      "pid": 65599,
+      "ppid": 65539,
+      "args": [
+        "/opt/ros/noetic/lib/rosout/rosout",
+        "__name:=rosout",
+        "__log:=/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-live-check-20260921/session-20260920T231114Z/ros-log/93a346fa-b548-11f1-9ddd-ad494f4288ef/rosout-1.log",
+        ""
+      ]
+    },
+    {
+      "pid": 84945,
+      "ppid": 890,
+      "args": [
+        "/usr/bin/python3",
+        "/opt/ros/noetic/bin/roslaunch",
+        "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/rviz-nav-test-20260921/view-and-localize.launch",
+        ""
+      ]
+    },
+    {
+      "pid": 84974,
+      "ppid": 84945,
+      "args": [
+        "/opt/ros/noetic/lib/map_server/map_server",
+        "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/maps/floor_3F.yaml",
+        "__name:=map_server",
+        "__log:=/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/rviz-nav-test-20260921/ros-log/93a346fa-b548-11f1-9ddd-ad494f4288ef/map_server-1.log",
+        ""
+      ]
+    },
+    {
+      "pid": 84975,
+      "ppid": 84945,
+      "args": [
+        "/opt/ros/noetic/lib/amcl/amcl",
+        "initialpose:=/multifloor/amcl_initialpose",
+        "__name:=amcl",
+        "__log:=/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/rviz-nav-test-20260921/ros-log/93a346fa-b548-11f1-9ddd-ad494f4288ef/amcl-2.log",
+        ""
+      ]
+    },
+    {
+      "pid": 84984,
+      "ppid": 84945,
+      "args": [
+        "/usr/bin/python3",
+        "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/devel/lib/multifloor_manager/multifloor_manager_node.py",
+        "__name:=multifloor_manager",
+        "__log:=/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/rviz-nav-test-20260921/ros-log/93a346fa-b548-11f1-9ddd-ad494f4288ef/multifloor_manager-4.log",
+        ""
+      ]
+    },
+    {
+      "pid": 84993,
+      "ppid": 84945,
+      "args": [
+        "/usr/bin/python3",
+        "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/devel/lib/mission_manager/mission_manager_node.py",
+        "__name:=mission_manager",
+        "__log:=/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/rviz-nav-test-20260921/ros-log/93a346fa-b548-11f1-9ddd-ad494f4288ef/mission_manager-5.log",
+        ""
+      ]
+    },
+    {
+      "pid": 109494,
+      "ppid": 890,
+      "args": [
+        "/usr/bin/python3",
+        "/opt/ros/noetic/bin/roslaunch",
+        "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/rviz-nav-test-20260921/doorway-footprint/apply.launch",
+        ""
+      ]
+    },
+    {
+      "pid": 109508,
+      "ppid": 109494,
+      "args": [
+        "/opt/ros/noetic/lib/move_base/move_base",
+        "cmd_vel:=/navigation/cmd_vel",
+        "odom:=/tron/wheel_odom_raw",
+        "__name:=move_base",
+        "__log:=/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/rviz-nav-test-20260921/ros-log/93a346fa-b548-11f1-9ddd-ad494f4288ef/move_base-1.log",
+        ""
+      ]
+    }
+  ]
+}

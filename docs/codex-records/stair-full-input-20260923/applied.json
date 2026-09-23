@@ -1,0 +1,17 @@
+{
+  "at_utc": "2026-09-23T00:50:05.521246+00:00",
+  "changes": [
+    {
+      "path": "src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+      "before_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+      "after_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+    },
+    {
+      "path": "src/stair_supervisor/test/test_stair_readiness.py",
+      "before_sha256": "49ae75fda8b51f2edb2cef052b13839e7fcfb5f31e1b297c0a6636160b7ae3b2",
+      "after_sha256": "7cba5bf54758a148caac3b1a67f8f00b36352bdd0710f46c59bb618d21c36036"
+    }
+  ],
+  "motion_goal_sent": false,
+  "restart_pending": true
+}

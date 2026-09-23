@@ -1,0 +1,18 @@
+test_empty_window_fails_before_replacing_existing_outputs (test_process_bag.BagOutputTests) ... ok
+test_imu_gap_can_recover_geometrically_without_loosening_limits (test_process_bag.BagOutputTests) ... ok
+test_input_bag_cannot_be_selected_as_output (test_process_bag.BagOutputTests) ... ok
+test_rejected_pose_never_gets_fresh_odometry_and_recovery_is_segmented (test_process_bag.BagOutputTests) ... ok
+test_short_empty_scan_is_predicted_but_has_no_measurement (test_process_bag.BagOutputTests) ... ok
+test_global_map_retains_distant_registered_scan_regions (test_registration_core.RegistrationCoreTest) ... ok
+test_gyro_respects_mounting_rotation_and_measurement_support (test_registration_core.RegistrationCoreTest) ... ok
+test_levels_floor_from_gravity_even_with_a_dominant_wall (test_registration_core.RegistrationCoreTest) ... ok
+test_recovers_half_turn_from_integrated_gyro_prediction (test_registration_core.RegistrationCoreTest) ... ok
+test_recovers_pose_when_initial_guess_is_close (test_registration_core.RegistrationCoreTest) ... ok
+test_rejects_registration_jump_outside_motion_gate (test_registration_core.RegistrationCoreTest) ... ok
+test_accepts_complete_ordered_stair_sequence (test_traversal_events.TraversalEventSetTest) ... ok
+test_rejects_incomplete_stair_sequence (test_traversal_events.TraversalEventSetTest) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 1.295s
+
+OK

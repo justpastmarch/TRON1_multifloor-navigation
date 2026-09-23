@@ -1,0 +1,114 @@
+{
+  "control_debug": {
+    "tracking_state": "HANDOFF_OVERDUE",
+    "loss_response": true,
+    "anchor_reset": false,
+    "age": 0.2619627252861392,
+    "physical_handoff_overdue": true,
+    "phase": "FORWARD_SEGMENT_1",
+    "command": [
+      0.55,
+      0.010508466803269311
+    ],
+    "phase_test": {
+      "state": "STOPPED",
+      "target_phase": "EXIT_CONFIRM",
+      "phases": [
+        "VERIFY_ENTRY",
+        "ALIGN",
+        "FORWARD_SEGMENT_1",
+        "LANDING",
+        "TURN_TO_NEXT_FLIGHT",
+        "FORWARD_SEGMENT_2",
+        "EXIT_CONFIRM"
+      ],
+      "max_duration_sec": 255.0,
+      "current_phase": "FORWARD_SEGMENT_1",
+      "phase_budget_sec": 45.0,
+      "elapsed_sec": 15.21631976601202,
+      "phase_elapsed_sec": 13.305008327006362,
+      "reason": "no bounded correction within connected support"
+    },
+    "route_id": "stair_3f_4f_up",
+    "run_id": "stair_3f_4f_up:0:5124",
+    "anchor_epoch": 0,
+    "anchor_sequence": 5124,
+    "anchor_source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+    "anchor_uncertainty_m": 0.1,
+    "pending_entries": [],
+    "observation_only": false,
+    "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+    "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+  },
+  "tracking_status": {
+    "epoch": 0,
+    "queue_length": 0,
+    "dropped_scans": 0,
+    "rejected_imu": 0,
+    "worker_error": "",
+    "backend": "process",
+    "mode": "control",
+    "observe_only": false,
+    "phase_test_protocol": "bound-ticket-v1",
+    "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+    "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337",
+    "routes": [
+      {
+        "id": "stair_3f_4f_up",
+        "commissioned": false
+      }
+    ],
+    "sequence": 5985,
+    "stamp": 1790127047.9022171,
+    "received_at": 197580.973621996,
+    "measured_at": 197580.7686530667,
+    "completed_at": 197581.022110712,
+    "last_geometry_at": 197580.7686530667,
+    "geometry_valid": true,
+    "state": "TRACKED",
+    "reason": "geometry accepted",
+    "fitness": 1.0,
+    "rmse": 0.06715302256632233,
+    "translation_innovation": 0.002413493672371389,
+    "rotation_innovation": 0.0020981364114287136,
+    "prediction_source": "gyro",
+    "compute_sec": 0.04738698698929511,
+    "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+    "geometry_age_sec": 0.3697990872897208,
+    "transport_delay_sec": 0.20496892929077148,
+    "completion_age_sec": 0.2534576452744659
+  },
+  "entry_evidence": {
+    "route_id": "stair_3f_4f_up",
+    "epoch": 0,
+    "sensor_stamp": 1790126875.7027197,
+    "profile_from_local": [
+      [
+        0.9999739628753238,
+        -0.007216202008014215,
+        0.0,
+        -1.3705675971903193
+      ],
+      [
+        0.007216202008014215,
+        0.9999739628753238,
+        0.0,
+        -0.15501853838094387
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        -0.0157452171675177
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "uncertainty_m": 0.1,
+    "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition"
+  }
+}

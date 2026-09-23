@@ -1,0 +1,13 @@
+[
+  ".omo/evidence/5f-rf-autonomous-route-repetition/task-1/DoneClaim.yaml",
+  ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/DoneClaim.json",
+  ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/adversarial_fixtures/interrupted_lidar_spec.json",
+  ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/adversarial_fixtures/malformed_lidar_spec.json",
+  ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/bag_metadata.json",
+  ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/inspection_result.json",
+  ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/path_valid_intervals.csv",
+  ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/rgb_event_frames.csv",
+  ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/semantic_boundary_brackets.csv",
+  ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/semantic_segments.csv",
+  ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/waypoint_proposals.csv"
+]

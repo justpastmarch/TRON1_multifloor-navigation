@@ -1,0 +1,32 @@
+[rospy.client][INFO] 2026-09-21 09:37:24,278: init_node, name[/nav_alignment_check_93917_1789951044250], pid[93917]
+[xmlrpc][INFO] 2026-09-21 09:37:24,278: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2026-09-21 09:37:24,278: Started XML-RPC server [http://192.168.1.26:33925/]
+[rospy.init][INFO] 2026-09-21 09:37:24,279: ROS Slave URI: [http://192.168.1.26:33925/]
+[rospy.impl.masterslave][INFO] 2026-09-21 09:37:24,279: _ready: http://192.168.1.26:33925/
+[rospy.registration][INFO] 2026-09-21 09:37:24,279: Registering with master node http://192.168.1.26:11311
+[xmlrpc][INFO] 2026-09-21 09:37:24,279: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2026-09-21 09:37:24,379: registered with master
+[rospy.rosout][INFO] 2026-09-21 09:37:24,379: initializing /rosout core topic
+[rospy.rosout][INFO] 2026-09-21 09:37:24,381: connected to core topic /rosout
+[rospy.simtime][INFO] 2026-09-21 09:37:24,382: /use_sim_time is not set, will not subscribe to simulated time [/clock] topic
+[rospy.internal][INFO] 2026-09-21 09:37:24,389: topic[/mission/status] adding connection to [http://192.168.1.26:40189/], count 0
+[rospy.internal][INFO] 2026-09-21 09:37:24,398: topic impl's ref count is zero, deleting topic /mission/status...
+[rospy.internal][INFO] 2026-09-21 09:37:24,398: topic[/mission/status] removing connection to http://192.168.1.26:40189/
+[rospy.internal][INFO] 2026-09-21 09:37:24,403: topic[/move_base/status] adding connection to [http://192.168.1.26:45367/], count 0
+[rospy.internal][INFO] 2026-09-21 09:37:24,413: topic impl's ref count is zero, deleting topic /move_base/status...
+[rospy.internal][INFO] 2026-09-21 09:37:24,413: topic[/move_base/status] removing connection to http://192.168.1.26:45367/
+[rospy.internal][INFO] 2026-09-21 09:37:24,420: topic[/multifloor/localization_status] adding connection to [http://192.168.1.26:35023/], count 0
+[rospy.internal][INFO] 2026-09-21 09:37:24,429: topic impl's ref count is zero, deleting topic /multifloor/localization_status...
+[rospy.internal][INFO] 2026-09-21 09:37:24,429: topic[/multifloor/localization_status] removing connection to http://192.168.1.26:35023/
+[rospy.internal][INFO] 2026-09-21 09:37:24,444: topic[/amcl_pose] adding connection to [http://192.168.1.26:39371/], count 0
+[rospy.internal][INFO] 2026-09-21 09:37:24,453: topic impl's ref count is zero, deleting topic /amcl_pose...
+[rospy.internal][INFO] 2026-09-21 09:37:24,454: topic[/amcl_pose] removing connection to http://192.168.1.26:39371/
+[rospy.internal][INFO] 2026-09-21 09:37:24,454: topic[/amcl_pose] removing connection to http://192.168.1.26:39371/
+[rospy.internal][INFO] 2026-09-21 09:37:24,465: topic[/move_base/global_costmap/costmap] adding connection to [http://192.168.1.26:45367/], count 0
+[rospy.internal][INFO] 2026-09-21 09:37:24,474: topic impl's ref count is zero, deleting topic /move_base/global_costmap/costmap...
+[rospy.internal][INFO] 2026-09-21 09:37:24,475: topic[/move_base/global_costmap/costmap] removing connection to http://192.168.1.26:45367/
+[rospy.internal][INFO] 2026-09-21 09:37:24,519: topic[/map] adding connection to [http://192.168.1.26:44577/], count 0
+[rospy.internal][INFO] 2026-09-21 09:37:24,529: topic impl's ref count is zero, deleting topic /map...
+[rospy.internal][INFO] 2026-09-21 09:37:24,529: topic[/map] removing connection to http://192.168.1.26:44577/
+[rospy.core][INFO] 2026-09-21 09:37:24,570: signal_shutdown [atexit]
+[rospy.impl.masterslave][INFO] 2026-09-21 09:37:24,572: atexit

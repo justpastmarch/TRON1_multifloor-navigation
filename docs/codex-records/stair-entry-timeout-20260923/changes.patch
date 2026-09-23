@@ -1,0 +1,223 @@
+--- a/src/stair_supervisor/src/stair_supervisor/ros_lidar.py
++++ b/src/stair_supervisor/src/stair_supervisor/ros_lidar.py
+@@ -34,6 +34,12 @@
+ 
+ 
+ def json_finite(value):
++    # Completion checks contain NumPy scalars after numeric comparisons.
++    # Normalize them before encoding status in the ROS timer callback.
++    if isinstance(value, np.generic):
++        value = value.item()
++    if isinstance(value, np.ndarray):
++        return json_finite(value.tolist())
+     if isinstance(value, dict):
+         return {k: json_finite(v) for k, v in value.items()}
+     if isinstance(value, (list, tuple)):
+--- a/src/stair_supervisor/src/stair_supervisor/stair_feedback.py
++++ b/src/stair_supervisor/src/stair_supervisor/stair_feedback.py
+@@ -451,15 +451,28 @@
+         support = (pose @ footprint.T).T[:, :2]
+         return pose, yaw, pitch, roll, velocity, angular, support
+ 
+-    def _settled(self, now_sample):
++    def _settled(self, now_sample, *, average_rate=False):
+         limits = self.route["limits"]
+         recent = [h for h in self._history if h[0] >= now_sample.stamp - limits["settle_sec"] - limits["warn_sec"]]
+-        if len(recent) < 2 or recent[-1][0] - recent[0][0] < limits["settle_sec"]:
++        span = recent[-1][0] - recent[0][0] if len(recent) >= 2 else 0.
++        self._settling_detail = dict(rate_mode="window_net_drift" if average_rate else "instantaneous_peak",
++                                    samples=len(recent), window_sec=float(span))
++        if len(recent) < 2 or span < limits["settle_sec"]:
+             return False
+-        return (max(np.linalg.norm(h[1] - recent[0][1]) for h in recent) <= limits["position_off"] and
+-                max(abs(wrap(h[2] - recent[0][2])) for h in recent) <= limits["yaw_tolerance"] and
+-                max(np.linalg.norm(h[3][:2]) for h in recent) <= limits["stationary_v"] and
+-                max(abs(h[4]) for h in recent) <= limits["stationary_w"])
++        peak_v = max(np.linalg.norm(h[3][:2]) for h in recent)
++        peak_w = max(abs(h[4]) for h in recent)
++        # Entry accepts bounded sway; it does not declare physical stillness.
++        # Net displacement can cancel reversals, so retain the excursion and
++        # target-pose limits while rejecting sustained drift above the budget.
++        v = np.linalg.norm((recent[-1][1] - recent[0][1])[:2]) / span if average_rate else peak_v
++        w = abs(wrap(recent[-1][2] - recent[0][2])) / span if average_rate else peak_w
++        excursion = max(np.linalg.norm(h[1] - recent[0][1]) for h in recent)
++        angle = max(abs(wrap(h[2] - recent[0][2])) for h in recent)
++        self._settling_detail.update(position_excursion_m=float(excursion), yaw_excursion_rad=float(angle),
++            evaluated_v=float(v), evaluated_w=float(w), peak_v=float(peak_v), peak_w=float(peak_w),
++            stationary_v_limit=limits["stationary_v"], stationary_w_limit=limits["stationary_w"])
++        return bool(excursion <= limits["position_off"] and angle <= limits["yaw_tolerance"] and
++                    v <= limits["stationary_v"] and w <= limits["stationary_w"])
+ 
+     def evaluate(self, phase, now, *, command_required=False, neutral_only=False):
+         with self._lock:
+@@ -490,6 +503,7 @@
+             landing = inside_polygon(support, self.route["landing_polygon"], margin)
+             exit_clear = inside_polygon(support, self.route["exit_polygon"], margin)
+             complete = False
++            settling = None
+             v, w, ey, epsi, progress = 0., 0., 0., 0., 0.
+             if abs(roll) > limits["max_roll"] or abs(pitch) > limits["max_pitch"]:
+                 self.debug = dict(tracking_state="ATTITUDE_LIMIT", loss_response=True, roll=roll, pitch=pitch)
+@@ -550,8 +564,10 @@
+                 else:
+                     w = -limits["yaw_kp"] * deadband(epsi, limits["yaw_deadband"])
+                 at_target = supported and distance <= limits["position_off"] and abs(epsi) <= limits["yaw_tolerance"]
++                settled = self._settled(sample, average_rate=phase in (Phase.VERIFY_ENTRY, Phase.ALIGN))
++                settling = dict(self._settling_detail)
+                 checks = dict(body_in_region=supported, position=distance <= limits["position_off"],
+-                              yaw=abs(epsi) <= limits["yaw_tolerance"], settled=self._settled(sample))
++                              yaw=abs(epsi) <= limits["yaw_tolerance"], settled=settled)
+                 complete = all(checks.values())
+                 if phase is Phase.TURN_TO_NEXT_FLIGHT and complete:
+                     if self.turn_index + 1 < len(self.route["turn_path"]):
+@@ -579,6 +595,7 @@
+                             anchor_uncertainty_m=self.anchor.uncertainty_m, effective_margin_m=margin,
+                             clearance_m=self._clearance_lower,
+                             height_error_m=abs(float(pos[2] - target[2])), completion_checks=checks,
++                            settling=settling,
+                             incomplete_conditions=[k for k, value in checks.items() if not value])
+             if not current_supported:
+                 self.debug = dict(tracking_state="CORRIDOR_LIMIT", loss_response=True, **geometry)
+--- a/src/stair_supervisor/test/test_lidar_ros_adapter.py
++++ b/src/stair_supervisor/test/test_lidar_ros_adapter.py
+@@ -1,6 +1,7 @@
+ """Real ROS message types with isolated boundaries; no master or robot socket."""
+ import hashlib
+ import io
++import json
+ from functools import partial
+ import pickle
+ from concurrent.futures import Future
+@@ -22,6 +23,59 @@
+ 
+ 
+ class AdapterTest(unittest.TestCase):
++    def test_diagnostics_normalize_numpy_scalars_and_nonfinite_values(self):
++        value = {'checks': [np.bool_(True), np.bool_(False)],
++                 'sequence': np.int64(7),
++                 'values': np.array([np.float32(.5), np.nan, np.inf]),
++                 'age': np.float32(np.nan)}
++        encoded = json.dumps(ros_lidar.json_finite(value), allow_nan=False)
++        self.assertEqual(json.loads(encoded),
++                         {'checks': [True, False], 'sequence': 7,
++                          'values': [.5, None, None], 'age': None})
++
++    def test_settled_entry_debug_does_not_stop_lidar_publication(self):
++        adapter = self.interface()
++        from test_supervisor import make_configuration
++        from stair_supervisor.stair_evidence import Phase
++        adapter.control.capture_entry('test_up', np.eye(4), .01, 'synthetic survey', 100.)
++        adapter.control.arm(make_configuration().profiles[0], 100.)
++        adapter.control.begin_phase(Phase.VERIFY_ENTRY, 100.)
++        complete = False
++        for i in range(1, 8):
++            stamp = 100. + i*.2
++            adapter.worker.value = sample(i+1, stamp)
++            adapter.clock.monotonic = lambda stamp=stamp: stamp+.01
++            report = adapter.control.evaluate(Phase.VERIFY_ENTRY, stamp+.01)
++            complete = complete or report.complete
++            adapter._publish(None)
++        self.assertTrue(complete)
++        self.assertEqual(adapter.status.publish.call_count, 7)
++        self.assertEqual(adapter.control_debug.publish.call_count, 7)
++        debug = json.loads(adapter.control_debug.publish.call_args[0][0].data)
++        self.assertIs(debug['phase_complete'], True)
++        self.assertIs(debug['completion_checks']['settled'], True)
++
++    def test_unsettled_entry_debug_does_not_stop_lidar_publication(self):
++        adapter = self.interface()
++        from test_supervisor import make_configuration
++        from stair_supervisor.stair_evidence import Phase
++        adapter.control.capture_entry('test_up', np.eye(4), .01, 'synthetic survey', 100.)
++        adapter.control.arm(make_configuration().profiles[0], 100.)
++        adapter.control.begin_phase(Phase.VERIFY_ENTRY, 100.)
++        for i in range(1, 8):
++            stamp = 100. + i*.2
++            # Stay within target tolerance but exceed settling excursion.
++            # The old false comparison was a NumPy bool_.
++            adapter.worker.value = sample(i+1, stamp, x=.03*(-1)**i)
++            adapter.clock.monotonic = lambda stamp=stamp: stamp+.01
++            report = adapter.control.evaluate(Phase.VERIFY_ENTRY, stamp+.01)
++            self.assertFalse(report.complete)
++            adapter._publish(None)
++        self.assertEqual(adapter.status.publish.call_count, 7)
++        self.assertEqual(adapter.control_debug.publish.call_count, 7)
++        debug = json.loads(adapter.control_debug.publish.call_args[0][0].data)
++        self.assertIs(debug['completion_checks']['settled'], False)
++
+     def interface(self):
+         adapter = ros_lidar.RosLidarInterface.__new__(ros_lidar.RosLidarInterface)
+         adapter.configuration = SimpleNamespace(mode="observe", observe_only=True,
+--- a/src/stair_supervisor/test/test_lidar_control.py
++++ b/src/stair_supervisor/test/test_lidar_control.py
+@@ -123,6 +123,70 @@
+             report=self.update(i+1,100.+i*.2,x=2,y=1,z=1,yaw=math.radians(150))
+             self.assertFalse(report.complete)
+         self.assertGreater(self.policy.command()[1],0)
++
++    def test_entry_and_alignment_allow_bounded_sway_without_raising_rate_limits(self):
++        for phase in (Phase.VERIFY_ENTRY, Phase.ALIGN):
++            with self.subTest(phase=phase):
++                self.setUp()
++                self.policy.begin_phase(phase, 100.)
++                complete = False
++                for i in range(1, 8):
++                    report = self.update(i+1, 100.+i*.2, x=.004*(-1)**i)
++                    self.assertFalse(report.faulted)
++                    complete = complete or report.complete
++                self.assertTrue(complete)
++                detail = self.policy.debug['settling']
++                self.assertEqual(detail['rate_mode'], 'window_net_drift')
++                self.assertGreater(detail['peak_v'], detail['stationary_v_limit'])
++                self.assertLessEqual(detail['evaluated_v'], detail['stationary_v_limit'])
++
++    def test_entry_still_rejects_sustained_translation_and_rotation(self):
++        for mode in ('translation', 'rotation'):
++            with self.subTest(mode=mode):
++                self.setUp()
++                self.policy.begin_phase(Phase.VERIFY_ENTRY, 100.)
++                for i in range(1, 7):
++                    dt=i*.2
++                    kwargs={'x':.025*dt} if mode=='translation' else {'yaw':.035*dt}
++                    report=self.update(i+1,100.+dt,**kwargs)
++                    self.assertFalse(report.complete)
++                    self.assertIn('settled', self.policy.debug['incomplete_conditions'])
++                # Target tolerances still pass: it is sustained motion that blocks.
++                self.assertTrue(self.policy.debug['completion_checks']['position'])
++                self.assertTrue(self.policy.debug['completion_checks']['yaw'])
++
++    def test_entry_may_finish_during_small_bounded_motion_not_physical_stillness(self):
++        for phase in (Phase.VERIFY_ENTRY, Phase.ALIGN):
++            with self.subTest(phase=phase):
++                self.setUp()
++                self.policy.begin_phase(phase,100.)
++                for i in range(1,6):
++                    report=self.update(i+1,100.+i*.2,x=.008 if i==5 else 0.)
++                self.assertTrue(report.complete)
++                detail=self.policy.debug['settling']
++                self.assertGreater(detail['peak_v'],detail['stationary_v_limit'])
++                self.assertLess(detail['evaluated_v'],detail['stationary_v_limit'])
++
++    def test_entry_bounded_mean_does_not_hide_large_position_excursions(self):
++        self.policy.begin_phase(Phase.VERIFY_ENTRY,100.)
++        for i in range(1,8):
++            report=self.update(i+1,100.+i*.2,x=.03*(-1)**i)
++            self.assertFalse(report.complete)
++        self.assertGreater(self.policy.debug['settling']['position_excursion_m'],
++                           self.policy.route['limits']['position_off'])
++
++    def test_turn_and_exit_keep_instantaneous_settling_requirement(self):
++        for phase in (Phase.TURN_TO_NEXT_FLIGHT,Phase.EXIT_CONFIRM):
++            with self.subTest(phase=phase):
++                self.setUp()
++                self.policy.begin_phase(phase,100.)
++                self.policy.turn_index=1
++                self.policy._flight_seen=[True,True]
++                x,z=(2.,1.) if phase is Phase.TURN_TO_NEXT_FLIGHT else (0.,2.)
++                for i in range(1,10):
++                    report=self.update(i+1,100.+i*.2,x=x+.004*(-1)**i,y=1.,z=z,yaw=math.pi)
++                    self.assertFalse(report.complete)
++                self.assertEqual(self.policy.debug['settling']['rate_mode'],'instantaneous_peak')
+ 
+     def test_front_sensor_or_last_two_steps_cannot_complete_flight(self):
+         self.policy.begin_phase(Phase.FORWARD_SEGMENT_2,100.)

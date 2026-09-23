@@ -1,0 +1,43 @@
+{
+  "videos": [
+    {
+      "file": "01-original-floor-aligned.mp4",
+      "decoded_frames": 1798,
+      "full_decode": "PASS",
+      "duration_s": 179.8,
+      "bytes": 8678990
+    },
+    {
+      "file": "02-floor-initialization-only.mp4",
+      "decoded_frames": 1798,
+      "full_decode": "PASS",
+      "duration_s": 179.8,
+      "bytes": 9066907
+    },
+    {
+      "file": "03-improved-gyro-gicp.mp4",
+      "decoded_frames": 1798,
+      "full_decode": "PASS",
+      "duration_s": 179.8,
+      "bytes": 8809391
+    }
+  ],
+  "same_camera_and_chapters_all_three": "PASS",
+  "rigid_transform_preservation": [
+    {
+      "run": "102101",
+      "max_relative_transform_difference": 3.552713678800501e-15
+    },
+    {
+      "run": "105713",
+      "max_relative_transform_difference": 1.7763568394002505e-15
+    }
+  ],
+  "review_scope": "Independent cold read of explanatory excerpt; not independent pose ground truth",
+  "review_changes": "Failure counts separated by BAG; definition of failure and non-independent geometry clarified",
+  "no_robot_commands": true,
+  "production_edits": false,
+  "temporary_files": "Interrupted draft rendering output removed; final MP4s, previews and numeric provenance retained as deliverables",
+  "local_page_links": "PASS",
+  "cleanup": "Interrupted MP4 draft, draft renderer and imported registration_core.cpython-38.pyc removed. All spawned render/encoder processes exited."
+}

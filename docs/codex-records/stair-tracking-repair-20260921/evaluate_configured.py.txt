@@ -1,0 +1,61 @@
+"""Configured-extrinsic regression after the user's recording-history confirmation.
+
+Compare availability and trajectories, not physical accuracy. Preserve the earlier
+identity-ablation metrics and plot. Static YAML rotation is not online calibration.
+"""
+import json
+import numpy as np
+from evaluate_results import read, column, rotations, heading, stats
+from replay_candidate import OUT, HIST, INDICES, META, configured_extrinsic
+import matplotlib.pyplot as plt
+
+
+def main():
+    r_li,config=configured_extrinsic()
+    prior=np.array([[.989895,-.135195,-.042775],[.136290,.990384,.023781],[.039149,-.029370,.998802]])
+    np.testing.assert_array_equal(np.array(config['configured_lidar_to_imu_rotation']),prior)
+    result={'scope':'three known regression windows, not holdout or physical accuracy',
+        'configuration_confirmation':json.loads((OUT/'state.json').read_text())['configuration_confirmation'],
+        'configuration':config,'runs':{},
+        'evidence':'OBSERVED for computed metrics; configuration history supplied by user; physical calibration UNVERIFIED',
+        'reused_105713':'previous static-matrix sensitivity result; exact equality to current YAML verified, not rerun',
+        'synthetic_tests_passed':6}
+    fig,axes=plt.subplots(3,1,figsize=(12,9),layout='constrained')
+    for ax,(run,index) in zip(axes,INDICES.items()):
+        original=read(HIST/run/'lidar_registration.csv')
+        identity=read(OUT/'results'/f'{run}-gyro-identity.csv')
+        configured=read(OUT/'results'/f'{run}-gyro-current_yaml.csv')
+        assert [r['stamp_ns'] for r in original]==[r['stamp_ns'] for r in configured]==[r['stamp_ns'] for r in identity]
+        # All configured rows in these recordings are observed geometric updates.
+        assert column(configured,'accepted').astype(bool).all()
+        a,b=rotations(identity),rotations(configured)
+        h_a,h_b=heading(a),heading(b)
+        pa=np.column_stack([column(identity,k) for k in ['x_m','y_m','z_m']])
+        pb=np.column_stack([column(configured,k) for k in ['x_m','y_m','z_m']])
+        # Remove arbitrary world initialization rotations for a fair shape comparison.
+        local_a=(pa-pa[0])@a[0];local_b=(pb-pb[0])@b[0]
+        differences=np.linalg.norm(local_a-local_b,axis=1)
+        metrics={'original':stats(original),'identity_ablation':stats(identity),'configured':stats(configured),
+            'relative_yaw_difference_end_deg':float(h_b[-1]-h_a[-1]),
+            'relative_yaw_difference_abs_max_deg':float(np.max(np.abs(h_b-h_a))),
+            'trajectory_difference_in_common_initial_sensor_axes_p95_m':float(np.percentile(differences,95)),
+            'trajectory_difference_in_common_initial_sensor_axes_max_m':float(differences.max()),
+            'difference_note':'difference between two estimates, NOT error from physical ground truth'}
+        result['runs'][run]=metrics
+        t=column(configured,'stamp_ns')*1e-9-META[index]['start']
+        ax.plot(t,heading(rotations(original)),color='#ce4b43',label='Original registration')
+        ax.plot(t,h_a,color='#7d8199',ls='--',label='Candidate: identity ablation')
+        ax.plot(t,h_b,color='#008f83',lw=2,label='Candidate: configured sensor rotation')
+        ax.set_title(f"{run}: configured rotation, {len(configured)}/{len(configured)} accepted, final relative yaw {h_b[-1]:+.1f} deg",loc='left',fontsize=11)
+        ax.set_ylabel('Relative yaw (deg)');ax.grid(alpha=.2)
+    axes[0].legend(loc='upper left',fontsize=9)
+    axes[-1].set_xlabel('Sensor header time minus original bag start (s)')
+    fig.suptitle('Configured sensor rotation: all three offline windows\nFixed YAML initialization only; no physical accuracy or online FAST-LIO certification',fontsize=14)
+    fig.savefig(OUT/'rotation-configured.png',dpi=150);plt.close(fig)
+    (OUT/'configured-metrics.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+    print(json.dumps({k:{'accepted':v['configured']['accepted_including_bootstrap'],
+        'yaw_deg':v['configured']['relative_yaw_end_deg'],'yaw_difference_end_deg':v['relative_yaw_difference_end_deg'],
+        'max_trajectory_difference_m':v['trajectory_difference_in_common_initial_sensor_axes_max_m']} for k,v in result['runs'].items()},indent=2))
+
+
+if __name__=='__main__':main()

@@ -1,0 +1,14 @@
+{
+  "created_utc": "2026-09-18T05:45:47.493590+00:00",
+  "temporary_root": "/tmp/tron1-audit-final-review-bw8qolsw",
+  "files": [
+    "/tmp/tron1-audit-final-review-bw8qolsw/artifact.md"
+  ],
+  "purpose": "shower fresh blind read of final report copy",
+  "processes": [],
+  "cleanup_pending": false,
+  "reviewed_copy_sha256": "0974a1472c0e451bc0c6373a8f01fa81d3317b2507df4af61e7539e87ffed622",
+  "removed_utc": "2026-09-18T05:48:38.728996+00:00",
+  "root_absent": true,
+  "remaining_processes": []
+}

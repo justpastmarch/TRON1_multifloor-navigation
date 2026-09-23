@@ -1,0 +1,107 @@
+[
+  {
+    "path": "docs/stair-drive-readiness-20260923/REPORT.md",
+    "before_sha256": null,
+    "after_sha256": "c9cbc3864c90bd5542ed7f4a615e23a755b1ea6814affbab23868561f99fd7c1"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/RUNBOOK.md",
+    "before_sha256": null,
+    "after_sha256": "eb4f2540da77b22ff5914293f80dfddbdcb989c47a34045999dba39067a813c4"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/common-route-results.json",
+    "before_sha256": null,
+    "after_sha256": "df027268bb9b0a33966a518003c86a6d57ee2ce32160cedc6cce8a2e8dca24cd"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/config-check.json",
+    "before_sha256": null,
+    "after_sha256": "ef6202a5a170ae9b9403f6df4d0e1b09399a42637e90763405d42b7d9f409e68"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/entry-only-fit.json",
+    "before_sha256": null,
+    "after_sha256": "dfebf7ead01e164a89ce2902b8d9b4d64082dedd844dd4b2e67660221b2fc8d4"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/entry-ros-results.json",
+    "before_sha256": null,
+    "after_sha256": "c74fd32fb3cf73039da710b416230ee15b098e8af6cc6a8dceb71b13427e60e4"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/geometry-verification.json",
+    "before_sha256": null,
+    "after_sha256": "34141161b97f31c8d99f91401d121ece18dcb42235c6d30dc53ce6f8cee200c1"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/ros-results.json",
+    "before_sha256": null,
+    "after_sha256": "2eb3b0936482bdca5b43454483fe713391758cd2159faa6f3f046ee582d02759"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/unit-results.json",
+    "before_sha256": null,
+    "after_sha256": "d2b5e788efd597d7a4d95c6400b95d8671a274cdc8e05393836e7f7b7e0cb295"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/validation.json",
+    "before_sha256": null,
+    "after_sha256": "21d3bae0dd3580be3c3701a6743afe5aa0f358ad2485536c3775571a8f984142"
+  },
+  {
+    "path": "docs/tron-documentation-20260922/APPLICATION_GUIDE.md",
+    "before_sha256": "3ec084801df1667eab29beaf02817a7caca7700d345832cdd95c00a9ccbaacef",
+    "after_sha256": "0e671d481631d7a3f57017e7ae4cf043a263060c24eed69e91ec8b3a3ab660ac"
+  },
+  {
+    "path": "src/stair_supervisor/CMakeLists.txt",
+    "before_sha256": "87e0e58a6d3e08bf7b2519fdd70a13681f38a5015a3306587184acc682852b1c",
+    "after_sha256": "995e60e2d350b37cc5eeeb349c6b2d3e40e877f85360d9827874ba5cb1993e75"
+  },
+  {
+    "path": "src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+    "before_sha256": null,
+    "after_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+  },
+  {
+    "path": "src/stair_supervisor/rviz/stair_lidar_control.rviz",
+    "before_sha256": "8f71c95dc05a237d81fac06e92ce48a0b93f4aa0ad715b86a49e4320b8492f9c",
+    "after_sha256": "eb5f6ea02c470deffcc13cb8af42f22b76426a012ad9983b2890546044550e37"
+  },
+  {
+    "path": "src/stair_supervisor/scripts/stair_entry_test.py",
+    "before_sha256": null,
+    "after_sha256": "3f13e233f58400c220b4a2e82546890771d6488f1447762ff6f56c23bb80c801"
+  },
+  {
+    "path": "src/stair_supervisor/scripts/stair_python.sh",
+    "before_sha256": null,
+    "after_sha256": "dd4df13a6cb12ef14c46d33d7a34a22fa6d017b50c470bc8d21fd6a6adbfc624"
+  },
+  {
+    "path": "src/stair_supervisor/src/stair_supervisor/ros_lidar.py",
+    "before_sha256": "b12487f7836726db88369b66b425dd9e0115ad550bf12c170956336a3a105960",
+    "after_sha256": "e299f3e13b73197bbe8576aac58285230f22820f11002837cfe319d7c5ecb4a2"
+  },
+  {
+    "path": "src/stair_supervisor/src/stair_supervisor/ros_node.py",
+    "before_sha256": "53625dee02591d54456f1104b10675e57aa6557bac162ea9535aebaab2389fa0",
+    "after_sha256": "4109dcbae7c7ee0a9036cd3c9a190cb01b9bc6e163b32ecebd21a3afa4d21910"
+  },
+  {
+    "path": "src/stair_supervisor/src/stair_supervisor/stair_feedback.py",
+    "before_sha256": "6dbd02fb2c61b5606f269f125cc69f458a7a736672cb77e60b126ab500e16fa0",
+    "after_sha256": "2b860f381b992668f9a58a7b6e21e6bde51653722a6e738a94e7c2b410e59ff1"
+  },
+  {
+    "path": "src/stair_supervisor/test/test_lidar_ros_adapter.py",
+    "before_sha256": "cad6b783eecaa2fe57a33e12319e70534fa8db6e7b216a9d5e6635b025b0f7b9",
+    "after_sha256": "169df0a194a2a66710b9edd3445782425568ccfa885d62cec81bacd77ca2ad03"
+  },
+  {
+    "path": "src/stair_supervisor/test/test_stair_readiness.py",
+    "before_sha256": null,
+    "after_sha256": "6d18b8d8e0828859f5b9216115171a9fc409eaf37761e9e61ea81b54111a0ec1"
+  }
+]

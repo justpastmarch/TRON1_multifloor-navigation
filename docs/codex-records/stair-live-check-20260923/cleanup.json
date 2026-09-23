@@ -1,0 +1,49 @@
+{
+  "at_utc": "2026-09-22T23:21:19.600796+00:00",
+  "removed_inspection_artifacts": [
+    {
+      "path": "preflight.log",
+      "files": [
+        {
+          "path": "preflight.log",
+          "bytes": 1314,
+          "sha256": "34cedc793cbddd112ba2a06a20a73e4d2de0cfaec68a11000aa2aeda7122051b"
+        }
+      ]
+    },
+    {
+      "path": "temporary-ros-home",
+      "files": [
+        {
+          "path": "temporary-ros-home/rospack_cache_11347029993074590649",
+          "bytes": 10992,
+          "sha256": "164bb69ffebf9cd8cfbc78e881499614d00a54994c27682171436e7fd4174c97"
+        }
+      ]
+    },
+    {
+      "path": "temporary-probe-home",
+      "files": [
+        {
+          "path": "temporary-probe-home/log/tron_readonly_probe_444156_1790119024206.log",
+          "bytes": 6899,
+          "sha256": "41578a0fe8fd4bea5ba7bc36b1759e3f9f8213129e938eaa1938735e3e820d22"
+        },
+        {
+          "path": "temporary-probe-home/log/tron_readonly_probe_444480_1790119111218.log",
+          "bytes": 6432,
+          "sha256": "671a6953b7e99cd62dfcc924c6fca7018ad3aa64271d209ea5d53992c7aa0d9b"
+        }
+      ]
+    }
+  ],
+  "retained_operational_artifacts": [
+    "session-console.log",
+    "session-ros-home/",
+    "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/logs/20260923_081522/",
+    "mini PC wf_mapping ROS logs/session"
+  ],
+  "retained_operational_process": "existing run.sh stack started this turn, kept running for user driving preparation",
+  "read_only_probe_processes": "both completed and called rospy.signal_shutdown; no persistent probe added",
+  "old_project_logs": "preserved; only identified old process roots were stopped"
+}

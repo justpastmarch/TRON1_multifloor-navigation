@@ -81,7 +81,7 @@ class ScriptedEvidence:
         self._profile: StairProfile | None = None
         self._started_at = 0.0
 
-    def arm(self, profile: StairProfile, started_at: float) -> None:
+    def arm(self, profile: StairProfile, started_at: float, **_options) -> None:
         self._profile = profile
         self._started_at = started_at
         self._counts.clear()
@@ -89,7 +89,7 @@ class ScriptedEvidence:
     def begin_phase(self, phase: Phase, _now: float) -> None:
         self._counts[phase] = 0
 
-    def evaluate(self, phase: Phase, now: float) -> EvidenceReport:
+    def evaluate(self, phase: Phase, now: float, **_options) -> EvidenceReport:
         self.on_observe(phase)
         count = self._counts.get(phase, 0) + 1
         self._counts[phase] = count

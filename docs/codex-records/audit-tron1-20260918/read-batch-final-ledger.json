@@ -1,0 +1,80 @@
+{
+  "files": [
+    ".omo/start-work/ledger.jsonl"
+  ],
+  "target_root": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation",
+  "observed_at_utc": "2026-09-18T05:18:08.834846+00:00",
+  "size_bytes": 133298,
+  "sha256": "592f01a6c9807a7b8c5d01ff5e00c9bc224208a3fd4e38e652f0f2e96a37a964",
+  "jsonl_rows": 129,
+  "status_ready_for_parent_coverage": "READ",
+  "complete_semantic_review": true,
+  "method": "Original JSONL rows 1–129 displayed in bounded non-truncated chunks and all keys, values, arrays, nested DoneClaim/adversarial metadata, command strings, findings, cleanup, limitations and corrections semantically reviewed. Initial abbreviated overview was not counted as reading. No numeric normalization or value deletion. Parsed structure supplemented, not replaced, semantic reading. Referenced external sibling artifacts were not recursively audited and commands were not executed.",
+  "reviewed_line_ranges_inclusive": [
+    [
+      1,
+      12
+    ],
+    [
+      13,
+      24
+    ],
+    [
+      25,
+      36
+    ],
+    [
+      37,
+      50
+    ],
+    [
+      51,
+      64
+    ],
+    [
+      65,
+      76
+    ],
+    [
+      77,
+      87
+    ],
+    [
+      88,
+      96
+    ],
+    [
+      97,
+      107
+    ],
+    [
+      108,
+      115
+    ],
+    [
+      116,
+      123
+    ],
+    [
+      124,
+      129
+    ]
+  ],
+  "plan_row_counts": {
+    ".omo/plans/tron1-multifloor-mvp.md": 42,
+    ".omo/plans/yaml-transition-policy-runtime.md": 41,
+    ".omo/plans/modular-architecture-expansion.md": 19,
+    ".omo/plans/tron1-stair-simulation.md": 20,
+    ".omo/plans/5f-rf-autonomous-route-repetition.md": 7
+  },
+  "historical_claims_not_current_runtime": true,
+  "target_mutations": 0,
+  "new_tests": 0,
+  "robot_ros_ssh_commands_executed": 0,
+  "temporary_artifacts": [],
+  "retained_artifacts": [
+    "read-batch-final-ledger.json",
+    "phase-E-final-ledger.md"
+  ],
+  "coverage_modified_by_agent": false
+}

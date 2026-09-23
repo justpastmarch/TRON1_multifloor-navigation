@@ -1,0 +1,1044 @@
+[
+  {
+    "path": "bundle_source_contract.py",
+    "current_sha256": "54455048bdfb3457099e237da4742ca7fab2dacfa9525d97b3f5fbdc008d68f6",
+    "latest_receipt": {
+      "path": "bundle_source_contract.py",
+      "expected": "54455048bdfb3457099e237da4742ca7fab2dacfa9525d97b3f5fbdc008d68f6",
+      "receipt": "stair-live-readiness-20260923/deployment.json",
+      "mtime": 1790108415.888932
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "config.env",
+    "current_sha256": "6752e2a5e99dec6431815709fbc40ea5031946570fc848319caac900051a5fa3",
+    "latest_receipt": {
+      "path": "config.env",
+      "expected": "6752e2a5e99dec6431815709fbc40ea5031946570fc848319caac900051a5fa3",
+      "receipt": "stair-live-readiness-20260923/deployment.json",
+      "mtime": 1790108415.888932
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/LIVE_READINESS.md",
+    "current_sha256": "3dfb424fd20489e2603206f72ddc3e4c5d176487281b39ce86c08964eb6bec6f",
+    "latest_receipt": {
+      "path": "docs/stair-drive-readiness-20260923/LIVE_READINESS.md",
+      "expected": "e52f1cc0cd530df9058a85ed0fd0902848a057850b2c9f6e1ce19c3cb5190007",
+      "receipt": "stair-live-readiness-20260923/deployment.json",
+      "mtime": 1790108415.888932
+    },
+    "matches_any_receipt": false,
+    "status": "CURRENT_DIFFERS_FROM_HISTORICAL_RECEIPT",
+    "resolution": "Preserve current source: later localization, field calibration, runtime record or September23 entry/full-input/single-phase change. Historical receipt is not a deployment request."
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/REPORT.md",
+    "current_sha256": "c9cbc3864c90bd5542ed7f4a615e23a755b1ea6814affbab23868561f99fd7c1",
+    "latest_receipt": {
+      "path": "docs/stair-drive-readiness-20260923/REPORT.md",
+      "expected": "c9cbc3864c90bd5542ed7f4a615e23a755b1ea6814affbab23868561f99fd7c1",
+      "receipt": "stair-drive-readiness-20260923/deployment.json",
+      "mtime": 1790107233.157839
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/RUNBOOK.md",
+    "current_sha256": "1f02c05320db46521cc4f1caf10bd5a353594d85838f3cb5d5568caac9a30f96",
+    "latest_receipt": {
+      "path": "docs/stair-drive-readiness-20260923/RUNBOOK.md",
+      "expected": "1f02c05320db46521cc4f1caf10bd5a353594d85838f3cb5d5568caac9a30f96",
+      "receipt": "stair-live-readiness-20260923/deployment.json",
+      "mtime": 1790108415.888932
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/common-route-results.json",
+    "current_sha256": "df027268bb9b0a33966a518003c86a6d57ee2ce32160cedc6cce8a2e8dca24cd",
+    "latest_receipt": {
+      "path": "docs/stair-drive-readiness-20260923/evidence/common-route-results.json",
+      "expected": "df027268bb9b0a33966a518003c86a6d57ee2ce32160cedc6cce8a2e8dca24cd",
+      "receipt": "stair-drive-readiness-20260923/deployment.json",
+      "mtime": 1790107233.157839
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/config-check.json",
+    "current_sha256": "924a2dc54e2891fb0e968d309051c9cdc5b45a90a736f4feaf4a8cb7127eb79b",
+    "latest_receipt": {
+      "path": "docs/stair-drive-readiness-20260923/evidence/config-check.json",
+      "expected": "924a2dc54e2891fb0e968d309051c9cdc5b45a90a736f4feaf4a8cb7127eb79b",
+      "receipt": "stair-drive-readiness-20260923/deployment.json",
+      "mtime": 1790107233.157839
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/entry-only-fit.json",
+    "current_sha256": "dfebf7ead01e164a89ce2902b8d9b4d64082dedd844dd4b2e67660221b2fc8d4",
+    "latest_receipt": {
+      "path": "docs/stair-drive-readiness-20260923/evidence/entry-only-fit.json",
+      "expected": "dfebf7ead01e164a89ce2902b8d9b4d64082dedd844dd4b2e67660221b2fc8d4",
+      "receipt": "stair-drive-readiness-20260923/deployment.json",
+      "mtime": 1790107233.157839
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/entry-ros-results.json",
+    "current_sha256": "c74fd32fb3cf73039da710b416230ee15b098e8af6cc6a8dceb71b13427e60e4",
+    "latest_receipt": {
+      "path": "docs/stair-drive-readiness-20260923/evidence/entry-ros-results.json",
+      "expected": "c74fd32fb3cf73039da710b416230ee15b098e8af6cc6a8dceb71b13427e60e4",
+      "receipt": "stair-drive-readiness-20260923/deployment.json",
+      "mtime": 1790107233.157839
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/geometry-verification.json",
+    "current_sha256": "34141161b97f31c8d99f91401d121ece18dcb42235c6d30dc53ce6f8cee200c1",
+    "latest_receipt": {
+      "path": "docs/stair-drive-readiness-20260923/evidence/geometry-verification.json",
+      "expected": "34141161b97f31c8d99f91401d121ece18dcb42235c6d30dc53ce6f8cee200c1",
+      "receipt": "stair-drive-readiness-20260923/deployment.json",
+      "mtime": 1790107233.157839
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/live-readiness.json",
+    "current_sha256": "009baa15389e8edb2b0ecb1270261f27e5bb10a70b30e29e8caa920fbb243de3",
+    "latest_receipt": {
+      "path": "docs/stair-drive-readiness-20260923/evidence/live-readiness.json",
+      "expected": "fb1e6b09b77ceff2bdb7f841957cb17ee4ee887979cbab1d649425626c334a82",
+      "receipt": "stair-live-readiness-20260923/deployment.json",
+      "mtime": 1790108415.888932
+    },
+    "matches_any_receipt": false,
+    "status": "CURRENT_DIFFERS_FROM_HISTORICAL_RECEIPT",
+    "resolution": "Preserve current source: later localization, field calibration, runtime record or September23 entry/full-input/single-phase change. Historical receipt is not a deployment request."
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/ros-results.json",
+    "current_sha256": "2eb3b0936482bdca5b43454483fe713391758cd2159faa6f3f046ee582d02759",
+    "latest_receipt": {
+      "path": "docs/stair-drive-readiness-20260923/evidence/ros-results.json",
+      "expected": "2eb3b0936482bdca5b43454483fe713391758cd2159faa6f3f046ee582d02759",
+      "receipt": "stair-drive-readiness-20260923/deployment.json",
+      "mtime": 1790107233.157839
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/unit-results.json",
+    "current_sha256": "d2b5e788efd597d7a4d95c6400b95d8671a274cdc8e05393836e7f7b7e0cb295",
+    "latest_receipt": {
+      "path": "docs/stair-drive-readiness-20260923/evidence/unit-results.json",
+      "expected": "d2b5e788efd597d7a4d95c6400b95d8671a274cdc8e05393836e7f7b7e0cb295",
+      "receipt": "stair-drive-readiness-20260923/deployment.json",
+      "mtime": 1790107233.157839
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-drive-readiness-20260923/evidence/validation.json",
+    "current_sha256": "d5b7a2ae7b9e02c2deb678646b6131060fafece52f3b077f27c477455dfad35b",
+    "latest_receipt": {
+      "path": "docs/stair-drive-readiness-20260923/evidence/validation.json",
+      "expected": "d5b7a2ae7b9e02c2deb678646b6131060fafece52f3b077f27c477455dfad35b",
+      "receipt": "stair-drive-readiness-20260923/deployment.json",
+      "mtime": 1790107233.157839
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/GEOMETRY_RECOVERY.md",
+    "current_sha256": "f81f61daf0a7756ceb8ee3774c7d9b06f96b76369296a3f74b4d3585048acb6b",
+    "latest_receipt": {
+      "path": "docs/stair-driving-repair-20260922/GEOMETRY_RECOVERY.md",
+      "expected": "3176ed93849a41f27af26e33c98d0914bb6887b387125d80bb7f820795e3646e",
+      "receipt": "stair-geometry-recovery-20260923/analysis-applied.json",
+      "mtime": 1790102946.5066106
+    },
+    "matches_any_receipt": false,
+    "status": "CURRENT_DIFFERS_FROM_HISTORICAL_RECEIPT",
+    "resolution": "Preserve current source: later localization, field calibration, runtime record or September23 entry/full-input/single-phase change. Historical receipt is not a deployment request."
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/REPORT.md",
+    "current_sha256": "e26c8e1b6c9e0c9287de8a806f1e7a455bae217a979a89a9b26ddca7e3efd324",
+    "latest_receipt": {
+      "path": "docs/stair-driving-repair-20260922/REPORT.md",
+      "expected": "e26c8e1b6c9e0c9287de8a806f1e7a455bae217a979a89a9b26ddca7e3efd324",
+      "receipt": "stair-geometry-recovery-20260923/analysis-applied.json",
+      "mtime": 1790102946.5066106
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/evidence/baseline-regressions.json",
+    "current_sha256": "b8db04e756a1b341ce892fbc40f0e542cc7c48d609569ac5adb6eee6997c210b",
+    "latest_receipt": {
+      "path": "docs/stair-driving-repair-20260922/evidence/baseline-regressions.json",
+      "expected": "b8db04e756a1b341ce892fbc40f0e542cc7c48d609569ac5adb6eee6997c210b",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/evidence/common-route-results.json",
+    "current_sha256": "749c77667752f106b75ceabaf5b033daf998d97ac1711441f157ed4422bfa610",
+    "latest_receipt": {
+      "path": "docs/stair-driving-repair-20260922/evidence/common-route-results.json",
+      "expected": "749c77667752f106b75ceabaf5b033daf998d97ac1711441f157ed4422bfa610",
+      "receipt": "stair-geometry-recovery-20260923/analysis-applied.json",
+      "mtime": 1790102946.5066106
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/evidence/fixed-geometry-fit.json",
+    "current_sha256": "6f81b73ac639e54281ecd499b4979ec29f5fee54c2182a99371805615d6cf21a",
+    "latest_receipt": {
+      "path": "docs/stair-driving-repair-20260922/evidence/fixed-geometry-fit.json",
+      "expected": "6f81b73ac639e54281ecd499b4979ec29f5fee54c2182a99371805615d6cf21a",
+      "receipt": "stair-geometry-recovery-20260923/analysis-applied.json",
+      "mtime": 1790102946.5066106
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/evidence/geometry-verification.json",
+    "current_sha256": "7fdd2dd67e1be701173a00e320e74862976545c33ad32d204f2d4a56319367de",
+    "latest_receipt": {
+      "path": "docs/stair-driving-repair-20260922/evidence/geometry-verification.json",
+      "expected": "7fdd2dd67e1be701173a00e320e74862976545c33ad32d204f2d4a56319367de",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/evidence/horizontal-surfaces.png",
+    "current_sha256": "ef33e481c9dd5c16c9d0407c0f7b191662fb1bae9fa4cfe5e5e9135544a4d845",
+    "latest_receipt": {
+      "path": "docs/stair-driving-repair-20260922/evidence/horizontal-surfaces.png",
+      "expected": "ef33e481c9dd5c16c9d0407c0f7b191662fb1bae9fa4cfe5e5e9135544a4d845",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/evidence/landing-measurements.json",
+    "current_sha256": "cbbcb97e81a4d99eb09052ccb56bc01bb79420db5a4865dd220b4bf02b85a7a9",
+    "latest_receipt": {
+      "path": "docs/stair-driving-repair-20260922/evidence/landing-measurements.json",
+      "expected": "cbbcb97e81a4d99eb09052ccb56bc01bb79420db5a4865dd220b4bf02b85a7a9",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/evidence/raw-geometry-overview.png",
+    "current_sha256": "d1adb97b1424c69d6d79da354f5deaf87385fbd767332bb89d07bee1753d1f66",
+    "latest_receipt": {
+      "path": "docs/stair-driving-repair-20260922/evidence/raw-geometry-overview.png",
+      "expected": "d1adb97b1424c69d6d79da354f5deaf87385fbd767332bb89d07bee1753d1f66",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/evidence/recorded-control-results.json",
+    "current_sha256": "558c148ce27352f6a68d9e2b098f166e4f24b7eff0a528702f0618ee50a46ad3",
+    "latest_receipt": {
+      "path": "docs/stair-driving-repair-20260922/evidence/recorded-control-results.json",
+      "expected": "558c148ce27352f6a68d9e2b098f166e4f24b7eff0a528702f0618ee50a46ad3",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/evidence/recording-result.json",
+    "current_sha256": "bd4897e274852ce55860640b3632c9543e81beae04e407d66b09c43585af4ef1",
+    "latest_receipt": {
+      "path": "docs/stair-driving-repair-20260922/evidence/recording-result.json",
+      "expected": "bd4897e274852ce55860640b3632c9543e81beae04e407d66b09c43585af4ef1",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/evidence/recording-ros-results.json",
+    "current_sha256": "187f9c806c99a79d4ad0f8f5bc3f56e1ab3640fc02e0a0605b9f5b47d313f071",
+    "latest_receipt": {
+      "path": "docs/stair-driving-repair-20260922/evidence/recording-ros-results.json",
+      "expected": "187f9c806c99a79d4ad0f8f5bc3f56e1ab3640fc02e0a0605b9f5b47d313f071",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/evidence/recovered-site.json",
+    "current_sha256": "d561029917d51fabba38f312f32609fce87b329dd064ec8e37bf38ce7670b632",
+    "latest_receipt": {
+      "path": "docs/stair-driving-repair-20260922/evidence/recovered-site.json",
+      "expected": "d561029917d51fabba38f312f32609fce87b329dd064ec8e37bf38ce7670b632",
+      "receipt": "stair-geometry-recovery-20260923/applied.json",
+      "mtime": 1790102657.5905926
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/evidence/ros-results.json",
+    "current_sha256": "ee69d09600b16274f7245ef33a35e3b11e5de009eef7ad6c7b28e2a3bba9e197",
+    "latest_receipt": {
+      "path": "docs/stair-driving-repair-20260922/evidence/ros-results.json",
+      "expected": "ee69d09600b16274f7245ef33a35e3b11e5de009eef7ad6c7b28e2a3bba9e197",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/evidence/session-tool-results.json",
+    "current_sha256": "7d2f51edd60ab65ef847054bc111a012cc016188caff19bd14d87c34ba5341d3",
+    "latest_receipt": {
+      "path": "docs/stair-driving-repair-20260922/evidence/session-tool-results.json",
+      "expected": "7d2f51edd60ab65ef847054bc111a012cc016188caff19bd14d87c34ba5341d3",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/evidence/unit-results.json",
+    "current_sha256": "c1cbde893a479ab653bea28fea1be14aa698d180ce08be2200d755c2d7739bea",
+    "latest_receipt": {
+      "path": "docs/stair-driving-repair-20260922/evidence/unit-results.json",
+      "expected": "c1cbde893a479ab653bea28fea1be14aa698d180ce08be2200d755c2d7739bea",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/stair-lidar-integration.md",
+    "current_sha256": "d7393e5e657fc671ee90f4490e482e475a59ee7d94e4221c72345c2a2b55aafb",
+    "latest_receipt": {
+      "path": "docs/stair-lidar-integration.md",
+      "expected": "4ed284c793f829f43f7f4e5e6ee50a1fa68d28a6a9948c8fbc375714d9a449bd",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": false,
+    "status": "CURRENT_DIFFERS_FROM_HISTORICAL_RECEIPT",
+    "resolution": "Preserve current source: later localization, field calibration, runtime record or September23 entry/full-input/single-phase change. Historical receipt is not a deployment request."
+  },
+  {
+    "path": "docs/tron-documentation-20260922/APPLICATION_GUIDE.md",
+    "current_sha256": "611aeb7cf0d65682df24dd2a3ec1a989b5a63e0e5289ffd1eabb2947e1b619c6",
+    "latest_receipt": {
+      "path": "docs/tron-documentation-20260922/APPLICATION_GUIDE.md",
+      "expected": "611aeb7cf0d65682df24dd2a3ec1a989b5a63e0e5289ffd1eabb2947e1b619c6",
+      "receipt": "stair-live-readiness-20260923/deployment.json",
+      "mtime": 1790108415.888932
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "docs/tron-documentation-20260922/README.md",
+    "current_sha256": "6250e767a107d781ef55dd401d9aa1673d13c1f36cb22ad67992055d56c98e50",
+    "latest_receipt": {
+      "path": "docs/tron-documentation-20260922/README.md",
+      "expected": "6250e767a107d781ef55dd401d9aa1673d13c1f36cb22ad67992055d56c98e50",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "run.sh",
+    "current_sha256": "80859864d8373267e1b65fd3dfcc88abd2994b5ce8acf37731589aaeb8e1fd61",
+    "latest_receipt": {
+      "path": "run.sh",
+      "expected": "80859864d8373267e1b65fd3dfcc88abd2994b5ce8acf37731589aaeb8e1fd61",
+      "receipt": "stair-live-readiness-20260923/deployment.json",
+      "mtime": 1790108415.888932
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/mission_manager/CMakeLists.txt",
+    "current_sha256": "bb8b0ff53bfe6e8bc8b50f4785119ea01d970df5745794e2a13a0cdd1b428504",
+    "latest_receipt": {
+      "path": "src/mission_manager/CMakeLists.txt",
+      "expected": "bb8b0ff53bfe6e8bc8b50f4785119ea01d970df5745794e2a13a0cdd1b428504",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/mission_manager/launch/system.launch",
+    "current_sha256": "47a6b782f84ce42837aebfb75e513dc817198aa4db7a7c0be2bbf15674440944",
+    "latest_receipt": {
+      "path": "src/mission_manager/launch/system.launch",
+      "expected": "4836b9585ecd4d30a2c90bcc3fd9f6ff140cfbb7df61b0cacda18824b4695dff",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": false,
+    "status": "CURRENT_DIFFERS_FROM_HISTORICAL_RECEIPT",
+    "resolution": "Preserve current source: later localization, field calibration, runtime record or September23 entry/full-input/single-phase change. Historical receipt is not a deployment request."
+  },
+  {
+    "path": "src/mission_manager/src/mission_manager/mission_action_server.py",
+    "current_sha256": "92ae3bd0f99c1eb4377200db713ad2377c5615ffea18751cb0ca2487a144baff",
+    "latest_receipt": {
+      "path": "src/mission_manager/src/mission_manager/mission_action_server.py",
+      "expected": "92ae3bd0f99c1eb4377200db713ad2377c5615ffea18751cb0ca2487a144baff",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/mission_manager/src/mission_manager/navigation_executor.py",
+    "current_sha256": "026f6dadeb54566f6aa87c11ee6ac92b089b7765dd92b1bcf6de4cecf637b8f3",
+    "latest_receipt": {
+      "path": "src/mission_manager/src/mission_manager/navigation_executor.py",
+      "expected": "026f6dadeb54566f6aa87c11ee6ac92b089b7765dd92b1bcf6de4cecf637b8f3",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/mission_manager/src/mission_manager/navigation_hold.py",
+    "current_sha256": "7adaab0962a85ca1fdf3231c9ded29988c83cf9c0e8e99b6912913a9fa528378",
+    "latest_receipt": {
+      "path": "src/mission_manager/src/mission_manager/navigation_hold.py",
+      "expected": "7adaab0962a85ca1fdf3231c9ded29988c83cf9c0e8e99b6912913a9fa528378",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/mission_manager/src/mission_manager/ros_runtime.py",
+    "current_sha256": "672edc138d8143528782bf6aaef1aca549784db495fd9faaaf738cba13cedd82",
+    "latest_receipt": {
+      "path": "src/mission_manager/src/mission_manager/ros_runtime.py",
+      "expected": "4562c142f41c32e5781ad703c6fde62af2db720d545258c2be84717e854fb443",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": false,
+    "status": "CURRENT_DIFFERS_FROM_HISTORICAL_RECEIPT",
+    "resolution": "Preserve current source: later localization, field calibration, runtime record or September23 entry/full-input/single-phase change. Historical receipt is not a deployment request."
+  },
+  {
+    "path": "src/mission_manager/src/mission_manager/ros_state.py",
+    "current_sha256": "89216e11edb1210abeebd45ac2d5ffe7328910cb8ea95e22c7b4b62006d0b9d4",
+    "latest_receipt": {
+      "path": "src/mission_manager/src/mission_manager/ros_state.py",
+      "expected": "89216e11edb1210abeebd45ac2d5ffe7328910cb8ea95e22c7b4b62006d0b9d4",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/mission_manager/test/mission_5f_rf_synthetic.test",
+    "current_sha256": "cd1ca30f6cdb41913aa2b53ca7f28e7e82819701cb9b9efd7fface17b322c96d",
+    "latest_receipt": {
+      "path": "src/mission_manager/test/mission_5f_rf_synthetic.test",
+      "expected": "cd1ca30f6cdb41913aa2b53ca7f28e7e82819701cb9b9efd7fface17b322c96d",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/mission_manager/test/mock_mission_children.py",
+    "current_sha256": "2b60c5ca0e99c2af192a1a49c6bc5c60ce9d0c93fc4e743a4540fcf45dced08b",
+    "latest_receipt": {
+      "path": "src/mission_manager/test/mock_mission_children.py",
+      "expected": "2b60c5ca0e99c2af192a1a49c6bc5c60ce9d0c93fc4e743a4540fcf45dced08b",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/mission_manager/test/test_full_system_synthetic_ros.py",
+    "current_sha256": "753ab30210b44f6ceb1aa00517275ed79264c38670ad692084fb3103d9743279",
+    "latest_receipt": {
+      "path": "src/mission_manager/test/test_full_system_synthetic_ros.py",
+      "expected": "753ab30210b44f6ceb1aa00517275ed79264c38670ad692084fb3103d9743279",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/mission_manager/test/test_navigation_hold.py",
+    "current_sha256": "6666bd20f5c5bd2879d08c0902136ce41dae33cc45ffb0c8b3d5dd68ab84142e",
+    "latest_receipt": {
+      "path": "src/mission_manager/test/test_navigation_hold.py",
+      "expected": "6666bd20f5c5bd2879d08c0902136ce41dae33cc45ffb0c8b3d5dd68ab84142e",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/mission_manager/test/test_runtime_gating.py",
+    "current_sha256": "a541d0b96e60d6806ec00e0b7447e4a750dd9070c850fb6bc4ea06cc38ec5a28",
+    "latest_receipt": {
+      "path": "src/mission_manager/test/test_runtime_gating.py",
+      "expected": "a541d0b96e60d6806ec00e0b7447e4a750dd9070c850fb6bc4ea06cc38ec5a28",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/CMakeLists.txt",
+    "current_sha256": "995e60e2d350b37cc5eeeb349c6b2d3e40e877f85360d9827874ba5cb1993e75",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/CMakeLists.txt",
+      "expected": "995e60e2d350b37cc5eeeb349c6b2d3e40e877f85360d9827874ba5cb1993e75",
+      "receipt": "stair-drive-readiness-20260923/deployment.json",
+      "mtime": 1790107233.157839
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/config/lidar_imu_baseline.yaml",
+    "current_sha256": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/config/lidar_imu_baseline.yaml",
+      "expected": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/config/stair_lidar.yaml",
+    "current_sha256": "fff0d2f4cd7c0bf1f4535890460b36ca60d42078e2b6e77e8b74553e20e2f05d",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/config/stair_lidar.yaml",
+      "expected": "05b8f97be0b48a8f16026ee0e6859e10799f10f8d21674ebef7148141fd8fe95",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": false,
+    "status": "CURRENT_DIFFERS_FROM_HISTORICAL_RECEIPT",
+    "resolution": "Preserve current source: later localization, field calibration, runtime record or September23 entry/full-input/single-phase change. Historical receipt is not a deployment request."
+  },
+  {
+    "path": "src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+    "current_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+      "expected": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337",
+      "receipt": "stair-full-input-20260923/applied.json",
+      "mtime": 1790124605.517094
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/package.xml",
+    "current_sha256": "9991fd127697d42f0524aff2cb061a530af43bb818bfe6aca6e5ea9c0532eb07",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/package.xml",
+      "expected": "9991fd127697d42f0524aff2cb061a530af43bb818bfe6aca6e5ea9c0532eb07",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/requirements-lidar.txt",
+    "current_sha256": "1c04613e04d8ef3120516a9fff56c0aecffafec574e6438e69e35929c44f1123",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/requirements-lidar.txt",
+      "expected": "1c04613e04d8ef3120516a9fff56c0aecffafec574e6438e69e35929c44f1123",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/rviz/stair_lidar_control.rviz",
+    "current_sha256": "eb5f6ea02c470deffcc13cb8af42f22b76426a012ad9983b2890546044550e37",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/rviz/stair_lidar_control.rviz",
+      "expected": "eb5f6ea02c470deffcc13cb8af42f22b76426a012ad9983b2890546044550e37",
+      "receipt": "stair-drive-readiness-20260923/deployment.json",
+      "mtime": 1790107233.157839
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/scripts/check_lidar_config.py",
+    "current_sha256": "d5913eb266cd0209355da628af883fa5d1d7424c8a016d14fe51f5205108572b",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/scripts/check_lidar_config.py",
+      "expected": "d5913eb266cd0209355da628af883fa5d1d7424c8a016d14fe51f5205108572b",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/scripts/profile_lidar_stream.py",
+    "current_sha256": "b2372eb45825979714a1a97581e2d79afe1c4d1856e751b1892fae5997222328",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/scripts/profile_lidar_stream.py",
+      "expected": "b2372eb45825979714a1a97581e2d79afe1c4d1856e751b1892fae5997222328",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/scripts/replay_lidar_tracking.py",
+    "current_sha256": "7231e4fa3b12d59d6469518209c52ffc0d4bb509465b2f5bd0d74bd15d710420",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/scripts/replay_lidar_tracking.py",
+      "expected": "7231e4fa3b12d59d6469518209c52ffc0d4bb509465b2f5bd0d74bd15d710420",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/scripts/stair_entry_test.py",
+    "current_sha256": "d00a9fe1755e7617ba5d98650a3c423b99d6d717d8780a45a2cac5876b48eba5",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/scripts/stair_entry_test.py",
+      "expected": "574536028a6a698f7152232b2a33194955aedef8020d10b83113d9b39634c2af",
+      "receipt": "stair-entry-freshness-20260923/applied.json",
+      "mtime": 1790122000.4985313
+    },
+    "matches_any_receipt": false,
+    "status": "CURRENT_DIFFERS_FROM_HISTORICAL_RECEIPT",
+    "resolution": "Preserve current source: later localization, field calibration, runtime record or September23 entry/full-input/single-phase change. Historical receipt is not a deployment request."
+  },
+  {
+    "path": "src/stair_supervisor/scripts/stair_python.sh",
+    "current_sha256": "dd4df13a6cb12ef14c46d33d7a34a22fa6d017b50c470bc8d21fd6a6adbfc624",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/scripts/stair_python.sh",
+      "expected": "dd4df13a6cb12ef14c46d33d7a34a22fa6d017b50c470bc8d21fd6a6adbfc624",
+      "receipt": "stair-drive-readiness-20260923/deployment.json",
+      "mtime": 1790107233.157839
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/src/stair_supervisor/configuration.py",
+    "current_sha256": "0d389a3b46bf0a3e4f3226183b32452b7bcfcddfaf9e9aed0d897f0bf3ef13c7",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/src/stair_supervisor/configuration.py",
+      "expected": "0d389a3b46bf0a3e4f3226183b32452b7bcfcddfaf9e9aed0d897f0bf3ef13c7",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/src/stair_supervisor/lidar_process.py",
+    "current_sha256": "693805096d7af3ce76c9c38e92a46b2f0d09ed4856010202d341468247fce725",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/src/stair_supervisor/lidar_process.py",
+      "expected": "693805096d7af3ce76c9c38e92a46b2f0d09ed4856010202d341468247fce725",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/src/stair_supervisor/lidar_tracking.py",
+    "current_sha256": "9bab9bf6e38d87558a6c20a548e7d2ed393bb011bd985ef6c9447e2c672ca2ce",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/src/stair_supervisor/lidar_tracking.py",
+      "expected": "9bab9bf6e38d87558a6c20a548e7d2ed393bb011bd985ef6c9447e2c672ca2ce",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/src/stair_supervisor/lidar_tracking_core.py",
+    "current_sha256": "1210ca227b1046750808aff118f9457179c290607c28ee790d829e9b1dd70d10",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/src/stair_supervisor/lidar_tracking_core.py",
+      "expected": "1210ca227b1046750808aff118f9457179c290607c28ee790d829e9b1dd70d10",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/src/stair_supervisor/robot_client.py",
+    "current_sha256": "6afdf0872f76759163d2f12212ef74967f5bdd3d7a8226361881ebeca2f81435",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/src/stair_supervisor/robot_client.py",
+      "expected": "6afdf0872f76759163d2f12212ef74967f5bdd3d7a8226361881ebeca2f81435",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+    "current_sha256": "ab58544c21fe808b7b28537d5bffbf8aea49ae40df3c3aa37d35ac3b75fe608c",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+      "expected": "ab58544c21fe808b7b28537d5bffbf8aea49ae40df3c3aa37d35ac3b75fe608c",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/src/stair_supervisor/ros_entrypoint.py",
+    "current_sha256": "0adb6ff5a7d03326f6474e47f78a068c10a04cda6ae50cc065313971cd8b18fa",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/src/stair_supervisor/ros_entrypoint.py",
+      "expected": "0adb6ff5a7d03326f6474e47f78a068c10a04cda6ae50cc065313971cd8b18fa",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/src/stair_supervisor/ros_lidar.py",
+    "current_sha256": "ca479bca748670767dcf462617c21a543afa36a4a925fcc67528b09cbeb6e7e3",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/src/stair_supervisor/ros_lidar.py",
+      "expected": "ca479bca748670767dcf462617c21a543afa36a4a925fcc67528b09cbeb6e7e3",
+      "receipt": "stair-entry-timeout-20260923/applied.json",
+      "mtime": 1790123398.1212504
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/src/stair_supervisor/ros_node.py",
+    "current_sha256": "4109dcbae7c7ee0a9036cd3c9a190cb01b9bc6e163b32ecebd21a3afa4d21910",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/src/stair_supervisor/ros_node.py",
+      "expected": "4109dcbae7c7ee0a9036cd3c9a190cb01b9bc6e163b32ecebd21a3afa4d21910",
+      "receipt": "stair-drive-readiness-20260923/deployment.json",
+      "mtime": 1790107233.157839
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/src/stair_supervisor/stair_feedback.py",
+    "current_sha256": "b9e6c897858ba2f237e4aef22b086ac97daa84c5505438b5105c28ad210f24c9",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/src/stair_supervisor/stair_feedback.py",
+      "expected": "341528169fda5ce1211d624cb1cd089e071c2ef092a1dc94fa72a59430696f00",
+      "receipt": "stair-entry-timeout-20260923/applied.json",
+      "mtime": 1790123398.1212504
+    },
+    "matches_any_receipt": false,
+    "status": "CURRENT_DIFFERS_FROM_HISTORICAL_RECEIPT",
+    "resolution": "Preserve current source: later localization, field calibration, runtime record or September23 entry/full-input/single-phase change. Historical receipt is not a deployment request."
+  },
+  {
+    "path": "src/stair_supervisor/src/stair_supervisor/supervisor.py",
+    "current_sha256": "2376ce9c961c91e5df8c4f87300795ed251d6dc8daeea80f2518896e18d3d05a",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "expected": "2376ce9c961c91e5df8c4f87300795ed251d6dc8daeea80f2518896e18d3d05a",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/src/stair_supervisor/supervisor_types.py",
+    "current_sha256": "6e9c0e54a08fe7d05b256f7eacd053b5348b61800c6da68fa2c0010eb0d95da9",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/src/stair_supervisor/supervisor_types.py",
+      "expected": "6e9c0e54a08fe7d05b256f7eacd053b5348b61800c6da68fa2c0010eb0d95da9",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/test/lidar_observe.test",
+    "current_sha256": "73348f327ecb81aa2b2bbd2794672d4bd3d550acc0d5c3f337bf5e64c88d58e7",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/test/lidar_observe.test",
+      "expected": "73348f327ecb81aa2b2bbd2794672d4bd3d550acc0d5c3f337bf5e64c88d58e7",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/test/robot_transport/test_robot_transport.py",
+    "current_sha256": "a71c4ad7ffae96208986eb46d80e994890f6b848f88af7c68a92f2a20ec77429",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/test/robot_transport/test_robot_transport.py",
+      "expected": "a71c4ad7ffae96208986eb46d80e994890f6b848f88af7c68a92f2a20ec77429",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/test/stair_sensor_fixture.py",
+    "current_sha256": "04a33be99bbdca8d9aa505aa935bd4093bbc1063ad7de5549656145b5c68e3d8",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/test/stair_sensor_fixture.py",
+      "expected": "04a33be99bbdca8d9aa505aa935bd4093bbc1063ad7de5549656145b5c68e3d8",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/test/test_lidar_control.py",
+    "current_sha256": "4e3631cf9c24e9ad0e08b3994da7b1efec3ada55800d9c0878d982984c4e759c",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/test/test_lidar_control.py",
+      "expected": "4e3631cf9c24e9ad0e08b3994da7b1efec3ada55800d9c0878d982984c4e759c",
+      "receipt": "stair-entry-timeout-20260923/applied.json",
+      "mtime": 1790123398.1212504
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/test/test_lidar_observe_ros.py",
+    "current_sha256": "effeafa4f1bfc4bb98c899c972e8d7b469679d1cc34569503b54d88b4c5cea16",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/test/test_lidar_observe_ros.py",
+      "expected": "effeafa4f1bfc4bb98c899c972e8d7b469679d1cc34569503b54d88b4c5cea16",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/test/test_lidar_phase_test.py",
+    "current_sha256": "30612fb69b6d06160e46a63b184e2ee9730ed3bd8b71cd28bd0afa100731434f",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/test/test_lidar_phase_test.py",
+      "expected": "30612fb69b6d06160e46a63b184e2ee9730ed3bd8b71cd28bd0afa100731434f",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/test/test_lidar_process.py",
+    "current_sha256": "170030ffbf1ce7504ce0e17743927c330279979ad19a5958b8de8ab6074646aa",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/test/test_lidar_process.py",
+      "expected": "170030ffbf1ce7504ce0e17743927c330279979ad19a5958b8de8ab6074646aa",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/test/test_lidar_ros_adapter.py",
+    "current_sha256": "6b76253c406137880a32195ce952c0c0fadbf1392ce7ce57639d47dfe1fb9a8d",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/test/test_lidar_ros_adapter.py",
+      "expected": "6b76253c406137880a32195ce952c0c0fadbf1392ce7ce57639d47dfe1fb9a8d",
+      "receipt": "stair-entry-timeout-20260923/applied.json",
+      "mtime": 1790123398.1212504
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/test/test_stair_readiness.py",
+    "current_sha256": "ca9a4b2f1fce6d70251226ff611d8ce4c52779a6b669c110cff4757fd150b3b3",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/test/test_stair_readiness.py",
+      "expected": "7cba5bf54758a148caac3b1a67f8f00b36352bdd0710f46c59bb618d21c36036",
+      "receipt": "stair-full-input-20260923/applied.json",
+      "mtime": 1790124605.517094
+    },
+    "matches_any_receipt": false,
+    "status": "CURRENT_DIFFERS_FROM_HISTORICAL_RECEIPT",
+    "resolution": "Preserve current source: later localization, field calibration, runtime record or September23 entry/full-input/single-phase change. Historical receipt is not a deployment request."
+  },
+  {
+    "path": "src/stair_supervisor/test/test_stair_repair.py",
+    "current_sha256": "8f82b74ea415c87f1f3dea22405211ff66d9cd301e036f356a063db9fe0f833c",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/test/test_stair_repair.py",
+      "expected": "8f82b74ea415c87f1f3dea22405211ff66d9cd301e036f356a063db9fe0f833c",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/test/test_supervisor.py",
+    "current_sha256": "53828522611a7f3ae0eb19df980cd5256c984d2170d6dcbd21e2bb16e0d33e93",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/test/test_supervisor.py",
+      "expected": "53828522611a7f3ae0eb19df980cd5256c984d2170d6dcbd21e2bb16e0d33e93",
+      "receipt": "stair-driving-repair-implementation-20260922/deployment.json",
+      "mtime": 1790084159.9856195
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "src/stair_supervisor/test/test_websocket_tx_ros.py",
+    "current_sha256": "5eb48bd7c3db6dae29f8bd6f74f74257ecac083b6d690f8d74977c00bb258148",
+    "latest_receipt": {
+      "path": "src/stair_supervisor/test/test_websocket_tx_ros.py",
+      "expected": "5eb48bd7c3db6dae29f8bd6f74f74257ecac083b6d690f8d74977c00bb258148",
+      "receipt": "stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "mtime": 1789942573.6466115
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "stair_control_session.sh",
+    "current_sha256": "1b14b4867b66faadbf53fe584fdba1733c08e4af00105d1fe6c233411c741f0a",
+    "latest_receipt": {
+      "path": "stair_control_session.sh",
+      "expected": "1b14b4867b66faadbf53fe584fdba1733c08e4af00105d1fe6c233411c741f0a",
+      "receipt": "stair-live-readiness-20260923/deployment.json",
+      "mtime": 1790108415.888932
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "test/test_process_boundary_contract.py",
+    "current_sha256": "b2e77d4278b357d0a3f1c6d8ffaa43cf20a0daa00d2c77bb308a2990366ad9fe",
+    "latest_receipt": {
+      "path": "test/test_process_boundary_contract.py",
+      "expected": "b2e77d4278b357d0a3f1c6d8ffaa43cf20a0daa00d2c77bb308a2990366ad9fe",
+      "receipt": "stair-live-readiness-20260923/deployment.json",
+      "mtime": 1790108415.888932
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "test/test_startup_shell_failures.py",
+    "current_sha256": "fc6079ca7fd50b3499ee5983523d9bd20d5c9a8991d7c8260c1d89e9f9960ed9",
+    "latest_receipt": {
+      "path": "test/test_startup_shell_failures.py",
+      "expected": "fc6079ca7fd50b3499ee5983523d9bd20d5c9a8991d7c8260c1d89e9f9960ed9",
+      "receipt": "stair-live-readiness-20260923/deployment.json",
+      "mtime": 1790108415.888932
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  },
+  {
+    "path": "test/test_workspace_layout.py",
+    "current_sha256": "7d75260a3cc54b58b57371764872f40c57d0ea64dd9f281b41f2de43482e9838",
+    "latest_receipt": {
+      "path": "test/test_workspace_layout.py",
+      "expected": "7d75260a3cc54b58b57371764872f40c57d0ea64dd9f281b41f2de43482e9838",
+      "receipt": "stair-live-readiness-20260923/deployment.json",
+      "mtime": 1790108415.888932
+    },
+    "matches_any_receipt": true,
+    "status": "MATCH"
+  }
+]

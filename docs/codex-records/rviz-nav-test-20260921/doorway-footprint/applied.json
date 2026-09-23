@@ -1,0 +1,12 @@
+{
+  "pid": 92997,
+  "started": 1789950714.5794342,
+  "operator_confirmed_origin_center": true,
+  "footprint_m": [
+    0.45,
+    0.45
+  ],
+  "padding_m": 0.02,
+  "goal_sent": false,
+  "scope": "session only; restart move_base with saved settings plus footprint override"
+}

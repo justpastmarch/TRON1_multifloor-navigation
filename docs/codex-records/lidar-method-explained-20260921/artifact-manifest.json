@@ -1,0 +1,62 @@
+[
+  {
+    "file": "REPORT.md",
+    "bytes": 64769,
+    "sha256": "549d77e3a435880c1bf3ebf49a28e804f5d23667991ce84385fb3edb515fcfa9"
+  },
+  {
+    "file": "algorithm-layers.svg",
+    "bytes": 2460,
+    "sha256": "2f996d459f8c543162cbb40d0c3b94730adaaa70ef90d45ab0e05da5f9dbcc1d"
+  },
+  {
+    "file": "build_document.py",
+    "bytes": 8465,
+    "sha256": "de6d905a882969d0a81c2d4b6650c53d869ea30a3ac5d8b495f29b8865f988c2"
+  },
+  {
+    "file": "preview-comparison.png",
+    "bytes": 247791,
+    "sha256": "b5c0592421c79c847a1d3d7cad073b40ab37e0bffc326628d738a8d0122c2771"
+  },
+  {
+    "file": "preview-layers.png",
+    "bytes": 214136,
+    "sha256": "03701e4500ae2560083df9f35204ad530c15c9da2fba0f795719a49ae58f24c9"
+  },
+  {
+    "file": "preview-top.png",
+    "bytes": 227308,
+    "sha256": "ec4205ac181b05a9d34da5f069db285c254ae71fd3ee34a2e7ced67a59d018bc"
+  },
+  {
+    "file": "regression-metrics.png",
+    "bytes": 74684,
+    "sha256": "8b30ab9868d662f9d995d50b3f5c2ffac7c8001627de2ff31aecfd6520e28eee"
+  },
+  {
+    "file": "render-checks.json",
+    "bytes": 569,
+    "sha256": "78db12923388989554d239535a5ea1062dd0c842f0151e3668166b48d5052875"
+  },
+  {
+    "file": "report.html",
+    "bytes": 181095,
+    "sha256": "1efaf61481476ff6c8c73f1881adc314816e2a545951ca2e7bc3c1ae73e9c8c6"
+  },
+  {
+    "file": "source-provenance.json",
+    "bytes": 1381,
+    "sha256": "5122673095cb636705c99590c52456c0ef2e78a85137de6e157fa6c281240d98"
+  },
+  {
+    "file": "verification.json",
+    "bytes": 564,
+    "sha256": "1f97f42e80b21ef8ffe55dfb23f35308a3d568f45c71606ce3dbae4de63a53a2"
+  },
+  {
+    "file": "verify_render.py",
+    "bytes": 2643,
+    "sha256": "36292ace426694dcd9ea74f3c00a2974012b65941f162360e706da3bc94aabb9"
+  }
+]

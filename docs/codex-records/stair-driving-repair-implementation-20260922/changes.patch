@@ -1,0 +1,1345 @@
+--- before/run.sh
++++ after/run.sh
+@@ -185,6 +185,7 @@
+ mkdir -p "$LOG_DIR"
+ pids=()
+ LAST_PID=""
++stair_record_pid=""
+ 
+ start_component() {
+     local name="$1"
+@@ -204,8 +205,22 @@
+     done
+     sleep 2
+     for pid in "${pids[@]:-}"; do
++        [[ "$pid" == "$stair_record_pid" ]] && continue
+         kill -TERM "$pid" 2>/dev/null || true
+     done
++    # rosbag needs time to finish its index after SIGINT. Do not terminate it
++    # after the generic two-second grace period used for other components.
++    if [[ -n "$stair_record_pid" ]]; then
++        for _ in {1..40}; do
++            kill -0 "$stair_record_pid" 2>/dev/null || break
++            sleep .25
++        done
++        if kill -0 "$stair_record_pid" 2>/dev/null; then
++            printf '[BAG] recorder did not finish; preserve .active for recovery. PID=%s\n' "$stair_record_pid" >&2
++            kill -TERM "$stair_record_pid" 2>/dev/null || true
++        fi
++        wait "$stair_record_pid" 2>/dev/null || true
++    fi
+ }
+ trap cleanup INT TERM EXIT
+ 
+@@ -249,6 +264,20 @@
+ fi
+ if [ -n "${ARRIVAL_HOLD_SETTINGS:-}" ]; then
+     lidar_launch_args+=("arrival_hold_enabled:=true" "arrival_hold_settings:=$ARRIVAL_HOLD_SETTINGS")
++fi
++if [[ "${STAIR_RECORD:-0}" == "1" ]]; then
++    : "${STAIR_LIDAR_CONFIG:?STAIR_RECORD needs an explicit LiDAR config}"
++    : "${STAIR_PYTHON:?STAIR_RECORD needs the LiDAR Python interpreter}"
++    "$STAIR_PYTHON" "$ROOT/src/stair_supervisor/scripts/check_lidar_config.py" \
++        "$STAIR_LIDAR_CONFIG" --mode "${STAIR_LIDAR_MODE:-control}" --snapshot-dir "$LOG_DIR"
++    start_component stair_bag rosbag record --split --size=1024 -O "$LOG_DIR/stair" \
++        /livox/lidar /livox/imu /tron/wheel_odom_raw /tron/sensor_joy /scan /tf /tf_static \
++        /navigation/cmd_vel /stair_supervisor/websocket_tx /stair_supervisor/state \
++        /stair_supervisor/tracking_status /stair_supervisor/control_debug /stair_supervisor/geometry_markers \
++        /stair_supervisor/lidar_odom /stair_traversal/goal /stair_traversal/cancel \
++        /stair_traversal/feedback /stair_traversal/result /mission/status /multifloor/floor_state
++    stair_record_pid="$LAST_PID"
++    printf '[BAG] automatic stair recording: %s\n' "$LOG_DIR"
+ fi
+ start_component system roslaunch mission_manager system.launch "${lidar_launch_args[@]}" \
+     startup_localization:="${STARTUP_LOCALIZATION:-auto}" \
+@@ -363,6 +392,10 @@
+ printf '%s\n' '[LOCALIZATION] Finding the current pose. Use RViz 2D Pose Estimate to set position and direction.'
+ while true; do
+     kill -0 "$system_pid" 2>/dev/null || { printf 'System launch exited.\n' >&2; exit 1; }
++    if [[ -n "$stair_record_pid" ]] && ! kill -0 "$stair_record_pid" 2>/dev/null; then
++        printf '[BAG] recording exited; see %s/stair_bag.log. Mission continues.\n' "$LOG_DIR" >&2
++        stair_record_pid=""
++    fi
+     floor_state="$(timeout 3s rostopic echo -n 1 /multifloor/floor_state/state 2>/dev/null | tr -cd '[:digit:]' || true)"
+     [[ "$floor_state" == "2" ]] && break
+     [[ "$floor_state" == "3" ]] && { printf 'Floor manager fault.\n' >&2; exit 1; }
+@@ -397,4 +430,11 @@
+     '[READY] Submit goals only through /mission.' \
+     '[READY] Stop with Ctrl+C. The mini-PC sensor stack remains running.' \
+     "[LOG] ${LOG_DIR}"
++if [[ -n "$stair_record_pid" ]]; then
++    # Recording failure is visible without making it a mobility stop gate.
++    wait -n "$system_pid" "$stair_record_pid" || true
++    if kill -0 "$system_pid" 2>/dev/null && ! kill -0 "$stair_record_pid" 2>/dev/null; then
++        printf '[BAG] recording exited; mission continues. See %s/stair_bag.log\n' "$LOG_DIR" >&2
++    fi
++fi
+ wait "$system_pid"
+--- before/src/stair_supervisor/CMakeLists.txt
++++ after/src/stair_supervisor/CMakeLists.txt
+@@ -48,12 +48,13 @@
+   scripts/replay_lidar_tracking.py
+   scripts/profile_lidar_stream.py
+   scripts/calibrate_yaw_rate.py
++  scripts/check_lidar_config.py
+   scripts/stair_supervisor_node.py
+   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+ )
+ 
+ install(
+-  DIRECTORY config launch
++  DIRECTORY config launch rviz
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+ )
+ 
+@@ -66,6 +67,8 @@
+     catkin_add_nosetests(test/test_lidar_control.py)
+     catkin_add_nosetests(test/test_lidar_ros_adapter.py)
+     catkin_add_nosetests(test/test_lidar_process.py)
++    catkin_add_nosetests(test/test_lidar_phase_test.py)
++    catkin_add_nosetests(test/test_stair_repair.py)
+   endif()
+   catkin_add_nosetests(test/test_fixture_discovery.py)
+   catkin_add_nosetests(test/test_configuration_transition.py)
+--- before/src/stair_supervisor/rviz/stair_lidar_control.rviz
++++ after/src/stair_supervisor/rviz/stair_lidar_control.rviz
+@@ -0,0 +1,59 @@
++Panels:
++  - Class: rviz/Displays
++    Name: Displays
++  - Class: rviz/Views
++    Name: Views
++Visualization Manager:
++  Class: ""
++  Global Options:
++    Background Color: 30; 30; 34
++    Fixed Frame: stair_local_0
++    Frame Rate: 20
++  Displays:
++    - Class: rviz/Grid
++      Name: Metric grid
++      Enabled: true
++      Value: true
++      Cell Size: 0.5
++      Plane Cell Count: 30
++      Reference Frame: <Fixed Frame>
++      Color: 90; 90; 100
++    - Class: rviz/Odometry
++      Name: Measured LiDAR poses
++      Enabled: true
++      Value: true
++      Topic: /stair_supervisor/lidar_odom
++      Keep: 300
++      Position Tolerance: 0.02
++      Angle Tolerance: 0.02
++      Shape: Arrow
++      Color: 0; 230; 90
++      Shaft Length: 0.12
++      Shaft Radius: 0.012
++      Head Length: 0.07
++      Head Radius: 0.035
++      Covariance:
++        Value: false
++    - Class: rviz/MarkerArray
++      Name: Body, support, target and phase
++      Enabled: true
++      Value: true
++      Marker Topic: /stair_supervisor/geometry_markers
++      Queue Size: 10
++  Tools:
++    - Class: rviz/Interact
++    - Class: rviz/MoveCamera
++    - Class: rviz/Select
++  Views:
++    Current:
++      Class: rviz/Orbit
++      Distance: 8
++      Pitch: 0.55
++      Yaw: 0.9
++      Focal Point:
++        X: 1.5
++        Y: 0.7
++        Z: 1.3
++Window Geometry:
++  Width: 1400
++  Height: 900
+--- before/src/stair_supervisor/scripts/check_lidar_config.py
++++ after/src/stair_supervisor/scripts/check_lidar_config.py
+@@ -0,0 +1,61 @@
++#!/usr/bin/env python3
++"""Read-only launch/configuration check; no ROS initialization or transport."""
++import argparse
++import hashlib
++import json
++from pathlib import Path
++import sys
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('config', type=Path)
++    parser.add_argument('--mode', choices=('observe', 'control'), default='control')
++    parser.add_argument('--snapshot-dir', type=Path)
++    parser.add_argument('--status-json', type=Path, help='Compare a saved tracking_status JSON object')
++    args = parser.parse_args()
++    # Resolve this checkout first when invoked directly, before catkin rebuild.
++    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
++    from stair_supervisor.configuration import load_lidar_configuration
++    from stair_supervisor.stair_feedback import StairFeedback
++    from stair_supervisor.lidar_tracking import load_imu_rotation
++    import numpy
++    import open3d
++    import scipy
++    import rospy
++    import websocket
++    from livox_ros_driver2.msg import CustomMsg
++    config = load_lidar_configuration(args.config.resolve(), args.mode, args.mode == 'observe')
++    calibration = (config.root / config.document['calibration']).resolve()
++    _, calibration_sha256 = load_imu_rotation(calibration)
++    control = StairFeedback(None, config.document['base_from_lidar'], config.document['routes']) if config.document['configured'] else None
++    if args.mode == 'control' and not control.routes:
++        raise ValueError('control configuration has no routes')
++    result = dict(mode=args.mode, config_path=config.source_path, config_sha256=config.source_sha256,
++                  calibration_path=str(calibration), calibration_sha256=calibration_sha256,
++                  configured=config.document['configured'], python=sys.executable,
++                  numpy=numpy.__version__, scipy=scipy.__version__, open3d=open3d.__version__,
++                  routes=[dict(id=r['id'], commissioned=r['commissioned'], phase_test_limits=r.get('phase_test_limits'))
++                          for r in config.document['routes']], robot_commands_sent=0)
++    if args.status_json:
++        status = json.loads(args.status_json.read_text())
++        for key in ('mode', 'config_path', 'config_sha256'):
++            if status.get(key) != result[key]:
++                raise ValueError('running configuration mismatch: ' + key)
++        result['running_configuration_matches'] = True
++    if args.snapshot_dir:
++        args.snapshot_dir.mkdir(parents=True, exist_ok=True)
++        content = args.config.read_bytes()
++        if hashlib.sha256(content).hexdigest() != config.source_sha256:
++            raise ValueError('configuration changed during check')
++        calibration_content = calibration.read_bytes()
++        if hashlib.sha256(calibration_content).hexdigest() != calibration_sha256:
++            raise ValueError('calibration changed during check')
++        (args.snapshot_dir / 'lidar-config.yaml').write_bytes(content)
++        (args.snapshot_dir / 'lidar-imu-calibration.yaml').write_bytes(calibration_content)
++        (args.snapshot_dir / 'configuration.json').write_text(json.dumps(result, indent=2)+'\n')
++    print(json.dumps(result, indent=2))
++
++
++if __name__ == '__main__':
++    main()
+--- before/src/stair_supervisor/src/stair_supervisor/configuration.py
++++ after/src/stair_supervisor/src/stair_supervisor/configuration.py
+@@ -4,6 +4,7 @@
+ 
+ from dataclasses import dataclass
+ from enum import Enum
++import hashlib
+ import math
+ from pathlib import Path
+ import re
+@@ -100,9 +101,9 @@
+     return StairConfigurationError(path.name, field, detail)
+ 
+ 
+-def _read(path: Path) -> Dict[str, YamlValue]:
++def _read(path: Path, *, content=None) -> Dict[str, YamlValue]:
+     try:
+-        raw = yaml.safe_load(path.read_text(encoding="utf-8"))
++        raw = yaml.safe_load(path.read_text(encoding="utf-8") if content is None else content)
+     except (OSError, UnicodeError, yaml.YAMLError) as error:
+         detail = "YAML parse error" if isinstance(error, yaml.YAMLError) else str(error)
+         raise _error(path, "", detail) from None
+@@ -266,6 +267,8 @@
+     observe_only: bool
+     root: Path
+     document: dict
++    source_path: str = ""
++    source_sha256: str = ""
+ 
+ 
+ def load_lidar_configuration(path: Path, mode: str = "off", observe_only: bool = True) -> LidarConfiguration:
+@@ -276,7 +279,11 @@
+         raise _error(path, "observe_only", "expected boolean")
+     if mode == "off":
+         return LidarConfiguration(mode, observe_only, path.parent, {})
+-    document = _read(path)
++    try:
++        content = path.read_bytes()
++    except OSError as error:
++        raise _error(path, "", str(error)) from None
++    document = _read(path, content=content)
+     configured = _header(document, {"calibration", "base_from_lidar", "tracking", "routes"}, path)
+     _string(document["calibration"], path, "calibration")
+     tracking = _mapping(document["tracking"], path, "tracking")
+@@ -295,4 +302,5 @@
+     _list(document["routes"], path, "routes")
+     if mode == "control" and not configured:
+         raise _error(path, "configured", "LiDAR control requires commissioned geometry/response; observe remains available")
+-    return LidarConfiguration(mode, observe_only, path.parent, document)
++    return LidarConfiguration(mode, observe_only, path.parent, document,
++                              str(path.resolve()), hashlib.sha256(content).hexdigest())
+--- before/src/stair_supervisor/src/stair_supervisor/ros_lidar.py
++++ after/src/stair_supervisor/src/stair_supervisor/ros_lidar.py
+@@ -156,7 +156,9 @@
+             if profile is None:
+                 raise ValueError("observation profile unavailable")
+             now = self.clock.monotonic()
+-            self.control.arm(profile, now)
++            # Observation emits no robot commands and must be available before
++            # commissioning. Start geometry/anchor validity still applies.
++            self.control.arm(profile, now, phase_test=True, start_phase=Phase.VERIFY_ENTRY)
+             self.control.begin_phase(Phase.VERIFY_ENTRY, now)
+             self._observing = True
+             return TriggerResponse(success=True, message="observing measured phases; no commands transmitted")
+@@ -215,6 +217,10 @@
+         sample = self.worker.snapshot()
+         diagnostic = self.worker.diagnostics()
+         diagnostic.update(mode=self.configuration.mode, observe_only=self.configuration.observe_only)
++        diagnostic.update(config_path=self.configuration.source_path,
++                          config_sha256=self.configuration.source_sha256,
++                          routes=[dict(id=r['id'], commissioned=r['commissioned'])
++                                  for r in self.configuration.document.get('routes', [])])
+         if sample is not None:
+             diagnostic.update(asdict(sample))
+             diagnostic.pop("transform", None)
+@@ -253,6 +259,7 @@
+                         self.control.begin_phase(phases[index], self.clock.monotonic())
+             debug = self.control.diagnostic_snapshot()
+             debug.update(observation_only=self.configuration.mode == "observe")
++            debug.update(config_path=self.configuration.source_path, config_sha256=self.configuration.source_sha256)
+             self.control_debug.publish(String(data=json.dumps(json_finite(debug), allow_nan=False)))
+             self._publish_geometry(sample)
+ 
+@@ -287,6 +294,9 @@
+                 array.markers.append(marker)
+             for key in ("flight_1", "flight_2"):
+                 line(key, route[key], local_profile, (0., .8, 1.))
++            if "target" in control.debug:
++                line("current_target", [control.debug["pose"], control.debug["target"][:3]],
++                     local_profile, (1., 0., 1.))
+             for key, height in (("entry_polygon", route["flight_1"][0][2]),
+                                 ("landing_polygon", route["flight_1"][1][2]),
+                                 ("exit_polygon", route["flight_2"][1][2])):
+@@ -301,7 +311,14 @@
+             text.pose.orientation.w = 1.
+             text.scale.z, text.color.a = .16, 1.
+             text.color.r, text.color.g = (0., 1.) if fresh else (1., 0.)
+-            text.text = "%s | %s | epoch %d" % (phase.value, control.debug.get("tracking_state", sample.state), sample.epoch)
++            debug = control.diagnostic_snapshot()
++            text.text = "%s | %s | epoch %d\nage=%.2fs margin=%.3fm clearance=%s\nv/w=%s\nwaiting=%s" % (
++                phase.value, debug.get("tracking_state", sample.state), sample.epoch,
++                self.clock.monotonic()-sample.measured_at,
++                route['limits']['margin_m']+anchor.uncertainty_m,
++                str(debug.get('clearance_m')),
++                str([round(v,3) for v in debug.get('command', [0.,0.])]),
++                ','.join(debug.get('incomplete_conditions', [])))
+             text.lifetime = rospy.Duration(.5)
+             array.markers.append(text)
+         self.markers.publish(array)
+--- before/src/stair_supervisor/src/stair_supervisor/stair_feedback.py
++++ after/src/stair_supervisor/src/stair_supervisor/stair_feedback.py
+@@ -7,6 +7,7 @@
+ 
+ from collections import deque
+ from dataclasses import dataclass
++from functools import lru_cache
+ import math
+ import threading
+ 
+@@ -42,14 +43,146 @@
+ def inside_polygon(points, polygon, margin=0.0):
+     """Convex CCW support polygon with a signed inward metric margin."""
+     polygon = np.asarray(polygon, dtype=float)
+-    for a, b in zip(polygon, np.roll(polygon, -1, axis=0)):
+-        edge = b - a
+-        if np.linalg.norm(edge) < 1e-8:
+-            return False
+-        distances = (edge[0] * (points[:, 1] - a[1]) - edge[1] * (points[:, 0] - a[0])) / np.linalg.norm(edge)
+-        if np.min(distances) < margin:
+-            return False
+-    return True
++    edges = np.roll(polygon, -1, axis=0)-polygon
++    lengths = np.linalg.norm(edges, axis=1)
++    if np.any(lengths < 1e-8):
++        return False
++    delta = np.asarray(points)[:, None, :]-polygon
++    distances = (edges[:, 0]*delta[:, :, 1]-edges[:, 1]*delta[:, :, 0])/lengths
++    return bool(np.all(distances >= margin))
++
++
++def _area(polygon):
++    if len(polygon) < 3:
++        return 0.0
++    p = np.asarray(polygon)
++    return abs(float(np.sum(p[:, 0] * np.roll(p[:, 1], -1) - p[:, 1] * np.roll(p[:, 0], -1)))) / 2
++
++
++def _segment_interval(a, b, polygon):
++    low, high = 0., 1.
++    for p, q in zip(polygon, np.roll(polygon, -1, axis=0)):
++        edge = q-p
++        start = edge[0]*(a[1]-p[1])-edge[1]*(a[0]-p[0])
++        slope = edge[0]*(b[1]-a[1])-edge[1]*(b[0]-a[0])
++        if abs(slope) < 1e-12:
++            if start < -1e-10:
++                return None
++        elif slope > 0:
++            low = max(low, -start/slope)
++        else:
++            high = min(high, -start/slope)
++    return (low, high) if high-low > 1e-10 else None
++
++
++@lru_cache(maxsize=64)
++def _union_layout(key):
++    """Precompute actual regions and exposed boundary segments."""
++    original = [np.asarray(p, dtype=float) for p in key]
++    polygons = [p for i, p in enumerate(original) if not any(
++        i != j and inside_polygon(p, q, -1e-10) and
++        (_area(p) < _area(q)-1e-10 or i > j)
++        for j, q in enumerate(original))]
++    boundary = []
++    for i, polygon in enumerate(polygons):
++        for a, b in zip(polygon, np.roll(polygon, -1, axis=0)):
++            edge = b-a
++            outward = np.array([edge[1], -edge[0]])
++            covered = []
++            for j, other in enumerate(polygons):
++                if i == j:
++                    continue
++                interval = _segment_interval(a, b, other)
++                if interval is None:
++                    continue
++                middle = a+(b-a)*sum(interval)/2
++                edges = np.roll(other, -1, axis=0)-other
++                distances = edges[:,0]*(middle[1]-other[:,1])-edges[:,1]*(middle[0]-other[:,0])
++                derivatives = edges[:,0]*outward[1]-edges[:,1]*outward[0]
++                # An internal seam has another region immediately on its right.
++                # Coincident external edges keep their outward-facing boundary.
++                if np.all((distances > 1e-9) | (derivatives >= -1e-10)):
++                    covered.append(interval)
++            cursor = 0.
++            for low, high in sorted(covered):
++                if low > cursor+1e-10:
++                    boundary.append([a+(b-a)*cursor, a+(b-a)*low])
++                cursor = max(cursor, high)
++            if cursor < 1.-1e-10:
++                boundary.append([a+(b-a)*cursor, b])
++    return polygons, np.asarray(boundary)
++
++
++def _layout(polygons):
++    if not 1 <= len(polygons) <= 3:
++        raise ValueError("support requires one to three neighboring polygons")
++    return _union_layout(tuple(tuple(tuple(map(float, p)) for p in polygon) for polygon in polygons))
++
++
++def _covered_body(points, polygons, boundary):
++    if any(inside_polygon(points, p) for p in polygons):
++        return True
++    # A convex body's interior is connected. With an interior witness inside
++    # the union, an uncovered hole/notch must expose a union boundary inside it.
++    probes = np.vstack((points, np.mean(points, axis=0)))
++    inside = np.zeros(len(probes), dtype=bool)
++    for polygon in polygons:
++        edges = np.roll(polygon,-1,axis=0)-polygon
++        delta = probes[:,None,:]-polygon
++        inside |= np.all(edges[:,0]*delta[:,:,1]-edges[:,1]*delta[:,:,0] >= -1e-10, axis=1)
++    if not np.all(inside):
++        return False
++    low, high = np.zeros(len(boundary)), np.ones(len(boundary))
++    valid = np.ones(len(boundary), dtype=bool)
++    a, b = boundary[:,0], boundary[:,1]
++    edges = np.roll(points,-1,axis=0)-points
++    for p, edge in zip(points, edges):
++        distance = edge[0]*(a[:,1]-p[1])-edge[1]*(a[:,0]-p[0])
++        slope = edge[0]*(b[:,1]-a[:,1])-edge[1]*(b[:,0]-a[:,0])
++        crossing = np.divide(-distance, slope, out=np.zeros_like(distance), where=np.abs(slope)>1e-12)
++        low = np.where(slope>1e-12, np.maximum(low,crossing),low)
++        high = np.where(slope< -1e-12, np.minimum(high,crossing),high)
++        valid &= ~((np.abs(slope)<=1e-12)&(distance< -1e-10))
++    valid &= high>=low
++    if not np.any(valid):
++        return True
++    middle = a[valid]+(b-a)[valid]*((low+high)[valid]/2)[:,None]
++    delta = middle[:,None,:]-points
++    inward = edges[:,0]*delta[:,:,1]-edges[:,1]*delta[:,:,0]
++    strictly_inside = np.all(inward>1e-10*np.linalg.norm(edges,axis=1),axis=1)
++    return not np.any(strictly_inside)
++
++
++def _clearance_inside(points, boundary):
++    """Distance between a covered convex body and the exposed union boundary."""
++    def distances(vertices, segments):
++        a, direction = segments[:,0], segments[:,1]-segments[:,0]
++        delta = vertices[:,None,:]-a
++        ratio = np.clip(np.sum(delta*direction, axis=2)/np.sum(direction*direction, axis=1), 0., 1.)
++        return np.linalg.norm(delta-ratio[:,:,None]*direction, axis=2).min()
++    body_edges = np.stack((points, np.roll(points,-1,axis=0)), axis=1)
++    return float(min(distances(points, boundary), distances(boundary[:,0], body_edges),
++                     distances(boundary[:,1], body_edges)))
++
++
++def support_clearance(points, polygons):
++    regions, boundary = _layout(polygons)
++    return _clearance_inside(np.asarray(points), boundary) if _covered_body(points, regions, boundary) else None
++
++
++def inside_support_union(points, polygons, margin=0.0):
++    """Whole-body union coverage and clearance to actual external edges.
++
++    Interior/boundary coverage checks prevent supported vertices from hiding a
++    gap or hole inside the body. Internal seams contribute no margin wall.
++    Region geometry is cached; no hull fills gaps between the allowed polygons.
++    """
++    regions, boundary = _layout(polygons)
++    if any(inside_polygon(points, p, margin) for p in regions):
++        return True
++    if len(regions) == 1 or not _covered_body(points, regions, boundary):
++        return False
++    return _clearance_inside(np.asarray(points), boundary) >= margin-1e-10
+ 
+ 
+ @dataclass(frozen=True)
+@@ -121,14 +254,23 @@
+         self._history = deque(maxlen=64)
+         self._recovering_at = None
+         self._interrupted = False
++        self.test_status = None
++        self._clearance_key = None
+ 
+     @staticmethod
+     def _validate_route(route):
+         keys = {"id", "commissioned", "direction", "flight_1", "flight_2", "landing_polygon",
+                 "exit_polygon", "entry_polygon", "flight_1_polygon", "flight_2_polygon", "footprint",
+                 "turn_path", "limits", "loss_response", "loss_response_evidence"}
+-        if set(route) not in (keys, keys | {"entry_reference"}):
++        optional = {"entry_reference", "phase_test_limits"}
++        if not keys <= set(route) or set(route) - keys - optional:
+             raise ValueError("LiDAR route keys must be " + str(sorted(keys)))
++        if "phase_test_limits" in route:
++            budgets = route["phase_test_limits"]
++            if (not isinstance(budgets, dict) or not budgets or
++                    any(k not in {p.value for p in Phase} or type(v) not in (float, int) or
++                        not math.isfinite(v) or v <= 0 for k, v in budgets.items())):
++                raise ValueError("phase_test_limits needs named phases and positive finite seconds")
+         if route["direction"] != "UP":
+             raise ValueError("reverse/downhill feedback requires separate commissioning; UP only")
+         if type(route["commissioned"]) is not bool:
+@@ -139,7 +281,7 @@
+                 raise ValueError("flight needs surveyed ascending start/end XYZ")
+         for name in ("landing_polygon", "exit_polygon", "entry_polygon", "flight_1_polygon", "flight_2_polygon", "footprint"):
+             p = np.asarray(route[name], dtype=float)
+-            if p.ndim != 2 or p.shape[1] != 2 or len(p) < 3 or not np.isfinite(p).all() or not inside_polygon(p, p, -1e-9):
++            if p.ndim != 2 or p.shape[1] != 2 or len(p) < 3 or not np.isfinite(p).all() or _area(p) <= 1e-8 or not inside_polygon(p, p, -1e-9):
+                 raise ValueError("%s must be a finite convex CCW polygon" % name)
+         points = np.asarray(route["turn_path"], dtype=float)
+         if points.ndim != 2 or points.shape[1] != 3 or len(points) < 1 or not np.isfinite(points).all():
+@@ -184,23 +326,48 @@
+             self.anchors[route_id] = anchor
+             return anchor
+ 
+-    def prepare(self, profile, now):
++    def test_plan(self, profile, phase, duration, from_entry):
++        route = self.routes.get(profile.id)
++        if route is None:
++            raise ValueError("no LiDAR route for this test")
++        phases = tuple(Phase)
++        phases = phases[:phases.index(phase) + 1] if from_entry else (phase,)
++        defaults = ({p.value: 30.0 for p in Phase if p is not Phase.EXIT_CONFIRM}
++                    if route["commissioned"] else {Phase.FORWARD_SEGMENT_1.value: 4.0})
++        budgets = route.get("phase_test_limits", defaults)
++        if any(p.value not in budgets for p in phases):
++            raise ValueError("test includes a phase without an explicit route budget")
++        if duration > min(sum(budgets[p.value] for p in phases), profile.timeout_sec):
++            raise ValueError("test duration exceeds route phase budgets or profile timeout")
++        return phases, {p: budgets[p.value] for p in phases}
++
++    def prepare(self, profile, now, *, phase_test=False, start_phase=None):
+         with self._lock:
+             route = self.routes.get(profile.id)
+             anchor = self.anchors.get(profile.id)
+             sample = self.worker.snapshot()
+-            if route is None or not route["commissioned"] or profile.direction is not Direction.UP:
++            if route is None or (not route["commissioned"] and not phase_test) or profile.direction is not Direction.UP:
+                 raise ValueError("no commissioned LiDAR route for this stair/direction")
+             if (anchor is None or anchor.epoch != self.worker.epoch or sample is None or
+                     sample.epoch != self.worker.epoch or not sample.geometry_valid):
+                 raise ValueError("missing or invalidated per-run entry anchor")
+             if now - anchor.measured_at > route["limits"]["anchor_max_age_sec"] or not 0 <= now - sample.measured_at <= route["limits"]["warn_sec"]:
+                 raise ValueError("entry anchor/observation is stale")
++            if start_phase is not None:
++                pose = np.linalg.inv(transform(anchor.local_from_profile)) @ transform(sample.transform) @ np.linalg.inv(self.base_from_lidar)
++                footprint = np.column_stack((route["footprint"], np.zeros(len(route["footprint"])), np.ones(len(route["footprint"]))))
++                support = (pose @ footprint.T).T[:, :2]
++                entry = start_phase in (Phase.VERIFY_ENTRY, Phase.ALIGN, Phase.FORWARD_SEGMENT_1)
++                region = route["entry_polygon"] if entry else route["landing_polygon"]
++                height = route["flight_1"][0 if entry else 1][2]
++                if (not inside_polygon(support, region, route["limits"]["margin_m"] + anchor.uncertainty_m) or
++                        abs(pose[2, 3] - height) > route["limits"]["height_tolerance"]):
++                    raise ValueError("test start pose is outside its entry/landing region or height; use from_entry")
+             return route, anchor
+ 
+-    def arm(self, profile, started_at):
+-        with self._lock:
+-            self.route, self.anchor = self.prepare(profile, started_at)
++    def arm(self, profile, started_at, *, phase_test=False, start_phase=None):
++        with self._lock:
++            self.route, self.anchor = self.prepare(profile, started_at, phase_test=phase_test, start_phase=start_phase)
+             self.profile = profile
+             self.started_at = started_at
+             self._history.clear()
+@@ -213,7 +380,24 @@
+             self._holding = False
+             self._phase_sequence = 0
+             self._flight_seen = [False, False]
++            self.test_status = None
++            self._clearance_key = None
+             self.anchors.pop(profile.id, None)  # a later goal needs new entry evidence
++
++    def reset_command(self, now):
++        """Match slew history to the zero command actually sent during entry ACK."""
++        with self._lock:
++            self._last_command, self._last_command_at = (0., 0.), now
++
++    def support_regions(self, phase):
++        names = {
++            Phase.FORWARD_SEGMENT_1: ("entry_polygon", "flight_1_polygon", "landing_polygon"),
++            Phase.FORWARD_SEGMENT_2: ("landing_polygon", "flight_2_polygon", "exit_polygon"),
++            Phase.VERIFY_ENTRY: ("entry_polygon",), Phase.ALIGN: ("entry_polygon",),
++            Phase.LANDING: ("landing_polygon",), Phase.TURN_TO_NEXT_FLIGHT: ("landing_polygon",),
++            Phase.EXIT_CONFIRM: ("exit_polygon",),
++        }[phase]
++        return names, [self.route[name] for name in names]
+ 
+     def begin_phase(self, phase, now):
+         with self._lock:
+@@ -254,7 +438,7 @@
+                 max(np.linalg.norm(h[3][:2]) for h in recent) <= limits["stationary_v"] and
+                 max(abs(h[4]) for h in recent) <= limits["stationary_w"])
+ 
+-    def evaluate(self, phase, now):
++    def evaluate(self, phase, now, *, command_required=False, neutral_only=False):
+         with self._lock:
+             sample = self.worker.snapshot()
+             limits = self.route["limits"]
+@@ -294,9 +478,6 @@
+                 length = np.linalg.norm(direction)
+                 direction = direction / length
+                 target, target_yaw = end, math.atan2(direction[1], direction[0])
+-                if not inside_polygon(support, self.route["flight_%d_polygon" % (idx + 1)], margin):
+-                    self.debug = dict(tracking_state="CORRIDOR_LIMIT", loss_response=True)
+-                    return EvidenceReport(phase, False, True, "body exceeds surveyed flight corridor", 0, 0, age)
+                 progress = float((pos[:2] - start[:2]) @ direction)
+                 ey = float(direction[0] * (pos[1] - start[1]) - direction[1] * (pos[0] - start[0]))
+                 epsi = wrap(yaw - math.atan2(direction[1], direction[0]))
+@@ -308,9 +489,10 @@
+                 w = -limits["yaw_kp"] * deadband(epsi, limits["yaw_deadband"]) - limits["lateral_kp"] * deadband(ey, limits["lateral_deadband"])
+                 if pos[2] - start[2] >= (end[2] - start[2]) * .5:
+                     self._flight_seen[idx] = True
+-                complete = (progress >= length and self._flight_seen[idx] and
+-                            abs(pos[2] - end[2]) <= limits["height_tolerance"] and
+-                            (landing if idx == 0 else exit_clear))
++                checks = dict(progress=progress >= length, ascent_seen=self._flight_seen[idx],
++                              height=abs(pos[2] - end[2]) <= limits["height_tolerance"],
++                              body_in_next_region=landing if idx == 0 else exit_clear)
++                complete = all(checks.values())
+             else:
+                 if phase in (Phase.VERIFY_ENTRY, Phase.ALIGN):
+                     target = np.asarray(self.route["flight_1"])[0]
+@@ -342,7 +524,9 @@
+                 else:
+                     w = -limits["yaw_kp"] * deadband(epsi, limits["yaw_deadband"])
+                 at_target = supported and distance <= limits["position_off"] and abs(epsi) <= limits["yaw_tolerance"]
+-                complete = at_target and self._settled(sample)
++                checks = dict(body_in_region=supported, position=distance <= limits["position_off"],
++                              yaw=abs(epsi) <= limits["yaw_tolerance"], settled=self._settled(sample))
++                complete = all(checks.values())
+                 if phase is Phase.TURN_TO_NEXT_FLIGHT and complete:
+                     if self.turn_index + 1 < len(self.route["turn_path"]):
+                         self.turn_index += 1
+@@ -350,33 +534,56 @@
+                         complete = False
+                 if phase is Phase.LANDING:
+                     complete = landing  # proceed directly to measured landing path
++                    checks = dict(body_in_landing=landing)
+                 if phase is Phase.EXIT_CONFIRM:
+                     complete = complete and all(self._flight_seen)
++                    checks.update(flight_1_seen=self._flight_seen[0], flight_2_seen=self._flight_seen[1])
++            checks["new_phase_observation"] = sample.sequence > self._phase_sequence
+             if sample.sequence <= self._phase_sequence:
+                 complete = False
+-            # Keep limits distinct from the physical loss response: if a proposed
+-            # supported-plane step would leave the polygon, do not issue it.
+-            v, w = self._limit_command(float(v), float(w), now)
+-            if phase in (Phase.FORWARD_SEGMENT_1, Phase.FORWARD_SEGMENT_2):
+-                polygon = self.route["flight_%d_polygon" % (1 if phase is Phase.FORWARD_SEGMENT_1 else 2)]
+-            else:
+-                polygon = self.route["entry_polygon"] if phase in (Phase.VERIFY_ENTRY,Phase.ALIGN) else self.route["exit_polygon"] if phase is Phase.EXIT_CONFIRM else self.route["landing_polygon"]
++            names, polygons = self.support_regions(phase)
++            raw_supported = inside_support_union(support, polygons)
++            current_supported = inside_support_union(support, polygons, margin)
++            key = (sample.epoch, sample.sequence, phase)
++            if key != self._clearance_key:
++                self._clearance_key = key
++                self._clearance_lower = support_clearance(support, polygons) if raw_supported else None
++            geometry = dict(support_regions=list(names), footprint_supported=raw_supported,
++                            current_supported=current_supported, margin_m=limits["margin_m"],
++                            anchor_uncertainty_m=self.anchor.uncertainty_m, effective_margin_m=margin,
++                            clearance_m=self._clearance_lower,
++                            height_error_m=abs(float(pos[2] - target[2])), completion_checks=checks,
++                            incomplete_conditions=[k for k, value in checks.items() if not value])
++            if not current_supported:
++                self.debug = dict(tracking_state="CORRIDOR_LIMIT", loss_response=True, **geometry)
++                return EvidenceReport(phase, False, True, "body/clearance exceeds connected support", 0, 0, age)
++            # A completed phase emits no command in the Supervisor loop. Do not
++            # reject its transition using the old command's future trajectory.
++            transition = complete and not command_required and not neutral_only
++            if neutral_only:
++                v, w = 0., 0.
++            elif not transition:
++                v, w = self._limit_command(float(v), float(w), now)
+             horizon = limits["expire_sec"]
+-            if not self._swept_support(pos[:2], yaw, support, v, w, horizon, polygon, margin):
+-                self.debug = dict(tracking_state="SUPPORT_LIMIT", loss_response=True)
++            if not transition and not self._swept_support(pos[:2], yaw, support, v, w, horizon, polygons, margin):
++                self.debug = dict(tracking_state="SUPPORT_LIMIT", loss_response=True,
++                                  proposed_command=[v, w], prediction_horizon_sec=horizon, **geometry)
+                 return EvidenceReport(phase, False, True, "correction would exceed surveyed support", 0, 0, age)
+-            self._last_command, self._last_command_at = (v, w), now
++            if not transition:
++                self._last_command, self._last_command_at = (v, w), now
+             self.debug = dict(tracking_state="TRACKED", loss_response=False, age=age, epoch=sample.epoch,
+                               sequence=sample.sequence, phase=phase.value, pose=pos.tolist(), yaw=yaw,
+                               roll=roll, pitch=pitch, velocity=velocity.tolist(), angular_velocity=angular,
+                               ey=ey, epsi=epsi, command=[v, w], landing_supported=landing,
+                               exit_supported=exit_clear, compute_sec=sample.compute_sec,
+                               target=[*map(float, target), float(target_yaw)], progress=progress,
+-                              phase_complete=complete)
++                              phase_complete=complete, transition_ready=transition,
++                              prediction_horizon_sec=horizon, neutral_only=neutral_only, **geometry)
+             return EvidenceReport(phase, complete, False, "LiDAR geometry/feedback: " + phase.value, progress, 0, age)
+ 
+     @staticmethod
+     def _swept_support(position, yaw, support, v, w, horizon, polygon, margin):
++        polygons = [polygon] if np.asarray(polygon, dtype=object).ndim == 2 else polygon
+         relative=support-position
+         radius=float(np.max(np.linalg.norm(relative,axis=1)))
+         step=horizon/16
+@@ -389,7 +596,7 @@
+                 center=position+(v/w)*np.array([math.sin(yaw+theta)-math.sin(yaw),math.cos(yaw)-math.cos(yaw+theta)])
+             rotation=np.array([[math.cos(theta),-math.sin(theta)],[math.sin(theta),math.cos(theta)]])
+             projected=relative@rotation.T+center
+-            if not inside_polygon(projected,polygon,margin+interpolation_bound):
++            if not inside_support_union(projected,polygons,margin+interpolation_bound):
+                 return False
+         return True
+ 
+@@ -407,6 +614,8 @@
+     def diagnostic_snapshot(self):
+         with self._lock:
+             result = dict(self.debug, phase=self.phase.value, command=list(self._last_command))
++            if self.test_status is not None:
++                result["phase_test"] = dict(self.test_status)
+             if self.anchor is not None and self.profile is not None:
+                 result.update(route_id=self.profile.id,
+                               run_id="%s:%d:%d" % (self.profile.id, self.anchor.epoch, self.anchor.sequence),
+--- before/src/stair_supervisor/src/stair_supervisor/supervisor.py
++++ after/src/stair_supervisor/src/stair_supervisor/supervisor.py
+@@ -124,7 +124,7 @@
+                     if self._clock.monotonic() >= self._arrival_hold_deadline:
+                         self._retain_lidar_loss("arrival ownership handoff deadline expired")
+                         return
+-                    report = self._lidar_control.evaluate(Phase.EXIT_CONFIRM, self._clock.monotonic())
++                    report = self._lidar_control.evaluate(Phase.EXIT_CONFIRM, self._clock.monotonic(), command_required=True)
+                     if report.faulted:
+                         self._retain_lidar_loss(report.detail)
+                         return
+@@ -151,21 +151,24 @@
+         *,
+         phase_test=None,
+     ) -> TraversalResult:
+-        """Execute a normal route or an explicitly armed, single LiDAR phase test."""
++        """Execute a normal route, one phase, or an entry-to-phase test prefix."""
++        from_entry = False
+         if phase_test is not None:
+             try:
+-                if not isinstance(phase_test, dict) or set(phase_test) != {"route_id", "phase", "max_duration_sec", "operator_confirmed"}:
++                required = {"route_id", "phase", "max_duration_sec", "operator_confirmed"}
++                if not isinstance(phase_test, dict) or not required <= set(phase_test) or set(phase_test) - required - {"from_entry"}:
+                     raise ValueError("phase_test needs route_id, phase, max_duration_sec, operator_confirmed")
++                from_entry = phase_test.get("from_entry", False)
++                if type(from_entry) is not bool:
++                    raise ValueError("from_entry must be boolean")
+                 test_phase = Phase(phase_test["phase"])
+                 duration = phase_test["max_duration_sec"]
+                 if self._lidar_control is None or phase_test["operator_confirmed"] is not True:
+                     raise ValueError("phase test requires LiDAR control and operator confirmation")
+-                if phase_test["route_id"] != goal.stair_id or test_phase not in (
+-                    Phase.ALIGN, Phase.FORWARD_SEGMENT_1, Phase.LANDING,
+-                    Phase.TURN_TO_NEXT_FLIGHT, Phase.FORWARD_SEGMENT_2):
+-                    raise ValueError("phase test route/phase mismatch; no arrival phase testing")
+-                if type(duration) not in (float, int) or not math.isfinite(duration) or not 0 < duration <= 30:
+-                    raise ValueError("phase test duration must be in (0, 30] seconds")
++                if phase_test["route_id"] != goal.stair_id or (test_phase is Phase.EXIT_CONFIRM and not from_entry):
++                    raise ValueError("phase test route mismatch; final arrival requires a connected entry test")
++                if type(duration) not in (float, int) or not math.isfinite(duration) or duration <= 0:
++                    raise ValueError("phase test duration must be positive finite seconds")
+             except (ValueError, TypeError, KeyError) as error:
+                 return TraversalResult(ResultCode.INVALID_GOAL, str(error))
+         if not self._profiles:
+@@ -206,7 +209,11 @@
+             # LiDAR anchor, surveyed route and phase geometry remain mandatory.
+             if self._lidar_control is not None:
+                 try:
+-                    self._lidar_control.prepare(profile, self._clock.monotonic())
++                    if phase_test is not None:
++                        phases, budgets = self._lidar_control.test_plan(profile, test_phase, duration, from_entry)
++                        self._lidar_control.prepare(profile, self._clock.monotonic(), phase_test=True, start_phase=phases[0])
++                    else:
++                        self._lidar_control.prepare(profile, self._clock.monotonic())
+                 except ValueError as error:
+                     return TraversalResult(ResultCode.ENTRY_REJECTED, str(error))
+             with self._state_lock:
+@@ -214,54 +221,81 @@
+                     return TraversalResult(ResultCode.ENTRY_REJECTED, "stair admission ownership changed")
+                 self._state = SupervisorState.STAIR
+                 self._latest_nav = None
+-                self._arrival_hold = False
+                 self._retained_loss = False
+             if phase_test is not None:
+-                return self._execute_phase_test(profile, test_phase, duration, cancellation_requested)
++                return self._execute_phase_test(profile, phases, budgets, duration, cancellation_requested,
++                                                admitted_state=admitted_state, retained_loss=test_resume)
+             return self._execute_profile(profile, cancellation_requested)
+         finally:
+             self._traversal_thread_id = None
+             self._traversal_lock.release()
+ 
+-    def _execute_phase_test(self, profile, phase, duration, cancellation_requested):
+-        """One phase only; no automatic advance, WALK handoff, or arrival success."""
+-        try:
+-            self._evidence.arm(profile, self._clock.monotonic())
++    def _execute_phase_test(self, profile, phases, budgets, duration, cancellation_requested,
++                            *, admitted_state, retained_loss):
++        """Test the selected sequence without normal success or floor handoff."""
++        control = self._lidar_control
++        try:
++            self._evidence.arm(profile, self._clock.monotonic(), phase_test=True, start_phase=phases[0])
+         except ValueError as error:
+             with self._state_lock:
+-                self._state = SupervisorState.NAV
++                self._state, self._retained_loss = admitted_state, retained_loss
+             return TraversalResult(ResultCode.ENTRY_REJECTED, str(error))
+-        try:
+-            self._set_lidar_mode(True, cancellation_requested, phase_override=phase)
+-            self._evidence.begin_phase(phase, self._clock.monotonic())
+-            deadline = self._clock.monotonic() + duration
+-            while True:
+-                now = self._clock.monotonic()
+-                if self._shutdown_requested.is_set() or cancellation_requested():
+-                    reason = "phase test interrupted; zero velocity; operator takeover"
+-                    break
+-                if now >= deadline:
+-                    reason = "phase test time complete; zero velocity; not stair arrival"
+-                    break
+-                report = self._evidence.evaluate(phase, now)
+-                self._feedback(report)
+-                if report.faulted:
+-                    reason = report.detail
+-                    break
+-                if report.complete:
+-                    reason = "phase test checkpoint complete; zero velocity; not stair arrival"
+-                    break
+-                self._transport.update_twist(*self._lidar_control.command())
+-                self._transport.send_current()
+-                self._clock.sleep(self._transport.stream_period_sec)
++        except Exception as error:
++            return self._control_exception(error)
++        with self._state_lock:
++            self._arrival_hold = False
++        try:
++            control.test_status = dict(state="MODE_ACK", target_phase=phases[-1].value,
++                                       phases=[p.value for p in phases], max_duration_sec=duration)
++            try:
++                neutral = phases[0] in (Phase.VERIFY_ENTRY, Phase.ALIGN, Phase.FORWARD_SEGMENT_1)
++                self._set_lidar_mode(True, cancellation_requested, phase_override=phases[0], neutral_only=neutral)
++                started = self._clock.monotonic()
++                # Mode acknowledgment has its own budget; all test timers begin here.
++                control.started_at = started
++                if neutral:
++                    control.reset_command(started)
++                deadline = started + min(duration, profile.timeout_sec)
++                reason = "phase test target reached; zero velocity; not stair arrival"
++                for phase in phases:
++                    phase_started = self._clock.monotonic()
++                    self._evidence.begin_phase(phase, phase_started)
++                    phase_deadline = min(deadline, phase_started + budgets[phase])
++                    control.test_status.update(state="RUNNING", current_phase=phase.value,
++                                               phase_budget_sec=budgets[phase])
++                    while True:
++                        now = self._clock.monotonic()
++                        control.test_status.update(elapsed_sec=now-started, phase_elapsed_sec=now-phase_started)
++                        if self._shutdown_requested.is_set() or cancellation_requested():
++                            raise _LidarTransitionFailed("phase test interrupted; zero velocity; operator takeover")
++                        if now >= phase_deadline:
++                            raise _LidarTransitionFailed("phase test time complete at " + phase.value + "; not stair arrival")
++                        report = self._evidence.evaluate(phase, now)
++                        self._feedback(report)
++                        if self._shutdown_requested.is_set() or cancellation_requested():
++                            raise _LidarTransitionFailed("phase test interrupted before command send")
++                        if self._clock.monotonic() >= phase_deadline:
++                            raise _LidarTransitionFailed("phase test time complete at " + phase.value + "; not stair arrival")
++                        if report.faulted:
++                            raise _LidarTransitionFailed(report.detail)
++                        if report.complete:
++                            break
++                        self._transport.update_twist(*control.command())
++                        self._transport.send_current()
++                        self._clock.sleep(self._transport.stream_period_sec)
++                control.test_status.update(state="TARGET_REACHED")
++            except _LidarTransitionFailed as error:
++                reason = str(error)
++                control.test_status.update(state="STOPPED", reason=reason)
+             self._retain_lidar_loss(reason)
+             return TraversalResult(ResultCode.STAIR_FAILED, reason, cancelled=True)
+-        except _LidarTransitionFailed as error:
+-            self._retain_lidar_loss(str(error))
+-            return TraversalResult(ResultCode.STAIR_FAILED, str(error), cancelled=True)
+         except TransportFault as error:
++            control.test_status.update(state="TRANSPORT_FAULT", reason=str(error))
+             self._latch_fault()
+             return TraversalResult(ResultCode.COMMUNICATION_LOST, str(error))
++        except Exception as error:
++            control.test_status.update(state="CONTROL_EXCEPTION", reason=str(error))
++            return self._control_exception(error)
+ 
+     def _execute_profile(
+         self,
+@@ -275,6 +309,10 @@
+             with self._state_lock:
+                 self._state = SupervisorState.NAV
+             return TraversalResult(ResultCode.ENTRY_REJECTED, str(error))
++        except Exception as error:
++            return self._control_exception(error)
++        with self._state_lock:
++            self._arrival_hold = False
+         cancel_pending = False
+         try:
+             if self._lidar_control is None:
+@@ -324,12 +362,31 @@
+         except TransportFault as error:
+             self._latch_fault()
+             return TraversalResult(ResultCode.COMMUNICATION_LOST, str(error))
+-
+-    def _set_lidar_mode(self, enabled, cancellation_requested, phase_override=None):
++        except Exception as error:
++            return self._control_exception(error)
++
++    def _control_exception(self, error):
++        """Contain an unexpected computation/callback failure at the owner."""
++        reason = "control exception %s: %s" % (type(error).__name__, error)
++        try:
++            if self._lidar_control is not None:
++                self._retain_lidar_loss(reason)
++            else:
++                self._zero_barrier()
++                self._latch_fault()
++        except TransportFault as transport_error:
++            self._latch_fault()
++            return TraversalResult(ResultCode.COMMUNICATION_LOST, str(transport_error))
++        return TraversalResult(ResultCode.STAIR_FAILED, reason)
++
++    def _set_lidar_mode(self, enabled, cancellation_requested, phase_override=None, neutral_only=False):
+         """Maintain measured support correction while mode acknowledgment waits."""
+         phase = phase_override if phase_override is not None else (Phase.VERIFY_ENTRY if enabled else Phase.EXIT_CONFIRM)
+         started = self._clock.monotonic()
+         self._lidar_control.begin_phase(phase, started)
++        if neutral_only:
++            self._zero_barrier()
++            self._lidar_control.reset_command(started)
+         next_send = started
+         def progress():
+             nonlocal next_send
+@@ -340,11 +397,15 @@
+                 raise _LidarTransitionFailed("mode handoff exceeded commissioned budget")
+             if now < next_send:
+                 return
+-            report = self._lidar_control.evaluate(phase, now)
++            report = self._lidar_control.evaluate(phase, now, command_required=True, neutral_only=neutral_only)
+             self._feedback(report)
++            if self._shutdown_requested.is_set() or cancellation_requested():
++                raise _LidarTransitionFailed("mode handoff interrupted before command send")
++            if self._clock.monotonic()-started >= self._lidar_control.route["limits"]["handoff_sec"]:
++                raise _LidarTransitionFailed("mode handoff exceeded commissioned budget")
+             if report.faulted:
+                 raise _LidarTransitionFailed(report.detail)
+-            self._transport.update_twist(*self._lidar_control.command())
++            self._transport.update_twist(*((0., 0.) if neutral_only else self._lidar_control.command()))
+             self._transport.send_current()
+             next_send = now + self._transport.stream_period_sec
+         self._transport.request_stair_mode_with_feedback(enabled, progress)
+@@ -392,7 +453,7 @@
+                 if self._shutdown_requested.is_set():
+                     return TraversalResult(ResultCode.STAIR_FAILED, "supervisor shutdown", cancelled=True)
+                 now = self._clock.monotonic()
+-                report = self._lidar_control.evaluate(Phase.EXIT_CONFIRM, now)
++                report = self._lidar_control.evaluate(Phase.EXIT_CONFIRM, now, command_required=True)
+                 self._feedback(report)
+                 cancel = cancellation_requested()
+                 if report.faulted or cancel or now - started > self._lidar_control.route["limits"]["handoff_sec"]:
+--- before/src/stair_supervisor/test/test_lidar_phase_test.py
++++ after/src/stair_supervisor/test/test_lidar_phase_test.py
+@@ -11,8 +11,11 @@
+ class PhaseTest(unittest.TestCase):
+     def setup_system(self, complete=False):
+         class Control(ScriptedEvidence):
++            routes={'test_up':route()}
+             route={'limits':{'handoff_sec':2.}}
+-            def prepare(self,*args): pass
++            test_plan=StairFeedback.test_plan
++            def prepare(self,*args,**kwargs): pass
++            def reset_command(self,now): pass
+             def begin_phase(self,phase,now):
+                 self.phase=phase
+                 self.seen.append(phase)
+--- before/src/stair_supervisor/test/test_lidar_ros_adapter.py
++++ after/src/stair_supervisor/test/test_lidar_ros_adapter.py
+@@ -22,7 +22,8 @@
+ class AdapterTest(unittest.TestCase):
+     def interface(self):
+         adapter = ros_lidar.RosLidarInterface.__new__(ros_lidar.RosLidarInterface)
+-        adapter.configuration = SimpleNamespace(mode="observe", observe_only=True)
++        adapter.configuration = SimpleNamespace(mode="observe", observe_only=True,
++            source_path='/synthetic/config.yaml', source_sha256='synthetic-hash', document={'routes':[route()]})
+         adapter.worker = Worker()
+         adapter.control = StairFeedback(adapter.worker, np.eye(4), [route()])
+         adapter.clock = SimpleNamespace(monotonic=lambda: 100.)
+@@ -66,6 +67,20 @@
+         adapter.assert_called_once()
+         transport.assert_not_called()
+         node.assert_not_called()
++
++    def test_uncommissioned_route_can_be_observed_without_enabling_a_mission(self):
++        adapter=self.interface()
++        adapter.control.routes['test_up']['commissioned']=False
++        adapter.control.capture_entry('test_up',np.eye(4),.01,'synthetic survey',100.)
++        adapter.ensure_entry=Mock()
++        from test_supervisor import make_configuration
++        config=make_configuration()
++        with patch.object(ros_lidar.rospy,'get_param',side_effect=lambda k,default=None:'test_up' if k.endswith('observe_route_id') else default), \
++             patch.object(ros_lidar,'load_stair_configuration',return_value=config):
++            result=adapter._start_observation(None)
++        self.assertTrue(result.success,result.message)
++        self.assertTrue(adapter._observing)
++        self.assertFalse(adapter.control.route['commissioned'])
+ 
+     def test_rejected_geometry_never_publishes_retimestamped_odometry(self):
+         adapter = self.interface()
+--- before/src/stair_supervisor/test/test_stair_repair.py
++++ after/src/stair_supervisor/test/test_stair_repair.py
+@@ -0,0 +1,263 @@
++"""Regression for entry ACK, connected tests and actual support boundaries.
++
++All command sinks are fakes. Scripted poses prove policy behavior, not hardware.
++"""
++from dataclasses import replace
++import math
++import unittest
++import numpy as np
++
++from stair_supervisor import stair_feedback as geometry
++from stair_supervisor.stair_feedback import StairFeedback
++from stair_supervisor.stair_evidence import Phase
++from stair_supervisor.robot_transport import TransportFault
++from stair_supervisor.supervisor import StairSupervisor, StairGoal, ResultCode, SupervisorState
++from stair_supervisor.configuration import Direction
++from test_lidar_control import Worker, route, sample, box
++from test_supervisor import FakeClock, FakeTransport, FakeAdmission, ScriptedEvidence, make_configuration
++
++
++class ConnectedGeometryTest(unittest.TestCase):
++    def policy(self, r=None):
++        worker = Worker()
++        control = StairFeedback(worker, np.eye(4), [r or route()])
++        control.capture_entry('test_up', np.eye(4), .01, 'synthetic measured start', 100.)
++        control.arm(replace(make_configuration().profiles[0], timeout_sec=300.), 100.)
++        return worker, control
++
++    def test_adjacent_regions_do_not_create_an_internal_margin_wall(self):
++        footprint = np.array(box(-.2,-.2,.2,.2))
++        self.assertTrue(geometry.inside_support_union(footprint, [box(-1,-1,0,1),box(0,-1,1,1)], .12))
++
++    def test_gap_inside_body_is_rejected_even_when_every_corner_is_supported(self):
++        regions = [box(-1,-1,0,2), box(-1,-1,2,0), box(1,-1,2,2)]
++        body = np.array(box(-.5,-.5,1.5,1.5))
++        self.assertTrue(all(any(geometry.inside_polygon(np.array([p]), r) for r in regions) for p in body))
++        self.assertFalse(geometry.inside_support_union(body, regions))
++
++    def test_physical_gap_and_outer_margin_remain_blocked(self):
++        body = np.array(box(-.2,-.2,.2,.2))
++        self.assertFalse(geometry.inside_support_union(body,[box(-1,-1,-.01,1),box(.01,-1,1,1)]))
++        self.assertFalse(geometry.inside_support_union(body,[box(-1,-1,0,1),box(0,-1,.25,1)],.10))
++
++    def test_body_straddling_flight_and_landing_is_supported(self):
++        r=route();r['flight_1_polygon']=box(-1,-1,1.8,1);r['landing_polygon']=box(1.8,-1,3,2)
++        worker,c=self.policy(r);c.begin_phase(Phase.FORWARD_SEGMENT_1,100.)
++        worker.value=sample(2,100.2,x=1.78,z=.9)
++        result=c.evaluate(c.phase,100.21)
++        self.assertFalse(result.faulted,result.detail)
++        self.assertFalse(result.complete)
++
++    def test_complete_phase_does_not_validate_an_unsent_old_forward_command(self):
++        r=route();r['flight_1_polygon']=box(-1,-1,2.13,1);r['landing_polygon']=box(1.5,-1,2.13,2)
++        worker,c=self.policy(r);c.begin_phase(Phase.FORWARD_SEGMENT_1,100.)
++        worker.value=sample(2,100.2,x=2,z=1)
++        previous=c.command()
++        result=c.evaluate(c.phase,100.21)
++        self.assertTrue(result.complete,result.detail);self.assertFalse(result.faulted)
++        self.assertEqual(c.command(),previous)  # no fictitious sent-command history
++        required=c.evaluate(c.phase,100.21,command_required=True)
++        self.assertTrue(required.faulted)  # actually sending forward still cannot pass
++
++    def test_completion_never_bypasses_current_body_support(self):
++        worker,c=self.policy();c.begin_phase(Phase.FORWARD_SEGMENT_1,100.)
++        worker.value=sample(2,100.2,x=4,z=1)
++        self.assertTrue(c.evaluate(c.phase,100.21).faulted)
++
++    def test_neutral_ack_keeps_actual_command_history_zero(self):
++        worker,c=self.policy();c.begin_phase(Phase.FORWARD_SEGMENT_1,100.)
++        for seq in range(2,8):
++            stamp=100.+seq*.1;worker.value=sample(seq,stamp)
++            self.assertFalse(c.evaluate(c.phase,stamp+.01,command_required=True,neutral_only=True).faulted)
++            self.assertEqual(c.command(),(0.,0.))
++        c.reset_command(101.);worker.value=sample(10,101.02)
++        c.evaluate(c.phase,101.025)
++        self.assertLessEqual(abs(c.command()[0]),c.route['limits']['max_accel']*.025+1e-9)
++
++    def test_explicit_uncommissioned_tests_do_not_enable_normal_missions(self):
++        r=route();r['commissioned']=False
++        w=Worker();c=StairFeedback(w,np.eye(4),[r]);p=make_configuration().profiles[0]
++        c.capture_entry('test_up',np.eye(4),.01,'synthetic',100.)
++        with self.assertRaises(ValueError):c.prepare(p,100.)
++        c.prepare(p,100.,phase_test=True,start_phase=Phase.FORWARD_SEGMENT_1)
++        with self.assertRaises(ValueError):c.prepare(p,100.,phase_test=True,start_phase=Phase.FORWARD_SEGMENT_2)
++
++    def test_uncommissioned_default_budget_is_first_flight_four_seconds(self):
++        r=route();r['commissioned']=False
++        c=StairFeedback(Worker(),np.eye(4),[r]);p=replace(make_configuration().profiles[0],timeout_sec=300.)
++        c.test_plan(p,Phase.FORWARD_SEGMENT_1,4.,False)
++        for phase,duration,prefix in [(Phase.FORWARD_SEGMENT_1,4.01,False),(Phase.TURN_TO_NEXT_FLIGHT,1.,False),(Phase.FORWARD_SEGMENT_1,4.,True)]:
++            with self.assertRaises(ValueError):c.test_plan(p,phase,duration,prefix)
++
++    def test_explicit_budgets_are_finite_named_and_bounded_by_profile(self):
++        for bad in [{'unknown':2.},{'ALIGN':True},{'ALIGN':float('inf')},{'ALIGN':0.},{}]:
++            r=route();r['phase_test_limits']=bad
++            with self.assertRaises(ValueError):StairFeedback(Worker(),np.eye(4),[r])
++        r=route();r['phase_test_limits']={p.value:50. for p in Phase}
++        c=StairFeedback(Worker(),np.eye(4),[r]);p=replace(make_configuration().profiles[0],timeout_sec=120.)
++        c.test_plan(p,Phase.TURN_TO_NEXT_FLIGHT,40.,False)
++        with self.assertRaises(ValueError):c.test_plan(p,Phase.EXIT_CONFIRM,121.,True)
++
++    def test_velocity_feedback_reduces_heading_and_lateral_error_in_unicycle_model(self):
++        r=route();r['flight_1']=[[0,0,0],[20,0,1]];r['flight_1_polygon']=box(-1,-1,21,1)
++        worker,c=self.policy(r);c.begin_phase(Phase.FORWARD_SEGMENT_1,100.)
++        x,y,yaw=.1,.15,.1;dt=.1
++        for i in range(250):
++            stamp=100.+(i+1)*dt;worker.value=sample(i+2,stamp,x=x,y=y,z=x/20,yaw=yaw)
++            result=c.evaluate(c.phase,stamp+.01)
++            self.assertFalse(result.faulted,result.detail)
++            v,w=c.command();x+=v*math.cos(yaw)*dt;y+=v*math.sin(yaw)*dt;yaw+=w*dt
++        self.assertLess(abs(y),.05);self.assertLess(abs(yaw),.05)
++
++
++class ConnectedExecutionTest(unittest.TestCase):
++    def system(self, *, complete=True, ack_sec=.0, stall=None):
++        r=route();r['commissioned']=False;r['phase_test_limits']={p.value:1. for p in Phase}
++        clock=FakeClock();transport=FakeTransport();admission=FakeAdmission()
++        class Control(ScriptedEvidence):
++            routes={'test_up':r}
++            route=r
++            test_plan=StairFeedback.test_plan
++            def prepare(self,*args,**options):return r,None
++            def begin_phase(self,phase,now):
++                self.phase=phase;self.phases.append(phase);super().begin_phase(phase,now)
++            def evaluate(self,phase,now,**options):
++                result=super().evaluate(phase,now,**options)
++                return replace(result,complete=False) if phase is stall else result
++            def command(self):return (.1,.2)
++            def reset_command(self,now):self.resets.append(now)
++            def loss_response(self,t):t.update_twist(0.,0.);t.send_current()
++        c=Control(observations_before_true=1 if complete else 100000);c.phases=[];c.resets=[]
++        def request(enabled,progress):
++            transport.events.append(('mode',enabled,clock.now))
++            for _ in range(max(1,round(ack_sec/.025))):
++                progress();clock.sleep(.025)
++            transport.events.append(('ack',enabled,clock.now))
++        transport.request_stair_mode_with_feedback=request
++        transport.update_twist=lambda v,w:transport.events.append(('update',v,w,clock.now))
++        config=make_configuration(timeout_sec=120.)
++        s=StairSupervisor(config,transport,c,clock,lambda report:None,admission,.25,lidar_control=c);s.start()
++        return s,c,transport,clock,admission
++
++    def run_test(self,s,phase=Phase.FORWARD_SEGMENT_1,duration=.1,prefix=False,cancel=lambda:False):
++        return s.traverse(StairGoal('test_up',Direction.UP,''),cancel,phase_test=dict(
++            route_id='test_up',phase=phase.value,max_duration_sec=duration,operator_confirmed=True,from_entry=prefix))
++
++    def test_all_entry_ack_commands_are_zero_and_do_not_consume_trial_time(self):
++        s,c,t,clock,a=self.system(complete=False,ack_sec=.5)
++        result=self.run_test(s)
++        ack=next(e[2] for e in t.events if e[0]=='ack')
++        self.assertTrue(result.cancelled)
++        self.assertTrue(all(e[1:3]==(0.,0.) for e in t.events if e[0]=='update' and e[3]<ack))
++        moving=[e[3] for e in t.events if e[0]=='update' and e[1]!=0.]
++        self.assertTrue(moving);self.assertGreaterEqual(min(moving),ack)
++        self.assertGreaterEqual(clock.now-ack,.1);self.assertLess(clock.now-ack,.126)
++        self.assertAlmostEqual(c.resets[-1],ack)
++
++    def test_connected_test_runs_ordered_prefix_and_never_returns_arrival_success(self):
++        s,c,t,clock,a=self.system()
++        result=self.run_test(s,Phase.EXIT_CONFIRM,1.,True)
++        self.assertEqual(c.phases[1:],list(Phase))
++        self.assertEqual(c.test_status['state'],'TARGET_REACHED')
++        self.assertNotEqual(result.code,ResultCode.OK);self.assertTrue(result.cancelled)
++        self.assertEqual(s.state,SupervisorState.STAIR);self.assertEqual(a.calls,[])
++        self.assertFalse(any(e[0]=='mode' and not e[1] for e in t.events))
++
++    def test_phase_budget_ends_a_stalled_phase_before_total_budget(self):
++        s,c,t,clock,a=self.system(stall=Phase.TURN_TO_NEXT_FLIGHT)
++        c.routes['test_up']['phase_test_limits'][Phase.TURN_TO_NEXT_FLIGHT.value]=.075
++        result=self.run_test(s,Phase.EXIT_CONFIRM,3.,True)
++        self.assertIn('time complete at TURN_TO_NEXT_FLIGHT',result.reason)
++        self.assertNotIn(Phase.FORWARD_SEGMENT_2,c.phases)
++
++    def test_missing_prefix_budget_rejects_before_any_mode_request(self):
++        s,c,t,clock,a=self.system();del c.routes['test_up']['phase_test_limits']['LANDING']
++        result=self.run_test(s,Phase.TURN_TO_NEXT_FLIGHT,1.,True)
++        self.assertEqual(result.code,ResultCode.ENTRY_REJECTED)
++        self.assertFalse(any(e[0]=='mode' for e in t.events))
++
++    def test_cancel_during_ack_retains_stair_and_never_sends_motion(self):
++        s,c,t,clock,a=self.system(ack_sec=.5)
++        result=self.run_test(s,cancel=lambda:clock.now>=100.1)
++        self.assertTrue(result.cancelled)
++        self.assertTrue(all(e[1:3]==(0.,0.) for e in t.events if e[0]=='update'))
++        self.assertEqual(s.state,SupervisorState.STAIR)
++
++    def test_mid_landing_handoff_keeps_measured_correction(self):
++        s,c,t,clock,a=self.system(ack_sec=.1)
++        self.run_test(s,Phase.TURN_TO_NEXT_FLIGHT)
++        ack=next(e[2] for e in t.events if e[0]=='ack')
++        self.assertTrue(any(e[0]=='update' and e[1]!=0. and e[3]<ack for e in t.events))
++
++    def test_transport_failure_during_loss_response_is_a_result_not_an_exception(self):
++        s,c,t,clock,a=self.system()
++        def fail(_):raise TransportFault('lost during neutral response')
++        c.loss_response=fail
++        result=self.run_test(s)
++        self.assertEqual(result.code,ResultCode.COMMUNICATION_LOST);self.assertEqual(s.state,SupervisorState.FAULT)
++
++    def test_failed_rearm_restores_retained_ownership(self):
++        s,c,t,clock,a=self.system();s._state=SupervisorState.STAIR;s._retained_loss=True
++        def fail(*args,**kwargs):raise ValueError('anchor reset between prepare and arm')
++        c.arm=fail
++        result=self.run_test(s)
++        self.assertEqual(result.code,ResultCode.ENTRY_REJECTED)
++        self.assertEqual(s.state,SupervisorState.STAIR);self.assertTrue(s._retained_loss)
++
++    def test_target_reached_does_not_allow_old_nav_to_resume(self):
++        s,c,t,clock,a=self.system();s.accept_navigation(.3,0.)
++        self.run_test(s,Phase.LANDING,1.,True)
++        s.accept_navigation(.3,0.);s.stream_navigation()
++        self.assertEqual([e[1:3] for e in t.events if e[0]=='update'][-1],(0.,0.))
++
++    def test_cancel_from_feedback_cannot_be_followed_by_nonzero_send(self):
++        s,c,t,clock,a=self.system(complete=False)
++        cancelled=[False]
++        def feedback(report):
++            if c.test_status['state']=='RUNNING':cancelled[0]=True
++        s._feedback=feedback
++        result=self.run_test(s,cancel=lambda:cancelled[0])
++        self.assertTrue(result.cancelled)
++        self.assertTrue(all(e[1:3]==(0.,0.) for e in t.events if e[0]=='update'))
++
++    def test_slow_evaluation_cannot_emit_a_command_after_trial_deadline(self):
++        s,c,t,clock,a=self.system(complete=False)
++        evaluate=c.evaluate
++        def slow(phase,now,**options):
++            result=evaluate(phase,now,**options)
++            if c.test_status['state']=='RUNNING':clock.sleep(.2)
++            return result
++        c.evaluate=slow
++        result=self.run_test(s,duration=.1)
++        self.assertIn('time complete',result.reason)
++        self.assertTrue(all(e[1:3]==(0.,0.) for e in t.events if e[0]=='update'))
++
++    def test_mode_ack_failure_never_emits_entry_motion(self):
++        s,c,t,clock,a=self.system()
++        def fail(enabled,progress):progress();raise TransportFault('mode ACK failed')
++        t.request_stair_mode_with_feedback=fail
++        result=self.run_test(s)
++        self.assertEqual(result.code,ResultCode.COMMUNICATION_LOST)
++        self.assertTrue(all(e[1:3]==(0.,0.) for e in t.events if e[0]=='update'))
++
++    def test_unexpected_feedback_failure_sends_zero_and_retains_ownership(self):
++        s,c,t,clock,a=self.system(complete=False)
++        def feedback(report):
++            if c.test_status['state']=='RUNNING':raise RuntimeError('diagnostic callback failed')
++        s._feedback=feedback
++        result=self.run_test(s)
++        self.assertEqual(result.code,ResultCode.STAIR_FAILED)
++        self.assertIn('control exception RuntimeError',result.reason)
++        self.assertEqual(s.state,SupervisorState.STAIR);self.assertTrue(s._retained_loss)
++        self.assertEqual([e[1:3] for e in t.events if e[0]=='update'][-1],(0.,0.))
++
++    def test_arm_rejection_keeps_existing_arrival_hold(self):
++        s,c,t,clock,a=self.system();s._arrival_hold=True
++        def fail(*args,**kwargs):raise ValueError('anchor expired')
++        c.arm=fail
++        result=self.run_test(s)
++        self.assertEqual(result.code,ResultCode.ENTRY_REJECTED)
++        self.assertEqual(s.state,SupervisorState.NAV);self.assertTrue(s._arrival_hold)
++
++
++if __name__=='__main__':unittest.main()
+--- before/src/stair_supervisor/test/test_supervisor.py
++++ after/src/stair_supervisor/test/test_supervisor.py
+@@ -81,7 +81,7 @@
+         self._profile: StairProfile | None = None
+         self._started_at = 0.0
+ 
+-    def arm(self, profile: StairProfile, started_at: float) -> None:
++    def arm(self, profile: StairProfile, started_at: float, **_options) -> None:
+         self._profile = profile
+         self._started_at = started_at
+         self._counts.clear()
+@@ -89,7 +89,7 @@
+     def begin_phase(self, phase: Phase, _now: float) -> None:
+         self._counts[phase] = 0
+ 
+-    def evaluate(self, phase: Phase, now: float) -> EvidenceReport:
++    def evaluate(self, phase: Phase, now: float, **_options) -> EvidenceReport:
+         self.on_observe(phase)
+         count = self._counts.get(phase, 0) + 1
+         self._counts[phase] = count
+--- before/stair_control_session.sh
++++ after/stair_control_session.sh
+@@ -0,0 +1,18 @@
++#!/usr/bin/env bash
++# Select one explicit control configuration; reuse run.sh and its command owner.
++set -Eeuo pipefail
++ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
++if [[ $# != 2 || ( "$1" != check && "$1" != start ) ]]; then
++    printf '%s\n' 'Usage: STAIR_PYTHON=/path/to/python ./stair_control_session.sh check|start /absolute/stair_lidar.yaml'
++    exit 2
++fi
++: "${STAIR_PYTHON:?Set the existing ROS + LiDAR Python interpreter explicitly}"
++[[ -x "$STAIR_PYTHON" ]] || { printf 'Python is not executable: %s\n' "$STAIR_PYTHON" >&2; exit 1; }
++# shellcheck disable=SC1091
++source /opt/ros/noetic/setup.bash
++if [[ -r "$ROOT/devel/setup.bash" ]]; then source "$ROOT/devel/setup.bash"; fi
++export STAIR_LIDAR_CONFIG
++STAIR_LIDAR_CONFIG="$(realpath "$2")"
++export STAIR_LIDAR_MODE=control STAIR_LIDAR_OBSERVE_ONLY=false STAIR_RECORD=1 STAIR_PYTHON
++"$STAIR_PYTHON" "$ROOT/src/stair_supervisor/scripts/check_lidar_config.py" "$STAIR_LIDAR_CONFIG"
++if [[ "$1" == start ]]; then exec "$ROOT/run.sh"; fi

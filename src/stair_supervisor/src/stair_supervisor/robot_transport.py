@@ -125,6 +125,7 @@ class RobotTransport:
         title: RequestTitle,
         data: Mapping[str, JsonValue],
         expected_status: RobotStatus | None,
+        progress=None,
     ) -> None:
         mode_retry = ModeRetryBudget(
             self._config.connection,
@@ -138,24 +139,28 @@ class RobotTransport:
             response_seen = False
             response_timestamp_ms: int | None = None
             status_seen = expected_status is None
-            while self._clock.monotonic() < deadline:
-                message = self._receive(receipt)
-                if message is None:
-                    continue
-                if self._client.consume_response(receipt, message):
-                    if message.data.get("result") != "success":
-                        self._latch_fault(f"{title.value} was rejected")
-                    response_seen = True
-                    response_timestamp_ms = message.timestamp_ms
-                elif (
-                    message.title == "notify_robot_info"
-                    and response_timestamp_ms is not None
-                    and message.timestamp_ms >= response_timestamp_ms
-                ):
-                    status_seen = self._message_has_status(message, expected_status)
-                if response_seen and status_seen:
-                    return
-            self._client.cancel_response(receipt)
+            try:
+                while self._clock.monotonic() < deadline:
+                    if progress is not None:
+                        progress()
+                    message = self._receive(receipt)
+                    if message is None:
+                        continue
+                    if self._client.consume_response(receipt, message):
+                        if message.data.get("result") != "success":
+                            self._latch_fault(f"{title.value} was rejected")
+                        response_seen = True
+                        response_timestamp_ms = message.timestamp_ms
+                    elif (
+                        message.title == "notify_robot_info"
+                        and response_timestamp_ms is not None
+                        and message.timestamp_ms >= response_timestamp_ms
+                    ):
+                        status_seen = self._message_has_status(message, expected_status)
+                    if response_seen and status_seen:
+                        return
+            finally:
+                self._client.cancel_response(receipt)
         self._latch_fault(f"{title.value} timed out before verified status")
 
     def _message_has_status(
@@ -237,6 +242,22 @@ class RobotTransport:
         self._require_ready()
         expected = RobotStatus.STAIR if enabled else RobotStatus.WALK
         self._request_success(RequestTitle.STAIR_MODE, {"enable": enabled}, expected)
+
+    def request_stair_mode_with_feedback(self, enabled: bool, progress) -> None:
+        """Keep the sole owner's position feedback alive during the mode ACK.
+
+        The same thread owns receive/response correlation; no competing socket
+        reader or second command session is introduced.
+        """
+        self._require_ready()
+        self._client.set_receive_timeout(min(self._config.connection.receive_timeout,
+                                            self.stream_period_sec / 4.))
+        try:
+            expected = RobotStatus.STAIR if enabled else RobotStatus.WALK
+            self._request_success(RequestTitle.STAIR_MODE, {"enable": enabled}, expected, progress)
+        finally:
+            if not self.faulted:
+                self._client.set_receive_timeout(self._config.connection.receive_timeout)
 
     def request_emergency_stop(self) -> None:
         """Send the documented empty emergency-stop request abstraction."""

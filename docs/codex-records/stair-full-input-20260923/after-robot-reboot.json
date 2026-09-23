@@ -1,0 +1,16 @@
+{
+  "at_utc": "2026-09-23T01:06:44.584923+00:00",
+  "goals_sent": 0,
+  "supervisor": {
+    "state": 1,
+    "connected": true,
+    "detail": "navigation owns commands"
+  },
+  "tracking": {
+    "state": "DEGRADED",
+    "geometry_valid": false,
+    "geometry_age_sec": 149.9213375931722,
+    "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337",
+    "worker_error": ""
+  }
+}

@@ -1,0 +1,15 @@
+[
+  "run.sh",
+  "src/stair_supervisor/CMakeLists.txt",
+  "src/stair_supervisor/rviz/stair_lidar_control.rviz",
+  "src/stair_supervisor/scripts/check_lidar_config.py",
+  "src/stair_supervisor/src/stair_supervisor/configuration.py",
+  "src/stair_supervisor/src/stair_supervisor/ros_lidar.py",
+  "src/stair_supervisor/src/stair_supervisor/stair_feedback.py",
+  "src/stair_supervisor/src/stair_supervisor/supervisor.py",
+  "src/stair_supervisor/test/test_lidar_phase_test.py",
+  "src/stair_supervisor/test/test_lidar_ros_adapter.py",
+  "src/stair_supervisor/test/test_stair_repair.py",
+  "src/stair_supervisor/test/test_supervisor.py",
+  "stair_control_session.sh"
+]

@@ -1,0 +1,150 @@
+--- a/README.md
++++ b/README.md
+@@ -15,6 +15,13 @@
+   accepted LiDAR pose (reviewed annotations, not automatic phase detections)
+ - frozen camera evidence on one topic per event, plus a current-event camera
+   topic that advances as the replay crosses each milestone
++
++Event markers appear only after the annotated camera-header time. The blue
++`FINAL_ARRIVAL (video annotation)` marker is a manually selected upper-landing
++reference, not a live Stair Supervisor completion result. An annotation outside
++the available LiDAR observation interval is rejected before writing an output.
++The reviewed `102101` and `105713` references were moved to later landing frames;
++the LiDAR estimator and its thresholds are unchanged.
+ 
+ FAST-LIO `bounded` means only that the trajectory stayed inside the configured
+ 5 m radius and 3 m vertical magnitude gate. It does not mean the trajectory is
+--- a/comparison_markers.py
++++ b/comparison_markers.py
+@@ -20,6 +20,7 @@
+     name: str
+     position: FloatVector
+     association_delta_s: float
++    camera_header_stamp_s: float
+ 
+ 
+ class ComparisonEvidence(NamedTuple):
+@@ -77,13 +78,15 @@
+         np.array([0.35, 0.20, 0.75], dtype=np.float64),
+     )
+     for event_index, event in enumerate(evidence.events):
++        if stamp.to_sec() < event.camera_header_stamp_s:
++            continue
+         marker_id = event_index * 2
+         point = _marker(marker_id, Marker.SPHERE, event.position, "", stamp)
+         _set_event_color(point, event_index)
+         markers.markers.append(point)
+ 
+         text_position = event.position + label_offsets[event_index]
+-        text = f"{event.name}\ncamera/LiDAR header |dt|={event.association_delta_s:.3f}s"
++        text = f"{event.name} (video annotation)\ncamera/LiDAR header |dt|={event.association_delta_s:.3f}s"
+         label = _marker(marker_id + 1, Marker.TEXT_VIEW_FACING, text_position, text, stamp)
+         label.scale.z = 0.18
+         _set_event_color(label, event_index)
+@@ -94,7 +97,8 @@
+         "GREEN gyro-aided LiDAR (accepted observations)\n"
+         "CYAN FAST-LIO bounded: r<=5m, |z|<=3m (not correctness)\n"
+         "MAGENTA FAST-LIO beyond gate | RED wheel\n"
+-        "ORANGE entry | YELLOW intermediate landing/U-turn | BLUE final arrival"
++        "Video annotations, shown after their camera time; not live arrival detection\n"
++        "ORANGE entry | YELLOW intermediate landing/U-turn | BLUE upper-landing reference"
+     )
+     legend_position = evidence.anchor + np.array([-2.5, 0.0, 3.5], dtype=np.float64)
+     legend_marker = _marker(10, Marker.TEXT_VIEW_FACING, legend_position, legend, stamp)
+--- a/build_comparison_bag.py
++++ b/build_comparison_bag.py
+@@ -78,6 +78,8 @@
+     associations: list[AssociatedEvent] = []
+     for event_spec in event_specs.events:
+         image = read_event_image(original_bag_path, event_spec.camera_header_stamp_s)
++        if not lidar_poses[0].stamp <= image.stamp <= lidar_poses[-1].stamp:
++            raise ValueError(f"{event_spec.name}: camera annotation is outside the LiDAR observation interval")
+         pose = min(
+             lidar_poses,
+             key=lambda item: abs(item.stamp.to_sec() - image.stamp.to_sec()),
+@@ -128,6 +130,7 @@
+                 name=event.spec.name,
+                 position=event.pose.transform[:3, 3],
+                 association_delta_s=abs(event.pose.stamp.to_sec() - event.image.stamp.to_sec()),
++                camera_header_stamp_s=event.image.stamp.to_sec(),
+             )
+             for event in events
+         ),
+@@ -144,7 +147,7 @@
+         write_path(output_bag, "/comparison/fast_lio_bounded_path", fast_lio_bounded)
+         write_path(output_bag, "/comparison/fast_lio_rejected_path", fast_lio_rejected)
+         for item in lidar:
+-            active_events = tuple(event for event in events if event.pose.stamp <= item.stamp)
++            active_events = tuple(event for event in events if event.image.stamp <= item.stamp)
+             if not active_events:
+                 continue
+             output_bag.write(
+--- a/specs/102101_comparison.json
++++ b/specs/102101_comparison.json
+@@ -8,7 +8,7 @@
+   "events": [
+     {"name": "STAIR_ENTRY", "camera_header_stamp_s": 1787793694.464132},
+     {"name": "INTERMEDIATE_LANDING", "camera_header_stamp_s": 1787793732.297255},
+-    {"name": "FINAL_ARRIVAL", "camera_header_stamp_s": 1787793779.454232}
++    {"name": "FINAL_ARRIVAL", "camera_header_stamp_s": 1787793785.3594377}
+   ],
+   "sample_period_s": 0.2,
+   "fast_lio_max_radius_m": 5.0,
+--- a/specs/105713_comparison.json
++++ b/specs/105713_comparison.json
+@@ -8,7 +8,7 @@
+   "events": [
+     {"name": "STAIR_ENTRY", "camera_header_stamp_s": 1787795856.574411},
+     {"name": "INTERMEDIATE_LANDING", "camera_header_stamp_s": 1787795871.087877},
+-    {"name": "FINAL_ARRIVAL", "camera_header_stamp_s": 1787795913.449060}
++    {"name": "FINAL_ARRIVAL", "camera_header_stamp_s": 1787795917.4853551}
+   ],
+   "sample_period_s": 0.2,
+   "fast_lio_max_radius_m": 5.0,
+--- a/test_comparison_markers.py
++++ b/test_comparison_markers.py
+@@ -0,0 +1,44 @@
++"""Regression: video annotations must not imply arrival before their timestamp."""
++import unittest
++from pathlib import Path
++from unittest.mock import patch
++
++import numpy as np
++import rospy
++from sensor_msgs.msg import Image
++
++from build_comparison_bag import _associate_events
++from comparison_markers import ComparisonEvidence, TraversalEventEvidence, event_marker_array
++from comparison_trajectory import StampedTransform
++from event_camera import StampedImage
++from traversal_events import TraversalEventSet
++
++
++class AnnotationTests(unittest.TestCase):
++    def setUp(self):
++        self.events = tuple(TraversalEventEvidence(name, np.array([i, 0., 0.]), 0.01, stamp)
++                            for i, (name, stamp) in enumerate([
++                                ('STAIR_ENTRY', 100.), ('INTERMEDIATE_LANDING', 110.), ('FINAL_ARRIVAL', 120.)]))
++        self.evidence = ComparisonEvidence(self.events, np.zeros(3), None, 0, 0)
++
++    def test_markers_appear_at_camera_time_and_keep_stable_ids(self):
++        for stamp, expected_ids in [(99., []), (100., [0, 1]), (115., [0, 1, 2, 3]),
++                                    (119.999, [0, 1, 2, 3]), (120., [0, 1, 2, 3, 4, 5])]:
++            markers = event_marker_array(self.evidence, rospy.Time.from_sec(stamp)).markers
++            self.assertEqual([m.id for m in markers if m.id < 6], expected_ids)
++        markers = event_marker_array(self.evidence, rospy.Time.from_sec(120.)).markers
++        self.assertIn('video annotation', next(m.text for m in markers if m.id == 5))
++
++    def test_camera_annotation_outside_observed_poses_cannot_clamp_to_endpoint(self):
++        specs = TraversalEventSet.model_validate([
++            {'name': e.name, 'camera_header_stamp_s': e.camera_header_stamp_s} for e in self.events])
++        poses = [StampedTransform(rospy.Time.from_sec(t), np.eye(4)) for t in [99., 115.]]
++        def image_at(_path, stamp):
++            return StampedImage(rospy.Time.from_sec(stamp), Image())
++        with patch('build_comparison_bag.read_event_image', side_effect=image_at):
++            with self.assertRaisesRegex(ValueError, 'FINAL_ARRIVAL.*outside'):
++                _associate_events(specs, Path('unused-input.bag'), poses)
++
++
++if __name__ == '__main__':
++    unittest.main()

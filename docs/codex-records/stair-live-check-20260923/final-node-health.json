@@ -1,0 +1,36 @@
+{
+  "at_utc": "2026-09-22T23:22:12.063169+00:00",
+  "live_nodes": {
+    "/stair_supervisor": [
+      1,
+      "",
+      442304
+    ],
+    "/mission_manager": [
+      1,
+      "",
+      442309
+    ],
+    "/multifloor_manager": [
+      1,
+      "",
+      442301
+    ],
+    "/livox_lidar_publisher2": [
+      1,
+      "",
+      7163
+    ],
+    "/mid360s_laserscan": [
+      1,
+      "",
+      7173
+    ],
+    "/rviz": [
+      1,
+      "",
+      442310
+    ]
+  },
+  "remaining_read_only_probe_nodes": []
+}

@@ -1,0 +1,24 @@
+[rospy.client][INFO] 2026-09-21 09:37:57,408: init_node, name[/wall_alignment_check_94090_1789951077380], pid[94090]
+[xmlrpc][INFO] 2026-09-21 09:37:57,408: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2026-09-21 09:37:57,408: Started XML-RPC server [http://192.168.1.26:34141/]
+[rospy.impl.masterslave][INFO] 2026-09-21 09:37:57,409: _ready: http://192.168.1.26:34141/
+[rospy.init][INFO] 2026-09-21 09:37:57,409: ROS Slave URI: [http://192.168.1.26:34141/]
+[rospy.registration][INFO] 2026-09-21 09:37:57,409: Registering with master node http://192.168.1.26:11311
+[xmlrpc][INFO] 2026-09-21 09:37:57,409: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2026-09-21 09:37:57,509: registered with master
+[rospy.rosout][INFO] 2026-09-21 09:37:57,509: initializing /rosout core topic
+[rospy.rosout][INFO] 2026-09-21 09:37:57,512: connected to core topic /rosout
+[rospy.simtime][INFO] 2026-09-21 09:37:57,513: /use_sim_time is not set, will not subscribe to simulated time [/clock] topic
+[rospy.internal][INFO] 2026-09-21 09:37:57,517: topic[/map] adding connection to [http://192.168.1.26:44577/], count 0
+[rospy.internal][INFO] 2026-09-21 09:37:57,526: topic impl's ref count is zero, deleting topic /map...
+[rospy.internal][INFO] 2026-09-21 09:37:57,527: topic[/map] removing connection to http://192.168.1.26:44577/
+[rospy.internal][INFO] 2026-09-21 09:37:57,530: topic[/move_base/global_costmap/costmap] adding connection to [http://192.168.1.26:45367/], count 0
+[rospy.internal][INFO] 2026-09-21 09:37:57,539: topic impl's ref count is zero, deleting topic /move_base/global_costmap/costmap...
+[rospy.internal][INFO] 2026-09-21 09:37:57,539: topic[/move_base/global_costmap/costmap] removing connection to http://192.168.1.26:45367/
+[rospy.internal][INFO] 2026-09-21 09:37:57,561: topic[/move_base/NavfnROS/plan] adding connection to [http://192.168.1.26:45367/], count 0
+[rospy.internal][INFO] 2026-09-21 09:37:57,721: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2026-09-21 09:38:00,562: topic impl's ref count is zero, deleting topic /move_base/NavfnROS/plan...
+[rospy.internal][INFO] 2026-09-21 09:38:00,563: topic[/move_base/NavfnROS/plan] removing connection to http://192.168.1.26:45367/
+[rospy.core][INFO] 2026-09-21 09:38:00,564: signal_shutdown [atexit]
+[rospy.internal][INFO] 2026-09-21 09:38:00,565: topic[/rosout] removing connection to /rosout
+[rospy.impl.masterslave][INFO] 2026-09-21 09:38:00,565: atexit

@@ -1,0 +1,13 @@
+{
+  "module_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/__init__.py",
+  "tests": 3,
+  "passed": true,
+  "frozen_files": {
+    "src/stair_supervisor/src/stair_supervisor/lidar_tracking_core.py": "1210ca227b1046750808aff118f9457179c290607c28ee790d829e9b1dd70d10",
+    "src/stair_supervisor/src/stair_supervisor/lidar_tracking.py": "9bab9bf6e38d87558a6c20a548e7d2ed393bb011bd985ef6c9447e2c672ca2ce",
+    "src/stair_supervisor/src/stair_supervisor/lidar_process.py": "693805096d7af3ce76c9c38e92a46b2f0d09ed4856010202d341468247fce725",
+    "src/stair_supervisor/src/stair_supervisor/robot_transport.py": "ab58544c21fe808b7b28537d5bffbf8aea49ae40df3c3aa37d35ac3b75fe608c",
+    "src/stair_supervisor/config/lidar_imu_baseline.yaml": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc"
+  },
+  "git_diff_check": ""
+}

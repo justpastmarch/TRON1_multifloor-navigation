@@ -37,11 +37,13 @@ class MissionOrchestrator:
         planner: BuildingPlanner,
         executor: SegmentExecutor,
         settings: MissionOrchestratorSettings,
+        start_from_current_pose: bool = False,
     ) -> None:
         self._planner = planner
         self._executor = executor
         self._anchor = LogicalAnchor(settings.initial_location_id)
         self._inspect_profile_id = settings.inspect_profile_id
+        self._start_from_current_pose = start_from_current_pose
 
     @property
     def confirmed_location_id(self) -> str:
@@ -68,7 +70,8 @@ class MissionOrchestrator:
             return outcome.result
         fsm = MissionFSM().dispatch(MissionEvent.GOAL_RECEIVED)
         try:
-            route = self._planner.plan(
+            plan = self._planner.plan_from_current_pose if self._start_from_current_pose else self._planner.plan
+            route = plan(
                 self._anchor.location_id,
                 request.destination_id,
                 self._inspect_profile_id if request.mission_type is MissionType.INSPECT else None,

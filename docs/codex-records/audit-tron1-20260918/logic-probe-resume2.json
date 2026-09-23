@@ -1,0 +1,35 @@
+{
+  "scope": "Unmodified source class bodies with injected in-memory peers; no ROS imports, sockets, robot commands or actual service calls. Not an actionlib/hardware E2E test.",
+  "source_sha256": {
+    "ros_segments": "d9cfb814c60baf0e48c3da197ba8f5897b404e1287b8d73eb942ab28a7a69795",
+    "ros_services": "eee7a8da9a329d4e783a7805c210c537cd7b0eb467da8a516dde9728abea400f"
+  },
+  "cancellation": [
+    {
+      "case": "floor_server_wait",
+      "events": [
+        "parent cancellation requested",
+        "cancel child before any goal exists",
+        "new child goal sent after cancellation"
+      ],
+      "outcome": "SUCCESS",
+      "cancellation_predicate_calls": 0
+    },
+    {
+      "case": "stair_entry_wait",
+      "events": [
+        "parent cancellation requested",
+        "cancel child before any goal exists",
+        "new child goal sent after cancellation"
+      ],
+      "outcome": "SUCCESS",
+      "cancellation_predicate_calls": 0
+    }
+  ],
+  "bounded_service": {
+    "returned_error": "response timeout",
+    "effect_at_timeout": false,
+    "effect_after_timeout": true,
+    "remaining_workers": 0
+  }
+}

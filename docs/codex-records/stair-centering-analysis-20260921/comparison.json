@@ -1,0 +1,1585 @@
+{
+  "note": "All numbers are offline estimator observations, not physical accuracy or closed-loop improvements. Single-side experiment uses RGB-labelled flight windows as oracle context. Baseline is anchored odometry prediction, not a counterfactual robot trajectory.",
+  "bags": [
+    {
+      "index": 0,
+      "bag": "manual-5F-rooftop_route_1788917683773755895.bag",
+      "raw_lidar_messages": 221,
+      "sampled_clouds": 45,
+      "dual_pairs": 0,
+      "has_stair_labels": false
+    },
+    {
+      "index": 1,
+      "bag": "manual-5F-rooftop_route_1788918199558502114.bag.active.invalid",
+      "raw_lidar_messages": 1930,
+      "sampled_clouds": 386,
+      "dual_pairs": 1,
+      "has_stair_labels": false
+    },
+    {
+      "index": 2,
+      "bag": "manual-5F-rooftop_route_1788918551828137154.bag",
+      "raw_lidar_messages": 348,
+      "sampled_clouds": 70,
+      "dual_pairs": 4,
+      "has_stair_labels": false
+    },
+    {
+      "index": 3,
+      "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+      "raw_lidar_messages": 2690,
+      "sampled_clouds": 538,
+      "dual_pairs": 149,
+      "has_stair_labels": true
+    },
+    {
+      "index": 4,
+      "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+      "raw_lidar_messages": 2892,
+      "sampled_clouds": 579,
+      "dual_pairs": 2,
+      "has_stair_labels": false
+    },
+    {
+      "index": 5,
+      "bag": "stair_3F_to_4F_FULL_20260916_231643.bag",
+      "raw_lidar_messages": 1341,
+      "sampled_clouds": 269,
+      "dual_pairs": 0,
+      "has_stair_labels": false
+    },
+    {
+      "index": 6,
+      "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+      "raw_lidar_messages": 3054,
+      "sampled_clouds": 611,
+      "dual_pairs": 109,
+      "has_stair_labels": false
+    },
+    {
+      "index": 7,
+      "bag": "stair_3F_to_4F_UP_20260821_155022.bag",
+      "raw_lidar_messages": 1432,
+      "sampled_clouds": 287,
+      "dual_pairs": 119,
+      "has_stair_labels": true
+    },
+    {
+      "index": 8,
+      "bag": "stair_3F_to_4F_UP_20260824_152128.bag",
+      "raw_lidar_messages": 98,
+      "sampled_clouds": 20,
+      "dual_pairs": 15,
+      "has_stair_labels": true
+    },
+    {
+      "index": 9,
+      "bag": "stair_3F_to_4F_UP_20260824_152223.bag",
+      "raw_lidar_messages": 141,
+      "sampled_clouds": 29,
+      "dual_pairs": 28,
+      "has_stair_labels": true
+    },
+    {
+      "index": 10,
+      "bag": "stair_3F_to_4F_UP_20260824_152248.bag",
+      "raw_lidar_messages": 1793,
+      "sampled_clouds": 359,
+      "dual_pairs": 198,
+      "has_stair_labels": true
+    },
+    {
+      "index": 11,
+      "bag": "stair_3F_to_4F_UP_20260827_102101.bag",
+      "raw_lidar_messages": 2249,
+      "sampled_clouds": 450,
+      "dual_pairs": 206,
+      "has_stair_labels": true
+    },
+    {
+      "index": 12,
+      "bag": "stair_3F_to_4F_UP_20260827_103200.bag",
+      "raw_lidar_messages": 690,
+      "sampled_clouds": 138,
+      "dual_pairs": 137,
+      "has_stair_labels": true
+    },
+    {
+      "index": 13,
+      "bag": "stair_3F_to_4F_UP_20260827_103313.bag",
+      "raw_lidar_messages": 2733,
+      "sampled_clouds": 547,
+      "dual_pairs": 263,
+      "has_stair_labels": true
+    },
+    {
+      "index": 14,
+      "bag": "stair_3F_to_4F_UP_20260827_105713.bag",
+      "raw_lidar_messages": 1818,
+      "sampled_clouds": 364,
+      "dual_pairs": 147,
+      "has_stair_labels": true
+    },
+    {
+      "index": 15,
+      "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+      "raw_lidar_messages": 1945,
+      "sampled_clouds": 389,
+      "dual_pairs": 159,
+      "has_stair_labels": false
+    },
+    {
+      "index": 16,
+      "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+      "raw_lidar_messages": 2198,
+      "sampled_clouds": 440,
+      "dual_pairs": 125,
+      "has_stair_labels": false
+    },
+    {
+      "index": 17,
+      "bag": "stair_3F_to_4F_UP_CLEAN_REPEAT_20260821_160211.bag",
+      "raw_lidar_messages": 1410,
+      "sampled_clouds": 282,
+      "dual_pairs": 149,
+      "has_stair_labels": true
+    },
+    {
+      "index": 18,
+      "bag": "tag_calibration_20260827_134853.bag",
+      "raw_lidar_messages": 0,
+      "sampled_clouds": 0,
+      "dual_pairs": 0,
+      "has_stair_labels": false
+    },
+    {
+      "index": 19,
+      "bag": "yaw_calibration_020_030_040_20260821_134549.bag",
+      "raw_lidar_messages": 0,
+      "sampled_clouds": 0,
+      "dual_pairs": 0,
+      "has_stair_labels": false
+    },
+    {
+      "index": 20,
+      "bag": "yaw_calibration_20260821_132716.bag",
+      "raw_lidar_messages": 0,
+      "sampled_clouds": 0,
+      "dual_pairs": 0,
+      "has_stair_labels": false
+    }
+  ],
+  "windows": [
+    {
+      "bag_index": 3,
+      "start_s": 72,
+      "end_s": 129,
+      "label": "roof_up_flight1",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 69,
+      "dual_frames": 40,
+      "proposed_frames": 36,
+      "single_side_frames": 0,
+      "calibrated_width_m": 1.2301643889547562,
+      "dual_sample_fraction": 0.5797101449275363,
+      "proposed_sample_fraction": 0.5217391304347826,
+      "dual_time_s": 21.783417844772202,
+      "proposed_time_s": 19.88036842346179,
+      "lateral_disagreement_abs_m": {
+        "n": 36,
+        "p50": 0.021729880036138217,
+        "p90": 0.03879266114736094,
+        "p95": 0.041944845751149956,
+        "max": 0.0530694439125822,
+        "mean": 0.02219902061184315
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 36,
+        "p50": 2.934593054890663,
+        "p90": 4.7580746906946985,
+        "p95": 5.32683323813533,
+        "max": 6.840331608580136,
+        "mean": 3.1066153196901833
+      },
+      "geometry_offset_abs_m": {
+        "n": 36,
+        "p50": 0.11689452577178358,
+        "p90": 0.12329731651580675,
+        "p95": 0.12472097602506693,
+        "max": 0.14031836236527398,
+        "mean": 0.11142705509478487
+      },
+      "geometry_heading_abs_deg": {
+        "n": 36,
+        "p50": 8.911545644528442,
+        "p90": 11.845307137422484,
+        "p95": 12.312906403895465,
+        "max": 13.387691288459369,
+        "mean": 7.3909006875361785
+      },
+      "raw_pair_width_m": {
+        "n": 40,
+        "p50": 1.226807925469344,
+        "p90": 1.2347860286738475,
+        "p95": 1.2406568095900226,
+        "max": 1.4732022550724653,
+        "mean": 1.221283992976463
+      },
+      "clock_delta_range_s": {
+        "n": 69,
+        "p50": 26.316178798675537,
+        "p90": 27.314988756179808,
+        "p95": 27.607182121276857,
+        "max": 27.754876136779785,
+        "mean": 26.469613994377248
+      }
+    },
+    {
+      "bag_index": 3,
+      "start_s": 168,
+      "end_s": 184,
+      "label": "roof_up_flight2",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 3,
+      "dual_frames": 0,
+      "proposed_frames": 0,
+      "single_side_frames": 0,
+      "calibrated_width_m": null,
+      "dual_sample_fraction": 0.0,
+      "proposed_sample_fraction": 0.0,
+      "dual_time_s": 0.0,
+      "proposed_time_s": 0.0,
+      "lateral_disagreement_abs_m": {
+        "n": 0
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 0
+      },
+      "geometry_offset_abs_m": {
+        "n": 0
+      },
+      "geometry_heading_abs_deg": {
+        "n": 0
+      },
+      "raw_pair_width_m": {
+        "n": 0
+      },
+      "clock_delta_range_s": {
+        "n": 3,
+        "p50": 38.337504625320435,
+        "p90": 40.10461869239807,
+        "p95": 40.32550795078278,
+        "max": 40.54639720916748,
+        "mean": 37.4370862642924
+      }
+    },
+    {
+      "bag_index": 3,
+      "start_s": 320,
+      "end_s": 384,
+      "label": "roof_down_candidate_backwards",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 128,
+      "dual_frames": 6,
+      "proposed_frames": 18,
+      "single_side_frames": 16,
+      "calibrated_width_m": 1.3843805414306367,
+      "dual_sample_fraction": 0.046875,
+      "proposed_sample_fraction": 0.140625,
+      "dual_time_s": 2.2902190685272217,
+      "proposed_time_s": 8.44202733039856,
+      "lateral_disagreement_abs_m": {
+        "n": 18,
+        "p50": 0.13205906913552523,
+        "p90": 0.15327889282430437,
+        "p95": 0.32392385947503977,
+        "max": 1.2169558226938575,
+        "mean": 0.17349906726200615
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 18,
+        "p50": 6.334047941280866,
+        "p90": 9.664736214740042,
+        "p95": 27.833102423993303,
+        "max": 98.51657592001429,
+        "mean": 11.203043408101856
+      },
+      "geometry_offset_abs_m": {
+        "n": 18,
+        "p50": 0.07559462826221813,
+        "p90": 0.08584110858031506,
+        "p95": 0.25686511518532157,
+        "max": 1.2174790579327794,
+        "mean": 0.13512471158838257
+      },
+      "geometry_heading_abs_deg": {
+        "n": 18,
+        "p50": 1.4512839465379894,
+        "p90": 13.384450870521409,
+        "p95": 32.16629411092431,
+        "max": 42.80432571970585,
+        "mean": 5.995406044084798
+      },
+      "raw_pair_width_m": {
+        "n": 6,
+        "p50": 1.3586458993219177,
+        "p90": 1.447764482275256,
+        "p95": 1.4498778838448645,
+        "max": 1.451991285414473,
+        "mean": 1.35535014697696
+      },
+      "clock_delta_range_s": {
+        "n": 128,
+        "p50": 0.1683276891708374,
+        "p90": 0.824609088897705,
+        "p95": 0.9944824814796444,
+        "max": 1.2364487648010254,
+        "mean": 0.2950487472116947
+      }
+    },
+    {
+      "bag_index": 7,
+      "start_s": 0,
+      "end_s": 15,
+      "label": "development_flight1",
+      "split": "development",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 30,
+      "dual_frames": 29,
+      "proposed_frames": 28,
+      "single_side_frames": 1,
+      "calibrated_width_m": 1.228954640489917,
+      "dual_sample_fraction": 0.9666666666666667,
+      "proposed_sample_fraction": 0.9333333333333333,
+      "dual_time_s": 14.724853467941283,
+      "proposed_time_s": 13.891766023635864,
+      "lateral_disagreement_abs_m": {
+        "n": 28,
+        "p50": 0.016517539203898233,
+        "p90": 0.06114224747637438,
+        "p95": 0.06582812395038044,
+        "max": 0.07067354017599192,
+        "mean": 0.022591324481688525
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 28,
+        "p50": 1.9662443768213633,
+        "p90": 3.607959906209225,
+        "p95": 3.875744946814651,
+        "max": 4.2723987064004385,
+        "mean": 2.132699576484275
+      },
+      "geometry_offset_abs_m": {
+        "n": 28,
+        "p50": 0.040334100407411706,
+        "p90": 0.046594846967507,
+        "p95": 0.0812544564887779,
+        "max": 0.13821170422172346,
+        "mean": 0.0360701056382647
+      },
+      "geometry_heading_abs_deg": {
+        "n": 28,
+        "p50": 2.5706924451665945,
+        "p90": 10.864886248728542,
+        "p95": 12.129565128550622,
+        "max": 15.328742361518538,
+        "mean": 4.484389102359392
+      },
+      "raw_pair_width_m": {
+        "n": 29,
+        "p50": 1.2292223275125,
+        "p90": 1.2326398543600157,
+        "p95": 1.233965311978883,
+        "max": 1.2350650155720162,
+        "mean": 1.2280239481383861
+      },
+      "clock_delta_range_s": {
+        "n": 30,
+        "p50": 0.13878381252288818,
+        "p90": 0.19551653861999513,
+        "p95": 0.24568626880645728,
+        "max": 0.3961606025695801,
+        "mean": 0.15753033955891926
+      }
+    },
+    {
+      "bag_index": 7,
+      "start_s": 38,
+      "end_s": 50,
+      "label": "development_flight2",
+      "split": "development",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 24,
+      "dual_frames": 23,
+      "proposed_frames": 15,
+      "single_side_frames": 1,
+      "calibrated_width_m": 1.2260042086852647,
+      "dual_sample_fraction": 0.9583333333333334,
+      "proposed_sample_fraction": 0.625,
+      "dual_time_s": 11.39013147354126,
+      "proposed_time_s": 7.551144123077393,
+      "lateral_disagreement_abs_m": {
+        "n": 15,
+        "p50": 0.023583465914171563,
+        "p90": 0.28690224310380835,
+        "p95": 0.33553309470658943,
+        "max": 0.3492145299796482,
+        "mean": 0.10908266025609394
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 15,
+        "p50": 0.31579643324268347,
+        "p90": 2.4234162560102184,
+        "p95": 3.1429568088751787,
+        "max": 4.335147347694942,
+        "mean": 1.0010142516450506
+      },
+      "geometry_offset_abs_m": {
+        "n": 15,
+        "p50": 0.033806568902181214,
+        "p90": 0.08867324440909466,
+        "p95": 0.1354553079464789,
+        "max": 0.18765087692005264,
+        "mean": 0.04241371244295989
+      },
+      "geometry_heading_abs_deg": {
+        "n": 15,
+        "p50": 3.766090435565419,
+        "p90": 6.560418451536396,
+        "p95": 8.296321089390847,
+        "max": 11.293976690238583,
+        "mean": 3.7441424594772204
+      },
+      "raw_pair_width_m": {
+        "n": 23,
+        "p50": 1.2259781804351342,
+        "p90": 1.357199271042468,
+        "p95": 1.3580933376655104,
+        "max": 1.3609532107539473,
+        "mean": 1.2619568209545022
+      },
+      "clock_delta_range_s": {
+        "n": 24,
+        "p50": 0.17262423038482666,
+        "p90": 0.1915442705154419,
+        "p95": 0.19343438148498535,
+        "max": 0.20519709587097168,
+        "mean": 0.16676340500513712
+      }
+    },
+    {
+      "bag_index": 8,
+      "start_s": 0,
+      "end_s": 13,
+      "label": "flight_view1",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 8,
+      "dual_frames": 8,
+      "proposed_frames": 6,
+      "single_side_frames": 0,
+      "calibrated_width_m": 1.2347221109393915,
+      "dual_sample_fraction": 1.0,
+      "proposed_sample_fraction": 0.75,
+      "dual_time_s": 4.799999999999999,
+      "proposed_time_s": 3.5999999999999988,
+      "lateral_disagreement_abs_m": {
+        "n": 5,
+        "p50": 0.00046311222783704253,
+        "p90": 0.0015748556531661963,
+        "p95": 0.0018472727074181042,
+        "max": 0.0021196897616700128,
+        "mean": 0.0006790833501151283
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 5,
+        "p50": 0.20494388408906702,
+        "p90": 0.35496508199184845,
+        "p95": 0.3572210156656731,
+        "max": 0.35947694933949775,
+        "mean": 0.18728023851104852
+      },
+      "geometry_offset_abs_m": {
+        "n": 6,
+        "p50": 0.08482514518529975,
+        "p90": 0.0902299347185967,
+        "p95": 0.09107439751081464,
+        "max": 0.0919188603030326,
+        "mean": 0.08426726112424261
+      },
+      "geometry_heading_abs_deg": {
+        "n": 6,
+        "p50": 8.188805542402484,
+        "p90": 8.412500519077078,
+        "p95": 8.462077155934288,
+        "max": 8.511653792791497,
+        "mean": 8.212411425419663
+      },
+      "raw_pair_width_m": {
+        "n": 8,
+        "p50": 1.2336631047697915,
+        "p90": 1.236999628419167,
+        "p95": 1.2383390628767605,
+        "max": 1.2396784973343538,
+        "mean": 1.2338772105684863
+      },
+      "clock_delta_range_s": {
+        "n": 8,
+        "p50": 2.9713242053985596,
+        "p90": 6.2163226127624505,
+        "p95": 6.740635848045349,
+        "max": 7.264949083328247,
+        "mean": 3.536236137151718
+      }
+    },
+    {
+      "bag_index": 8,
+      "start_s": 29,
+      "end_s": 47,
+      "label": "flight_view2",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 8,
+      "dual_frames": 3,
+      "proposed_frames": 5,
+      "single_side_frames": 4,
+      "calibrated_width_m": 1.2327509339123603,
+      "dual_sample_fraction": 0.375,
+      "proposed_sample_fraction": 0.625,
+      "dual_time_s": 1.8000000000000043,
+      "proposed_time_s": 3.000000000000007,
+      "lateral_disagreement_abs_m": {
+        "n": 5,
+        "p50": 9.067614266805187,
+        "p90": 11.16738401784174,
+        "p95": 11.192696718815794,
+        "max": 11.218009419789848,
+        "mean": 7.707449452649655
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 5,
+        "p50": 90.73753599410604,
+        "p90": 102.13722690006165,
+        "p95": 105.7888818036985,
+        "max": 109.44053670733535,
+        "mean": 76.35675647239304
+      },
+      "geometry_offset_abs_m": {
+        "n": 5,
+        "p50": 0.6066971079940163,
+        "p90": 0.7651705631119444,
+        "p95": 0.7941478154709258,
+        "max": 0.8231250678299072,
+        "mean": 0.49212355836653965
+      },
+      "geometry_heading_abs_deg": {
+        "n": 5,
+        "p50": 12.222984831961407,
+        "p90": 29.688034354055556,
+        "p95": 30.812886777022797,
+        "max": 31.93773919999004,
+        "mean": 15.053669122400061
+      },
+      "raw_pair_width_m": {
+        "n": 3,
+        "p50": 1.2327509339123603,
+        "p90": 1.2336209253606878,
+        "p95": 1.2337296742917288,
+        "max": 1.2338384232227697,
+        "mean": 1.232204108781356
+      },
+      "clock_delta_range_s": {
+        "n": 8,
+        "p50": 27.25416088104248,
+        "p90": 30.933738899230956,
+        "p95": 31.012306785583498,
+        "max": 31.090874671936035,
+        "mean": 27.898500710725784
+      }
+    },
+    {
+      "bag_index": 9,
+      "start_s": 0,
+      "end_s": 4,
+      "label": "flight_view1",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 4,
+      "dual_frames": 3,
+      "proposed_frames": 1,
+      "single_side_frames": 0,
+      "calibrated_width_m": 1.2586607358858868,
+      "dual_sample_fraction": 0.75,
+      "proposed_sample_fraction": 0.25,
+      "dual_time_s": 1.2980398654937746,
+      "proposed_time_s": 0.09803986549377441,
+      "lateral_disagreement_abs_m": {
+        "n": 0
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 0
+      },
+      "geometry_offset_abs_m": {
+        "n": 1,
+        "p50": 0.409058049155063,
+        "p90": 0.409058049155063,
+        "p95": 0.409058049155063,
+        "max": 0.409058049155063,
+        "mean": 0.409058049155063
+      },
+      "geometry_heading_abs_deg": {
+        "n": 1,
+        "p50": 16.84845286100273,
+        "p90": 16.84845286100273,
+        "p95": 16.84845286100273,
+        "max": 16.84845286100273,
+        "mean": 16.84845286100273
+      },
+      "raw_pair_width_m": {
+        "n": 3,
+        "p50": 1.2586607358858868,
+        "p90": 1.2630746090195801,
+        "p95": 1.263626343161292,
+        "max": 1.2641780773030036,
+        "mean": 1.2601942879188182
+      },
+      "clock_delta_range_s": {
+        "n": 4,
+        "p50": 3.022676706314087,
+        "p90": 4.014090895652771,
+        "p95": 4.187830984592438,
+        "max": 4.3615710735321045,
+        "mean": 3.091882884502411
+      }
+    },
+    {
+      "bag_index": 9,
+      "start_s": 8,
+      "end_s": 12.2,
+      "label": "flight_view2",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 14,
+      "dual_frames": 14,
+      "proposed_frames": 12,
+      "single_side_frames": 0,
+      "calibrated_width_m": 1.2443189933711807,
+      "dual_sample_fraction": 1.0,
+      "proposed_sample_fraction": 0.8571428571428571,
+      "dual_time_s": 4.1876055717468255,
+      "proposed_time_s": 3.8541373729705803,
+      "lateral_disagreement_abs_m": {
+        "n": 12,
+        "p50": 0.017720148063864932,
+        "p90": 0.023207725390899256,
+        "p95": 0.023308372993184775,
+        "max": 0.023342843516001244,
+        "mean": 0.016858408463424585
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 12,
+        "p50": 0.1327030421929133,
+        "p90": 0.27095603658114686,
+        "p95": 0.36456731680989996,
+        "max": 0.4766879794391407,
+        "mean": 0.16843947434500273
+      },
+      "geometry_offset_abs_m": {
+        "n": 12,
+        "p50": 0.1498316075233261,
+        "p90": 0.1560118414355581,
+        "p95": 0.1566884305455731,
+        "max": 0.15722341975284013,
+        "mean": 0.14557878125753243
+      },
+      "geometry_heading_abs_deg": {
+        "n": 12,
+        "p50": 3.1199964136280345,
+        "p90": 4.175663671024683,
+        "p95": 11.526424794904212,
+        "max": 20.39656658580446,
+        "mean": 4.400727948894736
+      },
+      "raw_pair_width_m": {
+        "n": 14,
+        "p50": 1.2307326671562138,
+        "p90": 1.243094917598702,
+        "p95": 1.2456589925788626,
+        "max": 1.248147562535986,
+        "mean": 1.2334358352777368
+      },
+      "clock_delta_range_s": {
+        "n": 14,
+        "p50": 0.37321150302886963,
+        "p90": 2.013775706291199,
+        "p95": 2.232122266292572,
+        "max": 2.4717960357666016,
+        "mean": 0.8194560153143746
+      }
+    },
+    {
+      "bag_index": 10,
+      "start_s": 0,
+      "end_s": 31,
+      "label": "flight1",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 62,
+      "dual_frames": 55,
+      "proposed_frames": 31,
+      "single_side_frames": 6,
+      "calibrated_width_m": 1.231375841048454,
+      "dual_sample_fraction": 0.8870967741935484,
+      "proposed_sample_fraction": 0.5,
+      "dual_time_s": 27.169454193115236,
+      "proposed_time_s": 15.439818716049194,
+      "lateral_disagreement_abs_m": {
+        "n": 31,
+        "p50": 0.036386862307698026,
+        "p90": 0.08858138754021641,
+        "p95": 0.09657020902132238,
+        "max": 0.11906101578120717,
+        "mean": 0.04261705550132904
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 31,
+        "p50": 0.30215589966025985,
+        "p90": 1.8665961089403387,
+        "p95": 1.9803349206397822,
+        "max": 2.868191787956787,
+        "mean": 0.5906036166079
+      },
+      "geometry_offset_abs_m": {
+        "n": 31,
+        "p50": 0.1369854971505772,
+        "p90": 0.17891265914494087,
+        "p95": 0.18516147596933968,
+        "max": 0.1983340447069845,
+        "mean": 0.1356839553960999
+      },
+      "geometry_heading_abs_deg": {
+        "n": 31,
+        "p50": 5.934120418559171,
+        "p90": 15.276681806628059,
+        "p95": 16.97236861545613,
+        "max": 23.1243407450548,
+        "mean": 7.631117014699719
+      },
+      "raw_pair_width_m": {
+        "n": 55,
+        "p50": 1.3363496522056084,
+        "p90": 1.3801262305441757,
+        "p95": 1.3845576144074894,
+        "max": 1.3954917085333878,
+        "mean": 1.2999376115585854
+      },
+      "clock_delta_range_s": {
+        "n": 62,
+        "p50": 0.17355751991271973,
+        "p90": 0.22797839641571044,
+        "p95": 0.2609689474105834,
+        "max": 0.37857747077941895,
+        "mean": 0.1841279806629304
+      }
+    },
+    {
+      "bag_index": 10,
+      "start_s": 51,
+      "end_s": 72,
+      "label": "flight2",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 42,
+      "dual_frames": 33,
+      "proposed_frames": 34,
+      "single_side_frames": 9,
+      "calibrated_width_m": 1.2356408958372158,
+      "dual_sample_fraction": 0.7857142857142857,
+      "proposed_sample_fraction": 0.8095238095238095,
+      "dual_time_s": 16.389955854415895,
+      "proposed_time_s": 16.94896335601807,
+      "lateral_disagreement_abs_m": {
+        "n": 34,
+        "p50": 0.015266804646587223,
+        "p90": 0.07384505243973642,
+        "p95": 0.0878893886027412,
+        "max": 0.09702527707637368,
+        "mean": 0.028352086336569923
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 34,
+        "p50": 1.0890342906542614,
+        "p90": 2.244728367772925,
+        "p95": 2.568462790099726,
+        "max": 4.40256316841241,
+        "mean": 1.1533179762614005
+      },
+      "geometry_offset_abs_m": {
+        "n": 34,
+        "p50": 0.10232787051017243,
+        "p90": 0.1362819582355197,
+        "p95": 0.15391485502336433,
+        "max": 0.2148985265536848,
+        "mean": 0.09632739881255586
+      },
+      "geometry_heading_abs_deg": {
+        "n": 34,
+        "p50": 6.2300955794694115,
+        "p90": 11.61534789552804,
+        "p95": 13.207777405714603,
+        "max": 14.302531208452677,
+        "mean": 6.300823604914057
+      },
+      "raw_pair_width_m": {
+        "n": 33,
+        "p50": 1.2295584932756511,
+        "p90": 1.3553294498532031,
+        "p95": 1.3679422798364695,
+        "max": 1.3864949713143693,
+        "mean": 1.252566949779561
+      },
+      "clock_delta_range_s": {
+        "n": 42,
+        "p50": 0.18585610389709473,
+        "p90": 0.2366164445877075,
+        "p95": 0.24952348470687866,
+        "max": 0.26154470443725586,
+        "mean": 0.193147721744719
+      }
+    },
+    {
+      "bag_index": 11,
+      "start_s": 0,
+      "end_s": 36,
+      "label": "flight1",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 74,
+      "dual_frames": 64,
+      "proposed_frames": 70,
+      "single_side_frames": 9,
+      "calibrated_width_m": 1.2313245250180782,
+      "dual_sample_fraction": 0.8648648648648649,
+      "proposed_sample_fraction": 0.9459459459459459,
+      "dual_time_s": 31.11573739051819,
+      "proposed_time_s": 35.02085204124451,
+      "lateral_disagreement_abs_m": {
+        "n": 70,
+        "p50": 0.020019436032404227,
+        "p90": 0.1122690440527543,
+        "p95": 0.2944157167441776,
+        "max": 0.30393289516128197,
+        "mean": 0.05634291939588264
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 70,
+        "p50": 0.7788875039298897,
+        "p90": 2.0206955021454966,
+        "p95": 2.510685907190265,
+        "max": 4.586351222474183,
+        "mean": 0.9528698642245341
+      },
+      "geometry_offset_abs_m": {
+        "n": 70,
+        "p50": 0.035783252136010454,
+        "p90": 0.04855340954675935,
+        "p95": 0.05272538756380545,
+        "max": 0.06940034719668593,
+        "mean": 0.03480359833944858
+      },
+      "geometry_heading_abs_deg": {
+        "n": 70,
+        "p50": 7.415601601619056,
+        "p90": 13.825992050015685,
+        "p95": 13.91685451121111,
+        "max": 15.463249973695788,
+        "mean": 8.032502503512141
+      },
+      "raw_pair_width_m": {
+        "n": 64,
+        "p50": 1.2307475390284361,
+        "p90": 1.238181624887362,
+        "p95": 1.2560783877972765,
+        "max": 1.3539393156561954,
+        "mean": 1.2339543765799748
+      },
+      "clock_delta_range_s": {
+        "n": 74,
+        "p50": 0.1754230260848999,
+        "p90": 0.23827617168426515,
+        "p95": 0.26596397161483765,
+        "max": 0.7369334697723389,
+        "mean": 0.19099488773861448
+      }
+    },
+    {
+      "bag_index": 11,
+      "start_s": 90,
+      "end_s": 118,
+      "label": "flight2",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 56,
+      "dual_frames": 51,
+      "proposed_frames": 32,
+      "single_side_frames": 5,
+      "calibrated_width_m": 1.1910650009020312,
+      "dual_sample_fraction": 0.9107142857142857,
+      "proposed_sample_fraction": 0.5714285714285714,
+      "dual_time_s": 24.976874113082886,
+      "proposed_time_s": 16.039741039276123,
+      "lateral_disagreement_abs_m": {
+        "n": 32,
+        "p50": 0.19527413161849183,
+        "p90": 0.5103691016117967,
+        "p95": 0.5225058477338577,
+        "max": 0.5275003214523958,
+        "mean": 0.186272901198887
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 32,
+        "p50": 2.438516938775499,
+        "p90": 4.010251079737599,
+        "p95": 4.31785317151495,
+        "max": 4.7556064692078985,
+        "mean": 2.466853649725998
+      },
+      "geometry_offset_abs_m": {
+        "n": 32,
+        "p50": 0.05973311104378111,
+        "p90": 0.11473431653704425,
+        "p95": 0.12582537925283585,
+        "max": 0.21335321033144627,
+        "mean": 0.063334710889298
+      },
+      "geometry_heading_abs_deg": {
+        "n": 32,
+        "p50": 2.012351267707441,
+        "p90": 12.113054310197622,
+        "p95": 13.577569752266458,
+        "max": 16.773803231896107,
+        "mean": 3.9900996716129646
+      },
+      "raw_pair_width_m": {
+        "n": 51,
+        "p50": 1.2299094375797217,
+        "p90": 1.3943454056834401,
+        "p95": 1.4271148499780444,
+        "max": 1.4673321904316285,
+        "mean": 1.2885974347216167
+      },
+      "clock_delta_range_s": {
+        "n": 56,
+        "p50": 0.19564461708068848,
+        "p90": 0.25558626651763916,
+        "p95": 0.26199573278427124,
+        "max": 0.30224084854125977,
+        "mean": 0.20115343161991664
+      }
+    },
+    {
+      "bag_index": 12,
+      "start_s": 0,
+      "end_s": 68.8,
+      "label": "stair_view_with_long_pause",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 138,
+      "dual_frames": 137,
+      "proposed_frames": 136,
+      "single_side_frames": 1,
+      "calibrated_width_m": 1.2359748098681105,
+      "dual_sample_fraction": 0.9927536231884058,
+      "proposed_sample_fraction": 0.9855072463768116,
+      "dual_time_s": 68.10840702056885,
+      "proposed_time_s": 67.71716713905334,
+      "lateral_disagreement_abs_m": {
+        "n": 136,
+        "p50": 0.05835989808038568,
+        "p90": 0.12156165807029616,
+        "p95": 0.12918440626627634,
+        "max": 0.1371857008614209,
+        "mean": 0.05925425726055094
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 136,
+        "p50": 1.0331144704592181,
+        "p90": 5.676567014079601,
+        "p95": 6.053766363764202,
+        "max": 6.398193195185466,
+        "mean": 1.918314082481414
+      },
+      "geometry_offset_abs_m": {
+        "n": 136,
+        "p50": 0.027600014974932034,
+        "p90": 0.07598374203324304,
+        "p95": 0.09464263769071089,
+        "max": 0.13683215640767468,
+        "mean": 0.03243423410556604
+      },
+      "geometry_heading_abs_deg": {
+        "n": 136,
+        "p50": 7.716293588120607,
+        "p90": 17.81060088726809,
+        "p95": 18.201204933883805,
+        "max": 32.76542601717486,
+        "mean": 8.505181657382824
+      },
+      "raw_pair_width_m": {
+        "n": 137,
+        "p50": 1.2305641155364353,
+        "p90": 1.2345265134111107,
+        "p95": 1.23625878967502,
+        "max": 1.244288547477041,
+        "mean": 1.2305797688810323
+      },
+      "clock_delta_range_s": {
+        "n": 138,
+        "p50": 0.15949833393096924,
+        "p90": 0.19388794898986816,
+        "p95": 0.20816798210144044,
+        "max": 0.36542701721191406,
+        "mean": 0.1670362897541212
+      }
+    },
+    {
+      "bag_index": 13,
+      "start_s": 0,
+      "end_s": 67,
+      "label": "flight1",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 136,
+      "dual_frames": 108,
+      "proposed_frames": 112,
+      "single_side_frames": 20,
+      "calibrated_width_m": 1.2335867225037447,
+      "dual_sample_fraction": 0.7941176470588235,
+      "proposed_sample_fraction": 0.8235294117647058,
+      "dual_time_s": 53.59884819984436,
+      "proposed_time_s": 55.56130862236024,
+      "lateral_disagreement_abs_m": {
+        "n": 111,
+        "p50": 0.050295974440896986,
+        "p90": 0.5983108340365682,
+        "p95": 0.6384826397785984,
+        "max": 0.6808097092596386,
+        "mean": 0.15837222920529345
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 111,
+        "p50": 3.418583091884246,
+        "p90": 5.6095030348771076,
+        "p95": 6.591716950158512,
+        "max": 9.519366906334982,
+        "mean": 3.3352331255148977
+      },
+      "geometry_offset_abs_m": {
+        "n": 112,
+        "p50": 0.03790536760423413,
+        "p90": 0.3076167117810377,
+        "p95": 0.34981671012485527,
+        "max": 0.47483699861893647,
+        "mean": 0.0867736634615559
+      },
+      "geometry_heading_abs_deg": {
+        "n": 112,
+        "p50": 3.2009945597613023,
+        "p90": 24.325483285278967,
+        "p95": 28.455363651649108,
+        "max": 44.610977935066046,
+        "mean": 7.714600211982924
+      },
+      "raw_pair_width_m": {
+        "n": 108,
+        "p50": 1.2315729793838974,
+        "p90": 1.3411081024112894,
+        "p95": 1.3468004371863387,
+        "max": 1.3747321340663623,
+        "mean": 1.246109349207011
+      },
+      "clock_delta_range_s": {
+        "n": 136,
+        "p50": 0.18133115768432617,
+        "p90": 0.35841500759124756,
+        "p95": 0.6256692409515381,
+        "max": 1.016725778579712,
+        "mean": 0.23488669711000779
+      }
+    },
+    {
+      "bag_index": 13,
+      "start_s": 106,
+      "end_s": 129,
+      "label": "flight2",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 46,
+      "dual_frames": 27,
+      "proposed_frames": 28,
+      "single_side_frames": 8,
+      "calibrated_width_m": 1.2312635722707546,
+      "dual_sample_fraction": 0.5869565217391305,
+      "proposed_sample_fraction": 0.6086956521739131,
+      "dual_time_s": 13.286785221099848,
+      "proposed_time_s": 13.914951658248896,
+      "lateral_disagreement_abs_m": {
+        "n": 28,
+        "p50": 0.07408201568642003,
+        "p90": 0.1308474117178846,
+        "p95": 0.16564473798110002,
+        "max": 0.23821449329561928,
+        "mean": 0.06694954773187031
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 28,
+        "p50": 0.4427160759242399,
+        "p90": 2.205968083909955,
+        "p95": 4.534300154967243,
+        "max": 7.039413398364234,
+        "mean": 0.9944554913486093
+      },
+      "geometry_offset_abs_m": {
+        "n": 28,
+        "p50": 0.09272925740902524,
+        "p90": 0.2007819620681284,
+        "p95": 0.2534668712872649,
+        "max": 0.26179813328535284,
+        "mean": 0.10788252943751526
+      },
+      "geometry_heading_abs_deg": {
+        "n": 28,
+        "p50": 3.7722433977903806,
+        "p90": 20.46801989930843,
+        "p95": 21.091593947728228,
+        "max": 39.30623196614885,
+        "mean": 8.472294627930937
+      },
+      "raw_pair_width_m": {
+        "n": 27,
+        "p50": 1.2247793444014086,
+        "p90": 1.3222558566087477,
+        "p95": 1.343437126186261,
+        "max": 1.3527456761743861,
+        "mean": 1.2446023361509904
+      },
+      "clock_delta_range_s": {
+        "n": 46,
+        "p50": 0.18873512744903564,
+        "p90": 0.22644639015197754,
+        "p95": 0.23488497734069824,
+        "max": 0.348644495010376,
+        "mean": 0.1930092935976775
+      }
+    },
+    {
+      "bag_index": 13,
+      "start_s": 213,
+      "end_s": 272.3,
+      "label": "stair_view_with_long_pause",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 119,
+      "dual_frames": 44,
+      "proposed_frames": 113,
+      "single_side_frames": 75,
+      "calibrated_width_m": 1.290036252956203,
+      "dual_sample_fraction": 0.3697478991596639,
+      "proposed_sample_fraction": 0.9495798319327731,
+      "dual_time_s": 21.934370279312134,
+      "proposed_time_s": 56.0792030334473,
+      "lateral_disagreement_abs_m": {
+        "n": 113,
+        "p50": 0.058343780696074266,
+        "p90": 0.0914826464605143,
+        "p95": 0.09547885440659767,
+        "max": 0.10556677239596274,
+        "mean": 0.058006146499058095
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 113,
+        "p50": 1.4230674151566864,
+        "p90": 1.7931896790713675,
+        "p95": 1.8928396000711818,
+        "max": 2.0274524785512655,
+        "mean": 1.216733626520874
+      },
+      "geometry_offset_abs_m": {
+        "n": 113,
+        "p50": 0.4735061896225038,
+        "p90": 0.4800881148270042,
+        "p95": 0.4827881847626663,
+        "max": 0.4921089813065337,
+        "mean": 0.47309104295346804
+      },
+      "geometry_heading_abs_deg": {
+        "n": 113,
+        "p50": 30.06809057711137,
+        "p90": 30.442419346092457,
+        "p95": 30.505951117845676,
+        "max": 30.613908681614948,
+        "mean": 29.79572455389586
+      },
+      "raw_pair_width_m": {
+        "n": 44,
+        "p50": 1.3117044278947823,
+        "p90": 1.358467757826328,
+        "p95": 1.3937907370403566,
+        "max": 1.4407179899875655,
+        "mean": 1.3206572740734197
+      },
+      "clock_delta_range_s": {
+        "n": 119,
+        "p50": 0.16225552558898926,
+        "p90": 0.19486861228942873,
+        "p95": 0.210040807723999,
+        "max": 0.458742618560791,
+        "mean": 0.16830056054251535
+      }
+    },
+    {
+      "bag_index": 14,
+      "start_s": 0,
+      "end_s": 27,
+      "label": "flight1",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 62,
+      "dual_frames": 58,
+      "proposed_frames": 47,
+      "single_side_frames": 1,
+      "calibrated_width_m": 1.2290448714705628,
+      "dual_sample_fraction": 0.9354838709677419,
+      "proposed_sample_fraction": 0.7580645161290323,
+      "dual_time_s": 24.058981180191044,
+      "proposed_time_s": 20.539208173751835,
+      "lateral_disagreement_abs_m": {
+        "n": 41,
+        "p50": 0.024946612654237088,
+        "p90": 0.15186228742926197,
+        "p95": 0.17709143568863164,
+        "max": 0.19126106648061092,
+        "mean": 0.04733876928037528
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 41,
+        "p50": 0.29303313673487213,
+        "p90": 0.8852351745282613,
+        "p95": 0.9031055081518916,
+        "max": 1.3967552006033812,
+        "mean": 0.40440776066981116
+      },
+      "geometry_offset_abs_m": {
+        "n": 47,
+        "p50": 0.016379093166720614,
+        "p90": 0.05967383463607893,
+        "p95": 0.10511789061947134,
+        "max": 0.11020195085631347,
+        "mean": 0.02288540669841183
+      },
+      "geometry_heading_abs_deg": {
+        "n": 47,
+        "p50": 1.0118888283474603,
+        "p90": 4.284104741465277,
+        "p95": 5.223488176828975,
+        "max": 8.325030496205212,
+        "mean": 1.9771647340479757
+      },
+      "raw_pair_width_m": {
+        "n": 58,
+        "p50": 1.23093875868314,
+        "p90": 1.343767812030775,
+        "p95": 1.3637152809547777,
+        "max": 1.3945389809489805,
+        "mean": 1.2534031716327492
+      },
+      "clock_delta_range_s": {
+        "n": 62,
+        "p50": 0.7993685007095337,
+        "p90": 1.8122273683547974,
+        "p95": 2.2901446223258954,
+        "max": 3.808288335800171,
+        "mean": 0.9834268093109131
+      }
+    },
+    {
+      "bag_index": 14,
+      "start_s": 50,
+      "end_s": 71,
+      "label": "flight2",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 41,
+      "dual_frames": 32,
+      "proposed_frames": 29,
+      "single_side_frames": 3,
+      "calibrated_width_m": 1.2294682907524168,
+      "dual_sample_fraction": 0.7804878048780488,
+      "proposed_sample_fraction": 0.7073170731707317,
+      "dual_time_s": 16.228812551498393,
+      "proposed_time_s": 14.559823656082145,
+      "lateral_disagreement_abs_m": {
+        "n": 29,
+        "p50": 0.23768119431606077,
+        "p90": 0.29006915017167295,
+        "p95": 0.2943263675991364,
+        "max": 0.35339093808904576,
+        "mean": 0.15288453500005278
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 29,
+        "p50": 0.30637845803939934,
+        "p90": 3.014805850853535,
+        "p95": 3.667905841690907,
+        "max": 9.226008161082804,
+        "mean": 1.1630763798257695
+      },
+      "geometry_offset_abs_m": {
+        "n": 29,
+        "p50": 0.030749899554924666,
+        "p90": 0.061313237530354774,
+        "p95": 0.06696269628889014,
+        "max": 0.0747798793739879,
+        "mean": 0.03318896576451018
+      },
+      "geometry_heading_abs_deg": {
+        "n": 29,
+        "p50": 4.79902505392095,
+        "p90": 33.38181090804321,
+        "p95": 34.98005056563298,
+        "max": 36.957433761368435,
+        "mean": 9.912858169058376
+      },
+      "raw_pair_width_m": {
+        "n": 32,
+        "p50": 1.2257653946719969,
+        "p90": 1.3209298669752279,
+        "p95": 1.346203469469387,
+        "max": 1.357538701961214,
+        "mean": 1.240370672766762
+      },
+      "clock_delta_range_s": {
+        "n": 41,
+        "p50": 0.313373327255249,
+        "p90": 0.6521916389465332,
+        "p95": 0.7099237442016602,
+        "max": 0.7586627006530762,
+        "mean": 0.3813056538744671
+      }
+    },
+    {
+      "bag_index": 17,
+      "start_s": 0,
+      "end_s": 18,
+      "label": "flight1",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 36,
+      "dual_frames": 33,
+      "proposed_frames": 31,
+      "single_side_frames": 3,
+      "calibrated_width_m": 1.229006754262029,
+      "dual_sample_fraction": 0.9166666666666666,
+      "proposed_sample_fraction": 0.8611111111111112,
+      "dual_time_s": 16.234358024597167,
+      "proposed_time_s": 15.35148935317993,
+      "lateral_disagreement_abs_m": {
+        "n": 31,
+        "p50": 0.014471803463483264,
+        "p90": 0.26054400477880973,
+        "p95": 0.27295895321564884,
+        "max": 0.45979456189096696,
+        "mean": 0.06565379859692179
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 31,
+        "p50": 0.6329031252981482,
+        "p90": 1.9723622814660422,
+        "p95": 3.558197559409326,
+        "max": 9.20300172241157,
+        "mean": 1.2424709743649085
+      },
+      "geometry_offset_abs_m": {
+        "n": 31,
+        "p50": 0.033726714793543,
+        "p90": 0.04473370042047021,
+        "p95": 0.0493221782262602,
+        "max": 0.05498072164461576,
+        "mean": 0.03319719446200434
+      },
+      "geometry_heading_abs_deg": {
+        "n": 31,
+        "p50": 3.197209199912392,
+        "p90": 6.799515009115984,
+        "p95": 8.444319455684392,
+        "max": 15.963108998581475,
+        "mean": 3.8469292967945248
+      },
+      "raw_pair_width_m": {
+        "n": 33,
+        "p50": 1.2301024240636935,
+        "p90": 1.2408030362815567,
+        "p95": 1.3493594427059878,
+        "max": 1.357977647253089,
+        "mean": 1.2414236822609548
+      },
+      "clock_delta_range_s": {
+        "n": 36,
+        "p50": 0.15505754947662354,
+        "p90": 0.38642704486846924,
+        "p95": 0.42901045083999634,
+        "max": 0.5280187129974365,
+        "mean": 0.1992469761106703
+      }
+    },
+    {
+      "bag_index": 17,
+      "start_s": 40,
+      "end_s": 61,
+      "label": "flight2",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "sampled_frames": 42,
+      "dual_frames": 39,
+      "proposed_frames": 28,
+      "single_side_frames": 3,
+      "calibrated_width_m": 1.2406858825569218,
+      "dual_sample_fraction": 0.9285714285714286,
+      "proposed_sample_fraction": 0.6666666666666666,
+      "dual_time_s": 19.393669271469122,
+      "proposed_time_s": 14.08246197700501,
+      "lateral_disagreement_abs_m": {
+        "n": 28,
+        "p50": 0.07302798901055593,
+        "p90": 0.17999739917953209,
+        "p95": 0.3058430876852136,
+        "max": 0.3725378364149967,
+        "mean": 0.09879130569927816
+      },
+      "heading_disagreement_abs_deg": {
+        "n": 28,
+        "p50": 2.726643526368184,
+        "p90": 4.211466510772824,
+        "p95": 4.462298110791862,
+        "max": 4.731932402825707,
+        "mean": 2.8345096227159097
+      },
+      "geometry_offset_abs_m": {
+        "n": 28,
+        "p50": 0.07562183378293999,
+        "p90": 0.11492166547780953,
+        "p95": 0.1893599967579784,
+        "max": 0.2320768585022359,
+        "mean": 0.08364202139345148
+      },
+      "geometry_heading_abs_deg": {
+        "n": 28,
+        "p50": 3.4080890817176144,
+        "p90": 8.69110394339393,
+        "p95": 10.59911296229198,
+        "max": 14.244499807533517,
+        "mean": 4.08940986245909
+      },
+      "raw_pair_width_m": {
+        "n": 39,
+        "p50": 1.2326819085303706,
+        "p90": 1.3780385275896359,
+        "p95": 1.3894009651745984,
+        "max": 1.4395289133834128,
+        "mean": 1.2773552648590454
+      },
+      "clock_delta_range_s": {
+        "n": 42,
+        "p50": 0.17402184009552002,
+        "p90": 0.24985158443450925,
+        "p95": 0.2710104942321777,
+        "max": 0.3996317386627197,
+        "mean": 0.1886300586518787
+      }
+    }
+  ],
+  "evaluation": {
+    "windows": 19,
+    "samples": 1088,
+    "dual_frames": 755,
+    "proposed_frames": 769,
+    "single_side_frames": 163,
+    "duration_s": 597.3,
+    "dual_time_s": 368.6555356502531,
+    "proposed_time_s": 380.1295617580413,
+    "lateral_disagreement_abs_m": {
+      "n": 760,
+      "p50": 0.042191152675330204,
+      "p90": 0.18542160187243462,
+      "p95": 0.3051946824019365,
+      "max": 11.218009419789848,
+      "mean": 0.13170798957638535
+    },
+    "heading_disagreement_abs_deg": {
+      "n": 760,
+      "p50": 1.3790888082511294,
+      "p90": 4.71179337452218,
+      "p95": 5.786790827196252,
+      "max": 109.44053670733535,
+      "mean": 2.4552975911105728
+    },
+    "geometry_offset_abs_m": {
+      "n": 769,
+      "p50": 0.05142391465706648,
+      "p90": 0.4733082823655986,
+      "p95": 0.4739198886988609,
+      "max": 1.2174790579327794,
+      "mean": 0.12942656561421348
+    },
+    "shadow_nonzero": 689,
+    "shadow_saturated": 203
+  },
+  "development": {
+    "windows": 2,
+    "samples": 54,
+    "dual_frames": 52,
+    "proposed_frames": 43,
+    "single_side_frames": 2,
+    "duration_s": 27,
+    "dual_time_s": 26.114984941482543,
+    "proposed_time_s": 21.442910146713256,
+    "lateral_disagreement_abs_m": {
+      "n": 43,
+      "p50": 0.020314278483050112,
+      "p90": 0.17375141780435335,
+      "p95": 0.21856233114854812,
+      "max": 0.3492145299796482,
+      "mean": 0.05276272068206251
+    },
+    "heading_disagreement_abs_deg": {
+      "n": 43,
+      "p50": 1.6047768232865218,
+      "p90": 3.5154792021533705,
+      "p95": 3.9027782931596424,
+      "max": 4.335147347694942,
+      "mean": 1.7379256259589644
+    },
+    "geometry_offset_abs_m": {
+      "n": 43,
+      "p50": 0.03722713238853664,
+      "p90": 0.052900256223834874,
+      "p95": 0.1114180248849888,
+      "max": 0.18765087692005264,
+      "mean": 0.038282991732925806
+    },
+    "shadow_nonzero": 29,
+    "shadow_saturated": 1
+  },
+  "compute_sec": {
+    "n": 5803,
+    "p50": 0.010977938014548272,
+    "p90": 0.01477029780508019,
+    "p95": 0.015620109302108175,
+    "max": 0.020264248974854127,
+    "mean": 0.010767500997455503
+  }
+}

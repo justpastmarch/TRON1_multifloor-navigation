@@ -1,0 +1,312 @@
+[
+  {
+    "path": "manual_captures/analysis/sensor_gap_rgb_214_242.mp4",
+    "sha256": "0e8d60249dc931a517bf8c6157f8e6cba2538f65fe7201661001c6548c9d9cf1",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "manual_captures/manual-5F-rooftop_route_1788917683773755895.bag",
+    "sha256": "1cdfc777e9e7577de5f0f698bd79059b06aca2f44a5bdc846edf24ca0c573c25",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "manual_captures/manual-5F-rooftop_route_1788917683773755895.bag.capture.json",
+    "sha256": "734904f2eaad47dd022cd3b092c3481f37b5fe043857b9ad3e27a425286b5fc7",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "manual_captures/manual-5F-rooftop_route_1788918199558502114.bag.INCOMPLETE.json",
+    "sha256": "c2a762efa474404e750809a5d2b129eb1634e089977e2fd7065ccbaa27a451e8",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "manual_captures/manual-5F-rooftop_route_1788918199558502114.bag.active.invalid",
+    "sha256": "80eb7c38203ae9ee698ca2195404c1a048aa5eee26e5be6be028f0f61db6b0d6",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "manual_captures/manual-5F-rooftop_route_1788918551828137154.bag",
+    "sha256": "a685e0c14189c6d5a2ae7e14b3ea78a14d0b896eb6354bccda1ccb18308162fa",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "manual_captures/manual-5F-rooftop_route_1788918551828137154.bag.capture.json",
+    "sha256": "ced0056a15d802e4eb4ab32219d262038c8eb448d2beba584ce0151e8ef9b5fe",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "manual_captures/manual-5F-rooftop_route_1788920816079496577.bag.INCOMPLETE.json",
+    "sha256": "f1cdaf841ef0acd69fc03ec1c92102b0f69a038aa131452770a6199a7ff7c91b",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "manual_captures/manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "sha256": "d28f40a9a4c0c30906ff835b643f4893f4f652642a0c97d27157a0d0c7651a02",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/stair_3F_to_4F_FULL_20260916_210849.bag",
+    "sha256": "47f4ff81bced59efae57a5ba506947aaa3db75eb64a45b5e64a759f3b0782f9a",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/stair_3F_to_4F_FULL_20260916_231643.bag",
+    "sha256": "6169a996535768cd00dcd7d59b5491d01c4370fa3f6300cd83ebf9881b163b44",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/stair_3F_to_4F_FULL_20260916_234018.bag",
+    "sha256": "738dfb1ecee2794e88dde9b8f633cd5248ea3831f2aa5b350aa4968e87a6d43d",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/stair_3F_to_4F_UP_20260821_155022.bag",
+    "sha256": "b83cc7bce123b677417e330fcc1e91b0264c9d05b4cd182d901446d4055ae3d1",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/stair_3F_to_4F_UP_20260824_152128.bag",
+    "sha256": "6292fa62191a2ce58afb1cefaa2ad40003b46825a3c46cf289e5efc0351a3372",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/stair_3F_to_4F_UP_20260824_152223.bag",
+    "sha256": "723afc03ca0e905b6099fd59dde882b70e0905e9fc7b90d2940b1f56146aeebc",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/stair_3F_to_4F_UP_20260824_152248.bag",
+    "sha256": "98b2b4a7e233da0625f10f18c93b79666f390ae289f16bfa1e743bd29d50826d",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/stair_3F_to_4F_UP_20260827_102101.bag",
+    "sha256": "efd5601ca80e59b4b3b75d6875d6db319363cbe56547f23f3458943e05cb92f2",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/stair_3F_to_4F_UP_20260827_103200.bag",
+    "sha256": "b754298f2538a29a1cac40594be9dcd728c0dca9c2f5acc2a1d53fe5afc46131",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/stair_3F_to_4F_UP_20260827_103313.bag",
+    "sha256": "180142119a5e2327332bc421d2a9cbd10605e5b76e97c9ff9609b8f564b8751a",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/stair_3F_to_4F_UP_20260827_105713.bag",
+    "sha256": "aceed61a8430efcb3d45623bb9c4226a5c48d8be95d0a2e83dcbcc7e862ce4e7",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/stair_3F_to_4F_UP_20260827_150034.bag",
+    "sha256": "b683d6a4509ccc42b1f68704a4a383c7467719d0719f4a20faaec6d1e77e7fc2",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/stair_3F_to_4F_UP_20260827_154342.bag",
+    "sha256": "f781e20961544231748bf1f414d5070c1b338eaa9f98fd4d3117366f7ba1e24f",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/stair_3F_to_4F_UP_CLEAN_REPEAT_20260821_160211.bag",
+    "sha256": "b535a4b82cbb8483df663a4cc3c7ac3b8a58afe0b83a734217e8ef41cf5f92ea",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/tag_calibration_20260827_134853.bag",
+    "sha256": "ea1ce0a1f90af3691ecbd4654a2c66703110ee16c3050328a50967a85ba1dbf4",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/yaw_calibration_020_030_040_20260821_134549.bag",
+    "sha256": "b16b07740ac33ed1fc5b2c857b04d2469533e5175fe9e5b857a56980ba361e4a",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/yaw_calibration_20260821_132716.bag",
+    "sha256": "8f6d7a42306164a30595e58a37c7ce931cf0e54016ca8ed0ba7a84fb469d3fa0",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "manual_captures/analysis/sensor_gap_rgb_contact_sheet.jpg",
+    "sha256": "b2524eeddcf7a008e3c808406f6c7e88a4778d06749697ceaa838a5decf0fea0",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827/frame_000s.jpg",
+    "sha256": "568d287c2f26bdcb8ae76348d4b08c56910d9d8f5048621823f9952424eec8ac",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827/frame_030s.jpg",
+    "sha256": "4ba9c3fa5c3f1cbc51e7a70f84e0f1ceafd05914f151c84a61c389c01691cb26",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827/frame_060s.jpg",
+    "sha256": "6a3d2696805712c077346a5b6914548f643b34b69b2cf59cf5e7b6315e087c14",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827/frame_090s.jpg",
+    "sha256": "0c4f2570f1377365a514fcc9019d307f4b597d7e784783b843fbc382a295a709",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827/frame_120s.jpg",
+    "sha256": "9b7e2dbd8785e0a4fd29192036ce3a400f1a69231ea243f1f9bf8b79784bd13c",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827/frame_150s.jpg",
+    "sha256": "d34cf1d87388671dd52ab57da24baca2118d385d145c5b05d644d09443f7b463",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827/frame_180s.jpg",
+    "sha256": "624f9598911e371908e6d6a6b86dbc340f6ac7bd12ddaafa9d545e84e1a4aa28",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827/frame_200s.jpg",
+    "sha256": "db76638c589f8a30c42deeddbddc5607d6f17a0e0fbc5bca427cffee6c98c433",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_401_exact/401_exact_00_tplus_125.908s.jpg",
+    "sha256": "353cee5674039c61d8d012d12e3d298c31ddca51c611142b4449c7b5ae593ce4",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_401_exact/401_exact_01_tplus_125.942s.jpg",
+    "sha256": "51c24d8c08fd24b1dc31febdf756f862b8b357d1486642cf92e8a1265c79136f",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_401_exact/401_exact_02_tplus_126.009s.jpg",
+    "sha256": "23aa518ceb5d47e5a46a6ee361a754afd89b26e31761e4b6429fa047e63d982a",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_00.jpg",
+    "sha256": "8a64b7d4f84277e29dd311e3bfc5d5260fcbc9e7b9a221520b72cce622011b97",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_01.jpg",
+    "sha256": "17af65dccfff46646fee3e104e791dddeb5f6c1468bf4c514aa7ba1eae39abfc",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_02.jpg",
+    "sha256": "eea3a99fe7ef74bec89290f839c965a74ea16524fe581e47d2fc0497a9384521",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_03.jpg",
+    "sha256": "01586d3856441c92e63d4317dca187d201279ed7a3190f6a215b4ef20c6f450e",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_04.jpg",
+    "sha256": "e38a3b4f89f511a0a408f515bc43d3931056302388257939e40b06055a89d7c0",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_05.jpg",
+    "sha256": "2339fe04ae12230cce232fd1a2d9bc47d49c4acf59fc48b27e818be115075b14",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_06.jpg",
+    "sha256": "da4a484abe47c50f67852d5255c6464fbbf19bb72b7e633b0fe459e63fc38ced",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_07.jpg",
+    "sha256": "b52f5824e65ea29d521b20c5b692157fa49f091d204c6967edd9eac85ac53f15",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_08.jpg",
+    "sha256": "575ffd488cb2de3c22741b40cd8df77ed8054244c09e8953722972609e6a5aaa",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_09.jpg",
+    "sha256": "2addb056dade4f39265224a9163c0ca85a601731120741736be38d4e9ea01adb",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_10.jpg",
+    "sha256": "88d8fdeb8fc104f8bb0eccd95a37fea9af97a8e35e922bbdbc655ce960def80b",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_11.jpg",
+    "sha256": "fcc9b5f57f883e7d2b97474586e50e3dfdc528fd20189b403265baa0fa1bab83",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_12.jpg",
+    "sha256": "a240142c39a0f8fd1ef39cd3bdd3ade9f12943719bc7c258fd2459e462938d40",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_13.jpg",
+    "sha256": "03a5955dea327b4039ebef0730dbb8b76a4306958900d9ae36446dc2eefc2c39",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_14.jpg",
+    "sha256": "18b5896be8e820ece55fc37a2ce7cce409c1a55844775f92f5d045e6b950fc56",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_15.jpg",
+    "sha256": "518a26c7d09db4fe400d26df41f27646a76350a1841d17b0f9605c01d73ef56c",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_16.jpg",
+    "sha256": "7bef01ef330e799712b445bde882e0feab2f16a809a1fcbf7cd69bc49d632917",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_17.jpg",
+    "sha256": "5a333d4602d0ec2f9ff537d80302529413c555f663455a2e2084130cd08e57ec",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_18.jpg",
+    "sha256": "7724f58e7a3fe4a2065902d151757d3e9d62230135d4cac5182329150cad11f9",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_19.jpg",
+    "sha256": "8791499cd13e13f146a04ead8a1839e7af5d825471fcbf90df3c29387ca16dd8",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_20.jpg",
+    "sha256": "eb589495b791b42726981848f44d2f8e5761eaa8b7e01287bcd91eec65625389",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_21.jpg",
+    "sha256": "7b1b126ac8ce0d17c2a419e1e15187dd14e6ee5fd5c03d2c4cab2627bb2d906c",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_22.jpg",
+    "sha256": "bcb7afc85087201e043283a85d91b0b40c1896666bdc0a8b5694a6995324d76a",
+    "size_mtime_unchanged_from_inventory": true
+  },
+  {
+    "path": "stair_captures/visual_review_20260827_tag/frame_23.jpg",
+    "sha256": "3a06bbf4796c00e7cb9f66d35a44c2030d42c1c5cdef98c4e22e368a739e8987",
+    "size_mtime_unchanged_from_inventory": true
+  }
+]

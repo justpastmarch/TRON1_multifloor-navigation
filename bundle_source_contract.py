@@ -18,6 +18,10 @@ EXPECTED_NODE_INITIALIZERS = frozenset(
         ("src/stair_supervisor/scripts/stair_supervisor_node.py", "stair_supervisor"),
     }
 )
+# Existing one-shot operator client; it must never enter a launch graph.
+OPERATOR_CLIENT_INITIALIZERS = frozenset({
+    ("src/stair_supervisor/scripts/stair_entry_test.py", "stair_entry_test_client"),
+})
 TEXT_SUFFIXES = frozenset({".env", ".sh", ".py", ".launch", ".yaml", ".rviz", ".xml"})
 ACTION_CONTRACTS = {
     "src/mission_manager/action/Mission.action": (
@@ -78,14 +82,26 @@ def validate_node_entrypoints(root: Path) -> None:
                 continue
             name = node.args[0].value if node.args and isinstance(node.args[0], ast.Constant) and isinstance(node.args[0].value, str) else None
             initializers.add((source_path.relative_to(root).as_posix(), name))
-    if initializers != EXPECTED_NODE_INITIALIZERS:
+    runtime_initializers = initializers - OPERATOR_CLIENT_INITIALIZERS
+    if runtime_initializers != EXPECTED_NODE_INITIALIZERS:
         fail(f"project node entrypoint mismatch; expected={sorted(EXPECTED_NODE_INITIALIZERS)} actual={sorted(initializers)}")
+    clients = {Path(path).name for path, _name in initializers & OPERATOR_CLIENT_INITIALIZERS}
+    for launch_path in project_files(root):
+        if launch_path.suffix != ".launch" or "test" in launch_path.relative_to(root).parts:
+            continue
+        for node in parse_xml(launch_path, root).findall(".//node"):
+            if Path(node.get("type", "")).name in clients:
+                fail(f"operator client must not be auto-launched: {launch_path.relative_to(root)}")
 
 
 def validate_paths(root: Path) -> None:
     checkout_markers = ("/home/" + "m3tron", "tron1-" + "control-center")
     parent_traversal = "." * 2 + "/"
     for path in project_files(root):
+        # Archived reports and their reproduction tools are not runtime assets.
+        # Source/config/launch files retain the original portable-path contract.
+        if path.relative_to(root).parts[0] == "docs":
+            continue
         if path.suffix not in TEXT_SUFFIXES:
             continue
         text = path.read_text(encoding="utf-8")

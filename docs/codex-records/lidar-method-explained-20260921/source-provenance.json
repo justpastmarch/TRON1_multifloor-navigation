@@ -1,0 +1,9 @@
+{
+  "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/lidar_tracking_core.py": "1210ca227b1046750808aff118f9457179c290607c28ee790d829e9b1dd70d10",
+  "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/lidar_tracking.py": "9bab9bf6e38d87558a6c20a548e7d2ed393bb011bd985ef6c9447e2c672ca2ce",
+  "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/lidar_process.py": "693805096d7af3ce76c9c38e92a46b2f0d09ed4856010202d341468247fce725",
+  "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/ros_lidar.py": "b7fe747d572c99a99cfdf0588b11253a67a092fb221d1548ab0730c40b8d172b",
+  "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/baseline.json": "eef55d59b933187937e1f99a7992cbdb9ef0c40c50b8157a10e9c244501d332c",
+  "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/configured-metrics.json": "3a209e124f16ea685ba721afa35ad057e2407b5b9d89504e578959d40a8faec2",
+  "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/stream-results.json": "62770c1f9e945383bd83955914dc8359fd7eed895af9160a7c7b78ceef73e3d5"
+}

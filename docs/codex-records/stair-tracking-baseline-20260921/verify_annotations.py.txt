@@ -1,0 +1,72 @@
+"""Check generated annotation timing and preservation of every LiDAR output."""
+from pathlib import Path
+from datetime import datetime, timezone
+import csv
+import hashlib
+import json
+import numpy as np
+import rosbag
+
+BASE = Path(__file__).resolve().parent
+FIX = BASE.parent / 'stair-tracking-fix-20260921'
+
+
+def main():
+    baseline = json.loads((BASE / 'baseline.json').read_text())
+    previous_manifest = json.loads((FIX / 'ARTIFACTS.json').read_text())
+    results = {}
+    for run in ['102101', '103313', '105713']:
+        directory = BASE / 'visualization' / run
+        spec = json.loads((directory / 'comparison_spec.json').read_text())
+        event_times = [event['camera_header_stamp_s'] for event in spec['events']]
+        count = 0
+        first_seen = {}
+        with rosbag.Bag(str(directory / 'comparison.bag'), 'r') as bag:
+            for _, message, record in bag.read_messages(topics=['/comparison/markers']):
+                count += 1
+                for marker in message.markers:
+                    if marker.id < 6:
+                        index = marker.id // 2
+                        assert record.to_sec() >= event_times[index] - 1e-6, (run, index, record.to_sec())
+                        first_seen.setdefault(index, record.to_sec())
+                        if marker.id % 2:
+                            assert '(video annotation)' in marker.text
+            arrival_images = list(bag.read_messages(topics=['/comparison/camera/final_arrival']))
+            assert arrival_images
+            assert abs(arrival_images[0].message.header.stamp.to_sec() - event_times[-1]) < 1e-6
+            assert all(item.timestamp >= item.message.header.stamp for item in arrival_images)
+            final_paths = list(bag.read_messages(topics=['/comparison/lidar_path']))
+        with (FIX / 'validation' / run / 'lidar_registration.csv').open() as stream:
+            rows = {int(row['stamp_ns']): row for row in csv.DictReader(stream)}
+        for pose in final_paths[-1].message.poses:
+            row = rows[pose.header.stamp.to_nsec()]
+            np.testing.assert_allclose([pose.pose.position.x, pose.pose.position.y, pose.pose.position.z],
+                                       [float(row[k]) for k in ['x_m', 'y_m', 'z_m']], atol=1e-12, rtol=0)
+        assert len(first_seen) == 3
+        results[run] = {'marker_messages': count, 'first_seen_s': first_seen,
+                        'configured_camera_stamps_s': event_times,
+                        'no_future_event_markers': True, 'annotation_labels_explicit': True,
+                        'arrival_camera_matches_revised_reference': True,
+                        'comparison_path_uses_unchanged_estimates': True}
+    preserved = []
+    for row in previous_manifest['files']:
+        if row['path'].startswith('validation/') and row['path'].endswith(('/lidar_registration.bag', '/lidar_registration.csv')):
+            path = FIX / row['path']
+            h = hashlib.sha256()
+            with path.open('rb') as stream:
+                for chunk in iter(lambda: stream.read(1024 * 1024), b''):
+                    h.update(chunk)
+            assert h.hexdigest() == row['sha256']
+            preserved.append({'path': str(path), 'sha256': h.hexdigest(), 'unchanged': True})
+    for name, digest in baseline['estimator_files'].items():
+        path = Path('/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio') / name
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == digest
+    data = {'observed_utc': datetime.now(timezone.utc).isoformat(), 'results': results,
+            'original_estimator_unchanged': True, 'retained_lidar_results': preserved,
+            'scope': 'offline bag contracts; not live Stair Supervisor arrival validation'}
+    (BASE / 'annotation-validation.json').write_text(json.dumps(data, indent=2) + '\n')
+    print(json.dumps({'runs': results, 'unchanged_lidar_artifacts': len(preserved)}, indent=2))
+
+
+if __name__ == '__main__':
+    main()

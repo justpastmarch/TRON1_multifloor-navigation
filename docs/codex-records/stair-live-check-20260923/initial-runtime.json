@@ -1,0 +1,84 @@
+{
+  "at_utc": "2026-09-22T23:11:54.691778+00:00",
+  "parameters": {
+    "/stair_supervisor/lidar_mode": [
+      1,
+      "Parameter [/stair_supervisor/lidar_mode]",
+      "observe"
+    ],
+    "/stair_supervisor/lidar_observe_only": [
+      1,
+      "Parameter [/stair_supervisor/lidar_observe_only]",
+      false
+    ],
+    "/stair_supervisor/lidar_config": [
+      -1,
+      "Parameter [/stair_supervisor/lidar_config] is not set",
+      0
+    ],
+    "/stair_supervisor/websocket_url": [
+      1,
+      "Parameter [/stair_supervisor/websocket_url]",
+      "ws://127.0.0.1:5000"
+    ],
+    "/use_sim_time": [
+      -1,
+      "Parameter [/use_sim_time] is not set",
+      0
+    ]
+  },
+  "nodes": [
+    {
+      "node": "/stair_supervisor",
+      "uri": "http://192.168.1.26:37363/",
+      "error": "[Errno 111] Connection refused"
+    },
+    {
+      "node": "/mission_manager",
+      "uri": "http://192.168.1.26:40189/",
+      "getPid": [
+        1,
+        "",
+        84993
+      ]
+    },
+    {
+      "node": "/multifloor_manager",
+      "uri": "http://192.168.1.26:35023/",
+      "getPid": [
+        1,
+        "",
+        84984
+      ]
+    },
+    {
+      "node": "/move_base",
+      "uri": "http://192.168.1.26:41471/",
+      "getPid": [
+        1,
+        "",
+        109508
+      ]
+    },
+    {
+      "node": "/livox_lidar_publisher2",
+      "uri": "http://192.168.1.56:39117/",
+      "error": "[Errno 111] Connection refused"
+    },
+    {
+      "node": "/tron1_wf_odom_bridge",
+      "uri": "http://192.168.1.56:45633/",
+      "error": "[Errno 111] Connection refused"
+    },
+    {
+      "node": "/camera1/realsense2_camera",
+      "uri": "http://192.168.1.56:36895/",
+      "error": "[Errno 111] Connection refused"
+    },
+    {
+      "node": "/mid360s_laserscan",
+      "uri": "http://192.168.1.56:35325/",
+      "error": "[Errno 111] Connection refused"
+    }
+  ]
+}

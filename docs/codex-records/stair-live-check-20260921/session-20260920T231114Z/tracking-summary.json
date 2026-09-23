@@ -1,0 +1,21 @@
+{
+  "observed_utc": "2026-09-20T23:16:52.382287+00:00",
+  "window_sec": 20,
+  "unique_tracking_samples": 100,
+  "states": {
+    "TRACKED": 100
+  },
+  "epochs": [
+    0
+  ],
+  "queue_max": 1,
+  "dropped_scans_max": 0,
+  "rejected_imu_max": 0,
+  "worker_errors": [],
+  "compute_p50_ms": 75.95892000063031,
+  "compute_p99_ms": 92.3809439293838,
+  "sensor_to_receipt_p50_ms": 112.38443851470947,
+  "sensor_to_receipt_p99_ms": 135.28946161270147,
+  "sensor_to_completion_p99_ms": 230.21388460780148,
+  "physical_accuracy": "UNVERIFIED; no independent ground truth or requested robot motion in this check"
+}

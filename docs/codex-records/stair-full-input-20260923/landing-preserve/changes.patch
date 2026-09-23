@@ -1,0 +1,51 @@
+--- before/src/stair_supervisor/src/stair_supervisor/stair_feedback.py
++++ after/src/stair_supervisor/src/stair_supervisor/stair_feedback.py
+@@ -682,7 +682,13 @@
+         limits = self.route["limits"]
+         dt = max(0., min(now - self._last_command_at, limits["warn_sec"]))
+         old_v, old_w = self._last_command
+-        return (float(np.clip(v, max(-limits["max_v"], old_v - limits["max_accel"] * dt), min(limits["max_v"], old_v + limits["max_accel"] * dt))),
++        linear = float(np.clip(v, max(-limits["max_v"], old_v - limits["max_accel"] * dt), min(limits["max_v"], old_v + limits["max_accel"] * dt)))
++        if self.phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT, Phase.EXIT_CONFIRM):
++            # Flat-region command cap takes precedence over deceleration slew:
++            # never carry the previous flight's high input onto the landing.
++            # This limits requested input; it does not prove physical braking.
++            linear = float(np.clip(linear, -limits["hold_v"], limits["hold_v"]))
++        return (linear,
+                 float(np.clip(w, max(-limits["max_w"], old_w - limits["max_alpha"] * dt), min(limits["max_w"], old_w + limits["max_alpha"] * dt))))
+ 
+     def command(self):
+--- before/src/stair_supervisor/test/test_stair_readiness.py
++++ after/src/stair_supervisor/test/test_stair_readiness.py
+@@ -122,6 +122,31 @@
+                 self.assertAlmostEqual(r['limits']['hold_v'],.06)
+                 self.assertAlmostEqual(r['limits']['max_w'],.2)
+ 
++    def test_flat_phase_caps_first_command_after_full_input_flight(self):
++        root=Path(__file__).resolve().parents[1]/'config'
++        cfg=load_lidar_configuration(root/'stair_lidar_3f_4f_test.yaml','control',False)
++        r=cfg.document['routes'][0]
++        profiles=load_stair_configuration(root)
++        profile=next(p for p in profiles.profiles if p.id==r['id'])
++        for phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT, Phase.EXIT_CONFIRM):
++            with self.subTest(phase=phase):
++                w=Worker();w.value=sample(x=-.45)
++                c=StairFeedback(w,np.eye(4),[r])
++                c.capture_entry(r['id'],se2(-.45,0.,0.),.1,'synthetic transition test',100.)
++                c.arm(profile,100.,phase_test=True)
++                c._last_command=(.55,0.)
++                c._last_command_at=104.
++                c.begin_phase(phase,104.)
++                c._flight_seen=[True,True]
++                x,y,z=(3.05,0.,1.53) if phase is not Phase.EXIT_CONFIRM else (-.80,1.47,3.23)
++                yaw=0. if phase is not Phase.EXIT_CONFIRM else math.pi
++                w.value=sample(2,104.02,x=x,y=y,z=z,yaw=yaw)
++                result=c.evaluate(phase,104.03,command_required=True)
++                self.assertFalse(result.faulted,result.detail)
++                self.assertLessEqual(abs(c.command()[0]),.06+1e-9)
++                self.assertLessEqual(abs(normalize_twist(*c.command(),profiles.robot.websocket_full_scale).x),.06/.55+1e-9)
++                self.assertLessEqual(abs(c.command()[1]),.2+1e-9)
++
+     def test_forward_floor_does_not_bypass_slew(self):
+         w,c=self.controller();c.route['limits'].update(max_v=.30,min_flight_v=.275)
+         c.begin_phase(Phase.FORWARD_SEGMENT_1,100.);w.value=sample(2,100.2,x=.1,z=.1)

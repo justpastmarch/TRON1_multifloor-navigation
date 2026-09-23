@@ -1,0 +1,54 @@
+"""Original scans placed by frozen poses; geometry evidence, not independent GT."""
+from pathlib import Path
+import json
+import math
+import sys
+import numpy as np
+import rosbag
+import yaml
+
+HERE = Path(__file__).resolve().parent
+OLD = HERE.parent / 'stair-lidar-commissioning-20260921/offline-validation'
+OUT = HERE / 'geometry'
+OUT.mkdir(exist_ok=True)
+mount = np.array(yaml.safe_load((OLD / 'config/stair_lidar.yaml').read_text())['base_from_lidar'])
+
+for bid in sys.argv[1:] or ['102101', '105713', '103313']:
+    rows = [r for r in json.loads((OLD / ('replay-' + bid) / 'poses.json').read_text()) if r['accepted']]
+    metadata = json.loads((OLD / ('replay-' + bid) / 'metrics.json').read_text())
+    first_body = np.asarray(rows[0]['pose']) @ np.linalg.inv(mount)
+    yaw = math.atan2(first_body[1, 0], first_body[0, 0])
+    c, s = math.cos(yaw), math.sin(yaw)
+    local_from_body_start = np.eye(4)
+    local_from_body_start[:3, :3] = [[c, -s, 0], [s, c, 0], [0, 0, 1]]
+    local_from_body_start[:3, 3] = first_body[:3, 3]
+    reference = np.linalg.inv(local_from_body_start)
+    chosen = {round(r['stamp'], 5): r for r in rows[::5]}
+    clouds = []
+    records = []
+    with rosbag.Bag(metadata['input_bag'], 'r') as bag:
+        for _, message, _ in bag.read_messages(topics=['/livox/lidar']):
+            key = round(message.header.stamp.to_sec(), 5)
+            if key not in chosen:
+                continue
+            row = chosen[key]
+            xyz = np.fromiter((v for p in message.points for v in (p.x, p.y, p.z)), dtype=float).reshape(-1, 3)
+            distances = np.linalg.norm(xyz, axis=1)
+            xyz = xyz[np.isfinite(xyz).all(axis=1) & (distances > .25) & (distances < 9.)]
+            matrix = reference @ np.asarray(row['pose'])
+            cloud = xyz @ matrix[:3, :3].T + matrix[:3, 3]
+            cloud = cloud[(cloud[:, 0] > -3) & (cloud[:, 0] < 7) & (cloud[:, 1] > -3) & (cloud[:, 1] < 5) & (cloud[:, 2] > -2) & (cloud[:, 2] < 5)]
+            _, indices = np.unique(np.floor(cloud / .025).astype(np.int32), axis=0, return_index=True)
+            cloud = cloud[indices]
+            t = row['stamp'] - rows[0]['stamp']
+            clouds.append(np.column_stack((cloud, np.full(len(cloud), t))))
+            records.append({'t': t, 'stamp': row['stamp'], 'points': len(cloud)})
+    merged = np.concatenate(clouds)
+    np.savez_compressed(OUT / (bid + '-scans.npz'), points=merged)
+    body_poses = [reference @ np.asarray(r['pose']) @ np.linalg.inv(mount) for r in rows]
+    result = {'bag': metadata['input_bag'], 'scans': records, 'points': len(merged),
+              'reference': 'first bootstrap body XYZ and yaw; gravity Z retained; not surveyed stair coordinates',
+              'reference_from_tracking': reference.tolist(),
+              'body_poses': [{'t': r['stamp']-rows[0]['stamp'], 'pose': p.tolist()} for r, p in zip(rows, body_poses)]}
+    (OUT / (bid + '-geometry.json')).write_text(json.dumps(result, indent=2))
+    print(bid, 'scans', len(records), 'points', len(merged), flush=True)

@@ -1,0 +1,33 @@
+from pathlib import Path
+import sys,json,math,numpy as np,yaml,datetime
+from scipy.spatial.transform import Rotation
+R=Path('/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation');E=Path(__file__).resolve().parent
+sys.path.insert(0,str(R/'src/stair_supervisor/src'))
+from stair_supervisor.stair_feedback import StairFeedback,wrap,deadband,support_clearance,inside_support_union
+cfg=yaml.safe_load((E/'source/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml').read_text());route=cfg['routes'][0];limits=route['limits'];mount=np.array(cfg['base_from_lidar']);cal=yaml.safe_load((R/'src/stair_supervisor/config/lidar_imu_baseline.yaml').read_text());b_i=mount[:3,:3]@Rotation.from_matrix(np.array(cal['mapping']['extrinsic_R']).reshape(3,3)).as_matrix().T
+runs=json.loads((E/'runs.json').read_text());poses=json.loads((E/'poses.json').read_text());sensors=json.loads((E/'sensors.json').read_text());imu=[s for s in sensors if s['topic'].endswith('/imu')];wheel=[s for s in sensors if s['topic'].endswith('wheel_odom_raw')];ev=json.loads((E/'events.json').read_text());out=[]
+for run in runs:
+ if run['result']['result_code']!=5:continue
+ phase=run['last_poses'][-1]['data']['phase'];idx=1 if phase.endswith('_2') else 0
+ p1=min(poses,key=lambda p:abs(p['t']-run['end']));j=poses.index(p1);p0=poses[j-1]
+ # The first fault record includes height/clearance: this matches p1 exactly.
+ dt=p1['stamp']-p0['stamp'];g=[s for s in imu if p0['stamp']<=s['stamp']<=p1['stamp']]
+ orientation=Rotation.from_matrix(np.array(p0['transform'])[:3,:3]);integral=0.
+ for a,b in zip(g,g[1:]):
+  omega=b_i@(np.array(a['gyro'])+b['gyro'])/2.;h=b['stamp']-a['stamp'];orientation=orientation*Rotation.from_rotvec(omega*h)
+ predyaw=math.atan2(orientation.as_matrix()[1,0],orientation.as_matrix()[0,0]);gyrodelta=wrap(predyaw-p0['yaw']);lidardelta=wrap(p1['yaw']-p0['yaw'])
+ w0=min(wheel,key=lambda w:abs(w['stamp']-p0['stamp']));w1=min(wheel,key=lambda w:abs(w['stamp']-p1['stamp']));wy=lambda w:Rotation.from_quat(w['quat']).as_euler('xyz')[2]
+ polys=[route[k] for k in (('entry_polygon','flight_1_polygon','landing_polygon') if idx==0 else ('landing_polygon','flight_2_polygon','exit_polygon'))]
+ targetyaw=math.pi if idx else 0.;epsi=wrap(p1['yaw']-targetyaw);ey= (route['flight_2'][0][1]-p1['pose'][1]) if idx else p1['pose'][1]
+ raww=-limits['yaw_kp']*deadband(epsi,limits['yaw_deadband'])-limits['lateral_kp']*deadband(ey,limits['lateral_deadband']);boundedw=float(np.clip(raww,-limits['max_w'],limits['max_w']))
+ prior=run['last_poses'][-1]['data'];oldw=prior['command'][1];oldv=prior['command'][0]
+ proposedw=run['fault_debug'][0]['data']['proposed_command'][1] if run['fault_debug'] else float(np.clip(boundedw,oldw-.3*.05,oldw+.3*.05))
+ foot=np.array(p1['footprint']);pos=np.array(p1['pose'][:2])
+ def valid(v,w,yaw=None,fp=None,margin=.12,horizon=.9):return StairFeedback._swept_support(pos,p1['yaw'] if yaw is None else yaw,foot if fp is None else fp,v,w,horizon,polys,margin)
+ grid=[{'v':v,'w':w,'accepted':valid(v,w)} for v in (.55,.4,.3,.2,.1,.05) for w in (proposedw,boundedw,.2,-.2)]
+ # Isolate directional correction; gyro-predicted footprint at same observed translation.
+ gp=np.column_stack((route['footprint'],np.zeros(4)))@orientation.as_matrix().T+np.array(p1['pose']);gp=gp[:,:2]
+ d={'end_kst':run['end_kst'],'phase':phase,'fault_pose_time_relative_sec':p1['t']-run['end'],'fault_sensor_stamp':p1['stamp'],'pose':p1['pose'],'yaw_deg':math.degrees(p1['yaw']),'lateral_error_m':ey,'interval_sec':dt,'lidar_yaw_change_deg':math.degrees(lidardelta),'imu_integrated_yaw_change_deg':math.degrees(gyrodelta),'wheel_orientation_yaw_change_deg':math.degrees(wrap(wy(w1)-wy(w0))),'lidar_minus_gyro_yaw_deg':math.degrees(wrap(lidardelta-gyrodelta)),'imu_samples':len(g),'imu_max_gap_sec':max((b['stamp']-a['stamp'] for a,b in zip(g,g[1:])),default=None),'clearance_m':support_clearance(foot,polys),'current_supported':inside_support_union(foot,polys,.12),'raw_w':raww,'bounded_w':boundedw,'prior_w':oldw,'proposed_w':proposedw,'proposed_w_exact':bool(run['fault_debug']),'full_input_with_proposed_w_passes':valid(.55,proposedw),'full_input_without_angular_slew_passes':valid(.55,boundedw),'gyro_only_orientation_at_same_position_passes':valid(.55,proposedw,yaw=predyaw,fp=gp),'grid':grid}
+ out.append(d)
+ print(json.dumps({k:v for k,v in d.items() if k!='grid'},indent=2));print('grid passes',[(x['v'],round(x['w'],3)) for x in grid if x['accepted']])
+(E/'diagnosis-numeric.json').write_text(json.dumps(out,indent=2))

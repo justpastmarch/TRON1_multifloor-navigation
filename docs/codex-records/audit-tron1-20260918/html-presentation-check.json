@@ -1,0 +1,13 @@
+{
+  "source_sha256": "c60bd5d3697928a1446e0f7bb945562d37a8391a4aafe1665c5b73ee0b58c326",
+  "html_sha256": "b5a1cf4a87d2c643f5a902bb20097c589fa79de5536a389afe8804e0f5c26a7b",
+  "main_sections": 11,
+  "embedded_appendices": 7,
+  "inline_diagrams": 2,
+  "broken_fragment_links": [],
+  "duplicate_ids": 0,
+  "external_assets": 0,
+  "canonical_markdown_unchanged": true,
+  "browser_visual_verification": "NOT_EXECUTED: in-app browser automation js tool unavailable; structural HTML checks completed",
+  "target_repository_access": "none"
+}

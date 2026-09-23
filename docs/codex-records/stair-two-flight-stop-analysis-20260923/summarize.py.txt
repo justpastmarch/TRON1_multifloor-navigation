@@ -1,0 +1,14 @@
+import json,datetime,collections,math
+from pathlib import Path
+E=Path(__file__).resolve().parent;rows=json.loads((E/'events.json').read_text())
+dbg=[x for x in rows if x['topic'].endswith('control_debug')];tx=[x for x in rows if x['topic'].endswith('websocket_tx')];feedback=[x for x in rows if x['topic'].endswith('/feedback')];tracking=[x for x in rows if x['topic'].endswith('tracking_status')]
+results=[x for x in rows if x['topic'].endswith('/result')];out=[]
+for r in results:
+ start=r['data']['status']['goal_id']['stamp'];end=r['t'];ds=[x for x in dbg if start<=x['t']<=end+.15];ts=[x for x in tx if start<=x['t']<=end+.15];fs=[x for x in feedback if start<=x['t']<=end+.1];tr=[x for x in tracking if start<=x['t']<=end]
+ poses=[x for x in ds if 'pose' in x['data']];faults=[x for x in ds if x['data'].get('tracking_state') in ('SUPPORT_LIMIT','CORRIDOR_LIMIT','ATTITUDE_LIMIT')]
+ nonzero=[x for x in ts if x['data'].get('title')=='request_twist' and any(abs(x['data']['data'].get(k,0))>1e-7 for k in ('x','z'))]
+ s={'start_kst':datetime.datetime.fromtimestamp(start).isoformat(),'end_kst':datetime.datetime.fromtimestamp(end).isoformat(),'start':start,'end':end,'duration':end-start,'result':r['data']['result'],'debug_states':dict(collections.Counter(x['data'].get('tracking_state') for x in ds)),'phases':dict(collections.Counter(x['data'].get('phase') for x in ds)),'feedback_tail':fs[-3:],'first_pose':poses[0] if poses else None,'last_poses':poses[-3:],'fault_debug':faults,'nonzero_tx_count':len(nonzero),'last_nonzero_tx':nonzero[-1] if nonzero else None,'tracking_states':dict(collections.Counter(x['data'].get('state') for x in tr)),'max_age':max((x['data'].get('geometry_age_sec',0) for x in tr),default=None)}
+ out.append(s)
+ print(json.dumps({k:v for k,v in s.items() if k not in ('first_pose','last_poses','feedback_tail','fault_debug')},indent=2))
+ print('LAST POSE',json.dumps(s['last_poses'][-1] if poses else None,indent=2));print('FAULTS',json.dumps(faults,indent=2))
+(E/'runs.json').write_text(json.dumps(out,indent=2))

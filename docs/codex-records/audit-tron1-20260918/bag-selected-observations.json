@@ -1,0 +1,214 @@
+{
+  "utc": "2026-09-18T03:58:47.401768+00:00",
+  "method": "read-only rosbag selected messages; no publish/replay/reindex",
+  "observations": [
+    {
+      "path": "stair_captures/stair_3F_to_4F_FULL_20260916_234018.bag",
+      "record_time_stats": {
+        "/amcl_pose": {
+          "n": 517,
+          "span": 298.3370611667633,
+          "max_gap": 28.328631162643433,
+          "p99_gap": 6.815168857574463,
+          "gap_gt_012": 480,
+          "nonpositive": 0
+        },
+        "/tron/wheel_odom_raw": {
+          "n": 30540,
+          "span": 305.4066832065582,
+          "max_gap": 0.18689942359924316,
+          "p99_gap": 0.05097150802612305,
+          "gap_gt_012": 6,
+          "nonpositive": 0
+        },
+        "/scan": {
+          "n": 3054,
+          "span": 305.19687509536743,
+          "max_gap": 0.2672004699707031,
+          "p99_gap": 0.20743536949157715,
+          "gap_gt_012": 521,
+          "nonpositive": 0
+        },
+        "/move_base/goal": {
+          "n": 4,
+          "span": 175.22691416740417,
+          "max_gap": 81.61285281181335,
+          "p99_gap": 64.79977011680603,
+          "gap_gt_012": 3,
+          "nonpositive": 0
+        },
+        "/navigation/cmd_vel": {
+          "n": 801,
+          "span": 213.2269949913025,
+          "max_gap": 54.598941802978516,
+          "p99_gap": 0.20640110969543457,
+          "gap_gt_012": 794,
+          "nonpositive": 0
+        },
+        "/move_base/result": {
+          "n": 4,
+          "span": 184.42644906044006,
+          "max_gap": 136.19925165176392,
+          "p99_gap": 38.01270294189453,
+          "gap_gt_012": 3,
+          "nonpositive": 0
+        }
+      },
+      "header_time_stats": {
+        "/amcl_pose": {
+          "n": 517,
+          "span": 305.60098361968994,
+          "max_gap": 28.3826961517334,
+          "p99_gap": 8.106448411941528,
+          "gap_gt_012": 476,
+          "nonpositive": 0
+        },
+        "/tron/wheel_odom_raw": {
+          "n": 30540,
+          "span": 305.4011356830597,
+          "max_gap": 0.22139215469360352,
+          "p99_gap": 0.02476954460144043,
+          "gap_gt_012": 5,
+          "nonpositive": 0
+        },
+        "/scan": {
+          "n": 3054,
+          "span": 305.2023940086365,
+          "max_gap": 0.218491792678833,
+          "p99_gap": 0.20790958404541016,
+          "gap_gt_012": 285,
+          "nonpositive": 0
+        },
+        "/move_base/goal": {
+          "n": 4,
+          "span": 175.22695064544678,
+          "max_gap": 81.6129150390625,
+          "p99_gap": 64.799733877182,
+          "gap_gt_012": 3,
+          "nonpositive": 0
+        },
+        "/move_base/result": {
+          "n": 4,
+          "span": 184.42647218704224,
+          "max_gap": 136.19978499412537,
+          "p99_gap": 38.01276707649231,
+          "gap_gt_012": 3,
+          "nonpositive": 0
+        }
+      },
+      "odom_step_max_xy": 0.015306665473269468,
+      "odom_steps_gt_01": 0,
+      "linear_x": {
+        "min": -0.1,
+        "max": 0.5000000000000002,
+        "nonzero": 364
+      },
+      "angular_z": {
+        "min": -0.7999999999999999,
+        "max": 0.8000000000000002
+      },
+      "events": [
+        {
+          "t": 1789569671.5906498,
+          "topic": "/move_base/goal",
+          "id": "/mission_manager-1-1789569671.590",
+          "x": 10.054808,
+          "y": -6.652934
+        },
+        {
+          "t": 1789569700.3915107,
+          "topic": "/move_base/result",
+          "id": "/mission_manager-1-1789569671.590",
+          "status": 4,
+          "text": "Robot is oscillating. Even after executing recovery behaviors."
+        },
+        {
+          "t": 1789569700.404941,
+          "topic": "/move_base/goal",
+          "id": "/mission_manager-2-1789569700.405",
+          "x": 10.054808,
+          "y": -6.652934
+        },
+        {
+          "t": 1789569710.6060052,
+          "topic": "/move_base/result",
+          "id": "/mission_manager-2-1789569700.405",
+          "status": 4,
+          "text": "Robot is oscillating. Even after executing recovery behaviors."
+        },
+        {
+          "t": 1789569765.2047112,
+          "topic": "/move_base/goal",
+          "id": "/mission_manager-3-1789569765.204",
+          "x": 10.054808,
+          "y": -6.652934
+        },
+        {
+          "t": 1789569846.8052568,
+          "topic": "/move_base/result",
+          "id": "/mission_manager-3-1789569765.204",
+          "status": 4,
+          "text": "Robot is oscillating. Even after executing recovery behaviors."
+        },
+        {
+          "t": 1789569846.817564,
+          "topic": "/move_base/goal",
+          "id": "/mission_manager-4-1789569846.817",
+          "x": 10.054808,
+          "y": -6.652934
+        },
+        {
+          "t": 1789569884.8179598,
+          "topic": "/move_base/result",
+          "id": "/mission_manager-4-1789569846.817",
+          "status": 4,
+          "text": "Robot is oscillating. Even after executing recovery behaviors."
+        }
+      ]
+    },
+    {
+      "path": "manual_captures/manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+      "record_time_stats": {
+        "/scan": {
+          "n": 4912,
+          "span": 508.4367573261261,
+          "max_gap": 13.322855710983276,
+          "p99_gap": 0.30524730682373047,
+          "gap_gt_012": 1144,
+          "nonpositive": 0
+        },
+        "/tron/wheel_odom_raw": {
+          "n": 47755,
+          "span": 497.0351996421814,
+          "max_gap": 4.542860746383667,
+          "p99_gap": 0.10236835479736328,
+          "gap_gt_012": 339,
+          "nonpositive": 0
+        }
+      },
+      "header_time_stats": {
+        "/scan": {
+          "n": 4912,
+          "span": 495.999404668808,
+          "max_gap": 4.999355792999268,
+          "p99_gap": 0.10091996192932129,
+          "gap_gt_012": 1,
+          "nonpositive": 0
+        },
+        "/tron/wheel_odom_raw": {
+          "n": 47755,
+          "span": 493.55814480781555,
+          "max_gap": 10.390351057052612,
+          "p99_gap": 0.0108184814453125,
+          "gap_gt_012": 6,
+          "nonpositive": 0
+        }
+      },
+      "odom_step_max_xy": 1.9192705600380995,
+      "odom_steps_gt_01": 2,
+      "linear_x": null,
+      "angular_z": null,
+      "events": []
+    }
+  ]
+}

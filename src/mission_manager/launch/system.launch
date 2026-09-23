@@ -17,6 +17,7 @@
   <arg name="scan_output_base" default="/var/lib/tron1/scans"/>
   <arg name="accid"/>
   <arg name="websocket_url"/>
+  <arg name="startup_localization" default="auto"/>
   <arg name="initial_x" default="0.0"/>
   <arg name="initial_y" default="0.0"/>
   <arg name="initial_yaw" default="0.0"/>
@@ -26,6 +27,12 @@
   <arg name="acc_lim_x" default="0.4"/>
   <arg name="acc_lim_theta" default="2.0"/>
   <arg name="rviz" default="true"/>
+  <arg name="stair_lidar_mode" default="off"/>
+  <arg name="stair_python" default=""/>
+  <arg name="stair_lidar_observe_only" default="true"/>
+  <arg name="stair_lidar_config" default="$(find stair_supervisor)/config/stair_lidar.yaml"/>
+  <arg name="arrival_hold_enabled" default="false"/>
+  <arg name="arrival_hold_settings" default=""/>
 
   <!-- /scan is published by the mini PC sensor stack (mid360s_laserscan).
        Do not add a second publisher here. -->
@@ -36,6 +43,7 @@
     <arg name="tag_topic" value="$(arg tag_topic)"/>
   </include>
   <include file="$(find multifloor_manager)/launch/navigation.launch">
+    <arg name="managed_localization" value="$(eval arg('startup_localization') != 'disabled')"/>
     <arg name="map_yaml" value="$(arg map_yaml)"/>
     <arg name="nav_params_dir" value="$(arg nav_params_dir)"/>
     <arg name="initial_x" value="$(arg initial_x)"/>
@@ -55,19 +63,28 @@
     <param name="config_root" value="$(arg fixture_config_root)"
            if="$(arg allow_test_fixture)"/>
     <param name="initial_floor" value="$(arg initial_floor)"/>
+    <param name="startup_localization" value="$(arg startup_localization)"/>
+    <param name="initialpose_topic" value="/multifloor/amcl_initialpose" if="$(eval arg('startup_localization') != 'disabled')"/>
     <param name="tag_topic" value="$(arg tag_topic)"/>
   </node>
   <node pkg="stair_supervisor" type="stair_supervisor_node.py"
-        name="stair_supervisor" output="screen">
+        name="stair_supervisor" output="screen" launch-prefix="$(arg stair_python)">
+    <env name="OMP_NUM_THREADS" value="2"/>
+    <env name="OPENBLAS_NUM_THREADS" value="1"/>
     <param name="config_dir" value="$(find stair_supervisor)/config"
            unless="$(arg allow_test_fixture)"/>
     <param name="config_dir" value="$(arg fixture_config_root)"
            if="$(arg allow_test_fixture)"/>
     <param name="accid" value="$(arg accid)"/>
     <param name="websocket_url" value="$(arg websocket_url)"/>
+    <param name="lidar_mode" value="$(arg stair_lidar_mode)"/>
+    <param name="lidar_observe_only" value="$(arg stair_lidar_observe_only)"/>
+    <param name="lidar_config" value="$(arg stair_lidar_config)"/>
   </node>
   <node pkg="mission_manager" type="mission_manager_node.py"
         name="mission_manager" output="screen">
+    <param name="arrival_hold_enabled" value="$(arg arrival_hold_enabled)"/>
+    <rosparam command="load" ns="arrival_hold" file="$(arg arrival_hold_settings)" if="$(arg arrival_hold_enabled)"/>
     <param name="config_profile" value="$(arg config_profile)"/>
     <param name="allow_test_fixture" value="$(arg allow_test_fixture)"/>
     <param name="fixture_config_root" value="$(arg fixture_config_root)"

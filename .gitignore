@@ -9,3 +9,9 @@ __pycache__/
 *.bag.active.invalid
 *.bag.INCOMPLETE.json
 *.bag.capture.json
+
+# Local execution artifacts; development evidence lives under docs/.
+logs/
+.omo/
+*.bag.active
+*.bag.orig

@@ -1,0 +1,84 @@
+{
+  "observed_utc": "2026-09-18T05:57:27.131751+00:00",
+  "head": "4d77a223ef6d0c898ebe9a44cc8a60a21904f2f0",
+  "head_identical": true,
+  "git_status_identical": false,
+  "worktree_diff_identical": false,
+  "staged_diff_identical": true,
+  "inventory_count": 5523,
+  "states": {
+    "READ": 761,
+    "METADATA_ONLY": 1013,
+    "EXCLUDED": 3749,
+    "UNREAD": 0
+  },
+  "hashed_content_rechecked": 1749,
+  "inventory_changes": [
+    {
+      "path": ".omo/run-continuation/ses_fe79dc3abffe0h8YOLMzr2MX0n.json",
+      "field": "mtime_ns",
+      "before": 1789699132177453495,
+      "after": 1789710376386829489
+    },
+    {
+      "path": ".omo/run-continuation/ses_fe79dc3abffe0h8YOLMzr2MX0n.json",
+      "field": "sha256"
+    }
+  ],
+  "new_files": [],
+  "temporary_cleanup_rechecks": [
+    {
+      "receipt": "resume2-loader-attempt0-cleanup.json",
+      "temporary_root": "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-w_xf47o3",
+      "absent_now": true,
+      "recorded_remaining_threads": [],
+      "recorded_events": 2
+    },
+    {
+      "receipt": "resume2-unit-run-cleanup.json",
+      "temporary_root": "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9",
+      "absent_now": true,
+      "recorded_remaining_threads": [],
+      "recorded_events": 223
+    },
+    {
+      "receipt": "resume2-temp-artifacts.json",
+      "temporary_root": "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-kb8xnr95",
+      "absent_now": true,
+      "recorded_remaining_threads": [],
+      "recorded_events": 2
+    },
+    {
+      "receipt": "final-review-temp-receipt.json",
+      "temporary_root": "/tmp/tron1-audit-final-review-bw8qolsw",
+      "absent_now": true,
+      "recorded_remaining_threads": [],
+      "recorded_events": 2
+    }
+  ],
+  "tests_executed": 88,
+  "tests_passed": 85,
+  "tests_failed": 3,
+  "test_count_scope": "Audit executions only. Historical task claims, pure probes and zero-test loader attempts excluded.",
+  "resume4_temporary_artifacts": [],
+  "resume4_background_processes": [],
+  "retained_deliverables": "Only this external audit directory. Existing target logs, caches, generated files and captures preserved.",
+  "final_audit_owned_runtime_processes": [],
+  "initial_inventory_count": 5509,
+  "post_baseline_inventory_additions": [
+    ".omo/run-continuation/ses_f4cfe51d8ffeqbnX1ryiSxgxKb.json",
+    ".omo/run-continuation/ses_f4d04ffacffe6C224R06eHxtNQ.json",
+    ".omo/run-continuation/ses_f4d0511e5ffeNAZlep9KQ8Ch4a.json",
+    ".omo/ulw-research/20260918-142053/REPORT.md",
+    ".omo/ulw-research/20260918-142053/brief.md",
+    ".omo/ulw-research/20260918-142053/cause-disappearance.md",
+    ".omo/ulw-research/20260918-142053/claim-graph.md",
+    ".omo/ulw-research/20260918-142053/excursion-log.md",
+    ".omo/ulw-research/20260918-142053/expansion-log.md",
+    ".omo/ulw-research/20260918-142053/intent-diff.md",
+    ".omo/ulw-research/20260918-142053/observation-manifest.md",
+    ".omo/ulw-research/20260918-142053/verification-economics.md",
+    ".omo/ulw-research/20260918-142053/wave-1-code-controller.md",
+    ".omo/ulw-research/20260918-142053/wave-1-recorded-evidence.md"
+  ]
+}

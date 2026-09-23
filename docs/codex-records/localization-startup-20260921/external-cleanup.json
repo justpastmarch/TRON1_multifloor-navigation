@@ -1,0 +1,20 @@
+{
+  "artifacts": [
+    {
+      "path": "/dev/shm/tron1-mission_system_m3tron_All_Series_78017_905866459689405257",
+      "files": 2,
+      "removed": true
+    },
+    {
+      "path": "/dev/shm/tron1-mission_system_m3tron_All_Series_75879_3854352878801158818",
+      "files": 2,
+      "removed": true
+    },
+    {
+      "path": "/dev/shm/tron1-synthetic-mission_5f_rf_m3tron_All_Series_75939_4792751139335527407",
+      "files": 6,
+      "removed": true
+    }
+  ],
+  "remaining_owned_test_processes": []
+}

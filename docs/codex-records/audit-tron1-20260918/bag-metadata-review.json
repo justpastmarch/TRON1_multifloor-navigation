@@ -1,0 +1,1569 @@
+{
+  "utc": "2026-09-18T03:57:54.843237+00:00",
+  "method": "installed rosbag.Bag r skip_index=True; no reindex/play/payload execution",
+  "bags": [
+    {
+      "path": "manual_captures/manual-5F-rooftop_route_1788917683773755895.bag",
+      "size": 105529960,
+      "start": 1788917705.5469632,
+      "end": 1788917727.674787,
+      "count": 21600,
+      "topics": {
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 663,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw/compressed": {
+          "msg_type": "sensor_msgs/CompressedImage",
+          "message_count": 663,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 4426,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 221,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 220,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 2202,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/sensor_joy": {
+          "msg_type": "sensor_msgs/Joy",
+          "message_count": 10999,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 2201,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "manual_captures/manual-5F-rooftop_route_1788918199558502114.bag.active.invalid",
+      "size": 922588033,
+      "start": 1788918222.2117922,
+      "end": 1788918415.2523305,
+      "count": 189050,
+      "topics": {
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 5788,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw/compressed": {
+          "msg_type": "sensor_msgs/CompressedImage",
+          "message_count": 5788,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 38610,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 1930,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 1929,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 19292,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/sensor_joy": {
+          "msg_type": "sensor_msgs/Joy",
+          "message_count": 96429,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 19279,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "manual_captures/manual-5F-rooftop_route_1788918551828137154.bag",
+      "size": 163403843,
+      "start": 1788918571.432276,
+      "end": 1788918606.2275865,
+      "count": 34003,
+      "topics": {
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 1043,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw/compressed": {
+          "msg_type": "sensor_msgs/CompressedImage",
+          "message_count": 1042,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 6960,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 348,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 348,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 3468,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/sensor_joy": {
+          "msg_type": "sensor_msgs/Joy",
+          "message_count": 17322,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 3467,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "manual_captures/manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+      "size": 1500070288,
+      "start": 1788920856.977572,
+      "end": 1788921365.416807,
+      "count": 463540,
+      "topics": {
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 14777,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw/compressed": {
+          "msg_type": "sensor_msgs/CompressedImage",
+          "message_count": 10407,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 95998,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 2690,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 4912,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 48615,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/sensor_joy": {
+          "msg_type": "sensor_msgs/Joy",
+          "message_count": 238381,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 47755,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_FULL_20260916_210849.bag",
+      "size": 1047464539,
+      "start": 1789560543.6863227,
+      "end": 1789560823.2523515,
+      "count": 176752,
+      "topics": {
+        "/amcl_pose": {
+          "msg_type": "geometry_msgs/PoseWithCovarianceStamped",
+          "message_count": 9,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 8481,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw/compressed": {
+          "msg_type": "sensor_msgs/CompressedImage",
+          "message_count": 8481,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/metadata": {
+          "msg_type": "realsense2_camera/Metadata",
+          "message_count": 8480,
+          "connections": 1,
+          "frequency": null
+        },
+        "/diagnostics": {
+          "msg_type": "diagnostic_msgs/DiagnosticArray",
+          "message_count": 3139,
+          "connections": 3,
+          "frequency": null
+        },
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 56008,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 2892,
+          "connections": 1,
+          "frequency": null
+        },
+        "/map": {
+          "msg_type": "nav_msgs/OccupancyGrid",
+          "message_count": 1,
+          "connections": 1,
+          "frequency": null
+        },
+        "/mission/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 1440,
+          "connections": 1,
+          "frequency": null
+        },
+        "/move_base/global_costmap/costmap": {
+          "msg_type": "nav_msgs/OccupancyGrid",
+          "message_count": 1,
+          "connections": 1,
+          "frequency": null
+        },
+        "/move_base/global_costmap/costmap_updates": {
+          "msg_type": "map_msgs/OccupancyGridUpdate",
+          "message_count": 179,
+          "connections": 1,
+          "frequency": null
+        },
+        "/move_base/local_costmap/costmap": {
+          "msg_type": "nav_msgs/OccupancyGrid",
+          "message_count": 22,
+          "connections": 1,
+          "frequency": null
+        },
+        "/move_base/local_costmap/costmap_updates": {
+          "msg_type": "map_msgs/OccupancyGridUpdate",
+          "message_count": 455,
+          "connections": 1,
+          "frequency": null
+        },
+        "/move_base/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 1425,
+          "connections": 1,
+          "frequency": null
+        },
+        "/multifloor/floor_state": {
+          "msg_type": "multifloor_manager/FloorState",
+          "message_count": 570,
+          "connections": 1,
+          "frequency": null
+        },
+        "/multifloor/floor_transition/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 1417,
+          "connections": 1,
+          "frequency": null
+        },
+        "/particlecloud": {
+          "msg_type": "geometry_msgs/PoseArray",
+          "message_count": 9,
+          "connections": 1,
+          "frequency": null
+        },
+        "/rosout": {
+          "msg_type": "rosgraph_msgs/Log",
+          "message_count": 355,
+          "connections": 4,
+          "frequency": null
+        },
+        "/rosout_agg": {
+          "msg_type": "rosgraph_msgs/Log",
+          "message_count": 336,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 2818,
+          "connections": 1,
+          "frequency": null
+        },
+        "/stair_supervisor/state": {
+          "msg_type": "stair_supervisor/SupervisorState",
+          "message_count": 564,
+          "connections": 1,
+          "frequency": null
+        },
+        "/stair_supervisor/websocket_tx": {
+          "msg_type": "std_msgs/String",
+          "message_count": 11253,
+          "connections": 1,
+          "frequency": null
+        },
+        "/stair_traversal/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 1401,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tag_detections": {
+          "msg_type": "apriltag_ros/AprilTagDetectionArray",
+          "message_count": 8319,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 30755,
+          "connections": 2,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 27937,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_FULL_20260916_231643.bag",
+      "size": 287498694,
+      "start": 1789568333.7713294,
+      "end": 1789568415.5305836,
+      "count": 26180,
+      "topics": {
+        "/amcl_pose": {
+          "msg_type": "geometry_msgs/PoseWithCovarianceStamped",
+          "message_count": 1,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 2444,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw/compressed": {
+          "msg_type": "sensor_msgs/CompressedImage",
+          "message_count": 2444,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 16293,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 1341,
+          "connections": 1,
+          "frequency": null
+        },
+        "/map": {
+          "msg_type": "nav_msgs/OccupancyGrid",
+          "message_count": 1,
+          "connections": 1,
+          "frequency": null
+        },
+        "/mission/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 410,
+          "connections": 1,
+          "frequency": null
+        },
+        "/move_base/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 409,
+          "connections": 1,
+          "frequency": null
+        },
+        "/multifloor/floor_state": {
+          "msg_type": "multifloor_manager/FloorState",
+          "message_count": 165,
+          "connections": 1,
+          "frequency": null
+        },
+        "/multifloor/floor_transition/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 410,
+          "connections": 1,
+          "frequency": null
+        },
+        "/rosout": {
+          "msg_type": "rosgraph_msgs/Log",
+          "message_count": 196,
+          "connections": 6,
+          "frequency": null
+        },
+        "/stair_supervisor/state": {
+          "msg_type": "stair_supervisor/SupervisorState",
+          "message_count": 164,
+          "connections": 1,
+          "frequency": null
+        },
+        "/stair_traversal/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 409,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tag_detections": {
+          "msg_type": "apriltag_ros/AprilTagDetectionArray",
+          "message_count": 1489,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 4,
+          "connections": 4,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_FULL_20260916_234018.bag",
+      "size": 1102331710,
+      "start": 1789569619.0308852,
+      "end": 1789569924.6716971,
+      "count": 165354,
+      "topics": {
+        "/amcl_pose": {
+          "msg_type": "geometry_msgs/PoseWithCovarianceStamped",
+          "message_count": 517,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 9156,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw/compressed": {
+          "msg_type": "sensor_msgs/CompressedImage",
+          "message_count": 9155,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 61083,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 3054,
+          "connections": 1,
+          "frequency": null
+        },
+        "/map": {
+          "msg_type": "nav_msgs/OccupancyGrid",
+          "message_count": 1,
+          "connections": 1,
+          "frequency": null
+        },
+        "/mission/feedback": {
+          "msg_type": "mission_manager/MissionActionFeedback",
+          "message_count": 2,
+          "connections": 1,
+          "frequency": null
+        },
+        "/mission/result": {
+          "msg_type": "mission_manager/MissionActionResult",
+          "message_count": 2,
+          "connections": 1,
+          "frequency": null
+        },
+        "/mission/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 1533,
+          "connections": 1,
+          "frequency": null
+        },
+        "/move_base/feedback": {
+          "msg_type": "move_base_msgs/MoveBaseActionFeedback",
+          "message_count": 797,
+          "connections": 1,
+          "frequency": null
+        },
+        "/move_base/goal": {
+          "msg_type": "move_base_msgs/MoveBaseActionGoal",
+          "message_count": 4,
+          "connections": 1,
+          "frequency": null
+        },
+        "/move_base/result": {
+          "msg_type": "move_base_msgs/MoveBaseActionResult",
+          "message_count": 4,
+          "connections": 1,
+          "frequency": null
+        },
+        "/move_base/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 1536,
+          "connections": 1,
+          "frequency": null
+        },
+        "/multifloor/floor_state": {
+          "msg_type": "multifloor_manager/FloorState",
+          "message_count": 612,
+          "connections": 1,
+          "frequency": null
+        },
+        "/multifloor/floor_transition/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 1528,
+          "connections": 1,
+          "frequency": null
+        },
+        "/navigation/cmd_vel": {
+          "msg_type": "geometry_msgs/Twist",
+          "message_count": 801,
+          "connections": 1,
+          "frequency": null
+        },
+        "/rosout": {
+          "msg_type": "rosgraph_msgs/Log",
+          "message_count": 389,
+          "connections": 6,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 3054,
+          "connections": 1,
+          "frequency": null
+        },
+        "/stair_supervisor/state": {
+          "msg_type": "stair_supervisor/SupervisorState",
+          "message_count": 612,
+          "connections": 1,
+          "frequency": null
+        },
+        "/stair_traversal/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 1528,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tag_detections": {
+          "msg_type": "apriltag_ros/AprilTagDetectionArray",
+          "message_count": 5244,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 34198,
+          "connections": 3,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 4,
+          "connections": 4,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 30540,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260821_155022.bag",
+      "size": 2157341453,
+      "start": 1787295081.317861,
+      "end": 1787295224.5369473,
+      "count": 67573,
+      "topics": {
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 4294,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw": {
+          "msg_type": "sensor_msgs/Image",
+          "message_count": 1718,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 28643,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 1432,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 1432,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 15740,
+          "connections": 2,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 14309,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260824_152128.bag",
+      "size": 91965707,
+      "start": 1787552490.3186307,
+      "end": 1787552537.3025436,
+      "count": 11940,
+      "topics": {
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 1444,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw": {
+          "msg_type": "sensor_msgs/Image",
+          "message_count": 53,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 98,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 478,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5210,
+          "connections": 2,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 4652,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260824_152223.bag",
+      "size": 154793379,
+      "start": 1787552547.5514758,
+      "end": 1787552559.727808,
+      "count": 3386,
+      "topics": {
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 458,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw": {
+          "msg_type": "sensor_msgs/Image",
+          "message_count": 108,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 141,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 132,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 1372,
+          "connections": 2,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 1170,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260824_152248.bag",
+      "size": 2169929079,
+      "start": 1787552569.4585907,
+      "end": 1787552749.039466,
+      "count": 48232,
+      "topics": {
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 5381,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw": {
+          "msg_type": "sensor_msgs/Image",
+          "message_count": 1590,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 1793,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 1794,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 19734,
+          "connections": 2,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 17935,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260827_102101.bag",
+      "size": 3563871958,
+      "start": 1787793663.2247295,
+      "end": 1787793887.514536,
+      "count": 107635,
+      "topics": {
+        "/amcl_pose": {
+          "msg_type": "geometry_msgs/PoseWithCovarianceStamped",
+          "message_count": 334,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 6746,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw": {
+          "msg_type": "sensor_msgs/Image",
+          "message_count": 2888,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 44957,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 2249,
+          "connections": 1,
+          "frequency": null
+        },
+        "/map": {
+          "msg_type": "nav_msgs/OccupancyGrid",
+          "message_count": 1,
+          "connections": 1,
+          "frequency": null
+        },
+        "/move_base/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 1126,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 2248,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 24682,
+          "connections": 2,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 22399,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260827_103200.bag",
+      "size": 1774155508,
+      "start": 1787794321.1483197,
+      "end": 1787794389.9874303,
+      "count": 33661,
+      "topics": {
+        "/amcl_pose": {
+          "msg_type": "geometry_msgs/PoseWithCovarianceStamped",
+          "message_count": 22,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 2070,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw": {
+          "msg_type": "sensor_msgs/Image",
+          "message_count": 1624,
+          "connections": 1,
+          "frequency": null
+        },
+        "/initialpose": {
+          "msg_type": "geometry_msgs/PoseWithCovarianceStamped",
+          "message_count": 2,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 13796,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 690,
+          "connections": 1,
+          "frequency": null
+        },
+        "/map": {
+          "msg_type": "nav_msgs/OccupancyGrid",
+          "message_count": 1,
+          "connections": 1,
+          "frequency": null
+        },
+        "/move_base/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 346,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 689,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 7555,
+          "connections": 2,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 6861,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260827_103313.bag",
+      "size": 4370811763,
+      "start": 1787794394.7039452,
+      "end": 1787794667.0442595,
+      "count": 130674,
+      "topics": {
+        "/amcl_pose": {
+          "msg_type": "geometry_msgs/PoseWithCovarianceStamped",
+          "message_count": 362,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 8195,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw": {
+          "msg_type": "sensor_msgs/Image",
+          "message_count": 3553,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 54561,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 2733,
+          "connections": 1,
+          "frequency": null
+        },
+        "/map": {
+          "msg_type": "nav_msgs/OccupancyGrid",
+          "message_count": 1,
+          "connections": 1,
+          "frequency": null
+        },
+        "/move_base/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 1368,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 2730,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 29960,
+          "connections": 2,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 27206,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260827_105713.bag",
+      "size": 1507746956,
+      "start": 1787795839.5957584,
+      "end": 1787796114.042964,
+      "count": 96815,
+      "topics": {
+        "/amcl_pose": {
+          "msg_type": "geometry_msgs/PoseWithCovarianceStamped",
+          "message_count": 322,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 6243,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw": {
+          "msg_type": "sensor_msgs/Image",
+          "message_count": 840,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 41082,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 1818,
+          "connections": 1,
+          "frequency": null
+        },
+        "/map": {
+          "msg_type": "nav_msgs/OccupancyGrid",
+          "message_count": 1,
+          "connections": 1,
+          "frequency": null
+        },
+        "/move_base/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 1387,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 2064,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 22580,
+          "connections": 2,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 20473,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260827_150034.bag",
+      "size": 1519550290,
+      "start": 1787810435.9975019,
+      "end": 1787810655.6556914,
+      "count": 108263,
+      "topics": {
+        "/amcl_pose": {
+          "msg_type": "geometry_msgs/PoseWithCovarianceStamped",
+          "message_count": 487,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 6612,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw/compressed": {
+          "msg_type": "sensor_msgs/CompressedImage",
+          "message_count": 4576,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 44029,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 1945,
+          "connections": 1,
+          "frequency": null
+        },
+        "/map": {
+          "msg_type": "nav_msgs/OccupancyGrid",
+          "message_count": 1,
+          "connections": 1,
+          "frequency": null
+        },
+        "/move_base/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 1103,
+          "connections": 1,
+          "frequency": null
+        },
+        "/particlecloud": {
+          "msg_type": "geometry_msgs/PoseArray",
+          "message_count": 487,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 2198,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tag_detections": {
+          "msg_type": "apriltag_ros/AprilTagDetectionArray",
+          "message_count": 597,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 24290,
+          "connections": 3,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 21933,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_20260827_154342.bag",
+      "size": 1747637963,
+      "start": 1787813023.762269,
+      "end": 1787813243.3815782,
+      "count": 110969,
+      "topics": {
+        "/amcl_pose": {
+          "msg_type": "geometry_msgs/PoseWithCovarianceStamped",
+          "message_count": 534,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 6594,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw/compressed": {
+          "msg_type": "sensor_msgs/CompressedImage",
+          "message_count": 5161,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 43964,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 2198,
+          "connections": 1,
+          "frequency": null
+        },
+        "/map": {
+          "msg_type": "nav_msgs/OccupancyGrid",
+          "message_count": 1,
+          "connections": 1,
+          "frequency": null
+        },
+        "/move_base/status": {
+          "msg_type": "actionlib_msgs/GoalStatusArray",
+          "message_count": 1100,
+          "connections": 1,
+          "frequency": null
+        },
+        "/particlecloud": {
+          "msg_type": "geometry_msgs/PoseArray",
+          "message_count": 534,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 2196,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tag_detections": {
+          "msg_type": "apriltag_ros/AprilTagDetectionArray",
+          "message_count": 2023,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 24735,
+          "connections": 3,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 21924,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/stair_3F_to_4F_UP_CLEAN_REPEAT_20260821_160211.bag",
+      "size": 2107960604,
+      "start": 1787295736.2206879,
+      "end": 1787295877.261191,
+      "count": 66526,
+      "topics": {
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 4228,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw": {
+          "msg_type": "sensor_msgs/Image",
+          "message_count": 1674,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 28207,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/lidar": {
+          "msg_type": "livox_ros_driver2/CustomMsg",
+          "message_count": 1410,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 1409,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 15501,
+          "connections": 2,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 14092,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/tag_calibration_20260827_134853.bag",
+      "size": 916786440,
+      "start": 1787806138.1713011,
+      "end": 1787806321.0725338,
+      "count": 84836,
+      "topics": {
+        "/amcl_pose": {
+          "msg_type": "geometry_msgs/PoseWithCovarianceStamped",
+          "message_count": 361,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/camera_info": {
+          "msg_type": "sensor_msgs/CameraInfo",
+          "message_count": 5582,
+          "connections": 1,
+          "frequency": null
+        },
+        "/camera1/color/image_raw": {
+          "msg_type": "sensor_msgs/Image",
+          "message_count": 1571,
+          "connections": 1,
+          "frequency": null
+        },
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 36682,
+          "connections": 1,
+          "frequency": null
+        },
+        "/map": {
+          "msg_type": "nav_msgs/OccupancyGrid",
+          "message_count": 1,
+          "connections": 1,
+          "frequency": null
+        },
+        "/particlecloud": {
+          "msg_type": "geometry_msgs/PoseArray",
+          "message_count": 361,
+          "connections": 1,
+          "frequency": null
+        },
+        "/scan": {
+          "msg_type": "sensor_msgs/LaserScan",
+          "message_count": 1842,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tag_detections": {
+          "msg_type": "apriltag_ros/AprilTagDetectionArray",
+          "message_count": 14,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 20161,
+          "connections": 3,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 18256,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/yaw_calibration_020_030_040_20260821_134549.bag",
+      "size": 11373716,
+      "start": 1787287549.977751,
+      "end": 1787287617.2507339,
+      "count": 26907,
+      "topics": {
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 13457,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 6728,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 6717,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    },
+    {
+      "path": "stair_captures/yaw_calibration_20260821_132716.bag",
+      "size": 162953638,
+      "start": 1787286438.0063426,
+      "end": 1787287405.0685382,
+      "count": 386797,
+      "topics": {
+        "/livox/imu": {
+          "msg_type": "sensor_msgs/Imu",
+          "message_count": 193410,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 96693,
+          "connections": 1,
+          "frequency": null
+        },
+        "/tf_static": {
+          "msg_type": "tf2_msgs/TFMessage",
+          "message_count": 5,
+          "connections": 5,
+          "frequency": null
+        },
+        "/tron/wheel_odom_raw": {
+          "msg_type": "nav_msgs/Odometry",
+          "message_count": 96689,
+          "connections": 1,
+          "frequency": null
+        }
+      }
+    }
+  ]
+}

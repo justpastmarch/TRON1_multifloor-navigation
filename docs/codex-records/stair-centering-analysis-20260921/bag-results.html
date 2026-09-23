@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+
+<html lang="ko" xml:lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8"/>
+<meta content="pandoc" name="generator"/>
+<meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport"/>
+<title>TRON1 · 계단 측위와 중앙 유지</title>
+<style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+<link href="report.css" rel="stylesheet"/>
+</head>
+<body>
+
+
+<h1 id="bag-coverage-and-results">Bag coverage and results</h1>
+<p>READ means the listed topic/sample scope, not a new read of every topic. METADATA_ONLY bags lack raw LiDAR and RGB. Originals were opened read-only.</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 12%"/>
+<col style="width: 12%"/>
+<col style="width: 12%"/>
+<col style="width: 16%"/>
+<col style="width: 16%"/>
+<col style="width: 16%"/>
+<col style="width: 12%"/>
+</colgroup>
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Original filename</th>
+<th>Scope</th>
+<th style="text-align: right;">LiDAR packets</th>
+<th style="text-align: right;">Geometry samples</th>
+<th style="text-align: right;">Evaluation windows</th>
+<th>Guarded dual / V1 / V2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>00</td>
+<td>manual-5F-rooftop_route_1788917683773755895.bag</td>
+<td>READ</td>
+<td style="text-align: right;">221</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">0</td>
+<td>no labelled evaluation window</td>
+</tr>
+<tr class="even">
+<td>01</td>
+<td>manual-5F-rooftop_route_1788918199558502114.bag.active.invalid</td>
+<td>READ</td>
+<td style="text-align: right;">1930</td>
+<td style="text-align: right;">386</td>
+<td style="text-align: right;">0</td>
+<td>no labelled evaluation window</td>
+</tr>
+<tr class="odd">
+<td>02</td>
+<td>manual-5F-rooftop_route_1788918551828137154.bag</td>
+<td>READ</td>
+<td style="text-align: right;">348</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">0</td>
+<td>no labelled evaluation window</td>
+</tr>
+<tr class="even">
+<td>03</td>
+<td>manual-5F-rooftop_route_1788920816079496577.bag.active.invalid</td>
+<td>READ</td>
+<td style="text-align: right;">2690</td>
+<td style="text-align: right;">538</td>
+<td style="text-align: right;">3</td>
+<td>38 / 54 / 53 of 200</td>
+</tr>
+<tr class="odd">
+<td>04</td>
+<td>stair_3F_to_4F_FULL_20260916_210849.bag</td>
+<td>READ</td>
+<td style="text-align: right;">2892</td>
+<td style="text-align: right;">579</td>
+<td style="text-align: right;">0</td>
+<td>no labelled evaluation window</td>
+</tr>
+<tr class="even">
+<td>05</td>
+<td>stair_3F_to_4F_FULL_20260916_231643.bag</td>
+<td>READ</td>
+<td style="text-align: right;">1341</td>
+<td style="text-align: right;">269</td>
+<td style="text-align: right;">0</td>
+<td>no labelled evaluation window</td>
+</tr>
+<tr class="odd">
+<td>06</td>
+<td>stair_3F_to_4F_FULL_20260916_234018.bag</td>
+<td>READ</td>
+<td style="text-align: right;">3054</td>
+<td style="text-align: right;">611</td>
+<td style="text-align: right;">0</td>
+<td>no labelled evaluation window</td>
+</tr>
+<tr class="even">
+<td>07</td>
+<td>stair_3F_to_4F_UP_20260821_155022.bag</td>
+<td>READ</td>
+<td style="text-align: right;">1432</td>
+<td style="text-align: right;">287</td>
+<td style="text-align: right;">0</td>
+<td>development only</td>
+</tr>
+<tr class="odd">
+<td>08</td>
+<td>stair_3F_to_4F_UP_20260824_152128.bag</td>
+<td>READ</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">2</td>
+<td>7 / 11 / 11 of 16</td>
+</tr>
+<tr class="even">
+<td>09</td>
+<td>stair_3F_to_4F_UP_20260824_152223.bag</td>
+<td>READ</td>
+<td style="text-align: right;">141</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">2</td>
+<td>13 / 13 / 13 of 18</td>
+</tr>
+<tr class="odd">
+<td>10</td>
+<td>stair_3F_to_4F_UP_20260824_152248.bag</td>
+<td>READ</td>
+<td style="text-align: right;">1793</td>
+<td style="text-align: right;">359</td>
+<td style="text-align: right;">2</td>
+<td>50 / 65 / 50 of 104</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td>stair_3F_to_4F_UP_20260827_102101.bag</td>
+<td>READ</td>
+<td style="text-align: right;">2249</td>
+<td style="text-align: right;">450</td>
+<td style="text-align: right;">2</td>
+<td>88 / 102 / 88 of 130</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>stair_3F_to_4F_UP_20260827_103200.bag</td>
+<td>READ</td>
+<td style="text-align: right;">690</td>
+<td style="text-align: right;">138</td>
+<td style="text-align: right;">1</td>
+<td>135 / 136 / 135 of 138</td>
+</tr>
+<tr class="even">
+<td>13</td>
+<td>stair_3F_to_4F_UP_20260827_103313.bag</td>
+<td>READ</td>
+<td style="text-align: right;">2733</td>
+<td style="text-align: right;">547</td>
+<td style="text-align: right;">3</td>
+<td>150 / 253 / 167 of 301</td>
+</tr>
+<tr class="odd">
+<td>14</td>
+<td>stair_3F_to_4F_UP_20260827_105713.bag</td>
+<td>READ</td>
+<td style="text-align: right;">1818</td>
+<td style="text-align: right;">364</td>
+<td style="text-align: right;">2</td>
+<td>72 / 76 / 72 of 103</td>
+</tr>
+<tr class="even">
+<td>15</td>
+<td>stair_3F_to_4F_UP_20260827_150034.bag</td>
+<td>READ</td>
+<td style="text-align: right;">1945</td>
+<td style="text-align: right;">389</td>
+<td style="text-align: right;">0</td>
+<td>no labelled evaluation window</td>
+</tr>
+<tr class="odd">
+<td>16</td>
+<td>stair_3F_to_4F_UP_20260827_154342.bag</td>
+<td>READ</td>
+<td style="text-align: right;">2198</td>
+<td style="text-align: right;">440</td>
+<td style="text-align: right;">0</td>
+<td>no labelled evaluation window</td>
+</tr>
+<tr class="even">
+<td>17</td>
+<td>stair_3F_to_4F_UP_CLEAN_REPEAT_20260821_160211.bag</td>
+<td>READ</td>
+<td style="text-align: right;">1410</td>
+<td style="text-align: right;">282</td>
+<td style="text-align: right;">2</td>
+<td>53 / 59 / 53 of 78</td>
+</tr>
+<tr class="odd">
+<td>18</td>
+<td>tag_calibration_20260827_134853.bag</td>
+<td>READ</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td>no labelled evaluation window</td>
+</tr>
+<tr class="even">
+<td>19</td>
+<td>yaw_calibration_020_030_040_20260821_134549.bag</td>
+<td>METADATA_ONLY</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td>no labelled evaluation window</td>
+</tr>
+<tr class="odd">
+<td>20</td>
+<td>yaw_calibration_20260821_132716.bag</td>
+<td>METADATA_ONLY</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td>no labelled evaluation window</td>
+</tr>
+</tbody>
+</table>
+<nav id="TOC">
+<ul>
+<li><a href="#bag-coverage-and-results">Bag coverage and results</a><ul>
+<li><a href="#every-evaluation-window">Every evaluation window</a></li>
+<li><a href="#header-time-correspondence-diagnostic">Header-time correspondence diagnostic</a></li>
+</ul></li>
+</ul>
+</nav><h2 id="every-evaluation-window">Every evaluation window</h2>
+<p>Coarse RGB stair-view windows include approaches/pauses, not verified physical contact phases. V2 is exploratory after V1 inspection.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Bag</th>
+<th>Window / record-time range</th>
+<th style="text-align: right;">Samples</th>
+<th style="text-align: right;">Guarded dual</th>
+<th style="text-align: right;">V1</th>
+<th style="text-align: right;">V2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>08</td>
+<td>flight_view1 / 0.0–13.0s</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td>08</td>
+<td>flight_view2 / 29.0–47.0s</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="odd">
+<td>09</td>
+<td>flight_view1 / 0.0–4.0s</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td>09</td>
+<td>flight_view2 / 8.0–12.2s</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="odd">
+<td>10</td>
+<td>flight1 / 0.0–31.0s</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>flight2 / 51.0–72.0s</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>flight1 / 0.0–36.0s</td>
+<td style="text-align: right;">74</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">61</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td>flight2 / 90.0–118.0s</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">27</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>stair_view_with_long_pause / 0.0–68.8s</td>
+<td style="text-align: right;">138</td>
+<td style="text-align: right;">135</td>
+<td style="text-align: right;">136</td>
+<td style="text-align: right;">135</td>
+</tr>
+<tr class="even">
+<td>13</td>
+<td>flight1 / 0.0–67.0s</td>
+<td style="text-align: right;">136</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: right;">112</td>
+<td style="text-align: right;">105</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>flight2 / 106.0–129.0s</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr class="even">
+<td>13</td>
+<td>stair_view_with_long_pause / 213.0–272.3s</td>
+<td style="text-align: right;">119</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">113</td>
+<td style="text-align: right;">42</td>
+</tr>
+<tr class="odd">
+<td>14</td>
+<td>flight1 / 0.0–27.0s</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">46</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>flight2 / 50.0–71.0s</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">26</td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td>flight1 / 0.0–18.0s</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="even">
+<td>17</td>
+<td>flight2 / 40.0–61.0s</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr class="odd">
+<td>03</td>
+<td>roof_up_flight1 / 72.0–129.0s</td>
+<td style="text-align: right;">69</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">36</td>
+</tr>
+<tr class="even">
+<td>03</td>
+<td>roof_up_flight2 / 168.0–184.0s</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td>03</td>
+<td>roof_down_candidate_backwards / 320.0–384.0s</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">17</td>
+</tr>
+</tbody>
+</table>
+<h2 id="header-time-correspondence-diagnostic">Header-time correspondence diagnostic</h2>
+<p>Same geometry parameters. Map RGB labels through RGB headers and select LiDAR by header. This does not prove cross-sensor clock synchronization. Initial tables above use record-time correspondence.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Bag</th>
+<th>Window</th>
+<th style="text-align: right;">Samples</th>
+<th style="text-align: right;">Guarded dual</th>
+<th style="text-align: right;">V1</th>
+<th style="text-align: right;">V2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>08</td>
+<td>flight_view1</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="even">
+<td>08</td>
+<td>flight_view2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td>09</td>
+<td>flight_view1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td>09</td>
+<td>flight_view2</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr class="odd">
+<td>10</td>
+<td>flight1</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>flight2</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>flight1</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">61</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td>flight2</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>stair_view_with_long_pause</td>
+<td style="text-align: right;">131</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">129</td>
+<td style="text-align: right;">128</td>
+</tr>
+<tr class="even">
+<td>13</td>
+<td>flight1</td>
+<td style="text-align: right;">136</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: right;">112</td>
+<td style="text-align: right;">105</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>flight2</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr class="even">
+<td>13</td>
+<td>stair_view_with_long_pause</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">104</td>
+<td style="text-align: right;">37</td>
+</tr>
+<tr class="odd">
+<td>14</td>
+<td>flight1</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">46</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>flight2</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">27</td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td>flight1</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">27</td>
+</tr>
+<tr class="even">
+<td>17</td>
+<td>flight2</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr class="odd">
+<td>03</td>
+<td>roof_up_flight1</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">46</td>
+</tr>
+<tr class="even">
+<td>03</td>
+<td>roof_up_flight2</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="odd">
+<td>03</td>
+<td>roof_down_candidate_backwards</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">17</td>
+</tr>
+</tbody>
+</table>
+<p>Bag 18: RGB payload and prior numeric arrays; no LiDAR. Bags 19/20: original index and prior numeric arrays only. Bags without labelled windows remain in full-cloud geometry and timing results; corridor/elevator planes are not evidence of stair traversal.</p>
+<p>No source bag was replayed into ROS. No robot command was issued. Generated from comparison.json and robustness.json.</p>
+</body>
+</html>

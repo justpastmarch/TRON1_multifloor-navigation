@@ -1,0 +1,72 @@
+"""Compare offline reconstructed entry signals with the unchanged controller."""
+from dataclasses import replace
+import json
+import math
+import sys
+from pathlib import Path
+from types import SimpleNamespace
+import numpy as np
+from scipy.spatial.transform import Rotation
+import yaml
+variant = sys.argv[1] if len(sys.argv) > 1 else 'before'
+if variant not in ('before', 'applied'):
+    raise SystemExit('usage: evaluate_replay.py [before|applied]')
+if variant == 'before':
+    import stair_supervisor
+    stair_supervisor.__path__.insert(0,str(Path(__file__).resolve().parent/'before/src/stair_supervisor/src/stair_supervisor'))
+from stair_supervisor.configuration import load_stair_configuration
+from stair_supervisor.lidar_tracking import TrackingSample
+from stair_supervisor.stair_feedback import StairFeedback, RouteAnchor
+from stair_supervisor.stair_evidence import Phase
+
+ROOT=Path('/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation')
+OUT=Path(__file__).resolve().parent
+config=yaml.safe_load((ROOT/'src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml').read_text())
+messages=json.loads((OUT/'stair_test_20260923_091321_pEOWV9.json').read_text())['messages']
+live={m['value']['sequence']:m['value'] for m in messages if m['topic'].endswith('/tracking_status') and 'sequence' in m['value']}
+debug=[m['value'] for m in messages if m['topic'].endswith('/control_debug') and 'pose' in m['value']]
+samples=[TrackingSample(**v) for v in json.loads((OUT/'replay-samples.json').read_text()) if v['geometry_valid']]
+reference=debug[0]
+reference_stamp=live[reference['sequence']]['stamp']
+reference_replay=next(s for s in samples if s.stamp==reference_stamp)
+body=np.eye(4);body[:3,:3]=Rotation.from_euler('xyz',[reference['roll'],reference['pitch'],reference['yaw']]).as_matrix();body[:3,3]=reference['pose']
+mount=np.asarray(config['base_from_lidar'])
+profile_from_replay=body@mount@np.linalg.inv(np.asarray(reference_replay.transform).reshape(4,4))
+start_debug=next(d for d in debug if d.get('phase_test',{}).get('state')=='RUNNING')
+first_stamp=live[start_debug['sequence']]['stamp']
+first=next(s for s in samples if s.stamp==first_stamp)
+worker=SimpleNamespace(value=first,epoch=0,diagnostics=lambda:{'worker_error':''})
+worker.snapshot=lambda:worker.value
+route=config['routes'][0]
+control=StairFeedback(worker,mount,[route])
+anchor=RouteAnchor(0,first.sequence,first.stamp,tuple(np.linalg.inv(profile_from_replay).flat),.1,'offline alignment to last recorded live reference; not ground truth')
+control.install_anchor(route['id'],anchor)
+profile=next(p for p in load_stair_configuration(ROOT/'src/stair_supervisor/config').profiles if p.id==route['id'])
+control.arm(profile,first.stamp+.35,phase_test=True,start_phase=Phase.VERIFY_ENTRY)
+control.begin_phase(Phase.VERIFY_ENTRY,first.stamp+.35)
+rows=[]
+transitions=[]
+phase=Phase.VERIFY_ENTRY
+candidate=variant=='applied'
+for s in samples:
+    if not first.stamp<=s.stamp<=first.stamp+5.:continue
+    worker.value=s
+    report=control.evaluate(phase,s.stamp+.35)
+    d=control.debug
+    recent=[h for h in control._history if h[0]>=s.stamp-route['limits']['settle_sec']-route['limits']['warn_sec']]
+    metrics={'span':recent[-1][0]-recent[0][0],
+             'position_excursion':float(max(np.linalg.norm(h[1]-recent[0][1]) for h in recent)),
+             'yaw_excursion':float(max(abs(math.atan2(math.sin(h[2]-recent[0][2]),math.cos(h[2]-recent[0][2]))) for h in recent)),
+             'max_planar_speed':float(max(np.linalg.norm(h[3][:2]) for h in recent)),
+             'max_yaw_rate':float(max(abs(h[4]) for h in recent))} if recent else {}
+    rows.append({'elapsed':s.stamp-first.stamp,'phase':phase.value,'faulted':bool(report.faulted),'complete':bool(report.complete),'pose':d.get('pose'),'yaw':d.get('yaw'),'waiting':d.get('incomplete_conditions'),'velocity':d.get('velocity'),'angular_velocity':d.get('angular_velocity'),'metrics':metrics})
+    if candidate and report.complete:
+        transitions.append({'completed':phase.value,'elapsed':s.stamp-first.stamp})
+        if phase is Phase.ALIGN:break
+        phase=Phase.ALIGN
+        control.begin_phase(phase,s.stamp+.35)
+result={'caveat':'Offline reconstruction aligned to a recorded live reference; missing runtime samples are not recovered ground truth. Estimator initialization and scheduling can differ. No simulated policy pass proves physical traversal.','reference_stamp':reference_stamp,'first_stamp':first_stamp,'rows':rows}
+result['transitions']=transitions
+(OUT/('replay-applied-evaluation.json' if candidate else 'replay-entry-evaluation.json')).write_text(json.dumps(result,indent=2))
+for r in rows:print(json.dumps(r))
+print('transitions',transitions)

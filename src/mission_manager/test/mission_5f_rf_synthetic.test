@@ -5,6 +5,7 @@
   <node pkg="mission_manager" type="mock_mission_children.py"
         name="mock_5f_rf_children" required="true" output="screen">
     <param name="initial_floor" value="5F" />
+    <param name="fixture_config_root" value="$(find mission_manager)/../../test/fixtures/building_5f_rf_synthetic" />
   </node>
 
   <node pkg="mission_manager" type="mission_manager_node.py"

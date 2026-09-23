@@ -1,0 +1,16 @@
+[INFO] [1790083694.399742]: LiDAR observation only: no robot command transport
+... logging to /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/ros-logs/rostest-m3tron-All-Series-366588.log
+[ROSUNIT] Outputting test results to /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/ros-home/test_results/stair_supervisor/rostest-test_lidar_observe.xml
+[Testcase: testlidar_observation_only] ... ok
+
+[ROSTEST]-----------------------------------------------------------------------
+
+[stair_supervisor.rosunit-lidar_observation_only/test_sensor_tracking_without_any_robot_command_surface][passed]
+
+SUMMARY
+[32m * RESULT: SUCCESS[0m
+ * TESTS: 1
+ * ERRORS: 0
+ * FAILURES: 0
+
+rostest log file is in /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/ros-logs/rostest-m3tron-All-Series-366588.log

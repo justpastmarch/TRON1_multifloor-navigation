@@ -1,0 +1,26 @@
+{
+  "at_utc": "2026-09-23T00:05:13.546055+00:00",
+  "trials": [
+    {
+      "wait_sec": 0.044768264022422954,
+      "geometry_age_sec": 0.382994232699275,
+      "sequence": 14830,
+      "state": "TRACKED"
+    },
+    {
+      "wait_sec": 0.1169141190184746,
+      "geometry_age_sec": 0.28311334483441897,
+      "sequence": 14831,
+      "state": "TRACKED"
+    },
+    {
+      "wait_sec": 0.09531327898730524,
+      "geometry_age_sec": 0.18295379570918158,
+      "sequence": 14832,
+      "state": "TRACKED"
+    }
+  ],
+  "command_publishers": 0,
+  "preview_or_action_services_called": 0,
+  "probe_log_directory_removed": true
+}

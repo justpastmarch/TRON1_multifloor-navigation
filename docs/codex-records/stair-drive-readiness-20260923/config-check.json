@@ -1,0 +1,28 @@
+{
+  "mode": "control",
+  "config_path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/candidate/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+  "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+  "calibration_path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/candidate/src/stair_supervisor/config/lidar_imu_baseline.yaml",
+  "calibration_sha256": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+  "configured": true,
+  "python": "/home/m3tron/.cache/uv/environments-v2/test-registration-core-26ae8f8cf1a8e532/bin/python",
+  "numpy": "1.24.4",
+  "scipy": "1.10.1",
+  "open3d": "0.18.0",
+  "routes": [
+    {
+      "id": "stair_3f_4f_up",
+      "commissioned": false,
+      "phase_test_limits": {
+        "VERIFY_ENTRY": 5.0,
+        "ALIGN": 15.0,
+        "FORWARD_SEGMENT_1": 45.0,
+        "LANDING": 10.0,
+        "TURN_TO_NEXT_FLIGHT": 120.0,
+        "FORWARD_SEGMENT_2": 45.0,
+        "EXIT_CONFIRM": 15.0
+      }
+    }
+  ],
+  "robot_commands_sent": 0
+}

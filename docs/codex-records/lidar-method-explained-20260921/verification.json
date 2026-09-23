@@ -1,0 +1,15 @@
+{
+  "document": "report.html",
+  "internal_links": "PASS",
+  "visual_review": [
+    "top",
+    "algorithm layers",
+    "comparison table"
+  ],
+  "render_checks": "render-checks.json",
+  "independent_review_scope": "Selected explanatory excerpts only; not a full-document independent audit",
+  "temporary_browser_profiles_and_logs": "removed",
+  "production_files_modified": false,
+  "robot_commands_sent": false,
+  "limits": "Historical measurements were traced to preserved artifacts; no new physical trial or absolute pose accuracy measurement was performed."
+}

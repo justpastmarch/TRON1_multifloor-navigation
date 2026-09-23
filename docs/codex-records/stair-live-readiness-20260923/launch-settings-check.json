@@ -1,0 +1,11 @@
+{
+  "resolved_parameters": {
+    "/stair_supervisor/lidar_mode": "control",
+    "/stair_supervisor/lidar_observe_only": false,
+    "/stair_supervisor/lidar_config": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-live-readiness-20260923/candidate/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+    "/stair_supervisor/config_dir": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config"
+  },
+  "configured": true,
+  "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+  "scope": "roslaunch parameter expansion only; no live master or robot"
+}

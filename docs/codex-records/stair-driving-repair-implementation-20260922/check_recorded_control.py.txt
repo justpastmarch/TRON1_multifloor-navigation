@@ -1,0 +1,47 @@
+import sys,json,math
+from pathlib import Path
+from dataclasses import replace
+import numpy as np
+HERE=Path(__file__).resolve().parent;REPO=Path('/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation')
+sys.path.insert(0,str(HERE/'candidate/src/stair_supervisor/src'))
+SOURCE=HERE.parent/'stair-lidar-commissioning-20260921/offline-validation'
+from stair_supervisor.configuration import load_stair_configuration,load_lidar_configuration
+from stair_supervisor.stair_feedback import StairFeedback,se2
+from stair_supervisor.stair_evidence import Phase
+from stair_supervisor.lidar_tracking import TrackingSample
+class Worker:
+ epoch=0
+ def snapshot(self):return self.value
+ def diagnostics(self):return {'worker_error':''}
+def sample(row,seq):
+ t=row['stamp'];return TrackingSample(0,seq,t,t,t,t,t,tuple(np.array(row['pose']).flat),True,'TRACKED','recorded-input offline')
+cfg=load_lidar_configuration(SOURCE/'config/stair_lidar.yaml','control',False);profile=load_stair_configuration(SOURCE/'config').profiles[0]
+results={}
+for bid in ['102101','105713','103313']:
+ rows=[r for r in json.loads((SOURCE/f'replay-{bid}/poses.json').read_text()) if r['accepted'] and r['state']!='BOOTSTRAP']
+ w=Worker();w.value=sample(rows[0],1);c=StairFeedback(w,cfg.document['base_from_lidar'],cfg.document['routes'])
+ start=rows[0]['stamp']
+ local_base=np.array(rows[0]['pose'])@np.linalg.inv(np.array(cfg.document['base_from_lidar']))
+ yaw0=math.atan2(local_base[1,0],local_base[0,0]);entry=se2(-.45,0,0)
+ entry[:3,:3]=se2(0,0,-yaw0)[:3,:3]@local_base[:3,:3]
+ c.capture_entry(profile.id,entry,.10,'offline assumed entry XY/yaw; measured gravity tilt preserved; not survey',start)
+ c.arm(profile,start,phase_test=True);phase=Phase.FORWARD_SEGMENT_1;c.begin_phase(phase,start)
+ first_fault=None;commands=[];transitions=[];trace=[]
+ phases=[Phase.FORWARD_SEGMENT_1,Phase.LANDING,Phase.TURN_TO_NEXT_FLIGHT,Phase.FORWARD_SEGMENT_2,Phase.EXIT_CONFIRM]
+ for i,r in enumerate(rows[1:],2):
+  w.value=sample(r,i);t=r['stamp']-start;report=c.evaluate(phase,r['stamp']+.01)
+  pose=np.linalg.inv(np.array(c.anchor.local_from_profile).reshape(4,4))@np.array(r['pose'])@np.linalg.inv(np.array(cfg.document['base_from_lidar']))
+  item=dict(position=pose[:3,3].tolist(),yaw_deg=math.degrees(math.atan2(pose[1,0],pose[0,0])),t=t,phase=phase.value,complete=report.complete,faulted=report.faulted,detail=report.detail,debug=c.debug.copy())
+  trace.append(item)
+  if t<=4:commands.append(dict(t=t,command=c.command(),faulted=report.faulted,detail=report.detail))
+  if report.faulted:
+   first_fault=item;break
+  if report.complete:
+   transitions.append(dict(t=t,phase=phase.value))
+   if phase is phases[-1]:break
+   phase=phases[phases.index(phase)+1];c.begin_phase(phase,r['stamp']+.01)
+ results[bid]=dict(first4s_samples=len(commands),first4s_faults=sum(x['faulted'] for x in commands),first_fault=first_fault,transitions=transitions,final_evaluated_phase=phase.value,
+  command_peak=[max((abs(x['command'][j]) for x in commands),default=0) for j in (0,1)],
+  note='Recorded motion is independent of proposed commands: this is open-loop policy evaluation, NOT a physical closed-loop driving simulation.')
+ (HERE/f'control-trace-{bid}.json').write_text(json.dumps(trace,indent=2,default=lambda x:x.item()))
+(HERE/'recorded-control-results.json').write_text(json.dumps(results,indent=2,default=lambda x:x.item()));print(json.dumps(results,indent=2,default=lambda x:x.item()))

@@ -1,0 +1,154 @@
+-- The C compiler identification is GNU 9.4.0
+-- The CXX compiler identification is GNU 9.4.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Using CATKIN_DEVEL_PREFIX: /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/devel
+-- Using CMAKE_PREFIX_PATH: /opt/ros/noetic
+-- This workspace overlays: /opt/ros/noetic
+-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+-- Using PYTHON_EXECUTABLE: /usr/bin/python3
+-- Using Debian Python package layout
+-- Found PY_em: /usr/lib/python3/dist-packages/em.py  
+-- Using empy: /usr/lib/python3/dist-packages/em.py
+-- Using CATKIN_ENABLE_TESTING: OFF
+-- catkin 0.8.12
+-- BUILD_SHARED_LIBS is on
+-- BUILD_SHARED_LIBS is on
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- ~~  traversing 1 packages in topological order:
+-- ~~  - stair_supervisor
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- +++ processing catkin package: 'stair_supervisor'
+-- ==> add_subdirectory(stair_supervisor)
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- Generating .msg files for action stair_supervisor/StairTraversal /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/src/stair_supervisor/action/StairTraversal.action
+Generating for action StairTraversal
+-- stair_supervisor: 8 messages, 1 services
+-- Installing devel-space wrapper /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/src/stair_supervisor/scripts/replay_lidar_tracking.py to /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/devel/lib/stair_supervisor
+-- Installing devel-space wrapper /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/src/stair_supervisor/scripts/profile_lidar_stream.py to /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/devel/lib/stair_supervisor
+-- Installing devel-space wrapper /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/src/stair_supervisor/scripts/calibrate_yaw_rate.py to /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/devel/lib/stair_supervisor
+-- Installing devel-space wrapper /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/src/stair_supervisor/scripts/check_lidar_config.py to /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/devel/lib/stair_supervisor
+-- Installing devel-space wrapper /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/src/stair_supervisor/scripts/stair_supervisor_node.py to /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/devel/lib/stair_supervisor
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/build
+Scanning dependencies of target _stair_supervisor_generate_messages_check_deps_StairTraversalActionGoal
+Scanning dependencies of target _stair_supervisor_generate_messages_check_deps_StairTraversalGoal
+Scanning dependencies of target std_msgs_generate_messages_cpp
+Scanning dependencies of target _stair_supervisor_generate_messages_check_deps_ValidateStairAdmission
+Scanning dependencies of target _stair_supervisor_generate_messages_check_deps_StairTraversalActionResult
+Scanning dependencies of target actionlib_msgs_generate_messages_cpp
+Scanning dependencies of target _stair_supervisor_generate_messages_check_deps_StairTraversalResult
+Scanning dependencies of target _stair_supervisor_generate_messages_check_deps_SupervisorState
+[  0%] Built target actionlib_msgs_generate_messages_cpp
+[  0%] Built target std_msgs_generate_messages_cpp
+Scanning dependencies of target _stair_supervisor_generate_messages_check_deps_StairTraversalActionFeedback
+Scanning dependencies of target _stair_supervisor_generate_messages_check_deps_StairTraversalAction
+[  0%] Built target _stair_supervisor_generate_messages_check_deps_StairTraversalActionGoal
+[  0%] Built target _stair_supervisor_generate_messages_check_deps_StairTraversalResult
+[  0%] Built target _stair_supervisor_generate_messages_check_deps_ValidateStairAdmission
+[  0%] Built target _stair_supervisor_generate_messages_check_deps_StairTraversalActionResult
+[  0%] Built target _stair_supervisor_generate_messages_check_deps_StairTraversalGoal
+Scanning dependencies of target std_msgs_generate_messages_lisp
+[  0%] Built target _stair_supervisor_generate_messages_check_deps_SupervisorState
+Scanning dependencies of target _stair_supervisor_generate_messages_check_deps_StairTraversalFeedback
+Scanning dependencies of target actionlib_msgs_generate_messages_lisp
+[  0%] Built target std_msgs_generate_messages_lisp
+Scanning dependencies of target actionlib_msgs_generate_messages_eus
+Scanning dependencies of target actionlib_msgs_generate_messages_nodejs
+Scanning dependencies of target std_msgs_generate_messages_nodejs
+[  0%] Built target _stair_supervisor_generate_messages_check_deps_StairTraversalActionFeedback
+[  0%] Built target actionlib_msgs_generate_messages_lisp
+[  0%] Built target actionlib_msgs_generate_messages_eus
+Scanning dependencies of target std_msgs_generate_messages_eus
+[  0%] Built target actionlib_msgs_generate_messages_nodejs
+[  0%] Built target _stair_supervisor_generate_messages_check_deps_StairTraversalAction
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target std_msgs_generate_messages_eus
+Scanning dependencies of target std_msgs_generate_messages_py
+Scanning dependencies of target actionlib_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target actionlib_msgs_generate_messages_py
+[  0%] Built target _stair_supervisor_generate_messages_check_deps_StairTraversalFeedback
+Scanning dependencies of target stair_supervisor_generate_messages_py
+Scanning dependencies of target stair_supervisor_generate_messages_eus
+Scanning dependencies of target stair_supervisor_generate_messages_nodejs
+Scanning dependencies of target stair_supervisor_generate_messages_cpp
+Scanning dependencies of target stair_supervisor_generate_messages_lisp
+[  2%] Generating EusLisp code from stair_supervisor/StairTraversalAction.msg
+[  4%] Generating EusLisp code from stair_supervisor/StairTraversalActionGoal.msg
+[  6%] Generating Lisp code from stair_supervisor/StairTraversalAction.msg
+[  8%] Generating C++ code from stair_supervisor/StairTraversalActionGoal.msg
+[ 10%] Generating EusLisp code from stair_supervisor/StairTraversalActionResult.msg
+[ 12%] Generating C++ code from stair_supervisor/StairTraversalAction.msg
+[ 14%] Generating Python from MSG stair_supervisor/StairTraversalAction
+[ 16%] Generating Javascript code from stair_supervisor/StairTraversalAction.msg
+[ 18%] Generating C++ code from stair_supervisor/StairTraversalActionResult.msg
+[ 20%] Generating Python from MSG stair_supervisor/StairTraversalActionGoal
+[ 22%] Generating Javascript code from stair_supervisor/StairTraversalActionGoal.msg
+[ 25%] Generating Lisp code from stair_supervisor/StairTraversalActionGoal.msg
+[ 27%] Generating EusLisp code from stair_supervisor/StairTraversalActionFeedback.msg
+[ 29%] Generating Python from MSG stair_supervisor/StairTraversalActionResult
+[ 31%] Generating Javascript code from stair_supervisor/StairTraversalActionResult.msg
+[ 33%] Generating Lisp code from stair_supervisor/StairTraversalActionResult.msg
+[ 35%] Generating Javascript code from stair_supervisor/StairTraversalActionFeedback.msg
+[ 37%] Generating Lisp code from stair_supervisor/StairTraversalActionFeedback.msg
+[ 39%] Generating EusLisp code from stair_supervisor/StairTraversalGoal.msg
+[ 41%] Generating C++ code from stair_supervisor/StairTraversalActionFeedback.msg
+[ 43%] Generating Javascript code from stair_supervisor/StairTraversalGoal.msg
+[ 45%] Generating Javascript code from stair_supervisor/StairTraversalResult.msg
+[ 47%] Generating C++ code from stair_supervisor/StairTraversalGoal.msg
+[ 50%] Generating EusLisp code from stair_supervisor/StairTraversalResult.msg
+[ 52%] Generating Lisp code from stair_supervisor/StairTraversalGoal.msg
+[ 54%] Generating Python from MSG stair_supervisor/StairTraversalActionFeedback
+[ 56%] Generating Javascript code from stair_supervisor/StairTraversalFeedback.msg
+[ 58%] Generating Lisp code from stair_supervisor/StairTraversalResult.msg
+[ 60%] Generating Lisp code from stair_supervisor/StairTraversalFeedback.msg
+[ 62%] Generating Lisp code from stair_supervisor/SupervisorState.msg
+[ 64%] Generating EusLisp code from stair_supervisor/StairTraversalFeedback.msg
+[ 66%] Generating Javascript code from stair_supervisor/SupervisorState.msg
+[ 68%] Generating Javascript code from stair_supervisor/ValidateStairAdmission.srv
+[ 70%] Generating EusLisp code from stair_supervisor/SupervisorState.msg
+[ 72%] Generating Lisp code from stair_supervisor/ValidateStairAdmission.srv
+[ 75%] Generating Python from MSG stair_supervisor/StairTraversalGoal
+[ 77%] Generating C++ code from stair_supervisor/StairTraversalResult.msg
+[ 79%] Generating C++ code from stair_supervisor/StairTraversalFeedback.msg
+[ 81%] Generating Python from MSG stair_supervisor/StairTraversalResult
+[ 83%] Generating EusLisp code from stair_supervisor/ValidateStairAdmission.srv
+[ 83%] Built target stair_supervisor_generate_messages_nodejs
+[ 85%] Generating Python from MSG stair_supervisor/StairTraversalFeedback
+[ 85%] Built target stair_supervisor_generate_messages_lisp
+[ 87%] Generating Python from MSG stair_supervisor/SupervisorState
+[ 89%] Generating EusLisp manifest code for stair_supervisor
+[ 91%] Generating C++ code from stair_supervisor/SupervisorState.msg
+[ 93%] Generating Python code from SRV stair_supervisor/ValidateStairAdmission
+[ 95%] Generating C++ code from stair_supervisor/ValidateStairAdmission.srv
+[ 97%] Generating Python srv __init__.py for stair_supervisor
+[100%] Generating Python msg __init__.py for stair_supervisor
+[100%] Built target stair_supervisor_generate_messages_cpp
+[100%] Built target stair_supervisor_generate_messages_py
+[100%] Built target stair_supervisor_generate_messages_eus
+Scanning dependencies of target stair_supervisor_generate_messages
+[100%] Built target stair_supervisor_generate_messages
+Base path: /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws
+Source space: /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/src
+Build space: /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/build
+Devel space: /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/devel
+Install space: /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/install
+Creating symlink "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/src/CMakeLists.txt" pointing to "/opt/ros/noetic/share/catkin/cmake/toplevel.cmake"
+####
+#### Running command: "cmake /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/src -DCATKIN_ENABLE_TESTING=OFF -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCATKIN_DEVEL_PREFIX=/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/devel -DCMAKE_INSTALL_PREFIX=/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/install -G Unix Makefiles" in "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/build"
+####
+####
+#### Running command: "make -j8 -l8" in "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/build-ws/build"
+####

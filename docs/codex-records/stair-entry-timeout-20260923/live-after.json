@@ -1,0 +1,69 @@
+{
+  "at_utc": "2026-09-23T00:32:53.341027+00:00",
+  "duration_sec": 8.007217587000923,
+  "counts": {
+    "tracking_status": 80,
+    "control_debug": 80
+  },
+  "last_tracking": {
+    "epoch": 0,
+    "queue_length": 0,
+    "dropped_scans": 0,
+    "rejected_imu": 0,
+    "worker_error": "",
+    "backend": "process",
+    "mode": "control",
+    "observe_only": false,
+    "phase_test_protocol": "bound-ticket-v1",
+    "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+    "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+    "routes": [
+      {
+        "id": "stair_3f_4f_up",
+        "commissioned": false
+      }
+    ],
+    "sequence": 396,
+    "stamp": 1790123572.9789174,
+    "received_at": 194106.01417221,
+    "measured_at": 194105.84535230568,
+    "completed_at": 194106.068613063,
+    "last_geometry_at": 194105.84535230568,
+    "geometry_valid": true,
+    "state": "TRACKED",
+    "reason": "geometry accepted",
+    "fitness": 1.0,
+    "rmse": 0.07403940168864384,
+    "translation_innovation": 0.0022303734427985265,
+    "rotation_innovation": 0.003550758681537531,
+    "prediction_source": "gyro",
+    "compute_sec": 0.0530950779793784,
+    "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+    "geometry_age_sec": 0.2715490823320579,
+    "transport_delay_sec": 0.16881990432739258,
+    "completion_age_sec": 0.22326075730961747
+  },
+  "last_debug": {
+    "phase": "VERIFY_ENTRY",
+    "command": [
+      0.0,
+      0.0
+    ],
+    "pending_entries": [],
+    "observation_only": false,
+    "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+    "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+  },
+  "last_supervisor_state": "header: \n  seq: 143\n  stamp: \n    secs: 1790123573\n    nsecs: 177658319\n  frame_id: ''\nstate: 1\nconnected: True\ndetail: \"navigation owns commands\"\nownership_epoch: 0",
+  "actions": {
+    "mission": [],
+    "stair_traversal": []
+  },
+  "geometry_age_range": [
+    0.2714183919597417,
+    0.37300748730194755
+  ],
+  "observed_twist_count": 320,
+  "observed_nonzero_twists": [],
+  "probe_goals_or_services_called": 0
+}

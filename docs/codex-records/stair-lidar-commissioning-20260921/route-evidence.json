@@ -1,0 +1,154 @@
+{
+  "103313": {
+    "source": "stair-tracking-fix-20260921/validation/103313/lidar_registration.csv",
+    "accepted_geometry_samples": 466,
+    "reference": "first accepted body pose; yaw-only entry-relative axes; not surveyed entry anchor",
+    "events": {
+      "STAIR_ENTRY": {
+        "body_pose": [
+          -3.469446951953614e-18,
+          -8.673617379884035e-19,
+          0.0,
+          1.1666488849482001e-18
+        ],
+        "sample_time_delta_sec": 0.14529633522033691,
+        "use": "annotation only; not independent arrival/support evidence"
+      },
+      "INTERMEDIATE_LANDING": {
+        "body_pose": [
+          1.2274879666463643,
+          0.3510099265502434,
+          0.6277950260576874,
+          0.5145707308689104
+        ],
+        "sample_time_delta_sec": -0.040914058685302734,
+        "use": "annotation only; not independent arrival/support evidence"
+      },
+      "FINAL_ARRIVAL": {
+        "body_pose": [
+          -0.41736626750028455,
+          1.7168050140984907,
+          2.3886249683415928,
+          -2.6890070718523424
+        ],
+        "sample_time_delta_sec": -0.01717853546142578,
+        "use": "annotation only; not independent arrival/support evidence"
+      }
+    },
+    "final_recorded_pose": [
+      -1.489991112807478,
+      1.092073168460508,
+      3.205051708880445,
+      -1.852935453116277
+    ],
+    "max_height_m": 3.208637304204681,
+    "use": "comparison only; not user-accepted route baseline"
+  },
+  "105713": {
+    "source": "stair-tracking-fix-20260921/validation/105713/lidar_registration.csv",
+    "accepted_geometry_samples": 339,
+    "reference": "first accepted body pose; yaw-only entry-relative axes; not surveyed entry anchor",
+    "events": {
+      "STAIR_ENTRY": {
+        "body_pose": [
+          0.26163338223067506,
+          0.01168284777489723,
+          0.0873879206408943,
+          0.017072630948987567
+        ],
+        "sample_time_delta_sec": -0.08542537689208984,
+        "use": "annotation only; not independent arrival/support evidence"
+      },
+      "INTERMEDIATE_LANDING": {
+        "body_pose": [
+          2.94738991978208,
+          0.0824432518511465,
+          1.525275237931499,
+          0.12015183251079875
+        ],
+        "sample_time_delta_sec": 0.0011174678802490234,
+        "use": "annotation only; not independent arrival/support evidence"
+      },
+      "FINAL_ARRIVAL": {
+        "body_pose": [
+          -0.34357440721204885,
+          1.3244490278475582,
+          3.2962331218390517,
+          -3.0968146295801584
+        ],
+        "sample_time_delta_sec": 0.004459857940673828,
+        "use": "annotation only; not independent arrival/support evidence"
+      }
+    },
+    "final_recorded_pose": [
+      -0.5047844635395112,
+      1.3228507025481944,
+      3.3040807532896657,
+      3.1211790097002066
+    ],
+    "max_height_m": 3.3171636417426407
+  },
+  "102101": {
+    "source": "stair-tracking-fix-20260921/validation/102101/lidar_registration.csv",
+    "accepted_geometry_samples": 499,
+    "reference": "first accepted body pose; not surveyed entry",
+    "final_recorded_pose": [
+      0.4993338022318888,
+      1.5047735394765154,
+      3.0043940989574014,
+      -3.094276942454346
+    ],
+    "max_height_m": 3.0129229769692607
+  },
+  "operator_confirmed": {
+    "stair_width_m": 1.23,
+    "landing_dimensions_m": [
+      2.7,
+      1.48
+    ],
+    "applies_to": "3F->4F",
+    "remote_takeover_and_posture_hold": true,
+    "mount_translation_m": [
+      0,
+      0,
+      0.18
+    ],
+    "mount_pitch_deg": 5,
+    "landing_axes": {
+      "across_flights_m": 2.7,
+      "forward_depth_m": 1.48
+    }
+  },
+  "control_ready": false,
+  "landing_height_candidates": {
+    "102101": {
+      "landing_body_height_median_from_record_start_m": 1.6077884057207914,
+      "landing_body_height_p10_p90_m": [
+        1.547621928928067,
+        1.6413006096120397
+      ],
+      "window_sec_from_first_accepted": [
+        40,
+        65
+      ],
+      "status": "INFERRED plateau selection; not surveyed landing boundary"
+    },
+    "105713": {
+      "landing_body_height_median_from_record_start_m": 1.4877548833602823,
+      "landing_body_height_p10_p90_m": [
+        1.4519852977131733,
+        1.5022080568556906
+      ],
+      "window_sec_from_first_accepted": [
+        23,
+        40
+      ],
+      "status": "INFERRED plateau selection; not surveyed landing boundary"
+    }
+  },
+  "remaining_code_limitations": [
+    "No first-flight-only action stop option in existing execution loop",
+    "Existing LiDAR cancellation/loss handling requests emergency_stop; operator remote takeover confirmation is not evidence for that API response",
+    "Route support boundaries and response gains not commissioned"
+  ]
+}

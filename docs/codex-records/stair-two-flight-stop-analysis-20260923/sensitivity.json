@@ -1,0 +1,72 @@
+[
+  {
+    "end_kst": "2026-09-23T10:28:13.074317",
+    "proposed_w_is_exact": true,
+    "baseline_projection": {
+      "min_sampled_clearance_m": 0.10565247360451058,
+      "interpolation_bound_m": 0.015780676215778874
+    },
+    "raw_feedback_w_projection": {
+      "min_sampled_clearance_m": 0.16659846415613166,
+      "interpolation_bound_m": 0.01723708008535122
+    },
+    "margin_sensitivity_at_full_input": {
+      "0": true,
+      "0.02": true,
+      "0.06": true,
+      "0.1": false,
+      "0.12": false
+    },
+    "max_internal_v_accepted_at_proposed_w": 0.44,
+    "min_positive_w_accepted_at_full_input": 0.12,
+    "first_zero_after_result_ms": 15.116453170776367,
+    "exact_slew_dt": 0.08115481401910074,
+    "min_v_permitted_by_slew": 0.537826777897135,
+    "all_four_speed_candidates_identical_v": 0.537826777897135,
+    "that_candidate_passes": false
+  },
+  {
+    "end_kst": "2026-09-23T10:35:21.104719",
+    "proposed_w_is_exact": false,
+    "baseline_projection": {
+      "min_sampled_clearance_m": 0.07603606537616425,
+      "interpolation_bound_m": 0.015917537168101417
+    },
+    "raw_feedback_w_projection": {
+      "min_sampled_clearance_m": 0.07603606537616425,
+      "interpolation_bound_m": 0.015970295175705043
+    },
+    "margin_sensitivity_at_full_input": {
+      "0": true,
+      "0.02": true,
+      "0.06": true,
+      "0.1": false,
+      "0.12": false
+    },
+    "max_internal_v_accepted_at_proposed_w": null,
+    "min_positive_w_accepted_at_full_input": null,
+    "first_zero_after_result_ms": 0.05888938903808594
+  },
+  {
+    "end_kst": "2026-09-23T10:38:07.018419",
+    "proposed_w_is_exact": false,
+    "baseline_projection": {
+      "min_sampled_clearance_m": 0.07714497519337149,
+      "interpolation_bound_m": 0.015915934241260324
+    },
+    "raw_feedback_w_projection": {
+      "min_sampled_clearance_m": 0.130638063292825,
+      "interpolation_bound_m": 0.017164231373305406
+    },
+    "margin_sensitivity_at_full_input": {
+      "0": true,
+      "0.02": true,
+      "0.06": true,
+      "0.1": false,
+      "0.12": false
+    },
+    "max_internal_v_accepted_at_proposed_w": 0.29,
+    "min_positive_w_accepted_at_full_input": 0.21000000000000008,
+    "first_zero_after_result_ms": 0.6816387176513672
+  }
+]

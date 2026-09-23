@@ -1,0 +1,198 @@
+{
+  "102101": {
+    "profile_from_initial_base": [
+      [
+        0.9891487350973756,
+        0.10078051894634334,
+        -0.10690213681759417,
+        -0.4493783261484718
+      ],
+      [
+        -0.09744238820921712,
+        0.9945892695144041,
+        0.03601619006625801,
+        0.19835596797660082
+      ],
+      [
+        0.10995344849228744,
+        -0.025208569330890936,
+        0.9936170123326911,
+        -0.011269307400792461
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "tracking_from_profile": [
+      [
+        0.9972061574113408,
+        -0.07469859182680674,
+        0.0,
+        0.497724171750922
+      ],
+      [
+        0.07469859182680676,
+        0.9972061574113408,
+        0.0,
+        -0.16138288943744705
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        -0.1788299216130386
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "transitions": [],
+    "first_fault": {
+      "t": 13.600291728973389,
+      "phase": "FORWARD_SEGMENT_1",
+      "position": [
+        1.501193698204012,
+        -0.15414271938182375,
+        0.9758129113328653
+      ],
+      "yaw_deg": -36.51725639188233,
+      "complete": false,
+      "faulted": true,
+      "debug": {
+        "tracking_state": "SUPPORT_LIMIT",
+        "loss_response": true,
+        "proposed_command": [
+          0.08091342677112953,
+          0.2
+        ],
+        "prediction_horizon_sec": 0.9,
+        "support_regions": [
+          "entry_polygon",
+          "flight_1_polygon",
+          "landing_polygon"
+        ],
+        "footprint_supported": true,
+        "current_supported": true,
+        "margin_m": 0.02,
+        "anchor_uncertainty_m": 0.1,
+        "effective_margin_m": 0.12000000000000001,
+        "clearance_m": 0.14645437280761497,
+        "height_error_m": 0.5541870886671347,
+        "completion_checks": {
+          "progress": false,
+          "ascent_seen": true,
+          "height": false,
+          "body_in_next_region": false,
+          "new_phase_observation": true
+        },
+        "incomplete_conditions": [
+          "progress",
+          "height",
+          "body_in_next_region"
+        ]
+      }
+    },
+    "final_phase": "FORWARD_SEGMENT_1"
+  },
+  "105713": {
+    "profile_from_initial_base": [
+      [
+        0.9920698642809092,
+        0.10878341519951429,
+        -0.06295675470660597,
+        -0.10044715940094563
+      ],
+      [
+        -0.10640152807401804,
+        0.9935169760084004,
+        0.04003415050475457,
+        0.13611230597682486
+      ],
+      [
+        0.06690365617192834,
+        -0.03301797935448939,
+        0.997212973155772,
+        0.06780036702191036
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "tracking_from_profile": [
+      [
+        0.9959501063277815,
+        -0.0899076509852254,
+        0.0,
+        0.13083072379186828
+      ],
+      [
+        0.0899076509852254,
+        0.9959501063277814,
+        0.0,
+        -0.12556698711107253
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        -0.22023333189127145
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "transitions": [
+      {
+        "t": 19.599764585494995,
+        "phase": "FORWARD_SEGMENT_1"
+      }
+    ],
+    "first_fault": {
+      "t": 19.799665212631226,
+      "phase": "LANDING",
+      "position": [
+        2.9139083119488194,
+        -0.06562557165317791,
+        1.6060903858520232
+      ],
+      "yaw_deg": 24.08939588369728,
+      "complete": false,
+      "faulted": true,
+      "debug": {
+        "tracking_state": "CORRIDOR_LIMIT",
+        "loss_response": true,
+        "support_regions": [
+          "landing_polygon"
+        ],
+        "footprint_supported": true,
+        "current_supported": false,
+        "margin_m": 0.02,
+        "anchor_uncertainty_m": 0.1,
+        "effective_margin_m": 0.12000000000000001,
+        "clearance_m": 0.09770464355274999,
+        "height_error_m": 0.0,
+        "completion_checks": {
+          "body_in_landing": false,
+          "new_phase_observation": true
+        },
+        "incomplete_conditions": [
+          "body_in_landing"
+        ]
+      }
+    },
+    "final_phase": "LANDING"
+  },
+  "scope": "Open-loop recorded policy evaluation. Fixed geometry, footprint, margin and command limits across bags. Bag-specific 4-DOF full-map alignment uses future scans and is INFERRED, not a live entry localization result or real driving success."
+}

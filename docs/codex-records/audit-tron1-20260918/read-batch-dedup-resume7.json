@@ -1,0 +1,33 @@
+{
+  "files": [
+    ".omo/evidence/ulw/modular-architecture-expansion/a1/final-F2-catkin-install.log",
+    ".omo/evidence/ulw/modular-architecture-expansion/a1/final-F2-catkin-run-tests-loopback.log",
+    ".omo/evidence/ulw/modular-architecture-expansion/a1/final-F2-catkin-run-tests.log",
+    ".omo/evidence/ulw/modular-architecture-expansion/a1/final-F2-catkin-test-results-initial.log",
+    ".omo/evidence/ulw/modular-architecture-expansion/a1/final-F2-compileall.log",
+    ".omo/evidence/ulw/modular-architecture-expansion/a1/task-1-modular-architecture-expansion.log",
+    ".omo/evidence/ulw/modular-architecture-expansion/a1/task-10-modular-architecture-expansion.log",
+    ".omo/evidence/ulw/modular-architecture-expansion/a1/task-11-modular-architecture-expansion.log",
+    ".omo/evidence/ulw/modular-architecture-expansion/a1/task-12-modular-architecture-expansion.log",
+    ".omo/evidence/ulw/modular-architecture-expansion/a1/task-13-modular-architecture-expansion.log",
+    ".omo/evidence/ulw/modular-architecture-expansion/a1/task-14-modular-architecture-expansion.log",
+    ".playwright-mcp/page-2026-08-27T12-08-11-091Z.yml",
+    ".playwright-mcp/page-2026-08-27T12-08-52-409Z.yml",
+    ".playwright-mcp/page-2026-08-27T12-10-50-914Z.yml",
+    ".playwright-mcp/page-2026-08-27T12-11-32-709Z.yml",
+    ".playwright-mcp/page-2026-08-27T12-12-02-483Z.yml"
+  ],
+  "reviewed_unique_line_ranges_inclusive": [
+    [
+      0,
+      1401
+    ],
+    [
+      2770,
+      3221
+    ]
+  ],
+  "next_unique_line": 1402,
+  "remaining_unreviewed_unique_lines": 1368,
+  "not_read": "Remaining files stay UNREAD even if some repeated lines already reviewed."
+}

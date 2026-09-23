@@ -1,0 +1,43 @@
+from pathlib import Path
+import json
+import numpy as np
+import open3d as o3d
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
+ROOT = Path(__file__).resolve().parent/'geometry'
+clouds = {}
+for bid in ['102101','105713']:
+    raw = np.load(ROOT/(bid+'-scans.npz'))['points']
+    cloud = o3d.geometry.PointCloud()
+    cloud.points = o3d.utility.Vector3dVector(raw[:,:3])
+    cloud = cloud.voxel_down_sample(.04)
+    cloud.estimate_normals(o3d.geometry.KDTreeSearchParamHybrid(radius=.14,max_nn=25))
+    clouds[bid] = cloud
+    points = np.asarray(cloud.points)
+    horizontal = points[np.abs(np.asarray(cloud.normals)[:,2])>.99]
+    np.save(ROOT/(bid+'-horizontal.npy'), horizontal)
+    for label, lower, upper in [('landing', [2.3,-.4,.5], [4.,1.9,2.]), ('entry', [-.6,-.4,-.8], [.5,.4,.3])]:
+        subset = horizontal[np.all((horizontal>lower)&(horizontal<upper),axis=1)]
+        hist, edges = np.histogram(subset[:,2], bins=np.arange(lower[2],upper[2]+.02,.02))
+        best = np.argsort(hist)[-6:][::-1]
+        print(bid,label,[(round(float(edges[k]),3),int(hist[k])) for k in best],flush=True)
+
+source, target = clouds['102101'].voxel_down_sample(.12), clouds['105713'].voxel_down_sample(.12)
+initial=np.eye(4);initial[:3,3]=[-.35,.08,.15]
+result=o3d.pipelines.registration.registration_generalized_icp(source,target,.4,initial,
+    o3d.pipelines.registration.TransformationEstimationForGeneralizedICP(),
+    o3d.pipelines.registration.ICPConvergenceCriteria(max_iteration=80))
+data={'target':'105713 first-body/gravity frame','source':'102101 first-body/gravity frame',
+      'target_from_source':result.transformation.tolist(),'fitness':result.fitness,'inlier_rmse_m':result.inlier_rmse,
+      'interpretation':'offline full-map geometric consistency only; not independent position accuracy or a live entry localization result'}
+(ROOT/'cross-bag-registration.json').write_text(json.dumps(data,indent=2));print(data,flush=True)
+fig,axes=plt.subplots(2,2,figsize=(14,10))
+for i,bid in enumerate(['102101','105713']):
+    pts=np.load(ROOT/(bid+'-horizontal.npy'))
+    for j,(lo,hi,title) in enumerate([(-.5,.5,'flight 1 slice'),(.9,1.9,'flight 2 slice')]):
+        p=pts[(pts[:,1]>lo)&(pts[:,1]<hi)]
+        axes[i,j].scatter(p[:,0],p[:,2],s=1,c=p[:,1],cmap='viridis')
+        axes[i,j].set_title(bid+' '+title);axes[i,j].set_ylim(-.7,3.6);axes[i,j].set_xlim(-1,4.5);axes[i,j].grid();axes[i,j].set_aspect('equal')
+fig.tight_layout();fig.savefig(ROOT/'horizontal-surfaces.png',dpi=150)

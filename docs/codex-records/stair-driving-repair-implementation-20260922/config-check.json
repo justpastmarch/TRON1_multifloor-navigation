@@ -1,0 +1,20 @@
+{
+  "mode": "control",
+  "config_path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/config/stair_lidar.yaml",
+  "config_sha256": "ebb9d435287c9472f1ab7200e091e6b3f82b568ac731b8519571a824b042c375",
+  "calibration_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/lidar_imu_baseline.yaml",
+  "calibration_sha256": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+  "configured": true,
+  "python": "/home/m3tron/.cache/uv/environments-v2/test-registration-core-26ae8f8cf1a8e532/bin/python",
+  "numpy": "1.24.4",
+  "scipy": "1.10.1",
+  "open3d": "0.18.0",
+  "routes": [
+    {
+      "id": "stair_3f_4f_up",
+      "commissioned": false,
+      "phase_test_limits": null
+    }
+  ],
+  "robot_commands_sent": 0
+}

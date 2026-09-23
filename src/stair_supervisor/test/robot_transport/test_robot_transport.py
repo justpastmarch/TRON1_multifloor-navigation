@@ -45,6 +45,28 @@ class RobotTransportTest(unittest.TestCase):
         self.assertEqual(socket.sent[-1]["data"], {"x": 0.5, "y": 0.0, "z": -0.5})
         self.assertEqual(socket.receive_timeouts, [0.01])
 
+    def test_mode_wait_runs_feedback_and_releases_pending_receipt_on_interrupt(self):
+        clock = FakeClock()
+        socket = FakeWebSocket(successful_mode_handler)
+        transport, _ = make_transport(socket, clock, request_timeout=.5)
+        transport.start()
+        sent = []
+        def progress():
+            transport.update_twist(.02, .01)
+            transport.send_current()
+            sent.append(socket.sent[-1])
+        transport.request_stair_mode_with_feedback(True, progress)
+        self.assertGreaterEqual(len(sent), 1)
+        self.assertTrue(all(frame["title"] == "request_twist" for frame in sent))
+        self.assertEqual(socket.receive_timeouts[-2:], [.00625, .01])
+        def interrupted():
+            raise ValueError("test cancellation")
+        with self.assertRaisesRegex(ValueError, "cancellation"):
+            transport.request_stair_mode_with_feedback(False, interrupted)
+        self.assertEqual(transport.pending_request_count, 0)
+        self.assertEqual(socket.receive_timeouts[-1], .01)
+        transport.close()
+
     def test_start_accepts_observed_firmware_frame_order(self) -> None:
         # Given: STAND notifies before its response; WALK responds before its status.
         clock = FakeClock()

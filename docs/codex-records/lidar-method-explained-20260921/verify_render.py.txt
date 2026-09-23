@@ -1,0 +1,41 @@
+import subprocess,time,json,base64,urllib.request,signal,os
+from pathlib import Path
+import websocket
+HERE=Path(__file__).resolve().parent
+if __name__=='__main__':
+ profile=HERE/'qa-browser-profile';proc=subprocess.Popen(['/usr/bin/google-chrome','--headless','--no-sandbox','--disable-gpu','--disable-background-networking','--disable-component-update','--disable-extensions','--no-first-run','--remote-allow-origins=*','--remote-debugging-port=0','--user-data-dir='+str(profile),'about:blank'],stdout=(HERE/'browser-qa.log').open('w'),stderr=subprocess.STDOUT,start_new_session=True)
+ ws=None
+ try:
+  for _ in range(100):
+   if (profile/'DevToolsActivePort').exists():break
+   if proc.poll() is not None:raise RuntimeError('browser exited')
+   time.sleep(.1)
+  port=(profile/'DevToolsActivePort').read_text().splitlines()[0]
+  tabs=json.load(urllib.request.urlopen('http://127.0.0.1:'+port+'/json'))
+  ws=websocket.create_connection(next(x['webSocketDebuggerUrl'] for x in tabs if x['type']=='page'),timeout=10)
+  counter=0
+  def cmd(method,params=None):
+   global counter
+   counter+=1;n=counter;ws.send(json.dumps(dict(id=n,method=method,params=params or {})))
+   while True:
+    r=json.loads(ws.recv())
+    if r.get('id')==n:
+     if 'error' in r:raise RuntimeError(r)
+     return r.get('result',{})
+  cmd('Page.enable');cmd('Emulation.setDeviceMetricsOverride',dict(width=1440,height=1100,deviceScaleFactor=1,mobile=False))
+  cmd('Page.navigate',dict(url=(HERE/'report.html').as_uri()));time.sleep(1)
+  cmd('Runtime.evaluate',dict(expression='document.fonts.ready',awaitPromise=True))
+  checks=[]
+  for section,name in [(None,'top'),('section-2','layers'),('section-7','comparison')]:
+   expr='window.scrollTo(0,0)' if section is None else 'document.getElementById('+json.dumps(section)+').scrollIntoView({behavior:"instant"})'
+   cmd('Runtime.evaluate',dict(expression=expr));time.sleep(.35)
+   metrics=cmd('Runtime.evaluate',dict(expression='JSON.stringify({scrollY:window.scrollY,width:innerWidth,documentWidth:document.documentElement.scrollWidth,title:document.title})',returnByValue=True))
+   checks.append(dict(section=section,metrics=json.loads(metrics['result']['value'])))
+   data=cmd('Page.captureScreenshot',dict(format='png',captureBeyondViewport=False))['data'];(HERE/('preview-'+name+'.png')).write_bytes(base64.b64decode(data))
+  (HERE/'render-checks.json').write_text(json.dumps(checks,indent=2,ensure_ascii=False))
+ finally:
+  if ws:ws.close()
+  if proc.poll() is None:
+   os.killpg(proc.pid,signal.SIGTERM)
+   try:proc.wait(timeout=8)
+   except subprocess.TimeoutExpired:os.killpg(proc.pid,signal.SIGKILL);proc.wait()

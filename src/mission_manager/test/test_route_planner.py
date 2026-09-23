@@ -34,6 +34,26 @@ class BuildingPlannerTest(unittest.TestCase):
         # Then: both boundaries expose the same class, not merely equal string values.
         self.assertIs(SegmentType, FSMSegmentType)
 
+    def test_current_pose_same_named_anchor_still_navigates(self) -> None:
+        route = self.planner.plan_from_current_pose('home_3f', 'home_3f')
+        self.assertEqual(len(route.segments), 1)
+        self.assertIs(route.segments[0].type, SegmentType.NAVIGATION)
+        self.assertEqual(route.segments[0].target_id, 'home_3f')
+
+    def test_current_pose_at_logical_stair_anchor_reaches_entry_first(self) -> None:
+        route = self.planner.plan_from_current_pose('stair_a_entry_3f', 'stair_a_landing_4f')
+        self.assertEqual(tuple(s.type for s in route.segments),
+                         (SegmentType.NAVIGATION, SegmentType.STAIR, SegmentType.FLOOR_TRANSITION))
+        self.assertEqual(route.segments[0].target_id, 'stair_a_entry_3f')
+        anchor = LogicalAnchor(route.origin_id)
+        for segment in route.segments:
+            anchor = anchor.after_segment(segment, succeeded=True)
+        self.assertEqual(anchor.location_id, route.destination_id)
+
+    def test_existing_navigation_route_does_not_detour_to_home(self) -> None:
+        original = self.planner.plan('home_3f', 'stair_a_landing_4f')
+        self.assertEqual(self.planner.plan_from_current_pose('home_3f', 'stair_a_landing_4f'), original)
+
     def test_same_floor_route_expands_navigation_when_locations_share_floor(self) -> None:
         # Given: two connected locations on 3F.
         # When: a route is planned between them.

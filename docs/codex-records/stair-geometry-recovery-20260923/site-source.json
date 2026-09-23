@@ -1,0 +1,31 @@
+{
+  "commissioning_record": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/docs/stair-up-commissioning.md",
+  "commissioning_record_sha256": "a004966b9b5251628681bce829fc6adec890fc4140f58d7206f655d13b4335d6",
+  "geometry": {
+    "dimension_source": "operator-provided stair measurements",
+    "flight_1_steps": 9,
+    "flight_2_steps": 10,
+    "landing_between_flights": true,
+    "landing_depth_m": 1.48,
+    "landing_width_m": 2.70,
+    "riser_height_m": 0.17,
+    "stair_width_m": 1.23,
+    "tread_depth_m": 0.28
+  },
+  "measurement_required": [],
+  "right_wall_measured_distance_m": null,
+  "right_wall_target_m": 0.3,
+  "right_wall_target_source": "commissioning target; not a measured distance or uncertainty",
+  "right_wall_uncertainty_m": null,
+  "schema_version": 1,
+  "site_id": "stair_3f_4f",
+  "state_machine_phases": [
+    "VERIFY_ENTRY",
+    "ALIGN",
+    "FORWARD_SEGMENT_1",
+    "LANDING",
+    "TURN_TO_NEXT_FLIGHT",
+    "FORWARD_SEGMENT_2",
+    "EXIT_CONFIRM"
+  ]
+}

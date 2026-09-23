@@ -1,0 +1,168 @@
+{
+  "102101": {
+    "first4s_samples": 19,
+    "first4s_faults": 0,
+    "first_fault": {
+      "position": [
+        1.520474768222084,
+        -0.17765336544428573,
+        0.9668472183860959
+      ],
+      "yaw_deg": -32.004015674223496,
+      "t": 13.799304485321045,
+      "phase": "FORWARD_SEGMENT_1",
+      "complete": false,
+      "faulted": true,
+      "detail": "correction would exceed surveyed support",
+      "debug": {
+        "tracking_state": "SUPPORT_LIMIT",
+        "loss_response": true,
+        "proposed_command": [
+          0.08639414280680202,
+          0.2
+        ],
+        "prediction_horizon_sec": 0.9,
+        "support_regions": [
+          "entry_polygon",
+          "flight_1_polygon",
+          "landing_polygon"
+        ],
+        "footprint_supported": true,
+        "current_supported": true,
+        "margin_m": 0.02,
+        "anchor_uncertainty_m": 0.1,
+        "effective_margin_m": 0.12000000000000001,
+        "clearance_m": 0.12786379551766003,
+        "height_error_m": 0.5831527816139042,
+        "completion_checks": {
+          "progress": false,
+          "ascent_seen": true,
+          "height": false,
+          "body_in_next_region": false,
+          "new_phase_observation": true
+        },
+        "incomplete_conditions": [
+          "progress",
+          "height",
+          "body_in_next_region"
+        ]
+      }
+    },
+    "transitions": [],
+    "final_evaluated_phase": "FORWARD_SEGMENT_1",
+    "command_peak": [
+      0.1430136188929651,
+      0.08163782243268076
+    ],
+    "note": "Recorded motion is independent of proposed commands: this is open-loop policy evaluation, NOT a physical closed-loop driving simulation."
+  },
+  "105713": {
+    "first4s_samples": 20,
+    "first4s_faults": 0,
+    "first_fault": {
+      "position": [
+        2.5583285504523245,
+        0.18767331512888438,
+        1.4872611886412836
+      ],
+      "yaw_deg": 90.26772817857723,
+      "t": 22.799804210662842,
+      "phase": "FORWARD_SEGMENT_1",
+      "complete": false,
+      "faulted": true,
+      "detail": "correction would exceed surveyed support",
+      "debug": {
+        "tracking_state": "SUPPORT_LIMIT",
+        "loss_response": true,
+        "proposed_command": [
+          0.05428601909119953,
+          -0.2
+        ],
+        "prediction_horizon_sec": 0.9,
+        "support_regions": [
+          "entry_polygon",
+          "flight_1_polygon",
+          "landing_polygon"
+        ],
+        "footprint_supported": true,
+        "current_supported": true,
+        "margin_m": 0.02,
+        "anchor_uncertainty_m": 0.1,
+        "effective_margin_m": 0.12000000000000001,
+        "clearance_m": 0.20126331726343927,
+        "height_error_m": 0.0627388113587164,
+        "completion_checks": {
+          "progress": false,
+          "ascent_seen": true,
+          "height": true,
+          "body_in_next_region": false,
+          "new_phase_observation": true
+        },
+        "incomplete_conditions": [
+          "progress",
+          "body_in_next_region"
+        ]
+      }
+    },
+    "transitions": [],
+    "final_evaluated_phase": "FORWARD_SEGMENT_1",
+    "command_peak": [
+      0.14096145643297017,
+      0.029224428823631066
+    ],
+    "note": "Recorded motion is independent of proposed commands: this is open-loop policy evaluation, NOT a physical closed-loop driving simulation."
+  },
+  "103313": {
+    "first4s_samples": 6,
+    "first4s_faults": 1,
+    "first_fault": {
+      "position": [
+        -0.19780035001314772,
+        -0.23253996282775724,
+        0.052178746179014024
+      ],
+      "yaw_deg": -11.287079759822102,
+      "t": 1.2000164985656738,
+      "phase": "FORWARD_SEGMENT_1",
+      "complete": false,
+      "faulted": true,
+      "detail": "body/clearance exceeds connected support",
+      "debug": {
+        "tracking_state": "CORRIDOR_LIMIT",
+        "loss_response": true,
+        "support_regions": [
+          "entry_polygon",
+          "flight_1_polygon",
+          "landing_polygon"
+        ],
+        "footprint_supported": true,
+        "current_supported": false,
+        "margin_m": 0.02,
+        "anchor_uncertainty_m": 0.1,
+        "effective_margin_m": 0.12000000000000001,
+        "clearance_m": 0.11822822676467765,
+        "height_error_m": 1.497821253820986,
+        "completion_checks": {
+          "progress": false,
+          "ascent_seen": false,
+          "height": false,
+          "body_in_next_region": false,
+          "new_phase_observation": true
+        },
+        "incomplete_conditions": [
+          "progress",
+          "ascent_seen",
+          "height",
+          "body_in_next_region"
+        ]
+      }
+    },
+    "transitions": [],
+    "final_evaluated_phase": "FORWARD_SEGMENT_1",
+    "command_peak": [
+      0.10615350737637474,
+      0.14430176565755853
+    ],
+    "note": "Recorded motion is independent of proposed commands: this is open-loop policy evaluation, NOT a physical closed-loop driving simulation."
+  }
+}

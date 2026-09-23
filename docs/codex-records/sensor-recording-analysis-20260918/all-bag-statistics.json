@@ -1,0 +1,882 @@
+[
+  {
+    "bag": "manual-5F-rooftop_route_1788917683773755895.bag",
+    "duration_s": 22.12782382965088,
+    "messages": 21600,
+    "errors": [],
+    "imu": {
+      "count": 4426,
+      "zero_orientation_count": 4426,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 0.9987135165877585,
+      "gyro_median": [
+        -0.005748137831687927,
+        -0.007152591831982136,
+        -0.01093144342303276
+      ]
+    },
+    "odom": {
+      "count": 2201,
+      "net_displacement_m": 0.0365741859890275,
+      "max_step_m": 0.0001119667913666942,
+      "max_step_interval_relative_record_s": [
+        0.13815832138061523,
+        0.14928555488586426
+      ],
+      "max_step_header_gap_s": 0.010000467300415039,
+      "max_step_record_gap_s": 0.011127233505249023,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    }
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788918199558502114.bag.active.invalid",
+    "duration_s": 193.04053831100464,
+    "messages": 189050,
+    "errors": [],
+    "imu": {
+      "count": 38610,
+      "zero_orientation_count": 38610,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 0.9987348151552161,
+      "gyro_median": [
+        -0.005748137831687927,
+        -0.007152591831982136,
+        -0.01093144342303276
+      ]
+    },
+    "odom": {
+      "count": 19279,
+      "net_displacement_m": 0.3159679747840106,
+      "max_step_m": 0.00011417903506565827,
+      "max_step_interval_relative_record_s": [
+        117.5959837436676,
+        117.60632300376892
+      ],
+      "max_step_header_gap_s": 0.010084152221679688,
+      "max_step_record_gap_s": 0.01033926010131836,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    }
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788918551828137154.bag",
+    "duration_s": 34.795310497283936,
+    "messages": 34003,
+    "errors": [],
+    "imu": {
+      "count": 6960,
+      "zero_orientation_count": 6960,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 1.0001053385608742,
+      "gyro_median": [
+        -0.0046828743070364,
+        -0.007152591831982136,
+        -0.009866181761026382
+      ]
+    },
+    "odom": {
+      "count": 3467,
+      "net_displacement_m": 0.14938002665907768,
+      "max_step_m": 0.008498295872730453,
+      "max_step_interval_relative_record_s": [
+        8.596176624298096,
+        8.60489797592163
+      ],
+      "max_step_header_gap_s": 0.009971141815185547,
+      "max_step_record_gap_s": 0.008721351623535156,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    }
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "duration_s": 508.4392349720001,
+    "messages": 463540,
+    "errors": [],
+    "imu": {
+      "count": 95998,
+      "zero_orientation_count": 95998,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 1.0015892802522748,
+      "gyro_median": [
+        -0.006813403218984604,
+        -0.0028915340080857277,
+        -0.005605123937129974
+      ]
+    },
+    "odom": {
+      "count": 47755,
+      "net_displacement_m": 3.0442708450856686,
+      "max_step_m": 1.9192705600380995,
+      "max_step_interval_relative_record_s": [
+        236.8378462791443,
+        236.83797979354858
+      ],
+      "max_step_header_gap_s": 10.390351057052612,
+      "max_step_record_gap_s": 0.000133514404296875,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    }
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "duration_s": 279.5660288333893,
+    "messages": 176752,
+    "errors": [],
+    "imu": {
+      "count": 56008,
+      "zero_orientation_count": 56008,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 1.0010337971341516,
+      "gyro_median": [
+        -0.0046828743070364,
+        -0.005022062920033932,
+        -0.007735650986433029
+      ]
+    },
+    "odom": {
+      "count": 27937,
+      "net_displacement_m": 0.7982271146467407,
+      "max_step_m": 0.000492334726753497,
+      "max_step_interval_relative_record_s": [
+        82.99022960662842,
+        82.99024152755737
+      ],
+      "max_step_header_gap_s": 0.009926319122314453,
+      "max_step_record_gap_s": 1.1920928955078125e-05,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    },
+    "amcl": {
+      "count": 9,
+      "span_s": 272.4034163951874,
+      "cov_diag_min": [
+        0.02700937292128458,
+        0.0173455141899721,
+        0.018624417433930195
+      ],
+      "cov_diag_max": [
+        1.2615668838662373,
+        0.5070761870568425,
+        0.5545088689958317
+      ]
+    }
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_231643.bag",
+    "duration_s": 81.75925421714783,
+    "messages": 26180,
+    "errors": [],
+    "imu": {
+      "count": 16293,
+      "zero_orientation_count": 16293,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 0.9989738802475525,
+      "gyro_median": [
+        -0.006813403218984604,
+        -0.007152591831982136,
+        -0.008800916373729706
+      ]
+    },
+    "amcl": {
+      "count": 1,
+      "span_s": 0.0,
+      "cov_diag_min": [
+        0.3000798138774208,
+        0.04413677386127546,
+        0.046739115267247826
+      ],
+      "cov_diag_max": [
+        0.3000798138774208,
+        0.04413677386127546,
+        0.046739115267247826
+      ]
+    }
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "duration_s": 305.640811920166,
+    "messages": 165354,
+    "errors": [],
+    "imu": {
+      "count": 61083,
+      "zero_orientation_count": 61083,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 1.0036372434216676,
+      "gyro_median": [
+        -0.0046828743070364,
+        -0.005022062920033932,
+        -0.009866181761026382
+      ]
+    },
+    "odom": {
+      "count": 30540,
+      "net_displacement_m": 0.8569572232796061,
+      "max_step_m": 0.015306665473269468,
+      "max_step_interval_relative_record_s": [
+        288.1372809410095,
+        288.13729429244995
+      ],
+      "max_step_header_gap_s": 0.010181665420532227,
+      "max_step_record_gap_s": 1.33514404296875e-05,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    },
+    "amcl": {
+      "count": 517,
+      "span_s": 298.3370611667633,
+      "cov_diag_min": [
+        0.0012900558621993241,
+        0.0017203727161607674,
+        0.000610419970247334
+      ],
+      "cov_diag_max": [
+        0.4163046031794835,
+        0.7967839172623599,
+        0.5213766761077465
+      ]
+    }
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260821_155022.bag",
+    "duration_s": 143.21908617019653,
+    "messages": 67573,
+    "errors": [],
+    "imu": {
+      "count": 28643,
+      "zero_orientation_count": 28643,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 1.0043735547463088,
+      "gyro_median": [
+        -0.006813403218984604,
+        -0.0028915340080857277,
+        -0.003474593162536621
+      ]
+    },
+    "odom": {
+      "count": 14309,
+      "net_displacement_m": 3.7916698688510846,
+      "max_step_m": 0.02222814893008288,
+      "max_step_interval_relative_record_s": [
+        51.35389447212219,
+        51.353904485702515
+      ],
+      "max_step_header_gap_s": 0.010013103485107422,
+      "max_step_record_gap_s": 1.0013580322265625e-05,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    }
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152128.bag",
+    "duration_s": 46.9839129447937,
+    "messages": 11940,
+    "errors": [],
+    "odom": {
+      "count": 4652,
+      "net_displacement_m": 12.058412586129755,
+      "max_step_m": 0.03197027081551012,
+      "max_step_interval_relative_record_s": [
+        8.95556354522705,
+        8.975581169128418
+      ],
+      "max_step_header_gap_s": 0.009792327880859375,
+      "max_step_record_gap_s": 0.020017623901367188,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    }
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152223.bag",
+    "duration_s": 12.176332235336304,
+    "messages": 3386,
+    "errors": [],
+    "odom": {
+      "count": 1170,
+      "net_displacement_m": 0.7951260434096027,
+      "max_step_m": 0.003610998932779834,
+      "max_step_interval_relative_record_s": [
+        2.591109037399292,
+        2.591118335723877
+      ],
+      "max_step_header_gap_s": 0.010013103485107422,
+      "max_step_record_gap_s": 9.298324584960938e-06,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    }
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152248.bag",
+    "duration_s": 179.58087515830994,
+    "messages": 48232,
+    "errors": [],
+    "odom": {
+      "count": 17935,
+      "net_displacement_m": 1.7812852354830946,
+      "max_step_m": 0.026792172236423654,
+      "max_step_interval_relative_record_s": [
+        10.438523054122925,
+        10.438529968261719
+      ],
+      "max_step_header_gap_s": 0.009979724884033203,
+      "max_step_record_gap_s": 6.9141387939453125e-06,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    }
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_102101.bag",
+    "duration_s": 224.2898063659668,
+    "messages": 107635,
+    "errors": [],
+    "imu": {
+      "count": 44957,
+      "zero_orientation_count": 44957,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 1.000972603877443,
+      "gyro_median": [
+        -0.006813403218984604,
+        0.004565318115055561,
+        -0.004539858549833298
+      ]
+    },
+    "odom": {
+      "count": 22399,
+      "net_displacement_m": 2.41462639669179,
+      "max_step_m": 0.02869462183641724,
+      "max_step_interval_relative_record_s": [
+        49.201273679733276,
+        49.22232007980347
+      ],
+      "max_step_header_gap_s": 0.009909629821777344,
+      "max_step_record_gap_s": 0.02104640007019043,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    },
+    "amcl": {
+      "count": 334,
+      "span_s": 207.86214017868042,
+      "cov_diag_min": [
+        0.008332862124163398,
+        0.029980892436224593,
+        0.014655065203964344
+      ],
+      "cov_diag_max": [
+        1.2826903763680164,
+        4.4414223244794595,
+        6.9839632275373384
+      ]
+    }
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103200.bag",
+    "duration_s": 68.83911061286926,
+    "messages": 33661,
+    "errors": [],
+    "imu": {
+      "count": 13796,
+      "zero_orientation_count": 13796,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 0.9991179939968429,
+      "gyro_median": [
+        -0.006813403218984604,
+        -0.007152591831982136,
+        -0.008800916373729706
+      ]
+    },
+    "odom": {
+      "count": 6861,
+      "net_displacement_m": 0.5267555581404026,
+      "max_step_m": 0.008406721716759347,
+      "max_step_interval_relative_record_s": [
+        8.095982313156128,
+        8.095991134643555
+      ],
+      "max_step_header_gap_s": 0.010027647018432617,
+      "max_step_record_gap_s": 8.821487426757812e-06,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    },
+    "amcl": {
+      "count": 22,
+      "span_s": 45.019169092178345,
+      "cov_diag_min": [
+        0.009603561960915385,
+        0.02942545053227974,
+        0.009143892268847013
+      ],
+      "cov_diag_max": [
+        0.7955786592591494,
+        0.10329189934765637,
+        0.78752904403437
+      ]
+    }
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103313.bag",
+    "duration_s": 272.34031438827515,
+    "messages": 130674,
+    "errors": [],
+    "imu": {
+      "count": 54561,
+      "zero_orientation_count": 54561,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 0.9995331721158525,
+      "gyro_median": [
+        -0.006813403218984604,
+        -0.006087327376008034,
+        -0.007735650986433029
+      ]
+    },
+    "odom": {
+      "count": 27206,
+      "net_displacement_m": 0.8288837083136456,
+      "max_step_m": 0.027963816579615993,
+      "max_step_interval_relative_record_s": [
+        43.77794098854065,
+        43.77795481681824
+      ],
+      "max_step_header_gap_s": 0.010045051574707031,
+      "max_step_record_gap_s": 1.3828277587890625e-05,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    },
+    "amcl": {
+      "count": 362,
+      "span_s": 214.8704535961151,
+      "cov_diag_min": [
+        0.0022041400265493394,
+        0.0020300079276864835,
+        0.0007424305191465253
+      ],
+      "cov_diag_max": [
+        0.6131162146537861,
+        4.791710857844382,
+        5.617614782398803
+      ]
+    }
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_105713.bag",
+    "duration_s": 274.44720554351807,
+    "messages": 96815,
+    "errors": [],
+    "imu": {
+      "count": 41082,
+      "zero_orientation_count": 41082,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 1.0009042617330115,
+      "gyro_median": [
+        -0.008943932130932808,
+        -0.0007610050961375237,
+        -0.0066703855991363525
+      ]
+    },
+    "odom": {
+      "count": 20473,
+      "net_displacement_m": 7.055069307702118,
+      "max_step_m": 0.07306921448994558,
+      "max_step_interval_relative_record_s": [
+        132.55354142189026,
+        132.55354952812195
+      ],
+      "max_step_header_gap_s": 0.010007143020629883,
+      "max_step_record_gap_s": 8.106231689453125e-06,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    },
+    "amcl": {
+      "count": 322,
+      "span_s": 205.02699041366577,
+      "cov_diag_min": [
+        0.00374355081117983,
+        0.007256867478190543,
+        0.003998908818409521
+      ],
+      "cov_diag_max": [
+        1.9443026660307794,
+        1.4215638244311606,
+        6.764650666043736
+      ]
+    }
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "duration_s": 219.658189535141,
+    "messages": 108263,
+    "errors": [],
+    "imu": {
+      "count": 44029,
+      "zero_orientation_count": 44029,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 1.0013186142207062,
+      "gyro_median": [
+        -0.005748137831687927,
+        -0.007152591831982136,
+        -0.0066703855991363525
+      ]
+    },
+    "odom": {
+      "count": 21933,
+      "net_displacement_m": 1.031518123264427,
+      "max_step_m": 0.013894735993623864,
+      "max_step_interval_relative_record_s": [
+        12.327929735183716,
+        12.34420132637024
+      ],
+      "max_step_header_gap_s": 0.009848833084106445,
+      "max_step_record_gap_s": 0.016271591186523438,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    },
+    "amcl": {
+      "count": 487,
+      "span_s": 209.4617486000061,
+      "cov_diag_min": [
+        0.0010560277725106815,
+        0.002453873598740941,
+        0.00040440695498763384
+      ],
+      "cov_diag_max": [
+        1.552300647172217,
+        0.9159392428441748,
+        0.4682589196531748
+      ]
+    }
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "duration_s": 219.61930918693542,
+    "messages": 110969,
+    "errors": [],
+    "imu": {
+      "count": 43964,
+      "zero_orientation_count": 43964,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 1.002964840245769,
+      "gyro_median": [
+        -0.0046828743070364,
+        -0.007152591831982136,
+        -0.007735650986433029
+      ]
+    },
+    "odom": {
+      "count": 21924,
+      "net_displacement_m": 0.8587742173545103,
+      "max_step_m": 0.013273233842881172,
+      "max_step_interval_relative_record_s": [
+        10.513045310974121,
+        10.513059377670288
+      ],
+      "max_step_header_gap_s": 0.009942054748535156,
+      "max_step_record_gap_s": 1.4066696166992188e-05,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    },
+    "amcl": {
+      "count": 534,
+      "span_s": 211.6109561920166,
+      "cov_diag_min": [
+        0.0008345957790254488,
+        0.0019112350988592652,
+        0.0006041898743361464
+      ],
+      "cov_diag_max": [
+        1.164241607335791,
+        0.33464329069055054,
+        0.5442487645415834
+      ]
+    }
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_CLEAN_REPEAT_20260821_160211.bag",
+    "duration_s": 141.04050302505493,
+    "messages": 66526,
+    "errors": [],
+    "imu": {
+      "count": 28207,
+      "zero_orientation_count": 28207,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 1.0031168026411195,
+      "gyro_median": [
+        -0.007878666743636131,
+        -0.0007610050961375237,
+        -0.004539858549833298
+      ]
+    },
+    "odom": {
+      "count": 14092,
+      "net_displacement_m": 2.699698358873882,
+      "max_step_m": 0.022160226003230105,
+      "max_step_interval_relative_record_s": [
+        13.659061670303345,
+        13.664016246795654
+      ],
+      "max_step_header_gap_s": 0.010020017623901367,
+      "max_step_record_gap_s": 0.00495457649230957,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    }
+  },
+  {
+    "bag": "tag_calibration_20260827_134853.bag",
+    "duration_s": 182.9012327194214,
+    "messages": 84836,
+    "errors": [],
+    "imu": {
+      "count": 36682,
+      "zero_orientation_count": 36682,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 1.0027854531221145,
+      "gyro_median": [
+        -0.0046828743070364,
+        -0.00395679846405983,
+        -0.01093144342303276
+      ]
+    },
+    "odom": {
+      "count": 18256,
+      "net_displacement_m": 1.1740980619318437,
+      "max_step_m": 0.008057505133642623,
+      "max_step_interval_relative_record_s": [
+        165.35899353027344,
+        165.37669467926025
+      ],
+      "max_step_header_gap_s": 0.009827852249145508,
+      "max_step_record_gap_s": 0.017701148986816406,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    },
+    "amcl": {
+      "count": 361,
+      "span_s": 177.27975869178772,
+      "cov_diag_min": [
+        0.0013206231012077296,
+        0.0011144406886458569,
+        0.0008044865959820925
+      ],
+      "cov_diag_max": [
+        1.1090244379835923,
+        0.6686995489724836,
+        0.5663004035126824
+      ]
+    }
+  },
+  {
+    "bag": "yaw_calibration_020_030_040_20260821_134549.bag",
+    "duration_s": 67.27298283576965,
+    "messages": 26907,
+    "errors": [],
+    "imu": {
+      "count": 13457,
+      "zero_orientation_count": 13457,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 1.0009974591747313,
+      "gyro_median": [
+        -0.006813403218984604,
+        -0.007152591831982136,
+        -0.007735650986433029
+      ]
+    },
+    "odom": {
+      "count": 6717,
+      "net_displacement_m": 0.1738048539485633,
+      "max_step_m": 0.0075900770713372085,
+      "max_step_interval_relative_record_s": [
+        9.319700717926025,
+        9.319707870483398
+      ],
+      "max_step_header_gap_s": 0.009994029998779297,
+      "max_step_record_gap_s": 7.152557373046875e-06,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    }
+  },
+  {
+    "bag": "yaw_calibration_20260821_132716.bag",
+    "duration_s": 967.0621955394745,
+    "messages": 386797,
+    "errors": [],
+    "imu": {
+      "count": 193410,
+      "zero_orientation_count": 193410,
+      "orientation_covariance0": [
+        0.0
+      ],
+      "accel_norm_p50": 1.0013398911083558,
+      "gyro_median": [
+        -0.005748137831687927,
+        -0.007152591831982136,
+        -0.008800916373729706
+      ]
+    },
+    "odom": {
+      "count": 96689,
+      "net_displacement_m": 2.352863917800561,
+      "max_step_m": 0.00799618526666798,
+      "max_step_interval_relative_record_s": [
+        24.395053148269653,
+        24.42527461051941
+      ],
+      "max_step_header_gap_s": 0.010052919387817383,
+      "max_step_record_gap_s": 0.03022146224975586,
+      "z_qx_qy_all_zero": true,
+      "pose_cov_diag_unique": [
+        [
+          0.04,
+          0.04,
+          0.09
+        ]
+      ]
+    }
+  }
+]

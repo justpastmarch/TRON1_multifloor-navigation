@@ -1,0 +1,279 @@
+[
+  {
+    "position": [
+      -0.40267149886656306,
+      -0.020609318687357225,
+      -0.0007421288134424053
+    ],
+    "yaw_deg": -4.376226759389322,
+    "t": 0.2000718116760254,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 2,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.40267149886656306,
+        -0.020609318687357225,
+        -0.0007421288134424053
+      ],
+      "yaw": -0.07637956576522534,
+      "roll": -0.10263127180371195,
+      "pitch": 0.1877397601805888,
+      "velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "angular_velocity": 0.0,
+      "ey": -0.020609318687357225,
+      "epsi": -0.07637956576522534,
+      "command": [
+        0.031510770320892334,
+        0.03556902548774425
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.04732850113343695,
+      "phase_complete": false
+    }
+  },
+  {
+    "position": [
+      -0.3838029406455699,
+      -0.06575327959160933,
+      0.057028528568447645
+    ],
+    "yaw_deg": -7.004183225055767,
+    "t": 0.3998880386352539,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 3,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.3838029406455699,
+        -0.06575327959160933,
+        0.057028528568447645
+      ],
+      "yaw": -0.12224605869017813,
+      "roll": -0.05372529219356637,
+      "pitch": 0.18114002073955157,
+      "velocity": [
+        0.09442955914107608,
+        -0.225927401348958,
+        0.2891189482507737
+      ],
+      "angular_velocity": -0.22954338405314606,
+      "ey": -0.06575327959160933,
+      "epsi": -0.12224605869017811,
+      "command": [
+        0.06148320436477661,
+        0.07888930755920415
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.0661970593544301,
+      "phase_complete": false
+    }
+  },
+  {
+    "position": [
+      -0.4064374140291225,
+      -0.1331751722411016,
+      -0.020649463965541515
+    ],
+    "yaw_deg": -8.492797596798884,
+    "t": 0.5999352931976318,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 4,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.4064374140291225,
+        -0.1331751722411016,
+        -0.020649463965541515
+      ],
+      "yaw": -0.14822728076960234,
+      "roll": -0.0007207767981666707,
+      "pitch": 0.249963779060638,
+      "velocity": [
+        -0.11314563368074004,
+        -0.33702983226130223,
+        -0.3882982183580426
+      ],
+      "angular_velocity": -0.1298754243654109,
+      "ey": -0.1331751722411016,
+      "epsi": -0.14822728076960234,
+      "command": [
+        0.0914902925491333,
+        0.11807570323418098
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.04356258597087753,
+      "phase_complete": false
+    }
+  },
+  {
+    "position": [
+      -0.2983329680846479,
+      -0.11678854076680026,
+      -0.07149559545535633
+    ],
+    "yaw_deg": -6.348467728054714,
+    "t": 0.7990944385528564,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 5,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.2983329680846479,
+        -0.11678854076680026,
+        -0.07149559545535633
+      ],
+      "yaw": -0.11080166431115875,
+      "roll": -0.02353144006705239,
+      "pitch": 0.24642502184887857,
+      "velocity": [
+        0.5428043274219577,
+        0.08227908110909884,
+        -0.25530402532670315
+      ],
+      "angular_velocity": 0.18791814150281902,
+      "ey": -0.11678854076680026,
+      "epsi": -0.11080166431115876,
+      "command": [
+        0.07602647080487206,
+        0.08988501234310936
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.15166703191535214,
+      "phase_complete": false
+    }
+  },
+  {
+    "position": [
+      -0.25451441722138274,
+      -0.14601339446055436,
+      0.018186958971690675
+    ],
+    "yaw_deg": -10.568116109694168,
+    "t": 0.999941349029541,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 6,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.25451441722138274,
+        -0.14601339446055436,
+        0.018186958971690675
+      ],
+      "yaw": -0.18444842184721746,
+      "roll": -0.14671718645340226,
+      "pitch": 0.2603785929259625,
+      "velocity": [
+        0.21816890665267086,
+        -0.14550810676844686,
+        0.4465219515410861
+      ],
+      "angular_velocity": -0.3666810575341563,
+      "ey": -0.14601339446055436,
+      "epsi": -0.18444842184721746,
+      "command": [
+        0.10615350737637474,
+        0.14430176565755853
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.19548558277861727,
+      "phase_complete": false
+    }
+  },
+  {
+    "position": [
+      -0.19780035001314772,
+      -0.23253996282775724,
+      0.052178746179014024
+    ],
+    "yaw_deg": -11.287079759822102,
+    "t": 1.2000164985656738,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": true,
+    "detail": "body exceeds surveyed flight corridor",
+    "debug": {
+      "tracking_state": "CORRIDOR_LIMIT",
+      "loss_response": true
+    }
+  }
+]

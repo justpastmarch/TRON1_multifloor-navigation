@@ -1,0 +1,63 @@
+{
+  "at_utc": "2026-09-22T20:00:24.024153+00:00",
+  "scope": "software and offline verification, NOT full repository audit or physical driving validation",
+  "unit_tests": {
+    "tests": 149,
+    "failures": [],
+    "errors": [],
+    "skipped": []
+  },
+  "geometry_comparisons": 729,
+  "geometry_disagreements": 0,
+  "ros_boundary_tests": 5,
+  "real_tracking_process_observe_tests": 1,
+  "entry_client_ros": "preview without goal/arming; same anchor retained after drift; bound ticket consumption; targeted cancellation acknowledgement",
+  "build_install": "passed in isolated catkin workspace on final candidate",
+  "hardware_commands_sent": 0,
+  "production_processes_restarted": false,
+  "initial_environment_failures": [
+    "isolated test copy lacked shared fixture helpers",
+    "numerical environment lacked ROS system libraries until runner appended them",
+    "ROS input fixture lacked Livox generated message path until its environment was corrected"
+  ],
+  "entry_localization": "prefix-only template fitting ambiguous; manual declared entry supported; arbitrary automatic entry NOT validated",
+  "review": {
+    "shower": "independent reviewer found shared-param ownership/cancellation issues; bound UUID tickets, receipts, process lock, expiry, cleanup and failed-vs-finished distinction added",
+    "factchk": "dimensions checked against recovered original user records and existing site file; command normalization checked against installed repo robot.yaml and robot_conversion.py",
+    "mandela": "BAG controls do not affect recorded movement; full-map anchors are INFERRED, not live entry results; identical limits retained for before/after code comparison",
+    "ssotize": "current guide links new report/runbook; older measurement and implementation reports retained as dated evidence",
+    "re0": "current application guide replaced stale placeholders with direct runbook reference; no historical report rewrite",
+    "detool": "not applicable: operational runbook tied to actual installation"
+  },
+  "deployment": {
+    "status": "applied; runtime was not restarted",
+    "repository": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation",
+    "changed_file_count": 21,
+    "baseline_file_count": 1885,
+    "head_before": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+    "head_after": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+    "unrelated_hash_changes": [],
+    "baseline_git_entries_missing": [],
+    "git_status_identical": false,
+    "git_status_difference": "only the reviewed implementation and documentation changes; existing changes preserved",
+    "deployed_config_check": "passed without robot connection",
+    "manifest": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/deployment.json",
+    "post_copy_verifier_note": "Initial post-copy verifier had a Path subscript TypeError; files already copied. Read-only recovery verified all deployed hashes and all unrelated baseline files."
+  },
+  "cleanup": {
+    "status": "complete",
+    "removed_groups": 20,
+    "removed_file_count": 863,
+    "removed_bytes": 41052204,
+    "test_processes_remaining": [],
+    "raw_logs_status": "temporary raw logs removed after structured result extraction; historical log path fields in result files are provenance, not retained log links",
+    "preexisting_repository_caches": "untouched",
+    "manifest": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/cleanup.json",
+    "durable_evidence_retained": [
+      "candidate and before source copies",
+      "baseline and deployment manifests",
+      "structured verification results and replay traces",
+      "reproduction scripts and geometry pose/source metadata"
+    ]
+  }
+}

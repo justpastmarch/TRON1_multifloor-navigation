@@ -1,0 +1,63 @@
+path,bytes,state,read_scope
+manual_captures/analysis/sensor_gap_rgb_214_242.mp4,2888160,READ,280 frames decoded; 12 visual samples; derived annotated video
+manual_captures/manual-5F-rooftop_route_1788917683773755895.bag,105529960,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+manual_captures/manual-5F-rooftop_route_1788917683773755895.bag.capture.json,482,READ,Full JSON read
+manual_captures/manual-5F-rooftop_route_1788918199558502114.bag.INCOMPLETE.json,683,READ,Full JSON read
+manual_captures/manual-5F-rooftop_route_1788918199558502114.bag.active.invalid,922588033,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+manual_captures/manual-5F-rooftop_route_1788918551828137154.bag,163403843,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+manual_captures/manual-5F-rooftop_route_1788918551828137154.bag.capture.json,484,READ,Full JSON read
+manual_captures/manual-5F-rooftop_route_1788920816079496577.bag.INCOMPLETE.json,686,READ,Full JSON read
+manual_captures/manual-5F-rooftop_route_1788920816079496577.bag.active.invalid,1500070288,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/stair_3F_to_4F_FULL_20260916_210849.bag,1047464539,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/stair_3F_to_4F_FULL_20260916_231643.bag,287498694,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/stair_3F_to_4F_FULL_20260916_234018.bag,1102331710,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/stair_3F_to_4F_UP_20260821_155022.bag,2157341453,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/stair_3F_to_4F_UP_20260824_152128.bag,91965707,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/stair_3F_to_4F_UP_20260824_152223.bag,154793379,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/stair_3F_to_4F_UP_20260824_152248.bag,2169929079,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/stair_3F_to_4F_UP_20260827_102101.bag,3563871958,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/stair_3F_to_4F_UP_20260827_103200.bag,1774155508,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/stair_3F_to_4F_UP_20260827_103313.bag,4370811763,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/stair_3F_to_4F_UP_20260827_105713.bag,1507746956,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/stair_3F_to_4F_UP_20260827_150034.bag,1519550290,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/stair_3F_to_4F_UP_20260827_154342.bag,1747637963,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/stair_3F_to_4F_UP_CLEAN_REPEAT_20260821_160211.bag,2107960604,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/tag_calibration_20260827_134853.bag,916786440,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/yaw_calibration_020_030_040_20260821_134549.bag,11373716,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+stair_captures/yaw_calibration_20260821_132716.bag,162953638,READ,All serialized messages; all numeric payloads; sampled RGB pixel decode/view (see summary)
+manual_captures/analysis/sensor_gap_rgb_contact_sheet.jpg,318943,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827/frame_000s.jpg,78635,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827/frame_030s.jpg,64749,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827/frame_060s.jpg,77817,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827/frame_090s.jpg,34991,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827/frame_120s.jpg,42232,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827/frame_150s.jpg,66253,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827/frame_180s.jpg,52030,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827/frame_200s.jpg,50549,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_401_exact/401_exact_00_tplus_125.908s.jpg,68569,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_401_exact/401_exact_01_tplus_125.942s.jpg,68757,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_401_exact/401_exact_02_tplus_126.009s.jpg,64866,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_00.jpg,43491,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_01.jpg,38078,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_02.jpg,25954,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_03.jpg,27997,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_04.jpg,27978,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_05.jpg,56853,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_06.jpg,51586,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_07.jpg,31394,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_08.jpg,41714,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_09.jpg,85778,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_10.jpg,88436,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_11.jpg,51700,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_12.jpg,20480,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_13.jpg,53323,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_14.jpg,33011,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_15.jpg,37579,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_16.jpg,44464,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_17.jpg,44151,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_18.jpg,31086,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_19.jpg,98120,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_20.jpg,89693,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_21.jpg,59958,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_22.jpg,49401,READ,Full JPEG decoded and visually reviewed in contact sheet
+stair_captures/visual_review_20260827_tag/frame_23.jpg,52877,READ,Full JPEG decoded and visually reviewed in contact sheet

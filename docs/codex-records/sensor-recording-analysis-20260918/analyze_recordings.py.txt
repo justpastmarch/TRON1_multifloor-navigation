@@ -1,0 +1,139 @@
+#!/usr/bin/env python3
+"""Offline read-only ROS bag payload analysis. Never initializes ROS or publishes."""
+import os,json,math,struct,hashlib,time,traceback
+from pathlib import Path
+from collections import defaultdict,Counter
+import numpy as np
+import rosbag,cv2
+ROOT=Path('/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation')
+OUT=Path(__file__).resolve().parent
+META=json.load(open(OUT/'bag-metadata.json'))
+DT=np.dtype([('offset','<u4'),('x','<f4'),('y','<f4'),('z','<f4'),('reflectivity','u1'),('tag','u1'),('line','u1')])
+assert DT.itemsize==19
+
+def dump(p,o):
+ p.write_text(json.dumps(o,ensure_ascii=False,indent=2,allow_nan=False))
+def finite(v): return float(v) if np.isfinite(v) else None
+def dist(a):
+ a=np.asarray(a,dtype=float);a=a[np.isfinite(a)]
+ return dict(zip(['min','p50','p95','p99','max'],map(float,np.percentile(a,[0,50,95,99,100])))) if len(a) else {}
+def quat(q):return [q.x,q.y,q.z,q.w]
+def pos(p):return [p.x,p.y,p.z]
+def obj(m):
+ if hasattr(m,'__slots__'):return {k:obj(getattr(m,k)) for k in m.__slots__ if k not in ['header']}
+ if isinstance(m,(list,tuple)):return [obj(v) for v in m]
+ if isinstance(m,bytes):return {'bytes':len(m),'sha256':hashlib.sha256(m).hexdigest()}
+ if isinstance(m,float):return finite(m)
+ return m
+
+def analyze(meta):
+ p=ROOT/meta['path'];dst=OUT/'bags'/p.name;dst.mkdir(parents=True,exist_ok=True)
+ if (dst/'summary.json').exists(): print('ALREADY',p.name,flush=True);return
+ arrays=defaultdict(list);rows=defaultdict(list);info={};events=[];last_event={};counters=Counter();maps=[];images=[];scans=[]
+ before=p.stat();start=time.time();sample_threshold=np.linspace(meta['start'],meta['end'],12);sample_i=0
+ counts=Counter();errors=[];health={}
+ try:
+  with rosbag.Bag(str(p),'r') as b:
+   for topic,raw,bt,ch in b.read_messages(raw=True,return_connection_header=True):
+    typ,data,md5,loc,cls=raw;t=bt.to_sec();counts[topic]+=1;stamp=np.nan;seq=np.nan
+    if topic not in info:
+     info[topic]={'type':typ,'callerid':ch.get('callerid',b'').decode(errors='replace'),'md5':md5,'frames':set()}
+    # deserialize ALL messages, except packed lidar using verified equivalent field parsing.
+    if typ=='livox_ros_driver2/CustomMsg':
+     seq,sec,nsec,n=struct.unpack_from('<IIII',data,0);stamp=sec+nsec*1e-9;off=16+n
+     info[topic]['frames'].add(data[16:off].decode(errors='replace'))
+     tb,pn,lid=struct.unpack_from('<QIB',data,off);length=struct.unpack_from('<I',data,off+16)[0]
+     if pn!=length or len(data)!=off+20+length*19:raise ValueError('CustomMsg payload size / point_num mismatch')
+     pts=np.frombuffer(data,dtype=DT,count=length,offset=off+20)
+     valid=np.isfinite(pts['x'])&np.isfinite(pts['y'])&np.isfinite(pts['z']);norm=np.sqrt(pts['x']**2+pts['y']**2+pts['z']**2)
+     rows[topic].append([t,stamp,length,int(valid.sum()),int((norm==0).sum()),float(norm[valid].min()) if valid.any() else np.nan,float(norm[valid].max()) if valid.any() else np.nan,tb*1e-9,int(pts['offset'].max()) if length else 0])
+     counters['lidar_points']+=length;counters['lidar_nonfinite_points']+=int((~valid).sum())
+    else:
+     m=cls();m.deserialize(data)
+     if hasattr(m,'header'):
+      stamp=m.header.stamp.to_sec();seq=m.header.seq;info[topic]['frames'].add(m.header.frame_id)
+     if typ=='nav_msgs/Odometry':
+      rows[topic].append([t,stamp]+pos(m.pose.pose.position)+quat(m.pose.pose.orientation)+pos(m.twist.twist.linear)+pos(m.twist.twist.angular)+[m.pose.covariance[0],m.pose.covariance[7],m.pose.covariance[35]])
+      info[topic]['child_frame']=m.child_frame_id
+     elif typ=='geometry_msgs/PoseWithCovarianceStamped':
+      rows[topic].append([t,stamp]+pos(m.pose.pose.position)+quat(m.pose.pose.orientation)+[m.pose.covariance[0],m.pose.covariance[7],m.pose.covariance[35]])
+     elif typ=='sensor_msgs/Imu':
+      rows[topic].append([t,stamp]+pos(m.angular_velocity)+pos(m.linear_acceleration)+quat(m.orientation)+[m.orientation_covariance[0],m.angular_velocity_covariance[0],m.linear_acceleration_covariance[0]])
+     elif typ=='sensor_msgs/Joy':
+      rows[topic].append([t,stamp]+list(m.axes)+list(m.buttons));info[topic].update(axes=len(m.axes),buttons=len(m.buttons))
+     elif typ=='geometry_msgs/Twist':rows[topic].append([t,stamp]+pos(m.linear)+pos(m.angular))
+     elif topic.endswith('/websocket_tx'):
+      d=json.loads(m.data)
+      if d.get('title')=='request_twist':
+       v=d['data'];rows[topic].append([t,float(d.get('timestamp',0))/1000,v.get('x',0),v.get('y',0),v.get('z',0)])
+      else:events.append({'t':t,'topic':topic,'data':d})
+     elif typ=='tf2_msgs/TFMessage':
+      for tr in m.transforms:
+       key=topic+':'+tr.header.frame_id+'>'+tr.child_frame_id
+       rows[key].append([t,tr.header.stamp.to_sec()]+pos(tr.transform.translation)+quat(tr.transform.rotation))
+     elif typ=='sensor_msgs/LaserScan':
+      v=np.asarray(m.ranges,dtype=np.float32);ok=np.isfinite(v)&(v>=m.range_min)&(v<=m.range_max)
+      rows[topic].append([t,stamp,len(v),int(ok.sum()),int(np.isnan(v).sum()),int(np.isinf(v).sum()),float(v[ok].min()) if ok.any() else np.nan,float(np.median(v[ok])) if ok.any() else np.nan,m.angle_min,m.angle_increment,m.range_min,m.range_max])
+      scans.append(v)
+     elif typ in ('sensor_msgs/Image','sensor_msgs/CompressedImage'):
+      if typ=='sensor_msgs/Image':
+       if len(m.data)!=m.height*m.step:raise ValueError('Image payload size mismatch')
+       shape=[m.height,m.width];encoding=m.encoding
+      else:shape=None;encoding=m.format
+      rows[topic].append([t,stamp,len(m.data)])
+      if sample_i<len(sample_threshold) and t>=sample_threshold[sample_i]:
+       if typ=='sensor_msgs/CompressedImage':img=cv2.imdecode(np.frombuffer(m.data,np.uint8),cv2.IMREAD_COLOR)
+       else:
+        channels=3 if m.encoding.lower() in ['rgb8','bgr8'] else 1
+        img=np.frombuffer(m.data,np.uint8).reshape(m.height,m.step)[:,:m.width*channels].reshape(m.height,m.width,channels)
+        if m.encoding=='rgb8':img=cv2.cvtColor(img,cv2.COLOR_RGB2BGR)
+       if img is None:raise ValueError('selected image decode failed')
+       (dst/'frames').mkdir(exist_ok=True);fname='frames/{:02d}_{:.3f}s.jpg'.format(sample_i,t-meta['start']);cv2.imwrite(str(dst/fname),img)
+       images.append({'t':t,'stamp':stamp,'relative_t':t-meta['start'],'path':fname,'shape':list(img.shape),'encoding':encoding});sample_i+=1
+      counters['image_payload_bytes']+=len(m.data)
+     elif typ=='geometry_msgs/PoseArray':
+      xy=np.array([[v.position.x,v.position.y] for v in m.poses]);std=xy.std(axis=0) if len(xy) else [np.nan,np.nan]
+      rows[topic].append([t,stamp,len(xy)]+list(std))
+     elif typ=='apriltag_ros/AprilTagDetectionArray':
+      rows[topic].append([t,stamp,len(m.detections)])
+      if m.detections:events.append({'t':t,'topic':topic,'data':obj(m)})
+     elif typ in ['nav_msgs/OccupancyGrid','map_msgs/OccupancyGridUpdate']:
+      arr=np.asarray(m.data,dtype=np.int8)
+      if hasattr(m,'info'):
+       v={'t':t,'topic':topic,'frame':m.header.frame_id,'width':m.info.width,'height':m.info.height,'resolution':m.info.resolution,'origin':obj(m.info.origin),'sha256_cells':hashlib.sha256(arr.tobytes()).hexdigest()}
+       if len(arr)!=m.info.width*m.info.height:raise ValueError('grid shape mismatch')
+       if not maps or v['sha256_cells']!=last_event.get(topic):maps.append(v);last_event[topic]=v['sha256_cells']
+      counters['map_cells']+=len(arr)
+     elif typ=='rosgraph_msgs/Log':
+      events.append({'t':t,'topic':topic,'data':{'level':m.level,'name':m.name,'msg':m.msg,'file':m.file,'line':m.line}})
+     elif typ=='sensor_msgs/CameraInfo':
+      key=tuple(m.K)+tuple(m.D)
+      if last_event.get(topic)!=key:
+       events.append({'t':t,'topic':topic,'data':obj(m)});last_event[topic]=key
+     elif topic.endswith('/state') or topic.endswith('/floor_state') or '/mission/' in topic or '/move_base/' in topic or 'status' in topic or typ=='diagnostic_msgs/DiagnosticArray':
+      d=obj(m);s=json.dumps(d,sort_keys=True)
+      if last_event.get(topic)!=s:events.append({'t':t,'topic':topic,'data':d});last_event[topic]=s
+     else:counters['other_deserialized:'+typ]+=1
+    arrays[topic].append((t,stamp,seq))
+ except Exception as e:
+  errors.append({'error':str(e),'traceback':traceback.format_exc(),'last_topic':topic,'last_t':t})
+ for topic,v in arrays.items():
+  a=np.asarray(v);rt=a[:,0];st=a[:,1];sq=a[:,2];dr=np.diff(rt);positive=st>0;ds=np.diff(st[positive]);delta=rt[positive]-st[positive]
+  i=np.argsort(dr)[-5:][::-1]
+  health[topic]={'count_read':len(a),'count_index':meta['topics'][topic]['count'],'record_span':float(rt[-1]-rt[0]),'record_gap_s':dist(dr),'largest_record_gaps':[{'from_rel':float(rt[k]-meta['start']),'to_rel':float(rt[k+1]-meta['start']),'gap':float(dr[k])} for k in i], 'header_zero':int((st==0).sum()),'header_nonmonotonic':int((ds<0).sum()),'header_equal':int((ds==0).sum()),'header_gap_s':dist(ds),'record_minus_header_s':dist(delta),'sequence_nonconsecutive':int((np.diff(sq[np.isfinite(sq)])!=1).sum())}
+  rows['clock:'+topic]=a
+ for k in rows:
+  try:rows[k]=np.asarray(rows[k],dtype=np.float64)
+  except ValueError:errors.append({'error':'variable numeric array shape','key':k});rows[k]=np.empty((0,0))
+ if scans:
+  try:rows['scan_ranges']=np.stack(scans)
+  except ValueError:errors.append({'error':'scan shape varies'})
+ np.savez_compressed(dst/'numeric.npz',**rows)
+ for d in info.values():d['frames']=sorted(d['frames'])
+ after=p.stat()
+ summary={'path':meta['path'],'start':meta['start'],'end':meta['end'],'counts_match':dict(counts)=={k:v['count'] for k,v in meta['topics'].items()},'counts':dict(counts),'health':health,'topic_info':info,'counters':dict(counters),'maps':maps,'selected_images':images,'errors':errors,'source_stat_unchanged':before.st_size==after.st_size and before.st_mtime_ns==after.st_mtime_ns,'elapsed_s':time.time()-start}
+ dump(dst/'events.json',events);dump(dst/'summary.json',summary)
+ print('DONE',p.name,'messages',sum(counts.values()),'seconds',round(time.time()-start,1),'errors',len(errors),'counts_match',summary['counts_match'],flush=True)
+
+if __name__=='__main__':
+ for m in META:analyze(m)

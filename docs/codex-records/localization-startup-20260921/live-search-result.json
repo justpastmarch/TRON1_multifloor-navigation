@@ -1,0 +1,15 @@
+{
+  "pose": [
+    0.6768969999999999,
+    -2.2182690000000003,
+    -0.3141592653589825
+  ],
+  "score": 0.8127223233814552,
+  "hit_fraction": 0.8,
+  "margin": 0.1041228276497086,
+  "unique": true,
+  "elapsed_sec": 1.030034686998988,
+  "valid_beams": 360,
+  "ground_truth": "not surveyed; not an accuracy result",
+  "scan_stamp": 1789947573.6787796
+}

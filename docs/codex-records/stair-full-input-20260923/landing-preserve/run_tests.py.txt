@@ -1,0 +1,8 @@
+import sys, pkgutil, unittest
+root='/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor'
+sys.path.insert(0,root+'/src');sys.path.insert(0,root+'/test')
+import stair_supervisor
+stair_supervisor.__path__=pkgutil.extend_path(stair_supervisor.__path__,stair_supervisor.__name__)
+suite=unittest.defaultTestLoader.loadTestsFromNames(['test_stair_readiness','test_stair_repair','test_lidar_control','test_supervisor'])
+r=unittest.TextTestRunner(verbosity=2).run(suite)
+sys.exit(not r.wasSuccessful())

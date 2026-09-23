@@ -42,10 +42,9 @@ class SyntheticStairSensors:
         stationary = MotionSample(0.0, 0.0)
         sequences = {
             Phase.VERIFY_ENTRY: (stationary,),
-            Phase.ALIGN: (
-                MotionSample(0.0, sign * 0.20),
-                MotionSample(0.0, sign * 0.20),
-            ),
+            # ALIGN accepts the NAV-aligned entry sample. Inventing a second
+            # turn here can arrive after the next phase captures its baseline.
+            Phase.ALIGN: (stationary,),
             Phase.FORWARD_SEGMENT_1: (
                 MotionSample(sign * 0.35, 0.0),
                 MotionSample(sign * 0.35, 0.0),

@@ -1,0 +1,273 @@
+{
+  "scope": "Same original LiDAR frame timestamps in three previously inspected windows. NOT holdout, NOT live acceptance, NOT physical position error.",
+  "metric_note": "Accepted counts include bootstrap; reject span is last rejected stamp minus first, not time to recovery. Relative yaw is unwrapped about initial sensor axes.",
+  "runs": {
+    "102101": {
+      "old": {
+        "frames": 500,
+        "accepted_including_bootstrap": 450,
+        "accepted_updates": 449,
+        "attempted_updates": 499,
+        "longest_reject_span_s": 8.000113487243652,
+        "longest_reject_frames": 41,
+        "initial_sensor_z_tilt_deg": 89.61670819956399,
+        "relative_yaw_end_deg": 27.46809700281529,
+        "endpoint_m": [
+          6.700079408153496,
+          -3.465080620100228,
+          1.7240907947522894
+        ],
+        "fitness_min": 0.5494367959949937,
+        "rmse_m_p95": 0.1398016295808148,
+        "rejected_intervals_from_first_sensor_stamp": [
+          {
+            "start_s": 6.800139904022217,
+            "end_s": 6.999962329864502,
+            "span_s": 0.19982242584228516,
+            "frames": 2
+          },
+          {
+            "start_s": 10.600073337554932,
+            "end_s": 11.000062942504883,
+            "span_s": 0.39998960494995117,
+            "frames": 3
+          },
+          {
+            "start_s": 44.5991485118866,
+            "end_s": 45.19905710220337,
+            "span_s": 0.5999085903167725,
+            "frames": 4
+          },
+          {
+            "start_s": 61.1994891166687,
+            "end_s": 69.19960260391235,
+            "span_s": 8.000113487243652,
+            "frames": 41
+          }
+        ]
+      },
+      "candidate": {
+        "frames": 500,
+        "accepted_including_bootstrap": 500,
+        "accepted_updates": 499,
+        "attempted_updates": 499,
+        "longest_reject_span_s": 0,
+        "longest_reject_frames": 0,
+        "initial_sensor_z_tilt_deg": 1.0839060794599966,
+        "relative_yaw_end_deg": 180.08343847232007,
+        "endpoint_m": [
+          0.6890387171918216,
+          1.4467898225166755,
+          2.994471055067032
+        ],
+        "fitness_min": 0.9694137638062872,
+        "rmse_m_p95": 0.11151984650377088,
+        "rejected_intervals_from_first_sensor_stamp": []
+      },
+      "wheel_relative_yaw_end_deg": 166.085910206216,
+      "gyro_prediction_relative_yaw_end_deg": 136.0011197495451,
+      "wheel_header_minus_record_median_s": -0.03948163986206055,
+      "imu_header_minus_record_median_s": -0.037786245346069336,
+      "rotation_innovation_p95_deg": 5.5343937279408255,
+      "rotation_innovation_max_deg": 13.492410321735413,
+      "translation_innovation_p95_m": 0.10123071061407415,
+      "sensor_first_offset_from_record_start_s": 24.86514139175415,
+      "sensor_last_offset_from_record_start_s": 124.6650698184967
+    },
+    "103313": {
+      "old": {
+        "frames": 467,
+        "accepted_including_bootstrap": 353,
+        "accepted_updates": 352,
+        "attempted_updates": 466,
+        "longest_reject_span_s": 15.200331926345825,
+        "longest_reject_frames": 77,
+        "initial_sensor_z_tilt_deg": 88.9149040299946,
+        "relative_yaw_end_deg": 163.9877935104293,
+        "endpoint_m": [
+          0.7881746989330393,
+          4.412232503609435,
+          -3.727090795118383
+        ],
+        "fitness_min": 0.40069686411149824,
+        "rmse_m_p95": 0.35107446506854373,
+        "rejected_intervals_from_first_sensor_stamp": [
+          {
+            "start_s": 7.399128675460815,
+            "end_s": 7.800129413604736,
+            "span_s": 0.4010007381439209,
+            "frames": 3
+          },
+          {
+            "start_s": 38.59910035133362,
+            "end_s": 39.199182987213135,
+            "span_s": 0.6000826358795166,
+            "frames": 4
+          },
+          {
+            "start_s": 49.39918613433838,
+            "end_s": 52.39934968948364,
+            "span_s": 3.0001635551452637,
+            "frames": 16
+          },
+          {
+            "start_s": 52.799302101135254,
+            "end_s": 67.99963402748108,
+            "span_s": 15.200331926345825,
+            "frames": 77
+          },
+          {
+            "start_s": 69.79959058761597,
+            "end_s": 72.39975905418396,
+            "span_s": 2.600168466567993,
+            "frames": 14
+          }
+        ]
+      },
+      "candidate": {
+        "frames": 467,
+        "accepted_including_bootstrap": 467,
+        "accepted_updates": 466,
+        "attempted_updates": 466,
+        "longest_reject_span_s": 0,
+        "longest_reject_frames": 0,
+        "initial_sensor_z_tilt_deg": 10.569532524519229,
+        "relative_yaw_end_deg": -108.3088799580178,
+        "endpoint_m": [
+          -1.384376905088644,
+          1.1343403427863923,
+          3.281978876289429
+        ],
+        "fitness_min": 0.9863013698630136,
+        "rmse_m_p95": 0.1114215075363733,
+        "rejected_intervals_from_first_sensor_stamp": []
+      },
+      "wheel_relative_yaw_end_deg": -106.08114562120716,
+      "gyro_prediction_relative_yaw_end_deg": -147.0793418570662,
+      "wheel_header_minus_record_median_s": -0.0388796329498291,
+      "imu_header_minus_record_median_s": -0.037386178970336914,
+      "rotation_innovation_p95_deg": 5.935660272213196,
+      "rotation_innovation_max_deg": 10.893018278835426,
+      "translation_innovation_p95_m": 0.10779069235846128,
+      "sensor_first_offset_from_record_start_s": 44.385924100875854,
+      "sensor_last_offset_from_record_start_s": 137.5859878063202
+    },
+    "105713": {
+      "old": {
+        "frames": 340,
+        "accepted_including_bootstrap": 168,
+        "accepted_updates": 167,
+        "attempted_updates": 339,
+        "longest_reject_span_s": 33.00065755844116,
+        "longest_reject_frames": 166,
+        "initial_sensor_z_tilt_deg": 89.6481066330332,
+        "relative_yaw_end_deg": -2.60281150266319,
+        "endpoint_m": [
+          4.2657756088015715,
+          3.9277150128079783,
+          -0.1690890252167273
+        ],
+        "fitness_min": 0.5106598984771573,
+        "rmse_m_p95": 0.33600713688991013,
+        "rejected_intervals_from_first_sensor_stamp": [
+          {
+            "start_s": 5.199969291687012,
+            "end_s": 6.1997716426849365,
+            "span_s": 0.9998023509979248,
+            "frames": 6
+          },
+          {
+            "start_s": 19.999772787094116,
+            "end_s": 53.00043034553528,
+            "span_s": 33.00065755844116,
+            "frames": 166
+          }
+        ]
+      },
+      "candidate": {
+        "frames": 340,
+        "accepted_including_bootstrap": 340,
+        "accepted_updates": 339,
+        "attempted_updates": 339,
+        "longest_reject_span_s": 0,
+        "longest_reject_frames": 0,
+        "initial_sensor_z_tilt_deg": 2.3377579365265237,
+        "relative_yaw_end_deg": 178.2698448478357,
+        "endpoint_m": [
+          -0.35736636637877295,
+          1.252934625796933,
+          3.3146247239574858
+        ],
+        "fitness_min": 0.9873646209386282,
+        "rmse_m_p95": 0.10723842422067979,
+        "rejected_intervals_from_first_sensor_stamp": []
+      },
+      "wheel_relative_yaw_end_deg": 170.56899624859398,
+      "gyro_prediction_relative_yaw_end_deg": 151.40810592200913,
+      "wheel_header_minus_record_median_s": -0.05958080291748047,
+      "imu_header_minus_record_median_s": -0.057683467864990234,
+      "rotation_innovation_p95_deg": 5.929345244269192,
+      "rotation_innovation_max_deg": 11.18665264456791,
+      "translation_innovation_p95_m": 0.11153656578220328,
+      "sensor_first_offset_from_record_start_s": 11.893338203430176,
+      "sensor_last_offset_from_record_start_s": 79.69403100013733
+    }
+  },
+  "synthetic_tests": {
+    "passed": 5,
+    "scope": "known rotation, gyro gap, up direction, recorded-vs-measurement time, common reference interpolation"
+  },
+  "zero_ros_publishers": true,
+  "up_only_ablation_105713": {
+    "frames": 340,
+    "accepted_including_bootstrap": 165,
+    "accepted_updates": 164,
+    "attempted_updates": 339,
+    "longest_reject_span_s": 33.60071635246277,
+    "longest_reject_frames": 169,
+    "initial_sensor_z_tilt_deg": 2.3377579365265237,
+    "relative_yaw_end_deg": -0.8251566784150383,
+    "endpoint_m": [
+      4.88325663749812,
+      0.5241900525951624,
+      2.98625409837587
+    ],
+    "fitness_min": 0.5050632911392405,
+    "rmse_m_p95": 0.3385662305909019,
+    "rejected_intervals_from_first_sensor_stamp": [
+      {
+        "start_s": 5.199969291687012,
+        "end_s": 6.1997716426849365,
+        "span_s": 0.9998023509979248,
+        "frames": 6
+      },
+      {
+        "start_s": 19.999772787094116,
+        "end_s": 53.600489139556885,
+        "span_s": 33.60071635246277,
+        "frames": 169
+      }
+    ]
+  },
+  "current_extrinsic_sensitivity_105713": {
+    "frames": 340,
+    "accepted_including_bootstrap": 340,
+    "accepted_updates": 339,
+    "attempted_updates": 339,
+    "longest_reject_span_s": 0,
+    "longest_reject_frames": 0,
+    "initial_sensor_z_tilt_deg": 1.2486306492620187,
+    "relative_yaw_end_deg": 177.98868672702017,
+    "endpoint_m": [
+      -0.47725931777149705,
+      1.3596551658914826,
+      3.3186661501931507
+    ],
+    "fitness_min": 0.9886578449905482,
+    "rmse_m_p95": 0.10829641213559389,
+    "rejected_intervals_from_first_sensor_stamp": []
+  },
+  "extrinsic_sensitivity_note": "Current YAML rotation only; both transforms remain historically unverified; translation lever arm not modeled.",
+  "extrinsic_sensitivity_yaw_difference_deg": -0.28115812081554736,
+  "ablation_invalid_measurements_all_nan": true
+}

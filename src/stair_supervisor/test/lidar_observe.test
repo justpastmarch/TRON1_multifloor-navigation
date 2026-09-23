@@ -1,0 +1,14 @@
+<launch>
+  <node pkg="stair_supervisor" type="stair_supervisor_node.py" name="stair_supervisor"
+        launch-prefix="$(env STAIR_LIDAR_TEST_PYTHON)" required="true" output="screen">
+    <env name="OMP_NUM_THREADS" value="2"/>
+    <env name="OPENBLAS_NUM_THREADS" value="1"/>
+    <param name="lidar_mode" value="observe"/>
+    <param name="lidar_observe_only" value="true"/>
+    <param name="lidar_topic" value="/test/lidar"/>
+    <param name="imu_topic" value="/test/imu"/>
+    <!-- Deliberately no ACCID or WebSocket URL: observe has no transport. -->
+  </node>
+  <test test-name="lidar_observation_only" pkg="stair_supervisor"
+        type="test_lidar_observe_ros.py" time-limit="35"/>
+</launch>

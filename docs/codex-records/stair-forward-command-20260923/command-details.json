@@ -1,0 +1,109 @@
+{
+  "forward_start_kst": "2026-09-23T09:41:16.075151+09:00",
+  "result_kst": "2026-09-23T09:42:01.091086+09:00",
+  "first_x_0point5_after_sec": 1.8376946449279785,
+  "x_0point5_to_result_sec": 43.178240060806274,
+  "commands_after_ramp": 899,
+  "all_after_ramp_x_0point5": true,
+  "tx_gap_max_sec": 0.10033679008483887,
+  "tx_gap_median_sec": 0.04732465744018555,
+  "tx_z_after_ramp_min": -0.08608084270982293,
+  "tx_z_after_ramp_max": -0.024809978970829104,
+  "tx_z_after_ramp_median": -0.06502444857545119,
+  "pitch_deg_min": -8.977143711849616,
+  "pitch_deg_max": -2.2999246888318567,
+  "last_heading_error_deg": 9.183118326494608,
+  "last_lateral_error_m": 0.06556157688874512,
+  "first_position": [
+    -0.4609154292481437,
+    -0.027165607570514703,
+    -0.0399147512361242
+  ],
+  "last_position": [
+    0.0339792561036805,
+    0.06556157688874512,
+    -0.03552679888009655
+  ],
+  "net_position_delta": [
+    0.49489468535182424,
+    0.09272718445925981,
+    0.004387952356027652
+  ],
+  "after_result_tx_first": [
+    {
+      "time": 1790124121.091216,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790124121090,
+        "guid": "45231dfd-da3b-452c-b5d9-312fc3dce723",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790124121.0928097,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790124121093,
+        "guid": "27b8d4db-5a3b-4379-9e5d-0341c4d675c9",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790124121.1181433,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790124121118,
+        "guid": "88399bd4-8823-46a4-9f60-940f7054b7ce",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790124121.1428425,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790124121143,
+        "guid": "9cd17d2c-6ec7-43d6-8328-d709a8354362",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790124121.1680822,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790124121168,
+        "guid": "b60c3074-a5d6-4bfe-a5c1-86b1cef98507",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    }
+  ]
+}

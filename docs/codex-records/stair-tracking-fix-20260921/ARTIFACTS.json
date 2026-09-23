@@ -1,0 +1,368 @@
+{
+  "created_utc": "2026-09-20T18:04:03.503402+00:00",
+  "scope": "deliberately retained repair evidence and deliverables",
+  "files": [
+    {
+      "path": "REPORT.md",
+      "bytes": 12065,
+      "sha256": "9bdcecaaaa96a7be70c668cd983ecb6a4ab76f7c46cd13da201f118f75b64ec8"
+    },
+    {
+      "path": "bag-validation.json",
+      "bytes": 2592,
+      "sha256": "5fac58050d5cd6e586a9a09adf2aa4bb8338d87aaf08ac1cb16cafacaea16cdb"
+    },
+    {
+      "path": "before/README.md",
+      "bytes": 4112,
+      "sha256": "69038062d1e082146f5196fc7184f09c3009c1aed2f72cfcb2605744d3309499"
+    },
+    {
+      "path": "before/build_comparison_bag.py",
+      "bytes": 7641,
+      "sha256": "03a1b7e51e4bf8a879c13490b705e335f2eba3b643b57e5353614b70702d87e1"
+    },
+    {
+      "path": "before/comparison_markers.py",
+      "bytes": 5214,
+      "sha256": "e24047a2d4f02581dce6f7d395bdfff3e14d1c9af03417dfdbeb13923d90b44b"
+    },
+    {
+      "path": "before/comparison_trajectory.py",
+      "bytes": 4755,
+      "sha256": "aa0d251172981d67227f9fc8979c98c77044ee7cade62fbd2b76634779d2814c"
+    },
+    {
+      "path": "before/event_camera.py",
+      "bytes": 914,
+      "sha256": "3fc055215e2d28c39670f6fe840fd884d74b680a7d6d7a8b151b6c32fef18b77"
+    },
+    {
+      "path": "before/process_bag.py",
+      "bytes": 10387,
+      "sha256": "646526a715e08baa3d591582fd37cf27a34555c283e1620032a4387c062c73ff"
+    },
+    {
+      "path": "before/registration_core.py",
+      "bytes": 6691,
+      "sha256": "06f1c7f3dee4d88447fe91dd5cc4397da416c79fb07a50e180663168d4dfdc50"
+    },
+    {
+      "path": "before/replay_rviz.sh",
+      "bytes": 3201,
+      "sha256": "69dd584553258a7acd21b69845e89813de685938235c05e20c44b923202be368"
+    },
+    {
+      "path": "before/run_all.sh",
+      "bytes": 1266,
+      "sha256": "24e5007f5cb42802864e55e0cfe81030eb3d57c9350996962592de7582437bc9"
+    },
+    {
+      "path": "before/run_fast_lio_replay.sh",
+      "bytes": 2868,
+      "sha256": "f1de760f8b74be80cc8705b18d9105c51d1beb7d4c5559d3ff01f3cb5581086f"
+    },
+    {
+      "path": "before/rviz/stair_lio_compare.rviz",
+      "bytes": 7482,
+      "sha256": "ca33db902533eeed2bace43f25a2d05547ae4a0a5e9e40d2967be195f98b3199"
+    },
+    {
+      "path": "before/specs/102101_comparison.json",
+      "bytes": 885,
+      "sha256": "0e5a1339ebbe99d7735a9f8abb6652b9922c37c4cc8d746ee1fb69725662a4b5"
+    },
+    {
+      "path": "before/specs/102101_lidar.json",
+      "bytes": 761,
+      "sha256": "8e11d13c665b721ddb3f5f2053cfade58c11f07fde1f00f9fc2c780970ab93ca"
+    },
+    {
+      "path": "before/specs/103313_comparison.json",
+      "bytes": 884,
+      "sha256": "3b72da1bb75301b98628a2c3eb155bdcdf89c4298ea9a1cdfde834ef285a0813"
+    },
+    {
+      "path": "before/specs/103313_lidar.json",
+      "bytes": 760,
+      "sha256": "09a19211b1c420b108b8471de900b3b8bdf106559b1a582f56d337ccd61f1aed"
+    },
+    {
+      "path": "before/specs/105713_comparison.json",
+      "bytes": 884,
+      "sha256": "b152f53beda025b5770be0551a34b21d6aa722802c033d334ac56d604dc43f74"
+    },
+    {
+      "path": "before/specs/105713_lidar.json",
+      "bytes": 760,
+      "sha256": "ce80b1f7babc3b3604a918eeacf084f5b356625f1bd07dd52ccd326b2e3111ed"
+    },
+    {
+      "path": "before/test_registration_core.py",
+      "bytes": 5163,
+      "sha256": "e31a84597f95356b0e6c3aa05d87b5aa46bde98bc7ea2d2d6c90f42eb7810525"
+    },
+    {
+      "path": "before/test_traversal_events.py",
+      "bytes": 1921,
+      "sha256": "54dbc25de9f3af1004ab3d1358584337d0fe4a170ac70b5335ab954357c412bc"
+    },
+    {
+      "path": "before/traversal_events.py",
+      "bytes": 2271,
+      "sha256": "3a379b3d5798e7a3ab5d4e5b8b751e094b47dc06bb2ee8e09bb70170d58c0bff"
+    },
+    {
+      "path": "comparison-validation.json",
+      "bytes": 2010,
+      "sha256": "7ce0d6d31022ea0b9c046886a4d8c56b637796eb1158e97352e9b5592386902f"
+    },
+    {
+      "path": "finalize_fix.py",
+      "bytes": 17814,
+      "sha256": "885086513dd601db47be7250c1b3eaff640acb4d6e9902f478cad1de9f1a9f1d"
+    },
+    {
+      "path": "fix.patch",
+      "bytes": 53687,
+      "sha256": "92b0f4f635c8016cdef80840c9b40f6f0b81634fb8e706a0513d692ea3723f69"
+    },
+    {
+      "path": "install-plan.json",
+      "bytes": 6068,
+      "sha256": "72e28508fd692cf3a7d5deacc112b4d3eb8d4e72ba34d42ab343030d82c8c152"
+    },
+    {
+      "path": "install_fix.py",
+      "bytes": 4049,
+      "sha256": "834c2f48b4773b2f80d9c9c4464e9271505bd547ea5e4e84a3cfe098442ee546"
+    },
+    {
+      "path": "installed.json",
+      "bytes": 537,
+      "sha256": "923a63d41506216f25753e165f81b260ec8dd519497af03653a5cc31e46f94aa"
+    },
+    {
+      "path": "report.css",
+      "bytes": 1447,
+      "sha256": "d8191486b1c4b9e98e9474050c85b6a2848ceb655e04460ac4502ad268635dcb"
+    },
+    {
+      "path": "report.html",
+      "bytes": 18928,
+      "sha256": "09900cc2802d94bac2629243eef17f12e844ec0f64176dd973ee22195927329d"
+    },
+    {
+      "path": "staged/README.md",
+      "bytes": 7939,
+      "sha256": "7d26fbc829450f3b7f0ca3bfdbabf671dffc2355147b6a1947b64b5df7439b55"
+    },
+    {
+      "path": "staged/build_comparison_bag.py",
+      "bytes": 7643,
+      "sha256": "6a2ec8a164586968ff9cabb99b78cead8d8b05bb783df58603eaf1edc31feb50"
+    },
+    {
+      "path": "staged/comparison_markers.py",
+      "bytes": 5228,
+      "sha256": "624196f4ae3291ab17307c1609965fb27edec0804d8740616c821aaba15655a3"
+    },
+    {
+      "path": "staged/comparison_trajectory.py",
+      "bytes": 4755,
+      "sha256": "aa0d251172981d67227f9fc8979c98c77044ee7cade62fbd2b76634779d2814c"
+    },
+    {
+      "path": "staged/event_camera.py",
+      "bytes": 914,
+      "sha256": "3fc055215e2d28c39670f6fe840fd884d74b680a7d6d7a8b151b6c32fef18b77"
+    },
+    {
+      "path": "staged/process_bag.py",
+      "bytes": 18813,
+      "sha256": "9b073e01a2e57386bd6d4b82fdc16250989bc180a1e22664927ed3186b8a8b73"
+    },
+    {
+      "path": "staged/registration_core.py",
+      "bytes": 9241,
+      "sha256": "1210ca227b1046750808aff118f9457179c290607c28ee790d829e9b1dd70d10"
+    },
+    {
+      "path": "staged/replay_rviz.sh",
+      "bytes": 3265,
+      "sha256": "7dee556de1cc7bfd58baa3fe299f6a7e7cb97a3bbf6ae3482eab8b1edc2f30db"
+    },
+    {
+      "path": "staged/run_all.sh",
+      "bytes": 1266,
+      "sha256": "24e5007f5cb42802864e55e0cfe81030eb3d57c9350996962592de7582437bc9"
+    },
+    {
+      "path": "staged/run_fast_lio_replay.sh",
+      "bytes": 2868,
+      "sha256": "f1de760f8b74be80cc8705b18d9105c51d1beb7d4c5559d3ff01f3cb5581086f"
+    },
+    {
+      "path": "staged/rviz/stair_lio_compare.rviz",
+      "bytes": 7495,
+      "sha256": "10be1e6a733ed2531adeb36e71d82032f1512968b966f53a3d5e6657458440ad"
+    },
+    {
+      "path": "staged/specs/102101_comparison.json",
+      "bytes": 885,
+      "sha256": "0e5a1339ebbe99d7735a9f8abb6652b9922c37c4cc8d746ee1fb69725662a4b5"
+    },
+    {
+      "path": "staged/specs/102101_lidar.json",
+      "bytes": 932,
+      "sha256": "a1ee221418c28f76a6015bf55092907c7a2d6a908c5931eda963605eaf30128c"
+    },
+    {
+      "path": "staged/specs/103313_comparison.json",
+      "bytes": 884,
+      "sha256": "3b72da1bb75301b98628a2c3eb155bdcdf89c4298ea9a1cdfde834ef285a0813"
+    },
+    {
+      "path": "staged/specs/103313_lidar.json",
+      "bytes": 931,
+      "sha256": "e585c122ff8f87071c7e8a7db2b9ee7fc82512037304746f1f7c8570cefdedc7"
+    },
+    {
+      "path": "staged/specs/105713_comparison.json",
+      "bytes": 884,
+      "sha256": "b152f53beda025b5770be0551a34b21d6aa722802c033d334ac56d604dc43f74"
+    },
+    {
+      "path": "staged/specs/105713_lidar.json",
+      "bytes": 931,
+      "sha256": "086287a949a688223c903ad5d2f9126aa18d7f295b7a4959c05194a69583807e"
+    },
+    {
+      "path": "staged/test_process_bag.py",
+      "bytes": 8356,
+      "sha256": "bd20bf51e589ecf26ed90fd301f1c3f81cf7c45e1debc5042ed017eca4bb35de"
+    },
+    {
+      "path": "staged/test_registration_core.py",
+      "bytes": 6753,
+      "sha256": "e7d1cb5695264a9bc5dbabc6ee32a0bf678c5a430fdd3e1f5d1c4c0cf35da9b8"
+    },
+    {
+      "path": "staged/test_traversal_events.py",
+      "bytes": 1921,
+      "sha256": "54dbc25de9f3af1004ab3d1358584337d0fe4a170ac70b5335ab954357c412bc"
+    },
+    {
+      "path": "staged/traversal_events.py",
+      "bytes": 2271,
+      "sha256": "3a379b3d5798e7a3ab5d4e5b8b751e094b47dc06bb2ee8e09bb70170d58c0bff"
+    },
+    {
+      "path": "state.json",
+      "bytes": 33682,
+      "sha256": "103152fe9a13d404f5a513d17fb5e59668c68474a345ed8a785c60909938068f"
+    },
+    {
+      "path": "tests.log",
+      "bytes": 1435,
+      "sha256": "c3dde4ca895cf5a6eba2598a042d6eb8ced0bf5ae55a64103fef1ac083093283"
+    },
+    {
+      "path": "validation/102101/comparison-result.json",
+      "bytes": 358,
+      "sha256": "02a1e3049310ab25222ab004de10515acad2f8ac3fd1744bad2d691b00b58d83"
+    },
+    {
+      "path": "validation/102101/comparison.bag",
+      "bytes": 794984077,
+      "sha256": "33d52267a579c08f242fa300196bd33b6f8a6b0d53be75e47a58ca099f7e2edb"
+    },
+    {
+      "path": "validation/102101/comparison_spec.json",
+      "bytes": 1039,
+      "sha256": "aaf1fdf14e273142ef867e45f48b39af8f541cb33cebe7b8c463c93448e61fc0"
+    },
+    {
+      "path": "validation/102101/lidar_registration.bag",
+      "bytes": 28215452,
+      "sha256": "dc8135a300c8ee9ca3b3279cda23d808d4a04a4158e7643b01fd72c35b4cf58a"
+    },
+    {
+      "path": "validation/102101/lidar_registration.csv",
+      "bytes": 132687,
+      "sha256": "c54f0daf4f0981afc48f44b922bba654ccfda7872929761f5a5e7b17a687cbbb"
+    },
+    {
+      "path": "validation/102101/spec.json",
+      "bytes": 1032,
+      "sha256": "27101bad5345aeb043df323f86aa6220e2523abcad05561a1d57730cb3f1ba60"
+    },
+    {
+      "path": "validation/103313/comparison-result.json",
+      "bytes": 357,
+      "sha256": "d0c70388a3632a5be0cf2b111f934aae12c1119fcd3233fe971736592b3af25e"
+    },
+    {
+      "path": "validation/103313/comparison.bag",
+      "bytes": 824551461,
+      "sha256": "16eb2b655113c1ce39e02fba3df6947a3451d26aec85396ad67736db466efc9f"
+    },
+    {
+      "path": "validation/103313/comparison_spec.json",
+      "bytes": 1038,
+      "sha256": "a79a016ef0216a9286903319d4b6d4765409e2821a35eb01253ab5b2dc62e84e"
+    },
+    {
+      "path": "validation/103313/lidar_registration.bag",
+      "bytes": 26224094,
+      "sha256": "171078d22aac539ef1c0d64faaecbb2a78fc085472821a303a747e75ccffc9c5"
+    },
+    {
+      "path": "validation/103313/lidar_registration.csv",
+      "bytes": 123858,
+      "sha256": "5911a56f9031301ce07ea09664cdfba313dd80c29043c7a71d983e4496c59d08"
+    },
+    {
+      "path": "validation/103313/spec.json",
+      "bytes": 1031,
+      "sha256": "bd70eb40582ed792f3b7e1ee3aa840aa464d776ef784f9759386546cb4cdc7a3"
+    },
+    {
+      "path": "validation/105713/comparison-result.json",
+      "bytes": 354,
+      "sha256": "d9cb8e2bcc1a7ee8510678a6fe33dde397ad99f8401b64bc0107f53fc402b98a"
+    },
+    {
+      "path": "validation/105713/comparison.bag",
+      "bytes": 573297811,
+      "sha256": "248d5e257387973ad60e0c8abbc0c44f235af5f21bdb03b5cae9760733da0b62"
+    },
+    {
+      "path": "validation/105713/comparison_spec.json",
+      "bytes": 1037,
+      "sha256": "3a351f88512b629c8588e3ac4a92399a644f2c5eee9a86943bf3e5f49674bff4"
+    },
+    {
+      "path": "validation/105713/lidar_registration.bag",
+      "bytes": 17359261,
+      "sha256": "91d392adbae1e22ae5e3189beea53ac33d3ab3dc7dcd73db22edf98ba7a1336b"
+    },
+    {
+      "path": "validation/105713/lidar_registration.csv",
+      "bytes": 90571,
+      "sha256": "bf1d7f8131e55039a00b6c508cea2bab850b7e0936bf4b013ff716154ba7253f"
+    },
+    {
+      "path": "validation/105713/spec.json",
+      "bytes": 1031,
+      "sha256": "cfa93ddb171f17f4f398f01558966a57206863775b23b1153f3b5e2dbb35f213"
+    },
+    {
+      "path": "verify_bags.py",
+      "bytes": 3194,
+      "sha256": "92e5c1fd5a81464a1ff96bd30efafa7e5edb588eac26b9813d5b866f5d37f5e0"
+    }
+  ],
+  "file_count": 72,
+  "temporary_artifacts_removed": true
+}

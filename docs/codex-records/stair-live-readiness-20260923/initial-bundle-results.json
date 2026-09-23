@@ -1,0 +1,36 @@
+[
+  {
+    "check": "validate_node_entrypoints",
+    "pass": false,
+    "error": "BUNDLE_ERROR: project node entrypoint mismatch; expected=[('src/mission_manager/scripts/mission_manager_node.py', 'mission_manager'), ('src/multifloor_manager/scripts/camera_info_stamp_relay.py', 'camera_info_stamp_relay'), ('src/multifloor_manager/scripts/multifloor_manager_node.py', 'multifloor_manager'), ('src/stair_supervisor/scripts/stair_supervisor_node.py', 'stair_supervisor')] actual=[('src/mission_manager/scripts/mission_manager_node.py', 'mission_manager'), ('src/multifloor_manager/scripts/camera_info_stamp_relay.py', 'camera_info_stamp_relay'), ('src/multifloor_manager/scripts/multifloor_manager_node.py', 'multifloor_manager'), ('src/stair_supervisor/scripts/stair_entry_test.py', 'stair_entry_test_client'), ('src/stair_supervisor/scripts/stair_supervisor_node.py', 'stair_supervisor')]"
+  },
+  {
+    "check": "validate_paths",
+    "pass": false,
+    "error": "BUNDLE_ERROR: parent traversal in docs/tron-documentation-20260922/archive_reports.py"
+  },
+  {
+    "check": "validate_actions",
+    "pass": true
+  },
+  {
+    "check": "validate_schema_assets",
+    "pass": true
+  },
+  {
+    "check": "validate_launch",
+    "pass": true
+  },
+  {
+    "check": "validate_forbidden_runtime",
+    "pass": true
+  },
+  {
+    "check": "validate_rviz",
+    "pass": true
+  },
+  {
+    "check": "validate_production_site",
+    "pass": true
+  }
+]

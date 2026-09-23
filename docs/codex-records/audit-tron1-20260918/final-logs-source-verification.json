@@ -1,0 +1,110 @@
+[
+  {
+    "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-15-modular-architecture-expansion.log",
+    "sha256": "095d0ecd416f74ffba5ab709acd9d2902f1aa661a0c5cf890f3578a4e7e646e4",
+    "bytes": 8060,
+    "lines": 175,
+    "index_reconstruction_matches_current_source": true,
+    "unique_index_min": 452,
+    "unique_index_max": 1547
+  },
+  {
+    "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-16-modular-architecture-expansion.log",
+    "sha256": "ce26f17d140cfadfa6049800552bbcf482db60f2ce742dee7423a71eae6da13c",
+    "bytes": 9650,
+    "lines": 135,
+    "index_reconstruction_matches_current_source": true,
+    "unique_index_min": 452,
+    "unique_index_max": 1670
+  },
+  {
+    "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-17-modular-architecture-expansion.log",
+    "sha256": "ca66b2968d6ab732b17878eca3eaff56d4a1d811d377116e6e65d3821a0f345a",
+    "bytes": 13622,
+    "lines": 213,
+    "index_reconstruction_matches_current_source": true,
+    "unique_index_min": 452,
+    "unique_index_max": 1838
+  },
+  {
+    "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-18-modular-architecture-expansion.log",
+    "sha256": "6e21d8a92ca30613b29d2f63c81d458bc95d7cf0d8af62739427a85037758943",
+    "bytes": 6309,
+    "lines": 129,
+    "index_reconstruction_matches_current_source": true,
+    "unique_index_min": 452,
+    "unique_index_max": 1937
+  },
+  {
+    "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-2-modular-architecture-expansion.log",
+    "sha256": "b6e176752aea5fb9559a94cb562463002771614ce4071e02a20d6ae04b5f3661",
+    "bytes": 12741,
+    "lines": 168,
+    "index_reconstruction_matches_current_source": true,
+    "unique_index_min": 452,
+    "unique_index_max": 2082
+  },
+  {
+    "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-3-modular-architecture-expansion.log",
+    "sha256": "ae33275b7942b6577af8be96dcf566f709eb52da83642859ec716819f797d04c",
+    "bytes": 11833,
+    "lines": 197,
+    "index_reconstruction_matches_current_source": true,
+    "unique_index_min": 452,
+    "unique_index_max": 2214
+  },
+  {
+    "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-4-modular-architecture-expansion.log",
+    "sha256": "6552c91ea00c79ef3b6d9155d576f5f0b4295197e54f9cd1d972268150420700",
+    "bytes": 5935,
+    "lines": 126,
+    "index_reconstruction_matches_current_source": true,
+    "unique_index_min": 452,
+    "unique_index_max": 2313
+  },
+  {
+    "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-5-modular-architecture-expansion.log",
+    "sha256": "89460cd1e43ca0f90e33e74cdd7ac3f4965796d9d42a89fb8dab7536175618aa",
+    "bytes": 6668,
+    "lines": 97,
+    "index_reconstruction_matches_current_source": true,
+    "unique_index_min": 452,
+    "unique_index_max": 2386
+  },
+  {
+    "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-6-modular-architecture-expansion.log",
+    "sha256": "80e2e6a4309ce5474c9547ded69b58a2b4a0ecd3189ec8ff41b9690d9a131b4a",
+    "bytes": 12435,
+    "lines": 150,
+    "index_reconstruction_matches_current_source": true,
+    "unique_index_min": 452,
+    "unique_index_max": 2502
+  },
+  {
+    "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-7-modular-architecture-expansion.log",
+    "sha256": "7aa3b38bbdc9f27226cd9f7db5ed89e7d7944382d087a2777b05d85b27738076",
+    "bytes": 8928,
+    "lines": 134,
+    "index_reconstruction_matches_current_source": true,
+    "unique_index_min": 452,
+    "unique_index_max": 2593
+  },
+  {
+    "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-8-modular-architecture-expansion.log",
+    "sha256": "239039d6511850249ccba11af2e2827b52debec27682a2f058fb8f47e1d5bc39",
+    "bytes": 12241,
+    "lines": 157,
+    "index_reconstruction_matches_current_source": true,
+    "unique_index_min": 452,
+    "unique_index_max": 2696
+  },
+  {
+    "path": ".omo/evidence/ulw/modular-architecture-expansion/a1/task-9-modular-architecture-expansion.log",
+    "sha256": "f5f7f1f3030befcb24474948c281ddd0632013c6812a6590ffc6a181dd34fc81",
+    "bytes": 9002,
+    "lines": 100,
+    "index_reconstruction_matches_current_source": true,
+    "unique_index_min": 452,
+    "unique_index_max": 2769
+  }
+]

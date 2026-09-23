@@ -1,0 +1,80 @@
+.................................................................../opt/ros/noetic/lib/python3/dist-packages/rospy/core.py:512: DeprecationWarning: The 'warn' method is deprecated, use 'warning' instead
+  _logger.warn("add_shutdown_hook called after shutdown")
+/opt/ros/noetic/lib/python3/dist-packages/rospy/client.py:322: DeprecationWarning: The 'warn' method is deprecated, use 'warning' instead
+  logger.warn("aborting node initialization as shutdown has been triggered")
+E.......ERROR: Unable to start XML-RPC server: Operation not permitted
+............E.......EEE................E
+======================================================================
+ERROR: test_sensor_tracking_without_any_robot_command_surface (test_lidar_observe_ros.ObservationTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/test_lidar_observe_ros.py", line 15, in test_sensor_tracking_without_any_robot_command_surface
+    rospy.init_node("lidar_observation_boundary", anonymous=True)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/client.py", line 323, in init_node
+    raise rospy.exceptions.ROSInitException("init_node interrupted before it could complete")
+rospy.exceptions.ROSInitException: init_node interrupted before it could complete
+
+======================================================================
+ERROR: test_ros_bag_replay (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_ros_bag_replay
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/loader.py", line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.8/unittest/loader.py", line 377, in _get_module_from_name
+    __import__(name)
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/test_ros_bag_replay.py", line 8, in <module>
+    import pytest
+ModuleNotFoundError: No module named 'pytest'
+
+
+======================================================================
+ERROR: setUpClass (test_stair_fake_websocket_ros.StairFakeWebSocketRosTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/test_stair_fake_websocket_ros.py", line 57, in setUpClass
+    rospy.init_node("stair_fake_websocket_qa", anonymous=True)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/client.py", line 274, in init_node
+    raise rospy.exceptions.ROSException("rospy.init_node() has already been called with different arguments: "+str(_init_node_args))
+rospy.exceptions.ROSException: rospy.init_node() has already been called with different arguments: ('lidar_observation_boundary', ['python -m unittest', 'discover', '-s', '/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test', '-p', 'test_*.py'], True, None, False, False)
+
+======================================================================
+ERROR: setUpClass (test_stair_supervisor_node.StairSupervisorNodeBoundaryTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/test_stair_supervisor_node.py", line 109, in setUpClass
+    rospy.init_node("stair_supervisor_node_boundary_test", anonymous=True)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/client.py", line 274, in init_node
+    raise rospy.exceptions.ROSException("rospy.init_node() has already been called with different arguments: "+str(_init_node_args))
+rospy.exceptions.ROSException: rospy.init_node() has already been called with different arguments: ('lidar_observation_boundary', ['python -m unittest', 'discover', '-s', '/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test', '-p', 'test_*.py'], True, None, False, False)
+
+======================================================================
+ERROR: test_state_machine_dashboard (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_state_machine_dashboard
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/loader.py", line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.8/unittest/loader.py", line 377, in _get_module_from_name
+    __import__(name)
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/test_state_machine_dashboard.py", line 7, in <module>
+    from stair_supervisor.state_machine_dashboard import (
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/state_machine_dashboard.py", line 9, in <module>
+    import cv2
+ModuleNotFoundError: No module named 'cv2'
+
+
+======================================================================
+ERROR: setUpClass (test_websocket_tx_ros.WebSocketTxRosTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test/test_websocket_tx_ros.py", line 172, in setUpClass
+    rospy.init_node("websocket_tx_surface_test", anonymous=True)
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/client.py", line 274, in init_node
+    raise rospy.exceptions.ROSException("rospy.init_node() has already been called with different arguments: "+str(_init_node_args))
+rospy.exceptions.ROSException: rospy.init_node() has already been called with different arguments: ('lidar_observation_boundary', ['python -m unittest', 'discover', '-s', '/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/test', '-p', 'test_*.py'], True, None, False, False)
+
+----------------------------------------------------------------------
+Ran 112 tests in 10.239s
+
+FAILED (errors=6)

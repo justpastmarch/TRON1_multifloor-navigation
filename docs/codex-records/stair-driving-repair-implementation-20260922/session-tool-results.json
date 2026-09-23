@@ -1,0 +1,50 @@
+[
+  {
+    "arguments": [
+      "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/config/stair_lidar.yaml",
+      "--snapshot-dir",
+      "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/stair-config-check-e1djaidg/snapshot"
+    ],
+    "exit_code": 0,
+    "expected_success": true,
+    "output": "{\n  \"mode\": \"control\",\n  \"config_path\": \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/config/stair_lidar.yaml\",\n  \"config_sha256\": \"ebb9d435287c9472f1ab7200e091e6b3f82b568ac731b8519571a824b042c375\",\n  \"calibration_path\": \"/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/lidar_imu_baseline.yaml\",\n  \"calibration_sha256\": \"d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc\",\n  \"configured\": true,\n  \"python\": \"/home/m3tron/.cache/uv/environments-v2/test-registration-core-26ae8f8cf1a8e532/bin/python\",\n  \"numpy\": \"1.24.4\",\n  \"scipy\": \"1.10.1\",\n  \"open3d\": \"0.18.0\",\n  \"routes\": [\n    {\n      \"id\": \"stair_3f_4f_up\",\n      \"commissioned\": false,\n      \"phase_test_limits\": null\n    }\n  ],\n  \"robot_commands_sent\": 0\n}\n"
+  },
+  {
+    "arguments": [
+      "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/config/stair_lidar.yaml",
+      "--status-json",
+      "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/stair-config-check-e1djaidg/status.json"
+    ],
+    "exit_code": 0,
+    "expected_success": true,
+    "output": "{\n  \"mode\": \"control\",\n  \"config_path\": \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/config/stair_lidar.yaml\",\n  \"config_sha256\": \"ebb9d435287c9472f1ab7200e091e6b3f82b568ac731b8519571a824b042c375\",\n  \"calibration_path\": \"/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/lidar_imu_baseline.yaml\",\n  \"calibration_sha256\": \"d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc\",\n  \"configured\": true,\n  \"python\": \"/home/m3tron/.cache/uv/environments-v2/test-registration-core-26ae8f8cf1a8e532/bin/python\",\n  \"numpy\": \"1.24.4\",\n  \"scipy\": \"1.10.1\",\n  \"open3d\": \"0.18.0\",\n  \"routes\": [\n    {\n      \"id\": \"stair_3f_4f_up\",\n      \"commissioned\": false,\n      \"phase_test_limits\": null\n    }\n  ],\n  \"robot_commands_sent\": 0,\n  \"running_configuration_matches\": true\n}\n"
+  },
+  {
+    "arguments": [
+      "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/config/stair_lidar.yaml",
+      "--status-json",
+      "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/stair-config-check-e1djaidg/status.json"
+    ],
+    "exit_code": 1,
+    "expected_success": false,
+    "output": "Traceback (most recent call last):\n  File \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/scripts/check_lidar_config.py\", line 61, in <module>\n    main()\n  File \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/scripts/check_lidar_config.py\", line 44, in main\n    raise ValueError('running configuration mismatch: ' + key)\nValueError: running configuration mismatch: config_sha256\n"
+  },
+  {
+    "arguments": [
+      "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/config/stair_lidar.yaml"
+    ],
+    "exit_code": 1,
+    "expected_success": false,
+    "output": "Traceback (most recent call last):\n  File \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/scripts/check_lidar_config.py\", line 61, in <module>\n    main()\n  File \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/scripts/check_lidar_config.py\", line 28, in main\n    config = load_lidar_configuration(args.config.resolve(), args.mode, args.mode == 'observe')\n  File \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/src/stair_supervisor/configuration.py\", line 304, in load_lidar_configuration\n    raise _error(path, \"configured\", \"LiDAR control requires commissioned geometry/response; observe remains available\")\nstair_supervisor.configuration.StairConfigurationError: stair_lidar.yaml:configured: LiDAR control requires commissioned geometry/response; observe remains available\n"
+  },
+  {
+    "arguments": [
+      "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/config/stair_lidar.yaml",
+      "--mode",
+      "observe"
+    ],
+    "exit_code": 0,
+    "expected_success": true,
+    "output": "{\n  \"mode\": \"observe\",\n  \"config_path\": \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/config/stair_lidar.yaml\",\n  \"config_sha256\": \"fff0d2f4cd7c0bf1f4535890460b36ca60d42078e2b6e77e8b74553e20e2f05d\",\n  \"calibration_path\": \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/config/lidar_imu_baseline.yaml\",\n  \"calibration_sha256\": \"d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc\",\n  \"configured\": false,\n  \"python\": \"/home/m3tron/.cache/uv/environments-v2/test-registration-core-26ae8f8cf1a8e532/bin/python\",\n  \"numpy\": \"1.24.4\",\n  \"scipy\": \"1.10.1\",\n  \"open3d\": \"0.18.0\",\n  \"routes\": [],\n  \"robot_commands_sent\": 0\n}\n"
+  }
+]

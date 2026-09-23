@@ -1,0 +1,34 @@
+import sys,time,json,io
+from pathlib import Path
+import numpy as np,rosbag
+HERE=Path(__file__).resolve().parent;sys.path.insert(0,str(HERE/'candidate'))
+from stair_supervisor.lidar_tracking import TrackingSettings,load_imu_rotation
+from stair_supervisor.lidar_process import ProcessTrackingWorker
+REPO=Path('/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation')
+if __name__=='__main__':
+ bag=HERE.parents[1]/'rviz-nav-test-20260921/drive-recordings/stair_entry_20260921_110938.bag'
+ events=[]
+ with rosbag.Bag(str(bag)) as b:
+  for topic,m,t in b.read_messages(topics=['/livox/imu','/livox/lidar']):
+   if topic.endswith('imu'):
+    w,a=m.angular_velocity,m.linear_acceleration;data=(m.header.stamp.to_sec(),w.x,w.y,w.z,a.x,a.y,a.z)
+   else:
+    buf=io.BytesIO();m.serialize(buf);data=(m.header.stamp.to_sec(),buf.getvalue())
+   events.append((t.to_sec(),topic,data))
+ rotation,checksum=load_imu_rotation(REPO/'src/stair_supervisor/config/lidar_imu_baseline.yaml')
+ worker=ProcessTrackingWorker(TrackingSettings(),rotation,checksum);worker.start();samples=[];seen=set()
+ try:
+  time.sleep(1);start=time.monotonic();origin=events[0][0]
+  for recorded,topic,data in events:
+   delay=start+recorded-origin-time.monotonic()
+   if delay>0:time.sleep(delay)
+   if topic.endswith('imu'):worker.push_imu(data)
+   else:worker.push_raw_scan(data[0],data[1],time.monotonic(),start+data[0]-origin)
+   s=worker.snapshot()
+   if s is not None and s.sequence not in seen:
+    seen.add(s.sequence);samples.append(dict(sequence=s.sequence,state=s.state,valid=s.geometry_valid,compute_sec=s.compute_sec,age=time.monotonic()-s.measured_at))
+  time.sleep(.5);diag=worker.diagnostics()
+ finally:worker.shutdown()
+ ages=[s['age'] for s in samples if s['valid']]
+ result=dict(bag=str(bag),elapsed_s=time.monotonic()-start,samples=len(samples),geometry_samples=len(ages),age_p50_p95_max_s=np.percentile(ages,[50,95,100]).tolist() if ages else [],age_over_warn=sum(a>.5 for a in ages),age_over_expire=sum(a>=.9 for a in ages),diagnostics=diag,limitation='Laptop real-time replay at 1x; not robot-network latency or hardware actuation.')
+ (HERE/'stream-results.json').write_text(json.dumps(result,indent=2,default=str));(HERE/'stream-samples.json').write_text(json.dumps(samples));print(json.dumps(result,default=str))

@@ -1,0 +1,64 @@
+{
+  "control_debug": {
+    "phase": "VERIFY_ENTRY",
+    "command": [
+      0.0,
+      0.0
+    ],
+    "pending_entries": [
+      {
+        "route_id": "stair_3f_4f_up",
+        "epoch": 0,
+        "sequence": 2832,
+        "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+        "age_sec": 256.3693795335712
+      }
+    ],
+    "observation_only": false,
+    "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+    "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+  },
+  "state": {
+    "state": 1,
+    "connected": true,
+    "detail": "test start pose is outside its entry/landing region or height; use from_entry"
+  },
+  "tracking_status": {
+    "epoch": 0,
+    "queue_length": 0,
+    "dropped_scans": 0,
+    "rejected_imu": 0,
+    "worker_error": "",
+    "backend": "process",
+    "mode": "control",
+    "observe_only": false,
+    "phase_test_protocol": "bound-ticket-v1",
+    "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+    "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337",
+    "routes": [
+      {
+        "id": "stair_3f_4f_up",
+        "commissioned": false
+      }
+    ],
+    "sequence": 4112,
+    "stamp": 1790126673.3023937,
+    "received_at": 197206.310634883,
+    "measured_at": 197206.16882994946,
+    "completed_at": 197206.376986453,
+    "last_geometry_at": 197206.16882994946,
+    "geometry_valid": true,
+    "state": "TRACKED",
+    "reason": "geometry accepted",
+    "fitness": 1.0,
+    "rmse": 0.06813109577303443,
+    "translation_innovation": 0.008586064829457181,
+    "rotation_innovation": 0.003545079712406638,
+    "prediction_source": "gyro",
+    "compute_sec": 0.06537967699114233,
+    "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+    "geometry_age_sec": 0.3697148025385104,
+    "transport_delay_sec": 0.14180493354797363,
+    "completion_age_sec": 0.208156503533246
+  }
+}

@@ -1,0 +1,23 @@
+<launch>
+  <node pkg="map_server" type="map_server" name="map_server"
+        args="$(find multifloor_manager)/config/maps/floor_3F.yaml"/>
+  <node pkg="amcl" type="amcl" name="amcl" output="screen">
+    <remap from="initialpose" to="/multifloor/amcl_initialpose"/>
+    <param name="use_map_topic" value="true"/>
+    <param name="base_frame_id" value="base_Link"/>
+    <param name="odom_frame_id" value="odom"/>
+    <param name="global_frame_id" value="map"/>
+    <param name="min_particles" value="500"/>
+    <param name="max_particles" value="2000"/>
+    <param name="resample_interval" value="1"/>
+    <param name="force_update_after_initialpose" value="true"/>
+    <param name="save_pose_rate" value="-1.0"/>
+  </node>
+  <node pkg="multifloor_manager" type="multifloor_manager_node.py" name="multifloor_manager" output="screen">
+    <param name="initial_floor" value="3F"/>
+    <param name="startup_localization" value="auto"/>
+    <param name="initialpose_topic" value="/multifloor/amcl_initialpose"/>
+    <param name="transaction_timeout" value="10.0"/>
+  </node>
+  <test test-name="startup_localization" pkg="multifloor_manager" type="test_startup_localization_ros.py" time-limit="90"/>
+</launch>

@@ -1,0 +1,2792 @@
+{
+  "scope": "Generated HTML reports under the current project; sources/ and .git excluded.",
+  "format": "Markdown",
+  "html_count": 18,
+  "documents": [
+    {
+      "source": "audit-tron1-20260918/FINAL-AUDIT.html",
+      "source_sha256": "b5a1cf4a87d2c643f5a902bb20097c589fa79de5536a389afe8804e0f5c26a7b",
+      "source_bytes": 298783,
+      "title": "TRON1 · 최종 시스템 감사",
+      "markdown": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "markdown_sha256": "ccfdadead6b423bca89b393985d8bed9e9748b180be6eae942911b817ff40306",
+      "source_elements": {
+        "table": 24,
+        "img": 0,
+        "svg": 2,
+        "video": 0,
+        "script": 1,
+        "nav": 1
+      },
+      "text_blocks_checked": 1656,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "lidar-before-after-video-20260921/report.html",
+      "source_sha256": "9d8ccbd7ae86018d4697e923d54f786015dc9b1a4f0898dafa67ccc09b7f6660",
+      "source_bytes": 3034,
+      "title": "LiDAR 비교 영상 3개",
+      "markdown": "documents/lidar-before-after-video-20260921/report.md",
+      "markdown_sha256": "2c42652da496108489fbd23fd18db96d23f79cc096f166b6f33a13765b3a4797",
+      "source_elements": {
+        "table": 0,
+        "img": 0,
+        "svg": 0,
+        "video": 3,
+        "script": 1,
+        "nav": 0
+      },
+      "text_blocks_checked": 17,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "lidar-method-explained-20260921/report.html",
+      "source_sha256": "1efaf61481476ff6c8c73f1881adc314816e2a545951ca2e7bc3c1ae73e9c8c6",
+      "source_bytes": 181095,
+      "title": "TRON LiDAR 개선 원리와 발견 과정",
+      "markdown": "documents/lidar-method-explained-20260921/report.md",
+      "markdown_sha256": "3edbf8943fc22a523d17a42cd6f6f28cba5d534faf9358e3d299e8e04d9dce67",
+      "source_elements": {
+        "table": 12,
+        "img": 1,
+        "svg": 1,
+        "video": 0,
+        "script": 0,
+        "nav": 0
+      },
+      "text_blocks_checked": 526,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "research-topic-selection-20260921/report.html",
+      "source_sha256": "6f469423d36680b7450b7fb09706c1d5fc463a6e2afdd2c71719f4fb25f529ba",
+      "source_bytes": 44703,
+      "title": "TRON · 학술제 연구 주제 선정",
+      "markdown": "documents/research-topic-selection-20260921/report.md",
+      "markdown_sha256": "aa6507c06d1f2df4ed3cdf1b6c3440cc32610e8e1007e59dedf3e4e4b78b3f6f",
+      "source_elements": {
+        "table": 10,
+        "img": 0,
+        "svg": 0,
+        "video": 0,
+        "script": 0,
+        "nav": 1
+      },
+      "text_blocks_checked": 276,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "sensor-recording-analysis-20260918/METHODS.html",
+      "source_sha256": "c16eb34dca8505662c02e77ac710eb9ab894b5c648d6ba1d0bd8e01dfa39889c",
+      "source_bytes": 10345,
+      "title": "TRON1 · 분석 방법",
+      "markdown": "documents/sensor-recording-analysis-20260918/METHODS.md",
+      "markdown_sha256": "cd9efcf5afab573e45bddda3a6d63e543c0867f6d285496d3d235de00e80cf39",
+      "source_elements": {
+        "table": 1,
+        "img": 0,
+        "svg": 0,
+        "video": 0,
+        "script": 0,
+        "nav": 1
+      },
+      "text_blocks_checked": 49,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "sensor-recording-analysis-20260918/bag-index.html",
+      "source_sha256": "38af9814f1156c0ad50842a3b82752a62a93b9d45c7ed69bdcd99c3cd7df0dc3",
+      "source_bytes": 18689,
+      "title": "TRON1 · bag 근거",
+      "markdown": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "markdown_sha256": "468a9345a5b9934ef3a92625fcf34a468f64c4539f349ddb79b942b20cdd0f75",
+      "source_elements": {
+        "table": 1,
+        "img": 19,
+        "svg": 0,
+        "video": 0,
+        "script": 0,
+        "nav": 1
+      },
+      "text_blocks_checked": 178,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "sensor-recording-analysis-20260918/report.html",
+      "source_sha256": "b2c43aa813a6d817d3e19eaf80e4a2b5f39b1feaaaa3b79996ece3183e970161",
+      "source_bytes": 26158,
+      "title": "TRON1 · 기록 센서 분석",
+      "markdown": "documents/sensor-recording-analysis-20260918/report.md",
+      "markdown_sha256": "506ab464712a08c93d327778d6019f4728072e0ea40d021ce82aa9826c72605f",
+      "source_elements": {
+        "table": 3,
+        "img": 4,
+        "svg": 0,
+        "video": 0,
+        "script": 0,
+        "nav": 1
+      },
+      "text_blocks_checked": 122,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "stair-centering-analysis-20260921/bag-results.html",
+      "source_sha256": "7763eb52bec3cf48495894a5e20748e8d9113d9a03a0da4deb00163bee37a4cf",
+      "source_bytes": 16853,
+      "title": "TRON1 · 계단 측위와 중앙 유지",
+      "markdown": "documents/stair-centering-analysis-20260921/bag-results.md",
+      "markdown_sha256": "eb6d83b838e07d5ea64adeb9b0ea6d7ad201145a3e9ea0f15ddb9197c2d76357",
+      "source_elements": {
+        "table": 3,
+        "img": 0,
+        "svg": 0,
+        "video": 0,
+        "script": 0,
+        "nav": 1
+      },
+      "text_blocks_checked": 341,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "stair-centering-analysis-20260921/method.html",
+      "source_sha256": "e0f105cfccea4f645b7af4d75285587c59bbab681747c3648402192da61687ef",
+      "source_bytes": 13775,
+      "title": "TRON1 · 계단 측위와 중앙 유지",
+      "markdown": "documents/stair-centering-analysis-20260921/method.md",
+      "markdown_sha256": "be2990db74e9d691b060f76c5fffd7ebf51bb7eb90e876faa0f8fa3251a98a03",
+      "source_elements": {
+        "table": 0,
+        "img": 0,
+        "svg": 0,
+        "video": 0,
+        "script": 0,
+        "nav": 1
+      },
+      "text_blocks_checked": 27,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "stair-centering-analysis-20260921/report.html",
+      "source_sha256": "5afd9c3e6d7df0496be34c337857e01d952b701c863ca2aea623fedc27e039b9",
+      "source_bytes": 28962,
+      "title": "TRON1 · 계단 측위와 중앙 유지",
+      "markdown": "documents/stair-centering-analysis-20260921/report.md",
+      "markdown_sha256": "45d886c12fa94b95b18e616d3a72b338f2286702ddbcccc64af3232dae88044f",
+      "source_elements": {
+        "table": 4,
+        "img": 4,
+        "svg": 0,
+        "video": 0,
+        "script": 0,
+        "nav": 1
+      },
+      "text_blocks_checked": 136,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "stair-driving-repair-plan-20260922/report.html",
+      "source_sha256": "0a7b87aec3a0e722b12a37bf08d1280b1cdbaa8c8a5031da30189369b6108832",
+      "source_bytes": 37611,
+      "title": "TRON · 3→4층 계단 주행 복구 계획",
+      "markdown": "documents/stair-driving-repair-plan-20260922/report.md",
+      "markdown_sha256": "3b240fe148c42003856e646ed3f2b53ae9f8827af45a5beb3b6d0a2d52a2c50d",
+      "source_elements": {
+        "table": 7,
+        "img": 0,
+        "svg": 0,
+        "video": 0,
+        "script": 0,
+        "nav": 1
+      },
+      "text_blocks_checked": 248,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "stair-lidar-commissioning-20260921/offline-validation/report.html",
+      "source_sha256": "7959f5dace536421188d36aa59b5f961709b815afe9adbe64ff447612f6c0282",
+      "source_bytes": 211605,
+      "title": "계단 제어 오프라인 검증",
+      "markdown": "documents/stair-lidar-commissioning-20260921/offline-validation/report.md",
+      "markdown_sha256": "dcf51913fbe5f79cd978810adbe0698e7e2d490de148e1c41fb18027299dd632",
+      "source_elements": {
+        "table": 2,
+        "img": 1,
+        "svg": 0,
+        "video": 0,
+        "script": 0,
+        "nav": 0
+      },
+      "text_blocks_checked": 121,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "stair-supervisor-implementation-20260921/report.html",
+      "source_sha256": "7daf56827ca9b84cd2f750affcb8fb7a26ec1b7b989731672b123c612980a9e8",
+      "source_bytes": 31155,
+      "title": "Stair Supervisor 구현 결과",
+      "markdown": "documents/stair-supervisor-implementation-20260921/report.md",
+      "markdown_sha256": "7dff7e2e1af3676854a06ed25d9657171316650e7e7fe622005712df87858229",
+      "source_elements": {
+        "table": 7,
+        "img": 0,
+        "svg": 0,
+        "video": 0,
+        "script": 0,
+        "nav": 1
+      },
+      "text_blocks_checked": 229,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "stair-supervisor-integration-plan-20260921/report.html",
+      "source_sha256": "125d9047f7b9240cf24dd93bfe72e03400a74e65d8fec22ea0ba8a66b6807dd3",
+      "source_bytes": 59600,
+      "title": "LiDAR 측위와 Stair Supervisor 구현 계획",
+      "markdown": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "markdown_sha256": "6bbcbc8e650098840fea9cd451fd73311ae49469f0eaa3a4d4ac23f2867e9a5d",
+      "source_elements": {
+        "table": 11,
+        "img": 0,
+        "svg": 0,
+        "video": 0,
+        "script": 0,
+        "nav": 1
+      },
+      "text_blocks_checked": 328,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "stair-tracking-baseline-20260921/report.html",
+      "source_sha256": "6ba7810a644bcd18c62877e60fb65885c2cdbbf868e704bc27d69ba861ec3ebe",
+      "source_bytes": 21577,
+      "title": "계단 LiDAR 기준 버전 · 수치와 도착 표식 수정",
+      "markdown": "documents/stair-tracking-baseline-20260921/report.md",
+      "markdown_sha256": "36ada443d1a75609e0497b1b104884abf6ecf94e52cb9977bcbcff5c3742d730",
+      "source_elements": {
+        "table": 3,
+        "img": 2,
+        "svg": 0,
+        "video": 0,
+        "script": 0,
+        "nav": 1
+      },
+      "text_blocks_checked": 98,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "stair-tracking-fix-20260921/report.html",
+      "source_sha256": "09900cc2802d94bac2629243eef17f12e844ec0f64176dd973ee22195927329d",
+      "source_bytes": 18928,
+      "title": "계단 추적 1·2 수정 적용 결과",
+      "markdown": "documents/stair-tracking-fix-20260921/report.md",
+      "markdown_sha256": "45bd47b24bd798927dbf874cf10799acf278152534939776db38022ef823ffdf",
+      "source_elements": {
+        "table": 3,
+        "img": 0,
+        "svg": 0,
+        "video": 0,
+        "script": 0,
+        "nav": 0
+      },
+      "text_blocks_checked": 73,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "stair-tracking-repair-20260921/report.html",
+      "source_sha256": "bea3092ee22b438d74a133f7872fa39be2e6ca67c83bafc477a9d182da4c5b2f",
+      "source_bytes": 20610,
+      "title": "TRON1 계단 회전 추적 수정 검증",
+      "markdown": "documents/stair-tracking-repair-20260921/report.md",
+      "markdown_sha256": "d05568695b9ecc31a92e1b7cfc0b4efb877dc74525996c01177436f0965146cf",
+      "source_elements": {
+        "table": 3,
+        "img": 1,
+        "svg": 0,
+        "video": 0,
+        "script": 0,
+        "nav": 0
+      },
+      "text_blocks_checked": 99,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    },
+    {
+      "source": "undergraduate-research-awards-20260921/report.html",
+      "source_sha256": "864035e82879c9c01bac926c21aebad9c2a68d4e7f7fb99a51f572e4f55cf2f7",
+      "source_bytes": 31620,
+      "title": "국내 학부 연구 수상작 37건 조사",
+      "markdown": "documents/undergraduate-research-awards-20260921/report.md",
+      "markdown_sha256": "6a83273d720e9388b3b275438fc6931212df8db2192b5e8c6340cfb53cd03441",
+      "source_elements": {
+        "table": 2,
+        "img": 0,
+        "svg": 0,
+        "video": 0,
+        "script": 1,
+        "nav": 0
+      },
+      "text_blocks_checked": 280,
+      "text_blocks_not_found": [],
+      "status": "CONVERTED_VERIFIED"
+    }
+  ],
+  "assets": [
+    {
+      "path": "assets/0a423248c38b553e86ee.svg",
+      "bytes": 18215,
+      "sha256": "0a423248c38b553e86eeb5ecf903902f21556571ee13e5fa1a039ffb7125049c",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/FINAL-AUDIT.html:svg1"
+    },
+    {
+      "path": "assets/976021146c2757788c76.svg",
+      "bytes": 18663,
+      "sha256": "976021146c2757788c76f948d0e738976675971eaec2507a650c386ce78013b7",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/FINAL-AUDIT.html:svg2"
+    },
+    {
+      "path": "assets/1c8dc68eb100784f493d.png",
+      "bytes": 176261,
+      "sha256": "1c8dc68eb100784f493d515239875e366aabd22e121a7b699337ebb48ffdcfe5",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/lidar-before-after-video-20260921/old-102101-499.png"
+    },
+    {
+      "path": "assets/a1e0e6d4f23692ef0313.mp4",
+      "bytes": 8678990,
+      "sha256": "a1e0e6d4f23692ef0313df113a32fbe53d8fd9c7cef51caa0d6bd74cd0131c22",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/lidar-before-after-video-20260921/01-original-floor-aligned.mp4"
+    },
+    {
+      "path": "assets/9c3d2d227adcd350dc47.png",
+      "bytes": 188232,
+      "sha256": "9c3d2d227adcd350dc4739b8d2b3142251cc66084a47243d32af137b58a10abb",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/lidar-before-after-video-20260921/floor-102101-499.png"
+    },
+    {
+      "path": "assets/7c0187412fbcb17b486f.mp4",
+      "bytes": 9066907,
+      "sha256": "7c0187412fbcb17b486ff9a78e1d80968510d93b960a242964607759f6db55b3",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/lidar-before-after-video-20260921/02-floor-initialization-only.mp4"
+    },
+    {
+      "path": "assets/7075541096cb2d4c7c8c.png",
+      "bytes": 182915,
+      "sha256": "7075541096cb2d4c7c8c17c2fb757432af36137610b2cf0efd90f0cad86e79d0",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/lidar-before-after-video-20260921/new-102101-499.png"
+    },
+    {
+      "path": "assets/408bc6daa556de5395dc.mp4",
+      "bytes": 8809391,
+      "sha256": "408bc6daa556de5395dcfda35758bc3af4e72a4df8f77af14e0229b7679ede9c",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/lidar-before-after-video-20260921/03-improved-gyro-gicp.mp4"
+    },
+    {
+      "path": "assets/a651e0883584669baee8.svg",
+      "bytes": 2403,
+      "sha256": "a651e0883584669baee83e33dbaca04fe8aec21966044d5352ed6b6937c81b81",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/lidar-method-explained-20260921/report.html:svg1"
+    },
+    {
+      "path": "assets/8b30ab9868d662f9d995.png",
+      "bytes": 74684,
+      "sha256": "8b30ab9868d662f9d995d50b3f5c2ffac7c8001627de2ff31aecfd6520e28eee",
+      "source": "report.html:embedded image/png"
+    },
+    {
+      "path": "assets/f9c27d9d024d78ce0a18.jpg",
+      "bytes": 189418,
+      "sha256": "f9c27d9d024d78ce0a18e06f7aff671a0c357541c2a398d5a439d646bedfdf67",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/manual-5F-rooftop_route_1788917683773755895.bag/contact.jpg"
+    },
+    {
+      "path": "assets/93b157ede1151505f4db.jpg",
+      "bytes": 193171,
+      "sha256": "93b157ede1151505f4dbcdfbd86eba8ebed00c1a7964a5c590408ecf9a1d9042",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/manual-5F-rooftop_route_1788918199558502114.bag.active.invalid/contact.jpg"
+    },
+    {
+      "path": "assets/66eb51491bf910a841bc.jpg",
+      "bytes": 173936,
+      "sha256": "66eb51491bf910a841bcb57e0bd233200f9be66b1adf2d1f1f245342852833bf",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/manual-5F-rooftop_route_1788918551828137154.bag/contact.jpg"
+    },
+    {
+      "path": "assets/62dd3a8e17c64eea5514.jpg",
+      "bytes": 215338,
+      "sha256": "62dd3a8e17c64eea55143b65f01a0317c903845c4db4826aba03c677ca6d67ab",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/manual-5F-rooftop_route_1788920816079496577.bag.active.invalid/contact.jpg"
+    },
+    {
+      "path": "assets/ddbc9f490aa2c8f80b46.jpg",
+      "bytes": 134175,
+      "sha256": "ddbc9f490aa2c8f80b462a83d69fcfea612f52f4157b37493fe9283cad2011dd",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_FULL_20260916_210849.bag/contact.jpg"
+    },
+    {
+      "path": "assets/05f26a071e7e3d4b24cd.jpg",
+      "bytes": 117567,
+      "sha256": "05f26a071e7e3d4b24cdeab77cfd59c4784debd104f54b750fc5009efeb94530",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_FULL_20260916_231643.bag/contact.jpg"
+    },
+    {
+      "path": "assets/77c38b597afbd4f0a854.jpg",
+      "bytes": 147938,
+      "sha256": "77c38b597afbd4f0a854a05e2c96fd3e351151a5c2881e65ec59bf4ebb0f2e49",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_FULL_20260916_234018.bag/contact.jpg"
+    },
+    {
+      "path": "assets/2f3c3a801d23b843655f.jpg",
+      "bytes": 258255,
+      "sha256": "2f3c3a801d23b843655f6a674020622306722c5800a361e54846171b3b1e47bf",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260821_155022.bag/contact.jpg"
+    },
+    {
+      "path": "assets/ace27f4b1b218fdfe76f.jpg",
+      "bytes": 265941,
+      "sha256": "ace27f4b1b218fdfe76fac969d530af4aaa7324e4d8dd22702f76eb96ce65d60",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260824_152128.bag/contact.jpg"
+    },
+    {
+      "path": "assets/6c6ccb58ed1dc4ddb432.jpg",
+      "bytes": 281028,
+      "sha256": "6c6ccb58ed1dc4ddb4324e0a904d0d90ab2c1cfaf07b2d896eab69666d7b8227",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260824_152223.bag/contact.jpg"
+    },
+    {
+      "path": "assets/b3f7e7475dae2aa0593d.jpg",
+      "bytes": 269597,
+      "sha256": "b3f7e7475dae2aa0593d2bacfb23d984ed1c52eee6692b504f98f6730cb68b3c",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260824_152248.bag/contact.jpg"
+    },
+    {
+      "path": "assets/af733c868851803b5ca8.jpg",
+      "bytes": 246849,
+      "sha256": "af733c868851803b5ca88d108e26d53a2aa2ee65e625fe007a49a115819607bc",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_102101.bag/contact.jpg"
+    },
+    {
+      "path": "assets/05225cbc3c96c96d8a9a.jpg",
+      "bytes": 318030,
+      "sha256": "05225cbc3c96c96d8a9abbe5f90c4046c4343644a6e965949cb89b8d9481f51d",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_103200.bag/contact.jpg"
+    },
+    {
+      "path": "assets/f5db22e277298e763a1e.jpg",
+      "bytes": 272185,
+      "sha256": "f5db22e277298e763a1e94eb42e8dd1b248d410efb53f946c321a014f9425d1b",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_103313.bag/contact.jpg"
+    },
+    {
+      "path": "assets/5d527bd0cbcb9852ef15.jpg",
+      "bytes": 196714,
+      "sha256": "5d527bd0cbcb9852ef15c2afe4adfb8556932bea58246fd2e06a9a103f3ff576",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_105713.bag/contact.jpg"
+    },
+    {
+      "path": "assets/3204629ee2afe7f06247.jpg",
+      "bytes": 216940,
+      "sha256": "3204629ee2afe7f0624736e7b1e93e6115b6ea373d79528a47800aa7f463608e",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_150034.bag/contact.jpg"
+    },
+    {
+      "path": "assets/bddc75ba80fd26de5cda.jpg",
+      "bytes": 229384,
+      "sha256": "bddc75ba80fd26de5cdac1169fdfa07db3ecc261856e8ad9b8265a9c33adfe56",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_154342.bag/contact.jpg"
+    },
+    {
+      "path": "assets/28939d8b275c86b1ffe2.jpg",
+      "bytes": 270600,
+      "sha256": "28939d8b275c86b1ffe2a69546991cf8a1b5af63af7d624fef0faa9709179858",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_CLEAN_REPEAT_20260821_160211.bag/contact.jpg"
+    },
+    {
+      "path": "assets/2b5a8cf5e018c89d04b7.jpg",
+      "bytes": 247753,
+      "sha256": "2b5a8cf5e018c89d04b7d6b59ab9a27741a589e6f7e3115e5e3d7fde52fcd795",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/tag_calibration_20260827_134853.bag/contact.jpg"
+    },
+    {
+      "path": "assets/e46d451ae37852b0984d.png",
+      "bytes": 134301,
+      "sha256": "e46d451ae37852b0984d8cc7c0c1229cf886ba00457f8fd6b58b41396849fccc",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/figures/stationary-cross-check.png"
+    },
+    {
+      "path": "assets/5ccaa62c068cbeac2441.png",
+      "bytes": 183566,
+      "sha256": "5ccaa62c068cbeac2441f9d9f1e2a6d11a77b910b41a60619f37e301c2fb2723",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/figures/rooftop-clock-difference.png"
+    },
+    {
+      "path": "assets/2418842095e3f7e9a707.png",
+      "bytes": 118497,
+      "sha256": "2418842095e3f7e9a707644f8294ccbddddd58eee8daac507b1a8413ec395a4a",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/figures/amcl-odom-disagreement.png"
+    },
+    {
+      "path": "assets/bb1947e39a6a6be6a825.png",
+      "bytes": 120832,
+      "sha256": "bb1947e39a6a6be6a8259824c90842b91a13fdd601f466f7bd8a175d6f95a634",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/figures/entry-navigation-failures.png"
+    },
+    {
+      "path": "assets/fef298170264f9f0b3e7.png",
+      "bytes": 135793,
+      "sha256": "fef298170264f9f0b3e7df8504cb482d29ddd276e25f69191ff647a8a77559e1",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-centering-analysis-20260921/figures/coverage.png"
+    },
+    {
+      "path": "assets/e200c1165784c0293fdd.png",
+      "bytes": 458252,
+      "sha256": "e200c1165784c0293fddbcf2e827875a2a68ca1ab143813fc9731d3339bfae85",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-centering-analysis-20260921/figures/geometry-examples.png"
+    },
+    {
+      "path": "assets/0a6907f0affe941d60ec.png",
+      "bytes": 246022,
+      "sha256": "0a6907f0affe941d60ecf38be2c3b7bfd1fa253400477fbdd58e6f416e58ba7d",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-centering-analysis-20260921/figures/diagnostics.png"
+    },
+    {
+      "path": "assets/44dae2f24c3548e1e7a3.png",
+      "bytes": 106755,
+      "sha256": "44dae2f24c3548e1e7a3e53359a1ad5a26836e4b5680e7d106b658e9d1c79bcc",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-centering-analysis-20260921/figures/equivariance.png"
+    },
+    {
+      "path": "assets/e448ee586d7962d4d2ee.png",
+      "bytes": 147758,
+      "sha256": "e448ee586d7962d4d2ee9cae23eeaf974044efa3b74961341def4dc0d4738a5b",
+      "source": "report.html:embedded image/png"
+    },
+    {
+      "path": "assets/beaaa6bf5a07de0a9791.jpg",
+      "bytes": 364411,
+      "sha256": "beaaa6bf5a07de0a97914b811e8e979d082047a4f552c2b6206a9575c7c1f10c",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/contact-sheet.jpg"
+    },
+    {
+      "path": "assets/ea61591fa37637620166.jpg",
+      "bytes": 331701,
+      "sha256": "ea61591fa376376201662a18208465e89ce7a7d592c63b6e45c91c7570acef1d",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/contact-sheet.jpg"
+    },
+    {
+      "path": "assets/521aa1d7ef99fb55884a.png",
+      "bytes": 259052,
+      "sha256": "521aa1d7ef99fb55884a2a6bec5a9963324fe6ca40f04f0c1f967dd99497949c",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/rotation-configured.png"
+    },
+    {
+      "path": "assets/af26a7c9d9ee411e8448.png",
+      "bytes": 382098,
+      "sha256": "af26a7c9d9ee411e8448b99119eed19bde882eac4b93c8f7e86b5e5adbd6decf",
+      "source": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/rotation-comparison.png"
+    }
+  ],
+  "external_local_references": [
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/completion-check.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/core.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_base.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/remote-sensor-observation.txt",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/phase-C-continuation.md",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/mission_orchestrator.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/mission_action_server.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/navigation_executor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/route_planner.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/stair_entry_gate.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/amcl__src__amcl_node.cpp",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/manifest.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/site_config.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/ros_node.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/scripts/wait_for_tf_exec.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/scripts/rviz_tf_reconnect.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/launch/system.launch",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/navigation_executor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_segments.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_segments.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/mission_action_server.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/opt/ros/noetic/lib/python3/dist-packages/actionlib/simple_action_client.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_runtime.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_services.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/logic-probe-resume2.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/transitions.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/transitions.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/pure-C-probe.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/config/scan_profiles.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/scan_recorder.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/record_route_runner.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/mission_action_server.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/opt/ros/noetic/lib/python3/dist-packages/actionlib/action_server.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_state.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/stair_entry_gate.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_runtime.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/amcl__src__amcl_node.cpp",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/amcl__src__amcl_node.cpp",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/amcl__src__amcl_node.cpp",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/config/building_graph.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/route_planner.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/pure-C-probe.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_segments.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_segments.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_segments.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/navigation_executor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/logic-probe-resume2.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_profiles.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/pure-C-probe.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/selected-tests-resume2.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_conversion.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/record_route_runner.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/fsm.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/mission_orchestrator.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/pure-C-probe.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/action/FloorTransition.action",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_segments.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/launch/system.launch",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_callbacks.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/mission_orchestrator.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/mission_orchestrator.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/local_costmap_params.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/costmap_2d__plugins__obstacle_layer.cpp",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/costmap_2d__src__observation_buffer.cpp",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/move_base__src__move_base.cpp",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_state.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/docs/manual-mission-capture-ko.md",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/config.env",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/sensor_joy_bridge.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/README.md",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/docs/navigation-perception-network-incident-rca-ko.md",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/docs/transition-policy-state-machine.md",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/test/test_system_operator_contract.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/selected-contracts-resume4.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/bag-nav-attempts.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/start-work/ledger.jsonl",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/launch/system.launch",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_runtime.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/ros_entrypoint.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/test/synthetic_hardware_peers.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/test/synthetic_hardware_peers.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/test/synthetic_hardware_peers.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/test/fixtures/building_valid/scan_profiles.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/test/test_command_provenance_contract.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/test/synthetic_hardware_peers.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/replay_bag_rviz.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/replay_bag_rviz.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/replay_bag_rviz.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/docs/ROSBAG-RECORD",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/bag-selected-observations.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/ros_node.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_client.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/stair_admission.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/opt/ros/noetic/lib/python3/dist-packages/rosmaster/master_api.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/opt/ros/noetic/lib/python3/dist-packages/rospy/impl/tcpros_pubsub.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/constraint-ledger-final.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/navigation-geometry-model.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/phase-D.md",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/scenario-status.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/scenario-status.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/selected-unit-results.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/selected-contract-results.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/resume2-unit-results.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/selected-contracts-resume4.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/read-files.txt",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/unread-files.txt",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/excluded-files.txt",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/coverage.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/phase-log.md",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/final-integrity-check.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/artifact-cleanup-final.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/final-integrity-check.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/final-concurrent-additions.json",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/scripts/wait_for_tf_exec.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_state.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/navigation_executor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/stair_admission.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/stair_entry_gate.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/tag_evidence.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/map_evidence.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/readiness.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/site_config.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/scan_recorder.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/scan_recorder.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/scan_recorder.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/costmap_common_params.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/costmap_common_params.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/local_costmap_params.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/local_costmap_params.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/local_costmap_params.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/base_local_planner_params.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/launch/navigation.launch",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/launch/navigation.launch",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_callbacks.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_runtime.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_config.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_conversion.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/base_local_planner_params.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/base_local_planner_params.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/base_local_planner_params.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/costmap_2d__plugins__static_layer.cpp",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/base_local_planner__src__trajectory_planner_ros.cpp",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/notebooks/03_rosbag_recording.ipynb",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/notebooks/03_rosbag_recording.ipynb",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/mission_action_server.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/mission_action_server.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/navigation_executor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_services.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/transitions.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_segments.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/navigation_executor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/route_planner.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/recording_session.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/notebooks/02_pose_and_nav_goal.ipynb",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/manual_mission_capture.py",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/local_costmap_params.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/launch/navigation.launch",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/FINAL-AUDIT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/audit-tron1-20260918/FINAL-AUDIT.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/completion-check.json",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-before-after-video-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/lidar-before-after-video-20260921/REPORT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/REPORT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/configured-metrics.json",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/REPORT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/REPORT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/baseline.json",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/runtime-versions.json",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/REPORT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/entry-drift-check.md",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/lidar_tracking.py",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/lidar_tracking_core.py",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/original/registration_core.py",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/before/process_bag.py",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/source-snapshot/process_bag.py",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/ros_lidar.py",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/catkin_ws/src/FAST_LIO/include/use-ikfom.hpp",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/catkin_ws/src/FAST_LIO/src/IMU_Processing.hpp",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/catkin_ws/src/FAST_LIO/src/laserMapping.cpp",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/tron1-control-center/sensor_integration/launch/fast_lio.launch",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/catkin_ws/src/FAST_LIO/config/mid360.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/lidar-method-explained-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/lidar_process.py",
+      "exists": true
+    },
+    {
+      "document": "documents/research-topic-selection-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/REPORT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/research-topic-selection-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/lidar-method-explained-20260921/REPORT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/research-topic-selection-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/REPORT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/research-topic-selection-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/REPORT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/research-topic-selection-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/recorded-control-results.json",
+      "exists": true
+    },
+    {
+      "document": "documents/research-topic-selection-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_feedback.py",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/manual-5F-rooftop_route_1788917683773755895.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/manual-5F-rooftop_route_1788917683773755895.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/manual-5F-rooftop_route_1788917683773755895.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/manual-5F-rooftop_route_1788918199558502114.bag.active.invalid/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/manual-5F-rooftop_route_1788918199558502114.bag.active.invalid/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/manual-5F-rooftop_route_1788918199558502114.bag.active.invalid/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/manual-5F-rooftop_route_1788918551828137154.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/manual-5F-rooftop_route_1788918551828137154.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/manual-5F-rooftop_route_1788918551828137154.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/manual-5F-rooftop_route_1788920816079496577.bag.active.invalid/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/manual-5F-rooftop_route_1788920816079496577.bag.active.invalid/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/manual-5F-rooftop_route_1788920816079496577.bag.active.invalid/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_FULL_20260916_210849.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_FULL_20260916_210849.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_FULL_20260916_210849.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_FULL_20260916_231643.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_FULL_20260916_231643.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_FULL_20260916_231643.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_FULL_20260916_234018.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_FULL_20260916_234018.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_FULL_20260916_234018.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260821_155022.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260821_155022.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260821_155022.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260824_152128.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260824_152128.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260824_152128.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260824_152223.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260824_152223.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260824_152223.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260824_152248.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260824_152248.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260824_152248.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_102101.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_102101.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_102101.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_103200.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_103200.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_103200.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_103313.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_103313.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_103313.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_105713.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_105713.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_105713.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_150034.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_150034.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_150034.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_154342.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_154342.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_154342.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_CLEAN_REPEAT_20260821_160211.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_CLEAN_REPEAT_20260821_160211.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_CLEAN_REPEAT_20260821_160211.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/tag_calibration_20260827_134853.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/tag_calibration_20260827_134853.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/tag_calibration_20260827_134853.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/yaw_calibration_020_030_040_20260821_134549.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/yaw_calibration_020_030_040_20260821_134549.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/yaw_calibration_020_030_040_20260821_134549.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/yaw_calibration_20260821_132716.bag/summary.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/yaw_calibration_20260821_132716.bag/events.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/bag-index.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/yaw_calibration_20260821_132716.bag/numeric.npz",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/FINAL-AUDIT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/tron1-web-mission-plan/IMPLEMENTATION-PLAN-DRAFT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/coverage.csv",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/tron1-control-center/sensor_integration/src/mid360s_laserscan.py",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/tron1-control-center/sensor_integration/launch/wf_mapping.launch",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/drift-cross-check.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/rooftop-gap-details.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/amcl-odom-disagreement.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/opt/ros/noetic/share/sensor_msgs/msg/Imu.msg",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/catkin_ws/src/livox_ros_driver2/src/comm/lidar_imu_data_queue.h",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/catkin_ws/src/livox_ros_driver2/src/lddc.cpp",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/ros_node.py",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/all-bag-statistics.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/action-state-evidence.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/tron1-web-mission-plan/IMPLEMENTATION-PLAN-DRAFT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/original-sha256.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/preservation-check.json",
+      "exists": true
+    },
+    {
+      "document": "documents/sensor-recording-analysis-20260918/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/quality-review.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-centering-analysis-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-centering-analysis-20260921/analysis-state.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-centering-analysis-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/FINAL-AUDIT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-centering-analysis-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-centering-analysis-20260921/comparison.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-centering-analysis-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-centering-analysis-20260921/robustness.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-centering-analysis-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-centering-analysis-20260921/time-alignment.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-centering-analysis-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py:206",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-centering-analysis-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py:160",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-centering-analysis-20260921/report.md",
+      "target": "/home/m3tron/catkin_ws/src/livox_ros_driver2/src/lddc.cpp:493",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-centering-analysis-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/REPORT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-centering-analysis-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-centering-analysis-20260921/robustness.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-centering-analysis-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-centering-analysis-20260921/CLEANUP.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-centering-analysis-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-centering-analysis-20260921/ARTIFACTS.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-driving-repair-plan-20260922/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/REPORT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-driving-repair-plan-20260922/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/recorded-control-results.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-driving-repair-plan-20260922/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-driving-repair-plan-20260922/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_feedback.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-lidar-commissioning-20260921/offline-validation/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/recorded-control-results.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-lidar-commissioning-20260921/offline-validation/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/stream-results.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-lidar-commissioning-20260921/offline-validation/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/unit-results.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-lidar-commissioning-20260921/offline-validation/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/candidate.patch",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_feedback.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/ros_lidar.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/navigation_hold.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/docs/stair-lidar-integration.md",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/static-checks.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/launch-dry-check.txt",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-verified-102101.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-verified-105713.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/replay-final/103313/metrics.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/measurement-provenance.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-105713.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-process-105713.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/realtime-final-102101.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/test-results.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/runtime-versions.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/application-receipt.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/delivery-manifest.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/changes.patch",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/state.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/cleanup-receipt.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-implementation-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-implementation-20260921/quality-review.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/launch/system.launch",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/launch/navigation.launch",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/5f-rf-autonomous-route-repetition/COMMISSIONING_STATUS.md",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/plans/tron1-stair-simulation.md",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/REPORT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/baseline.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/tron1-web-mission-plan/IMPLEMENTATION-PLAN-DRAFT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-integration-plan-20260921/compatibility-check.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_profiles.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/tron1-control-center/sensor_integration/config/sensor_extrinsics.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/process_bag.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/registration_core.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_conversion.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/runtime-versions.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/opt/ros/noetic/lib/python3/dist-packages/rospy/timer.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-integration-plan-20260921/baseline.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-integration-plan-20260921/compatibility-check.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-supervisor-integration-plan-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-supervisor-integration-plan-20260921/state.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/runtime-versions.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/registration_core.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/process_bag.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/source-snapshot/README.md",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/baseline.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/capture_baseline.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/baseline.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/bag-validation.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/build_comparison_bag.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/comparison_markers.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-revision.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-frames.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/tests.log",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/annotation-validation.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/visualization/index.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/calibration/mid360.yaml",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/baseline.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/annotation-fix.patch",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-baseline-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/state.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-fix-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/registration_core.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-fix-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/process_bag.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-fix-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/registration_core.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-fix-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/process_bag.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-fix-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/test_process_bag.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-fix-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/fix.patch",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-fix-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/installed.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-fix-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/bag-validation.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-fix-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/configured-metrics.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-fix-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/tests.log",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-fix-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/comparison-validation.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-fix-20260921/report.md",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/README.md",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-fix-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/state.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-fix-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/state.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-repair-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/evaluate_results.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-repair-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/configured-metrics.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-repair-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/results",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-repair-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/metrics.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-repair-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/original/registration_core.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-repair-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/original/registration_core.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-repair-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/original/process_bag.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-repair-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/original/comparison_trajectory.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-repair-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/state.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-repair-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/replay_candidate.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-repair-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/comparison_trajectory.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-repair-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/comparison-time.patch",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-repair-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/test_repair.py",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-repair-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-centering-analysis-20260921/REPORT.md",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-repair-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/state.json",
+      "exists": true
+    },
+    {
+      "document": "documents/stair-tracking-repair-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/ARTIFACTS.json",
+      "exists": true
+    },
+    {
+      "document": "documents/undergraduate-research-awards-20260921/report.md",
+      "target": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/lidar-method-explained-20260921/REPORT.md",
+      "exists": true
+    }
+  ],
+  "missing_references": [],
+  "source_html_unchanged": true
+}

@@ -1,0 +1,63 @@
+"""Same physical template and policy limits for both bags; offline poses only."""
+from pathlib import Path
+import sys,json,math,copy
+import numpy as np
+import yaml
+ROOT=Path(__file__).resolve().parent;OLD=ROOT.parent/'stair-lidar-commissioning-20260921/offline-validation'
+REPO=Path('/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation')
+sys.path.insert(0,str(REPO/'src/stair_supervisor/src'))
+from stair_supervisor.stair_feedback import StairFeedback,se2
+from stair_supervisor.stair_evidence import Phase
+from stair_supervisor.configuration import load_stair_configuration
+from stair_supervisor.lidar_tracking import TrackingSample
+cfg=yaml.safe_load((OLD/'config/stair_lidar.yaml').read_text());route=cfg['routes'][0]
+site=json.loads((ROOT/'recovered-site.json').read_text())['geometry'];fits=json.loads((ROOT/'fixed-geometry-fit.json').read_text())
+n1,n2=site['flight_1_steps'],site['flight_2_steps'];d,h,w=site['tread_depth_m'],site['riser_height_m'],site['stair_width_m'];a=n1*d;b=a-n2*d;offset=site['landing_width_m']-w;back=a+site['landing_depth_m']
+# Nominal rectangle convention follows the existing simulation world. The
+# separate first-body transform is inferred from full-map data, not live entry.
+clearance=.225+route['limits']['margin_m']+route['limits']['anchor_uncertainty_m']+.01
+entry_start=route['flight_1'][0][0]
+route['flight_1']=[[entry_start,0,0],[a+clearance,0,n1*h]]
+route['flight_2']=[[a,offset,n1*h],[b-clearance,offset,(n1+n2)*h]]
+def box(x0,y0,x1,y1):return [[x0,y0],[x1,y0],[x1,y1],[x0,y1]]
+route['entry_polygon']=box(-1,-w/2,0,w/2)
+route['flight_1_polygon']=box(0,-w/2,a,w/2)
+route['landing_polygon']=box(a,-w/2,back,site['landing_width_m']-w/2)
+route['flight_2_polygon']=box(b,offset-w/2,a,offset+w/2)
+route['exit_polygon']=box(b-1,offset-w/2,b,offset+w/2)
+mid=a+site['landing_depth_m']/2
+route['turn_path']=[[mid,0,0],[mid,0,math.pi/2],[mid,offset,math.pi/2],[mid,offset,math.pi],[a+clearance,offset,math.pi]]
+(ROOT/'offline-common-route.yaml').write_text('# OFFLINE ONLY: fixed operator dimensions; inferred full-map anchors, NOT commissioned.\n'+yaml.safe_dump(cfg,sort_keys=False))
+profile=load_stair_configuration(OLD/'config').profiles[0];mount=np.array(cfg['base_from_lidar']);phases=[Phase.FORWARD_SEGMENT_1,Phase.LANDING,Phase.TURN_TO_NEXT_FLIGHT,Phase.FORWARD_SEGMENT_2,Phase.EXIT_CONFIRM]
+body_height=-fits['102101']['fits'][0]['parameters'][2]
+class Worker:
+ epoch=0
+ def snapshot(self):return self.value
+ def diagnostics(self):return {'worker_error':''}
+def sample(row,seq):
+ t=row['stamp'];return TrackingSample(0,seq,t,t,t,t,t,tuple(np.asarray(row['pose']).flat),True,'TRACKED','offline fixed template evaluation')
+results={}
+for bid in ['102101','105713']:
+ rows=[r for r in json.loads((OLD/f'replay-{bid}/poses.json').read_text()) if r['accepted'] and r['state']!='BOOTSTRAP']
+ reference=np.array(json.loads((ROOT/'geometry'/f'{bid}-geometry.json').read_text())['reference_from_tracking'])
+ tx,ty,tz,yaw=fits[bid]['fits'][0]['parameters'];body_from_profile=se2(tx,ty,yaw);body_from_profile[2,3]=tz+body_height
+ local_from_profile=np.linalg.inv(reference)@body_from_profile
+ wkr=Worker();wkr.value=sample(rows[0],1);c=StairFeedback(wkr,mount,[copy.deepcopy(route)])
+ entry=np.linalg.inv(local_from_profile)@np.array(rows[0]['pose'])@np.linalg.inv(mount)
+ start=rows[0]['stamp'];c.capture_entry(profile.id,entry,.10,'OFFLINE full-map fixed-template fit; future scans used; uncertainty unvalidated',start)
+ c.arm(profile,start,phase_test=True);phase=phases[0];c.begin_phase(phase,start);trace=[];transitions=[];fault=None
+ for i,row in enumerate(rows[1:],2):
+  wkr.value=sample(row,i);r=c.evaluate(phase,row['stamp']+.01)
+  pose=np.linalg.inv(local_from_profile)@np.array(row['pose'])@np.linalg.inv(mount)
+  item=dict(t=row['stamp']-start,phase=phase.value,position=pose[:3,3].tolist(),yaw_deg=math.degrees(math.atan2(pose[1,0],pose[0,0])),complete=r.complete,faulted=r.faulted,debug=c.debug)
+  trace.append(item)
+  if r.faulted:fault=item;break
+  if r.complete:
+   transitions.append(dict(t=item['t'],phase=phase.value))
+   if phase==phases[-1]:break
+   phase=phases[phases.index(phase)+1];c.begin_phase(phase,row['stamp']+.01)
+ results[bid]=dict(profile_from_initial_base=entry.tolist(),tracking_from_profile=local_from_profile.tolist(),transitions=transitions,first_fault=fault,final_phase=phase.value)
+ (ROOT/f'common-route-trace-{bid}.json').write_text(json.dumps(trace,indent=2,default=lambda v:v.item()))
+ print(bid,'transitions',transitions,'first fault',None if fault is None else (fault['t'],fault['debug']['tracking_state']),flush=True)
+results['scope']='Open-loop recorded policy evaluation. Fixed geometry, footprint, margin and command limits across bags. Bag-specific 4-DOF full-map alignment uses future scans and is INFERRED, not a live entry localization result or real driving success.'
+(ROOT/'common-route-results.json').write_text(json.dumps(results,indent=2,default=lambda v:v.item()))

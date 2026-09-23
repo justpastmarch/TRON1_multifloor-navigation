@@ -1,0 +1,1240 @@
+--- a/tools/offline_lio/README.md
++++ b/tools/offline_lio/README.md
+@@ -6,13 +6,13 @@
+ ## What it produces
+ 
+ - FAST-LIO odometry and logs for comparison only
+-- IMU-nonintegrating 3D generalized ICP trajectory
++- gravity-aligned 3D generalized ICP trajectory, with IMU gyro rotation prediction
+ - registered scan, rolling local-map, and voxelized full-traversal global-map
+   PointCloud2 topics
+-- normalized wheel, FAST-LIO, and LiDAR-only paths
++- normalized wheel and FAST-LIO comparison paths, plus accepted LiDAR path segments
+ - RViz markers for stair entry, intermediate landing/U-turn, and final 4F
+   arrival, each projected from a reviewed camera-header timestamp to the nearest
+-  LiDAR-only pose
++  accepted LiDAR pose (reviewed annotations, not automatic phase detections)
+ - frozen camera evidence on one topic per event, plus a current-event camera
+   topic that advances as the replay crosses each milestone
+ 
+@@ -29,6 +29,19 @@
+ the production navigation graph.
+ 
+ ## Process all three bags
++
++To regenerate only the corrected LiDAR trajectory, source ROS Noetic and the
++existing catkin workspace, then run `process_bag.py` with a LiDAR spec. The JSON
++spec controls output paths; use new output paths when preserving previous runs.
++This command reads the bag and writes files without starting a ROS master or
++publishing to a robot:
++
++```bash
++uv run --python /usr/bin/python3 tools/offline_lio/process_bag.py \
++  tools/offline_lio/specs/105713_lidar.json
++```
++
++The complete workflow below also reruns FAST-LIO and rebuilds the comparison bag.
+ 
+ ```bash
+ cd /home/m3tron/Desktop/TRON1_Modular_Navigation
+@@ -62,7 +75,7 @@
+ 
+ | Color | Meaning |
+ | --- | --- |
+-| green | IMU-nonintegrating 3D LiDAR registration |
++| green | gyro-aided LiDAR registration; accepted path segments only |
+ | cyan | FAST-LIO segment inside the magnitude gate |
+ | magenta | FAST-LIO samples after the first magnitude-gate exit |
+ | red | wheel odometry normalized at the window start |
+@@ -70,11 +83,11 @@
+ | yellow | intermediate landing/U-turn event projected to a LiDAR pose |
+ | blue | final 4F-arrival event projected to a LiDAR pose |
+ 
+-All trajectories are start-normalized for shape comparison and are not shown in
+-a shared calibrated or ground-truth frame. The camera panel and registered 3D
+-cloud use the same rosbag clock. Event annotations are stored as absolute camera
+-sensor-header timestamps, so rosbag record-time delay is not mistaken for robot
+-motion. The generated evidence topics are
++The comparison paths are start-normalized for shape comparison and are not shown
++in a shared calibrated or ground-truth frame. Camera event annotations use
++absolute camera-header timestamps. The existing wheel/FAST-LIO comparison reader
++uses bag record time and independent initial poses; do not interpret that overlay
++as a calibrated position-error measurement. The generated evidence topics are
+ `/comparison/camera/stair_entry`,
+ `/comparison/camera/intermediate_landing`, and
+ `/comparison/camera/final_arrival`.
+@@ -84,13 +97,61 @@
+ ```bash
+ UV_CACHE_DIR=/tmp/offline-lio-uv \
+   uv run --python /usr/bin/python3 tools/offline_lio/test_registration_core.py
++UV_CACHE_DIR=/tmp/offline-lio-uv \
++  uv run --python /usr/bin/python3 tools/offline_lio/test_process_bag.py
+ bash -n tools/offline_lio/run_fast_lio_replay.sh
+ bash -n tools/offline_lio/replay_rviz.sh
+ bash -n tools/offline_lio/run_all.sh
+ ```
+ 
+-The current `102101` replay reproduces FAST-LIO's known failure mode: repeated
+-`No Effective Points` leaves IMU gravity and bias integration uncorrected, and
+-the trajectory exceeds the bounded gate immediately. Landing measurement must
+-therefore use the LiDAR-only trajectory, with FAST-LIO retained as comparison
+-evidence rather than localization authority.
++The historical `102101` FAST-LIO replay diverges and reports `No Effective Points`.
++Its first causal fault is not established by the corrected LiDAR trajectory.
++Neither trajectory is certified as a stair-control localization authority.
++
++## Gravity, prediction, and observation validity
++
++`imu_calibration_path` supplies FAST-LIO YAML `mapping/extrinsic_R`, defined as
++LiDAR-to-IMU rotation. Its inverse rotates IMU vectors into LiDAR axes. The initial
++up vector is the median acceleration in a +/-0.5 second sensor-header window.
++This is an offline initialization with lookahead, requiring a low-dynamic window;
++it does not prove that the robot was stationary. No dominant scene plane defines
++up, so a large wall cannot be selected as the floor.
++
++Gyro integration predicts rotation between the last accepted LiDAR observation
++and the current header stamp. GICP corrects that prediction using geometry. There
++is no wheel input, translational IMU integration, gyro bias estimation, point
++deskew, or extrinsic translation compensation. Fixed YAML extrinsics also do not
++reproduce FAST-LIO's online extrinsic estimation. Existing GICP thresholds remain
++unchanged; the correction is now measured relative to the predicted pose.
++
++`/lidar_registration/status` is a JSON `std_msgs/String` at every selected scan:
++
++- `BOOTSTRAP`: gravity initialization, not a geometric match yet.
++- `TRACKED`: a geometric update passed the existing fitness/innovation checks.
++- `PREDICTED`: gyro supports a short rejected interval; no measured pose is emitted.
++- `LOST`: no accepted current observation outside that diagnostic prediction interval.
++- `WAITING_FOR_INITIALIZATION`: initial LiDAR/IMU support is insufficient.
++
++Fields include `measurement_valid`, `geometry_valid`, `last_valid_stamp_ns`, `measurement_age_s`,
++`prediction_source`, `reason`, fitness, and translation/rotation innovations.
++The CSV retains its original columns and adds these diagnostics; rejected pose
++columns are NaN. `measurement_valid` also includes BOOTSTRAP's initial relative
++pose; consumers requiring a successful scan match must use `geometry_valid`.
++A rejected scan writes no odometry, no transformed points, and
++no map update. Empty live-cloud/path payloads represent the missing observation.
++The live path restarts at the next accepted observation instead of bridging the
++unknown segment. The full global map keeps accepted scans and retains the last
++accepted timestamp even if the recording ends with a tracking loss.
++
++An IMU gap disables gyro prediction for the affected interval. Local geometric
++recovery still starts from the last observation with the same correction limits;
++success is labeled `prediction_source=last_observation`. Once a supported interval
++is available, gyro prediction resumes. Large ambiguous gaps may remain LOST;
++the tool does not invent a global relocalization. `imu_max_gap_s` (0.03) and
++`prediction_display_horizon_s` (0.5) are offline support/diagnostic settings,
++not robot-wide stop rules. Acceptance is not physical position accuracy.
++
++`/lidar_registration/metadata` records the actual calibration-file hash and applied
++rotation. The deprecated `floor_plane_threshold_m` field is accepted for old
++specs but is unused. Regenerate old output bags before using the updated RViz
++labels; historical bags keep their original algorithm and do not gain status data.
+--- a/tools/offline_lio/build_comparison_bag.py
++++ b/tools/offline_lio/build_comparison_bag.py
+@@ -14,7 +14,7 @@
+ # source /opt/ros/noetic/setup.bash && source ~/catkin_ws/devel/setup.bash
+ # UV_CACHE_DIR=/tmp/opencode/tron1_fast_lio_ws/uv-cache uv run --python /usr/bin/python3 tools/offline_lio/build_comparison_bag.py SPEC.json
+ 
+-"""Align LiDAR-only, FAST-LIO, and wheel trajectories for RViz comparison."""
++"""Align gyro-aided LiDAR, FAST-LIO, and wheel paths for offline comparison."""
+ 
+ from __future__ import annotations
+ 
+--- a/tools/offline_lio/comparison_markers.py
++++ b/tools/offline_lio/comparison_markers.py
+@@ -15,7 +15,7 @@
+ 
+ 
+ class TraversalEventEvidence(NamedTuple):
+-    """One named camera-header event projected to a LiDAR-only pose."""
++    """One named camera-header event projected to an accepted LiDAR pose."""
+ 
+     name: str
+     position: FloatVector
+@@ -91,7 +91,7 @@
+ 
+     legend = (
+         "START-NORMALIZED | no ground-truth frame\n"
+-        "GREEN LiDAR-only (no IMU integration)\n"
++        "GREEN gyro-aided LiDAR (accepted observations)\n"
+         "CYAN FAST-LIO bounded: r<=5m, |z|<=3m (not correctness)\n"
+         "MAGENTA FAST-LIO beyond gate | RED wheel\n"
+         "ORANGE entry | YELLOW intermediate landing/U-turn | BLUE final arrival"
+--- a/tools/offline_lio/process_bag.py
++++ b/tools/offline_lio/process_bag.py
+@@ -8,6 +8,8 @@
+ #   "pycryptodomex==3.23.0",
+ #   "python-gnupg==0.5.5",
+ #   "rospkg==1.6.0",
++#   "scipy==1.10.1",
++#   "PyYAML==6.0.3",
+ #   "typer==0.16.0",
+ # ]
+ # ///
+@@ -15,21 +17,27 @@
+ # source /opt/ros/noetic/setup.bash && source ~/catkin_ws/devel/setup.bash
+ # UV_CACHE_DIR=/tmp/opencode/tron1_fast_lio_ws/uv-cache uv run --python /usr/bin/python3 tools/offline_lio/process_bag.py SPEC.json
+ 
+-"""Build an IMU-nonintegrating 3D LiDAR trajectory from a ROS bag."""
++"""Build gravity-aligned, gyro-predicted LiDAR registration from a ROS bag.
++
++This is an offline writer, not a ROS node. Only accepted geometry is written as
++odometry; predictions and tracking loss are explicitly diagnostic evidence.
++"""
+ 
+ from __future__ import annotations
+ 
+ import csv
++import hashlib
+ import json
+ from collections import deque
++from itertools import chain
+ from pathlib import Path
+ 
+ import numpy as np
+ import numpy.typing as npt
+-import open3d as o3d
+ import rosbag
+ import rospy
+ import typer
++import yaml
+ from geometry_msgs.msg import PoseStamped
+ from livox_ros_driver2.msg import CustomMsg
+ from nav_msgs.msg import Odometry
+@@ -37,12 +45,13 @@
+ from pydantic import BaseModel, ConfigDict, Field
+ from sensor_msgs import point_cloud2
+ from sensor_msgs.msg import PointCloud2
+-from std_msgs.msg import Header
++from std_msgs.msg import Header, String
++from scipy.spatial.transform import Rotation
+ from tf.transformations import quaternion_from_matrix
+ 
+ from registration_core import (
+     RegistrationConfig,
+-    level_transform_from_plane,
++    ImuRotation,
+     merge_registered_scans,
+     register_scan_to_map,
+     voxel_downsample_points,
+@@ -77,12 +86,20 @@
+     output_bag_path: Path
+     output_csv_path: Path
+     lidar_topic: str = "/livox/lidar"
++    imu_topic: str = "/livox/imu"
++    imu_calibration_path: Path = (
++        Path.home() / "catkin_ws/src/FAST_LIO/config/mid360.yaml"
++    )
++    imu_max_gap_s: float = Field(default=0.03, gt=0.0)
++    gravity_half_window_s: float = Field(default=0.5, gt=0.0)
++    prediction_display_horizon_s: float = Field(default=0.5, ge=0.0)
+     start_offset_s: float = Field(ge=0.0)
+     duration_s: float = Field(gt=0.0)
+     frame_step: int = Field(gt=0)
+     local_map_scans: int = Field(gt=1)
+     max_range_m: float = Field(gt=1.0)
+-    floor_plane_threshold_m: float = Field(gt=0.0)
++    # Deprecated input accepted for old specs; no scene plane is used as gravity.
++    floor_plane_threshold_m: float = Field(default=0.08, gt=0.0)
+     registration: RegistrationSettings
+ 
+ 
+@@ -111,7 +128,9 @@
+     return (transform @ homogeneous.T).T[:, :3]
+ 
+ 
+-def _pose_stamped(transform: FloatMatrix, stamp: rospy.Time, sequence: int) -> PoseStamped:
++def _pose_stamped(
++    transform: FloatMatrix, stamp: rospy.Time, sequence: int
++) -> PoseStamped:
+     pose = PoseStamped()
+     pose.header = Header(seq=sequence, stamp=stamp, frame_id=FRAME_ID)
+     pose.pose.position.x, pose.pose.position.y, pose.pose.position.z = transform[:3, 3]
+@@ -133,141 +152,301 @@
+ 
+ def _cloud(points_xyz: FloatMatrix, stamp: rospy.Time, sequence: int) -> PointCloud2:
+     header = Header(seq=sequence, stamp=stamp, frame_id=FRAME_ID)
+-    return point_cloud2.create_cloud_xyz32(header, points_xyz.astype(np.float32).tolist())
++    return point_cloud2.create_cloud_xyz32(
++        header, points_xyz.astype(np.float32).tolist()
++    )
++
++
++def _finite_number(value: float):
++    """JSON null denotes an unavailable measurement, never NaN or Infinity."""
++    return float(value) if np.isfinite(value) else None
++
++
++def _load_imu(input_bag: rosbag.Bag, spec: ReplaySpec) -> tuple[ImuRotation, dict]:
++    content = spec.imu_calibration_path.expanduser().read_bytes()
++    calibration = yaml.safe_load(content)
++    rotation = np.asarray(
++        calibration["mapping"]["extrinsic_R"], dtype=np.float64
++    ).reshape(3, 3)
++    if (
++        not np.isfinite(rotation).all()
++        or not np.allclose(rotation.T @ rotation, np.eye(3), atol=1e-3)
++        or np.linalg.det(rotation) < 0.0
++    ):
++        raise ValueError("mapping/extrinsic_R is not a proper lidar-to-IMU rotation")
++    lidar_from_imu = Rotation.from_matrix(rotation).as_matrix().T
++    samples = []
++    for _, message, _ in input_bag.read_messages(topics=[spec.imu_topic]):
++        w, a = message.angular_velocity, message.linear_acceleration
++        samples.append([message.header.stamp.to_sec(), w.x, w.y, w.z, a.x, a.y, a.z])
++    trajectory = ImuRotation(
++        np.asarray(samples, dtype=np.float64), lidar_from_imu, spec.imu_max_gap_s
++    )
++    return trajectory, {
++        "calibration_path": str(spec.imu_calibration_path.expanduser()),
++        "calibration_sha256": hashlib.sha256(content).hexdigest(),
++        "lidar_to_imu_rotation": rotation.tolist(),
++        "imu_topic": spec.imu_topic,
++        "gravity_half_window_s": spec.gravity_half_window_s,
++        "imu_max_gap_s": spec.imu_max_gap_s,
++        "scope": "fixed rotation, gyro only; no acceleration integration, point deskew, bias estimation or sensor translation compensation",
++    }
+ 
+ 
+ def process(spec: ReplaySpec) -> dict[str, float | int | str]:
+-    """Process one configured bag window and write ROS plus tabular evidence."""
++    """Write observed poses only, plus per-frame tracking status and innovations."""
++    paths = [
++        p.resolve() for p in (spec.bag_path, spec.output_bag_path, spec.output_csv_path)
++    ]
++    if len(set(paths)) != len(paths):
++        raise ValueError("input bag and output paths must be distinct")
+     spec.output_bag_path.parent.mkdir(parents=True, exist_ok=True)
+     spec.output_csv_path.parent.mkdir(parents=True, exist_ok=True)
+-    o3d.utility.random.seed(20260828)
+     config = spec.registration.core_config()
+     local_scans: deque[FloatMatrix] = deque(maxlen=spec.local_map_scans)
+     global_scans: list[FloatMatrix] = []
+     path = RosPath()
+     path.header.frame_id = FRAME_ID
+-    path.poses = []
+     pose_transform = np.eye(4, dtype=np.float64)
+-    processed = 0
+-    accepted = 0
+-    rejected = 0
++    last_valid_stamp: rospy.Time | None = None
++    previous_sensor_stamp: rospy.Time | None = None
++    processed = accepted = rejected = 0
+     global_map_points = 0
+-    latest_stamp: rospy.Time | None = None
+-
+     with rosbag.Bag(str(spec.bag_path), "r") as input_bag:
++        imu, metadata = _load_imu(input_bag, spec)
+         start_s = input_bag.get_start_time() + spec.start_offset_s
+         end_s = start_s + spec.duration_s
+-        with rosbag.Bag(str(spec.output_bag_path), "w") as output_bag, spec.output_csv_path.open(
+-            "w",
+-            encoding="utf-8",
+-            newline="",
++        messages = input_bag.read_messages(
++            topics=[spec.lidar_topic],
++            start_time=rospy.Time.from_sec(start_s),
++            end_time=rospy.Time.from_sec(end_s),
++        )
++        first_message = next(messages, None)
++        if first_message is None:
++            raise ValueError("no LiDAR messages in the requested topic/window")
++        messages = chain((first_message,), messages)
++        with rosbag.Bag(
++            str(spec.output_bag_path), "w"
++        ) as output_bag, spec.output_csv_path.open(
++            "w", newline="", encoding="utf-8"
+         ) as csv_file:
+-                writer = csv.writer(csv_file)
+-                writer.writerow(
+-                    (
+-                        "stamp_ns",
+-                        "x_m",
+-                        "y_m",
+-                        "z_m",
+-                        "qx",
+-                        "qy",
+-                        "qz",
+-                        "qw",
+-                        "fitness",
+-                        "rmse_m",
+-                        "accepted",
+-                    )
+-                )
+-                messages = input_bag.read_messages(
+-                    topics=[spec.lidar_topic],
+-                    start_time=rospy.Time.from_sec(start_s),
+-                    end_time=rospy.Time.from_sec(end_s),
+-                )
+-                for source_index, bag_message in enumerate(messages):
+-                    if source_index % spec.frame_step != 0:
+-                        continue
+-                    message = bag_message.message
+-                    sensor_stamp = message.header.stamp
+-                    latest_stamp = sensor_stamp
+-                    scan = _points(message, spec.max_range_m)
+-                    downsampled = voxel_downsample_points(scan, config.voxel_size_m)
+-                    fitness = 1.0
+-                    rmse_m = 0.0
+-                    admitted = True
+-                    if not local_scans:
+-                        pose_transform = level_transform_from_plane(
+-                            downsampled,
+-                            spec.floor_plane_threshold_m,
++            writer = csv.writer(csv_file)
++            writer.writerow(
++                (
++                    "stamp_ns",
++                    "x_m",
++                    "y_m",
++                    "z_m",
++                    "qx",
++                    "qy",
++                    "qz",
++                    "qw",
++                    "fitness",
++                    "rmse_m",
++                    "accepted",
++                    "state",
++                    "measurement_age_s",
++                    "prediction_source",
++                    "reason",
++                    "translation_innovation_m",
++                    "rotation_innovation_rad",
++                    "geometry_valid",
++                )
++            )
++            for source_index, bag_message in enumerate(messages):
++                if source_index % spec.frame_step:
++                    continue
++                message = bag_message.message
++                stamp = message.header.stamp
++                if stamp.to_sec() <= 0 or (
++                    previous_sensor_stamp is not None and stamp <= previous_sensor_stamp
++                ):
++                    raise ValueError(
++                        "LiDAR measurement stamps must be positive and strictly increasing"
++                    )
++                previous_sensor_stamp = stamp
++                if processed == 0:
++                    output_bag.write(
++                        "/lidar_registration/metadata",
++                        String(data=json.dumps(metadata, allow_nan=False)),
++                        stamp,
++                    )
++                scan = voxel_downsample_points(
++                    _points(message, spec.max_range_m), config.voxel_size_m
++                )
++                admitted = False
++                fitness = rmse = translation_innovation = rotation_innovation = float(
++                    "nan"
++                )
++                prediction_source = "none"
++                reason = "insufficient lidar points"
++                bootstrap = last_valid_stamp is None
++                prediction = pose_transform.copy()
++                imu_error = ""
++                if not bootstrap:
++                    prediction_source = "gyro"
++                    try:
++                        prediction[:3, :3] = pose_transform[:3, :3] @ imu.relative(
++                            last_valid_stamp.to_sec(), stamp.to_sec()
+                         )
++                    except ValueError as error:
++                        # Local recovery with unchanged limits; an IMU gap does
++                        # not permanently poison subsequent supported intervals.
++                        prediction_source = "last_observation"
++                        imu_error = str(error)
++                if len(scan) >= 3:
++                    if bootstrap:
++                        try:
++                            candidate = imu.initial_transform(
++                                stamp.to_sec(), spec.gravity_half_window_s
++                            )
++                            admitted = True
++                            prediction_source = "gravity"
++                            reason = "gravity initialized; no scan match yet"
++                        except ValueError as error:
++                            reason = str(error)
+                     else:
+                         result = register_scan_to_map(
+-                            downsampled,
+-                            np.vstack(local_scans),
+-                            pose_transform,
+-                            config,
++                            scan, np.vstack(local_scans), prediction, config
+                         )
+-                        fitness = result.fitness
+-                        rmse_m = result.inlier_rmse_m
++                        candidate = result.transform.copy()
++                        fitness, rmse = result.fitness, result.inlier_rmse_m
++                        translation_innovation, rotation_innovation = (
++                            result.translation_step_m,
++                            result.rotation_step_rad,
++                        )
+                         admitted = result.accepted
+-                        if admitted:
+-                            pose_transform = result.transform
+-                            accepted += 1
+-                        else:
+-                            rejected += 1
+-                    world_scan = _transform(downsampled, pose_transform)
+-                    if admitted:
+-                        local_scans.append(world_scan)
+-                        global_scans.append(world_scan)
+-
+-                    pose = _pose_stamped(pose_transform, sensor_stamp, processed)
+-                    path.header.stamp = sensor_stamp
++                        reasons = []
++                        if fitness < config.min_fitness:
++                            reasons.append("low fitness")
++                        if translation_innovation > config.max_translation_step_m:
++                            reasons.append("translation innovation")
++                        if rotation_innovation > config.max_rotation_step_rad:
++                            reasons.append("rotation innovation")
++                        reason = (
++                            "geometry recovered without IMU: " + imu_error
++                            if admitted and imu_error
++                            else "geometry accepted"
++                            if admitted
++                            else "; ".join(filter(None, [imu_error, *reasons]))
++                            or "registration rejected"
++                        )
++                if admitted:
++                    pose_transform = candidate
++                    last_valid_stamp = stamp
++                    world_scan = _transform(scan, pose_transform)
++                    local_scans.append(world_scan)
++                    global_scans.append(world_scan)
++                    pose = _pose_stamped(pose_transform, stamp, processed)
++                    path.header.stamp = stamp
+                     path.poses.append(pose)
+                     output_bag.write(
+-                        "/lidar_registration/odom",
+-                        _odometry(pose, processed),
+-                        sensor_stamp,
+-                    )
+-                    output_bag.write("/lidar_registration/path", path, sensor_stamp)
++                        "/lidar_registration/odom", _odometry(pose, processed), stamp
++                    )
++                    output_bag.write("/lidar_registration/path", path, stamp)
+                     output_bag.write(
+                         "/lidar_registration/cloud",
+-                        _cloud(world_scan, sensor_stamp, processed),
+-                        sensor_stamp,
++                        _cloud(world_scan, stamp, processed),
++                        stamp,
+                     )
+                     if processed % 10 == 0:
+                         output_bag.write(
+                             "/lidar_registration/local_map",
+-                            _cloud(np.vstack(local_scans), sensor_stamp, processed),
+-                            sensor_stamp,
++                            _cloud(np.vstack(local_scans), stamp, processed),
++                            stamp,
+                         )
+-                    writer.writerow(
+-                        (
+-                            sensor_stamp.to_nsec(),
+-                            *pose_transform[:3, 3],
+-                            pose.pose.orientation.x,
+-                            pose.pose.orientation.y,
+-                            pose.pose.orientation.z,
+-                            pose.pose.orientation.w,
+-                            fitness,
+-                            rmse_m,
+-                            int(admitted),
+-                        )
+-                    )
+-                    processed += 1
+-
+-                if latest_stamp is not None and global_scans:
+-                    global_map = merge_registered_scans(global_scans, config.voxel_size_m)
+-                    global_map_points = global_map.shape[0]
++                    values = (
++                        *pose_transform[:3, 3],
++                        *quaternion_from_matrix(pose_transform),
++                    )
++                    state = "BOOTSTRAP" if bootstrap else "TRACKED"
++                    if not bootstrap:
++                        accepted += 1
++                else:
++                    rejected += 1
++                    values = (float("nan"),) * 7
++                    age = (
++                        None
++                        if last_valid_stamp is None
++                        else (stamp - last_valid_stamp).to_sec()
++                    )
++                    state = (
++                        "WAITING_FOR_INITIALIZATION"
++                        if bootstrap
++                        else "PREDICTED"
++                        if prediction_source == "gyro"
++                        and age <= spec.prediction_display_horizon_s
++                        else "LOST"
++                    )
++                    # Empty display payloads mark missing observation; path segments
++                    # never connect unobserved motion. No odometry is emitted.
++                    path.poses = []
++                    path.header.stamp = stamp
++                    output_bag.write("/lidar_registration/path", path, stamp)
+                     output_bag.write(
+-                        "/lidar_registration/global_map",
+-                        _cloud(global_map, latest_stamp, processed),
+-                        latest_stamp,
+-                    )
+-
++                        "/lidar_registration/cloud",
++                        _cloud(np.empty((0, 3)), stamp, processed),
++                        stamp,
++                    )
++                age = (
++                    None
++                    if last_valid_stamp is None
++                    else (stamp - last_valid_stamp).to_sec()
++                )
++                status = {
++                    "stamp_ns": stamp.to_nsec(),
++                    "state": state,
++                    "measurement_valid": admitted,
++                    "geometry_valid": admitted and not bootstrap,
++                    "last_valid_stamp_ns": last_valid_stamp.to_nsec()
++                    if last_valid_stamp is not None
++                    else None,
++                    "measurement_age_s": age,
++                    "prediction_source": prediction_source,
++                    "reason": reason,
++                    "fitness": _finite_number(fitness),
++                    "rmse_m": _finite_number(rmse),
++                    "translation_innovation_m": _finite_number(translation_innovation),
++                    "rotation_innovation_rad": _finite_number(rotation_innovation),
++                }
++                output_bag.write(
++                    "/lidar_registration/status",
++                    String(data=json.dumps(status, allow_nan=False)),
++                    stamp,
++                )
++                writer.writerow(
++                    (
++                        stamp.to_nsec(),
++                        *values,
++                        fitness,
++                        rmse,
++                        int(admitted),
++                        state,
++                        age,
++                        prediction_source,
++                        reason,
++                        translation_innovation,
++                        rotation_innovation,
++                        int(admitted and not bootstrap),
++                    )
++                )
++                processed += 1
++            if last_valid_stamp is not None:
++                global_map = merge_registered_scans(global_scans, config.voxel_size_m)
++                global_map_points = len(global_map)
++                # Map age remains the last accepted observation even if the tail is lost.
++                output_bag.write(
++                    "/lidar_registration/global_map",
++                    _cloud(global_map, last_valid_stamp, processed),
++                    last_valid_stamp,
++                )
+     return {
+-        "status": "ok",
++        "status": "ok" if not rejected else "completed_with_tracking_gaps",
+         "processed_frames": processed,
+         "accepted_updates": accepted,
+         "rejected_updates": rejected,
++        "rejected_frames": rejected,
++        "bootstrap_frames": int(last_valid_stamp is not None),
+         "acceptance_ratio": accepted / max(accepted + rejected, 1),
+         "global_map_points": global_map_points,
+     }
+--- a/tools/offline_lio/registration_core.py
++++ b/tools/offline_lio/registration_core.py
+@@ -1,4 +1,4 @@
+-"""Generalized ICP with motion gates and no inertial integration."""
++"""Gravity initialization, gyro rotation prediction, and geometric registration."""
+ 
+ from __future__ import annotations
+ 
+@@ -9,6 +9,7 @@
+ import numpy as np
+ import numpy.typing as npt
+ import open3d as o3d
++from scipy.spatial.transform import Rotation, Slerp
+ 
+ FloatMatrix = npt.NDArray[np.float64]
+ 
+@@ -29,7 +30,11 @@
+ 
+ 
+ class RegistrationConfig(NamedTuple):
+-    """Geometric registration and one-frame physical acceptance limits."""
++    """Geometric acceptance limits relative to the supplied pose prediction.
++
++    Field names are retained for existing specs. Corrections from a prediction
++    are innovations, not independently measured one-frame physical motion.
++    """
+ 
+     voxel_size_m: float
+     correspondence_distance_m: float
+@@ -58,7 +63,9 @@
+ 
+ def _require_shape(name: str, value: FloatMatrix, expected: tuple[int, ...]) -> None:
+     if value.shape != expected:
+-        raise PointCloudShapeError(name=name, expected=str(expected), actual=value.shape)
++        raise PointCloudShapeError(
++            name=name, expected=str(expected), actual=value.shape
++        )
+ 
+ 
+ def _point_cloud(points: FloatMatrix, voxel_size_m: float) -> o3d.geometry.PointCloud:
+@@ -74,7 +81,9 @@
+     return downsampled
+ 
+ 
+-def voxel_downsample_points(points_xyz: FloatMatrix, voxel_size_m: float) -> FloatMatrix:
++def voxel_downsample_points(
++    points_xyz: FloatMatrix, voxel_size_m: float
++) -> FloatMatrix:
+     """Return deterministic voxel centroids as an N×3 float matrix."""
+     if points_xyz.ndim != 2 or points_xyz.shape[1:] != (3,):
+         raise PointCloudShapeError(
+@@ -100,47 +109,86 @@
+     return math.acos(cosine)
+ 
+ 
+-def level_transform_from_plane(
+-    points_xyz: FloatMatrix,
+-    distance_threshold_m: float,
+-) -> FloatMatrix:
+-    """Align the dominant geometric plane normal with +Z without IMU integration."""
+-    if points_xyz.ndim != 2 or points_xyz.shape[1:] != (3,):
+-        raise PointCloudShapeError(
+-            name="points_xyz",
+-            expected="(N, 3)",
+-            actual=points_xyz.shape,
+-        )
+-    cloud = o3d.geometry.PointCloud()
+-    cloud.points = o3d.utility.Vector3dVector(points_xyz)
+-    plane, _ = cloud.segment_plane(
+-        distance_threshold=distance_threshold_m,
+-        ransac_n=3,
+-        num_iterations=1_000,
+-    )
+-    normal = np.asarray(plane[:3], dtype=np.float64)
+-    normal /= np.linalg.norm(normal)
+-    if normal[2] < 0.0:
+-        normal *= -1.0
+-
+-    target = np.array([0.0, 0.0, 1.0], dtype=np.float64)
+-    axis = np.cross(normal, target)
+-    sine = float(np.linalg.norm(axis))
+-    cosine = float(np.dot(normal, target))
+-    rotation = np.eye(3, dtype=np.float64)
+-    if sine > 1e-9:
+-        skew = np.array(
+-            [
+-                [0.0, -axis[2], axis[1]],
+-                [axis[2], 0.0, -axis[0]],
+-                [-axis[1], axis[0], 0.0],
+-            ],
+-            dtype=np.float64,
+-        )
+-        rotation += skew + (skew @ skew) * ((1.0 - cosine) / (sine * sine))
++def level_transform_from_gravity(up_lidar: FloatMatrix) -> FloatMatrix:
++    """Align calibrated accelerometer up with world +Z, never a scene plane.
++
++    Accelerometer magnitude cancels. The caller supplies a low-dynamic initial
++    window; this operation alone cannot certify stationarity or calibration.
++    """
++    up = np.asarray(up_lidar, dtype=np.float64)
++    _require_shape("up_lidar", up, (3,))
++    if not np.isfinite(up).all() or np.linalg.norm(up) < 1e-9:
++        raise ValueError("invalid accelerometer up vector")
++    up = up / np.linalg.norm(up)
++    cosine = float(np.clip(up[2], -1.0, 1.0))
++    axis = np.cross(up, [0.0, 0.0, 1.0])
++    skew = np.array(
++        [[0.0, -axis[2], axis[1]], [axis[2], 0.0, -axis[0]], [-axis[1], axis[0], 0.0]]
++    )
++    rotation = (
++        Rotation.from_rotvec([math.pi, 0.0, 0.0]).as_matrix()
++        if cosine < -1.0 + 1e-8
++        else np.eye(3) + skew + skew @ skew / (1.0 + cosine)
++    )
+     transform = np.eye(4, dtype=np.float64)
+     transform[:3, :3] = rotation
+     return transform
++
++
++class ImuRotation:
++    """Header-time gyro integration in LiDAR axes; no translational integration."""
++
++    def __init__(
++        self, samples: FloatMatrix, lidar_from_imu: FloatMatrix, max_gap_s: float
++    ) -> None:
++        # Columns: header seconds, angular xyz rad/s, acceleration xyz.
++        if samples.ndim != 2 or samples.shape[1] != 7 or len(samples) < 2:
++            raise ValueError(
++                "need at least two IMU samples [stamp, gyro xyz, acceleration xyz]"
++            )
++        if not np.isfinite(samples).all() or np.any(np.diff(samples[:, 0]) <= 0):
++            raise ValueError(
++                "IMU samples must be finite with strictly increasing header stamps"
++            )
++        self.times = samples[:, 0]
++        self.acceleration = samples[:, 4:7] @ lidar_from_imu.T
++        self.max_gap_s = max_gap_s
++        gyro = samples[:, 1:4] @ lidar_from_imu.T
++        rotations = [np.eye(3)]
++        for i, dt in enumerate(np.diff(self.times)):
++            rotations.append(
++                rotations[-1]
++                @ Rotation.from_rotvec(0.5 * (gyro[i] + gyro[i + 1]) * dt).as_matrix()
++            )
++        self.interpolator = Slerp(
++            self.times - self.times[0], Rotation.from_matrix(rotations)
++        )
++
++    def _support(self, start_s: float, end_s: float) -> None:
++        if start_s < self.times[0] or end_s > self.times[-1] or end_s < start_s:
++            raise ValueError("IMU interval outside recorded header times")
++        first = max(0, int(np.searchsorted(self.times, start_s, side="right")) - 1)
++        last = min(len(self.times), int(np.searchsorted(self.times, end_s)) + 1)
++        if np.max(np.diff(self.times[first:last]), initial=0.0) > self.max_gap_s:
++            raise ValueError("IMU sample gap")
++
++    def initial_transform(self, stamp_s: float, half_window_s: float) -> FloatMatrix:
++        selected = np.abs(self.times - stamp_s) <= half_window_s
++        if selected.sum() < 2 or not (self.times[0] <= stamp_s <= self.times[-1]):
++            raise ValueError("insufficient IMU support for gravity initialization")
++        # Gravity uses a median, not time integration over the whole window.
++        # Require support at initialization, not uninterrupted distant samples.
++        self._support(stamp_s, stamp_s)
++        return level_transform_from_gravity(
++            np.median(self.acceleration[selected], axis=0)
++        )
++
++    def relative(self, start_s: float, end_s: float) -> FloatMatrix:
++        self._support(start_s, end_s)
++        rotations = self.interpolator(
++            np.array([start_s, end_s]) - self.times[0]
++        ).as_matrix()
++        return rotations[0].T @ rotations[1]
+ 
+ 
+ def register_scan_to_map(
+--- a/tools/offline_lio/replay_rviz.sh
++++ b/tools/offline_lio/replay_rviz.sh
+@@ -102,6 +102,8 @@
+     /camera1/color/image_raw/compressed \
+     /camera1/color/image_raw \
+     /lidar_registration/cloud \
++    /lidar_registration/path \
++    /lidar_registration/status \
+     /lidar_registration/local_map \
+     /lidar_registration/global_map \
+     /comparison/lidar_path \
+--- a/tools/offline_lio/rviz/stair_lio_compare.rviz
++++ b/tools/offline_lio/rviz/stair_lio_compare.rviz
+@@ -71,7 +71,7 @@
+       Invert Rainbow: false
+       Max Color: 180; 190; 205
+       Min Color: 100; 115; 130
+-      Name: LiDAR-only Registered Scan
++      Name: Gyro-aided LiDAR Registered Scan
+       Position Transformer: XYZ
+       Queue Size: 10
+       Selectable: false
+@@ -141,7 +141,7 @@
+       Length: 0.25
+       Line Style: Lines
+       Line Width: 0.12
+-      Name: GREEN LiDAR-only, no IMU integration
++      Name: GREEN Gyro-aided LiDAR, accepted segments
+       Offset:
+         X: 0
+         Y: 0
+@@ -152,7 +152,7 @@
+       Radius: 0.03
+       Shaft Diameter: 0.08
+       Shaft Length: 0.1
+-      Topic: /comparison/lidar_path
++      Topic: /lidar_registration/path
+       Unreliable: false
+       Value: true
+     - Alpha: 1
+--- a/tools/offline_lio/specs/102101_lidar.json
++++ b/tools/offline_lio/specs/102101_lidar.json
+@@ -8,13 +8,17 @@
+   "frame_step": 2,
+   "local_map_scans": 15,
+   "max_range_m": 20.0,
+-  "floor_plane_threshold_m": 0.08,
+   "registration": {
+-    "voxel_size_m": 0.20,
+-    "correspondence_distance_m": 0.80,
++    "voxel_size_m": 0.2,
++    "correspondence_distance_m": 0.8,
+     "max_iterations": 30,
+     "min_fitness": 0.35,
+-    "max_translation_step_m": 0.50,
++    "max_translation_step_m": 0.5,
+     "max_rotation_step_rad": 0.35
+-  }
++  },
++  "imu_topic": "/livox/imu",
++  "imu_calibration_path": "/home/m3tron/catkin_ws/src/FAST_LIO/config/mid360.yaml",
++  "imu_max_gap_s": 0.03,
++  "gravity_half_window_s": 0.5,
++  "prediction_display_horizon_s": 0.5
+ }
+--- a/tools/offline_lio/specs/103313_lidar.json
++++ b/tools/offline_lio/specs/103313_lidar.json
+@@ -8,13 +8,17 @@
+   "frame_step": 2,
+   "local_map_scans": 15,
+   "max_range_m": 20.0,
+-  "floor_plane_threshold_m": 0.08,
+   "registration": {
+-    "voxel_size_m": 0.20,
+-    "correspondence_distance_m": 0.80,
++    "voxel_size_m": 0.2,
++    "correspondence_distance_m": 0.8,
+     "max_iterations": 30,
+     "min_fitness": 0.35,
+-    "max_translation_step_m": 0.50,
++    "max_translation_step_m": 0.5,
+     "max_rotation_step_rad": 0.35
+-  }
++  },
++  "imu_topic": "/livox/imu",
++  "imu_calibration_path": "/home/m3tron/catkin_ws/src/FAST_LIO/config/mid360.yaml",
++  "imu_max_gap_s": 0.03,
++  "gravity_half_window_s": 0.5,
++  "prediction_display_horizon_s": 0.5
+ }
+--- a/tools/offline_lio/specs/105713_lidar.json
++++ b/tools/offline_lio/specs/105713_lidar.json
+@@ -8,13 +8,17 @@
+   "frame_step": 2,
+   "local_map_scans": 15,
+   "max_range_m": 20.0,
+-  "floor_plane_threshold_m": 0.08,
+   "registration": {
+-    "voxel_size_m": 0.20,
+-    "correspondence_distance_m": 0.80,
++    "voxel_size_m": 0.2,
++    "correspondence_distance_m": 0.8,
+     "max_iterations": 30,
+     "min_fitness": 0.35,
+-    "max_translation_step_m": 0.50,
++    "max_translation_step_m": 0.5,
+     "max_rotation_step_rad": 0.35
+-  }
++  },
++  "imu_topic": "/livox/imu",
++  "imu_calibration_path": "/home/m3tron/catkin_ws/src/FAST_LIO/config/mid360.yaml",
++  "imu_max_gap_s": 0.03,
++  "gravity_half_window_s": 0.5,
++  "prediction_display_horizon_s": 0.5
+ }
+--- a/tools/offline_lio/test_process_bag.py
++++ b/tools/offline_lio/test_process_bag.py
+@@ -0,0 +1,195 @@
++#!/usr/bin/env python3
++# /// script
++# requires-python = ">=3.8,<3.9"
++# dependencies = ["numpy==1.24.4", "open3d==0.18.0", "scipy==1.10.1",
++#   "pydantic==2.10.6", "PyYAML==6.0.3", "pycryptodomex==3.23.0",
++#   "python-gnupg==0.5.5", "rospkg==1.6.0", "typer==0.16.0"]
++# ///
++"""Synthetic bag regressions for observation validity, gravity, and recovery."""
++
++import csv
++import hashlib
++import json
++import tempfile
++import unittest
++from pathlib import Path
++from unittest.mock import patch
++
++import numpy as np
++import rosbag
++import rospy
++from livox_ros_driver2.msg import CustomMsg, CustomPoint
++from sensor_msgs.msg import Imu
++from tf.transformations import quaternion_matrix
++
++import process_bag as subject
++from registration_core import RegistrationResult, register_scan_to_map
++
++
++class BagOutputTests(unittest.TestCase):
++    def setUp(self):
++        self.temporary = tempfile.TemporaryDirectory(prefix="offline-lio-fix-test-")
++        self.addCleanup(self.temporary.cleanup)
++        self.root = Path(self.temporary.name)
++        calibration = self.root / "calibration.yaml"
++        calibration.write_text("mapping:\n  extrinsic_R: [1,0,0, 0,1,0, 0,0,1]\n")
++        self.spec = subject.ReplaySpec(
++            bag_path=self.root / "input.bag",
++            output_bag_path=self.root / "output.bag",
++            output_csv_path=self.root / "output.csv",
++            imu_calibration_path=calibration,
++            start_offset_s=0,
++            duration_s=5,
++            frame_step=1,
++            local_map_scans=3,
++            max_range_m=20,
++            registration=subject.RegistrationSettings(
++                voxel_size_m=0.2,
++                correspondence_distance_m=0.8,
++                max_iterations=30,
++                min_fitness=0.35,
++                max_translation_step_m=0.5,
++                max_rotation_step_rad=0.35,
++            ),
++        )
++        self.stamps = [rospy.Time(100, i * 200000000) for i in range(5)]
++
++    def make_bag(self, gap=False):
++        rng = np.random.default_rng(782)
++        # Large vertical wall; it must never become the world floor.
++        wall = np.column_stack(
++            (rng.uniform(-2, 2, 1200), np.full(1200, 1.5), rng.uniform(-0.5, 2, 1200))
++        )
++        floor = np.column_stack(
++            (rng.uniform(-2, 2, 300), rng.uniform(-2, 2, 300), np.full(300, -0.7))
++        )
++        with rosbag.Bag(str(self.spec.bag_path), "w") as bag:
++            for tick in range(400):
++                ns = 99400000000 + tick * 5000000
++                if gap and 100300000000 <= ns < 100450000000:
++                    continue
++                msg = Imu()
++                msg.header.stamp = rospy.Time(ns // 1000000000, ns % 1000000000)
++                msg.linear_acceleration.z = 1.0
++                bag.write("/livox/imu", msg, msg.header.stamp + rospy.Duration(0.3))
++            for stamp in self.stamps:
++                msg = CustomMsg()
++                msg.header.stamp = stamp
++                msg.header.frame_id = "mid360_link"
++                msg.points = [
++                    CustomPoint(x=float(x), y=float(y), z=float(z))
++                    for x, y, z in np.vstack((wall, floor))
++                ]
++                msg.point_num = len(msg.points)
++                bag.write("/livox/lidar", msg, stamp + rospy.Duration(0.3))
++
++    def test_rejected_pose_never_gets_fresh_odometry_and_recovery_is_segmented(self):
++        self.make_bag()
++        original_hash = hashlib.sha256(self.spec.bag_path.read_bytes()).hexdigest()
++        calls = 0
++
++        def inject_fault(source, target, prediction, config):
++            nonlocal calls
++            calls += 1
++            if calls in (2, 4):
++                return RegistrationResult(prediction.copy(), 1.0, 0.1, 1.0, 0.0, False)
++            return register_scan_to_map(source, target, prediction, config)
++
++        with patch.object(subject, "register_scan_to_map", side_effect=inject_fault):
++            result = subject.process(self.spec)
++        self.assertEqual(result["rejected_frames"], 2)
++        with rosbag.Bag(str(self.spec.output_bag_path), "r") as bag:
++            messages = list(bag.read_messages())
++        odometry = [m for t, m, _ in messages if t.endswith("/odom")]
++        self.assertEqual(
++            [m.header.stamp for m in odometry], [self.stamps[i] for i in (0, 1, 3)]
++        )
++        initial = odometry[0].pose.pose.orientation
++        np.testing.assert_allclose(
++            quaternion_matrix([initial.x, initial.y, initial.z, initial.w]),
++            np.eye(4),
++            atol=1e-9,
++        )
++        statuses = [json.loads(m.data) for t, m, _ in messages if t.endswith("/status")]
++        self.assertEqual(len(statuses), 5)
++        self.assertFalse(statuses[0]["geometry_valid"])
++        self.assertTrue(statuses[1]["geometry_valid"])
++        self.assertFalse(statuses[2]["measurement_valid"])
++        self.assertEqual(statuses[4]["last_valid_stamp_ns"], self.stamps[3].to_nsec())
++        self.assertIn("translation innovation", statuses[2]["reason"])
++        paths = [m for t, m, _ in messages if t.endswith("/path")]
++        self.assertEqual([len(m.poses) for m in paths], [1, 2, 0, 1, 0])
++        clouds = [m for t, m, _ in messages if t.endswith("/cloud")]
++        self.assertEqual([clouds[i].width for i in (2, 4)], [0, 0])
++        global_map = [m for t, m, _ in messages if t.endswith("/global_map")][0]
++        self.assertEqual(global_map.header.stamp, self.stamps[3])
++        with self.spec.output_csv_path.open() as stream:
++            rows = list(csv.DictReader(stream))
++        self.assertTrue(
++            all(
++                np.isnan(float(rows[i][k]))
++                for i in (2, 4)
++                for k in ("x_m", "y_m", "z_m", "qx", "qy", "qz", "qw")
++            )
++        )
++        self.assertEqual(
++            hashlib.sha256(self.spec.bag_path.read_bytes()).hexdigest(), original_hash
++        )
++
++    def test_imu_gap_can_recover_geometrically_without_loosening_limits(self):
++        self.make_bag(gap=True)
++        result = subject.process(self.spec)
++        self.assertEqual(result["rejected_frames"], 0)
++        with rosbag.Bag(str(self.spec.output_bag_path), "r") as bag:
++            statuses = [
++                json.loads(m.data)
++                for _, m, _ in bag.read_messages(topics=["/lidar_registration/status"])
++            ]
++        self.assertEqual(statuses[2]["prediction_source"], "last_observation")
++        self.assertIn("without IMU", statuses[2]["reason"])
++        self.assertEqual(statuses[-1]["prediction_source"], "gyro")
++        self.assertTrue(statuses[-1]["measurement_valid"])
++
++    def test_input_bag_cannot_be_selected_as_output(self):
++        self.make_bag()
++        with self.assertRaisesRegex(ValueError, "distinct"):
++            subject.process(
++                self.spec.model_copy(update={"output_bag_path": self.spec.bag_path})
++            )
++
++    def test_empty_window_fails_before_replacing_existing_outputs(self):
++        self.make_bag()
++        self.spec.output_bag_path.write_bytes(b"previous output")
++        self.spec.output_csv_path.write_text("previous CSV")
++        with self.assertRaisesRegex(ValueError, "no LiDAR messages"):
++            subject.process(self.spec.model_copy(update={"start_offset_s": 50}))
++        self.assertEqual(self.spec.output_bag_path.read_bytes(), b"previous output")
++        self.assertEqual(self.spec.output_csv_path.read_text(), "previous CSV")
++
++    def test_short_empty_scan_is_predicted_but_has_no_measurement(self):
++        self.make_bag()
++        actual = subject.voxel_downsample_points
++        calls = 0
++
++        def drop_one_scan(points, voxel):
++            nonlocal calls
++            calls += 1
++            return np.empty((0, 3)) if calls == 2 else actual(points, voxel)
++
++        with patch.object(
++            subject, "voxel_downsample_points", side_effect=drop_one_scan
++        ):
++            subject.process(self.spec)
++        with rosbag.Bag(str(self.spec.output_bag_path), "r") as bag:
++            states = [
++                json.loads(m.data)
++                for _, m, _ in bag.read_messages(topics=["/lidar_registration/status"])
++            ]
++        self.assertEqual(states[1]["state"], "PREDICTED")
++        self.assertFalse(states[1]["measurement_valid"])
++        self.assertFalse(states[1]["geometry_valid"])
++        self.assertEqual(states[2]["state"], "TRACKED")
++
++
++if __name__ == "__main__":
++    unittest.main(verbosity=2)
+--- a/tools/offline_lio/test_registration_core.py
++++ b/tools/offline_lio/test_registration_core.py
+@@ -3,12 +3,13 @@
+ # dependencies = [
+ #   "numpy==1.24.4",
+ #   "open3d==0.18.0",
++#   "scipy==1.10.1",
+ # ]
+ # ///
+ # ─── How to run ───
+ # UV_CACHE_DIR=/tmp/opencode/tron1_fast_lio_ws/uv-cache uv run --python /usr/bin/python3 tools/offline_lio/test_registration_core.py
+ 
+-"""Synthetic behavior tests for wheel- and IMU-independent registration."""
++"""Known-motion regressions for gravity/gyro aided geometric registration."""
+ 
+ from __future__ import annotations
+ 
+@@ -20,7 +21,8 @@
+ 
+ from registration_core import (
+     RegistrationConfig,
+-    level_transform_from_plane,
++    ImuRotation,
++    level_transform_from_gravity,
+     merge_registered_scans,
+     register_scan_to_map,
+ )
+@@ -97,21 +99,50 @@
+         # Then: geometry alone cannot admit the physically impossible jump.
+         self.assertFalse(result.accepted)
+ 
+-    def test_levels_dominant_floor_without_integrating_imu(self) -> None:
+-        # Given: a tilted floor plane mixed with sparse non-floor points.
++    def test_levels_floor_from_gravity_even_with_a_dominant_wall(self) -> None:
+         generator = np.random.default_rng(42)
+         xy = generator.uniform(-4.0, 4.0, size=(4_000, 2))
+         floor = np.column_stack((xy, 0.18 * xy[:, 0] - 0.09 * xy[:, 1] - 1.0))
+-        outliers = generator.uniform(-4.0, 4.0, size=(400, 3))
+-        points = np.vstack((floor, outliers))
+-
+-        # When: the dominant lower plane defines the initial level frame.
+-        transform = level_transform_from_plane(points, distance_threshold_m=0.04)
++        # Scene planes never enter gravity initialization, regardless of wall size.
++        transform = level_transform_from_gravity(np.array([-0.18, 0.09, 1.0]))
+         homogeneous = np.column_stack((floor, np.ones(floor.shape[0])))
+         level_floor = (transform @ homogeneous.T).T[:, :3]
+ 
+         # Then: the floor height no longer changes with x/y.
+         self.assertLess(float(np.std(level_floor[:, 2])), 0.02)
++
++    def test_recovers_half_turn_from_integrated_gyro_prediction(self) -> None:
++        samples = np.zeros((401, 7))
++        samples[:, 0] = 100 + np.arange(401) * 0.005
++        samples[:, 3] = math.radians(172.0) / 2.0
++        samples[:, 6] = 1.0
++        imu = ImuRotation(samples, np.eye(3), 0.03)
++        seed = np.eye(4)
++        seed[:3, :3] = imu.relative(100, 102)
++        expected = _yaw_transform(0.22, -0.08, 0.04, math.radians(177))
++        source = (self.target - expected[:3, 3]) @ expected[:3, :3]
++        result = register_scan_to_map(source, self.target, seed, self.config)
++        self.assertTrue(result.accepted)
++        self.assertLess(result.rotation_error_to(expected), math.radians(1))
++        self.assertLess(np.linalg.norm(result.transform[:3, 3] - expected[:3, 3]), 0.03)
++
++    def test_gyro_respects_mounting_rotation_and_measurement_support(self) -> None:
++        samples = np.zeros((401, 7))
++        samples[:, 0] = 100 + np.arange(401) * 0.005
++        samples[:, 3] = math.pi / 4
++        samples[:, 6] = 1
++        # IMU +Z is LiDAR +Y. A known 90-degree turn must become LiDAR +Y.
++        lidar_from_imu = np.array([[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, -1.0, 0.0]])
++        imu = ImuRotation(samples, lidar_from_imu, 0.03)
++        expected = np.array([[0.0, 0.0, 1.0], [0.0, 1.0, 0.0], [-1.0, 0.0, 0.0]])
++        np.testing.assert_allclose(imu.relative(100, 102), expected, atol=1e-10)
++        with self.assertRaises(ValueError):
++            imu.relative(99.9, 102)
++        missing = ImuRotation(
++            np.delete(samples, np.s_[100:130], axis=0), lidar_from_imu, 0.03
++        )
++        with self.assertRaises(ValueError):
++            missing.relative(100, 102)
+ 
+     def test_global_map_retains_distant_registered_scan_regions(self) -> None:
+         # Given: accepted world-frame scans from opposite ends of a traversal.
+@@ -119,7 +150,9 @@
+         arrival_scan = np.array([[10.0, 1.0, 3.0], [10.02, 1.0, 3.0]], dtype=np.float64)
+ 
+         # When: the scans are merged into one voxelized global map.
+-        global_map = merge_registered_scans((entry_scan, arrival_scan), voxel_size_m=0.1)
++        global_map = merge_registered_scans(
++            (entry_scan, arrival_scan), voxel_size_m=0.1
++        )
+ 
+         # Then: both traversal extents remain represented after deduplication.
+         self.assertLess(float(np.min(global_map[:, 0])), 0.1)

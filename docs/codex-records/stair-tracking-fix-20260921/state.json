@@ -1,0 +1,774 @@
+{
+  "status": "REQUESTED_FIXES_APPLIED_AND_OFFLINE_VERIFIED",
+  "created_utc": "2026-09-20T17:37:07.893124+00:00",
+  "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio",
+  "source_inventory": [
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/.ruff_cache/.gitignore",
+      "relative": ".ruff_cache/.gitignore",
+      "sha256": "9e3a60f1e6ec4ae60215c11d54b171392745ec25e9dded433d5bd921363af316",
+      "bytes": 35,
+      "mtime_ns": 1787887688338308443,
+      "status": "EXCLUDED",
+      "read_scope": "pre-existing cache, excluded from semantic review; preservation hash checked",
+      "after_sha256": "9e3a60f1e6ec4ae60215c11d54b171392745ec25e9dded433d5bd921363af316",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/.ruff_cache/0.16.5/16784368067056306936",
+      "relative": ".ruff_cache/0.16.5/16784368067056306936",
+      "sha256": "ba2e4aa43fdbcdbeb83f040a5916fe7da02bb83eb01144cf17219aa7b3b80555",
+      "bytes": 460,
+      "mtime_ns": 1787895528574940927,
+      "status": "EXCLUDED",
+      "read_scope": "pre-existing cache, excluded from semantic review; preservation hash checked",
+      "after_sha256": "ba2e4aa43fdbcdbeb83f040a5916fe7da02bb83eb01144cf17219aa7b3b80555",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/.ruff_cache/0.6.9/1127350676634526257",
+      "relative": ".ruff_cache/0.6.9/1127350676634526257",
+      "sha256": "c47c99876ca625273d2e7e812d2bfd00ecbfa366fe94bf7bd3521a4e0d1126dd",
+      "bytes": 143,
+      "mtime_ns": 1787899606046152120,
+      "status": "EXCLUDED",
+      "read_scope": "pre-existing cache, excluded from semantic review; preservation hash checked",
+      "after_sha256": "c47c99876ca625273d2e7e812d2bfd00ecbfa366fe94bf7bd3521a4e0d1126dd",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/.ruff_cache/CACHEDIR.TAG",
+      "relative": ".ruff_cache/CACHEDIR.TAG",
+      "sha256": "5953156d7e0c564a427251316eaf26f8870e6483ae2197f916b630e4f93e31ae",
+      "bytes": 43,
+      "mtime_ns": 1787887688338308443,
+      "status": "EXCLUDED",
+      "read_scope": "pre-existing cache, excluded from semantic review; preservation hash checked",
+      "after_sha256": "5953156d7e0c564a427251316eaf26f8870e6483ae2197f916b630e4f93e31ae",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/README.md",
+      "relative": "README.md",
+      "sha256": "69038062d1e082146f5196fc7184f09c3009c1aed2f72cfcb2605744d3309499",
+      "bytes": 4112,
+      "mtime_ns": 1787901141705977196,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "7d26fbc829450f3b7f0ca3bfdbabf671dffc2355147b6a1947b64b5df7439b55",
+      "changed_as_requested": true
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/__pycache__/build_comparison_bag.cpython-38.pyc",
+      "relative": "__pycache__/build_comparison_bag.cpython-38.pyc",
+      "sha256": "f6f790242664cbdcd9e2e576b3fbf730461bc0535a066d85bb1bbd1c4a1583ca",
+      "bytes": 8224,
+      "mtime_ns": 1787894135336951270,
+      "status": "EXCLUDED",
+      "read_scope": "pre-existing cache, excluded from semantic review; preservation hash checked",
+      "after_sha256": "f6f790242664cbdcd9e2e576b3fbf730461bc0535a066d85bb1bbd1c4a1583ca",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/__pycache__/comparison_markers.cpython-38.pyc",
+      "relative": "__pycache__/comparison_markers.cpython-38.pyc",
+      "sha256": "b011c8daf60e74df359af7da345fc5a78c493121d8284dc92ac24dc661303adf",
+      "bytes": 4680,
+      "mtime_ns": 1787900201769286707,
+      "status": "EXCLUDED",
+      "read_scope": "pre-existing cache, excluded from semantic review; preservation hash checked",
+      "after_sha256": "b011c8daf60e74df359af7da345fc5a78c493121d8284dc92ac24dc661303adf",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/__pycache__/comparison_trajectory.cpython-38.pyc",
+      "relative": "__pycache__/comparison_trajectory.cpython-38.pyc",
+      "sha256": "cf61927c89d995e5b83e4264273bb7257f7df07e8adbca4f93d06ad597610bd5",
+      "bytes": 4812,
+      "mtime_ns": 1787898425046985313,
+      "status": "EXCLUDED",
+      "read_scope": "pre-existing cache, excluded from semantic review; preservation hash checked",
+      "after_sha256": "cf61927c89d995e5b83e4264273bb7257f7df07e8adbca4f93d06ad597610bd5",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/__pycache__/event_camera.cpython-38.pyc",
+      "relative": "__pycache__/event_camera.cpython-38.pyc",
+      "sha256": "67b29f2b4b499187254f3481c74f9ba8afb1b311f9b2453c63c1db2cfc2cc229",
+      "bytes": 1327,
+      "mtime_ns": 1787893898508362752,
+      "status": "EXCLUDED",
+      "read_scope": "pre-existing cache, excluded from semantic review; preservation hash checked",
+      "after_sha256": "67b29f2b4b499187254f3481c74f9ba8afb1b311f9b2453c63c1db2cfc2cc229",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/__pycache__/process_bag.cpython-38.pyc",
+      "relative": "__pycache__/process_bag.cpython-38.pyc",
+      "sha256": "09d361e9c75e4585a53d37c5a5d854ae10b51e0c15170d42ed29a50c02fd0872",
+      "bytes": 7289,
+      "mtime_ns": 1787890938999295475,
+      "status": "EXCLUDED",
+      "read_scope": "pre-existing cache, excluded from semantic review; preservation hash checked",
+      "after_sha256": "09d361e9c75e4585a53d37c5a5d854ae10b51e0c15170d42ed29a50c02fd0872",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/__pycache__/registration_core.cpython-38.pyc",
+      "relative": "__pycache__/registration_core.cpython-38.pyc",
+      "sha256": "89997773c7226410505942eb378beac9bf3efa893ea60e711bbe3fcdf344dbf4",
+      "bytes": 6286,
+      "mtime_ns": 1787901170305502895,
+      "status": "EXCLUDED",
+      "read_scope": "pre-existing cache, excluded from semantic review; preservation hash checked",
+      "after_sha256": "89997773c7226410505942eb378beac9bf3efa893ea60e711bbe3fcdf344dbf4",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/__pycache__/test_registration_core.cpython-38.pyc",
+      "relative": "__pycache__/test_registration_core.cpython-38.pyc",
+      "sha256": "07f9623eac16146ae97ee4a1b572eff6528fb49435f414569cf740502cbc9156",
+      "bytes": 3938,
+      "mtime_ns": 1787890938999295475,
+      "status": "EXCLUDED",
+      "read_scope": "pre-existing cache, excluded from semantic review; preservation hash checked",
+      "after_sha256": "07f9623eac16146ae97ee4a1b572eff6528fb49435f414569cf740502cbc9156",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/__pycache__/traversal_events.cpython-38.pyc",
+      "relative": "__pycache__/traversal_events.cpython-38.pyc",
+      "sha256": "d2586ea9f09c176951f457e6bb5c6855f0668bf324a013beddf1fe08bb88ad3c",
+      "bytes": 2945,
+      "mtime_ns": 1787897735564942782,
+      "status": "EXCLUDED",
+      "read_scope": "pre-existing cache, excluded from semantic review; preservation hash checked",
+      "after_sha256": "d2586ea9f09c176951f457e6bb5c6855f0668bf324a013beddf1fe08bb88ad3c",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/build_comparison_bag.py",
+      "relative": "build_comparison_bag.py",
+      "sha256": "03a1b7e51e4bf8a879c13490b705e335f2eba3b643b57e5353614b70702d87e1",
+      "bytes": 7641,
+      "mtime_ns": 1787898009884831290,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "6a2ec8a164586968ff9cabb99b78cead8d8b05bb783df58603eaf1edc31feb50",
+      "changed_as_requested": true
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/comparison_markers.py",
+      "relative": "comparison_markers.py",
+      "sha256": "e24047a2d4f02581dce6f7d395bdfff3e14d1c9af03417dfdbeb13923d90b44b",
+      "bytes": 5214,
+      "mtime_ns": 1787900176661681705,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "624196f4ae3291ab17307c1609965fb27edec0804d8740616c821aaba15655a3",
+      "changed_as_requested": true
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/comparison_trajectory.py",
+      "relative": "comparison_trajectory.py",
+      "sha256": "aa0d251172981d67227f9fc8979c98c77044ee7cade62fbd2b76634779d2814c",
+      "bytes": 4755,
+      "mtime_ns": 1787897858821076643,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "aa0d251172981d67227f9fc8979c98c77044ee7cade62fbd2b76634779d2814c",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/event_camera.py",
+      "relative": "event_camera.py",
+      "sha256": "3fc055215e2d28c39670f6fe840fd884d74b680a7d6d7a8b151b6c32fef18b77",
+      "bytes": 914,
+      "mtime_ns": 1787893865640853373,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "3fc055215e2d28c39670f6fe840fd884d74b680a7d6d7a8b151b6c32fef18b77",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/process_bag.py",
+      "relative": "process_bag.py",
+      "sha256": "646526a715e08baa3d591582fd37cf27a34555c283e1620032a4387c062c73ff",
+      "bytes": 10387,
+      "mtime_ns": 1787901141705977196,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "9b073e01a2e57386bd6d4b82fdc16250989bc180a1e22664927ed3186b8a8b73",
+      "changed_as_requested": true
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/registration_core.py",
+      "relative": "registration_core.py",
+      "sha256": "06f1c7f3dee4d88447fe91dd5cc4397da416c79fb07a50e180663168d4dfdc50",
+      "bytes": 6691,
+      "mtime_ns": 1787901141701977262,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "1210ca227b1046750808aff118f9457179c290607c28ee790d829e9b1dd70d10",
+      "changed_as_requested": true
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/replay_rviz.sh",
+      "relative": "replay_rviz.sh",
+      "sha256": "69dd584553258a7acd21b69845e89813de685938235c05e20c44b923202be368",
+      "bytes": 3201,
+      "mtime_ns": 1789106598046666488,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "7dee556de1cc7bfd58baa3fe299f6a7e7cb97a3bbf6ae3482eab8b1edc2f30db",
+      "changed_as_requested": true
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/run_all.sh",
+      "relative": "run_all.sh",
+      "sha256": "24e5007f5cb42802864e55e0cfe81030eb3d57c9350996962592de7582437bc9",
+      "bytes": 1266,
+      "mtime_ns": 1787886430824091104,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "24e5007f5cb42802864e55e0cfe81030eb3d57c9350996962592de7582437bc9",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/run_fast_lio_replay.sh",
+      "relative": "run_fast_lio_replay.sh",
+      "sha256": "f1de760f8b74be80cc8705b18d9105c51d1beb7d4c5559d3ff01f3cb5581086f",
+      "bytes": 2868,
+      "mtime_ns": 1787884417135400549,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "f1de760f8b74be80cc8705b18d9105c51d1beb7d4c5559d3ff01f3cb5581086f",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/rviz/stair_lio_compare.rviz",
+      "relative": "rviz/stair_lio_compare.rviz",
+      "sha256": "ca33db902533eeed2bace43f25a2d05547ae4a0a5e9e40d2967be195f98b3199",
+      "bytes": 7482,
+      "mtime_ns": 1787901141705977196,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "10be1e6a733ed2531adeb36e71d82032f1512968b966f53a3d5e6657458440ad",
+      "changed_as_requested": true
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/102101_comparison.json",
+      "relative": "specs/102101_comparison.json",
+      "sha256": "0e5a1339ebbe99d7735a9f8abb6652b9922c37c4cc8d746ee1fb69725662a4b5",
+      "bytes": 885,
+      "mtime_ns": 1787897927547086077,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "0e5a1339ebbe99d7735a9f8abb6652b9922c37c4cc8d746ee1fb69725662a4b5",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/102101_lidar.json",
+      "relative": "specs/102101_lidar.json",
+      "sha256": "8e11d13c665b721ddb3f5f2053cfade58c11f07fde1f00f9fc2c780970ab93ca",
+      "bytes": 761,
+      "mtime_ns": 1787897927535086416,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "a1ee221418c28f76a6015bf55092907c7a2d6a908c5931eda963605eaf30128c",
+      "changed_as_requested": true
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/103313_comparison.json",
+      "relative": "specs/103313_comparison.json",
+      "sha256": "3b72da1bb75301b98628a2c3eb155bdcdf89c4298ea9a1cdfde834ef285a0813",
+      "bytes": 884,
+      "mtime_ns": 1787898539892563927,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "3b72da1bb75301b98628a2c3eb155bdcdf89c4298ea9a1cdfde834ef285a0813",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/103313_lidar.json",
+      "relative": "specs/103313_lidar.json",
+      "sha256": "09a19211b1c420b108b8471de900b3b8bdf106559b1a582f56d337ccd61f1aed",
+      "bytes": 760,
+      "mtime_ns": 1787897927547086077,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "e585c122ff8f87071c7e8a7db2b9ee7fc82512037304746f1f7c8570cefdedc7",
+      "changed_as_requested": true
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/105713_comparison.json",
+      "relative": "specs/105713_comparison.json",
+      "sha256": "b152f53beda025b5770be0551a34b21d6aa722802c033d334ac56d604dc43f74",
+      "bytes": 884,
+      "mtime_ns": 1787897927547086077,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "b152f53beda025b5770be0551a34b21d6aa722802c033d334ac56d604dc43f74",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/105713_lidar.json",
+      "relative": "specs/105713_lidar.json",
+      "sha256": "ce80b1f7babc3b3604a918eeacf084f5b356625f1bd07dd52ccd326b2e3111ed",
+      "bytes": 760,
+      "mtime_ns": 1787897927547086077,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "086287a949a688223c903ad5d2f9126aa18d7f295b7a4959c05194a69583807e",
+      "changed_as_requested": true
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/test_registration_core.py",
+      "relative": "test_registration_core.py",
+      "sha256": "e31a84597f95356b0e6c3aa05d87b5aa46bde98bc7ea2d2d6c90f42eb7810525",
+      "bytes": 5163,
+      "mtime_ns": 1787901079579006651,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "e7d1cb5695264a9bc5dbabc6ee32a0bf678c5a430fdd3e1f5d1c4c0cf35da9b8",
+      "changed_as_requested": true
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/test_traversal_events.py",
+      "relative": "test_traversal_events.py",
+      "sha256": "54dbc25de9f3af1004ab3d1358584337d0fe4a170ac70b5335ab954357c412bc",
+      "bytes": 1921,
+      "mtime_ns": 1787897686434607800,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "54dbc25de9f3af1004ab3d1358584337d0fe4a170ac70b5335ab954357c412bc",
+      "changed_as_requested": false
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/traversal_events.py",
+      "relative": "traversal_events.py",
+      "sha256": "3a379b3d5798e7a3ab5d4e5b8b751e094b47dc06bb2ee8e09bb70170d58c0bff",
+      "bytes": 2271,
+      "mtime_ns": 1787897721001428290,
+      "status": "READ",
+      "read_scope": "entire final source/config/document; targeted 1/2 repair review",
+      "after_sha256": "3a379b3d5798e7a3ab5d4e5b8b751e094b47dc06bb2ee8e09bb70170d58c0bff",
+      "changed_as_requested": false
+    }
+  ],
+  "source_git": "empty .git directory; no valid Git worktree; preserve and verify source hashes",
+  "production_git_before": {
+    "head": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+    "status": ""
+  },
+  "scope": "actual offline comparison tool fixes 1/2; not a new full repository audit or robot-control validation",
+  "runtime_sessions": [
+    {
+      "id": 63143,
+      "exited": true
+    },
+    {
+      "id": 5882,
+      "exited": true
+    },
+    {
+      "id": 36758,
+      "exited": true
+    },
+    {
+      "id": 25992,
+      "exited": true
+    },
+    {
+      "id": 89836,
+      "exited": true
+    },
+    {
+      "id": 54567,
+      "exited": true
+    },
+    {
+      "id": 14456,
+      "exited": true
+    },
+    {
+      "id": 44713,
+      "exited": true
+    },
+    {
+      "id": 82705,
+      "exited": true
+    },
+    {
+      "id": 79889,
+      "exited": true
+    },
+    {
+      "id": 66433,
+      "exited": true
+    },
+    {
+      "id": 11151,
+      "exited": true
+    },
+    {
+      "id": 46410,
+      "exited": true
+    },
+    {
+      "id": 94324,
+      "exited": true
+    },
+    {
+      "id": 86223,
+      "exited": true
+    },
+    {
+      "id": 88514,
+      "exited": true
+    },
+    {
+      "id": 15986,
+      "exited": true
+    },
+    {
+      "id": 47801,
+      "exited": true
+    },
+    {
+      "id": 88221,
+      "exited": true
+    },
+    {
+      "id": 99418,
+      "exited": true
+    },
+    {
+      "id": 1508,
+      "exited": true,
+      "purpose": "HTML verification, cleanup check, artifact hashing"
+    }
+  ],
+  "temporary_artifacts": [
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/review-copy.txt",
+      "purpose": "cold-review input copy",
+      "removed": true
+    },
+    {
+      "pattern": "offline-lio-fix-test-*",
+      "purpose": "synthetic input/output bags",
+      "removed_by": "TemporaryDirectory cleanup",
+      "remaining": []
+    },
+    {
+      "pattern": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/.codex-stair-fix-*",
+      "purpose": "atomic source install",
+      "removed": true
+    }
+  ],
+  "completed_utc": "2026-09-20T18:02:54.559737+00:00",
+  "source_inventory_count": 32,
+  "source_coverage_counts": {
+    "EXCLUDED": 12,
+    "READ": 20
+  },
+  "installed_inventory": [
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/.ruff_cache/.gitignore",
+      "relative": ".ruff_cache/.gitignore",
+      "sha256": "9e3a60f1e6ec4ae60215c11d54b171392745ec25e9dded433d5bd921363af316",
+      "status": "EXCLUDED"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/.ruff_cache/0.16.5/16784368067056306936",
+      "relative": ".ruff_cache/0.16.5/16784368067056306936",
+      "sha256": "ba2e4aa43fdbcdbeb83f040a5916fe7da02bb83eb01144cf17219aa7b3b80555",
+      "status": "EXCLUDED"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/.ruff_cache/0.6.9/1127350676634526257",
+      "relative": ".ruff_cache/0.6.9/1127350676634526257",
+      "sha256": "c47c99876ca625273d2e7e812d2bfd00ecbfa366fe94bf7bd3521a4e0d1126dd",
+      "status": "EXCLUDED"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/.ruff_cache/CACHEDIR.TAG",
+      "relative": ".ruff_cache/CACHEDIR.TAG",
+      "sha256": "5953156d7e0c564a427251316eaf26f8870e6483ae2197f916b630e4f93e31ae",
+      "status": "EXCLUDED"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/README.md",
+      "relative": "README.md",
+      "sha256": "7d26fbc829450f3b7f0ca3bfdbabf671dffc2355147b6a1947b64b5df7439b55",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/__pycache__/build_comparison_bag.cpython-38.pyc",
+      "relative": "__pycache__/build_comparison_bag.cpython-38.pyc",
+      "sha256": "f6f790242664cbdcd9e2e576b3fbf730461bc0535a066d85bb1bbd1c4a1583ca",
+      "status": "EXCLUDED"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/__pycache__/comparison_markers.cpython-38.pyc",
+      "relative": "__pycache__/comparison_markers.cpython-38.pyc",
+      "sha256": "b011c8daf60e74df359af7da345fc5a78c493121d8284dc92ac24dc661303adf",
+      "status": "EXCLUDED"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/__pycache__/comparison_trajectory.cpython-38.pyc",
+      "relative": "__pycache__/comparison_trajectory.cpython-38.pyc",
+      "sha256": "cf61927c89d995e5b83e4264273bb7257f7df07e8adbca4f93d06ad597610bd5",
+      "status": "EXCLUDED"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/__pycache__/event_camera.cpython-38.pyc",
+      "relative": "__pycache__/event_camera.cpython-38.pyc",
+      "sha256": "67b29f2b4b499187254f3481c74f9ba8afb1b311f9b2453c63c1db2cfc2cc229",
+      "status": "EXCLUDED"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/__pycache__/process_bag.cpython-38.pyc",
+      "relative": "__pycache__/process_bag.cpython-38.pyc",
+      "sha256": "09d361e9c75e4585a53d37c5a5d854ae10b51e0c15170d42ed29a50c02fd0872",
+      "status": "EXCLUDED"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/__pycache__/registration_core.cpython-38.pyc",
+      "relative": "__pycache__/registration_core.cpython-38.pyc",
+      "sha256": "89997773c7226410505942eb378beac9bf3efa893ea60e711bbe3fcdf344dbf4",
+      "status": "EXCLUDED"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/__pycache__/test_registration_core.cpython-38.pyc",
+      "relative": "__pycache__/test_registration_core.cpython-38.pyc",
+      "sha256": "07f9623eac16146ae97ee4a1b572eff6528fb49435f414569cf740502cbc9156",
+      "status": "EXCLUDED"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/__pycache__/traversal_events.cpython-38.pyc",
+      "relative": "__pycache__/traversal_events.cpython-38.pyc",
+      "sha256": "d2586ea9f09c176951f457e6bb5c6855f0668bf324a013beddf1fe08bb88ad3c",
+      "status": "EXCLUDED"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/build_comparison_bag.py",
+      "relative": "build_comparison_bag.py",
+      "sha256": "6a2ec8a164586968ff9cabb99b78cead8d8b05bb783df58603eaf1edc31feb50",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/comparison_markers.py",
+      "relative": "comparison_markers.py",
+      "sha256": "624196f4ae3291ab17307c1609965fb27edec0804d8740616c821aaba15655a3",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/comparison_trajectory.py",
+      "relative": "comparison_trajectory.py",
+      "sha256": "aa0d251172981d67227f9fc8979c98c77044ee7cade62fbd2b76634779d2814c",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/event_camera.py",
+      "relative": "event_camera.py",
+      "sha256": "3fc055215e2d28c39670f6fe840fd884d74b680a7d6d7a8b151b6c32fef18b77",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/process_bag.py",
+      "relative": "process_bag.py",
+      "sha256": "9b073e01a2e57386bd6d4b82fdc16250989bc180a1e22664927ed3186b8a8b73",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/registration_core.py",
+      "relative": "registration_core.py",
+      "sha256": "1210ca227b1046750808aff118f9457179c290607c28ee790d829e9b1dd70d10",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/replay_rviz.sh",
+      "relative": "replay_rviz.sh",
+      "sha256": "7dee556de1cc7bfd58baa3fe299f6a7e7cb97a3bbf6ae3482eab8b1edc2f30db",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/run_all.sh",
+      "relative": "run_all.sh",
+      "sha256": "24e5007f5cb42802864e55e0cfe81030eb3d57c9350996962592de7582437bc9",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/run_fast_lio_replay.sh",
+      "relative": "run_fast_lio_replay.sh",
+      "sha256": "f1de760f8b74be80cc8705b18d9105c51d1beb7d4c5559d3ff01f3cb5581086f",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/rviz/stair_lio_compare.rviz",
+      "relative": "rviz/stair_lio_compare.rviz",
+      "sha256": "10be1e6a733ed2531adeb36e71d82032f1512968b966f53a3d5e6657458440ad",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/102101_comparison.json",
+      "relative": "specs/102101_comparison.json",
+      "sha256": "0e5a1339ebbe99d7735a9f8abb6652b9922c37c4cc8d746ee1fb69725662a4b5",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/102101_lidar.json",
+      "relative": "specs/102101_lidar.json",
+      "sha256": "a1ee221418c28f76a6015bf55092907c7a2d6a908c5931eda963605eaf30128c",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/103313_comparison.json",
+      "relative": "specs/103313_comparison.json",
+      "sha256": "3b72da1bb75301b98628a2c3eb155bdcdf89c4298ea9a1cdfde834ef285a0813",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/103313_lidar.json",
+      "relative": "specs/103313_lidar.json",
+      "sha256": "e585c122ff8f87071c7e8a7db2b9ee7fc82512037304746f1f7c8570cefdedc7",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/105713_comparison.json",
+      "relative": "specs/105713_comparison.json",
+      "sha256": "b152f53beda025b5770be0551a34b21d6aa722802c033d334ac56d604dc43f74",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/105713_lidar.json",
+      "relative": "specs/105713_lidar.json",
+      "sha256": "086287a949a688223c903ad5d2f9126aa18d7f295b7a4959c05194a69583807e",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/test_process_bag.py",
+      "relative": "test_process_bag.py",
+      "sha256": "bd20bf51e589ecf26ed90fd301f1c3f81cf7c45e1debc5042ed017eca4bb35de",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/test_registration_core.py",
+      "relative": "test_registration_core.py",
+      "sha256": "e7d1cb5695264a9bc5dbabc6ee32a0bf678c5a430fdd3e1f5d1c4c0cf35da9b8",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/test_traversal_events.py",
+      "relative": "test_traversal_events.py",
+      "sha256": "54dbc25de9f3af1004ab3d1358584337d0fe4a170ac70b5335ab954357c412bc",
+      "status": "READ"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/traversal_events.py",
+      "relative": "traversal_events.py",
+      "sha256": "3a379b3d5798e7a3ab5d4e5b8b751e094b47dc06bb2ee8e09bb70170d58c0bff",
+      "status": "READ"
+    }
+  ],
+  "installed_inventory_count": 33,
+  "installed_coverage_counts": {
+    "EXCLUDED": 12,
+    "READ": 21
+  },
+  "production_git_after": {
+    "head": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+    "status": ""
+  },
+  "production_git_difference": false,
+  "source_changes": "11 existing files modified plus 1 test file added; verified against staged hashes",
+  "original_bags": [
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_102101.bag",
+      "bytes": 3563871958,
+      "mtime_ns": 1787793888018227885,
+      "unchanged_by_size_and_mtime": true,
+      "full_content_hash_comparison": "not performed"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_103313.bag",
+      "bytes": 4370811763,
+      "mtime_ns": 1787794667798558110,
+      "unchanged_by_size_and_mtime": true,
+      "full_content_hash_comparison": "not performed"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_105713.bag",
+      "bytes": 1507746956,
+      "mtime_ns": 1787797116939047023,
+      "unchanged_by_size_and_mtime": true,
+      "full_content_hash_comparison": "not performed"
+    }
+  ],
+  "installed": {
+    "applied_utc": "2026-09-20T17:56:34.562745+00:00",
+    "installed": [
+      "README.md",
+      "build_comparison_bag.py",
+      "comparison_markers.py",
+      "process_bag.py",
+      "registration_core.py",
+      "replay_rviz.sh",
+      "rviz/stair_lio_compare.rviz",
+      "specs/102101_lidar.json",
+      "specs/103313_lidar.json",
+      "specs/105713_lidar.json",
+      "test_process_bag.py",
+      "test_registration_core.py"
+    ],
+    "new_ros_nodes": 0,
+    "robot_commands": 0,
+    "original_bags_modified": false,
+    "temporary_install_files_removed": true
+  },
+  "tests": {
+    "installed_unit_tests": 13,
+    "ruff": "PASS",
+    "replay_shell_syntax": "PASS",
+    "installed_cli_help": "PASS",
+    "bag_selected_frames": 1307,
+    "geometric_updates": 1304,
+    "bootstrap_frames": 3,
+    "rejected_frames": 0,
+    "new_comparison_bags_verified": 3,
+    "rviz_gui_replay": "not performed"
+  },
+  "temporary_artifacts_removed": true,
+  "new_ros_nodes": 0,
+  "robot_commands": 0,
+  "retained_deliverables": "before/staged source snapshots, patch, specs, corrected output bags/CSVs, test evidence log, verification scripts, reports and manifests",
+  "development_failures": [
+    "Python 3.8/Pydantic could not evaluate a union field; deprecated float field retained instead, then tests passed.",
+    "Initial synthetic IMU-gap recovery test exposed an exact-start interval boundary issue and unnecessarily broad gravity support check; corrected and covered by the passing recovery test.",
+    "A verification command ran while two final bag writers were still active; rerun after their completion passed exact frame selection."
+  ],
+  "cold_review": {
+    "scope": "fresh reviewer read complete supplied core/process/tests/README copy, not the live robot",
+    "resolved": [
+      "empty input falsely successful",
+      "short missing scan prematurely LOST",
+      "explicit geometry_valid distinguishes bootstrap from scan match"
+    ]
+  },
+  "evidence_limits": "known regression windows, no held-out dataset or independent physical position truth; gyro input is not its own ground truth",
+  "system_safety_verdict": "UNVERIFIED for physical stair control",
+  "system_mobility_verdict": "OBSERVED offline tracking continuity improved; real navigation/centering UNVERIFIED",
+  "full_audit_completion": "not asserted; original 15 E2E scenarios were not rerun as part of this targeted fix",
+  "report_validation": {
+    "local_links": 14,
+    "tables": 3,
+    "html_language": "ko",
+    "browser_screenshot": "not performed"
+  },
+  "process_check": {
+    "checked_utc": "2026-09-20T18:03:54.604268+00:00",
+    "active_task_processes": []
+  }
+}

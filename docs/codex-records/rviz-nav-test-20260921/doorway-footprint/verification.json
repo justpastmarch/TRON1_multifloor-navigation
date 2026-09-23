@@ -1,0 +1,38 @@
+{
+  "/move_base/global_costmap": {
+    "frame": "map",
+    "published_edges_m": [
+      0.4900000120481818,
+      0.4899999573869069,
+      0.4899999573869069,
+      0.4899999336201523
+    ],
+    "configured_footprint": "[[0.225,0.225],[-0.225,0.225],[-0.225,-0.225],[0.225,-0.225]]",
+    "padding_m": 0.02,
+    "inflation": {
+      "inflation_radius": 0.33,
+      "cost_scaling_factor": 4.0,
+      "enabled": true,
+      "inflate_unknown": false
+    }
+  },
+  "/move_base/local_costmap": {
+    "frame": "odom",
+    "published_edges_m": [
+      0.48999986770305676,
+      0.4900003689519735,
+      0.48999992294907135,
+      0.48999989532600685
+    ],
+    "configured_footprint": "[[0.225,0.225],[-0.225,0.225],[-0.225,-0.225],[0.225,-0.225]]",
+    "padding_m": 0.02,
+    "inflation": {
+      "inflation_radius": 0.33,
+      "cost_scaling_factor": 4.0,
+      "enabled": true,
+      "inflate_unknown": false
+    }
+  },
+  "active_goals": [],
+  "git_unchanged": true
+}

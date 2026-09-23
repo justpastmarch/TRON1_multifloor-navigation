@@ -1,0 +1,22 @@
+[
+  {
+    "path": "docs/stair-driving-repair-20260922/REPORT.md",
+    "before_sha256": "b55f9e35cc062ba9b6a75d1a26b1a197c7b706876de3c7538e583f0f961145a2",
+    "after_sha256": "e26c8e1b6c9e0c9287de8a806f1e7a455bae217a979a89a9b26ddca7e3efd324"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/GEOMETRY_RECOVERY.md",
+    "before_sha256": null,
+    "after_sha256": "3176ed93849a41f27af26e33c98d0914bb6887b387125d80bb7f820795e3646e"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/evidence/fixed-geometry-fit.json",
+    "before_sha256": null,
+    "after_sha256": "6f81b73ac639e54281ecd499b4979ec29f5fee54c2182a99371805615d6cf21a"
+  },
+  {
+    "path": "docs/stair-driving-repair-20260922/evidence/common-route-results.json",
+    "before_sha256": null,
+    "after_sha256": "749c77667752f106b75ceabaf5b033daf998d97ac1711441f157ed4422bfa610"
+  }
+]

@@ -1,0 +1,5 @@
+{
+  "tests": 2,
+  "expected_failures_reproduced": true,
+  "errors": 2
+}

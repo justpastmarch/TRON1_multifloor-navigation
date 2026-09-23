@@ -1,0 +1,53 @@
+{
+  "coverage_count": 5509,
+  "states": {
+    "READ": 552,
+    "METADATA_ONLY": 1002,
+    "EXCLUDED": 3749,
+    "UNREAD": 206
+  },
+  "status_lists_equal": true,
+  "next_target_unique_count": 206,
+  "new_read_unique_count": 109,
+  "read_batches": {
+    "read-batch-claims-resume5.json": 19,
+    "read-batch-plans-resume5.json": 5,
+    "read-batch-policy-core-resume5.json": 20,
+    "read-batch-policy-final-resume5.json": 45,
+    "read-batch-runfix-resume5.json": 6,
+    "read-batch-viewer-resume5.json": 14
+  },
+  "current_test_counts": {
+    "executed": 88,
+    "passed": 85,
+    "failed": 3
+  },
+  "historical_tests_counted": false,
+  "truncated_output_repair": "policy-evaluator all6 and policy-schema first3 fully reread; package-ownership8 and schema final3 were wholly visible",
+  "new_temporary_artifacts": [],
+  "new_background_processes": [],
+  "cold_read": {
+    "status": "minor gaps; fixed",
+    "reviewer": "/root/resume5_handoff_cold_read",
+    "scope": "entire standalone inline continuation5 handoff; no repository tools",
+    "changes": [
+      "KEEP0 interpretation",
+      "read-only F versus hardware verification",
+      "metadata/excluded disposition",
+      "partial constraints prevent completion",
+      "same-directory artifact names and finding IDs"
+    ]
+  },
+  "scenarios": 15,
+  "scenario_status": "all PENDING",
+  "constraint_rows": 45,
+  "keep_count": 0,
+  "quality_checks": {
+    "factchk": "plan434/464-469, claims scope, actual test receipts, final integrity checked",
+    "mandela": "historical/fake evidence excluded from current executions and hardware proof",
+    "ssotize_audit": "coverage lists and unique next targets equal; constraints/scenario counts checked; no target mutation",
+    "re0": "checkpoint next start and current counts updated",
+    "detool": "skipped: provenance-specific handoff"
+  },
+  "verification_correction": "First row-count assertion subtracted only one header pair; ledger contains three tables. Corrected exclusion of all header/separator rows yields45. No target artifact changed."
+}

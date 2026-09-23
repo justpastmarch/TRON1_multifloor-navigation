@@ -60,15 +60,22 @@ class MultifloorManagerNode:
         )
         self.tf_buffer = tf2_ros.Buffer(cache_time=rospy.Duration(35.0))
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
+        startup_mode = rospy.get_param("~startup_localization", "disabled")
+        if startup_mode not in ("auto", "manual", "disabled"):
+            raise ValueError("invalid startup_localization mode")
         self.runtime = RosEvidenceRuntime(
             initial_floor,
             self.identities[initial_floor],
             tag_sets,
             self.tf_buffer,
             configuration.transitions[0],
+            require_initial_localization=startup_mode != "disabled",
         )
+        initialpose_topic = rospy.get_param("~initialpose_topic", "/initialpose" if startup_mode == "disabled" else "/multifloor/amcl_initialpose")
+        if startup_mode != "disabled" and rospy.resolve_name(initialpose_topic) == "/initialpose":
+            raise ValueError("managed initialpose output must differ from manual /initialpose input")
         self.initialpose_publisher = rospy.Publisher(
-            rospy.get_param("~initialpose_topic", "/initialpose"),
+            initialpose_topic,
             PoseWithCovarianceStamped,
             queue_size=1,
         )
@@ -100,6 +107,10 @@ class MultifloorManagerNode:
         )
         self.server.start()
         self.state_timer = rospy.Timer(rospy.Duration(0.5), self.runtime.publish_heartbeat)
+        self.startup = None
+        if startup_mode != "disabled":
+            from multifloor_manager.ros_startup_localization import StartupLocalization
+            self.startup = StartupLocalization(self, startup_mode)
 
     def _feedback(self, phase: str, detail: str) -> None:
         self.server.publish_feedback(FloorTransitionFeedback(phase=phase, detail=detail))

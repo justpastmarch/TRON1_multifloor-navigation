@@ -1,0 +1,93 @@
+{
+  "observed_utc": "2026-09-20T22:18:36.619120+00:00",
+  "external_temporary_candidates": [
+    {
+      "path": "/dev/shm/tron1-mission_system_m3tron_All_Series_54589_8334086252873975034",
+      "ctime": "2026-09-20T22:05:16.125220+00:00",
+      "children": [
+        "artifacts"
+      ]
+    },
+    {
+      "path": "/dev/shm/tron1-synthetic-mission_5f_rf_m3tron_All_Series_54223_5616462865432477331",
+      "ctime": "2026-09-20T22:05:08.313281+00:00",
+      "children": [
+        "artifacts"
+      ]
+    },
+    {
+      "path": "/dev/shm/tron1-synthetic-mission_5f_rf_m3tron_All_Series_47840_2754669404087071830",
+      "ctime": "2026-09-20T21:44:26.852668+00:00",
+      "children": [
+        "artifacts"
+      ]
+    },
+    {
+      "path": "/dev/shm/tron1-mission_system_m3tron_All_Series_44141_7520887248322811186",
+      "ctime": "2026-09-20T21:40:10.751765+00:00",
+      "children": [
+        "artifacts"
+      ]
+    },
+    {
+      "path": "/dev/shm/tron1-synthetic-mission_5f_rf_m3tron_All_Series_43713_8010314680164796267",
+      "ctime": "2026-09-20T21:39:50.372003+00:00",
+      "children": [
+        "artifacts"
+      ]
+    },
+    {
+      "path": "/dev/shm/tron1-mission_system_m3tron_All_Series_33284_3444231160095611231",
+      "ctime": "2026-09-20T21:09:27.956890+00:00",
+      "children": [
+        "artifacts"
+      ]
+    }
+  ],
+  "related_processes": [],
+  "cleanup_utc": "2026-09-20T22:19:20.366304+00:00",
+  "removed": [
+    {
+      "path": "/dev/shm/tron1-mission_system_m3tron_All_Series_54589_8334086252873975034",
+      "test_pid": 54589,
+      "files": 2,
+      "bytes": 22,
+      "removed": true
+    },
+    {
+      "path": "/dev/shm/tron1-synthetic-mission_5f_rf_m3tron_All_Series_54223_5616462865432477331",
+      "test_pid": 54223,
+      "files": 6,
+      "bytes": 66,
+      "removed": true
+    },
+    {
+      "path": "/dev/shm/tron1-synthetic-mission_5f_rf_m3tron_All_Series_47840_2754669404087071830",
+      "test_pid": 47840,
+      "files": 6,
+      "bytes": 66,
+      "removed": true
+    },
+    {
+      "path": "/dev/shm/tron1-mission_system_m3tron_All_Series_44141_7520887248322811186",
+      "test_pid": 44141,
+      "files": 2,
+      "bytes": 22,
+      "removed": true
+    },
+    {
+      "path": "/dev/shm/tron1-synthetic-mission_5f_rf_m3tron_All_Series_43713_8010314680164796267",
+      "test_pid": 43713,
+      "files": 6,
+      "bytes": 66,
+      "removed": true
+    },
+    {
+      "path": "/dev/shm/tron1-mission_system_m3tron_All_Series_33284_3444231160095611231",
+      "test_pid": 33284,
+      "files": 2,
+      "bytes": 22,
+      "removed": true
+    }
+  ]
+}

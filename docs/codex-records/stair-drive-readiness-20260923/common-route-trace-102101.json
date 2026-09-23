@@ -1,0 +1,6227 @@
+[
+  {
+    "t": 0.2001638412475586,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.45407367740555693,
+      0.1983492005048737,
+      -0.014493926432178755
+    ],
+    "yaw_deg": -5.3230479948526535,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 2,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.45407367740555704,
+        0.19834920050487367,
+        -0.014493926432178755
+      ],
+      "yaw": -0.09290471375186095,
+      "roll": -0.024961041645828373,
+      "pitch": -0.0979830873048,
+      "velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "angular_velocity": 0.0,
+      "ey": 0.19834920050487367,
+      "epsi": -0.09290471375186095,
+      "command": [
+        0.03152457475662231,
+        -0.017151367437555187
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": -0.00407367740555703,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.03152457475662231,
+        -0.017151367437555187
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.17196849020931726,
+      "height_error_m": 1.5444939264321789,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 0.4000885486602783,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.45461027557057576,
+      0.19756114318444332,
+      -0.011533435590885627
+    ],
+    "yaw_deg": -4.746477072109072,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 3,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.4546102755705759,
+        0.1975611431844433,
+        -0.011533435590885627
+      ],
+      "yaw": -0.0828416527787236,
+      "roll": -0.023660285359339422,
+      "pitch": -0.09359975085381296,
+      "velocity": [
+        -0.0026840012520868216,
+        -0.0039417705326612726,
+        0.014808028880500312
+      ],
+      "angular_velocity": 0.050334253846691435,
+      "ey": 0.1975611431844433,
+      "epsi": -0.0828416527787236,
+      "command": [
+        0.06151328086853027,
+        -0.022913383959286965
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": -0.004610275570575861,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.06151328086853027,
+        -0.022913383959286965
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.17477783707580657,
+      "height_error_m": 1.5415334355908856,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 0.6000781059265137,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.4625557563533475,
+      0.19917639113474836,
+      -0.012881811306606178
+    ],
+    "yaw_deg": -4.096726469506926,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 4,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.4625557563533476,
+        0.19917639113474833,
+        -0.012881811306606178
+      ],
+      "yaw": -0.07150136544649892,
+      "roll": -0.022538318705953807,
+      "pitch": -0.08552920447101989,
+      "velocity": [
+        -0.03972947833568304,
+        0.008076661463652077,
+        -0.006742230615199228
+      ],
+      "angular_velocity": 0.05670439740575038,
+      "ey": 0.19917639113474833,
+      "epsi": -0.07150136544649892,
+      "command": [
+        0.09151171445846557,
+        -0.03028289314122854
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": -0.012555756353347602,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.09151171445846557,
+        -0.03028289314122854
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.17547111266730397,
+      "height_error_m": 1.5428818113066063,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 0.800257682800293,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.46866685712451983,
+      0.1982107846965401,
+      -0.006564240273736838
+    ],
+    "yaw_deg": -3.528937943776122,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 5,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.46866685712451994,
+        0.19821078469654008,
+        -0.006564240273736838
+      ],
+      "yaw": -0.06159158621745185,
+      "roll": -0.02381976053494743,
+      "pitch": -0.06841353250713535,
+      "velocity": [
+        -0.030528093158202676,
+        -0.004823701065254555,
+        0.03155951836611586
+      ],
+      "angular_velocity": 0.04950444687619433,
+      "ey": 0.19821078469654008,
+      "epsi": -0.06159158621745185,
+      "command": [
+        0.11906629441503142,
+        -0.03589079842528389
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": -0.01866685712451993,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11906629441503142,
+        -0.03589079842528389
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.17848515815721455,
+      "height_error_m": 1.536564240273737,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 1.0000836849212646,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.46184031963671957,
+      0.19729887116421382,
+      -0.012330900652886195
+    ],
+    "yaw_deg": -2.957442870441018,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 6,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.4618403196367197,
+        0.1972988711642138,
+        -0.012330900652886195
+      ],
+      "yaw": -0.05161711552882784,
+      "roll": -0.02044021028987422,
+      "pitch": -0.062274764387673494,
+      "velocity": [
+        0.034162408371997466,
+        -0.004563537891201075,
+        -0.028858408405019822
+      ],
+      "angular_velocity": 0.04991577964205887,
+      "ey": 0.1972988711642138,
+      "epsi": -0.05161711552882784,
+      "command": [
+        0.12010415560231512,
+        -0.04155631110214411
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": -0.011840319636719665,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.12010415560231512,
+        -0.04155631110214411
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.18147631211998333,
+      "height_error_m": 1.5423309006528862,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 1.1991479396820068,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.45865354231745026,
+      0.197789361466109,
+      -0.0157404471560727
+    ],
+    "yaw_deg": -2.179266438482416,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 7,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.45865354231745037,
+        0.19778936146610898,
+        -0.0157404471560727
+      ],
+      "yaw": -0.038035374629728606,
+      "roll": -0.01939426350281275,
+      "pitch": -0.05570803734247332,
+      "velocity": [
+        0.01600878732899352,
+        0.002463979796295985,
+        -0.01712786912589848
+      ],
+      "angular_velocity": 0.0682279242721065,
+      "ey": 0.19778936146610898,
+      "epsi": -0.038035374629728606,
+      "command": [
+        0.12137643439139542,
+        -0.049877027247266954
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": -0.008653542317450358,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.12137643439139542,
+        -0.049877027247266954
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.1838822703108577,
+      "height_error_m": 1.5457404471560727,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 1.4001879692077637,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.4411259729785249,
+      0.1961753577695193,
+      -0.015619926424945946
+    ],
+    "yaw_deg": -1.3172128869605573,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 8,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.44112597297852496,
+        0.19617535776951928,
+        -0.015619926424945946
+      ],
+      "yaw": -0.022989701827161604,
+      "roll": -0.019542183179126628,
+      "pitch": -0.05508440566400278,
+      "velocity": [
+        0.08718447455599787,
+        -0.008028270292225173,
+        0.0005994862386911581
+      ],
+      "angular_velocity": 0.07483918918067699,
+      "ey": 0.19617535776951928,
+      "epsi": -0.022989701827161604,
+      "command": [
+        0.1230350220581472,
+        -0.05833952963500076
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.00887402702147505,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.1230350220581472,
+        -0.05833952963500076
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.18876823185613195,
+      "height_error_m": 1.545619926424946,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 1.600036382675171,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.42625242492466436,
+      0.1976361364001669,
+      -0.01865338242647563
+    ],
+    "yaw_deg": -0.11185456854351863,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 9,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.4262524249246645,
+        0.19763613640016686,
+        -0.01865338242647563
+      ],
+      "yaw": -0.0019522305044820784,
+      "roll": -0.0192544543570257,
+      "pitch": -0.05415069598708908,
+      "velocity": [
+        0.07442414876256286,
+        0.007309433211416614,
+        -0.015178784504208244
+      ],
+      "angular_velocity": 0.10526714201867045,
+      "ey": 0.19763613640016686,
+      "epsi": -0.0019522305044820784,
+      "command": [
+        0.1250428931609696,
+        -0.0621726477400584
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.023747575075335536,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.1250428931609696,
+        -0.0621726477400584
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.19196784856507865,
+      "height_error_m": 1.5486533824264757,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 1.800060749053955,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.39575325028179315,
+      0.19515462976157924,
+      -0.014993457722516562
+    ],
+    "yaw_deg": 1.3300435509072464,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 10,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.39575325028179326,
+        0.1951546297615792,
+        -0.014993457722516562
+      ],
+      "yaw": 0.02321363915824826,
+      "roll": -0.018430379386766334,
+      "pitch": -0.06625953636041361,
+      "velocity": [
+        0.15247729661652937,
+        -0.012406021743813174,
+        0.01829739431359229
+      ],
+      "angular_velocity": 0.1258140201532946,
+      "ey": 0.1951546297615792,
+      "epsi": 0.02321363915824826,
+      "command": [
+        0.1231154847236673,
+        -0.0647603283995357
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.054246749718206755,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.1231154847236673,
+        -0.0647603283995357
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.18972668101538626,
+      "height_error_m": 1.5449934577225166,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 2.0001933574676514,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.3763744052003156,
+      0.19362733414094316,
+      -0.010540124247885058
+    ],
+    "yaw_deg": 2.4540058589186464,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 11,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.3763744052003157,
+        0.19362733414094313,
+        -0.010540124247885058
+      ],
+      "yaw": 0.042830482101361825,
+      "roll": -0.01809080857674165,
+      "pitch": -0.07002163750580362,
+      "velocity": [
+        0.09683002302862789,
+        -0.007631418151903525,
+        0.02225191341845688
+      ],
+      "angular_velocity": 0.09801922384663762,
+      "ey": 0.19362733414094313,
+      "epsi": 0.042830482101361825,
+      "command": [
+        0.12131428830775812,
+        -0.07599588069818121
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.07362559479968434,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.12131428830775812,
+        -0.07599588069818121
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.18699329646574397,
+      "height_error_m": 1.5405401242478851,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 2.199963092803955,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.3487592443326106,
+      0.19530808947520542,
+      -0.007592600132073024
+    ],
+    "yaw_deg": 3.1697052846791185,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 12,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.34875924433261063,
+        0.1953080894752054,
+        -0.007592600132073024
+      ],
+      "yaw": 0.055321793535514786,
+      "roll": -0.018702486494546703,
+      "pitch": -0.05548823094769853,
+      "velocity": [
+        0.138234957468488,
+        0.008413463287783727,
+        0.014754607903194166
+      ],
+      "angular_velocity": 0.0625285477458554,
+      "ey": 0.1953080894752054,
+      "epsi": 0.05532179353551479,
+      "command": [
+        0.11993956168622451,
+        -0.08407893192566479
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.10124075566738938,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11993956168622451,
+        -0.08407893192566479
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.1826406071951674,
+      "height_error_m": 1.537592600132073,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 2.400118827819824,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.3000547268139529,
+      0.1950520861933095,
+      0.0022249694547796517
+    ],
+    "yaw_deg": 1.3751130021664266,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 13,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.30005472681395295,
+        0.19505208619330947,
+        0.0022249694547796517
+      ],
+      "yaw": 0.024000249474788054,
+      "roll": -0.017254666833904347,
+      "pitch": -0.06851654849970973,
+      "velocity": [
+        0.24333311016442366,
+        -0.0012790204681151452,
+        0.0490496541908944
+      ],
+      "angular_velocity": -0.1564858686574404,
+      "ey": 0.19505208619330947,
+      "epsi": 0.024000249474788054,
+      "command": [
+        0.11340779179883938,
+        -0.06519640434056517
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.14994527318604706,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11340779179883938,
+        -0.06519640434056517
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.18965294870066363,
+      "height_error_m": 1.5277750305452205,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 2.5999720096588135,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.2756381951423871,
+      0.2034258575791721,
+      -0.01320431898904631
+    ],
+    "yaw_deg": -0.6793929913550929,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 14,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.27563819514238713,
+        0.20342585757917206,
+        -0.01320431898904631
+      ],
+      "yaw": -0.011857644614119742,
+      "roll": -0.01859453809011458,
+      "pitch": -0.0797520915128932,
+      "velocity": [
+        0.12217234395215625,
+        0.041899615051457534,
+        -0.07720311631693956
+      ],
+      "angular_velocity": -0.17942118188439218,
+      "ey": 0.20342585757917206,
+      "epsi": -0.011857644614119742,
+      "command": [
+        0.12342799003630545,
+        -0.06419905015271023
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.17436180485761288,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.12342799003630545,
+        -0.06419905015271023
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.1839733783683074,
+      "height_error_m": 1.5432043189890463,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 2.800044059753418,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.23633273358341392,
+      0.20345181356788086,
+      -0.010446955186175999
+    ],
+    "yaw_deg": -0.026291216740443674,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 15,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.23633273358341397,
+        0.20345181356788083,
+        -0.010446955186175999
+      ],
+      "yaw": -0.00045886829647619366,
+      "roll": -0.019520714269754064,
+      "pitch": -0.0721714322701282,
+      "velocity": [
+        0.19645653423547912,
+        0.0001297332070946559,
+        0.013781854094894741
+      ],
+      "angular_velocity": 0.056973356909441435,
+      "ey": 0.20345181356788083,
+      "epsi": -0.00045886829647619366,
+      "command": [
+        0.12067466636287126,
+        -0.06420813474875829
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.21366726641658604,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.12067466636287126,
+        -0.06420813474875829
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.18648824654006707,
+      "height_error_m": 1.5404469551861761,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 3.000142812728882,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.20903264985069228,
+      0.1962978775764931,
+      -0.010758654667848006
+    ],
+    "yaw_deg": 0.7350843620155463,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 16,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.20903264985069234,
+        0.19629787757649308,
+        -0.010758654667848006
+      ],
+      "yaw": 0.012829642397093222,
+      "roll": -0.012714732173738018,
+      "pitch": -0.06583982550044977,
+      "velocity": [
+        0.13643305281402315,
+        -0.03575202686178142,
+        -0.0015577282568583876
+      ],
+      "angular_velocity": 0.06640976265953469,
+      "ey": 0.19629787757649308,
+      "epsi": 0.012829642397093222,
+      "command": [
+        0.12405639398835018,
+        -0.06170425715177258
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.24096735014930767,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.12405639398835018,
+        -0.06170425715177258
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.19085607439207597,
+      "height_error_m": 1.540758654667848,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 3.199965000152588,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.16846032037047343,
+      0.20399754836286327,
+      -0.0043167939256669174
+    ],
+    "yaw_deg": 0.5344479262260093,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 17,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.16846032037047348,
+        0.20399754836286324,
+        -0.0043167939256669174
+      ],
+      "yaw": 0.009327875993099614,
+      "roll": -0.02099942483675495,
+      "pitch": -0.08203617715582678,
+      "velocity": [
+        0.20304216465306058,
+        0.03853261184676982,
+        0.03223796528921819
+      ],
+      "angular_velocity": -0.01752441232448531,
+      "ey": 0.20399754836286324,
+      "epsi": 0.009327875993099614,
+      "command": [
+        0.11892413395905921,
+        -0.06439914192700213
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.28153967962952653,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11892413395905921,
+        -0.06439914192700213
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.18396655127504713,
+      "height_error_m": 1.534316793925667,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 3.3999669551849365,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.15188708681234686,
+      0.19932793669561025,
+      -0.0035148130088482887
+    ],
+    "yaw_deg": -0.3486085885807082,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 18,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.15188708681234692,
+        0.19932793669561022,
+        -0.0035148130088482887
+      ],
+      "yaw": -0.006084367671463663,
+      "roll": -0.016146953706061246,
+      "pitch": -0.06943666012830771,
+      "velocity": [
+        0.08286535776835774,
+        -0.023347830107449452,
+        0.004009865387010417
+      ],
+      "angular_velocity": -0.07706046504430657,
+      "ey": 0.19932793669561022,
+      "epsi": -0.006084367671463663,
+      "command": [
+        0.12443874967641094,
+        -0.06276477784346357
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.2981129131876531,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.12443874967641094,
+        -0.06276477784346357
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.1893414164675803,
+      "height_error_m": 1.5335148130088483,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 3.6001064777374268,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.11158342316297387,
+      0.20320720033040657,
+      -0.003870378602151614
+    ],
+    "yaw_deg": -1.191536587027817,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 19,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.11158342316297393,
+        0.20320720033040654,
+        -0.003870378602151614
+      ],
+      "yaw": -0.02079623660161136,
+      "roll": -0.01833750465502562,
+      "pitch": -0.05895481333625845,
+      "velocity": [
+        0.20137783449944335,
+        0.019382796487779734,
+        -0.0017765885956386835
+      ],
+      "angular_velocity": -0.07350806448680941,
+      "ey": 0.20320720033040654,
+      "epsi": -0.02079623660161136,
+      "command": [
+        0.11809062006180586,
+        -0.06211675366664145
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.3384165768370261,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11809062006180586,
+        -0.06211675366664145
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.18221364044350075,
+      "height_error_m": 1.5338703786021517,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 3.7993152141571045,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.08008479962093973,
+      0.20186336960932227,
+      -0.007260797460151874
+    ],
+    "yaw_deg": -2.7601967684635658,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 20,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.08008479962093978,
+        0.20186336960932225,
+        -0.007260797460151874
+      ],
+      "yaw": -0.04817452161259681,
+      "roll": -0.015086396036512122,
+      "pitch": -0.07496727082911123,
+      "velocity": [
+        0.1581186854961785,
+        -0.006745842302082645,
+        -0.017019428559887983
+      ],
+      "angular_velocity": -0.13743516224763844,
+      "ey": 0.20186336960932225,
+      "epsi": -0.04817452161259681,
+      "command": [
+        0.11999636255295762,
+        -0.045219441907670674
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.3699152003790602,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11999636255295762,
+        -0.045219441907670674
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.17763084282643593,
+      "height_error_m": 1.537260797460152,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 4.000112295150757,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.0559773986707711,
+      0.20318710665767448,
+      -0.012951338614924285
+    ],
+    "yaw_deg": -3.3469259586008673,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 21,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.0559773986707711,
+        0.20318710665767445,
+        -0.012951338614924285
+      ],
+      "yaw": -0.058414877798052545,
+      "roll": -0.01923383809828983,
+      "pitch": -0.04490132873192088,
+      "velocity": [
+        0.12005852291712732,
+        0.006592411810976719,
+        -0.028339760352155227
+      ],
+      "angular_velocity": -0.05099853112794729,
+      "ey": 0.20318710665767445,
+      "epsi": -0.058414877798052545,
+      "command": [
+        0.11889645216808385,
+        -0.03953853616332051
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.3940226013292289,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11889645216808385,
+        -0.03953853616332051
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.17412691935427016,
+      "height_error_m": 1.5429513386149243,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 4.200095891952515,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.033188461530571665,
+      0.20392190447912503,
+      -0.00781128532413583
+    ],
+    "yaw_deg": -3.3654924271657087,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 22,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.03318846153057172,
+        0.203921904479125,
+        -0.00781128532413583
+      ],
+      "yaw": -0.058738923804977056,
+      "roll": -0.020337923063775798,
+      "pitch": -0.02825807618457808,
+      "velocity": [
+        0.11395403175386369,
+        0.0036742904578266743,
+        0.025702374459660057
+      ],
+      "angular_velocity": -0.0016203629302944046,
+      "ey": 0.203921904479125,
+      "epsi": -0.05873892380497706,
+      "command": [
+        0.11879674782011182,
+        -0.03960128779667349
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.4168115384694283,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11879674782011182,
+        -0.03960128779667349
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.1733167936684682,
+      "height_error_m": 1.537811285324136,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 4.400018215179443,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.015435051422617214,
+      0.20392649522362982,
+      -0.008427863637391508
+    ],
+    "yaw_deg": -3.3041026399466267,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 23,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.015435051422617216,
+        0.2039264952236298,
+        -0.008427863637391508
+      ],
+      "yaw": -0.05766746989090535,
+      "roll": -0.018674598219697087,
+      "pitch": -0.03468901645898818,
+      "velocity": [
+        0.08880153962498168,
+        2.2962640843159017e-05,
+        -0.0030840893768316682
+      ],
+      "angular_velocity": 0.005359351055837404,
+      "ey": 0.2039264952236298,
+      "epsi": -0.05766746989090535,
+      "command": [
+        0.11889720793518704,
+        -0.0402457669056932
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.4345649485773828,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11889720793518704,
+        -0.0402457669056932
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.1735349007718613,
+      "height_error_m": 1.5384278636373916,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 4.600108623504639,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.025437133129778758,
+      0.20201558851845672,
+      -0.0018292632463060565
+    ],
+    "yaw_deg": -3.2730567572402665,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 24,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.02543713312977876,
+        0.20201558851845666,
+        -0.0018292632463060565
+      ],
+      "yaw": -0.057125617018491386,
+      "roll": -0.01880889321226196,
+      "pitch": -0.019212226246235066,
+      "velocity": [
+        -0.049987811964008505,
+        -0.009550216430501988,
+        0.032978094483975116
+      ],
+      "angular_velocity": 0.002708040215167741,
+      "ey": 0.20201558851845666,
+      "epsi": -0.05712561701849138,
+      "command": [
+        0.11912881521182052,
+        -0.03990206128233099
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.42456286687022127,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11912881521182052,
+        -0.03990206128233099
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.17555190863378717,
+      "height_error_m": 1.5318292632463062,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 4.7992103099823,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.014823381889413892,
+      0.19830377944030161,
+      0.011086038926596264
+    ],
+    "yaw_deg": -3.3049591652586723,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 25,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.014823381889413895,
+        0.1983037794403016,
+        0.011086038926596264
+      ],
+      "yaw": -0.057682419077727205,
+      "roll": -0.022229206808156734,
+      "pitch": 0.0034298544221243316,
+      "velocity": [
+        0.053308193557444886,
+        -0.018642780700762848,
+        0.06486786928523278
+      ],
+      "angular_velocity": -0.002796571285187441,
+      "ey": 0.1983037794403016,
+      "epsi": -0.0576824190777272,
+      "command": [
+        0.11942806392059797,
+        -0.038268846869435214
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.4351766181105861,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11942806392059797,
+        -0.038268846869435214
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.17915366852646852,
+      "height_error_m": 1.5189139610734037,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 5.00001072883606,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.005890570392834395,
+      0.2001871157736,
+      -0.00015371899838495517
+    ],
+    "yaw_deg": -3.32901463743936,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 26,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.005890570392834402,
+        0.20018711577359996,
+        -0.00015371899838495517
+      ],
+      "yaw": -0.05810226627040211,
+      "roll": -0.01998580971763369,
+      "pitch": 0.017278100348490418,
+      "velocity": [
+        0.04448602023626823,
+        0.009379145442271128,
+        -0.055974773305462994
+      ],
+      "angular_velocity": -0.002090868112086329,
+      "ey": 0.20018711577359996,
+      "epsi": -0.05810226627040211,
+      "command": [
+        0.11920946178242052,
+        -0.038676106270484706
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.4441094296071656,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11920946178242052,
+        -0.038676106270484706
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.17716920525982827,
+      "height_error_m": 1.530153718998385,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 5.200084686279297,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      -0.005554320395066612,
+      0.19914085730357328,
+      0.0017338713914205883
+    ],
+    "yaw_deg": -3.3214645307182993,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 27,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.0055543203950666154,
+        0.19914085730357325,
+        0.0017338713914205883
+      ],
+      "yaw": -0.05797049204924264,
+      "roll": -0.020643051335154834,
+      "pitch": 0.02556218686492703,
+      "velocity": [
+        0.0016806285138993324,
+        -0.005229358600174332,
+        0.009434463205142874
+      ],
+      "angular_velocity": 0.0006586275537477305,
+      "ey": 0.19914085730357325,
+      "epsi": -0.05797049204924264,
+      "command": [
+        0.11932117236649145,
+        -0.03838898033867104
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.4444456796049334,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11932117236649145,
+        -0.03838898033867104
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.1782462846365394,
+      "height_error_m": 1.5282661286085795,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 5.3999574184417725,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.003912431050642571,
+      0.19881164799179257,
+      -0.002226793674461547
+    ],
+    "yaw_deg": -3.337952463004582,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 28,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.003912431050642565,
+        0.19881164799179254,
+        -0.002226793674461547
+      ],
+      "yaw": -0.05825826075448416,
+      "roll": -0.019995708697014412,
+      "pitch": 0.0343001003584005,
+      "velocity": [
+        0.04736389673211503,
+        -0.001647094669787656,
+        -0.019815934985381246
+      ],
+      "angular_velocity": -0.0014397597017265613,
+      "ey": 0.19881164799179254,
+      "epsi": -0.05825826075448416,
+      "command": [
+        0.1193251059120496,
+        -0.038101095856402874
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.45391243105064255,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.1193251059120496,
+        -0.038101095856402874
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.17851300255646807,
+      "height_error_m": 1.5322267936744616,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 5.59998083114624,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.008068835421223369,
+      0.1988490735500173,
+      -0.0011206237805417296
+    ],
+    "yaw_deg": -3.3744788657615077,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 29,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.008068835421223362,
+        0.19884907355001727,
+        -0.0011206237805417296
+      ],
+      "yaw": -0.05889576674650205,
+      "roll": -0.01977319730530401,
+      "pitch": 0.0481639264452385,
+      "velocity": [
+        0.020779589320985316,
+        0.00018710588784933823,
+        0.0055302020846638095
+      ],
+      "angular_velocity": -0.003187156860281129,
+      "ey": 0.19884907355001727,
+      "epsi": -0.05889576674650205,
+      "command": [
+        0.11926107362494669,
+        -0.0377316912065708
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.4580688354212234,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11926107362494669,
+        -0.0377316912065708
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.17834381448214054,
+      "height_error_m": 1.5311206237805417,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 5.800100803375244,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.018329725382513963,
+      0.19735808662363663,
+      -0.003919667538134913
+    ],
+    "yaw_deg": -3.4129755239810655,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 30,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.018329725382513956,
+        0.1973580866236366,
+        -0.003919667538134913
+      ],
+      "yaw": -0.059567660183448265,
+      "roll": -0.019435923959834775,
+      "pitch": 0.05996429363127198,
+      "velocity": [
+        0.05127369271043431,
+        -0.007450465387205234,
+        -0.01398682863292698
+      ],
+      "angular_velocity": -0.0033574531790227574,
+      "ey": 0.1973580866236366,
+      "epsi": -0.059567660183448265,
+      "command": [
+        0.11933879179501146,
+        -0.036806709720169827
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.46832972538251394,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11933879179501146,
+        -0.036806709720169827
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.17969707570106586,
+      "height_error_m": 1.533919667538135,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 5.999203443527222,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.03737170484130953,
+      0.19599215549828494,
+      0.0048341664443730115
+    ],
+    "yaw_deg": -3.3391625582901288,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 31,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.037371704841309514,
+        0.19599215549828491,
+        0.004834166444372984
+      ],
+      "yaw": -0.058279380901479806,
+      "roll": -0.021832099503742045,
+      "pitch": 0.07827815366706906,
+      "velocity": [
+        0.09563901033286437,
+        -0.006860437030413337,
+        0.04396643849537096
+      ],
+      "angular_velocity": 0.006470427920921084,
+      "ey": 0.19599215549828491,
+      "epsi": -0.058279380901479806,
+      "command": [
+        0.11959132902796862,
+        -0.037101601395477815
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.48737170484130954,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11959132902796862,
+        -0.037101601395477815
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.18135568978969457,
+      "height_error_m": 1.525165833555627,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 6.199992895126343,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.058525078975382935,
+      0.1957442329788446,
+      0.003497462998396872
+    ],
+    "yaw_deg": -3.529703410303466,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 32,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.05852507897538292,
+        0.19574423297884458,
+        0.003497462998396844
+      ],
+      "yaw": -0.061604946128667806,
+      "roll": -0.027372163139116914,
+      "pitch": 0.11735294797004166,
+      "velocity": [
+        0.1053510230024753,
+        -0.0012347387647400738,
+        -0.006657239388475877
+      ],
+      "angular_velocity": -0.016562449873250996,
+      "ey": 0.19574423297884458,
+      "epsi": -0.061604946128667806,
+      "command": [
+        0.11929860256199676,
+        -0.03501948937736089
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.5085250789753829,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11929860256199676,
+        -0.03501948937736089
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.18096525229727645,
+      "height_error_m": 1.5265025370016032,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 6.4000749588012695,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.10671898280538081,
+      0.213912303258264,
+      0.06774054311423763
+    ],
+    "yaw_deg": -3.0938063678676535,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 33,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.10671898280538089,
+        0.21391230325826396,
+        0.06774054311423763
+      ],
+      "yaw": -0.05399710753845745,
+      "roll": -0.0528437748493839,
+      "pitch": 0.10622903261324824,
+      "velocity": [
+        0.24087068548182602,
+        0.09080309321947538,
+        0.32108365405615014
+      ],
+      "angular_velocity": 0.038023591172923976,
+      "ey": 0.21391230325826396,
+      "epsi": -0.053997107538457455,
+      "command": [
+        0.10932910190375608,
+        -0.04594301712928389
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.5567189828053809,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.10932910190375608,
+        -0.04594301712928389
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.16458625184000286,
+      "height_error_m": 1.4622594568857623,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 6.600211143493652,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.19377963488274064,
+      0.13511603122683133,
+      0.06090886484638139
+    ],
+    "yaw_deg": -27.104484193958474,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 34,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.19377963488274064,
+        0.1351160312268313,
+        0.06090886484638139
+      ],
+      "yaw": -0.4730624912393366,
+      "roll": -0.05609604835232846,
+      "pitch": 0.14221745180086015,
+      "velocity": [
+        0.43500705387771527,
+        -0.3937132715532957,
+        -0.034135147916189185
+      ],
+      "angular_velocity": -2.093901132096623,
+      "ey": 0.1351160312268313,
+      "epsi": -0.4730624912393366,
+      "command": [
+        0.07930867419989866,
+        0.014097838278430946
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.6437796348827407,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.07930867419989866,
+        0.014097838278430946
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.17761618822520536,
+      "height_error_m": 1.4690911351536187,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 6.800033807754517,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.2545679237984184,
+      0.15027312510349886,
+      0.13685287427413861
+    ],
+    "yaw_deg": -25.149767694685544,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 35,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.2545679237984184,
+        0.15027312510349883,
+        0.13685287427413861
+      ],
+      "yaw": -0.4389462523839666,
+      "roll": -0.07050438445636512,
+      "pitch": 0.0640760924123835,
+      "velocity": [
+        0.30421118215259085,
+        0.07585272637982778,
+        0.3800570356154091
+      ],
+      "angular_velocity": 0.17073257921750024,
+      "ey": 0.15027312510349883,
+      "epsi": -0.43894625238396656,
+      "command": [
+        0.0812463807742174,
+        0.07404463755669022
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.7045679237984184,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.0812463807742174,
+        0.07404463755669022
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.16570595897702578,
+      "height_error_m": 1.3931471257258614,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 7.000030755996704,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.32698824521052716,
+      0.14626737584840938,
+      0.23717659271347122
+    ],
+    "yaw_deg": -17.253734308171943,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 36,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.3269882452105273,
+        0.14626737584840935,
+        0.23717659271347122
+      ],
+      "yaw": -0.30113447194190635,
+      "roll": 0.029334507511514257,
+      "pitch": 0.07686495362135663,
+      "velocity": [
+        0.36210713237689524,
+        -0.02002905189452538,
+        0.5016262464057452
+      ],
+      "angular_velocity": 0.6890694165751783,
+      "ey": 0.14626737584840935,
+      "epsi": -0.30113447194190635,
+      "command": [
+        0.08320697553849807,
+        0.12601512610623453
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.7769882452105272,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.08320697553849807,
+        0.12601512610623453
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.18756142548039811,
+      "height_error_m": 1.2928234072865288,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 7.200124025344849,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.4000759116353594,
+      0.19514739710010726,
+      0.31088533673166324
+    ],
+    "yaw_deg": -8.135937506209665,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 37,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.4000759116353595,
+        0.19514739710010723,
+        0.31088533673166324
+      ],
+      "yaw": -0.1419988972198552,
+      "roll": -0.07155661943322976,
+      "pitch": -0.03733334422254758,
+      "velocity": [
+        0.3652679905872604,
+        0.24428618419268758,
+        0.3683719310415452
+      ],
+      "angular_velocity": 0.7953069847900249,
+      "ey": 0.19514739710010723,
+      "epsi": -0.1419988972198552,
+      "command": [
+        0.08971329608546635,
+        0.06598714530179117
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.8500759116353596,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.08971329608546635,
+        0.06598714530179117
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.1659518789517901,
+      "height_error_m": 1.2191146632683367,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 7.399320363998413,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.46587311411608184,
+      0.19444009932081785,
+      0.33751024455894724
+    ],
+    "yaw_deg": -11.20580376887815,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 38,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.46587311411608195,
+        0.19444009932081782,
+        0.33751024455894724
+      ],
+      "yaw": -0.19557817109931336,
+      "roll": -0.0929453939133268,
+      "pitch": -0.08240874775178275,
+      "velocity": [
+        0.3303133126114067,
+        -0.0035507569269107643,
+        0.13366163257442767
+      ],
+      "angular_velocity": -0.2689772023000956,
+      "ey": 0.19444009932081782,
+      "epsi": -0.19557817109931336,
+      "command": [
+        0.09007291902029932,
+        0.0458208923853358
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.915873114116082,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.09007291902029932,
+        0.0458208923853358
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.1575594298898183,
+      "height_error_m": 1.1924897554410527,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 7.6001200675964355,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.48313940713842024,
+      0.17105695075411187,
+      0.3709507818772385
+    ],
+    "yaw_deg": -10.213612736158106,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 39,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.48313940713842035,
+        0.17105695075411184,
+        0.3709507818772385
+      ],
+      "yaw": -0.1782611707695858,
+      "roll": -0.06476329535702123,
+      "pitch": -0.0678952677227753,
+      "velocity": [
+        0.08598764197831436,
+        -0.11645011495393594,
+        0.16653678625559787
+      ],
+      "angular_velocity": 0.08624016878229145,
+      "ey": 0.17105695075411184,
+      "epsi": -0.1782611707695858,
+      "command": [
+        0.1111672611575206,
+        0.043614794185846364
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.9331394071384204,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.1111672611575206,
+        0.043614794185846364
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.18334314503459737,
+      "height_error_m": 1.1590492181227616,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 7.799280881881714,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.5052414177192243,
+      0.14761464874219768,
+      0.37226814761538896
+    ],
+    "yaw_deg": -10.35178295395783,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 40,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.5052414177192243,
+        0.14761464874219768,
+        0.37226814761538896
+      ],
+      "yaw": -0.18067269599838864,
+      "roll": -0.03861246101866691,
+      "pitch": -0.022163485993863717,
+      "velocity": [
+        0.11097569901047376,
+        -0.11770539348335544,
+        0.006614583008600514
+      ],
+      "angular_velocity": -0.01210843226091937,
+      "ey": 0.14761464874219768,
+      "epsi": -0.18067269599838864,
+      "command": [
+        0.11292737267574804,
+        0.053266515027298025
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.9552414177192243,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11292737267574804,
+        0.053266515027298025
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.20582660801807762,
+      "height_error_m": 1.157731852384611,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 8.000235557556152,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.5169328713406776,
+      0.13189153525346747,
+      0.3772341286476236
+    ],
+    "yaw_deg": -10.271801280288706,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 41,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.5169328713406776,
+        0.13189153525346745,
+        0.3772341286476236
+      ],
+      "yaw": -0.17927675245160682,
+      "roll": -0.022784647947982604,
+      "pitch": 0.0027645722013286966,
+      "velocity": [
+        0.05817955507735645,
+        -0.07824208835131981,
+        0.024711945694062508
+      ],
+      "angular_velocity": 0.006946559178565008,
+      "ey": 0.13189153525346745,
+      "epsi": -0.17927675245160682,
+      "command": [
+        0.11440179068282959,
+        0.057932038620284516
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.9669328713406775,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11440179068282959,
+        0.057932038620284516
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.22164810727839246,
+      "height_error_m": 1.1527658713523765,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 8.200191020965576,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.5414809848815637,
+      0.11843818620736071,
+      0.3687194223206498
+    ],
+    "yaw_deg": -9.0478562261136,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 42,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.5414809848815637,
+        0.11843818620736069,
+        0.3687194223206498
+      ],
+      "yaw": -0.1579148813927508,
+      "roll": -0.014204477432343687,
+      "pitch": 0.02446672415156236,
+      "velocity": [
+        0.12276790602426324,
+        -0.06728172772433838,
+        -0.04258301414620174
+      ],
+      "angular_velocity": 0.10683314521452195,
+      "ey": 0.11843818620736069,
+      "epsi": -0.1579148813927508,
+      "command": [
+        0.11752234064986462,
+        0.049823588151108274
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 0.9914809848815638,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11752234064986462,
+        0.049823588151108274
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2389987646847168,
+      "height_error_m": 1.1612805776793502,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 8.399300813674927,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.5552435026540035,
+      0.11015111792899465,
+      0.36427514868440625
+    ],
+    "yaw_deg": -8.574550883164882,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 43,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.5552435026540034,
+        0.11015111792899462,
+        0.36427514868440625
+      ],
+      "yaw": -0.1496541447910148,
+      "roll": -0.01727736384708687,
+      "pitch": 0.060235843136836054,
+      "velocity": [
+        0.06912024559499894,
+        -0.04162059618264513,
+        -0.02232071851298173
+      ],
+      "angular_velocity": 0.04148834916319047,
+      "ey": 0.11015111792899462,
+      "epsi": -0.1496541447910148,
+      "command": [
+        0.11906602110562652,
+        0.047767620087494786
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.0052435026540034,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11906602110562652,
+        0.047767620087494786
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.24887629714464005,
+      "height_error_m": 1.1657248513155938,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 8.600020170211792,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.5636135653860894,
+      0.10867927426953979,
+      0.3564113380906763
+    ],
+    "yaw_deg": -8.419392603045948,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 44,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.5636135653860893,
+        0.10867927426953976,
+        0.3564113380906763
+      ],
+      "yaw": -0.14694612194120774,
+      "roll": -0.013244913760813477,
+      "pitch": 0.09316794213481353,
+      "velocity": [
+        0.04170032664761292,
+        -0.00733284365219923,
+        -0.039178137721289544
+      ],
+      "angular_velocity": 0.013491587939151707,
+      "ey": 0.10867927426953976,
+      "epsi": -0.14694612194120774,
+      "command": [
+        0.11946238141779636,
+        0.04665795165841975
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.0136135653860894,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11946238141779636,
+        0.04665795165841975
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.25092337896255207,
+      "height_error_m": 1.1735886619093236,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 8.800212144851685,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.5968831236144203,
+      0.1035509035340923,
+      0.3550364118336943
+    ],
+    "yaw_deg": -8.31626712814412,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 45,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.5968831236144203,
+        0.10355090353409227,
+        0.3550364118336943
+      ],
+      "yaw": -0.14514624286148803,
+      "roll": -0.014189191499026489,
+      "pitch": 0.12094325457132356,
+      "velocity": [
+        0.16618827147380222,
+        -0.025617264351742646,
+        -0.006868038838496284
+      ],
+      "angular_velocity": 0.008990765403844726,
+      "ey": 0.10355090353409227,
+      "epsi": -0.14514624286148803,
+      "command": [
+        0.11998246309074767,
+        0.04737295396799455
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.0468831236144203,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11998246309074767,
+        0.04737295396799455
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2564760912038604,
+      "height_error_m": 1.1749635881663059,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 9.000054597854614,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.6048602658369743,
+      0.10326281084792412,
+      0.3573256583575235
+    ],
+    "yaw_deg": -8.576216801310055,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 46,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.6048602658369742,
+        0.10326281084792409,
+        0.3573256583575235
+      ],
+      "yaw": -0.14968322054771674,
+      "roll": -0.019352289571138884,
+      "pitch": 0.1525389975792789,
+      "velocity": [
+        0.03991715525247737,
+        -0.0014415990288307663,
+        0.011455256325319747
+      ],
+      "angular_velocity": -0.02270277219906923,
+      "ey": 0.10326281084792409,
+      "epsi": -0.14968322054771674,
+      "command": [
+        0.11971784597371435,
+        0.05019597301989064
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.0548602658369741,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11971784597371435,
+        0.05019597301989064
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2560325582144207,
+      "height_error_m": 1.1726743416424765,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 9.200069904327393,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.6323106962838475,
+      0.10413403508924873,
+      0.34243071049040874
+    ],
+    "yaw_deg": -8.757202785672192,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 47,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.6323106962838477,
+        0.1041340350892487,
+        0.34243071049040874
+      ],
+      "yaw": -0.15284202187479903,
+      "roll": -0.01930530277943311,
+      "pitch": 0.18983696676788384,
+      "velocity": [
+        0.13724164880656028,
+        0.004355787847882476,
+        -0.0744690400439025
+      ],
+      "angular_velocity": -0.015792797975249965,
+      "ey": 0.1041340350892487,
+      "epsi": -0.15284202187479903,
+      "command": [
+        0.11933401528927477,
+        0.0517863253316764
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.0823106962838478,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11933401528927477,
+        0.0517863253316764
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.254765271629363,
+      "height_error_m": 1.1875692895095913,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 9.400187730789185,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.6697757911861562,
+      0.10107133106623101,
+      0.3596797711420896
+    ],
+    "yaw_deg": -8.61450180669939,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 48,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.6697757911861562,
+        0.10107133106623098,
+        0.3596797711420896
+      ],
+      "yaw": -0.15035141994590445,
+      "roll": -0.0168682740765714,
+      "pitch": 0.19985785355745633,
+      "velocity": [
+        0.1872151800002762,
+        -0.015304503737464292,
+        0.08619452327988471
+      ],
+      "angular_velocity": 0.01244567749375444,
+      "ey": 0.10107133106623098,
+      "epsi": -0.15035141994590445,
+      "command": [
+        0.11720078037684348,
+        0.05136391058239585
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.119775791186156,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11720078037684348,
+        0.05136391058239585
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.25835487841228755,
+      "height_error_m": 1.1703202288579104,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 9.600079774856567,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.6861732052225934,
+      0.04968580469761628,
+      0.39288689636025653
+    ],
+    "yaw_deg": -1.1656612260524428,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 49,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.6861732052225934,
+        0.04968580469761625,
+        0.39288689636025653
+      ],
+      "yaw": -0.02034462635744903,
+      "roll": 0.023404945318123007,
+      "pitch": 0.1222932585860392,
+      "velocity": [
+        0.0820313490361314,
+        -0.257066391053027,
+        0.16612529714775914
+      ],
+      "angular_velocity": 0.6503850325560264,
+      "ey": 0.04968580469761625,
+      "epsi": -0.02034462635744903,
+      "command": [
+        0.1401829290519316,
+        -0.00860370263781899
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.1361732052225935,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.1401829290519316,
+        -0.00860370263781899
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.33589239613749244,
+      "height_error_m": 1.1371131036397435,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 9.800265550613403,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.8304741912496584,
+      0.15374719350834046,
+      0.423389245053443
+    ],
+    "yaw_deg": 11.576316011315397,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 50,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.8304741912496584,
+        0.15374719350834043,
+        0.423389245053443
+      ],
+      "yaw": 0.20204482964879078,
+      "roll": -0.05640668402206703,
+      "pitch": 0.06523552979589409,
+      "velocity": [
+        0.7208353614611771,
+        0.5198240904844644,
+        0.15237021001051257
+      ],
+      "angular_velocity": 1.1109153743089843,
+      "ey": 0.15374719350834043,
+      "epsi": 0.20204482964879078,
+      "command": [
+        0.11015506268840622,
+        -0.06865943536486976
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.2804741912496584,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11015506268840622,
+        -0.06865943536486976
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.1962908195498742,
+      "height_error_m": 1.1066107549465571,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 10.000307321548462,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.8896126127195538,
+      0.16528109156488013,
+      0.5214116908629348
+    ],
+    "yaw_deg": 6.790051217619478,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 51,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.8896126127195538,
+        0.1652810915648801,
+        0.5214116908629348
+      ],
+      "yaw": 0.11850875012650987,
+      "roll": -0.12912963046315754,
+      "pitch": 0.13712440814480717,
+      "velocity": [
+        0.29563036356588795,
+        0.05765744825506485,
+        0.49000988819137054
+      ],
+      "angular_velocity": -0.41759318132311474,
+      "ey": 0.1652810915648801,
+      "epsi": 0.11850875012650988,
+      "command": [
+        0.10157849924510069,
+        -0.111481656611648
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.3396126127195538,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.10157849924510069,
+        -0.111481656611648
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.20227305018754105,
+      "height_error_m": 1.0085883091370653,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 10.199244499206543,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      0.956527745509606,
+      0.13738258329081307,
+      0.6038495652968974
+    ],
+    "yaw_deg": -3.880215762387242,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 52,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.956527745509606,
+        0.13738258329081304,
+        0.6038495652968974
+      ],
+      "yaw": -0.06772254074143931,
+      "roll": -0.12941163327429928,
+      "pitch": 0.11533785152231713,
+      "velocity": [
+        0.33636313522584027,
+        -0.14023778060236192,
+        0.4143914948650315
+      ],
+      "angular_velocity": -0.9361311598982778,
+      "ey": 0.13738258329081304,
+      "epsi": -0.06772254074143931,
+      "command": [
+        0.1031408192010952,
+        -0.05180050331422368
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.406527745509606,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.1031408192010952,
+        -0.05180050331422368
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2396594291023033,
+      "height_error_m": 0.9261504347031027,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 10.400144577026367,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.0247444309271492,
+      0.043397669390002655,
+      0.6486511953264018
+    ],
+    "yaw_deg": -22.562161550933645,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 53,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.0247444309271494,
+        0.04339766939000263,
+        0.6486511953264018
+      ],
+      "yaw": -0.39378400543066233,
+      "roll": 0.018555037583838675,
+      "pitch": 0.07874211949905478,
+      "velocity": [
+        0.3395552961344449,
+        -0.46781920107119174,
+        0.22300454293344998
+      ],
+      "angular_velocity": -1.623003177637636,
+      "ey": 0.04339766939000263,
+      "epsi": -0.39378400543066233,
+      "command": [
+        0.08615243830971016,
+        0.008469520031723583
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.4747444309271494,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.08615243830971016,
+        0.008469520031723583
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2779229846521506,
+      "height_error_m": 0.8813488046735982,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 10.600231170654297,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.09024357520716,
+      0.029334062715342845,
+      0.7150296880272318
+    ],
+    "yaw_deg": -21.091900719851175,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 54,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.0902435752071602,
+        0.02933406271534282,
+        0.7150296880272318
+      ],
+      "yaw": -0.36812311306516504,
+      "roll": 0.01609192456778234,
+      "pitch": -0.010921574360608722,
+      "velocity": [
+        0.32735398755305667,
+        -0.07028760108141846,
+        0.3317488268317659
+      ],
+      "angular_velocity": 0.1282489341250664,
+      "ey": 0.02933406271534282,
+      "epsi": -0.36812311306516504,
+      "command": [
+        0.08991109283679136,
+        0.06849549812010249
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.5402435752071602,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.08991109283679136,
+        0.06849549812010249
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.29478811552853035,
+      "height_error_m": 0.8149703119727683,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 10.800134420394897,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.1285060998064633,
+      0.034394162694890096,
+      0.7889780966912915
+    ],
+    "yaw_deg": -18.64258263153762,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 55,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.1285060998064635,
+        0.03439416269489007,
+        0.7889780966912915
+      ],
+      "yaw": -0.3253744479954403,
+      "roll": 0.08873481640766494,
+      "pitch": -0.06678327098187302,
+      "velocity": [
+        0.19140521551777548,
+        0.025312744970946488,
+        0.3699209930804877
+      ],
+      "angular_velocity": 0.2138467740029063,
+      "ey": 0.03439416269489007,
+      "epsi": -0.3253744479954403,
+      "command": [
+        0.10740005065876035,
+        0.12846647304228265
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.5785060998064635,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.10740005065876035,
+        0.12846647304228265
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2960607944493536,
+      "height_error_m": 0.7410219033087085,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 11.000192880630493,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.191021096276331,
+      0.12532784233810998,
+      0.8700161151948823
+    ],
+    "yaw_deg": -10.338145196018885,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 56,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.191021096276331,
+        0.12532784233810992,
+        0.8700161151948823
+      ],
+      "yaw": -0.1804346722197641,
+      "roll": -0.04319229429404629,
+      "pitch": -0.07763114058592295,
+      "velocity": [
+        0.3124836430123858,
+        0.4545355369432177,
+        0.40507168958592243
+      ],
+      "angular_velocity": 0.7244871104425684,
+      "ey": 0.12532784233810992,
+      "epsi": -0.1804346722197641,
+      "command": [
+        0.0979331632838617,
+        0.06844893497160394
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.641021096276331,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.0979331632838617,
+        0.06844893497160394
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.22841024461434323,
+      "height_error_m": 0.6599838848051177,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 11.200166702270508,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.2318765508932212,
+      0.16509227699855578,
+      0.8559475233850294
+    ],
+    "yaw_deg": -13.669649149623153,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 57,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.2318765508932215,
+        0.16509227699855575,
+        0.8559475233850294
+      ],
+      "yaw": -0.23858038525336694,
+      "roll": -0.1255085391952033,
+      "pitch": -0.13005092496936035,
+      "velocity": [
+        0.20430401480468224,
+        0.19884820090115726,
+        -0.07035216757110649
+      ],
+      "angular_velocity": -0.2907666241348059,
+      "ey": 0.16509227699855575,
+      "epsi": -0.23858038525336694,
+      "command": [
+        0.1026623953394589,
+        0.08189395869055968
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.6818765508932214,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.1026623953394589,
+        0.08189395869055968
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.1811401092670577,
+      "height_error_m": 0.6740524766149706,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 11.3993079662323,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.2338191510789651,
+      0.16908515936351778,
+      0.8861210395616997
+    ],
+    "yaw_deg": -14.04822992674792,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 58,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.2338191510789653,
+        0.16908515936351776,
+        0.8861210395616997
+      ],
+      "yaw": -0.24518786629895298,
+      "roll": -0.1416500418688217,
+      "pitch": -0.13213982501742488,
+      "velocity": [
+        0.00975488528643966,
+        0.02005050226922381,
+        0.1515181513684653
+      ],
+      "angular_velocity": -0.0331798689740855,
+      "ey": 0.16908515936351776,
+      "epsi": -0.24518786629895298,
+      "command": [
+        0.10606155761878955,
+        0.08446093849017458
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.6838191510789653,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.10606155761878955,
+        0.08446093849017458
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.17670616977753678,
+      "height_error_m": 0.6438789604383003,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 11.600195407867432,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.2370501473188453,
+      0.14568252873002163,
+      0.9018856188714279
+    ],
+    "yaw_deg": -13.531508750367296,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 59,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.2370501473188455,
+        0.1456825287300216,
+        0.9018856188714279
+      ],
+      "yaw": -0.2361693804563327,
+      "roll": -0.1431008623714235,
+      "pitch": -0.10279123773410269,
+      "velocity": [
+        0.01608361485208524,
+        -0.11649623512057025,
+        0.07847468802137021
+      ],
+      "angular_velocity": 0.04489322861207213,
+      "ey": 0.1456825287300216,
+      "epsi": -0.2361693804563327,
+      "command": [
+        0.10854998209491291,
+        0.08724076770632609
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.6870501473188455,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.10854998209491291,
+        0.08724076770632609
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.20120190681518046,
+      "height_error_m": 0.6281143811285721,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 11.800305843353271,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.2285932909247868,
+      0.0971352582418318,
+      0.8847274584937621
+    ],
+    "yaw_deg": -14.244716216028161,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 60,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.228593290924787,
+        0.09713525824183178,
+        0.8847274584937621
+      ],
+      "yaw": -0.2486171989819192,
+      "roll": -0.07746945564190637,
+      "pitch": -0.04831650610203111,
+      "velocity": [
+        -0.04226094642953789,
+        -0.24260239287533364,
+        -0.08574345628706585
+      ],
+      "angular_velocity": -0.0622047445719907,
+      "ey": 0.09713525824183178,
+      "epsi": -0.24861719898191922,
+      "command": [
+        0.11146180651190914,
+        0.11170100349254443
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.678593290924787,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11146180651190914,
+        0.11170100349254443
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2453439401880439,
+      "height_error_m": 0.6452725415062379,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 11.999295473098755,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.226987392829264,
+      0.052740254057807814,
+      0.8857718273283806
+    ],
+    "yaw_deg": -13.857451947550562,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 61,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.2269873928292643,
+        0.05274025405780779,
+        0.8857718273283806
+      ],
+      "yaw": -0.2418581624216578,
+      "roll": -0.04014290536329696,
+      "pitch": -0.00010973943744311648,
+      "velocity": [
+        -0.008070260232036768,
+        -0.22310209954562546,
+        0.005248358097626705
+      ],
+      "angular_velocity": 0.033966777911524824,
+      "ey": 0.05274025405780779,
+      "epsi": -0.2418581624216578,
+      "command": [
+        0.11586604625078285,
+        0.12318383302079597
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.6769873928292642,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11586604625078285,
+        0.12318383302079597
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.29009558339378133,
+      "height_error_m": 0.6442281726716195,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 12.200141906738281,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.2337954926070163,
+      0.00946667193313651,
+      0.884307752135848
+    ],
+    "yaw_deg": -15.254401952178807,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 62,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.2337954926070165,
+        0.009466671933136484,
+        0.884307752135848
+      ],
+      "yaw": -0.2662395394881707,
+      "roll": 0.0009433791179025905,
+      "pitch": 0.024248530565969387,
+      "velocity": [
+        0.03389704091022695,
+        -0.2154560643199547,
+        -0.007289525464814757
+      ],
+      "angular_velocity": -0.12139312919178795,
+      "ey": 0.009466671933136484,
+      "epsi": -0.26623953948817064,
+      "command": [
+        0.11758193121351973,
+        0.14927174818093641
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.6837954926070164,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11758193121351973,
+        0.14927174818093641
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3292808808823619,
+      "height_error_m": 0.645692247864152,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 12.39925241470337,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.256796720582993,
+      -0.01905267348141602,
+      0.8856168479281892
+    ],
+    "yaw_deg": -19.005108159151,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 63,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.2567967205829933,
+        -0.01905267348141605,
+        0.8856168479281892
+      ],
+      "yaw": -0.3317017120748234,
+      "roll": 0.03798695852172448,
+      "pitch": 0.009647534251787777,
+      "velocity": [
+        0.1155199100793307,
+        -0.14323375348704914,
+        0.006574719766024164
+      ],
+      "angular_velocity": -0.3287730680599282,
+      "ey": -0.01905267348141605,
+      "epsi": -0.3317017120748234,
+      "command": [
+        0.11104905644132344,
+        0.18854905173292805
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.7067967205829933,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.11104905644132344,
+        0.18854905173292805
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3101241039567933,
+      "height_error_m": 0.6443831520718108,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 12.600129842758179,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.290769972598632,
+      -0.05124534559866482,
+      0.7512970593891071
+    ],
+    "yaw_deg": -22.788612534907355,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 64,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.2907699725986321,
+        -0.051245345598664845,
+        0.7512970593891071
+      ],
+      "yaw": -0.3977363206953845,
+      "roll": 0.08155660623031097,
+      "pitch": 0.06811317440323884,
+      "velocity": [
+        0.16912428810253985,
+        -0.16026027627387285,
+        -0.6686654137289773
+      ],
+      "angular_velocity": -0.3287308547306943,
+      "ey": -0.051245345598664845,
+      "epsi": -0.3977363206953845,
+      "command": [
+        0.10309402821271052,
+        0.2
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.740769972598632,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.10309402821271052,
+        0.2
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2705431340326282,
+      "height_error_m": 0.778702940610893,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 12.800269842147827,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.3844344293842508,
+      -0.06462411099781214,
+      0.8226154357305765
+    ],
+    "yaw_deg": -25.454348474619668,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 65,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.384434429384251,
+        -0.06462411099781216,
+        0.8226154357305765
+      ],
+      "yaw": -0.44426218983210936,
+      "roll": -0.04456191108382344,
+      "pitch": 0.1438673406297531,
+      "velocity": [
+        0.467994689073949,
+        -0.06684703427574454,
+        0.3563424430846587
+      ],
+      "angular_velocity": -0.2324666197592246,
+      "ey": -0.06462411099781216,
+      "epsi": -0.44426218983210936,
+      "command": [
+        0.07307302830426325,
+        0.2
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.834434429384251,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.07307302830426325,
+        0.2
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2510970314997062,
+      "height_error_m": 0.7073845642694235,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 12.999267101287842,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.4188976517964627,
+      -0.16325431531699597,
+      0.8941086274981461
+    ],
+    "yaw_deg": -32.0443904426116,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 66,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.4188976517964629,
+        -0.16325431531699602,
+        0.8941086274981461
+      ],
+      "yaw": -0.5592801200181754,
+      "roll": 0.06988263020571177,
+      "pitch": 0.04924648019572289,
+      "velocity": [
+        0.1731844074694694,
+        -0.49563599390978325,
+        0.35926721843574216
+      ],
+      "angular_velocity": -0.5779875093914703,
+      "ey": -0.16325431531699602,
+      "epsi": -0.5592801200181754,
+      "command": [
+        0.08636828142749517,
+        0.2
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.8688976517964628,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.08636828142749517,
+        0.2
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.1426682431672936,
+      "height_error_m": 0.6358913725018539,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 13.1992928981781,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.4443766627409254,
+      -0.14703500869395822,
+      0.9332405120351972
+    ],
+    "yaw_deg": -27.636702491966215,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 67,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.4443766627409256,
+        -0.14703500869395825,
+        0.9332405120351972
+      ],
+      "yaw": -0.48235145287893205,
+      "roll": 0.06812769648322248,
+      "pitch": 0.04117122608735657,
+      "velocity": [
+        0.12737862486027932,
+        0.08108607427239128,
+        0.1956341889167436
+      ],
+      "angular_velocity": 0.3845937290850996,
+      "ey": -0.14703500869395825,
+      "epsi": -0.48235145287893205,
+      "command": [
+        0.09205919131990392,
+        0.2
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.8943766627409255,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.09205919131990392,
+        0.2
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.16510996945433415,
+      "height_error_m": 0.5967594879648028,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 13.400118827819824,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.4614333818852647,
+      -0.1417176954657668,
+      0.9563271219975585
+    ],
+    "yaw_deg": -35.672444391161044,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 68,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.461433381885265,
+        -0.14171769546576682,
+        0.9563271219975585
+      ],
+      "yaw": -0.622601606860344,
+      "roll": 0.0415816684044768,
+      "pitch": -0.005014694284161183,
+      "velocity": [
+        0.08493285291779207,
+        0.026477224518156553,
+        0.11495831242284392
+      ],
+      "angular_velocity": -0.6983667608640991,
+      "ey": -0.14171769546576682,
+      "epsi": -0.622601606860344,
+      "command": [
+        0.08501862435118022,
+        0.2
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.911433381885265,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": false,
+      "proposed_command": [
+        0.08501862435118022,
+        0.2
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.15942379903154047,
+      "height_error_m": 0.5736728780024415,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 13.600291728973389,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.501193698204012,
+      -0.15414271938182375,
+      0.9758129113328653
+    ],
+    "yaw_deg": -36.51725639188233,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 69,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.5011936982040122,
+        -0.15414271938182378,
+        0.9758129113328653
+      ],
+      "yaw": -0.6373463578332912,
+      "roll": 0.05240668156119573,
+      "pitch": 0.008677902422177516,
+      "velocity": [
+        0.19862986492984247,
+        -0.062071458446440714,
+        0.0973447915427776
+      ],
+      "angular_velocity": -0.07366007530477651,
+      "ey": -0.15414271938182378,
+      "epsi": -0.6373463578332912,
+      "command": [
+        0.06068507007834715,
+        0.2
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.9511936982040121,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": true,
+      "proposed_command": [
+        0.08091342677112953,
+        0.2
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.14645437280761497,
+      "height_error_m": 0.5541870886671347,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 13.799304485321045,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.4941876800692335,
+      -0.17162066632415662,
+      0.9555779109853033
+    ],
+    "yaw_deg": -37.63014817959612,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 70,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.4941876800692337,
+        -0.17162066632415665,
+        0.9555779109853033
+      ],
+      "yaw": -0.6567699837473027,
+      "roll": 0.05253057559596911,
+      "pitch": 0.0359073052308163,
+      "velocity": [
+        -0.03520386463337843,
+        -0.08782324943935037,
+        -0.10167690111388324
+      ],
+      "angular_velocity": -0.09759990399851684,
+      "ey": -0.17162066632415665,
+      "epsi": -0.6567699837473027,
+      "command": [
+        0.03083315662619871,
+        0.2
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.9441876800692337,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": true,
+      "proposed_command": [
+        0.08203936067718215,
+        0.2
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.128403284575071,
+      "height_error_m": 0.5744220890146967,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 13.9992196559906,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.5049300945376867,
+      -0.1752514999781246,
+      0.9579403627060479
+    ],
+    "yaw_deg": -39.51546716900744,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 71,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.504930094537687,
+        -0.17525149997812461,
+        0.9579403627060479
+      ],
+      "yaw": -0.6896750075629021,
+      "roll": 0.04419381833670049,
+      "pitch": 0.03291619274666772,
+      "velocity": [
+        0.053734863804856134,
+        -0.01816187156686298,
+        0.011817270859596309
+      ],
+      "angular_velocity": -0.16459493146715168,
+      "ey": -0.17525149997812461,
+      "epsi": -0.6896750075629022,
+      "command": [
+        0.015205108056658015,
+        0.2
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.9549300945376868,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": true,
+      "proposed_command": [
+        0.06082043222663206,
+        0.2
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.12346233156035863,
+      "height_error_m": 0.5720596372939522,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 14.199193477630615,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.5155943408469204,
+      -0.1644426801853748,
+      0.9630622402145083
+    ],
+    "yaw_deg": -40.67613390686147,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 72,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.515594340846921,
+        -0.16444268018537483,
+        0.9630622402145083
+      ],
+      "yaw": -0.709932463656837,
+      "roll": 0.024309968176397214,
+      "pitch": 0.0569255371906086,
+      "velocity": [
+        0.05332821177179632,
+        0.05405117381917825,
+        0.025612740039946794
+      ],
+      "angular_velocity": -0.10130053987967301,
+      "ey": -0.16444268018537483,
+      "epsi": -0.709932463656837,
+      "command": [
+        0.03390088597699516,
+        0.2
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.965594340846921,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": true,
+      "proposed_command": [
+        0.04520118130266021,
+        0.2
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.13375570175480478,
+      "height_error_m": 0.5669377597854918,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 14.399345636367798,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.5175081132743276,
+      -0.1543159875496158,
+      0.9585055733388829
+    ],
+    "yaw_deg": -41.30485587047307,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 73,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.5175081132743278,
+        -0.15431598754961584,
+        0.9585055733388829
+      ],
+      "yaw": -0.7209057320014635,
+      "roll": 0.027089449197996687,
+      "pitch": 0.0796859045403391,
+      "velocity": [
+        0.009561587741452783,
+        0.050594970844437565,
+        -0.022766014138317123
+      ],
+      "angular_velocity": -0.05482463148966224,
+      "ey": -0.15431598754961584,
+      "epsi": -0.7209057320014635,
+      "command": [
+        0.047942782340679405,
+        0.2
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.9675081132743277,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": true,
+      "proposed_command": [
+        0.06392370978757254,
+        0.2
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.14400096713423016,
+      "height_error_m": 0.5714944266611172,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 14.599228858947754,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.505931129383304,
+      -0.1646541768222801,
+      0.9532461569454183
+    ],
+    "yaw_deg": -42.0522513070792,
+    "complete": false,
+    "faulted": false,
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 74,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.5059311293833042,
+        -0.16465417682228012,
+        0.9532461569454183
+      ],
+      "yaw": -0.733950243184621,
+      "roll": 0.044774967792073794,
+      "pitch": 0.10659498999210952,
+      "velocity": [
+        -0.05791873745878106,
+        -0.05172114567308849,
+        -0.02631244546480519
+      ],
+      "angular_velocity": -0.06526066077376523,
+      "ey": -0.16465417682228012,
+      "epsi": -0.733950243184621,
+      "command": [
+        0.0194813164319182,
+        0.2
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        2.8750000000000004,
+        0.0,
+        1.53,
+        0.0
+      ],
+      "progress": 1.9559311293833042,
+      "phase_complete": false,
+      "transition_ready": false,
+      "boundary_adjusted": true,
+      "proposed_command": [
+        0.0779252657276728,
+        0.2
+      ],
+      "below_flight_command_floor": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.13430932150565378,
+      "height_error_m": 0.5767538430545818,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "t": 14.800301790237427,
+    "phase": "FORWARD_SEGMENT_1",
+    "position": [
+      1.4899191323432404,
+      -0.18226074843423518,
+      0.9456584332678051
+    ],
+    "yaw_deg": -41.90776399879488,
+    "complete": false,
+    "faulted": true,
+    "debug": {
+      "tracking_state": "CORRIDOR_LIMIT",
+      "loss_response": true,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": false,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.11751800833395987,
+      "height_error_m": 0.584341566732195,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  }
+]

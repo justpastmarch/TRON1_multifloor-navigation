@@ -23,12 +23,14 @@ class FakeMaster:
         }
 
     def lookupNode(self, node: str) -> str:
-        if node in self.missing_nodes:
+        if node in self.missing_nodes or node not in self.node_uris:
             raise rosgraph.MasterError(f"unknown node {node}")
         return self.node_uris[node]
 
     def getSystemState(self):
-        return ([('/tf', ['/tf_source'])], [], [])
+        return ([('/tf', ['/tf_source']), ('/initialpose', ['/rviz_navigation']),
+                 ('/move_base_simple/goal', ['/rviz_navigation'])],
+                [('/initialpose', ['/amcl']), ('/move_base_simple/goal', ['/move_base'])], [])
 
 
 class FakeServer:
@@ -49,6 +51,21 @@ class RvizTfReconnectTest(unittest.TestCase):
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         return module
+
+    def test_managed_pose_goes_to_floor_manager_without_goal_tool(self) -> None:
+        module = self.load_module()
+        master = FakeMaster('test', frozenset({'/rviz_navigation'}))
+        master.node_uris['/rviz'] = 'http://rviz:3333/'
+        master.node_uris['/multifloor_manager'] = 'http://floor:5555/'
+        master.getSystemState = lambda: (
+            [('/tf', ['/tf_source']), ('/initialpose', ['/rviz'])],
+            [('/initialpose', ['/multifloor_manager']), ('/multifloor/amcl_initialpose', ['/amcl'])], [])
+        calls = []
+        module.rosgraph.Master = lambda caller: master
+        module.ServerProxy = lambda uri: FakeServer(uri, calls)
+        self.assertEqual(module.main(), 0)
+        self.assertEqual([(call[0],call[2]) for call in calls],
+                         [('http://rviz:3333/','/tf'),('http://floor:5555/','/initialpose')])
 
     def test_existing_tf_publishers_are_sent_to_rviz(self) -> None:
         # Given: RViz and one current TF publisher are registered with the master.

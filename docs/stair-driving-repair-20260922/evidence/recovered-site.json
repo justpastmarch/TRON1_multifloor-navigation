@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "site_id": "stair_3f_4f",
+  "evidence": "OBSERVED operator messages and saved site file; not independent survey",
+  "geometry": {
+    "dimension_source": "operator-provided stair measurements",
+    "flight_1_steps": 9,
+    "flight_2_steps": 10,
+    "landing_between_flights": true,
+    "landing_depth_m": 1.48,
+    "landing_width_m": 2.7,
+    "riser_height_m": 0.17,
+    "stair_width_m": 1.23,
+    "tread_depth_m": 0.28
+  },
+  "source": {
+    "path": "/home/m3tron/Desktop/TRON1_Stair_Simulation/config/site/stair_3f_4f.yaml",
+    "sha256": "220fae4d0e31d6d9827f81f73caab58370fb021591cf8eabbbc04692799624b3"
+  },
+  "message_source": [
+    {
+      "part_id": "prt_02342ca76001dHyHwJhAMZING5",
+      "session_id": "ses_fe79dc3abffe0h8YOLMzr2MX0n",
+      "time_utc": "2026-08-21T07:39:34.910000+00:00",
+      "text": "apriltag는 42h11 family, 3층으로 올라오는 계단에는 id 300, 3층으로 내려오는 계단에는 id 301, 4층으로 올라가는 계단에는 id 400, 4층으로 내려가는 계단에는 id 401, 5층으로 올라가는 계단에는 id 500, 5층으로 내려가는 계단에는 id 501, 옥상으로 올라가는 계단에는 id600 을 붙였어. 아마 bag에서도 id 400을 인식할 수 있을거야. 그리고 18*18cm야. 2. 계단 구조는 3층에서 4층 갈때 9단 - 계단참 - 10단 , 4층에서 5층 갈때 9단 - 계단참 - 10단, 5층에서 RF 갈때 10단 - 9단 - 그리고 마지막에 옥상으로 나갈 때 2단이 더 있어. 기억해놔. 3. 컨트롤러로 계단 진입점에서 stair모드를 항상 켰고, 4층에 도달해서 계단에 도착하고 약간 더 전진한 뒤에 stair 모드를 종료했어. 그리고 계단의 경우 너무 낮은 속도로 전진하면 토크가 안걸려서 계단을 넘어가지 못해. 최소 웹소켓 기준 0.5는 되어야 해"
+    },
+    {
+      "part_id": "prt_06a2ced00001JCcVfLB80MTdzL",
+      "session_id": "ses_fe79dc3abffe0h8YOLMzr2MX0n",
+      "time_utc": "2026-09-04T02:08:44.323000+00:00",
+      "text": "계단을 위에서 본 거 기준, 가로길이 123CM, 세로길이 28CM, 높이 17CM 야. 그 계단으로 내가 이전에 층별 계단 단수 말해줬지? 그렇게 판단하면 돼. 나중에 이 값과 ROSBAG을 비교해봐도 돼"
+    },
+    {
+      "part_id": "prt_06ab648ed001ZlWKDaqPv5AdJP",
+      "session_id": "ses_fe79dc3abffe0h8YOLMzr2MX0n",
+      "time_utc": "2026-09-04T04:38:46.262000+00:00",
+      "text": "계단참. 즉 직사각형 공간의 가로길이는 270CM, 세로길이는 148CM 야. 지금은 이렇게 월드를 만들고, 나중에 CAD나 IFC 파일로 월드를 만들 수도 있나?"
+    },
+    {
+      "part_id": "prt_08f5d9f01001YsOyt0bNqk4k1u",
+      "session_id": "ses_fe79dc3abffe0h8YOLMzr2MX0n",
+      "time_utc": "2026-09-11T07:27:52.583000+00:00",
+      "text": "다른 층 stair는 3->4층의 경우 첫계단 9단 두번째계단 10단, 4->5층 계단의 경우 첫번째계단 9단 두번째계단 10단, 5->6층(루프탑) 이건 이미 알고. 이렇게 해서 할 수 있나?"
+    }
+  ],
+  "derived": {
+    "flight_1_rise_m": 1.53,
+    "flight_2_rise_m": 1.7,
+    "total_rise_m": 3.23
+  },
+  "runtime_route_commissioned": false
+}

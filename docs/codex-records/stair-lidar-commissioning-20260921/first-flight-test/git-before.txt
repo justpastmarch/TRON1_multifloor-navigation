@@ -1,0 +1,67 @@
+ M README.md
+ M bundle_runtime_contract.py
+ M config.env
+ M run.sh
+ M src/mission_manager/CMakeLists.txt
+ M src/mission_manager/launch/system.launch
+ M src/mission_manager/src/mission_manager/mission_action_server.py
+ M src/mission_manager/src/mission_manager/mission_orchestrator.py
+ M src/mission_manager/src/mission_manager/navigation_executor.py
+ M src/mission_manager/src/mission_manager/ros_runtime.py
+ M src/mission_manager/src/mission_manager/ros_state.py
+ M src/mission_manager/src/mission_manager/route_planner.py
+ M src/mission_manager/test/mission_5f_rf_synthetic.test
+ M src/mission_manager/test/mock_mission_children.py
+ M src/mission_manager/test/test_full_system_synthetic_ros.py
+ M src/mission_manager/test/test_mission_action_ros.py
+ M src/mission_manager/test/test_route_planner.py
+ M src/mission_manager/test/test_runtime_gating.py
+ M src/multifloor_manager/CMakeLists.txt
+ M src/multifloor_manager/launch/navigation.launch
+ M src/multifloor_manager/package.xml
+ M src/multifloor_manager/rviz/wf_navigation.rviz
+ M src/multifloor_manager/scripts/rviz_tf_reconnect.py
+ M src/multifloor_manager/src/multifloor_manager/ros_callbacks.py
+ M src/multifloor_manager/src/multifloor_manager/ros_node.py
+ M src/multifloor_manager/src/multifloor_manager/ros_runtime.py
+ M src/stair_supervisor/CMakeLists.txt
+ M src/stair_supervisor/package.xml
+ M src/stair_supervisor/src/stair_supervisor/configuration.py
+ M src/stair_supervisor/src/stair_supervisor/robot_client.py
+ M src/stair_supervisor/src/stair_supervisor/robot_transport.py
+ M src/stair_supervisor/src/stair_supervisor/ros_entrypoint.py
+ M src/stair_supervisor/src/stair_supervisor/ros_node.py
+ M src/stair_supervisor/src/stair_supervisor/supervisor.py
+ M src/stair_supervisor/src/stair_supervisor/supervisor_types.py
+ M src/stair_supervisor/test/robot_transport/test_robot_transport.py
+ M src/stair_supervisor/test/stair_sensor_fixture.py
+ M src/stair_supervisor/test/test_websocket_tx_ros.py
+ M test/test_bundle_contract.py
+ M test/test_legacy_rviz_viewer_contract.py
+ M test/test_rviz_tf_reconnect.py
+ M test/test_system_operator_contract.py
+?? docs/stair-lidar-integration.md
+?? docs/startup-localization-ko.md
+?? src/mission_manager/src/mission_manager/navigation_hold.py
+?? src/mission_manager/test/test_navigation_hold.py
+?? src/multifloor_manager/src/multifloor_manager/ros_startup_localization.py
+?? src/multifloor_manager/src/multifloor_manager/startup_matching.py
+?? src/multifloor_manager/test/startup_localization.test
+?? src/multifloor_manager/test/test_startup_localization_ros.py
+?? src/multifloor_manager/test/test_startup_matching.py
+?? src/stair_supervisor/config/lidar_imu_baseline.yaml
+?? src/stair_supervisor/config/stair_lidar.yaml
+?? src/stair_supervisor/requirements-lidar.txt
+?? src/stair_supervisor/scripts/profile_lidar_stream.py
+?? src/stair_supervisor/scripts/replay_lidar_tracking.py
+?? src/stair_supervisor/src/stair_supervisor/lidar_process.py
+?? src/stair_supervisor/src/stair_supervisor/lidar_tracking.py
+?? src/stair_supervisor/src/stair_supervisor/lidar_tracking_core.py
+?? src/stair_supervisor/src/stair_supervisor/ros_lidar.py
+?? src/stair_supervisor/src/stair_supervisor/stair_feedback.py
+?? src/stair_supervisor/test/lidar_observe.test
+?? src/stair_supervisor/test/test_lidar_control.py
+?? src/stair_supervisor/test/test_lidar_observe_ros.py
+?? src/stair_supervisor/test/test_lidar_phase_test.py
+?? src/stair_supervisor/test/test_lidar_process.py
+?? src/stair_supervisor/test/test_lidar_ros_adapter.py

@@ -1,0 +1,48 @@
+{
+  "run": "103313",
+  "mode": "gyro",
+  "extrinsic": "identity",
+  "initial_up_sensor": [
+    -0.1750869971285617,
+    -0.0546864683692541,
+    0.9830330277329453
+  ],
+  "initial_transform": [
+    [
+      0.9845411265799526,
+      -0.004828406484628769,
+      0.1750869971285617,
+      0.0
+    ],
+    [
+      -0.004828406484628769,
+      0.9984919011529927,
+      0.0546864683692541,
+      0.0
+    ],
+    [
+      -0.1750869971285617,
+      -0.0546864683692541,
+      0.9830330277329453,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "initial_imu_window": "+/- 0.5 sensor seconds, median acceleration, not certified stationary",
+  "gyro_max_gap_s": 0.007528066635131836,
+  "elapsed_s": 49.585400342941284,
+  "scope": "offline diagnostic; no ROS output; no absolute ground truth; no supervisor completion evidence",
+  "config": {
+    "voxel_size_m": 0.2,
+    "correspondence_distance_m": 0.8,
+    "max_iterations": 30,
+    "min_fitness": 0.35,
+    "max_translation_step_m": 0.5,
+    "max_rotation_step_rad": 0.35
+  }
+}

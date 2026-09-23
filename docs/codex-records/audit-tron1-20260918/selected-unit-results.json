@@ -1,0 +1,14 @@
+{
+  "utc": "2026-09-18T03:04:52Z",
+  "files": [
+    "test_fsm.py",
+    "test_stair_entry_gate.py",
+    "test_subprocess_executor.py"
+  ],
+  "tests_run": 10,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "previous_attempt": "Four-module suite could not load stair_admission because generated stair_supervisor.srv package was absent; zero tests executed in that attempt",
+  "scope": "Three fully reviewed pure unit modules; mission package namespace skips ROS entrypoint; socket creation prohibited; recording subprocess mocked; no ROS/hardware/E2E claims"
+}

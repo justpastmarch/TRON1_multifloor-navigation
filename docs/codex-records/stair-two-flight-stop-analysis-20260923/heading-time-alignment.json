@@ -1,0 +1,32 @@
+[
+  {
+    "end_kst": "2026-09-23T10:28:13.074317",
+    "pose_age_at_fault": 0.37135863304138184,
+    "imu_available_until": 1790126893.0377815,
+    "propagated_interval": 0.3299684524536133,
+    "lidar_yaw_deg": -17.514897919409275,
+    "causal_gyro_propagated_yaw_deg": -17.23425385685726,
+    "causal_yaw_error_deg": -17.23425385685726,
+    "imu_samples": 67
+  },
+  {
+    "end_kst": "2026-09-23T10:35:21.104719",
+    "pose_age_at_fault": 0.4019811153411865,
+    "imu_available_until": 1790127321.07533,
+    "propagated_interval": 0.3699178695678711,
+    "lidar_yaw_deg": 165.38617673879125,
+    "causal_gyro_propagated_yaw_deg": 154.0932072022065,
+    "causal_yaw_error_deg": -25.90679279779352,
+    "imu_samples": 75
+  },
+  {
+    "end_kst": "2026-09-23T10:38:07.018419",
+    "pose_age_at_fault": 0.3150160312652588,
+    "imu_available_until": 1790127486.9682875,
+    "propagated_interval": 0.26001524925231934,
+    "lidar_yaw_deg": 165.80910919208583,
+    "causal_gyro_propagated_yaw_deg": 166.48409789163256,
+    "causal_yaw_error_deg": -13.51590210836743,
+    "imu_samples": 53
+  }
+]

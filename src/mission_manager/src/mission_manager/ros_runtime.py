@@ -111,9 +111,15 @@ def create_mission_action_server() -> MissionActionServer:
             settings.initial_location_id,
             settings.inspect_profile_id,
         ),
+        start_from_current_pose=True,
     )
+    arrival_hold=None
+    if rospy.get_param("~arrival_hold_enabled",False):
+        from mission_manager.navigation_hold import RosNavigationHold
+        arrival_hold=RosNavigationHold(navigation,state,configuration.locations)
     return MissionActionServer(
         settings.action_name,
         orchestrator,
         frozenset(location.id for location in configuration.locations),
+        arrival_hold=arrival_hold,
     )

@@ -1,0 +1,20 @@
+{
+  "checked_at": "2026-09-21T16:07:10.110375+09:00",
+  "head_unchanged": true,
+  "git_status_unchanged": true,
+  "scope": "Compared with pre-document snapshot taken during this read-only study; not a new full repository audit.",
+  "robot_or_ros_processes_started": false,
+  "temporary_browser_profiles_removed": true,
+  "artifacts": [
+    "REPORT.md",
+    "VALIDATION.md",
+    "WORKLOG.md",
+    "build_report.py",
+    "document-qa.json",
+    "final-state.json",
+    "render-qa.json",
+    "report-preview.png",
+    "report.html",
+    "review-baseline.json"
+  ]
+}

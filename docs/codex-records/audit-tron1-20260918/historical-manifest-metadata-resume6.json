@@ -1,0 +1,304 @@
+[
+  {
+    "path": ".omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/build-manifest.json",
+    "header": {
+      "schema_version": 2,
+      "class": "build",
+      "roots": [
+        "build"
+      ],
+      "explicit_exclusions": [
+        ".git/**",
+        ".omo/**",
+        "**/__pycache__/**",
+        "**/*.pyc",
+        "**/*.pyo"
+      ],
+      "file_count": 2187,
+      "manifest_sha256": "5d938a0828f8d0e432e9edde1cf83dcceb0416221427e11270d05583d2fd433c"
+    },
+    "parsed_entries": 2187,
+    "unique_paths": 2187,
+    "entry_shapes": [
+      [
+        [
+          "kind",
+          "mtime_ns",
+          "path",
+          "sha256",
+          "size"
+        ],
+        2187
+      ]
+    ],
+    "canonical_digest_matches": true,
+    "counts_match": true,
+    "invalid_paths": [],
+    "invalid_hashes": [],
+    "classification": "METADATA_ONLY: historical path/hash/mtime inventories; underlying file contents and past runtime not verified"
+  },
+  {
+    "path": ".omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/devel-manifest.json",
+    "header": {
+      "schema_version": 2,
+      "class": "devel",
+      "roots": [
+        "devel"
+      ],
+      "explicit_exclusions": [
+        ".git/**",
+        ".omo/**",
+        "**/__pycache__/**",
+        "**/*.pyc",
+        "**/*.pyo"
+      ],
+      "file_count": 213,
+      "manifest_sha256": "5828e27e7f6c277f5b92d1386882623b95473381e1a68d0bc67d8dc5fb74de48"
+    },
+    "parsed_entries": 213,
+    "unique_paths": 213,
+    "entry_shapes": [
+      [
+        [
+          "kind",
+          "mtime_ns",
+          "path",
+          "sha256",
+          "size"
+        ],
+        213
+      ]
+    ],
+    "canonical_digest_matches": true,
+    "counts_match": true,
+    "invalid_paths": [],
+    "invalid_hashes": [],
+    "classification": "METADATA_ONLY: historical path/hash/mtime inventories; underlying file contents and past runtime not verified"
+  },
+  {
+    "path": ".omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/install-manifest.json",
+    "header": {
+      "schema_version": 2,
+      "class": "install",
+      "roots": [
+        "install"
+      ],
+      "explicit_exclusions": [
+        ".git/**",
+        ".omo/**",
+        "**/__pycache__/**",
+        "**/*.pyc",
+        "**/*.pyo"
+      ],
+      "file_count": 283,
+      "manifest_sha256": "567e07680e9b89152046d83edb00002c80581306418f8cd5252d6b8dc978b4ae"
+    },
+    "parsed_entries": 283,
+    "unique_paths": 283,
+    "entry_shapes": [
+      [
+        [
+          "kind",
+          "mtime_ns",
+          "path",
+          "sha256",
+          "size"
+        ],
+        283
+      ]
+    ],
+    "canonical_digest_matches": true,
+    "counts_match": true,
+    "invalid_paths": [],
+    "invalid_hashes": [],
+    "classification": "METADATA_ONLY: historical path/hash/mtime inventories; underlying file contents and past runtime not verified"
+  },
+  {
+    "path": ".omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/result-xml-manifest.json",
+    "header": {
+      "schema_version": 1,
+      "root": "build/test_results",
+      "explicit_exclusions": [
+        "non-XML files"
+      ],
+      "file_count": 37,
+      "manifest_sha256": "b9d613d8245fdf20cbadaaef3366495d23cedd2c905fb8b0dc5ee7456309b21a"
+    },
+    "parsed_entries": 37,
+    "unique_paths": 37,
+    "entry_shapes": [
+      [
+        [
+          "errors",
+          "failures",
+          "mtime_ns",
+          "path",
+          "sha256",
+          "tests"
+        ],
+        37
+      ]
+    ],
+    "canonical_digest_matches": true,
+    "counts_match": true,
+    "invalid_paths": [],
+    "invalid_hashes": [],
+    "classification": "METADATA_ONLY: historical path/hash/mtime inventories; underlying file contents and past runtime not verified",
+    "recorded_test_totals": {
+      "tests": 150,
+      "errors": 9,
+      "failures": 1
+    },
+    "failing_rows": [
+      {
+        "path": "build/test_results/mission_manager/nosetests-test.test_navigation_executor.py.xml",
+        "tests": 1,
+        "errors": 1,
+        "failures": 0
+      },
+      {
+        "path": "build/test_results/mission_manager/nosetests-test.test_ros_segments.py.xml",
+        "tests": 1,
+        "errors": 1,
+        "failures": 0
+      },
+      {
+        "path": "build/test_results/mission_manager/nosetests-test.test_runtime_gating.py.xml",
+        "tests": 1,
+        "errors": 1,
+        "failures": 0
+      },
+      {
+        "path": "build/test_results/stair_supervisor/nosetests-test.robot_transport.xml",
+        "tests": 7,
+        "errors": 6,
+        "failures": 1
+      }
+    ]
+  },
+  {
+    "path": ".omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/runtime-manifest.json",
+    "header": {
+      "schema_version": 2,
+      "class": "runtime",
+      "roots": [
+        "src/mission_manager/scripts",
+        "src/mission_manager/launch",
+        "src/multifloor_manager/scripts",
+        "src/multifloor_manager/launch",
+        "src/stair_supervisor/scripts",
+        "src/stair_supervisor/launch",
+        "src/mission_manager/package.xml",
+        "src/multifloor_manager/package.xml",
+        "src/stair_supervisor/package.xml"
+      ],
+      "explicit_exclusions": [
+        ".git/**",
+        ".omo/**",
+        "**/__pycache__/**",
+        "**/*.pyc",
+        "**/*.pyo"
+      ],
+      "file_count": 15,
+      "manifest_sha256": "572e20e5261c7ccb7d632c476031c66c8537cae357dd84495c75cde86fcdb054"
+    },
+    "parsed_entries": 15,
+    "unique_paths": 15,
+    "entry_shapes": [
+      [
+        [
+          "kind",
+          "mtime_ns",
+          "path",
+          "sha256",
+          "size"
+        ],
+        15
+      ]
+    ],
+    "canonical_digest_matches": true,
+    "counts_match": true,
+    "invalid_paths": [],
+    "invalid_hashes": [],
+    "classification": "METADATA_ONLY: historical path/hash/mtime inventories; underlying file contents and past runtime not verified"
+  },
+  {
+    "path": ".omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/source-manifest.json",
+    "header": {
+      "schema_version": 2,
+      "class": "source",
+      "roots": [
+        "src"
+      ],
+      "explicit_exclusions": [
+        ".git/**",
+        ".omo/**",
+        "**/__pycache__/**",
+        "**/*.pyc",
+        "**/*.pyo"
+      ],
+      "file_count": 142,
+      "manifest_sha256": "63972ff751865072c72eda5a428d915ec0e8a5713faa674562a44f008a00c6be"
+    },
+    "parsed_entries": 142,
+    "unique_paths": 142,
+    "entry_shapes": [
+      [
+        [
+          "kind",
+          "mtime_ns",
+          "path",
+          "sha256",
+          "size"
+        ],
+        142
+      ]
+    ],
+    "canonical_digest_matches": true,
+    "counts_match": true,
+    "invalid_paths": [],
+    "invalid_hashes": [],
+    "classification": "METADATA_ONLY: historical path/hash/mtime inventories; underlying file contents and past runtime not verified"
+  },
+  {
+    "path": ".omo/evidence/yaml-transition-policy-runtime/baseline-provenance/repair-2-2026-08-24T10-12-00/test-manifest.json",
+    "header": {
+      "schema_version": 2,
+      "class": "test",
+      "roots": [
+        "test",
+        "src/mission_manager/test",
+        "src/multifloor_manager/test",
+        "src/stair_supervisor/test"
+      ],
+      "explicit_exclusions": [
+        ".git/**",
+        ".omo/**",
+        "**/__pycache__/**",
+        "**/*.pyc",
+        "**/*.pyo"
+      ],
+      "file_count": 97,
+      "manifest_sha256": "7af12a45d3adb24b8442b2ec77af4a6260317a3ef0899868ae67ec31163cb71c"
+    },
+    "parsed_entries": 97,
+    "unique_paths": 97,
+    "entry_shapes": [
+      [
+        [
+          "kind",
+          "mtime_ns",
+          "path",
+          "sha256",
+          "size"
+        ],
+        97
+      ]
+    ],
+    "canonical_digest_matches": true,
+    "counts_match": true,
+    "invalid_paths": [],
+    "invalid_hashes": [],
+    "classification": "METADATA_ONLY: historical path/hash/mtime inventories; underlying file contents and past runtime not verified"
+  }
+]

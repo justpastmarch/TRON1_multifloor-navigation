@@ -1,0 +1,12 @@
+{
+  "utc": "2026-09-18T03:05:08Z",
+  "tests_run": 6,
+  "failures": [
+    {
+      "test": "test_system_launch_includes_standard_navigation_and_perception (test_system_operator_contract.SystemOperatorContractTest)",
+      "trace": "Traceback (most recent call last):\n  File \"/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/test/test_system_operator_contract.py\", line 46, in test_system_launch_includes_standard_navigation_and_perception\n    self.assertEqual(\nAssertionError: Items in the second set but not the first:\n'$(find multifloor_manager)/launch/pointcloud_to_laserscan.launch'\n"
+    }
+  ],
+  "errors": [],
+  "scope": "Read-only file-string/XML contracts; not execution, ROS, physical behavior, or whole test suite"
+}

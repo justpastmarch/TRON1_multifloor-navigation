@@ -1,0 +1,39 @@
+{
+  "observed_utc": "2026-09-18T05:57:27.475938+00:00",
+  "temporary_roots": [
+    {
+      "receipt": "resume2-loader-attempt0-cleanup.json",
+      "temporary_root": "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-w_xf47o3",
+      "absent_now": true,
+      "recorded_remaining_threads": [],
+      "recorded_events": 2
+    },
+    {
+      "receipt": "resume2-unit-run-cleanup.json",
+      "temporary_root": "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9",
+      "absent_now": true,
+      "recorded_remaining_threads": [],
+      "recorded_events": 223
+    },
+    {
+      "receipt": "resume2-temp-artifacts.json",
+      "temporary_root": "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-kb8xnr95",
+      "absent_now": true,
+      "recorded_remaining_threads": [],
+      "recorded_events": 2
+    },
+    {
+      "receipt": "final-review-temp-receipt.json",
+      "temporary_root": "/tmp/tron1-audit-final-review-bw8qolsw",
+      "absent_now": true,
+      "recorded_remaining_threads": [],
+      "recorded_events": 2
+    }
+  ],
+  "all_temporary_roots_absent": true,
+  "audit_owned_runtime_processes": [],
+  "process_basis": "All audit exec processes ran foreground and returned; no ROS/robot/background process started. Test cleanup receipts record no remaining threads. Review agent completed.",
+  "retained_deliverables": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918",
+  "obsolete_draft_generator_removed": "build-final-findings.py",
+  "existing_user_artifacts_or_processes_removed": false
+}

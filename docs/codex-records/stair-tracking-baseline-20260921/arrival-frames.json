@@ -1,0 +1,615 @@
+{
+  "102101": {
+    "old_annotation_s": 1787793779.454232,
+    "original_bag": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_102101.bag",
+    "camera_messages_read": 316,
+    "samples": [
+      {
+        "index": 0,
+        "requested_offset_s": -4,
+        "camera_header_s": 1787793775.444821,
+        "bag_record_s": 1787793775.7860582,
+        "actual_event_offset_s": -4.009411096572876,
+        "target_miss_s": 0.009411096572875977,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/frame-00.jpg"
+      },
+      {
+        "index": 1,
+        "requested_offset_s": -2,
+        "camera_header_s": 1787793777.4522192,
+        "bag_record_s": 1787793777.7548158,
+        "actual_event_offset_s": -2.0020127296447754,
+        "target_miss_s": 0.0020127296447753906,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/frame-01.jpg"
+      },
+      {
+        "index": 2,
+        "requested_offset_s": 0,
+        "camera_header_s": 1787793779.4542322,
+        "bag_record_s": 1787793780.0866764,
+        "actual_event_offset_s": 2.384185791015625e-07,
+        "target_miss_s": 2.384185791015625e-07,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/frame-02.jpg"
+      },
+      {
+        "index": 3,
+        "requested_offset_s": 1,
+        "camera_header_s": 1787793780.456902,
+        "bag_record_s": 1787793781.0658517,
+        "actual_event_offset_s": 1.0026700496673584,
+        "target_miss_s": 0.0026700496673583984,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/frame-03.jpg"
+      },
+      {
+        "index": 4,
+        "requested_offset_s": 2,
+        "camera_header_s": 1787793781.4872324,
+        "bag_record_s": 1787793781.8758585,
+        "actual_event_offset_s": 2.0330004692077637,
+        "target_miss_s": 0.03300046920776367,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/frame-04.jpg"
+      },
+      {
+        "index": 5,
+        "requested_offset_s": 3,
+        "camera_header_s": 1787793782.386785,
+        "bag_record_s": 1787793782.9918218,
+        "actual_event_offset_s": 2.9325530529022217,
+        "target_miss_s": 0.06744694709777832,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/frame-05.jpg"
+      },
+      {
+        "index": 6,
+        "requested_offset_s": 4,
+        "camera_header_s": 1787793783.456787,
+        "bag_record_s": 1787793783.7387419,
+        "actual_event_offset_s": 4.0025551319122314,
+        "target_miss_s": 0.0025551319122314453,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/frame-06.jpg"
+      },
+      {
+        "index": 7,
+        "requested_offset_s": 5,
+        "camera_header_s": 1787793784.3899329,
+        "bag_record_s": 1787793785.1598155,
+        "actual_event_offset_s": 4.9357008934021,
+        "target_miss_s": 0.06429910659790039,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/frame-07.jpg"
+      },
+      {
+        "index": 8,
+        "requested_offset_s": 6,
+        "camera_header_s": 1787793785.3594377,
+        "bag_record_s": 1787793785.9948823,
+        "actual_event_offset_s": 5.905205726623535,
+        "target_miss_s": 0.09479427337646484,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/frame-08.jpg"
+      },
+      {
+        "index": 9,
+        "requested_offset_s": 8,
+        "camera_header_s": 1787793787.3953419,
+        "bag_record_s": 1787793787.8665628,
+        "actual_event_offset_s": 7.941109895706177,
+        "target_miss_s": 0.05889010429382324,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/frame-09.jpg"
+      },
+      {
+        "index": 10,
+        "requested_offset_s": 10,
+        "camera_header_s": 1787793789.416385,
+        "bag_record_s": 1787793790.017662,
+        "actual_event_offset_s": 9.96215295791626,
+        "target_miss_s": 0.037847042083740234,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/frame-10.jpg"
+      },
+      {
+        "index": 11,
+        "requested_offset_s": 12,
+        "camera_header_s": 1787793791.3720236,
+        "bag_record_s": 1787793792.205543,
+        "actual_event_offset_s": 11.917791604995728,
+        "target_miss_s": 0.08220839500427246,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/frame-11.jpg"
+      },
+      {
+        "index": 12,
+        "requested_offset_s": 15,
+        "camera_header_s": 1787793794.378933,
+        "bag_record_s": 1787793794.8738618,
+        "actual_event_offset_s": 14.92470097541809,
+        "target_miss_s": 0.07529902458190918,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/frame-12.jpg"
+      },
+      {
+        "index": 13,
+        "requested_offset_s": 18,
+        "camera_header_s": 1787793797.511178,
+        "bag_record_s": 1787793798.2105436,
+        "actual_event_offset_s": 18.05694603919983,
+        "target_miss_s": 0.0569460391998291,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/frame-13.jpg"
+      },
+      {
+        "index": 14,
+        "requested_offset_s": 22,
+        "camera_header_s": 1787793801.5181072,
+        "bag_record_s": 1787793802.2480245,
+        "actual_event_offset_s": 22.063875198364258,
+        "target_miss_s": 0.06387519836425781,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/frame-14.jpg"
+      }
+    ],
+    "scope": "selected raw camera frames; no automatic arrival or physical foot-contact truth",
+    "pose_samples": [
+      {
+        "camera_s": 1787793775.444821,
+        "relative_to_old_s": -4.009,
+        "lidar_s": 1787793775.4898803,
+        "x_y_z_m": [
+          1.2553477083739295,
+          1.514906625658588,
+          2.614373986322423
+        ],
+        "roll_pitch_yaw_deg": [
+          1.6480400175828276,
+          0.6578187054879636,
+          -177.26789866894674
+        ],
+        "z_gain_from_old_m": -0.19241176867796206,
+        "distance_from_old_m": 0.48046852939962353
+      },
+      {
+        "camera_s": 1787793777.4522192,
+        "relative_to_old_s": -2.002,
+        "lidar_s": 1787793777.4898663,
+        "x_y_z_m": [
+          1.0860191225600926,
+          1.5070820107065752,
+          2.627243943801813
+        ],
+        "roll_pitch_yaw_deg": [
+          3.2869332600513763,
+          7.747771041315295,
+          179.40003767618276
+        ],
+        "z_gain_from_old_m": -0.17954181119857182,
+        "distance_from_old_m": 0.33461742697447816
+      },
+      {
+        "camera_s": 1787793779.4542322,
+        "relative_to_old_s": 0.0,
+        "lidar_s": 1787793779.489795,
+        "x_y_z_m": [
+          0.8403995785528326,
+          1.3677816156309606,
+          2.806785755000385
+        ],
+        "roll_pitch_yaw_deg": [
+          -3.9596293566475467,
+          6.442475247501589,
+          -165.4042393447119
+        ],
+        "z_gain_from_old_m": 0.0,
+        "distance_from_old_m": 0.0
+      },
+      {
+        "camera_s": 1787793780.456902,
+        "relative_to_old_s": 1.003,
+        "lidar_s": 1787793780.4898484,
+        "x_y_z_m": [
+          0.7816792511828194,
+          1.3567855246677747,
+          2.9450548710489497
+        ],
+        "roll_pitch_yaw_deg": [
+          -3.1992967994808654,
+          2.2415086196176706,
+          -155.98892348309695
+        ],
+        "z_gain_from_old_m": 0.13826911604856473,
+        "distance_from_old_m": 0.15062316991672842
+      },
+      {
+        "camera_s": 1787793781.4872324,
+        "relative_to_old_s": 2.033,
+        "lidar_s": 1787793781.4898748,
+        "x_y_z_m": [
+          0.7590482458580201,
+          1.4476182553099182,
+          2.874880124860449
+        ],
+        "roll_pitch_yaw_deg": [
+          0.41839774041486455,
+          4.137165153163614,
+          -157.1046316936206
+        ],
+        "z_gain_from_old_m": 0.06809436986006423,
+        "distance_from_old_m": 0.13277338427971552
+      },
+      {
+        "camera_s": 1787793782.386785,
+        "relative_to_old_s": 2.933,
+        "lidar_s": 1787793782.289821,
+        "x_y_z_m": [
+          0.7856773729182878,
+          1.449572198182248,
+          2.8599078606467576
+        ],
+        "roll_pitch_yaw_deg": [
+          -0.5022382794982404,
+          8.677521483536587,
+          -163.44115068549152
+        ],
+        "z_gain_from_old_m": 0.05312210564637265,
+        "distance_from_old_m": 0.11183102115197179
+      },
+      {
+        "camera_s": 1787793783.456787,
+        "relative_to_old_s": 4.003,
+        "lidar_s": 1787793783.4899454,
+        "x_y_z_m": [
+          0.7661916520342312,
+          1.464259992249645,
+          2.8026169863144963
+        ],
+        "roll_pitch_yaw_deg": [
+          2.146259331917041,
+          10.673608214021701,
+          -169.44234723939908
+        ],
+        "z_gain_from_old_m": -0.0041687686858886686,
+        "distance_from_old_m": 0.12178781607994835
+      },
+      {
+        "camera_s": 1787793784.3899329,
+        "relative_to_old_s": 4.936,
+        "lidar_s": 1787793784.4898858,
+        "x_y_z_m": [
+          0.7056511803515159,
+          1.4519819628569453,
+          2.836117996140642
+        ],
+        "roll_pitch_yaw_deg": [
+          -3.6665396639580723,
+          11.280927109958403,
+          -174.0852081304256
+        ],
+        "z_gain_from_old_m": 0.02933224114025723,
+        "distance_from_old_m": 0.1615772560142894
+      },
+      {
+        "camera_s": 1787793785.3594377,
+        "relative_to_old_s": 5.905,
+        "lidar_s": 1787793785.289938,
+        "x_y_z_m": [
+          0.5909964340656501,
+          1.4666527780535878,
+          2.9923516460903783
+        ],
+        "roll_pitch_yaw_deg": [
+          1.490316534852318,
+          7.228597951984132,
+          168.2399379164341
+        ],
+        "z_gain_from_old_m": 0.18556589108999333,
+        "distance_from_old_m": 0.32620872945848534
+      },
+      {
+        "camera_s": 1787793787.3953419,
+        "relative_to_old_s": 7.941,
+        "lidar_s": 1787793787.4898672,
+        "x_y_z_m": [
+          0.5728093147261517,
+          1.5088223169494663,
+          2.996479582697815
+        ],
+        "roll_pitch_yaw_deg": [
+          2.464550823523265,
+          5.6504980264995055,
+          -177.57485549792938
+        ],
+        "z_gain_from_old_m": 0.18969382769742982,
+        "distance_from_old_m": 0.3570445028140762
+      }
+    ]
+  },
+  "105713": {
+    "old_annotation_s": 1787795913.44906,
+    "original_bag": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_105713.bag",
+    "camera_messages_read": 136,
+    "samples": [
+      {
+        "index": 0,
+        "requested_offset_s": -4,
+        "camera_header_s": 1787795909.5128934,
+        "bag_record_s": 1787795910.824501,
+        "actual_event_offset_s": -3.936166524887085,
+        "target_miss_s": 0.06383347511291504,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/frame-00.jpg"
+      },
+      {
+        "index": 1,
+        "requested_offset_s": -2,
+        "camera_header_s": 1787795911.3475325,
+        "bag_record_s": 1787795912.7020452,
+        "actual_event_offset_s": -2.101527452468872,
+        "target_miss_s": 0.10152745246887207,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/frame-01.jpg"
+      },
+      {
+        "index": 2,
+        "requested_offset_s": 0,
+        "camera_header_s": 1787795913.4490604,
+        "bag_record_s": 1787795915.1728404,
+        "actual_event_offset_s": 4.76837158203125e-07,
+        "target_miss_s": 4.76837158203125e-07,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/frame-02.jpg"
+      },
+      {
+        "index": 3,
+        "requested_offset_s": 1,
+        "camera_header_s": 1787795914.5498757,
+        "bag_record_s": 1787795916.126291,
+        "actual_event_offset_s": 1.100815773010254,
+        "target_miss_s": 0.1008157730102539,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/frame-03.jpg"
+      },
+      {
+        "index": 4,
+        "requested_offset_s": 2,
+        "camera_header_s": 1787795915.5171971,
+        "bag_record_s": 1787795917.141691,
+        "actual_event_offset_s": 2.0681371688842773,
+        "target_miss_s": 0.06813716888427734,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/frame-04.jpg"
+      },
+      {
+        "index": 5,
+        "requested_offset_s": 3,
+        "camera_header_s": 1787795916.5513349,
+        "bag_record_s": 1787795917.90785,
+        "actual_event_offset_s": 3.1022748947143555,
+        "target_miss_s": 0.10227489471435547,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/frame-05.jpg"
+      },
+      {
+        "index": 6,
+        "requested_offset_s": 4,
+        "camera_header_s": 1787795917.4853551,
+        "bag_record_s": 1787795918.8464546,
+        "actual_event_offset_s": 4.036295175552368,
+        "target_miss_s": 0.036295175552368164,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/frame-06.jpg"
+      },
+      {
+        "index": 7,
+        "requested_offset_s": 5,
+        "camera_header_s": 1787795918.2525752,
+        "bag_record_s": 1787795919.6955316,
+        "actual_event_offset_s": 4.803515195846558,
+        "target_miss_s": 0.19648480415344238,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/frame-07.jpg"
+      },
+      {
+        "index": 8,
+        "requested_offset_s": 6,
+        "camera_header_s": 1787795919.4534478,
+        "bag_record_s": 1787795920.9083977,
+        "actual_event_offset_s": 6.004387855529785,
+        "target_miss_s": 0.004387855529785156,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/frame-08.jpg"
+      },
+      {
+        "index": 9,
+        "requested_offset_s": 8,
+        "camera_header_s": 1787795921.421548,
+        "bag_record_s": 1787795923.1539814,
+        "actual_event_offset_s": 7.972487926483154,
+        "target_miss_s": 0.027512073516845703,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/frame-09.jpg"
+      },
+      {
+        "index": 10,
+        "requested_offset_s": 10,
+        "camera_header_s": 1787795923.3563247,
+        "bag_record_s": 1787795925.0242193,
+        "actual_event_offset_s": 9.907264709472656,
+        "target_miss_s": 0.09273529052734375,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/frame-10.jpg"
+      },
+      {
+        "index": 11,
+        "requested_offset_s": 12,
+        "camera_header_s": 1787795925.3911784,
+        "bag_record_s": 1787795926.5549152,
+        "actual_event_offset_s": 11.942118406295776,
+        "target_miss_s": 0.05788159370422363,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/frame-11.jpg"
+      },
+      {
+        "index": 12,
+        "requested_offset_s": 15,
+        "camera_header_s": 1787795928.593464,
+        "bag_record_s": 1787795929.7550175,
+        "actual_event_offset_s": 15.14440393447876,
+        "target_miss_s": 0.14440393447875977,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/frame-12.jpg"
+      },
+      {
+        "index": 13,
+        "requested_offset_s": 18,
+        "camera_header_s": 1787795931.3620946,
+        "bag_record_s": 1787795932.3226607,
+        "actual_event_offset_s": 17.913034677505493,
+        "target_miss_s": 0.08696532249450684,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/frame-13.jpg"
+      },
+      {
+        "index": 14,
+        "requested_offset_s": 22,
+        "camera_header_s": 1787795935.5867283,
+        "bag_record_s": 1787795936.698402,
+        "actual_event_offset_s": 22.13766837120056,
+        "target_miss_s": 0.13766837120056152,
+        "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/frame-14.jpg"
+      }
+    ],
+    "scope": "selected raw camera frames; no automatic arrival or physical foot-contact truth",
+    "pose_samples": [
+      {
+        "camera_s": 1787795909.5128934,
+        "relative_to_old_s": -3.936,
+        "lidar_s": 1787795909.489611,
+        "x_y_z_m": [
+          1.0726029765676495,
+          1.50564932109626,
+          2.41423650323259
+        ],
+        "roll_pitch_yaw_deg": [
+          -0.4513084363327683,
+          11.663039076762427,
+          -178.29014262214173
+        ],
+        "z_gain_from_old_m": -0.5916710879375602,
+        "distance_from_old_m": 0.9844066415529288
+      },
+      {
+        "camera_s": 1787795911.3475325,
+        "relative_to_old_s": -2.102,
+        "lidar_s": 1787795911.2896502,
+        "x_y_z_m": [
+          0.7525894921562633,
+          1.41848503579702,
+          2.7715002904100046
+        ],
+        "roll_pitch_yaw_deg": [
+          -2.5062411681272607,
+          1.1636586582464674,
+          177.2504698877434
+        ],
+        "z_gain_from_old_m": -0.2344073007601457,
+        "distance_from_old_m": 0.5145867227090517
+      },
+      {
+        "camera_s": 1787795913.4490604,
+        "relative_to_old_s": 0.0,
+        "lidar_s": 1787795913.489708,
+        "x_y_z_m": [
+          0.296298755671746,
+          1.3778466753822354,
+          3.0059075911701503
+        ],
+        "roll_pitch_yaw_deg": [
+          -8.40742468715877,
+          5.745028025597201,
+          -163.77290308453252
+        ],
+        "z_gain_from_old_m": 0.0,
+        "distance_from_old_m": 0.0
+      },
+      {
+        "camera_s": 1787795914.5498757,
+        "relative_to_old_s": 1.101,
+        "lidar_s": 1787795914.4897134,
+        "x_y_z_m": [
+          0.10754376710709816,
+          1.359404712730641,
+          3.1302172845972223
+        ],
+        "roll_pitch_yaw_deg": [
+          -0.5921108765442303,
+          5.044688636546193,
+          -171.93288504925403
+        ],
+        "z_gain_from_old_m": 0.12430969342707199,
+        "distance_from_old_m": 0.22676298545930235
+      },
+      {
+        "camera_s": 1787795915.5171971,
+        "relative_to_old_s": 2.068,
+        "lidar_s": 1787795915.4897087,
+        "x_y_z_m": [
+          -0.010186885303739087,
+          1.3548508215455752,
+          3.1230713982614273
+        ],
+        "roll_pitch_yaw_deg": [
+          -0.5330018942543916,
+          11.399589202228146,
+          -173.32929229534417
+        ],
+        "z_gain_from_old_m": 0.11716380709127705,
+        "distance_from_old_m": 0.32892189819158124
+      },
+      {
+        "camera_s": 1787795916.5513349,
+        "relative_to_old_s": 3.102,
+        "lidar_s": 1787795916.4898903,
+        "x_y_z_m": [
+          -0.11443627825374887,
+          1.3148189309998628,
+          3.2037648605803173
+        ],
+        "roll_pitch_yaw_deg": [
+          -5.361162620701762,
+          11.50164667989667,
+          -179.22549467694418
+        ],
+        "z_gain_from_old_m": 0.197857269410167,
+        "distance_from_old_m": 0.46024261397023475
+      },
+      {
+        "camera_s": 1787795917.4853551,
+        "relative_to_old_s": 4.036,
+        "lidar_s": 1787795917.489815,
+        "x_y_z_m": [
+          -0.29507018045497746,
+          1.3313302156008082,
+          3.3236378982866253
+        ],
+        "roll_pitch_yaw_deg": [
+          0.036608106946369894,
+          2.567297316433428,
+          -178.39460924006914
+        ],
+        "z_gain_from_old_m": 0.317730307116475,
+        "distance_from_old_m": 0.6729290807407414
+      },
+      {
+        "camera_s": 1787795918.2525752,
+        "relative_to_old_s": 4.804,
+        "lidar_s": 1787795918.2898343,
+        "x_y_z_m": [
+          -0.37473409024190996,
+          1.3352013775432465,
+          3.3280464865754844
+        ],
+        "roll_pitch_yaw_deg": [
+          0.48225473825996784,
+          4.863500665744318,
+          177.40552024650128
+        ],
+        "z_gain_from_old_m": 0.32213889540533414,
+        "distance_from_old_m": 0.7455717065820867
+      },
+      {
+        "camera_s": 1787795919.4534478,
+        "relative_to_old_s": 6.004,
+        "lidar_s": 1787795919.2897894,
+        "x_y_z_m": [
+          -0.46446559682681265,
+          1.3334167043666216,
+          3.3316422430305965
+        ],
+        "roll_pitch_yaw_deg": [
+          0.4095517779942362,
+          5.189374775725443,
+          177.90268452825788
+        ],
+        "z_gain_from_old_m": 0.32573465186044626,
+        "distance_from_old_m": 0.828757796813789
+      }
+    ]
+  }
+}

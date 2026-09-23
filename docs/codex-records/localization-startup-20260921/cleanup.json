@@ -1,0 +1,147 @@
+{
+  "checked_utc": "2026-09-20T23:58:42.071332+00:00",
+  "temporary_artifacts": [
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/work",
+      "files": 3499,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/final-regression-results.txt",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/mission-retest-log",
+      "files": 5,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/probe-logs",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/startup-retest-home",
+      "files": 0,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/regression-tests.log",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/bundle-check.log",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/regression-results.txt",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/rviz-reconnect-tests.log",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/matching-test.log",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/ui-contract-tests.log",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/mission-retest.log",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/startup-final.log",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/startup-retest.log",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/startup-retest-log",
+      "files": 10,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/build-final.log",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/mission-retest-home",
+      "files": 0,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/startup-ros-test.log",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/planner-test.log",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/live-scan.json",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/launch-params.yaml",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/test-ros-home",
+      "files": 3,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/build.log",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/test-ros-log",
+      "files": 56,
+      "removed": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/localization-startup-20260921/installed-check-home",
+      "files": 1,
+      "removed": true
+    },
+    {
+      "path": "/dev/shm/tron1-mission_system_m3tron_All_Series_78017_905866459689405257",
+      "files": 2,
+      "removed": true
+    },
+    {
+      "path": "/dev/shm/tron1-mission_system_m3tron_All_Series_75879_3854352878801158818",
+      "files": 2,
+      "removed": true
+    },
+    {
+      "path": "/dev/shm/tron1-synthetic-mission_5f_rf_m3tron_All_Series_75939_4792751139335527407",
+      "files": 6,
+      "removed": true
+    }
+  ],
+  "all_removed": true,
+  "retained": "source-change receipt, test summary, derived read-only observation, report and patch; existing live operational processes retained"
+}

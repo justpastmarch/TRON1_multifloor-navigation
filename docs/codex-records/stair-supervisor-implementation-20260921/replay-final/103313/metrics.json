@@ -1,0 +1,19 @@
+{
+  "spec": "../../stair-tracking-fix-20260921/validation/103313/spec.json",
+  "input_bag": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_103313.bag",
+  "calibration_sha256": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+  "frames": 467,
+  "accepted": 467,
+  "pending": 0,
+  "elapsed_sec": 79.6425903240015,
+  "compute_p50_sec": 0.041290238999863504,
+  "compute_p99_sec": 0.06756938317950698,
+  "physical_accuracy": "UNVERIFIED; numerical baseline equivalence only",
+  "reference": "../../stair-tracking-fix-20260921/validation/103313/lidar_registration.csv",
+  "reference_sha256": "5911a56f9031301ce07ea09664cdfba313dd80c29043c7a71d983e4496c59d08",
+  "reference_frames": 467,
+  "state_or_stamp_mismatch": [],
+  "max_translation_difference_m": 1.1045196226003386e-11,
+  "max_rotation_difference_deg": 5.100803785901601e-10,
+  "numerical_pass": true
+}

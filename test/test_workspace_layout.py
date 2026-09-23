@@ -21,6 +21,10 @@ EXPECTED_NODE_INITIALIZERS = {
     ("src/mission_manager/scripts/mission_manager_node.py", "mission_manager"),
     ("src/multifloor_manager/scripts/multifloor_manager_node.py", "multifloor_manager"),
     ("src/stair_supervisor/scripts/stair_supervisor_node.py", "stair_supervisor"),
+    ("src/multifloor_manager/scripts/camera_info_stamp_relay.py", "camera_info_stamp_relay"),
+}
+EXPECTED_OPERATOR_CLIENTS = {
+    ("src/stair_supervisor/scripts/stair_entry_test.py", "stair_entry_test_client"),
 }
 
 
@@ -44,12 +48,11 @@ class WorkspaceLayoutTest(unittest.TestCase):
             with self.subTest(package=package_name):
                 scripts_dir = ROOT / "src" / package_name / "scripts"
 
-                # When: installed Python node candidates are inspected.
-                scripts = tuple(scripts_dir.glob("*.py"))
-
-                # Then: the package owns one executable runtime entrypoint.
-                self.assertEqual(len(scripts), 1)
-                self.assertTrue(scripts[0].stat().st_mode & stat.S_IXUSR)
+                # Script directories also contain one-shot tools and library
+                # checkers; the operational entrypoint remains unchanged.
+                entrypoint = scripts_dir / f"{package_name}_node.py"
+                self.assertTrue(entrypoint.is_file())
+                self.assertTrue(entrypoint.stat().st_mode & stat.S_IXUSR)
 
     def test_operator_wrapper_sources_ros_and_workspace_setups(self) -> None:
         # Given: the operator-facing root wrapper.
@@ -64,7 +67,7 @@ class WorkspaceLayoutTest(unittest.TestCase):
         # Then: both ROS and this workspace are sourced.
         self.assertTrue(all(statement in wrapper for statement in required_setups))
 
-    def test_only_three_package_entrypoints_initialize_ros_nodes(self) -> None:
+    def test_only_approved_runtime_entrypoints_and_operator_client_initialize_ros_nodes(self) -> None:
         # Given: every project Python source file outside generated catkin trees.
         initializers: Set[Tuple[str, Optional[str]]] = set()
         for source_path in ROOT.rglob("*.py"):
@@ -95,7 +98,7 @@ class WorkspaceLayoutTest(unittest.TestCase):
                 initializers.add((relative_path.as_posix(), node_name))
 
         # Then: exactly the three approved package entrypoints initialize nodes.
-        self.assertEqual(initializers, EXPECTED_NODE_INITIALIZERS)
+        self.assertEqual(initializers, EXPECTED_NODE_INITIALIZERS | EXPECTED_OPERATOR_CLIENTS)
 
     def test_operator_wrapper_does_not_launch_standalone_bridge(self) -> None:
         # Given: the operator-facing root wrapper.
@@ -138,7 +141,7 @@ class WorkspaceLayoutTest(unittest.TestCase):
             workspace_root = Path(temporary_dir)
             for relative_path, node_name in EXPECTED_NODE_INITIALIZERS:
                 source_path = workspace_root / relative_path
-                source_path.parent.mkdir(parents=True)
+                source_path.parent.mkdir(parents=True, exist_ok=True)
                 source_path.write_text(
                     f'import rospy\nrospy.init_node("{node_name}")\n',
                     encoding="utf-8",

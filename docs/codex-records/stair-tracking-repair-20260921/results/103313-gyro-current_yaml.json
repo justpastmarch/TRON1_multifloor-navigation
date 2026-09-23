@@ -1,0 +1,76 @@
+{
+  "run": "103313",
+  "mode": "gyro",
+  "extrinsic": "current_yaml",
+  "extrinsic_metadata": {
+    "source": "/home/m3tron/catkin_ws/src/FAST_LIO/config/mid360.yaml",
+    "sha256": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+    "configured_lidar_to_imu_rotation": [
+      [
+        0.989895,
+        -0.135195,
+        -0.042775
+      ],
+      [
+        0.13629,
+        0.990384,
+        0.023781
+      ],
+      [
+        0.039149,
+        -0.02937,
+        0.998802
+      ]
+    ],
+    "configured_translation_not_applied_m": [
+      0.01203,
+      -0.04045,
+      0.06974
+    ],
+    "scope": "fixed configured rotation only; online estimation and translation not reproduced",
+    "configuration_history": "recording/current equality confirmed by user; physical accuracy not verified"
+  },
+  "initial_up_sensor": [
+    -0.1422864140024631,
+    -0.05936156549394516,
+    0.988043916499883
+  ],
+  "initial_transform": [
+    [
+      0.989816410270592,
+      -0.0042485702723188854,
+      0.1422864140024631,
+      0.0
+    ],
+    [
+      -0.0042485702723188854,
+      0.998227506229291,
+      0.05936156549394516,
+      0.0
+    ],
+    [
+      -0.1422864140024631,
+      -0.05936156549394516,
+      0.988043916499883,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "initial_imu_window": "+/- 0.5 sensor seconds, median acceleration, not certified stationary",
+  "gyro_max_gap_s": 0.007528066635131836,
+  "elapsed_s": 43.080549240112305,
+  "scope": "offline diagnostic; no ROS output; no absolute ground truth; no supervisor completion evidence",
+  "config": {
+    "voxel_size_m": 0.2,
+    "correspondence_distance_m": 0.8,
+    "max_iterations": 30,
+    "min_fitness": 0.35,
+    "max_translation_step_m": 0.5,
+    "max_rotation_step_rad": 0.35
+  }
+}

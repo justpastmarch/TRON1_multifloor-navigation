@@ -113,7 +113,8 @@ def normalize_map_image(root: Path) -> None:
 def validate_rviz(root: Path) -> None:
     text = (root / "src/multifloor_manager/rviz/wf_navigation.rviz").read_text(encoding="utf-8")
     required = {"Fixed Frame: map", "Class: rviz/Map", "Topic: /scan", "Class: rviz/PoseWithCovariance", "Class: rviz/Path", "Class: rviz/TF"}
-    forbidden = {"Class: rviz/SetInitialPose", "Class: rviz/SetGoal", "/move_base_simple/goal"}
+    required |= {"Class: rviz/SetInitialPose", "Topic: /initialpose"}
+    forbidden = {"Class: rviz/SetGoal", "/move_base_simple/goal"}
     missing = sorted(token for token in required if token not in text)
     present = sorted(token for token in forbidden if token in text)
     if missing or present:

@@ -1,0 +1,571 @@
+[
+  {
+    "path": ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/controller_intent_samples.csv",
+    "rows": 1286,
+    "fields": [
+      "record_time_s",
+      "header_time_s",
+      "axes_json",
+      "buttons_json",
+      "provenance"
+    ],
+    "ragged_rows": 0,
+    "numeric": {
+      "record_time_s": {
+        "min": 0.0038788318634033203,
+        "max": 490.4006276130676,
+        "nonfinite": 0,
+        "zeros": 0,
+        "decreasing": 0,
+        "equal": 0,
+        "max_gap": 13.834096431732178
+      },
+      "header_time_s": {
+        "min": 0.0,
+        "max": 0.0,
+        "nonfinite": 0,
+        "zeros": 1286,
+        "decreasing": 0,
+        "equal": 1285,
+        "max_gap": 0.0
+      }
+    },
+    "categorical": {
+      "provenance": {
+        "controller_intent_only": 1286
+      }
+    },
+    "array_columns": {
+      "axes_json": {
+        "length_counts": {
+          "4": 1286
+        },
+        "unique_arrays": 410,
+        "nonzero_rows": 1099,
+        "nonfinite_elements": 0,
+        "axis_ranges": [
+          [
+            -0.12999999523162842,
+            0.10999999940395355
+          ],
+          [
+            -0.49000000953674316,
+            0.8299999833106995
+          ],
+          [
+            -1.0,
+            1.0
+          ],
+          [
+            -0.3100000023841858,
+            0.5400000214576721
+          ]
+        ]
+      },
+      "buttons_json": {
+        "length_counts": {
+          "18": 1286
+        },
+        "unique_arrays": 5,
+        "nonzero_rows": 6,
+        "nonfinite_elements": 0,
+        "axis_ranges": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "path": ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/gap_intervals.csv",
+    "rows": 232,
+    "fields": [
+      "topic",
+      "start_s",
+      "end_s",
+      "duration_s",
+      "rejected_no_interpolation"
+    ],
+    "ragged_rows": 0,
+    "numeric": {
+      "start_s": {
+        "min": 0.47077512741088867,
+        "max": 498.03780221939087,
+        "nonfinite": 0,
+        "zeros": 0
+      },
+      "end_s": {
+        "min": 1.2312994003295898,
+        "max": 500.1007409095764,
+        "nonfinite": 0,
+        "zeros": 0
+      },
+      "duration_s": {
+        "min": 0.5011188983917236,
+        "max": 19.011229276657104,
+        "nonfinite": 0,
+        "zeros": 0
+      }
+    },
+    "categorical": {
+      "topic": {
+        "/livox/lidar": 170,
+        "/livox/imu": 7,
+        "/tron/wheel_odom_raw": 7,
+        "/tron/sensor_joy": 6,
+        "/camera1/color/image_raw/compressed": 42
+      },
+      "rejected_no_interpolation": {
+        "true": 232
+      }
+    },
+    "array_columns": {},
+    "duration_mismatches": 0,
+    "gap_counts_by_topic": {
+      "/livox/lidar": 170,
+      "/livox/imu": 7,
+      "/tron/wheel_odom_raw": 7,
+      "/tron/sensor_joy": 6,
+      "/camera1/color/image_raw/compressed": 42
+    }
+  },
+  {
+    "path": ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/lidar_relative_path.csv",
+    "rows": 1345,
+    "fields": [
+      "stamp_ns",
+      "x_m",
+      "y_m",
+      "z_m",
+      "qx",
+      "qy",
+      "qz",
+      "qw",
+      "fitness",
+      "rmse_m",
+      "accepted",
+      "record_time_s",
+      "derived_edge_valid_from_previous",
+      "derived_route_evidence_usable",
+      "derived_path_segment_id"
+    ],
+    "ragged_rows": 0,
+    "numeric": {
+      "stamp_ns": {
+        "min": 1.7889208541836436e+18,
+        "max": 1.7889213136833684e+18,
+        "nonfinite": 0,
+        "zeros": 0,
+        "decreasing": 0,
+        "equal": 0,
+        "max_gap": 23599416832.0,
+        "precision_note": "float summary approximate; use exact_integer_stamp_ns"
+      },
+      "x_m": {
+        "min": -4.3466237476374925,
+        "max": 6.658127561546888,
+        "nonfinite": 0,
+        "zeros": 1
+      },
+      "y_m": {
+        "min": -2.814271216477019,
+        "max": 3.594548866940093,
+        "nonfinite": 0,
+        "zeros": 1
+      },
+      "z_m": {
+        "min": -5.332203622744615,
+        "max": 3.102084038087797,
+        "nonfinite": 0,
+        "zeros": 1
+      },
+      "qx": {
+        "min": -0.6362878882993184,
+        "max": 0.04133240110228403,
+        "nonfinite": 0,
+        "zeros": 0
+      },
+      "qy": {
+        "min": -0.5508473205170886,
+        "max": 0.5787070640701777,
+        "nonfinite": 0,
+        "zeros": 0
+      },
+      "qz": {
+        "min": -0.6726768368920829,
+        "max": 0.8378343362863242,
+        "nonfinite": 0,
+        "zeros": 1
+      },
+      "qw": {
+        "min": -0.49979611284195236,
+        "max": 0.8283897305224566,
+        "nonfinite": 0,
+        "zeros": 0
+      },
+      "fitness": {
+        "min": 0.23001310615989515,
+        "max": 1.0,
+        "nonfinite": 0,
+        "zeros": 0
+      },
+      "rmse_m": {
+        "min": 0.0,
+        "max": 0.43657842283833764,
+        "nonfinite": 0,
+        "zeros": 1
+      },
+      "accepted": {
+        "min": 0.0,
+        "max": 1.0,
+        "nonfinite": 0,
+        "zeros": 505
+      },
+      "record_time_s": {
+        "min": 0.47077512741088867,
+        "max": 492.6981637477875,
+        "nonfinite": 0,
+        "zeros": 0,
+        "decreasing": 0,
+        "equal": 0,
+        "max_gap": 19.4732563495636
+      },
+      "derived_path_segment_id": {
+        "min": 1.0,
+        "max": 597.0,
+        "nonfinite": 0,
+        "zeros": 0
+      }
+    },
+    "categorical": {
+      "derived_edge_valid_from_previous": {
+        "false": 590,
+        "true": 755
+      },
+      "derived_route_evidence_usable": {
+        "false": 590,
+        "true": 755
+      }
+    },
+    "array_columns": {},
+    "quaternion_norm_error_max": 7.549516567451064e-15,
+    "accepted_counts": {
+      "1": 840,
+      "0": 505
+    },
+    "usable_counts": {
+      "false": 590,
+      "true": 755
+    },
+    "segments": 597,
+    "exact_integer_stamp_ns": {
+      "min": 1788920854183643579,
+      "max": 1788921313683368444,
+      "max_gap": 23599416733
+    },
+    "derived_consistency": {},
+    "accepted_after_rejected_rows": [
+      329,
+      339,
+      349,
+      353,
+      853,
+      1113,
+      1244
+    ],
+    "interpretation": "Segments separate accepted-after-rejected samples; edge/usable alone does not prove its predecessor accepted or physical path validity."
+  },
+  {
+    "path": ".omo/evidence/5f-rf-autonomous-route-repetition/task-2/normalized_wheel_path.csv",
+    "rows": 47755,
+    "fields": [
+      "record_time_s",
+      "header_time_s",
+      "measured_x_m",
+      "measured_y_m",
+      "measured_z_m",
+      "measured_yaw_rad",
+      "derived_normalized_x_m",
+      "derived_normalized_y_m",
+      "derived_normalized_z_m",
+      "derived_step_distance_m",
+      "derived_edge_valid_from_previous",
+      "derived_path_segment_id"
+    ],
+    "ragged_rows": 0,
+    "numeric": {
+      "record_time_s": {
+        "min": 0.5933308601379395,
+        "max": 497.62853050231934,
+        "nonfinite": 0,
+        "zeros": 0,
+        "decreasing": 0,
+        "equal": 0,
+        "max_gap": 4.542860746383667
+      },
+      "header_time_s": {
+        "min": 1788920857.4666624,
+        "max": 1788921351.0248072,
+        "nonfinite": 0,
+        "zeros": 0,
+        "decreasing": 0,
+        "equal": 0,
+        "max_gap": 10.390351057052612
+      },
+      "measured_x_m": {
+        "min": -1.0461969363055355,
+        "max": 11.664286877868037,
+        "nonfinite": 0,
+        "zeros": 0
+      },
+      "measured_y_m": {
+        "min": -19.941824680879744,
+        "max": -13.800915913484404,
+        "nonfinite": 0,
+        "zeros": 0
+      },
+      "measured_z_m": {
+        "min": 0.0,
+        "max": 0.0,
+        "nonfinite": 0,
+        "zeros": 47755
+      },
+      "measured_yaw_rad": {
+        "min": -3.141185975028127,
+        "max": 3.1415391015626586,
+        "nonfinite": 0,
+        "zeros": 0
+      },
+      "derived_normalized_x_m": {
+        "min": -4.707977011712067,
+        "max": 5.8096629414821255,
+        "nonfinite": 0,
+        "zeros": 9
+      },
+      "derived_normalized_y_m": {
+        "min": -2.1377366423530795,
+        "max": 4.981298497685016,
+        "nonfinite": 0,
+        "zeros": 9
+      },
+      "derived_normalized_z_m": {
+        "min": 0.0,
+        "max": 0.0,
+        "nonfinite": 0,
+        "zeros": 47755
+      },
+      "derived_step_distance_m": {
+        "min": 0.0,
+        "max": 1.9192705600380995,
+        "nonfinite": 0,
+        "zeros": 1
+      },
+      "derived_path_segment_id": {
+        "min": 1.0,
+        "max": 9.0,
+        "nonfinite": 0,
+        "zeros": 0
+      }
+    },
+    "categorical": {
+      "derived_edge_valid_from_previous": {
+        "false": 9,
+        "true": 47746
+      }
+    },
+    "array_columns": {},
+    "derived_consistency": {
+      "normalization_mismatch": 87252
+    },
+    "invalid_edges": [
+      {
+        "line": 2,
+        "time": 0.5933308601379395,
+        "step": 0.0,
+        "segment": "1"
+      },
+      {
+        "line": 4131,
+        "time": 42.51285982131958,
+        "step": 0.00040198835111903076,
+        "segment": "2"
+      },
+      {
+        "line": 6499,
+        "time": 66.80463552474976,
+        "step": 0.0017685671591989,
+        "segment": "3"
+      },
+      {
+        "line": 21529,
+        "time": 224.14909601211548,
+        "step": 0.00264276499391944,
+        "segment": "4"
+      },
+      {
+        "line": 21644,
+        "time": 228.5355315208435,
+        "step": 0.0008407814891320503,
+        "segment": "5"
+      },
+      {
+        "line": 21672,
+        "time": 232.02625966072083,
+        "step": 0.001595192098590313,
+        "segment": "6"
+      },
+      {
+        "line": 21674,
+        "time": 236.56913542747498,
+        "step": 0.0016147681350450233,
+        "segment": "7"
+      },
+      {
+        "line": 21919,
+        "time": 236.83797979354858,
+        "step": 1.9192705600380995,
+        "segment": "8"
+      },
+      {
+        "line": 47747,
+        "time": 497.6284534931183,
+        "step": 0.00023928410150132198,
+        "segment": "9"
+      }
+    ],
+    "largest_steps": [
+      [
+        1.9192705600380995,
+        21919,
+        236.83797979354858,
+        false
+      ],
+      [
+        0.34449685606778474,
+        21762,
+        236.70370221138,
+        true
+      ],
+      [
+        0.03083918710372823,
+        16375,
+        169.87766027450562,
+        true
+      ],
+      [
+        0.02476488227407067,
+        10810,
+        108.70738244056702,
+        true
+      ],
+      [
+        0.023974330237068627,
+        11846,
+        119.06594610214233,
+        true
+      ],
+      [
+        0.02311455972499621,
+        15668,
+        159.51742839813232,
+        true
+      ],
+      [
+        0.021213845404291734,
+        10805,
+        108.69426441192627,
+        true
+      ],
+      [
+        0.020587017205224614,
+        16532,
+        171.43641448020935,
+        true
+      ],
+      [
+        0.020382023037259615,
+        15666,
+        159.51721620559692,
+        true
+      ],
+      [
+        0.019721844895663067,
+        16001,
+        163.97815608978271,
+        true
+      ]
+    ],
+    "corrected_segment_normalization": {},
+    "initial_probe_correction": "Global-origin hypothesis invalid: extractor normalizes each segment independently. Original mismatch count is a rejected audit hypothesis, not a repository finding."
+  }
+]

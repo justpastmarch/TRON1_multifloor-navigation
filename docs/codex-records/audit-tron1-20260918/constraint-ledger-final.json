@@ -1,0 +1,2454 @@
+{
+  "created_utc": "2026-09-18T05:28:15.995652+00:00",
+  "repository": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation",
+  "status": "MAJOR_CONSTRAINT_SCOPE_RECONCILED",
+  "constraint_count": 67,
+  "partial_count": 45,
+  "added_count": 22,
+  "decision_counts": {
+    "NARROW": 15,
+    "UNVERIFIED": 21,
+    "TUNE": 24,
+    "MAKE_RECOVERABLE": 7
+  },
+  "KEEP_count": 0,
+  "scope": "사용자 요청 capability startup/mission/command/stair/floor/navigation/recording/manual gate 전부를 코드경계 단위로 조정. 모든 if문 또는 외부firmware safety proof의 전수증명은 아님.",
+  "evidence_note": "OBSERVED는 source/config·공식upstream snapshot 구현. 정상방해·hazard consequence는 INFERRED. 실제물리위험발생·threshold최소성은 UNVERIFIED. 순수반례 OBSERVED는 finding원장참조.",
+  "score_note": "각 제약의 결함·과잉·복구비용에 대한 두축영향평가이며제약존재자체가결함이라는뜻은아님.",
+  "not_constraints": [
+    "D-01 scan expected_update_rate 누락",
+    "C-10 floor handoff ownership_epoch 검증누락",
+    "E-04 replay production-master isolation 부재",
+    "E-05 인증/remote shell/lock·PID·symlink 보호공백"
+  ],
+  "verification": {
+    "target_writes": 0,
+    "tests_run": 0,
+    "processes_started": 0,
+    "temporary_artifacts": [],
+    "source_reference_existence_and_line_bounds": "checked",
+    "source_files_hashed": 52,
+    "all_referenced_source_hashes_unchanged_after_write": true,
+    "all_67_rows_have_required_fields_and_both_scores": true
+  },
+  "constraints": [
+    {
+      "id": "K01",
+      "constraint": "전역 camera/tag/action readiness",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+          "line_start": 70,
+          "line_end": 73,
+          "basis": "repository",
+          "sha256": "70bf3634e5fc1e5c155c3439e7074d23ee0686e2055ce388bc08cc5417141784"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+          "line_start": 105,
+          "line_end": 107,
+          "basis": "repository",
+          "sha256": "70bf3634e5fc1e5c155c3439e7074d23ee0686e2055ce388bc08cc5417141784"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+          "line_start": 348,
+          "line_end": 360,
+          "basis": "repository",
+          "sha256": "70bf3634e5fc1e5c155c3439e7074d23ee0686e2055ce388bc08cc5417141784"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/verify_action_servers.py",
+          "line_start": 17,
+          "line_end": 34,
+          "basis": "repository",
+          "sha256": "70c886398ff95b9324a5cbe9e49226d872b50433edf03adb41ccc04303f5f0f9"
+        }
+      ],
+      "hazard": "해당 기능 입력/서버 부재",
+      "scope": "모든 startup",
+      "false_positive_or_gap": "camera 없이 flat NAV 차단",
+      "recovery": "입력 복구 후 전체 재실행",
+      "decision": "NARROW",
+      "reason_and_minimal_change": "필요 입력을 capability별 기존 분기에서 선택한다. 빈 tag 배열 수신은 freshness를 통과할 수 있어 태그 비가시를 항상 차단한다고 일반화하지 않는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S1",
+      "Mobility": "M3",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K02",
+      "constraint": "Mini PC 센서 묶음 재시작",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+          "line_start": 224,
+          "line_end": 225,
+          "basis": "repository",
+          "sha256": "70bf3634e5fc1e5c155c3439e7074d23ee0686e2055ce388bc08cc5417141784"
+        }
+      ],
+      "hazard": "죽은 sensor stack 재사용",
+      "scope": "lidar/scan/odom/camera 전체",
+      "false_positive_or_gap": "camera 단독 누락에도 다른 센서 재시작",
+      "recovery": "전체 wf_mapping restart branch",
+      "decision": "NARROW",
+      "reason_and_minimal_change": "camera 단독 부재가 LiDAR/odom 전체 restart로 이어지는 분기를 좁힌다. 재시작 전 해당 sensor의 실제 응답만 확인한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S1",
+      "Mobility": "M3",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K03",
+      "constraint": "NTP와 clock 차이",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+          "line_start": 110,
+          "line_end": 114,
+          "basis": "repository",
+          "sha256": "70bf3634e5fc1e5c155c3439e7074d23ee0686e2055ce388bc08cc5417141784"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+          "line_start": 131,
+          "line_end": 141,
+          "basis": "repository",
+          "sha256": "70bf3634e5fc1e5c155c3439e7074d23ee0686e2055ce388bc08cc5417141784"
+        }
+      ],
+      "hazard": "서로 다른 시간 기준의 stale 판정",
+      "scope": "전체 startup",
+      "false_positive_or_gap": "sync 플래그와 실제 clock 오차 불일치 가능",
+      "recovery": "clock 정상화 후 재시도",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "원격 date 초 단위와 왕복지연, NTP flag만으로 실제 timestamp 오차 budget은 증명되지 않는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S1",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K04",
+      "constraint": "AprilTag 중복 detector",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+          "line_start": 228,
+          "line_end": 234,
+          "basis": "repository",
+          "sha256": "70bf3634e5fc1e5c155c3439e7074d23ee0686e2055ce388bc08cc5417141784"
+        }
+      ],
+      "hazard": "중복 detector 입력",
+      "scope": "전체 startup",
+      "false_positive_or_gap": "stale registration에도 종료 가능",
+      "recovery": "문서는 기존 detector 중단 요구",
+      "decision": "NARROW",
+      "reason_and_minimal_change": "프로세스명/ROS 등록만으로 중복 실동작을 단정하지 말고 대상 master의 실제 owner를 확인한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S1",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K05",
+      "constraint": "단일 scan publisher",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+          "line_start": 365,
+          "line_end": 369,
+          "basis": "repository",
+          "sha256": "70bf3634e5fc1e5c155c3439e7074d23ee0686e2055ce388bc08cc5417141784"
+        }
+      ],
+      "hazard": "다중 scan authority",
+      "scope": "전체 startup",
+      "false_positive_or_gap": "죽은 registration 집계 가능",
+      "recovery": "구체 publisher 확인 후 재시도",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "실제 단일 publisher 필요성은 명확하나 stale registration과 다중 독립 source의 위협·복구 계약이 미검증이다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K06",
+      "constraint": "TF launch 대기",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/scripts/wait_for_tf_exec.sh",
+          "line_start": 17,
+          "line_end": 28,
+          "basis": "repository",
+          "sha256": "92ab933b0f1ad45c85ed6e2fbf3829c15f09194cba15e12a58600d1d403d493c"
+        }
+      ],
+      "hazard": "TF 부재 상태 NAV",
+      "scope": "move_base 시작",
+      "false_positive_or_gap": "무한 대기/불완전 체인 판정",
+      "recovery": "자동 탈출 deadline 없음",
+      "decision": "NARROW",
+      "reason_and_minimal_change": "map frame 문자열 검색은 map→base_Link 연결 증명이 아니며 while true 총 deadline이 없다. 실제 TF chain과 bounded wait로 좁힌다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S1",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K07",
+      "constraint": "floor/supervisor health",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_state.py",
+          "line_start": 151,
+          "line_end": 166,
+          "basis": "repository",
+          "sha256": "31e7b6abb88b18dc559138d7c0a3f6286c463c9b5cbd586c3aaf04782c8dc6a7"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_segments.py",
+          "line_start": 83,
+          "line_end": 96,
+          "basis": "repository",
+          "sha256": "d9cfb814c60baf0e48c3da197ba8f5897b404e1287b8d73eb942ab28a7a69795"
+        }
+      ],
+      "hazard": "잘못된 floor/command owner",
+      "scope": "모든 segment 시작",
+      "false_positive_or_gap": "floor FAULT가 관련 작업도 차단",
+      "recovery": "상위 원인 복구 경로 미완",
+      "decision": "NARROW",
+      "reason_and_minimal_change": "floor와 supervisor의 receipt freshness/FAULT/connected만 검사한다. 모든 segment에 적용해 scan 등 commandless 작업도 묶는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M3",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K08",
+      "constraint": "NAV floor/generation 일치",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/navigation_executor.py",
+          "line_start": 239,
+          "line_end": 250,
+          "basis": "repository",
+          "sha256": "fe6b5146317619e55091e43d785eade84a57d0f39093ca6be19cc2cbe28d9f77"
+        }
+      ],
+      "hazard": "잘못된 지도 목적지 명령",
+      "scope": "NAV 시작",
+      "false_positive_or_gap": "stale state와 실제 상태 구별 필요",
+      "recovery": "최신 floor state 수신",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "NAV READY/floor/generation/NAV owner를 검사한다. 초기 pose·anchor 정합성 전체를 증명하는 gate는 아니다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K09",
+      "constraint": "NAV freshness/zero",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+          "line_start": 80,
+          "line_end": 112,
+          "basis": "repository",
+          "sha256": "29b3aa30368e5c8db2e4b2d8527c70ab1e89ada5c20a4a398eff66e22ed41726"
+        }
+      ],
+      "hazard": "오래된 속도 명령 지속",
+      "scope": "NAV streaming",
+      "false_positive_or_gap": "5Hz controller 대비 0.25s 여유 검토 필요",
+      "recovery": "fresh NAV 입력",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "새 NAV 명령은 자동회복 가능하나 controller5Hz 대비0.25s 여유와 jitter 분포는 측정되지 않았다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K10",
+      "constraint": "transport fault latch",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+          "line_start": 81,
+          "line_end": 98,
+          "basis": "repository",
+          "sha256": "3fb0b7c10da6fd7072738fd639e616c6c1b6e607fef02773871931b81947bf8e"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+          "line_start": 177,
+          "line_end": 183,
+          "basis": "repository",
+          "sha256": "3fb0b7c10da6fd7072738fd639e616c6c1b6e607fef02773871931b81947bf8e"
+        }
+      ],
+      "hazard": "불확실 통신 명령 지속",
+      "scope": "전체 command transport",
+      "false_positive_or_gap": "일시 장애 후 session 회복 불가",
+      "recovery": "현재 node/session 재생성 필요",
+      "decision": "MAKE_RECOVERABLE",
+      "reason_and_minimal_change": "짧은 send 실패는 outage budget 내 허용한다. budget 초과/프로토콜 오류 이후는 새 session 없이는 회복하지 못한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S1",
+      "Mobility": "M3",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K11",
+      "constraint": "stair admission token",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/stair_admission.py",
+          "line_start": 57,
+          "line_end": 107,
+          "basis": "repository",
+          "sha256": "83fab69e20a173ef11e3ca0ef67cf80954f10104be70c421b7c2140ae8498cc3"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_admission.py",
+          "line_start": 23,
+          "line_end": 50,
+          "basis": "repository",
+          "sha256": "d0368d8c78afaa86fa7760664b30d11a09dd5d6b5b712ba13811d50ec680aae6"
+        }
+      ],
+      "hazard": "mission 소유권 없는 stair 요청",
+      "scope": "STAIR 진입",
+      "false_positive_or_gap": "1s lifetime과 recheck 시간 예산",
+      "recovery": "새 admission 발급",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "1초 단일사용 token은 context/epoch/recheck를 결합한다. recheck 지연·서비스 timeout 이후 재발급 경로의 정상 운용 budget은 미검증이다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S3",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K12",
+      "constraint": "post-fence entry pose",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/stair_entry_gate.py",
+          "line_start": 115,
+          "line_end": 176,
+          "basis": "repository",
+          "sha256": "bc9ef176e426fbb6be1563cfb86221226a431c3aa5e04d8055531526ee03f88f"
+        }
+      ],
+      "hazard": "잘못된 진입 위치/방향",
+      "scope": "STAIR 진입",
+      "false_positive_or_gap": "정지 후 새 AMCL 3개 요구 충족 미검증",
+      "recovery": "재시도; nomotion 연결 미확인",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "정지 후 새 AMCL3개 요구의 공급 경로를 함께 조정해야 한다. freshness만 늘리거나 pose gate를 삭제하는 것은 진입 안전 증명이 아니다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S3",
+      "Mobility": "M3",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K13",
+      "constraint": "stair sample gap/freshness",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+          "line_start": 96,
+          "line_end": 156,
+          "basis": "repository",
+          "sha256": "25f0f500db4f53965bdc112601f0231057ce3b84b5b13faba48802ab028fb7de"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_profiles.yaml",
+          "line_start": 18,
+          "line_end": 22,
+          "basis": "repository",
+          "sha256": "423129a9dd29e87e1ee1c09213f06598b531ffefcb779060918a2b7aadde920c"
+        }
+      ],
+      "hazard": "관측 상실 상태 stair 이동",
+      "scope": "계단 profile",
+      "false_positive_or_gap": "0.12s gap 1회로 fault",
+      "recovery": "supervisor FAULT 복구 필요",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "0.12s gap은0.20s freshness보다 먼저 실패한다. 일부 bag gap 존재는 계단중 해당 임계가 불필요함을 입증하지 않는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M3",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K14",
+      "constraint": "stair dwell/progress",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+          "line_start": 169,
+          "line_end": 224,
+          "basis": "repository",
+          "sha256": "25f0f500db4f53965bdc112601f0231057ce3b84b5b13faba48802ab028fb7de"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_profiles.yaml",
+          "line_start": 16,
+          "line_end": 21,
+          "basis": "repository",
+          "sha256": "423129a9dd29e87e1ee1c09213f06598b531ffefcb779060918a2b7aadde920c"
+        }
+      ],
+      "hazard": "계단참 도달 전 회전/이탈",
+      "scope": "계단 phase",
+      "false_positive_or_gap": "미세연속이동도 정지dwell을 통과하는 코드 반례. slip/착지실물증명 없음.",
+      "recovery": "현 구현 FAULT는 process 재생성; 기존 stationary/dwell 판정을 실제 정지 기준으로 수정 후 재관측 필요.",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "수용 step≤0.10m/yaw≤0.20rad가 정지 tolerance0.50m/0.35rad보다 작아 이동 표본도 dwell을 충족한다. per-step 대신 실제 정지·누적이동 기준으로 고친다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S4",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K15",
+      "constraint": "checkpoint cancel",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+          "line_start": 27,
+          "line_end": 29,
+          "basis": "repository",
+          "sha256": "29b3aa30368e5c8db2e4b2d8527c70ab1e89ada5c20a4a398eff66e22ed41726"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+          "line_start": 168,
+          "line_end": 185,
+          "basis": "repository",
+          "sha256": "29b3aa30368e5c8db2e4b2d8527c70ab1e89ada5c20a4a398eff66e22ed41726"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+          "line_start": 218,
+          "line_end": 228,
+          "basis": "repository",
+          "sha256": "29b3aa30368e5c8db2e4b2d8527c70ab1e89ada5c20a4a398eff66e22ed41726"
+        }
+      ],
+      "hazard": "불안정 계단 구간 임의 중단",
+      "scope": "STAIR cancel",
+      "false_positive_or_gap": "LANDING evidence 미완료/FAULT에도 mode 해제·NAV 복귀하는 순수 반례; 취소 지연도 존재",
+      "recovery": "위험 정지와 검증된 ownership 복귀를 분리; 현 구현 복구 불충분",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "cancel이 LANDING 이름만으로 report.faulted/complete보다 먼저 mode 해제·NAV 복귀한다. 위험 정지와 검증된 ownership 반환을 분리한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S4",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K16",
+      "constraint": "tag vote",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/tag_evidence.py",
+          "line_start": 87,
+          "line_end": 92,
+          "basis": "repository",
+          "sha256": "807865e03b2082defc3409ed4fccbf8345780aa32511d63e25bbe6b3b2706e84"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/tag_evidence.py",
+          "line_start": 224,
+          "line_end": 295,
+          "basis": "repository",
+          "sha256": "807865e03b2082defc3409ed4fccbf8345780aa32511d63e25bbe6b3b2706e84"
+        }
+      ],
+      "hazard": "잘못된 floor 확정",
+      "scope": "floor transition",
+      "false_positive_or_gap": "3회/1초/0.5초/10초 임계 실측 미검증",
+      "recovery": "실패 시 floor FAULT",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "잘못된 층 확인 hazard와 평면 NAV를 분리하고 3회/1초/0.5초 기준은 현장 검출률로 조정한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K17",
+      "constraint": "map fingerprint",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/map_evidence.py",
+          "line_start": 256,
+          "line_end": 296,
+          "basis": "repository",
+          "sha256": "28d2be8dcbd85e1b47b08a4223f4f17b47d4a365823db027d3c0b3daf8fd49ed"
+        }
+      ],
+      "hazard": "이전/다른 지도 전이",
+      "scope": "floor transition",
+      "false_positive_or_gap": "동일 identity와 load-time 계약 검증 필요",
+      "recovery": "실패 시 floor FAULT",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "identity와 post-arm/new/monotonic map load-time을 함께 검사한다. 동일지도 재발행·clock 계약에서 필요한 최소 비교는 추가 검증한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K18",
+      "constraint": "AMCL/scan/odom/TF conjunction",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/readiness.py",
+          "line_start": 214,
+          "line_end": 245,
+          "basis": "repository",
+          "sha256": "7c59a2a96417d4fd1d00bcd331b469c3861314563032707357cf060bf95937c2"
+        }
+      ],
+      "hazard": "localization 미확정 후 주행",
+      "scope": "floor transition",
+      "false_positive_or_gap": "pose 갱신과 stationary 필요의 충족 검토",
+      "recovery": "실패 시 floor FAULT",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "AMCL/scan/odom/TF는 서로 다른 사실을 검사한다. 중복이라는 이유로 통째로 제거하지 말고 stationary AMCL 갱신과 timeout만 검증한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K19",
+      "constraint": "costmap metadata equality",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+          "line_start": 170,
+          "line_end": 180,
+          "basis": "repository",
+          "sha256": "cc729336999eec0d51f777445c714d412d5713b4b7401afa969466d4f1b8a173"
+        }
+      ],
+      "hazard": "이전 지도 costmap 사용",
+      "scope": "floor transition",
+      "false_positive_or_gap": "origin/크기 동일성 필요성 미증명",
+      "recovery": "실패 시 floor FAULT",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "전역 costmap의 frame/크기/해상도/origin 일치와 새 sequence를 검사한다. metadata 일치가 obstacle 내용 동기화를 증명하지는 않는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K20",
+      "constraint": "floor confirmed freshness",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+          "line_start": 220,
+          "line_end": 224,
+          "basis": "repository",
+          "sha256": "cc729336999eec0d51f777445c714d412d5713b4b7401afa969466d4f1b8a173"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/transitions.py",
+          "line_start": 214,
+          "line_end": 218,
+          "basis": "repository",
+          "sha256": "e8dfb77c982fb47d9c238e693fcec3cc651f3a8c634dc539c3f3a148a037b783"
+        }
+      ],
+      "hazard": "오래된 floor 관측 사용",
+      "scope": "최종 transition gate",
+      "false_positive_or_gap": "후속 작업 10초 초과 시 관측 갱신 없음",
+      "recovery": "실패 시 floor FAULT",
+      "decision": "NARROW",
+      "reason_and_minimal_change": "한 번 찍힌 FLOOR_CONFIRMED timestamp를 map/AMCL 진행 중 갱신하지 않아10초 경과 정상 전이를 차단할 수 있다. epoch내 확정 사실과 연속 sensor freshness를 분리한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S1",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K21",
+      "constraint": "floor FAULT latch",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+          "line_start": 115,
+          "line_end": 121,
+          "basis": "repository",
+          "sha256": "cc729336999eec0d51f777445c714d412d5713b4b7401afa969466d4f1b8a173"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+          "line_start": 194,
+          "line_end": 209,
+          "basis": "repository",
+          "sha256": "cc729336999eec0d51f777445c714d412d5713b4b7401afa969466d4f1b8a173"
+        }
+      ],
+      "hazard": "불확실 floor 상태 NAV",
+      "scope": "후속 mission",
+      "false_positive_or_gap": "일시 실패도 READY 복구 경로 부재",
+      "recovery": "안전한 runtime 재관측 경로 필요",
+      "decision": "MAKE_RECOVERABLE",
+      "reason_and_minimal_change": "실패가 current floor를 잃게 하고 다음 전이도 READY 조건에서 거절한다. 기존 node내 재관측·재진입 경로가 필요하다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M3",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K22",
+      "constraint": "전체 site bundle validation",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/site_config.py",
+          "line_start": 200,
+          "line_end": 212,
+          "basis": "repository",
+          "sha256": "d6104ee69ef91a992e339b46ce40f48dbdbe49d601994bef329ce88be66d6584"
+        }
+      ],
+      "hazard": "잘못된 지도/route/config",
+      "scope": "모든 mission startup",
+      "false_positive_or_gap": "무관한 층·scan profile 결함도 NAV 차단",
+      "recovery": "bundle 수정 후 재실행",
+      "decision": "NARROW",
+      "reason_and_minimal_change": "전체 site cross-reference의 유효성을 필요한 capability와 분리한다. config type/finite/reference 자체의 검증을 제거하라는 판정은 아니다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S1",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K23",
+      "constraint": "recording mandatory topic count",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/scan_recorder.py",
+          "line_start": 211,
+          "line_end": 236,
+          "basis": "repository",
+          "sha256": "b3970695fd46747c77484d1de765fcb6f7aa0ba19b03dbef82be885251456f19"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/config/scan_profiles.yaml",
+          "line_start": 5,
+          "line_end": 20,
+          "basis": "repository",
+          "sha256": "6d8e1bfb7f2d08bb3df0777986bd162b923384d39bd9c4f62d6f09fd708c6a8a"
+        }
+      ],
+      "hazard": "불완전 녹화 성공 처리",
+      "scope": "INSPECT/RECORD_ROUTE",
+      "false_positive_or_gap": "부모 result가 finalize 이후 발생",
+      "recovery": "topic policy 좁힌 뒤 재시도",
+      "decision": "NARROW",
+      "reason_and_minimal_change": "부모 mission result가 finalize 후 발행되는 순환과 실제 imu topic 불일치를 고친다. topic 수>0은 goal 상관관계·전체 품질 증명이 아니다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S1",
+      "Mobility": "M4",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K24",
+      "constraint": "free space fraction",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/scan_recorder.py",
+          "line_start": 197,
+          "line_end": 209,
+          "basis": "repository",
+          "sha256": "b3970695fd46747c77484d1de765fcb6f7aa0ba19b03dbef82be885251456f19"
+        }
+      ],
+      "hazard": "기록 중 disk exhaustion",
+      "scope": "녹화 시작",
+      "false_positive_or_gap": "총 disk 비율과 실제 필요 용량 차이",
+      "recovery": "저장공간 복구 후 재시도",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "총 disk비율은 예상 rate×duration과 다르다. recording scope에서 예상용량/최소절대여유로 조정한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S0",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K25",
+      "constraint": "artifact root/identity bound",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/scan_recorder.py",
+          "line_start": 114,
+          "line_end": 123,
+          "basis": "repository",
+          "sha256": "b3970695fd46747c77484d1de765fcb6f7aa0ba19b03dbef82be885251456f19"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/scan_recorder.py",
+          "line_start": 180,
+          "line_end": 200,
+          "basis": "repository",
+          "sha256": "b3970695fd46747c77484d1de765fcb6f7aa0ba19b03dbef82be885251456f19"
+        }
+      ],
+      "hazard": "허용 output root 이탈, 기존 bag/marker 덮어쓰기",
+      "scope": "녹화 경로",
+      "false_positive_or_gap": "동시 경로 변경 race 미검증",
+      "recovery": "새 ID/정상 output root",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "resolve+relative_to와ID 검사·기존 marker 거절을 확인했다. writable symlink/TOCTOU까지 보장하지 않아 KEEP 증명이 부족하다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S1",
+      "Mobility": "M1",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K26",
+      "constraint": "robot radius/footprint collision eligibility",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/costmap_common_params.yaml",
+          "line_start": 2,
+          "line_end": 2,
+          "basis": "repository",
+          "sha256": "c25f4256d9e7ae4b336f2cdbe1d5f2f9841a35f6f27f06b75e3c4f0849884e06"
+        },
+        {
+          "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/navfn__src__navfn.cpp",
+          "line_start": 228,
+          "line_end": 255,
+          "basis": "official_upstream_snapshot",
+          "sha256": "42d9b30c79ea0f8546fd0b0dcc324e993f4584832237910673e70643f9d89ed1"
+        },
+        {
+          "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/base_local_planner__src__trajectory_planner.cpp",
+          "line_start": 267,
+          "line_end": 283,
+          "basis": "official_upstream_snapshot",
+          "sha256": "4b9aabd688bee76f1453c8e39bc6e172d7793722884118defdaaeae68934964e"
+        }
+      ],
+      "hazard": "body collision",
+      "scope": "global/local NAV",
+      "false_positive_or_gap": "실측 외곽과 일치 미확인",
+      "recovery": "실측 후 config 검증",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "0.28m는 실측 외곽 증명 전 PHYSICAL_COLLISION_BOUNDARY 후보다. 좁은 통로 때문에 임의 축소하지 않는다. Navfn의 inscribed/lethal 차단과 local footprint trajectory 검사는 다르다. local 일반 충돌거절의 backup 예외는 K43이다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음.",
+      "navigation_classification": "PHYSICAL_COLLISION_BOUNDARY 후보"
+    },
+    {
+      "id": "K27",
+      "constraint": "footprint padding",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/costmap_common_params.yaml",
+          "line_start": 3,
+          "line_end": 3,
+          "basis": "repository",
+          "sha256": "c25f4256d9e7ae4b336f2cdbe1d5f2f9841a35f6f27f06b75e3c4f0849884e06"
+        },
+        {
+          "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/costmap_2d__src__footprint.cpp",
+          "line_start": 138,
+          "line_end": 166,
+          "basis": "official_upstream_snapshot",
+          "sha256": "6f0b4c77fe518180928930249b7022afccf79fddf17c2f343f00725f221911b4"
+        }
+      ],
+      "hazard": "geometry/localization 오차",
+      "scope": "global/local NAV",
+      "false_positive_or_gap": "2cm 근거 미확인",
+      "recovery": "측정된 오차에 맞게 조정",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "0.02m padding은 좌표축 부호별 추가값이다. 실측오차 없이 필요·과잉을 단정하지 않고 OPTIONAL_MARGIN으로 검증한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음.",
+      "navigation_classification": "OPTIONAL_MARGIN"
+    },
+    {
+      "id": "K28",
+      "constraint": "inflation cost",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/local_costmap_params.yaml",
+          "line_start": 24,
+          "line_end": 26,
+          "basis": "repository",
+          "sha256": "664bd7ca6aeb96c34a6163fd964093628e5ece8758ce6c671438ab6fa12c75a0"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/global_costmap_params.yaml",
+          "line_start": 12,
+          "line_end": 14,
+          "basis": "repository",
+          "sha256": "26d292d53a7aa5b159b7a05ddad83cfa1daddd75b21d620c9fe4168eeea0c852"
+        },
+        {
+          "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/costmap_2d__include__costmap_2d__inflation_layer.h",
+          "line_start": 104,
+          "line_end": 119,
+          "basis": "official_upstream_snapshot",
+          "sha256": "2693eedf70146fba4410af7cfaf64aa5d6ed37a303b20c1f135cfede7abd6b3a"
+        }
+      ],
+      "hazard": "벽 근접 비용",
+      "scope": "global/local NAV",
+      "false_positive_or_gap": "soft cost와 금지 영역 혼동 금지",
+      "recovery": "profile 비용 검증",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "0.33m/4.0은 soft cost 영역까지 포함한다.0.05m grid에서 radius7cell로 반올림되는 영역 전체를 통행금지로 해석하지 않는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음.",
+      "navigation_classification": "COMFORT_MARGIN"
+    },
+    {
+      "id": "K29",
+      "constraint": "obstacle/raytrace range",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/local_costmap_params.yaml",
+          "line_start": 14,
+          "line_end": 23,
+          "basis": "repository",
+          "sha256": "664bd7ca6aeb96c34a6163fd964093628e5ece8758ce6c671438ab6fa12c75a0"
+        }
+      ],
+      "hazard": "동적 장애물/잔상",
+      "scope": "FLAT_NAV local map",
+      "false_positive_or_gap": "실센서 coverage·제동거리 미확인",
+      "recovery": "새 관측 clearing",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "local 장애물1.3m/clearing1.4m의 필요 범위는 실sensor coverage·제동 거리와 함께 검증한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M1",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음.",
+      "navigation_classification": "PHYSICAL_COLLISION_BOUNDARY 관측후보"
+    },
+    {
+      "id": "K30",
+      "constraint": "TF age/costmap current",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/local_costmap_params.yaml",
+          "line_start": 6,
+          "line_end": 6,
+          "basis": "repository",
+          "sha256": "664bd7ca6aeb96c34a6163fd964093628e5ece8758ce6c671438ab6fa12c75a0"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/global_costmap_params.yaml",
+          "line_start": 6,
+          "line_end": 6,
+          "basis": "repository",
+          "sha256": "26d292d53a7aa5b159b7a05ddad83cfa1daddd75b21d620c9fe4168eeea0c852"
+        },
+        {
+          "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/costmap_2d__src__costmap_2d_ros.cpp",
+          "line_start": 546,
+          "line_end": 592,
+          "basis": "official_upstream_snapshot",
+          "sha256": "85a1b4a5cbe03dda903911967783780d259f8ce2c9e366ffc6e226dec2787075"
+        },
+        {
+          "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/move_base__src__move_base.cpp",
+          "line_start": 828,
+          "line_end": 832,
+          "basis": "official_upstream_snapshot",
+          "sha256": "6aefdf9795436cb1940ae529554912aa64a63495c510676afb45d6834b7aee1c"
+        }
+      ],
+      "hazard": "오래된 위치로 trajectory 평가",
+      "scope": "NAV costmap",
+      "false_positive_or_gap": "0.5초 근거/clock·TF gap",
+      "recovery": "fresh TF 수신",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "0.5초 TF age와 실제 scan freshness는 다른 계약이다. TF 정상이어도 scan current 보호공백은 D-01에 별도 기록한다. upstream은 current=false에서zero를publish하지만scan buffer의expected_update_rate=0 기본은scan나이검증을제공하지않는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음.",
+      "navigation_classification": "OPTIONAL_MARGIN 시간"
+    },
+    {
+      "id": "K31",
+      "constraint": "goal tolerance/latch",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/base_local_planner_params.yaml",
+          "line_start": 14,
+          "line_end": 16,
+          "basis": "repository",
+          "sha256": "40996021b119c48b36614e3b974224b8e585ea57722bbfde31fbd1861db306eb"
+        }
+      ],
+      "hazard": "목적지 자세 오차",
+      "scope": "NAV 완료 및 stair entry에 재사용",
+      "false_positive_or_gap": "일반 goal과 stair entry hazard 차이",
+      "recovery": "재시도/pose acquisition",
+      "decision": "NARROW",
+      "reason_and_minimal_change": "일반 goal0.25m/0.2rad latch는 stair 진입 공차와 목적이 다르므로 기존 진입 gate에서 엄격도만 분리한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음.",
+      "navigation_classification": "OPTIONAL_MARGIN goal"
+    },
+    {
+      "id": "K32",
+      "constraint": "oscillation/planner patience",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/launch/navigation.launch",
+          "line_start": 53,
+          "line_end": 57,
+          "basis": "repository",
+          "sha256": "f14973f128533922a59d83b194e8ea250aef738c4f7e31f30c5092fb0406fc6b"
+        }
+      ],
+      "hazard": "진전 없는 motion",
+      "scope": "NAV",
+      "false_positive_or_gap": "좁은 통로 정상 회전과 구별 필요",
+      "recovery": "mission bounded retry",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "planner5초/oscillation10초0.2m의 반복abort율은 미측정이다. 정상 제자리회전·좁은 통로를 함께 평가한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S1",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음.",
+      "navigation_classification": "OPTIONAL_MARGIN 시간"
+    },
+    {
+      "id": "K33",
+      "constraint": "recovery disabled",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/launch/navigation.launch",
+          "line_start": 55,
+          "line_end": 55,
+          "basis": "repository",
+          "sha256": "f14973f128533922a59d83b194e8ea250aef738c4f7e31f30c5092fb0406fc6b"
+        },
+        {
+          "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/move_base__src__move_base.cpp",
+          "line_start": 901,
+          "line_end": 990,
+          "basis": "official_upstream_snapshot",
+          "sha256": "6aefdf9795436cb1940ae529554912aa64a63495c510676afb45d6834b7aee1c"
+        }
+      ],
+      "hazard": "불확실 공간에서 recovery 회전",
+      "scope": "모든 NAV",
+      "false_positive_or_gap": "평면 복구도 일괄 차단",
+      "recovery": "현재 새 goal/제한 재시도",
+      "decision": "NARROW",
+      "reason_and_minimal_change": "평면에서 제한된 복구까지 전역 비활성화한다.계단주변 임의회전을 피하면서 기존 recovery 적용범위를 좁힌다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음.",
+      "navigation_classification": "OPTIONAL_MARGIN recovery범위"
+    },
+    {
+      "id": "K34",
+      "constraint": "초기 지도 identity 일치",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_callbacks.py",
+          "line_start": 36,
+          "line_end": 59,
+          "basis": "repository",
+          "sha256": "62371b0feda1abdde7b73c52d8b595c8beff199726e6675ca2f42c10eeb71ffb"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/launch/system.launch",
+          "line_start": 6,
+          "line_end": 22,
+          "basis": "repository",
+          "sha256": "5d44a98f4695b6090306575ab8fc541c0152aa9297b17c935b68baa8d8c4ecf0"
+        }
+      ],
+      "hazard": "지정 floor와 다른 지도 사용",
+      "scope": "startup floor READY",
+      "false_positive_or_gap": "floor만 바꾸고 map default가 남으면 UNKNOWN; pose·anchor 동시 검증 없음",
+      "recovery": "동일 startup 입력으로 map/floor/pose/anchor 재설정",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "floor identity만 맞으면 startup READY이므로 map/floor/pose/anchor를 원자적으로 선택해야 한다. 3F는 구조필수가 아니라 기본지도다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K35",
+      "constraint": "test-fixture opt-in",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_runtime.py",
+          "line_start": 38,
+          "line_end": 54,
+          "basis": "repository",
+          "sha256": "92555bb0988ed26dba4ac62cd04cbd7b469168ea167e751602b68e97a507484c"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/launch/system.launch",
+          "line_start": 51,
+          "line_end": 79,
+          "basis": "repository",
+          "sha256": "5d44a98f4695b6090306575ab8fc541c0152aa9297b17c935b68baa8d8c4ecf0"
+        }
+      ],
+      "hazard": "synthetic 설정의 실장비 적용",
+      "scope": "package config 선택",
+      "false_positive_or_gap": "mission profile gate와 다른 두 node의 allow_test_fixture 분기 일치 필요",
+      "recovery": "production profile로 일관되게 시작",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "mission의2개 opt-in과 floor/stair의 allow_test_fixture 분기가 다르다. 혼합 설정의 정상 거절/회복 계약을 검증한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K36",
+      "constraint": "workstation 전체 실행 lock",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+          "line_start": 178,
+          "line_end": 182,
+          "basis": "repository",
+          "sha256": "70bf3634e5fc1e5c155c3439e7074d23ee0686e2055ce388bc08cc5417141784"
+        }
+      ],
+      "hazard": "중복 managed command owner",
+      "scope": "같은 host의 /tmp/tron1_system.lock",
+      "false_positive_or_gap": "서로 다른 물리 robot/endpoint의 독립 운용도 host lock이 차단할 수 있음; FD 상속과 실제 owner 수명 확인 필요",
+      "recovery": "실제 owner 종료 후 재실행",
+      "decision": "NARROW",
+      "reason_and_minimal_change": "같은 물리 robot/endpoint의 command owner 상호배타는 유지한다. 서로 독립 robot일 때만 owner별 scope 분리를 검토하며, master만 다르다는 이유로 동시 제어를 허용하지 않는다. child FD 상속과 wrapper 종료 후 lock 수명을 정리한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K37",
+      "constraint": "command cadence 30Hz 하한",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_config.py",
+          "line_start": 50,
+          "line_end": 65,
+          "basis": "repository",
+          "sha256": "0d049bf4a2aab70fd52356b87858fe82b0470fd89c6f9c3f0ef2e9bc3d0c4263"
+        }
+      ],
+      "hazard": "transport/firmware command 공백",
+      "scope": "전체 transport startup",
+      "false_positive_or_gap": "문서상 최소와 실제 firmware 계약 미검증",
+      "recovery": "검증한 cadence 설정",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "30Hz는 repository validation 값이다. firmware 실제최소와 공백허용을 실장비 계약 없이 확정하지 않는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K38",
+      "constraint": "twist finite/clipping",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_conversion.py",
+          "line_start": 25,
+          "line_end": 37,
+          "basis": "repository",
+          "sha256": "542d13d66b0d63a9afd89896618edd3019b7c1cf8330ccd3c771f776eae75fab"
+        }
+      ],
+      "hazard": "NaN/Inf·범위 초과 명령",
+      "scope": "전체 NAV/STAIR 전송",
+      "false_positive_or_gap": "full-scale calibration 실측 미검증; clipping이 요청과 실제 동작 차이를 숨김",
+      "recovery": "finite 입력·calibration 정상화",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "nonfinite는zero,finite는full-scale로clipping한다. 기체별calibration을 검증해야하며clipping성공을physical 정지 증거로 세지 않는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M1",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K39",
+      "constraint": "NAV 속도·가속도 envelope",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/base_local_planner_params.yaml",
+          "line_start": 2,
+          "line_end": 9,
+          "basis": "repository",
+          "sha256": "40996021b119c48b36614e3b974224b8e585ea57722bbfde31fbd1861db306eb"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/launch/navigation.launch",
+          "line_start": 68,
+          "line_end": 74,
+          "basis": "repository",
+          "sha256": "f14973f128533922a59d83b194e8ea250aef738c4f7e31f30c5092fb0406fc6b"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/config.env",
+          "line_start": 45,
+          "line_end": 49,
+          "basis": "repository",
+          "sha256": "a76a6c26646bf6f3b9e0ee2bbad050eb580a86e5bba79eccbae63c9e9c21f13e"
+        }
+      ],
+      "hazard": "급가속/과속·기체 제어 한계",
+      "scope": "평면 local planner",
+      "false_positive_or_gap": "실제 제동/회전·floor별 필요성 미측정; YAML과 launch 값을 구분",
+      "recovery": "commissioning 후 기존 config 조정",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "run.sh/config.env가 x0.30/yaw0.80/ax0.4로override한다. YAML만 보고live값을 단정하지 않고 제동·회전 측정으로 조정한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음.",
+      "navigation_classification": "PHYSICAL_COLLISION_BOUNDARY 동역학후보"
+    },
+    {
+      "id": "K40",
+      "constraint": "trajectory horizon/sampling",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/base_local_planner_params.yaml",
+          "line_start": 10,
+          "line_end": 13,
+          "basis": "repository",
+          "sha256": "40996021b119c48b36614e3b974224b8e585ea57722bbfde31fbd1861db306eb"
+        }
+      ],
+      "hazard": "짧은 예측/이산 sample의 충돌 누락",
+      "scope": "local NAV",
+      "false_positive_or_gap": "sim_time1.2/granularity0.05/12×24 후보의 충분성 미검증",
+      "recovery": "같은 planner의 측정 기반 조정",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "1.2초/0.05m/12×24 후보가 실제 장애물·속도에서 충분한지는 미검증이다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음.",
+      "navigation_classification": "OPTIONAL_MARGIN 예측"
+    },
+    {
+      "id": "K41",
+      "constraint": "일반 전진-only/nonholonomic rollout 정책",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/base_local_planner_params.yaml",
+          "line_start": 3,
+          "line_end": 3,
+          "basis": "repository",
+          "sha256": "40996021b119c48b36614e3b974224b8e585ea57722bbfde31fbd1861db306eb"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/base_local_planner_params.yaml",
+          "line_start": 20,
+          "line_end": 20,
+          "basis": "repository",
+          "sha256": "40996021b119c48b36614e3b974224b8e585ea57722bbfde31fbd1861db306eb"
+        }
+      ],
+      "hazard": "후방 coverage 없는 정상 후진",
+      "scope": "일반 sampled NAV",
+      "false_positive_or_gap": "좁은 구역 복구 제한; 별도 escape -0.1은 존재",
+      "recovery": "후방 coverage 검증 후 제한 후보/복구",
+      "decision": "NARROW",
+      "reason_and_minimal_change": "일반 rollout의 min_vel_x=0와 nonholonomic은 별도 backup escape를 없애지 않는다. 후방 coverage가 있는 경우만 좁게 허용을 검토한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음.",
+      "navigation_classification": "OPTIONAL_MARGIN 이동후보"
+    },
+    {
+      "id": "K42",
+      "constraint": "unknown-space 허용",
+      "sources": [
+        {
+          "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/costmap_2d__plugins__static_layer.cpp",
+          "line_start": 69,
+          "line_end": 80,
+          "basis": "official_upstream_snapshot",
+          "sha256": "6f5ed524e1da2d88fad7dbf5b85c937693b51d186caf2a7d80d42ea9ee80d3e0"
+        },
+        {
+          "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/navfn__src__navfn_ros.cpp",
+          "line_start": 73,
+          "line_end": 82,
+          "basis": "official_upstream_snapshot",
+          "sha256": "bf9fcdfdc71e4d5f7eb8b45ed7d626132fe52c0447b9292ca18c317f7f3cf267"
+        }
+      ],
+      "hazard": "관측 불완전 구역 경로 단절 완화",
+      "scope": "global plan",
+      "false_positive_or_gap": "free/unknown/실물 지지면 구별 미검증; 일괄 금지는 정상 경로 차단 가능",
+      "recovery": "floor별 지도·관측 coverage 재검증",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "unknown 허용은 금지 gate가 아닌 upstream navigation 정책이다. free/unknown과 실물 지지면을 구분하지 않고 일괄 금지·허용하지 않는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음.",
+      "kind": "upstream_navigation_policy",
+      "navigation_classification": "미지영역 navigation 정책"
+    },
+    {
+      "id": "K43",
+      "constraint": "내부 backup escape",
+      "sources": [
+        {
+          "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/base_local_planner__src__trajectory_planner_ros.cpp",
+          "line_start": 223,
+          "line_end": 231,
+          "basis": "official_upstream_snapshot",
+          "sha256": "7f374f7c7f370c9d086a1637aaee85e838182bfa4ffcde2593afd15857762a40"
+        },
+        {
+          "file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/audit-tron1-20260918/upstream/base_local_planner__src__trajectory_planner.cpp",
+          "line_start": 849,
+          "line_end": 900,
+          "basis": "official_upstream_snapshot",
+          "sha256": "4b9aabd688bee76f1453c8e39bc6e172d7793722884118defdaaeae68934964e"
+        }
+      ],
+      "hazard": "유효 trajectory 부재 시 탈출",
+      "scope": "local planner fallback",
+      "false_positive_or_gap": "-1 footprint collision cost 양수 변환; 실후방 여유 미검증, recovery_enabled=false와 별개",
+      "recovery": "기존 planner 설정·좁은 recovery 검증",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "upstream escape -0.1와 collision cost -1의 양수변환을 확인했다. 설치 binary 동일성과 실제후방 여유는 미검증이며 recovery=false와 별개다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S3",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음.",
+      "kind": "upstream_navigation_policy",
+      "navigation_classification": "backup escape 정책"
+    },
+    {
+      "id": "K44",
+      "constraint": "모든 recorder process 중복 차단",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/notebooks/03_rosbag_recording.ipynb",
+          "line_start": 165,
+          "line_end": 168,
+          "basis": "repository",
+          "sha256": "f3a9697715a2bcc203df6a4bec94694455faa25a61a832e3877b2c5d64a4d0ad"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/notebooks/check_environment.sh",
+          "line_start": 248,
+          "line_end": 254,
+          "basis": "repository",
+          "sha256": "d29ada0c44ba186efb32c3cca1c9a667de6192c5a1d6defff1e9b79b3114e491"
+        }
+      ],
+      "hazard": "중복 녹화·disk 과부하",
+      "scope": "host의 rosbag record 전체",
+      "false_positive_or_gap": "별도 경로·충분한 용량의 unrelated recorder도 차단",
+      "recovery": "현재 recorder 정상 종료; 대상 경로/자원 단위로 좁히기",
+      "decision": "NARROW",
+      "reason_and_minimal_change": "host전체 rosbag process를 차단한다. 파일충돌과실제resource budget만으로 scope를 좁힐 수 있다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S0",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K45",
+      "constraint": "notebook 녹화10GiB 여유",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/notebooks/03_rosbag_recording.ipynb",
+          "line_start": 173,
+          "line_end": 175,
+          "basis": "repository",
+          "sha256": "f3a9697715a2bcc203df6a4bec94694455faa25a61a832e3877b2c5d64a4d0ad"
+        }
+      ],
+      "hazard": "녹화 중 disk exhaustion",
+      "scope": "모든 manual notebook recording",
+      "false_positive_or_gap": "기록 길이/rate와 무관한 일괄값",
+      "recovery": "여유 공간 확보·예상 용량 기준으로 조정",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "10GiB는 모든수동녹화 공통상수다.예상rate/duration 근거로 조정하고 부족 시 recorder만 거절한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S0",
+      "Mobility": "M2",
+      "origin": "partial45",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 물리 현실성 또는 최소 범위/더 좁은 대안 불충분/완전한 false-positive 회복 중 하나 이상 미입증. KEEP 판정 없음."
+    },
+    {
+      "id": "K46",
+      "constraint": "mission 단일 active goal/BUSY",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/mission_action_server.py",
+          "line_start": 79,
+          "line_end": 112,
+          "basis": "repository",
+          "sha256": "bc7fd4c9398da733d6b260812ac8cb9488c1467a2a3ad79b1d3cf0c16ba0a1f0"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/mission_action_server.py",
+          "line_start": 149,
+          "line_end": 154,
+          "basis": "repository",
+          "sha256": "bc7fd4c9398da733d6b260812ac8cb9488c1467a2a3ad79b1d3cf0c16ba0a1f0"
+        }
+      ],
+      "hazard": "동시에 서로 다른 mission이 child와 논리 anchor를 소유",
+      "scope": "managed mission admission",
+      "false_positive_or_gap": "child result 영구대기 때 정상후속goal도 영구BUSY",
+      "recovery": "활성goal 정상terminal/release; 현재hung child는 process재기동 필요",
+      "decision": "MAKE_RECOVERABLE",
+      "reason_and_minimal_change": "직렬소유는 유지하고 child의 결과소실을 bounded terminal/reconciliation로 처리한다. BUSY자체를 삭제하지 않는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M3",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K47",
+      "constraint": "mission destination/type 입력검사",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/mission_action_server.py",
+          "line_start": 24,
+          "line_end": 45,
+          "basis": "repository",
+          "sha256": "bc7fd4c9398da733d6b260812ac8cb9488c1467a2a3ad79b1d3cf0c16ba0a1f0"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/mission_action_server.py",
+          "line_start": 88,
+          "line_end": 99,
+          "basis": "repository",
+          "sha256": "bc7fd4c9398da733d6b260812ac8cb9488c1467a2a3ad79b1d3cf0c16ba0a1f0"
+        }
+      ],
+      "hazard": "알수없는 목적지/mission종류로 command dispatch",
+      "scope": "새 /mission goal",
+      "false_positive_or_gap": "허용identifier형식과 site변경이 불일치하면 정상목적지 거절",
+      "recovery": "valid goal/등록된 ID 재전송; active 없으면 재시도 가능",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "타입·known-ID 검사는 observed. identifier문법의최소성은 외부 client 계약과 함께검증하며무조건삭제하지않는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M1",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K48",
+      "constraint": "NAV goal finite/quaternion",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/navigation_executor.py",
+          "line_start": 252,
+          "line_end": 269,
+          "basis": "repository",
+          "sha256": "fe6b5146317619e55091e43d785eade84a57d0f39093ca6be19cc2cbe28d9f77"
+        }
+      ],
+      "hazard": "NaN/Inf 또는 잘못된자세 goal이 planner로 전달",
+      "scope": "NAV goal 생성",
+      "false_positive_or_gap": "현재구성에 finite yaw이면 정상quaternion생성; 유한하지만 틀린위치는 검출못함",
+      "recovery": "valid site pose로 재생성",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "유효숫자검사는존재하나실측위치·floor/anchor정합을증명하지않는다. KEEP전체최소성증명과구분한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M1",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K49",
+      "constraint": "stair configured/enabled/profile/direction",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+          "line_start": 120,
+          "line_end": 147,
+          "basis": "repository",
+          "sha256": "29b3aa30368e5c8db2e4b2d8527c70ab1e89ada5c20a4a398eff66e22ed41726"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/route_planner.py",
+          "line_start": 224,
+          "line_end": 230,
+          "basis": "repository",
+          "sha256": "bd1e9ef6450c3321583248455443d0c173e9dd1d967b8ca42bad8e2ed2a1bfe3"
+        }
+      ],
+      "hazard": "허가되지않은방향·profile로 계단동작",
+      "scope": "route STAIR edge와stair goal",
+      "false_positive_or_gap": "disabled profile이경로를제거;현재모든profile enabled여도실측commissioning미검증",
+      "recovery": "해당profile을독립UP/DOWN검증후기존config사용",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "capability를선택할때만적용한다. enabled를실장비합격과동일시하지않는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S3",
+      "Mobility": "M2",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K50",
+      "constraint": "stair traversal lock/NAV/epoch recheck",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+          "line_start": 125,
+          "line_end": 155,
+          "basis": "repository",
+          "sha256": "29b3aa30368e5c8db2e4b2d8527c70ab1e89ada5c20a4a398eff66e22ed41726"
+        }
+      ],
+      "hazard": "동시에NAV와STAIR 또는두stair요청이 command소유",
+      "scope": "stair admission 및 STAIR전환",
+      "false_positive_or_gap": "FAULT/NAV이외에서정상재시도도거절;검사후동일epoch로전환",
+      "recovery": "활성traversal정상종료;FAULT는현재node재생성",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "local lock/epoch는확인됨. 외부직접sender나floorhandoff epoch 보호공백을해결한것으로세지않는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S3",
+      "Mobility": "M2",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K51",
+      "constraint": "zero barrier/startup/finish/close",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+          "line_start": 166,
+          "line_end": 167,
+          "basis": "repository",
+          "sha256": "29b3aa30368e5c8db2e4b2d8527c70ab1e89ada5c20a4a398eff66e22ed41726"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+          "line_start": 218,
+          "line_end": 233,
+          "basis": "repository",
+          "sha256": "29b3aa30368e5c8db2e4b2d8527c70ab1e89ada5c20a4a398eff66e22ed41726"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+          "line_start": 250,
+          "line_end": 261,
+          "basis": "repository",
+          "sha256": "29b3aa30368e5c8db2e4b2d8527c70ab1e89ada5c20a4a398eff66e22ed41726"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+          "line_start": 196,
+          "line_end": 205,
+          "basis": "repository",
+          "sha256": "3fb0b7c10da6fd7072738fd639e616c6c1b6e607fef02773871931b81947bf8e"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_config.py",
+          "line_start": 50,
+          "line_end": 65,
+          "basis": "repository",
+          "sha256": "0d049bf4a2aab70fd52356b87858fe82b0470fd89c6f9c3f0ef2e9bc3d0c4263"
+        }
+      ],
+      "hazard": "mode/owner전환때이전속도명령이잔류",
+      "scope": "startup·STAIR진입/종료·shutdown",
+      "false_positive_or_gap": "send success가물리정지/수신을증명하지않고soft send실패도즉시raise하지않을수있음",
+      "recovery": "정지관측확인후mode반환;단절시현재runtime복구없음",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "횟수증가가아니라기존barrier의전송/정지증거와cleanup순서를명확히한다. 즉시정지와NAV반환을분리한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S3",
+      "Mobility": "M2",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K52",
+      "constraint": "mode request correlation/status/retry",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+          "line_start": 123,
+          "line_end": 175,
+          "basis": "repository",
+          "sha256": "3fb0b7c10da6fd7072738fd639e616c6c1b6e607fef02773871931b81947bf8e"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+          "line_start": 185,
+          "line_end": 201,
+          "basis": "repository",
+          "sha256": "3fb0b7c10da6fd7072738fd639e616c6c1b6e607fef02773871931b81947bf8e"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+          "line_start": 235,
+          "line_end": 244,
+          "basis": "repository",
+          "sha256": "3fb0b7c10da6fd7072738fd639e616c6c1b6e607fef02773871931b81947bf8e"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_tolerances.py",
+          "line_start": 26,
+          "line_end": 45,
+          "basis": "repository",
+          "sha256": "937eac39bff6ee432b201e2e27178718ae6879ef02a03447dce2a0b90dfa049e"
+        }
+      ],
+      "hazard": "다른request응답이나이전mode를성공으로간주",
+      "scope": "STAND/WALK/STAIR 및 emergency abstraction",
+      "false_positive_or_gap": "STAND/ESTOP은expected_status=None;WALK/STAIR만response뒤timestamp status검사. firmware순서/clock미검증",
+      "recovery": "boundedattempt내재시도;초과는terminalFAULT",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "실제firmware의상태통지순서와deadline을검증한다. STAND까지fresh status검증한다는docstring확대해석금지.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S3",
+      "Mobility": "M3",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K53",
+      "constraint": "transport stale command/outage budget",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+          "line_start": 177,
+          "line_end": 183,
+          "basis": "repository",
+          "sha256": "3fb0b7c10da6fd7072738fd639e616c6c1b6e607fef02773871931b81947bf8e"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+          "line_start": 219,
+          "line_end": 233,
+          "basis": "repository",
+          "sha256": "3fb0b7c10da6fd7072738fd639e616c6c1b6e607fef02773871931b81947bf8e"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_tolerances.py",
+          "line_start": 8,
+          "line_end": 23,
+          "basis": "repository",
+          "sha256": "937eac39bff6ee432b201e2e27178718ae6879ef02a03447dce2a0b90dfa049e"
+        }
+      ],
+      "hazard": "오래된 desired twist 지속 또는 장시간송신공백",
+      "scope": "NAV/STAIR 공통transport tick",
+      "false_positive_or_gap": "송신성공시baseline갱신은기체수신/actuation확인이아님;일시실패는budget내회복",
+      "recovery": "fresh command/성공send는budget내회복;초과는K10",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "NAV receipt freshness K09와전송outage는다른사실. 측정jitter에맞춰기존budget만조정한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M3",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K54",
+      "constraint": "계단 profile 전체 timeout",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+          "line_start": 70,
+          "line_end": 74,
+          "basis": "repository",
+          "sha256": "25f0f500db4f53965bdc112601f0231057ce3b84b5b13faba48802ab028fb7de"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+          "line_start": 135,
+          "line_end": 156,
+          "basis": "repository",
+          "sha256": "25f0f500db4f53965bdc112601f0231057ce3b84b5b13faba48802ab028fb7de"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_profiles.yaml",
+          "line_start": 22,
+          "line_end": 22,
+          "basis": "repository",
+          "sha256": "423129a9dd29e87e1ee1c09213f06598b531ffefcb779060918a2b7aadde920c"
+        }
+      ],
+      "hazard": "끝나지않는계단command/관측대기",
+      "scope": "traverse 전체300초, phase별아님",
+      "false_positive_or_gap": "느린정상계단/센서대기포함300초초과시FAULT",
+      "recovery": "현재FAULT후session재생성;안전정지/현위치확인필요",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "phase300초라고표현하지않는다. 실제UP/DOWN전체분포와stop시간으로같은timeout을조정한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M3",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K55",
+      "constraint": "odom monotonic/finite/step/yaw/reverse",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+          "line_start": 96,
+          "line_end": 129,
+          "basis": "repository",
+          "sha256": "25f0f500db4f53965bdc112601f0231057ce3b84b5b13faba48802ab028fb7de"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+          "line_start": 187,
+          "line_end": 209,
+          "basis": "repository",
+          "sha256": "25f0f500db4f53965bdc112601f0231057ce3b84b5b13faba48802ab028fb7de"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_profiles.yaml",
+          "line_start": 16,
+          "line_end": 21,
+          "basis": "repository",
+          "sha256": "423129a9dd29e87e1ee1c09213f06598b531ffefcb779060918a2b7aadde920c"
+        }
+      ],
+      "hazard": "불연속/역방향odom을계단진행으로오인",
+      "scope": "armed stair tracker",
+      "false_positive_or_gap": "timestamp중복·0.10mstep·0.20radyaw1회로fault;slip은여전히통과가능",
+      "recovery": "freshconsistent측정으로원인확인;현재faultclear없음",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "허용움직임과reset/clockgap을분리해측정한다. odom크기일치만으로실제착지·방향안전확정금지.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S3",
+      "Mobility": "M3",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K56",
+      "constraint": "floor transaction BUSY/directed goal/READY",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+          "line_start": 182,
+          "line_end": 209,
+          "basis": "repository",
+          "sha256": "cc729336999eec0d51f777445c714d412d5713b4b7401afa969466d4f1b8a173"
+        }
+      ],
+      "hazard": "동시map교체 또는현재층과무관한전이",
+      "scope": "floor action admission",
+      "false_positive_or_gap": "한번FAULT면정상target도INVALID_GOAL;ownership_epoch검사없음",
+      "recovery": "K21복구후현재floor에맞는전이재시도",
+      "decision": "MAKE_RECOVERABLE",
+      "reason_and_minimal_change": "단일transaction/방향검증을유지하며관측회복후READY재진입을기존node에서가능하게한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M3",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K57",
+      "constraint": "floor service response/evidence deadlines",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_services.py",
+          "line_start": 22,
+          "line_end": 48,
+          "basis": "repository",
+          "sha256": "eee7a8da9a329d4e783a7805c210c537cd7b0eb467da8a516dde9728abea400f"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+          "line_start": 81,
+          "line_end": 84,
+          "basis": "repository",
+          "sha256": "cc729336999eec0d51f777445c714d412d5713b4b7401afa969466d4f1b8a173"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+          "line_start": 123,
+          "line_end": 133,
+          "basis": "repository",
+          "sha256": "cc729336999eec0d51f777445c714d412d5713b4b7401afa969466d4f1b8a173"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+          "line_start": 225,
+          "line_end": 245,
+          "basis": "repository",
+          "sha256": "cc729336999eec0d51f777445c714d412d5713b4b7401afa969466d4f1b8a173"
+        }
+      ],
+      "hazard": "응답없는map/nomotion/costmap peer가전이를영구점유",
+      "scope": "서비스응답기본5초,tag10초,단계evidence30초",
+      "false_positive_or_gap": "대기threadtimeout은외부service를취소하지않아나중에map바뀔수있음",
+      "recovery": "현재FAULT;late결과를동일epoch에서대조해안전재진입필요",
+      "decision": "MAKE_RECOVERABLE",
+      "reason_and_minimal_change": "timeout을삭제하지말고기존epoch/reconciliation으로late sideeffect를처리한다. 새node불필요.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M3",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K58",
+      "constraint": "final policy required/epoch/dwell/deadline",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/transitions.py",
+          "line_start": 145,
+          "line_end": 184,
+          "basis": "repository",
+          "sha256": "e8dfb77c982fb47d9c238e693fcec3cc651f3a8c634dc539c3f3a148a037b783"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/transitions.py",
+          "line_start": 196,
+          "line_end": 221,
+          "basis": "repository",
+          "sha256": "e8dfb77c982fb47d9c238e693fcec3cc651f3a8c634dc539c3f3a148a037b783"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/transitions.yaml",
+          "line_start": 13,
+          "line_end": 22,
+          "basis": "repository",
+          "sha256": "09b5622b86e58c449ce3f35db53bf4e04f3d32e999ab23d325704cbc961c9e5a"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/ros_node.py",
+          "line_start": 135,
+          "line_end": 168,
+          "basis": "repository",
+          "sha256": "cc729336999eec0d51f777445c714d412d5713b4b7401afa969466d4f1b8a173"
+        }
+      ],
+      "hazard": "서로다른전이epoch나미완료localization/costmap을READY로commit",
+      "scope": "고정 map/localization/costmap 단계후최종승인",
+      "false_positive_or_gap": "0.2s dwell/8sdeadline/10sfreshness;고정선행gate가있어YAML변경만으로전체gate제어불가",
+      "recovery": "실패시floorFAULT(K21);epoch내확정관측K20수정후재시도",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "세required사실은별개지만one-shot확정과연속상태의freshness를구분한다.최종YAML만바꿔선행검사를우회하지않는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K59",
+      "constraint": "child server/terminal/result/state coherence",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_segments.py",
+          "line_start": 155,
+          "line_end": 190,
+          "basis": "repository",
+          "sha256": "d9cfb814c60baf0e48c3da197ba8f5897b404e1287b8d73eb942ab28a7a69795"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_segments.py",
+          "line_start": 193,
+          "line_end": 233,
+          "basis": "repository",
+          "sha256": "d9cfb814c60baf0e48c3da197ba8f5897b404e1287b8d73eb942ab28a7a69795"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_state.py",
+          "line_start": 129,
+          "line_end": 143,
+          "basis": "repository",
+          "sha256": "31e7b6abb88b18dc559138d7c0a3f6286c463c9b5cbd586c3aaf04782c8dc6a7"
+        }
+      ],
+      "hazard": "잘못된child결과나이전floor상태를성공처리",
+      "scope": "STAIR/FLOOR child handoff와성공",
+      "false_positive_or_gap": "wait_for_server5초/state수렴5초는bounded지만wait_for_result는무기한",
+      "recovery": "서버/상태복구후재시도;result소실은현재parentBUSY",
+      "decision": "MAKE_RECOVERABLE",
+      "reason_and_minimal_change": "상관관계검증은유지하고無result영구대기를유한처리한다. floor epoch 전달누락은보호공백C10.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M3",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K60",
+      "constraint": "NAV terminal token/cancel/barrier/retry",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/navigation_executor.py",
+          "line_start": 179,
+          "line_end": 237,
+          "basis": "repository",
+          "sha256": "fe6b5146317619e55091e43d785eade84a57d0f39093ca6be19cc2cbe28d9f77"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/navigation_executor.py",
+          "line_start": 271,
+          "line_end": 298,
+          "basis": "repository",
+          "sha256": "fe6b5146317619e55091e43d785eade84a57d0f39093ca6be19cc2cbe28d9f77"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/ros_state.py",
+          "line_start": 168,
+          "line_end": 189,
+          "basis": "repository",
+          "sha256": "31e7b6abb88b18dc559138d7c0a3f6286c463c9b5cbd586c3aaf04782c8dc6a7"
+        }
+      ],
+      "hazard": "이전goal terminal/진행중속도를새segment소유로혼동",
+      "scope": "NAV실행·cancel·STAIRhandoff",
+      "false_positive_or_gap": "terminal무기한대기,clear_costmaps동기호출;stationary barrier는관측기준이고직접zero발행안함",
+      "recovery": "terminal확인·stationary회복;현hung call은재기동필요",
+      "decision": "MAKE_RECOVERABLE",
+      "reason_and_minimal_change": "최대2attempt는유지하고response부재·cancelrace를같은executor에서bounded처리한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S3",
+      "Mobility": "M3",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K61",
+      "constraint": "directed route/return/profile/anchor",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/route_planner.py",
+          "line_start": 109,
+          "line_end": 115,
+          "basis": "repository",
+          "sha256": "bd1e9ef6450c3321583248455443d0c173e9dd1d967b8ca42bad8e2ed2a1bfe3"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/route_planner.py",
+          "line_start": 145,
+          "line_end": 177,
+          "basis": "repository",
+          "sha256": "bd1e9ef6450c3321583248455443d0c173e9dd1d967b8ca42bad8e2ed2a1bfe3"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/route_planner.py",
+          "line_start": 193,
+          "line_end": 230,
+          "basis": "repository",
+          "sha256": "bd1e9ef6450c3321583248455443d0c173e9dd1d967b8ca42bad8e2ed2a1bfe3"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/mission_orchestrator.py",
+          "line_start": 134,
+          "line_end": 145,
+          "basis": "repository",
+          "sha256": "4ef064bac0a88f6292a62064032f5cf6a292493cc2aa941318384b3611a97a69"
+        }
+      ],
+      "hazard": "없는연결/틀린anchor를추정해다음주행dispatch",
+      "scope": "경로계획·optionalreturn·성공anchorcommit",
+      "false_positive_or_gap": "누락된역방향NAVedge로return차단;실제위치와anchor불일치검출은없음",
+      "recovery": "실측endpoint에맞는directed edge복구;confirmed anchor에서재계획",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "안전gate삭제대신누락graph를고치고return가능성을동작전표시한다. nearest-anchor자동추정은현재구현아님.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K62",
+      "constraint": "recording active/finalize/invalid lifecycle",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/recording_session.py",
+          "line_start": 83,
+          "line_end": 104,
+          "basis": "repository",
+          "sha256": "f43812fccf408fa7b87b13ab4a47592a2cf6011416f60b26f54088dbd1c71d7f"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/recording_session.py",
+          "line_start": 129,
+          "line_end": 164,
+          "basis": "repository",
+          "sha256": "f43812fccf408fa7b87b13ab4a47592a2cf6011416f60b26f54088dbd1c71d7f"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/recording_session.py",
+          "line_start": 184,
+          "line_end": 197,
+          "basis": "repository",
+          "sha256": "f43812fccf408fa7b87b13ab4a47592a2cf6011416f60b26f54088dbd1c71d7f"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/scan_recorder.py",
+          "line_start": 211,
+          "line_end": 236,
+          "basis": "repository",
+          "sha256": "b3970695fd46747c77484d1de765fcb6f7aa0ba19b03dbef82be885251456f19"
+        }
+      ],
+      "hazard": "죽은recorder/강제종료/불완전bag을완성artifact로승인",
+      "scope": "INSPECT/RECORD_ROUTE recorder만",
+      "false_positive_or_gap": ".active표시지연/종료timeout이면invalid;경계검사만으로연속recording품질미보장",
+      "recovery": "새recordinggeneration;성공한NAVanchor를artifact실패와분리해유지",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "artifactvalidity와motion성공을별개결과로처리한다. C06/C07결함수정없이다른정상주행까지실패시키지않는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S1",
+      "Mobility": "M2",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K63",
+      "constraint": "manual notebook ARM/NAV/managed exclusion",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/notebooks/02_pose_and_nav_goal.ipynb",
+          "line_start": 115,
+          "line_end": 134,
+          "basis": "repository",
+          "sha256": "939e629b0b3f69c24ba5efb4b5e221ffd69a5f114908f833b487aa2ec0676837"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/notebooks/02_pose_and_nav_goal.ipynb",
+          "line_start": 275,
+          "line_end": 312,
+          "basis": "repository",
+          "sha256": "939e629b0b3f69c24ba5efb4b5e221ffd69a5f114908f833b487aa2ec0676837"
+        }
+      ],
+      "hazard": "managed mission과직접move_base동시소유/무의도수동goal",
+      "scope": "수동notebook goal셀",
+      "false_positive_or_gap": "stale node등록에도managed충돌로거절;booleanarm은실제현장확인증명아님",
+      "recovery": "같은master의실owner확인후manual흐름재검사;timeout은cancel요청",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "도구의명시arm과NAV연결체크를확인했다.ROS권한통제나managed수준localization증명과동일시하지않는다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S3",
+      "Mobility": "M2",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K64",
+      "constraint": "manual capture required topic/type/message/count",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/manual_mission_capture.py",
+          "line_start": 83,
+          "line_end": 100,
+          "basis": "repository",
+          "sha256": "8dedf68a7b69b23a830e2bba6675d94b951111852bd5af33f376e04ee41bf046"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/manual_mission_capture.py",
+          "line_start": 203,
+          "line_end": 224,
+          "basis": "repository",
+          "sha256": "8dedf68a7b69b23a830e2bba6675d94b951111852bd5af33f376e04ee41bf046"
+        }
+      ],
+      "hazard": "camera/lidar/odom/controller등없는녹화를완성증거로채택",
+      "scope": "manualcapture전용,자율NAVgate아님",
+      "false_positive_or_gap": "사용하지않는실험topic도필수면capture전체거절;단일message/count는연속coverage아님",
+      "recovery": "해당capture목적필수topic회복또는명시profile조정후재녹화",
+      "decision": "NARROW",
+      "reason_and_minimal_change": "관측목적에필요한topic집합으로좁히되기록결손은명시한다. SDKreceiver자동시작은E01별도sideeffect.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S1",
+      "Mobility": "M2",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K65",
+      "constraint": "startup process/connectivity/time/readiness deadlines",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+          "line_start": 212,
+          "line_end": 220,
+          "basis": "repository",
+          "sha256": "70bf3634e5fc1e5c155c3439e7074d23ee0686e2055ce388bc08cc5417141784"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+          "line_start": 236,
+          "line_end": 245,
+          "basis": "repository",
+          "sha256": "70bf3634e5fc1e5c155c3439e7074d23ee0686e2055ce388bc08cc5417141784"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+          "line_start": 281,
+          "line_end": 346,
+          "basis": "repository",
+          "sha256": "70bf3634e5fc1e5c155c3439e7074d23ee0686e2055ce388bc08cc5417141784"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+          "line_start": 361,
+          "line_end": 372,
+          "basis": "repository",
+          "sha256": "70bf3634e5fc1e5c155c3439e7074d23ee0686e2055ce388bc08cc5417141784"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/verify_action_servers.py",
+          "line_start": 30,
+          "line_end": 34,
+          "basis": "repository",
+          "sha256": "70c886398ff95b9324a5cbe9e49226d872b50433edf03adb41ccc04303f5f0f9"
+        }
+      ],
+      "hazard": "master/tunnel/action/sensor부재인startup을READY로표시",
+      "scope": "managed run startup",
+      "false_positive_or_gap": "각retry는bounded여도RPC무제한지점/순차합산긴대기존재;TF문자열루프는K06",
+      "recovery": "해당owner복구후현재는전체wrapper재실행",
+      "decision": "NARROW",
+      "reason_and_minimal_change": "실제사용capability와총deadline으로좁힌다. action등록검사와실client연결verify를구분한다.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S1",
+      "Mobility": "M3",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨."
+    },
+    {
+      "id": "K66",
+      "constraint": "navigation grid/rolling coverage/update cadence",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/local_costmap_params.yaml",
+          "line_start": 4,
+          "line_end": 10,
+          "basis": "repository",
+          "sha256": "664bd7ca6aeb96c34a6163fd964093628e5ece8758ce6c671438ab6fa12c75a0"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/config/nav/global_costmap_params.yaml",
+          "line_start": 4,
+          "line_end": 8,
+          "basis": "repository",
+          "sha256": "26d292d53a7aa5b159b7a05ddad83cfa1daddd75b21d620c9fe4168eeea0c852"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/launch/navigation.launch",
+          "line_start": 53,
+          "line_end": 53,
+          "basis": "repository",
+          "sha256": "f14973f128533922a59d83b194e8ea250aef738c4f7e31f30c5092fb0406fc6b"
+        }
+      ],
+      "hazard": "격자밖/낡은collisionmodel로trajectory판정",
+      "scope": "local4×4m0.05m5Hz,global0.05m1Hz,controller5Hz",
+      "false_positive_or_gap": "5cmcell과2m반폭이좁은통로·계획갱신에영향;publish2Hz와update5Hz구분",
+      "recovery": "freshmap/TF/scan갱신;measuredgeometry기반동일plannerconfig조정",
+      "decision": "UNVERIFIED",
+      "reason_and_minimal_change": "grid5cm당한cell여유가실측위치오차와비슷할수있다.일괄해상도축소가최소개선이라는증거없음.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M2",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨.",
+      "navigation_classification": "OPTIONAL_MARGIN 격자/coverage"
+    },
+    {
+      "id": "K67",
+      "constraint": "AMCL range/update/covariance policy",
+      "sources": [
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/launch/navigation.launch",
+          "line_start": 25,
+          "line_end": 43,
+          "basis": "repository",
+          "sha256": "f14973f128533922a59d83b194e8ea250aef738c4f7e31f30c5092fb0406fc6b"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/src/multifloor_manager/readiness.py",
+          "line_start": 214,
+          "line_end": 245,
+          "basis": "repository",
+          "sha256": "7c59a2a96417d4fd1d00bcd331b469c3861314563032707357cf060bf95937c2"
+        },
+        {
+          "file": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/src/mission_manager/stair_entry_gate.py",
+          "line_start": 127,
+          "line_end": 162,
+          "basis": "repository",
+          "sha256": "bc9ef176e426fbb6be1563cfb86221226a431c3aa5e04d8055531526ee03f88f"
+        }
+      ],
+      "hazard": "오래되거나불확실한localization을신뢰",
+      "scope": "AMCL사용관측과gate에공급되는pose",
+      "false_positive_or_gap": "0.3–12m laser/0.1m·rad update문턱과post-fence정지samples수요가충돌할수있음",
+      "recovery": "기존nomotion update와subscriber관측순서정리;대칭복도재관측",
+      "decision": "TUNE",
+      "reason_and_minimal_change": "AMCL upstream이정의한업데이트와repo의pose필요조건을맞춘다.공분산작음만으로위치정답증명아님.",
+      "evidence": {
+        "implementation": "OBSERVED",
+        "operational_implication": "INFERRED",
+        "physical_hazard_threshold_minimality": "UNVERIFIED"
+      },
+      "Safety": "S2",
+      "Mobility": "M3",
+      "origin": "final_scope_reconciliation",
+      "KEEP_minimum_proof": "NOT_ESTABLISHED: 최소범위/물리조건/더좁은대안불충분/falsepositive회복 전체입증안됨.",
+      "navigation_classification": "OPTIONAL_MARGIN localization"
+    }
+  ]
+}

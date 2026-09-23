@@ -209,8 +209,12 @@ class MockMissionChildren:
     def _location_id_from_nav_goal(self, goal: MoveBaseGoal) -> str | None:
         x = goal.target_pose.pose.position.x
         y = goal.target_pose.pose.position.y
+        q = goal.target_pose.pose.orientation
+        yaw = math.atan2(2.0 * (q.w * q.z + q.x * q.y), 1.0 - 2.0 * (q.y * q.y + q.z * q.z))
         for location_id, location in self._locations.items():
-            if abs(location["x"] - x) < 1e-3 and abs(location["y"] - y) < 1e-3:
+            yaw_error = math.atan2(math.sin(location["yaw"] - yaw), math.cos(location["yaw"] - yaw))
+            if (location["floor_id"] == self._floor_id and abs(location["x"] - x) < 1e-3 and
+                    abs(location["y"] - y) < 1e-3 and abs(yaw_error) < 1e-3):
                 return location_id
         return None
 

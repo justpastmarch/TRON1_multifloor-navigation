@@ -1,0 +1,30 @@
+{
+  "at_utc": "2026-09-23T00:29:58.124894+00:00",
+  "changes": [
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/ros_lidar.py",
+      "before_sha256": "e299f3e13b73197bbe8576aac58285230f22820f11002837cfe319d7c5ecb4a2",
+      "after_sha256": "ca479bca748670767dcf462617c21a543afa36a4a925fcc67528b09cbeb6e7e3"
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/stair_feedback.py",
+      "before_sha256": "2b860f381b992668f9a58a7b6e21e6bde51653722a6e738a94e7c2b410e59ff1",
+      "after_sha256": "341528169fda5ce1211d624cb1cd089e071c2ef092a1dc94fa72a59430696f00"
+    },
+    {
+      "path": "src/stair_supervisor/test/test_lidar_ros_adapter.py",
+      "before_sha256": "169df0a194a2a66710b9edd3445782425568ccfa885d62cec81bacd77ca2ad03",
+      "after_sha256": "6b76253c406137880a32195ce952c0c0fadbf1392ce7ce57639d47dfe1fb9a8d"
+    },
+    {
+      "path": "src/stair_supervisor/test/test_lidar_control.py",
+      "before_sha256": "635c4bca1c16117ee5cc40b9597f35821cd5967350e45d6f03b7329d8f6ca874",
+      "after_sha256": "4e3631cf9c24e9ad0e08b3994da7b1efec3ada55800d9c0878d982984c4e759c"
+    }
+  ],
+  "new_nodes": 0,
+  "route_configuration_changed": false,
+  "phase_order_changed": false,
+  "goals_sent": 0,
+  "requires_restart": true
+}

@@ -1,0 +1,1373 @@
+{
+  "temporary_root": "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9",
+  "events": [
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp_3hq9igi"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp_3hq9igi/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp_3hq9igi/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp_3hq9igi/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp_3hq9igi/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp_3hq9igi/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp_3hq9igi"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp_3hq9igi"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp4etqajet"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp4etqajet"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp4etqajet"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag.invalid"
+      ]
+    },
+    {
+      "event": "os.remove",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag.invalid"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag.invalid"
+      ]
+    },
+    {
+      "event": "os.remove",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag.invalid"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag.invalid"
+      ]
+    },
+    {
+      "event": "os.remove",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm/artifacts/scans/mission-42_roof_1700000000000000000.bag.invalid"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp2_fuytzm"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmphw59n102"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmphw59n102/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmphw59n102/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmphw59n102/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmphw59n102/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmphw59n102/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmphw59n102/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmphw59n102/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmphw59n102/artifacts/scans/mission-42_roof_1700000000000000000.bag"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmphw59n102"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmphw59n102"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpruuyq68i"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpruuyq68i/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpruuyq68i/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpruuyq68i/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpruuyq68i/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpruuyq68i/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpruuyq68i/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpruuyq68i/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpruuyq68i/artifacts/scans/mission-42_roof_1700000000000000000.bag"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpruuyq68i/artifacts/scans/mission-42_roof_1700000000000000000.bag",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpruuyq68i/artifacts/scans/mission-42_roof_1700000000000000000.bag.invalid"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpruuyq68i"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpruuyq68i"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpy1gv9u2o"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpy1gv9u2o/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpy1gv9u2o/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpy1gv9u2o/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpy1gv9u2o/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpy1gv9u2o"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpy1gv9u2o"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpd8t0kydl"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpd8t0kydl/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpd8t0kydl/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpd8t0kydl/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpd8t0kydl/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpd8t0kydl/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpd8t0kydl/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpd8t0kydl/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpd8t0kydl/artifacts/scans/mission-42_roof_1700000000000000000.bag"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpd8t0kydl"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpd8t0kydl"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp3l2_gpmz"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp3l2_gpmz/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp3l2_gpmz/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp3l2_gpmz/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp3l2_gpmz/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp3l2_gpmz/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp3l2_gpmz/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp3l2_gpmz/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp3l2_gpmz/artifacts/scans/mission-42_roof_1700000000000000000.bag.active.invalid"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp3l2_gpmz"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp3l2_gpmz"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpveji4fw3"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpveji4fw3"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpveji4fw3"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpeo_i62dt"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpeo_i62dt/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpeo_i62dt/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpeo_i62dt/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpeo_i62dt/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpeo_i62dt/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpeo_i62dt/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpeo_i62dt/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpeo_i62dt/artifacts/scans/mission-42_roof_1700000000000000000.bag"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpeo_i62dt/artifacts/scans/mission-42_roof_1700000000000000000.bag",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpeo_i62dt/artifacts/scans/mission-42_roof_1700000000000000000.bag.invalid"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpeo_i62dt"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpeo_i62dt"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag.invalid"
+      ]
+    },
+    {
+      "event": "os.remove",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag.invalid"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag.invalid"
+      ]
+    },
+    {
+      "event": "os.remove",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag.invalid"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag.invalid"
+      ]
+    },
+    {
+      "event": "os.remove",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp/artifacts/scans/mission-42_roof_1700000000000000000.bag.invalid"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpowhoxglp"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoibyjrbq"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoibyjrbq/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoibyjrbq/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoibyjrbq/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoibyjrbq/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoibyjrbq"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoibyjrbq"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo25s2id2"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo25s2id2/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo25s2id2/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo25s2id2/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo25s2id2/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo25s2id2/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo25s2id2/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo25s2id2/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo25s2id2/artifacts/scans/mission-42_roof_1700000000000000000.bag"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo25s2id2/artifacts/scans/mission-42_roof_1700000000000000000.bag",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo25s2id2/artifacts/scans/mission-42_roof_1700000000000000000.bag.invalid"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo25s2id2"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo25s2id2"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp3r8n8l1_"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp3r8n8l1_"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp3r8n8l1_"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo9vcbkzz"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo9vcbkzz/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo9vcbkzz/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo9vcbkzz/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo9vcbkzz/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo9vcbkzz/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo9vcbkzz/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo9vcbkzz/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo9vcbkzz/artifacts/scans/mission-42_roof_1700000000000000000.bag.active.invalid"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo9vcbkzz"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpo9vcbkzz"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpm411reew"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpm411reew/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpm411reew/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpm411reew/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpm411reew/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpm411reew/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpm411reew/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpm411reew/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpm411reew/artifacts/scans/mission-42_roof_1700000000000000000.bag.active.invalid"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpm411reew"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpm411reew"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp8pkbliyp"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp8pkbliyp/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp8pkbliyp/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp8pkbliyp/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp8pkbliyp/artifacts/scans/mission-42_roof_1700000000000000000.bag"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp8pkbliyp/artifacts/scans/mission-42_roof_1700000000000000000.bag"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp8pkbliyp"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp8pkbliyp"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp23tp1ef3"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp23tp1ef3/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp23tp1ef3/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp23tp1ef3/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp23tp1ef3/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp23tp1ef3/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp23tp1ef3/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp23tp1ef3/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp23tp1ef3/artifacts/scans/mission-42_roof_1700000000000000000.bag"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp23tp1ef3"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp23tp1ef3"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp51it_xiq"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp51it_xiq/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp51it_xiq/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp51it_xiq/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp51it_xiq/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp51it_xiq/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp51it_xiq/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp51it_xiq/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp51it_xiq/artifacts/scans/mission-42_roof_1700000000000000000.bag.active.invalid"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp51it_xiq"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmp51it_xiq"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoxd7ydtv"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoxd7ydtv/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoxd7ydtv/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoxd7ydtv/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoxd7ydtv/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoxd7ydtv/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoxd7ydtv/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoxd7ydtv/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoxd7ydtv/artifacts/scans/mission-42_roof_1700000000000000000.bag"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoxd7ydtv/artifacts/scans/mission-42_roof_1700000000000000000.bag",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoxd7ydtv/artifacts/scans/mission-42_roof_1700000000000000000.bag.invalid"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoxd7ydtv"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpoxd7ydtv"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpmbgxesnz"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpmbgxesnz/blocked"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpmbgxesnz/blocked"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpmbgxesnz/blocked/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpmbgxesnz"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpmbgxesnz"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpvvsjz7i_"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpvvsjz7i_/artifacts/scans"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpvvsjz7i_/artifacts"
+      ]
+    },
+    {
+      "event": "os.mkdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpvvsjz7i_/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpvvsjz7i_/artifacts/scans"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpvvsjz7i_/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpvvsjz7i_/artifacts/scans/mission-42_roof_1700000000000000000.bag.active"
+      ]
+    },
+    {
+      "event": "os.rename",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpvvsjz7i_/artifacts/scans/mission-42_roof_1700000000000000000.bag.active",
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpvvsjz7i_/artifacts/scans/mission-42_roof_1700000000000000000.bag"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpvvsjz7i_"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9/tmpvvsjz7i_"
+      ]
+    },
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-00nvvcw9"
+      ]
+    }
+  ],
+  "root_removed": true,
+  "remaining_threads": []
+}

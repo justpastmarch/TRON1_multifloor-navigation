@@ -1,0 +1,226 @@
+{
+  "operation": "apply",
+  "time_utc": "2026-09-22T13:35:59.986604+00:00",
+  "repository": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation",
+  "head_before": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+  "head_after": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+  "files": [
+    {
+      "path": "docs/stair-driving-repair-20260922/REPORT.md",
+      "before_sha256": null,
+      "after_sha256": "fb12540b7b2bca145b82ad1d8ac74ea92df587e4c5a64e8b8c628d7f3016327b"
+    },
+    {
+      "path": "docs/stair-driving-repair-20260922/evidence/baseline-regressions.json",
+      "before_sha256": null,
+      "after_sha256": "b8db04e756a1b341ce892fbc40f0e542cc7c48d609569ac5adb6eee6997c210b"
+    },
+    {
+      "path": "docs/stair-driving-repair-20260922/evidence/geometry-verification.json",
+      "before_sha256": null,
+      "after_sha256": "7fdd2dd67e1be701173a00e320e74862976545c33ad32d204f2d4a56319367de"
+    },
+    {
+      "path": "docs/stair-driving-repair-20260922/evidence/horizontal-surfaces.png",
+      "before_sha256": null,
+      "after_sha256": "ef33e481c9dd5c16c9d0407c0f7b191662fb1bae9fa4cfe5e5e9135544a4d845"
+    },
+    {
+      "path": "docs/stair-driving-repair-20260922/evidence/landing-measurements.json",
+      "before_sha256": null,
+      "after_sha256": "cbbcb97e81a4d99eb09052ccb56bc01bb79420db5a4865dd220b4bf02b85a7a9"
+    },
+    {
+      "path": "docs/stair-driving-repair-20260922/evidence/raw-geometry-overview.png",
+      "before_sha256": null,
+      "after_sha256": "d1adb97b1424c69d6d79da354f5deaf87385fbd767332bb89d07bee1753d1f66"
+    },
+    {
+      "path": "docs/stair-driving-repair-20260922/evidence/recorded-control-results.json",
+      "before_sha256": null,
+      "after_sha256": "558c148ce27352f6a68d9e2b098f166e4f24b7eff0a528702f0618ee50a46ad3"
+    },
+    {
+      "path": "docs/stair-driving-repair-20260922/evidence/recording-result.json",
+      "before_sha256": null,
+      "after_sha256": "bd4897e274852ce55860640b3632c9543e81beae04e407d66b09c43585af4ef1"
+    },
+    {
+      "path": "docs/stair-driving-repair-20260922/evidence/recording-ros-results.json",
+      "before_sha256": null,
+      "after_sha256": "187f9c806c99a79d4ad0f8f5bc3f56e1ab3640fc02e0a0605b9f5b47d313f071"
+    },
+    {
+      "path": "docs/stair-driving-repair-20260922/evidence/ros-results.json",
+      "before_sha256": null,
+      "after_sha256": "ee69d09600b16274f7245ef33a35e3b11e5de009eef7ad6c7b28e2a3bba9e197"
+    },
+    {
+      "path": "docs/stair-driving-repair-20260922/evidence/session-tool-results.json",
+      "before_sha256": null,
+      "after_sha256": "7d2f51edd60ab65ef847054bc111a012cc016188caff19bd14d87c34ba5341d3"
+    },
+    {
+      "path": "docs/stair-driving-repair-20260922/evidence/unit-results.json",
+      "before_sha256": null,
+      "after_sha256": "c1cbde893a479ab653bea28fea1be14aa698d180ce08be2200d755c2d7739bea"
+    },
+    {
+      "path": "docs/tron-documentation-20260922/APPLICATION_GUIDE.md",
+      "before_sha256": "6ae28d9090fe6d3ffca56791b13919eec6e9d56ec8e43a93e7c55ffbc9138e62",
+      "after_sha256": "090ac5390e279ebc41c40eb30de309d701bcadb5167fced74c8e5b7a46dc9bea"
+    },
+    {
+      "path": "docs/tron-documentation-20260922/README.md",
+      "before_sha256": "a84da90123a9fea52cf5d0583897662e3d355cacfa68b0297a52fd5dc945cf2f",
+      "after_sha256": "6250e767a107d781ef55dd401d9aa1673d13c1f36cb22ad67992055d56c98e50"
+    },
+    {
+      "path": "run.sh",
+      "before_sha256": "e57ebca4c0f1cfaa5ae611d88f6637f957dbb2a326ced8b1c479fda85633d424",
+      "after_sha256": "a61c0dad1e876ea4f2b89aeb36f793de5ecdaafba59ecb3258270dcbacf4f271"
+    },
+    {
+      "path": "src/stair_supervisor/CMakeLists.txt",
+      "before_sha256": "2625702c9c8ce2341c5806a8a2e3345eb641b117818d07b243dde4f9a3f11855",
+      "after_sha256": "87e0e58a6d3e08bf7b2519fdd70a13681f38a5015a3306587184acc682852b1c"
+    },
+    {
+      "path": "src/stair_supervisor/rviz/stair_lidar_control.rviz",
+      "before_sha256": null,
+      "after_sha256": "8f71c95dc05a237d81fac06e92ce48a0b93f4aa0ad715b86a49e4320b8492f9c"
+    },
+    {
+      "path": "src/stair_supervisor/scripts/check_lidar_config.py",
+      "before_sha256": null,
+      "after_sha256": "d5913eb266cd0209355da628af883fa5d1d7424c8a016d14fe51f5205108572b"
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/configuration.py",
+      "before_sha256": "3768f9af50e83a061013c1216a7482c7c713a991f5237534b89721498f247275",
+      "after_sha256": "0d389a3b46bf0a3e4f3226183b32452b7bcfcddfaf9e9aed0d897f0bf3ef13c7"
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/ros_lidar.py",
+      "before_sha256": "b7fe747d572c99a99cfdf0588b11253a67a092fb221d1548ab0730c40b8d172b",
+      "after_sha256": "b12487f7836726db88369b66b425dd9e0115ad550bf12c170956336a3a105960"
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/stair_feedback.py",
+      "before_sha256": "d8078d5419a3e82dc3c0539a293d5abfbe3b68af9b90c07c2befcce309ccca3e",
+      "after_sha256": "6dbd02fb2c61b5606f269f125cc69f458a7a736672cb77e60b126ab500e16fa0"
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "before_sha256": "cf70c5bf6a90dd449e6f8573f2b3be0b62c5acbeb599e9e9e2e8f6d1a5109f2d",
+      "after_sha256": "2376ce9c961c91e5df8c4f87300795ed251d6dc8daeea80f2518896e18d3d05a"
+    },
+    {
+      "path": "src/stair_supervisor/test/test_lidar_observe_ros.py",
+      "before_sha256": "b04f1a637c0da2685427f9a84d889fe50bef2ca51bcff073d0c18e25ab661597",
+      "after_sha256": "effeafa4f1bfc4bb98c899c972e8d7b469679d1cc34569503b54d88b4c5cea16"
+    },
+    {
+      "path": "src/stair_supervisor/test/test_lidar_phase_test.py",
+      "before_sha256": "819ad1efdc446094be8660814629612eaf7e6abde1a047a8f360a48ae0b79a22",
+      "after_sha256": "30612fb69b6d06160e46a63b184e2ee9730ed3bd8b71cd28bd0afa100731434f"
+    },
+    {
+      "path": "src/stair_supervisor/test/test_lidar_ros_adapter.py",
+      "before_sha256": "356d87ba31a8b6fde8753061ebcacbe0747fe0b127acf913693b4001d6c886b5",
+      "after_sha256": "cad6b783eecaa2fe57a33e12319e70534fa8db6e7b216a9d5e6635b025b0f7b9"
+    },
+    {
+      "path": "src/stair_supervisor/test/test_stair_repair.py",
+      "before_sha256": null,
+      "after_sha256": "8f82b74ea415c87f1f3dea22405211ff66d9cd301e036f356a063db9fe0f833c"
+    },
+    {
+      "path": "src/stair_supervisor/test/test_supervisor.py",
+      "before_sha256": "b1b2fbae20322532f7675bf6102944b006234db204031d6e6851b79bf7193a15",
+      "after_sha256": "53828522611a7f3ae0eb19df980cd5256c984d2170d6dcbd21e2bb16e0d33e93"
+    },
+    {
+      "path": "stair_control_session.sh",
+      "before_sha256": null,
+      "after_sha256": "875b7efa44e93dfa9b052ea9eded41b12586c5f45b2809b28411274433828e66"
+    }
+  ],
+  "unchanged_staged_files": [
+    "config.env",
+    "src/stair_supervisor/package.xml",
+    "src/stair_supervisor/requirements-lidar.txt",
+    "src/stair_supervisor/setup.py",
+    "src/stair_supervisor/.pytest_cache/.gitignore",
+    "src/stair_supervisor/.pytest_cache/README.md",
+    "src/stair_supervisor/.pytest_cache/CACHEDIR.TAG",
+    "src/stair_supervisor/.pytest_cache/v/cache/lastfailed",
+    "src/stair_supervisor/.pytest_cache/v/cache/nodeids",
+    "src/stair_supervisor/.pytest_cache/v/cache/stepwise",
+    "src/stair_supervisor/test/synthetic_stair_supervisor_node.py",
+    "src/stair_supervisor/test/test_state_machine_dashboard.py",
+    "src/stair_supervisor/test/stair_supervisor_node.test",
+    "src/stair_supervisor/test/lidar_observe.test",
+    "src/stair_supervisor/test/test_lidar_control.py",
+    "src/stair_supervisor/test/test_websocket_tx_ros.py",
+    "src/stair_supervisor/test/test_stair_evidence.py",
+    "src/stair_supervisor/test/test_stair_supervisor_node.py",
+    "src/stair_supervisor/test/test_bag_replay.py",
+    "src/stair_supervisor/test/test_ros_bag_replay.py",
+    "src/stair_supervisor/test/test_fixture_discovery.py",
+    "src/stair_supervisor/test/test_stair_fake_websocket_ros.py",
+    "src/stair_supervisor/test/test_supervisor_safety.py",
+    "src/stair_supervisor/test/test_configuration_transition.py",
+    "src/stair_supervisor/test/replay_stair_state_machine.py",
+    "src/stair_supervisor/test/stair_sensor_fixture.py",
+    "src/stair_supervisor/test/rostest_python.sh",
+    "src/stair_supervisor/test/test_lidar_process.py",
+    "src/stair_supervisor/test/robot_transport/test_robot_transport_fakes.py",
+    "src/stair_supervisor/test/robot_transport/test_robot_protocol.py",
+    "src/stair_supervisor/test/robot_transport/test_robot_transport_faults.py",
+    "src/stair_supervisor/test/robot_transport/test_robot_conversion.py",
+    "src/stair_supervisor/test/robot_transport/__init__.py",
+    "src/stair_supervisor/test/robot_transport/test_robot_transport.py",
+    "src/stair_supervisor/test/robot_transport/test_yaw_calibration_cli.py",
+    "src/stair_supervisor/test/robot_transport/test_robot_config.py",
+    "src/stair_supervisor/scripts/replay_lidar_tracking.py",
+    "src/stair_supervisor/scripts/stair_supervisor_node.py",
+    "src/stair_supervisor/scripts/profile_lidar_stream.py",
+    "src/stair_supervisor/scripts/calibrate_yaw_rate.py",
+    "src/stair_supervisor/action/StairTraversal.action",
+    "src/stair_supervisor/config/.gitkeep",
+    "src/stair_supervisor/config/stair_lidar.yaml",
+    "src/stair_supervisor/config/lidar_imu_baseline.yaml",
+    "src/stair_supervisor/config/robot.yaml",
+    "src/stair_supervisor/config/stair_profiles.yaml",
+    "src/stair_supervisor/srv/ValidateStairAdmission.srv",
+    "src/stair_supervisor/msg/SupervisorState.msg",
+    "src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+    "src/stair_supervisor/src/stair_supervisor/lidar_process.py",
+    "src/stair_supervisor/src/stair_supervisor/supervisor_types.py",
+    "src/stair_supervisor/src/stair_supervisor/state_machine_dashboard.py",
+    "src/stair_supervisor/src/stair_supervisor/robot_conversion.py",
+    "src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+    "src/stair_supervisor/src/stair_supervisor/ros_bag_replay.py",
+    "src/stair_supervisor/src/stair_supervisor/bag_replay.py",
+    "src/stair_supervisor/src/stair_supervisor/robot_protocol.py",
+    "src/stair_supervisor/src/stair_supervisor/robot_client.py",
+    "src/stair_supervisor/src/stair_supervisor/ros_node.py",
+    "src/stair_supervisor/src/stair_supervisor/robot_clock.py",
+    "src/stair_supervisor/src/stair_supervisor/__init__.py",
+    "src/stair_supervisor/src/stair_supervisor/stair_admission.py",
+    "src/stair_supervisor/src/stair_supervisor/lidar_tracking_core.py",
+    "src/stair_supervisor/src/stair_supervisor/lidar_tracking.py",
+    "src/stair_supervisor/src/stair_supervisor/robot_config.py",
+    "src/stair_supervisor/src/stair_supervisor/ros_entrypoint.py",
+    "src/stair_supervisor/src/stair_supervisor/robot_tolerances.py",
+    "src/stair_supervisor/launch/.gitkeep",
+    "src/mission_manager/launch/system.launch",
+    "src/multifloor_manager/rviz/wf_navigation.rviz"
+  ],
+  "git_status_before": " M .omo/run-continuation/ses_fe79dc3abffe0h8YOLMzr2MX0n.json\n M README.md\n M bundle_runtime_contract.py\n M config.env\n M run.sh\n M src/mission_manager/CMakeLists.txt\n M src/mission_manager/launch/system.launch\n M src/mission_manager/src/mission_manager/mission_action_server.py\n M src/mission_manager/src/mission_manager/mission_orchestrator.py\n M src/mission_manager/src/mission_manager/navigation_executor.py\n M src/mission_manager/src/mission_manager/ros_runtime.py\n M src/mission_manager/src/mission_manager/ros_state.py\n M src/mission_manager/src/mission_manager/route_planner.py\n M src/mission_manager/test/mission_5f_rf_synthetic.test\n M src/mission_manager/test/mock_mission_children.py\n M src/mission_manager/test/test_full_system_synthetic_ros.py\n M src/mission_manager/test/test_mission_action_ros.py\n M src/mission_manager/test/test_route_planner.py\n M src/mission_manager/test/test_runtime_gating.py\n M src/multifloor_manager/CMakeLists.txt\n M src/multifloor_manager/launch/navigation.launch\n M src/multifloor_manager/package.xml\n M src/multifloor_manager/rviz/wf_navigation.rviz\n M src/multifloor_manager/scripts/rviz_tf_reconnect.py\n M src/multifloor_manager/src/multifloor_manager/ros_callbacks.py\n M src/multifloor_manager/src/multifloor_manager/ros_node.py\n M src/multifloor_manager/src/multifloor_manager/ros_runtime.py\n M src/stair_supervisor/CMakeLists.txt\n M src/stair_supervisor/package.xml\n M src/stair_supervisor/src/stair_supervisor/configuration.py\n M src/stair_supervisor/src/stair_supervisor/robot_client.py\n M src/stair_supervisor/src/stair_supervisor/robot_transport.py\n M src/stair_supervisor/src/stair_supervisor/ros_entrypoint.py\n M src/stair_supervisor/src/stair_supervisor/ros_node.py\n M src/stair_supervisor/src/stair_supervisor/supervisor.py\n M src/stair_supervisor/src/stair_supervisor/supervisor_types.py\n M src/stair_supervisor/test/robot_transport/test_robot_transport.py\n M src/stair_supervisor/test/stair_sensor_fixture.py\n M src/stair_supervisor/test/test_websocket_tx_ros.py\n M test/test_bundle_contract.py\n M test/test_legacy_rviz_viewer_contract.py\n M test/test_rviz_tf_reconnect.py\n M test/test_system_operator_contract.py\n?? .omo/ulw-research/20260921-154335/brief.md\n?? .omo/ulw-research/20260921-154335/cause-disappearance.md\n?? .omo/ulw-research/20260921-154335/claim-graph.md\n?? .omo/ulw-research/20260921-154335/excursion-log.md\n?? .omo/ulw-research/20260921-154335/expansion-log.md\n?? .omo/ulw-research/20260921-154335/intent-diff.md\n?? .omo/ulw-research/20260921-154335/observation-manifest.md\n?? .omo/ulw-research/20260921-154335/verification-economics.md\n?? docs/stair-lidar-integration.md\n?? docs/startup-localization-ko.md\n?? docs/tron-documentation-20260922/APPLICATION_GUIDE.md\n?? docs/tron-documentation-20260922/README.md\n?? docs/tron-documentation-20260922/VALIDATION.md\n?? docs/tron-documentation-20260922/WORKLOG.md\n?? docs/tron-documentation-20260922/archive_reports.py\n?? docs/tron-documentation-20260922/assets/05225cbc3c96c96d8a9a.jpg\n?? docs/tron-documentation-20260922/assets/05f26a071e7e3d4b24cd.jpg\n?? docs/tron-documentation-20260922/assets/0a423248c38b553e86ee.svg\n?? docs/tron-documentation-20260922/assets/0a6907f0affe941d60ec.png\n?? docs/tron-documentation-20260922/assets/1c8dc68eb100784f493d.png\n?? docs/tron-documentation-20260922/assets/2418842095e3f7e9a707.png\n?? docs/tron-documentation-20260922/assets/28939d8b275c86b1ffe2.jpg\n?? docs/tron-documentation-20260922/assets/2b5a8cf5e018c89d04b7.jpg\n?? docs/tron-documentation-20260922/assets/2f3c3a801d23b843655f.jpg\n?? docs/tron-documentation-20260922/assets/3204629ee2afe7f06247.jpg\n?? docs/tron-documentation-20260922/assets/408bc6daa556de5395dc.mp4\n?? docs/tron-documentation-20260922/assets/44dae2f24c3548e1e7a3.png\n?? docs/tron-documentation-20260922/assets/521aa1d7ef99fb55884a.png\n?? docs/tron-documentation-20260922/assets/5ccaa62c068cbeac2441.png\n?? docs/tron-documentation-20260922/assets/5d527bd0cbcb9852ef15.jpg\n?? docs/tron-documentation-20260922/assets/62dd3a8e17c64eea5514.jpg\n?? docs/tron-documentation-20260922/assets/66eb51491bf910a841bc.jpg\n?? docs/tron-documentation-20260922/assets/6c6ccb58ed1dc4ddb432.jpg\n?? docs/tron-documentation-20260922/assets/7075541096cb2d4c7c8c.png\n?? docs/tron-documentation-20260922/assets/77c38b597afbd4f0a854.jpg\n?? docs/tron-documentation-20260922/assets/7c0187412fbcb17b486f.mp4\n?? docs/tron-documentation-20260922/assets/8b30ab9868d662f9d995.png\n?? docs/tron-documentation-20260922/assets/93b157ede1151505f4db.jpg\n?? docs/tron-documentation-20260922/assets/976021146c2757788c76.svg\n?? docs/tron-documentation-20260922/assets/9c3d2d227adcd350dc47.png\n?? docs/tron-documentation-20260922/assets/a1e0e6d4f23692ef0313.mp4\n?? docs/tron-documentation-20260922/assets/a651e0883584669baee8.svg\n?? docs/tron-documentation-20260922/assets/ace27f4b1b218fdfe76f.jpg\n?? docs/tron-documentation-20260922/assets/af26a7c9d9ee411e8448.png\n?? docs/tron-documentation-20260922/assets/af733c868851803b5ca8.jpg\n?? docs/tron-documentation-20260922/assets/b3f7e7475dae2aa0593d.jpg\n?? docs/tron-documentation-20260922/assets/bb1947e39a6a6be6a825.png\n?? docs/tron-documentation-20260922/assets/bddc75ba80fd26de5cda.jpg\n?? docs/tron-documentation-20260922/assets/beaaa6bf5a07de0a9791.jpg\n?? docs/tron-documentation-20260922/assets/ddbc9f490aa2c8f80b46.jpg\n?? docs/tron-documentation-20260922/assets/e200c1165784c0293fdd.png\n?? docs/tron-documentation-20260922/assets/e448ee586d7962d4d2ee.png\n?? docs/tron-documentation-20260922/assets/e46d451ae37852b0984d.png\n?? docs/tron-documentation-20260922/assets/ea61591fa37637620166.jpg\n?? docs/tron-documentation-20260922/assets/f5db22e277298e763a1e.jpg\n?? docs/tron-documentation-20260922/assets/f9c27d9d024d78ce0a18.jpg\n?? docs/tron-documentation-20260922/assets/fef298170264f9f0b3e7.png\n?? docs/tron-documentation-20260922/conversion-validation.json\n?? docs/tron-documentation-20260922/documents/audit-tron1-20260918/FINAL-AUDIT.md\n?? docs/tron-documentation-20260922/documents/lidar-before-after-video-20260921/report.md\n?? docs/tron-documentation-20260922/documents/lidar-method-explained-20260921/report.md\n?? docs/tron-documentation-20260922/documents/research-topic-selection-20260921/report.md\n?? docs/tron-documentation-20260922/documents/sensor-recording-analysis-20260918/METHODS.md\n?? docs/tron-documentation-20260922/documents/sensor-recording-analysis-20260918/bag-index.md\n?? docs/tron-documentation-20260922/documents/sensor-recording-analysis-20260918/report.md\n?? docs/tron-documentation-20260922/documents/stair-centering-analysis-20260921/bag-results.md\n?? docs/tron-documentation-20260922/documents/stair-centering-analysis-20260921/method.md\n?? docs/tron-documentation-20260922/documents/stair-centering-analysis-20260921/report.md\n?? docs/tron-documentation-20260922/documents/stair-driving-repair-plan-20260922/report.md\n?? docs/tron-documentation-20260922/documents/stair-lidar-commissioning-20260921/offline-validation/report.md\n?? docs/tron-documentation-20260922/documents/stair-supervisor-implementation-20260921/report.md\n?? docs/tron-documentation-20260922/documents/stair-supervisor-integration-plan-20260921/report.md\n?? docs/tron-documentation-20260922/documents/stair-tracking-baseline-20260921/report.md\n?? docs/tron-documentation-20260922/documents/stair-tracking-fix-20260921/report.md\n?? docs/tron-documentation-20260922/documents/stair-tracking-repair-20260921/report.md\n?? docs/tron-documentation-20260922/documents/undergraduate-research-awards-20260921/report.md\n?? docs/tron-documentation-20260922/local-check-result.json\n?? docs/tron-documentation-20260922/manifest.json\n?? docs/tron-documentation-20260922/verify_archive.py\n?? src/mission_manager/src/mission_manager/navigation_hold.py\n?? src/mission_manager/test/test_navigation_hold.py\n?? src/multifloor_manager/src/multifloor_manager/ros_startup_localization.py\n?? src/multifloor_manager/src/multifloor_manager/startup_matching.py\n?? src/multifloor_manager/test/startup_localization.test\n?? src/multifloor_manager/test/test_startup_localization_ros.py\n?? src/multifloor_manager/test/test_startup_matching.py\n?? src/stair_supervisor/config/lidar_imu_baseline.yaml\n?? src/stair_supervisor/config/stair_lidar.yaml\n?? src/stair_supervisor/requirements-lidar.txt\n?? src/stair_supervisor/scripts/profile_lidar_stream.py\n?? src/stair_supervisor/scripts/replay_lidar_tracking.py\n?? src/stair_supervisor/src/stair_supervisor/lidar_process.py\n?? src/stair_supervisor/src/stair_supervisor/lidar_tracking.py\n?? src/stair_supervisor/src/stair_supervisor/lidar_tracking_core.py\n?? src/stair_supervisor/src/stair_supervisor/ros_lidar.py\n?? src/stair_supervisor/src/stair_supervisor/stair_feedback.py\n?? src/stair_supervisor/test/lidar_observe.test\n?? src/stair_supervisor/test/test_lidar_control.py\n?? src/stair_supervisor/test/test_lidar_observe_ros.py\n?? src/stair_supervisor/test/test_lidar_phase_test.py\n?? src/stair_supervisor/test/test_lidar_process.py\n?? src/stair_supervisor/test/test_lidar_ros_adapter.py\n",
+  "git_status_after": " M .omo/run-continuation/ses_fe79dc3abffe0h8YOLMzr2MX0n.json\n M README.md\n M bundle_runtime_contract.py\n M config.env\n M run.sh\n M src/mission_manager/CMakeLists.txt\n M src/mission_manager/launch/system.launch\n M src/mission_manager/src/mission_manager/mission_action_server.py\n M src/mission_manager/src/mission_manager/mission_orchestrator.py\n M src/mission_manager/src/mission_manager/navigation_executor.py\n M src/mission_manager/src/mission_manager/ros_runtime.py\n M src/mission_manager/src/mission_manager/ros_state.py\n M src/mission_manager/src/mission_manager/route_planner.py\n M src/mission_manager/test/mission_5f_rf_synthetic.test\n M src/mission_manager/test/mock_mission_children.py\n M src/mission_manager/test/test_full_system_synthetic_ros.py\n M src/mission_manager/test/test_mission_action_ros.py\n M src/mission_manager/test/test_route_planner.py\n M src/mission_manager/test/test_runtime_gating.py\n M src/multifloor_manager/CMakeLists.txt\n M src/multifloor_manager/launch/navigation.launch\n M src/multifloor_manager/package.xml\n M src/multifloor_manager/rviz/wf_navigation.rviz\n M src/multifloor_manager/scripts/rviz_tf_reconnect.py\n M src/multifloor_manager/src/multifloor_manager/ros_callbacks.py\n M src/multifloor_manager/src/multifloor_manager/ros_node.py\n M src/multifloor_manager/src/multifloor_manager/ros_runtime.py\n M src/stair_supervisor/CMakeLists.txt\n M src/stair_supervisor/package.xml\n M src/stair_supervisor/src/stair_supervisor/configuration.py\n M src/stair_supervisor/src/stair_supervisor/robot_client.py\n M src/stair_supervisor/src/stair_supervisor/robot_transport.py\n M src/stair_supervisor/src/stair_supervisor/ros_entrypoint.py\n M src/stair_supervisor/src/stair_supervisor/ros_node.py\n M src/stair_supervisor/src/stair_supervisor/supervisor.py\n M src/stair_supervisor/src/stair_supervisor/supervisor_types.py\n M src/stair_supervisor/test/robot_transport/test_robot_transport.py\n M src/stair_supervisor/test/stair_sensor_fixture.py\n M src/stair_supervisor/test/test_supervisor.py\n M src/stair_supervisor/test/test_websocket_tx_ros.py\n M test/test_bundle_contract.py\n M test/test_legacy_rviz_viewer_contract.py\n M test/test_rviz_tf_reconnect.py\n M test/test_system_operator_contract.py\n?? .omo/ulw-research/20260921-154335/brief.md\n?? .omo/ulw-research/20260921-154335/cause-disappearance.md\n?? .omo/ulw-research/20260921-154335/claim-graph.md\n?? .omo/ulw-research/20260921-154335/excursion-log.md\n?? .omo/ulw-research/20260921-154335/expansion-log.md\n?? .omo/ulw-research/20260921-154335/intent-diff.md\n?? .omo/ulw-research/20260921-154335/observation-manifest.md\n?? .omo/ulw-research/20260921-154335/verification-economics.md\n?? docs/stair-driving-repair-20260922/REPORT.md\n?? docs/stair-driving-repair-20260922/evidence/baseline-regressions.json\n?? docs/stair-driving-repair-20260922/evidence/geometry-verification.json\n?? docs/stair-driving-repair-20260922/evidence/horizontal-surfaces.png\n?? docs/stair-driving-repair-20260922/evidence/landing-measurements.json\n?? docs/stair-driving-repair-20260922/evidence/raw-geometry-overview.png\n?? docs/stair-driving-repair-20260922/evidence/recorded-control-results.json\n?? docs/stair-driving-repair-20260922/evidence/recording-result.json\n?? docs/stair-driving-repair-20260922/evidence/recording-ros-results.json\n?? docs/stair-driving-repair-20260922/evidence/ros-results.json\n?? docs/stair-driving-repair-20260922/evidence/session-tool-results.json\n?? docs/stair-driving-repair-20260922/evidence/unit-results.json\n?? docs/stair-lidar-integration.md\n?? docs/startup-localization-ko.md\n?? docs/tron-documentation-20260922/APPLICATION_GUIDE.md\n?? docs/tron-documentation-20260922/README.md\n?? docs/tron-documentation-20260922/VALIDATION.md\n?? docs/tron-documentation-20260922/WORKLOG.md\n?? docs/tron-documentation-20260922/archive_reports.py\n?? docs/tron-documentation-20260922/assets/05225cbc3c96c96d8a9a.jpg\n?? docs/tron-documentation-20260922/assets/05f26a071e7e3d4b24cd.jpg\n?? docs/tron-documentation-20260922/assets/0a423248c38b553e86ee.svg\n?? docs/tron-documentation-20260922/assets/0a6907f0affe941d60ec.png\n?? docs/tron-documentation-20260922/assets/1c8dc68eb100784f493d.png\n?? docs/tron-documentation-20260922/assets/2418842095e3f7e9a707.png\n?? docs/tron-documentation-20260922/assets/28939d8b275c86b1ffe2.jpg\n?? docs/tron-documentation-20260922/assets/2b5a8cf5e018c89d04b7.jpg\n?? docs/tron-documentation-20260922/assets/2f3c3a801d23b843655f.jpg\n?? docs/tron-documentation-20260922/assets/3204629ee2afe7f06247.jpg\n?? docs/tron-documentation-20260922/assets/408bc6daa556de5395dc.mp4\n?? docs/tron-documentation-20260922/assets/44dae2f24c3548e1e7a3.png\n?? docs/tron-documentation-20260922/assets/521aa1d7ef99fb55884a.png\n?? docs/tron-documentation-20260922/assets/5ccaa62c068cbeac2441.png\n?? docs/tron-documentation-20260922/assets/5d527bd0cbcb9852ef15.jpg\n?? docs/tron-documentation-20260922/assets/62dd3a8e17c64eea5514.jpg\n?? docs/tron-documentation-20260922/assets/66eb51491bf910a841bc.jpg\n?? docs/tron-documentation-20260922/assets/6c6ccb58ed1dc4ddb432.jpg\n?? docs/tron-documentation-20260922/assets/7075541096cb2d4c7c8c.png\n?? docs/tron-documentation-20260922/assets/77c38b597afbd4f0a854.jpg\n?? docs/tron-documentation-20260922/assets/7c0187412fbcb17b486f.mp4\n?? docs/tron-documentation-20260922/assets/8b30ab9868d662f9d995.png\n?? docs/tron-documentation-20260922/assets/93b157ede1151505f4db.jpg\n?? docs/tron-documentation-20260922/assets/976021146c2757788c76.svg\n?? docs/tron-documentation-20260922/assets/9c3d2d227adcd350dc47.png\n?? docs/tron-documentation-20260922/assets/a1e0e6d4f23692ef0313.mp4\n?? docs/tron-documentation-20260922/assets/a651e0883584669baee8.svg\n?? docs/tron-documentation-20260922/assets/ace27f4b1b218fdfe76f.jpg\n?? docs/tron-documentation-20260922/assets/af26a7c9d9ee411e8448.png\n?? docs/tron-documentation-20260922/assets/af733c868851803b5ca8.jpg\n?? docs/tron-documentation-20260922/assets/b3f7e7475dae2aa0593d.jpg\n?? docs/tron-documentation-20260922/assets/bb1947e39a6a6be6a825.png\n?? docs/tron-documentation-20260922/assets/bddc75ba80fd26de5cda.jpg\n?? docs/tron-documentation-20260922/assets/beaaa6bf5a07de0a9791.jpg\n?? docs/tron-documentation-20260922/assets/ddbc9f490aa2c8f80b46.jpg\n?? docs/tron-documentation-20260922/assets/e200c1165784c0293fdd.png\n?? docs/tron-documentation-20260922/assets/e448ee586d7962d4d2ee.png\n?? docs/tron-documentation-20260922/assets/e46d451ae37852b0984d.png\n?? docs/tron-documentation-20260922/assets/ea61591fa37637620166.jpg\n?? docs/tron-documentation-20260922/assets/f5db22e277298e763a1e.jpg\n?? docs/tron-documentation-20260922/assets/f9c27d9d024d78ce0a18.jpg\n?? docs/tron-documentation-20260922/assets/fef298170264f9f0b3e7.png\n?? docs/tron-documentation-20260922/conversion-validation.json\n?? docs/tron-documentation-20260922/documents/audit-tron1-20260918/FINAL-AUDIT.md\n?? docs/tron-documentation-20260922/documents/lidar-before-after-video-20260921/report.md\n?? docs/tron-documentation-20260922/documents/lidar-method-explained-20260921/report.md\n?? docs/tron-documentation-20260922/documents/research-topic-selection-20260921/report.md\n?? docs/tron-documentation-20260922/documents/sensor-recording-analysis-20260918/METHODS.md\n?? docs/tron-documentation-20260922/documents/sensor-recording-analysis-20260918/bag-index.md\n?? docs/tron-documentation-20260922/documents/sensor-recording-analysis-20260918/report.md\n?? docs/tron-documentation-20260922/documents/stair-centering-analysis-20260921/bag-results.md\n?? docs/tron-documentation-20260922/documents/stair-centering-analysis-20260921/method.md\n?? docs/tron-documentation-20260922/documents/stair-centering-analysis-20260921/report.md\n?? docs/tron-documentation-20260922/documents/stair-driving-repair-plan-20260922/report.md\n?? docs/tron-documentation-20260922/documents/stair-lidar-commissioning-20260921/offline-validation/report.md\n?? docs/tron-documentation-20260922/documents/stair-supervisor-implementation-20260921/report.md\n?? docs/tron-documentation-20260922/documents/stair-supervisor-integration-plan-20260921/report.md\n?? docs/tron-documentation-20260922/documents/stair-tracking-baseline-20260921/report.md\n?? docs/tron-documentation-20260922/documents/stair-tracking-fix-20260921/report.md\n?? docs/tron-documentation-20260922/documents/stair-tracking-repair-20260921/report.md\n?? docs/tron-documentation-20260922/documents/undergraduate-research-awards-20260921/report.md\n?? docs/tron-documentation-20260922/local-check-result.json\n?? docs/tron-documentation-20260922/manifest.json\n?? docs/tron-documentation-20260922/verify_archive.py\n?? src/mission_manager/src/mission_manager/navigation_hold.py\n?? src/mission_manager/test/test_navigation_hold.py\n?? src/multifloor_manager/src/multifloor_manager/ros_startup_localization.py\n?? src/multifloor_manager/src/multifloor_manager/startup_matching.py\n?? src/multifloor_manager/test/startup_localization.test\n?? src/multifloor_manager/test/test_startup_localization_ros.py\n?? src/multifloor_manager/test/test_startup_matching.py\n?? src/stair_supervisor/config/lidar_imu_baseline.yaml\n?? src/stair_supervisor/config/stair_lidar.yaml\n?? src/stair_supervisor/requirements-lidar.txt\n?? src/stair_supervisor/rviz/stair_lidar_control.rviz\n?? src/stair_supervisor/scripts/check_lidar_config.py\n?? src/stair_supervisor/scripts/profile_lidar_stream.py\n?? src/stair_supervisor/scripts/replay_lidar_tracking.py\n?? src/stair_supervisor/src/stair_supervisor/lidar_process.py\n?? src/stair_supervisor/src/stair_supervisor/lidar_tracking.py\n?? src/stair_supervisor/src/stair_supervisor/lidar_tracking_core.py\n?? src/stair_supervisor/src/stair_supervisor/ros_lidar.py\n?? src/stair_supervisor/src/stair_supervisor/stair_feedback.py\n?? src/stair_supervisor/test/lidar_observe.test\n?? src/stair_supervisor/test/test_lidar_control.py\n?? src/stair_supervisor/test/test_lidar_observe_ros.py\n?? src/stair_supervisor/test/test_lidar_phase_test.py\n?? src/stair_supervisor/test/test_lidar_process.py\n?? src/stair_supervisor/test/test_lidar_ros_adapter.py\n?? src/stair_supervisor/test/test_stair_repair.py\n?? stair_control_session.sh\n",
+  "preexisting_git_status_entries_preserved": true,
+  "robot_commands_sent": 0,
+  "production_processes_restarted": false
+}

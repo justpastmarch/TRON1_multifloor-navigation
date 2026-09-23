@@ -1,0 +1,90 @@
+{
+  "observed_utc": "2026-09-20T19:05:49.260631+00:00",
+  "results": {
+    "102101": {
+      "marker_messages": 306,
+      "first_seen_s": {
+        "0": 1787793694.4897923,
+        "1": 1787793732.4890332,
+        "2": 1787793785.490029
+      },
+      "configured_camera_stamps_s": [
+        1787793694.464132,
+        1787793732.297255,
+        1787793785.3594377
+      ],
+      "no_future_event_markers": true,
+      "annotation_labels_explicit": true,
+      "arrival_camera_matches_revised_reference": true,
+      "comparison_path_uses_unchanged_estimates": true
+    },
+    "103313": {
+      "marker_messages": 306,
+      "first_seen_s": {
+        "0": 1787794439.2900293,
+        "1": 1787794464.8893757,
+        "2": 1787794525.0897524
+      },
+      "configured_camera_stamps_s": [
+        1787794439.144733,
+        1787794464.729951,
+        1787794524.906908
+      ],
+      "no_future_event_markers": true,
+      "annotation_labels_explicit": true,
+      "arrival_camera_matches_revised_reference": true,
+      "comparison_path_uses_unchanged_estimates": true
+    },
+    "105713": {
+      "marker_messages": 208,
+      "first_seen_s": {
+        "0": 1787795856.6890657,
+        "1": 1787795871.2889688,
+        "2": 1787795917.489815
+      },
+      "configured_camera_stamps_s": [
+        1787795856.574411,
+        1787795871.087877,
+        1787795917.4853551
+      ],
+      "no_future_event_markers": true,
+      "annotation_labels_explicit": true,
+      "arrival_camera_matches_revised_reference": true,
+      "comparison_path_uses_unchanged_estimates": true
+    }
+  },
+  "original_estimator_unchanged": true,
+  "retained_lidar_results": [
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/102101/lidar_registration.bag",
+      "sha256": "dc8135a300c8ee9ca3b3279cda23d808d4a04a4158e7643b01fd72c35b4cf58a",
+      "unchanged": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/102101/lidar_registration.csv",
+      "sha256": "c54f0daf4f0981afc48f44b922bba654ccfda7872929761f5a5e7b17a687cbbb",
+      "unchanged": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/103313/lidar_registration.bag",
+      "sha256": "171078d22aac539ef1c0d64faaecbb2a78fc085472821a303a747e75ccffc9c5",
+      "unchanged": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/103313/lidar_registration.csv",
+      "sha256": "5911a56f9031301ce07ea09664cdfba313dd80c29043c7a71d983e4496c59d08",
+      "unchanged": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/105713/lidar_registration.bag",
+      "sha256": "91d392adbae1e22ae5e3189beea53ac33d3ab3dc7dcd73db22edf98ba7a1336b",
+      "unchanged": true
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/105713/lidar_registration.csv",
+      "sha256": "bf1d7f8131e55039a00b6c508cea2bab850b7e0936bf4b013ff716154ba7253f",
+      "unchanged": true
+    }
+  ],
+  "scope": "offline bag contracts; not live Stair Supervisor arrival validation"
+}

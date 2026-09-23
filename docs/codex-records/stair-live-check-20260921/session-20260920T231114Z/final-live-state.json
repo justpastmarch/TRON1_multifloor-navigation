@@ -1,0 +1,11 @@
+{
+  "observed_utc": "2026-09-20T23:17:31.251320+00:00",
+  "running_nodes": {
+    "/stair_supervisor": 66061,
+    "/livox_lidar_publisher2": 4332,
+    "/tron1_wf_odom_bridge": 4331,
+    "/camera1/realsense2_camera_manager": 4336
+  },
+  "command_publishers": {},
+  "temporary_probe_nodes": []
+}

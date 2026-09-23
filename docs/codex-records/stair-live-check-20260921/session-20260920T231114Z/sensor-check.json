@@ -1,0 +1,110 @@
+{
+  "observed_utc": "2026-09-20T23:13:27.219123+00:00",
+  "master": "http://192.168.1.26:11311",
+  "nodes_before_probe": [
+    "/camera1/realsense2_camera",
+    "/camera1/realsense2_camera_manager",
+    "/livox_lidar_publisher2",
+    "/mid360s_laserscan",
+    "/rosout",
+    "/sensor_tf_base_to_camera1",
+    "/sensor_tf_base_to_mid360",
+    "/sensor_tf_odom_to_camera_init",
+    "/tron1_wf_odom_bridge"
+  ],
+  "topics": {
+    "/livox/lidar": {
+      "messages": 118,
+      "frame_id": "mid360_link",
+      "observed_rate_hz": 10.19,
+      "age_p50_sec": 0.11365294456481934,
+      "age_p99_sec": 1.1853375434875488,
+      "age_min_sec": 0.10274982452392578,
+      "age_max_sec": 1.2572870254516602,
+      "stamp_reversals": 0,
+      "example": {
+        "point_num": 20064
+      },
+      "measurement_scope": "12-second wall-clock subscription"
+    },
+    "/livox/imu": {
+      "messages": 2121,
+      "frame_id": "livox_frame",
+      "observed_rate_hz": 178.39,
+      "age_p50_sec": -0.012161016464233398,
+      "age_p99_sec": 0.034935951232910156,
+      "age_min_sec": -0.0155029296875,
+      "age_max_sec": 0.056690216064453125,
+      "stamp_reversals": 0,
+      "example": {
+        "angular_velocity": [
+          -0.006813403218984604,
+          -0.00395679846405983,
+          -0.017323032021522522
+        ],
+        "linear_acceleration": [
+          -0.04680566489696503,
+          -0.026241261512041092,
+          1.0044784545898438
+        ]
+      },
+      "measurement_scope": "12-second wall-clock subscription"
+    },
+    "/tron/wheel_odom_raw": {
+      "messages": 1161,
+      "frame_id": "odom",
+      "observed_rate_hz": 97.65,
+      "age_p50_sec": -0.010689973831176758,
+      "age_p99_sec": 0.044347524642944336,
+      "age_min_sec": -0.01526784896850586,
+      "age_max_sec": 0.0630030632019043,
+      "stamp_reversals": 0,
+      "example": {
+        "child_frame_id": "base_Link",
+        "position": [
+          0.008440208037115341,
+          -0.11471274877457624,
+          0.0
+        ]
+      },
+      "measurement_scope": "12-second wall-clock subscription"
+    },
+    "/scan": {
+      "messages": 119,
+      "frame_id": "base_Link",
+      "observed_rate_hz": 10.0,
+      "age_p50_sec": -0.013638734817504883,
+      "age_p99_sec": 0.023126602172851562,
+      "age_min_sec": -0.015210151672363281,
+      "age_max_sec": 0.0379788875579834,
+      "stamp_reversals": 0,
+      "example": null,
+      "measurement_scope": "12-second wall-clock subscription"
+    },
+    "/camera1/color/image_raw": {
+      "messages": 5,
+      "frame_id": "camera1_color_optical_frame",
+      "observed_rate_hz": 2.21,
+      "age_p50_sec": 0.6909563541412354,
+      "age_p99_sec": 0.849470853805542,
+      "age_min_sec": 0.4181101322174072,
+      "age_max_sec": 1.0072216987609863,
+      "stamp_reversals": 0,
+      "example": null,
+      "measurement_scope": "five frames only"
+    },
+    "/camera1/depth/image_rect_raw": {
+      "messages": 5,
+      "frame_id": "camera1_depth_optical_frame",
+      "observed_rate_hz": 3.2,
+      "age_p50_sec": 0.582026481628418,
+      "age_p99_sec": 0.714301347732544,
+      "age_min_sec": 0.21627521514892578,
+      "age_max_sec": 0.7981860637664795,
+      "stamp_reversals": 0,
+      "example": null,
+      "measurement_scope": "five frames only"
+    }
+  },
+  "robot_motion_commands_sent": 0
+}

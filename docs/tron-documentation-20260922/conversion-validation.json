@@ -1,0 +1,17 @@
+{
+  "documents": 18,
+  "guides": 4,
+  "inventory_matches": true,
+  "text_blocks": 4804,
+  "unmatched_text_blocks": 0,
+  "text_validation_method": "Converter round-trip text comparison, bound to unchanged Markdown hashes.",
+  "local_links_checked": 617,
+  "missing_paths": [],
+  "broken_internal_anchors": [],
+  "assets": 42,
+  "mp4_files": 3,
+  "asset_hashes_match": true,
+  "markdown_hashes_match": true,
+  "original_html_unchanged": true,
+  "passed": true
+}

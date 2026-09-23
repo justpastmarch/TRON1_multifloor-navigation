@@ -1,0 +1,20 @@
+{
+  "interval_stamps": [
+    1790119663.3312433,
+    1790119697.6472843
+  ],
+  "span_sec": 34.316040992736816,
+  "method": "Linear interpolation in position and shortest-angle interpolation in yaw; each displacement expressed in its own initial planar sensor/body axes. LiDAR extrinsic tilt/body origin differences not removed; no independent ground truth.",
+  "wheel": {
+    "net_m": 0.09370159634228992,
+    "forward_m": 0.03312620888054983,
+    "lateral_m": -0.08765068991340352,
+    "yaw_deg": -2.6109031088985013
+  },
+  "lidar": {
+    "net_m": 0.04906234282354053,
+    "forward_m": 0.049048090577422945,
+    "lateral_m": 0.0011824948386919554,
+    "yaw_deg": -2.198726876638333
+  }
+}

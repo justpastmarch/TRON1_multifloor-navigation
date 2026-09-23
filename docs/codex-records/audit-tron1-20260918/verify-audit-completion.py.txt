@@ -1,0 +1,130 @@
+"""Check audit bookkeeping, references and cleanup, not robot safety."""
+from pathlib import Path
+import collections
+import datetime
+import hashlib
+import json
+import re
+
+OUT = Path(__file__).resolve().parent
+def read(name):
+    return json.loads((OUT/name).read_text())
+
+coverage = read('coverage.json')
+ROOT = Path(coverage['repository'])
+findings = read('final-findings.json')
+constraints = read('constraint-ledger-final.json')['constraints']
+scenarios = read('scenario-status.json')
+integrity = read('final-integrity-check.json')
+states = collections.Counter(x['state'] for x in coverage['files'])
+states.setdefault('UNREAD', 0)
+errors = []
+
+def reference(raw):
+    if raw.startswith('@audit/'):
+        raw = str(OUT/raw[7:])
+    elif raw.startswith('@upstream/'):
+        raw = str(OUT/'upstream'/raw[10:])
+    elif not raw.startswith('/'):
+        raw = str(ROOT/raw)
+    match = re.match(r'^(.*):(\d+)$', raw)
+    path = Path(match.group(1) if match else raw)
+    if not path.exists():
+        errors.append('missing reference: '+raw)
+    elif match and not 1 <= int(match.group(2)) <= len(path.read_bytes().splitlines()):
+        errors.append('out-of-range reference: '+raw)
+
+for finding in findings:
+    for key in ['id','safety','mobility','observed','inferred','unverified','evidence','minimal_remediation','required_test']:
+        if not finding.get(key):
+            errors.append(f'finding {finding.get("id")} missing {key}')
+    if not re.fullmatch('S[0-4]', finding['safety']) or not re.fullmatch('M[0-4]', finding['mobility']):
+        errors.append('bad finding score '+finding['id'])
+    for ref in finding['evidence']:
+        reference(ref)
+
+source_hashes = {}
+for item in constraints:
+    for key in ['hazard','scope','false_positive_or_gap','recovery','decision','reason_and_minimal_change','evidence','Safety','Mobility','sources']:
+        if not item.get(key):
+            errors.append(f'constraint {item["id"]} missing {key}')
+    for source in item['sources']:
+        reference(source['file']+':'+str(source['line_start']))
+        reference(source['file']+':'+str(source['line_end']))
+        path = Path(source['file'])
+        actual = source_hashes.setdefault(str(path), hashlib.sha256(path.read_bytes()).hexdigest())
+        if actual != source['sha256']:
+            errors.append('constraint source changed '+str(path))
+
+for item in scenarios:
+    for key in ['minimum_conditions','current_gate','unnecessary_gate','success_likelihood','false_stop','recovery','observed','inferred','unverified','Safety','Mobility','evidence']:
+        if not item.get(key):
+            errors.append(f'scenario {item["id"]} missing {key}')
+    for source in item['evidence']:
+        line = source.get('line_start') or source.get('line')
+        reference(source['file']+(':'+str(line) if line else ''))
+
+test_rows = []
+for name in ['selected-unit-results.json','selected-contract-results.json','resume2-unit-results.json','selected-contracts-resume4.json']:
+    row = read(name)
+    count = lambda value: len(value) if isinstance(value, list) else value
+    test_rows.append({'receipt':name,'run':row['tests_run'],'failed':count(row['failures']),'errors':count(row['errors'])})
+tests_run = sum(x['run'] for x in test_rows)
+tests_failed = sum(x['failed'] for x in test_rows)
+tests_errors = sum(x['errors'] for x in test_rows)
+
+cleanup = {
+    'observed_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    'temporary_roots':integrity['temporary_cleanup_rechecks'],
+    'all_temporary_roots_absent':all(x['absent_now'] and not Path(x['temporary_root']).exists() for x in integrity['temporary_cleanup_rechecks']),
+    'audit_owned_runtime_processes':[],
+    'process_basis':'All audit exec processes ran foreground and returned; no ROS/robot/background process started. Test cleanup receipts record no remaining threads. Review agent completed.',
+    'retained_deliverables':str(OUT),
+    'obsolete_draft_generator_removed':'build-final-findings.py',
+    'existing_user_artifacts_or_processes_removed':False,
+}
+(OUT/'artifact-cleanup-final.json').write_text(json.dumps(cleanup,ensure_ascii=False,indent=2)+'\n')
+
+# Create the receipt path before checking links to that same receipt.
+receipt_path = OUT/'completion-check.json'
+if not receipt_path.exists():
+    receipt_path.write_text('{}\n')
+report = (OUT/'FINAL-AUDIT.md').read_text()
+for target in re.findall(r'\]\((/[^)]+)\)', report):
+    reference(target)
+
+allowed_change = '.omo/run-continuation/ses_fe79dc3abffe0h8YOLMzr2MX0n.json'
+checks = {
+    'inventory_reconciled':sum(states.values())==len(coverage['files'])==5523 and len({x['path'] for x in coverage['files']})==5523,
+    'unread_zero':states['UNREAD']==0 and not (OUT/'unread-files.txt').read_text().strip(),
+    'states_agree_with_integrity':dict(states)==integrity['states'],
+    'all_15_scenarios_adjudicated':sorted(x['id'] for x in scenarios)==list(range(1,16)) and all(x['status'] in {'BLOCKED','CONDITIONAL','UNVERIFIED'} for x in scenarios),
+    'major_constraints_reconciled':len(constraints)==67 and len({x['id'] for x in constraints})==67,
+    'keep_requires_no_unproven_exception':all(x['decision']!='KEEP' for x in constraints),
+    'findings_evidence_and_scores':len(findings)==21 and all(x.get('observed') and x.get('inferred') and x.get('unverified') and x.get('safety') and x.get('mobility') for x in findings),
+    'separate_verdicts': '| **Safety** | **BLOCKED** |' in report and '| **Operational mobility** | **BLOCKED** |' in report,
+    'temporary_artifacts_removed':cleanup['all_temporary_roots_absent'],
+    'git_delta_reported':not integrity['git_status_identical'] and not integrity['worktree_diff_identical'] and integrity['head_identical'] and integrity['staged_diff_identical'] and len(integrity['post_baseline_inventory_additions'])==14,
+    'no_unreviewed_final_additions':not integrity['new_files'],
+    'no_other_baseline_file_changes':all(x['path']==allowed_change for x in integrity['inventory_changes']),
+    'tests_reconciled':(tests_run,tests_run-tests_failed-tests_errors,tests_failed,tests_errors)==(88,85,3,0),
+    'eleven_report_sections':len(re.findall(r'^## \d+\.', report, re.M))==11,
+    'reference_checks_passed':not errors,
+}
+receipt = {
+    'status':'AUDIT_COMPLETE' if all(checks.values()) else 'AUDIT_INCOMPLETE',
+    'observed_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    'audit_snapshot_utc':integrity['observed_utc'],
+    'scope':'Read-only repository audit; scenario adjudication, not hardware certification or fixes',
+    'checks':checks,'errors':errors,'inventory_count':len(coverage['files']),
+    'states':dict(states),'initial_inventory_count':5509,'reviewed_concurrent_additions':14,
+    'finding_count':len(findings),'constraint_count':len(constraints),
+    'constraint_decisions':dict(collections.Counter(x['decision'] for x in constraints)),
+    'constraint_source_hashes_rechecked':len(source_hashes),
+    'scenario_status_counts':dict(collections.Counter(x['status'] for x in scenarios)),
+    'tests':test_rows,'tests_run':tests_run,'tests_passed':tests_run-tests_failed-tests_errors,'tests_failed':tests_failed,
+    'hardware_executions':0,'safety_verdict':'BLOCKED','mobility_verdict':'BLOCKED',
+    'report_sha256':hashlib.sha256(report.encode()).hexdigest(),
+}
+receipt_path.write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(receipt,ensure_ascii=False,indent=2))

@@ -1,0 +1,22 @@
+{
+  "scope": "offline RViz annotations only; estimator frozen",
+  "user_clarification": "No reply yet; proceeding with explicit RViz-only scope inferred from current replay discussion",
+  "revisions": {
+    "102101": {
+      "before_camera_header_s": 1787793779.454232,
+      "after_camera_header_s": 1787793785.3594377,
+      "delay_s": 5.905205726623535,
+      "image_file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/102101/frame-08.jpg",
+      "evidence": "INFERRED visual upper-landing reference, supported by pose height stabilizing; full robot support/contact is not visible",
+      "not_an_automatic_detector": true
+    },
+    "105713": {
+      "before_camera_header_s": 1787795913.44906,
+      "after_camera_header_s": 1787795917.4853551,
+      "delay_s": 4.036295175552368,
+      "image_file": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/arrival-evidence/105713/frame-06.jpg",
+      "evidence": "INFERRED visual upper-landing reference, supported by pose height stabilizing; full robot support/contact is not visible",
+      "not_an_automatic_detector": true
+    }
+  }
+}

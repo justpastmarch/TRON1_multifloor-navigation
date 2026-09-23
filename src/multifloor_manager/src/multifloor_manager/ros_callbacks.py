@@ -50,7 +50,10 @@ class RosEvidenceCallbacks:
                     return
                 if self.map_state.current_fingerprint is None and fingerprint.identity() == self.initial_identity:
                     self.map_state = MapGenerationState(MapGeneration(0), fingerprint)
-                    self.publish_floor(FloorState.READY, "initial map observed", self.initial_floor)
+                    if self.require_initial_localization:
+                        self.publish_floor(FloorState.UNKNOWN, "initial map observed; waiting for localization", self.initial_floor)
+                    else:
+                        self.publish_floor(FloorState.READY, "initial map observed", self.initial_floor)
             elif self.active_epoch == epoch and self.map_guard is not None:
                 result = evaluate_map_observation(self.map_guard, fingerprint)
                 self.map_guard = result.guard

@@ -1,0 +1,11 @@
+{
+  "path": "manual_captures/analysis/sensor_gap_rgb_214_242.mp4",
+  "opened": true,
+  "declared_frame_count": 280.0,
+  "fps": 10.0,
+  "width": 640.0,
+  "height": 480.0,
+  "fourcc": 1983148141,
+  "decoded_frames": 280,
+  "scope": "Metadata and complete sequential decode only. Video frames not individually visually reviewed; existing contact sheet separately READ. No physical-motion or exact timing verification."
+}

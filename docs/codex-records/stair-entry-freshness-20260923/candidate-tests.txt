@@ -1,0 +1,15 @@
+test_configuration_mismatch_still_fails_before_later_good_sample (candidate_readiness.EntryFreshnessTest) ... ok
+test_fresh_first_status_returns_without_wait_notice (candidate_readiness.EntryFreshnessTest) ... ok
+test_missing_topic_times_out_and_unregisters (candidate_readiness.EntryFreshnessTest) ... ok
+test_nonfinite_future_and_boolean_age_never_admit (candidate_readiness.EntryFreshnessTest) ... ok
+test_old_first_status_waits_for_next_fresh_status_on_one_subscription (candidate_readiness.EntryFreshnessTest) ... ok
+test_only_stale_status_times_out_instead_of_relaxing_limit (candidate_readiness.EntryFreshnessTest) ... ok
+test_shutdown_exits_without_waiting_for_deadline (candidate_readiness.EntryFreshnessTest) ... ok
+test_time_spent_validating_cannot_bypass_timeout (candidate_readiness.EntryFreshnessTest) ... ok
+test_time_spent_validating_counts_toward_freshness (candidate_readiness.EntryFreshnessTest) ... ok
+test_worker_fault_is_not_retried_as_a_timestamp_delay (candidate_readiness.EntryFreshnessTest) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.293s
+
+OK

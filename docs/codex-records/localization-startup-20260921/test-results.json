@@ -1,0 +1,607 @@
+[
+  {
+    "file": "mission_manager/nosetests-test.test_ros_segments.py.xml",
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_route_recording_resolves_profile_and_mission_identity",
+      "test_stair_and_floor_adapters_use_their_receiver_keys",
+      "test_stair_entry_mismatch_sends_no_child_goal"
+    ]
+  },
+  {
+    "file": "mission_manager/rostest-test_mission_system.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "testmission_action_ros"
+    ]
+  },
+  {
+    "file": "mission_manager/nosetests-test.test_scan_recorder.py.xml",
+    "tests": 22,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_active_artifact_marker_is_rejected_as_stale_generation",
+      "test_artifact_path_outside_profile_output_root_is_rejected",
+      "test_artifact_validation_rejects_zero_duration_messages_and_malformed_yaml",
+      "test_cancellation_returns_preempted_valid_artifact",
+      "test_discarded_session_invalidates_active_artifact_without_validation",
+      "test_disk_precheck_fails_before_subprocess_start",
+      "test_duration_starts_after_delayed_active_artifact_readiness",
+      "test_forced_termination_marks_generated_active_bag_invalid",
+      "test_invalid_profile_fails_before_subprocess_start",
+      "test_missing_mandatory_topic_rejects_artifact",
+      "test_nonfinite_duration_metadata_is_rejected",
+      "test_readiness_timeout_reaps_without_returning_artifact",
+      "test_rosbag_info_subprocess_failure_rejects_artifact",
+      "test_scan_failure_maps_to_mission_result_without_artifact_return",
+      "test_session_detects_process_exit_between_route_segments",
+      "test_sigint_timeout_kills_process_and_marks_artifact_invalid",
+      "test_stale_artifact_is_rejected_before_recording",
+      "test_started_session_remains_active_until_explicit_finish",
+      "test_subprocess_failure_has_no_success_return",
+      "test_unexpected_wait_exception_still_reaps_owned_process",
+      "test_unwritable_output_shape_fails_before_subprocess_start",
+      "test_valid_recording_uses_explicit_topics_and_validates_artifact"
+    ]
+  },
+  {
+    "file": "mission_manager/rosunit-mission_action_ros.xml",
+    "tests": 16,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_busy_goal_is_rejected_without_preempting_active_goal",
+      "test_cancellation_then_resume_uses_confirmed_anchor",
+      "test_communication_failure_aborts_before_floor_transition",
+      "test_dirty_scan_artifact_is_rejected",
+      "test_fresh_return_completes_with_validated_scan_artifact",
+      "test_localization_failure_stops_before_next_navigation",
+      "test_malformed_and_unknown_goals_are_rejected_before_children",
+      "test_misleading_child_success_is_mission_abort",
+      "test_multi_floor_mission_executes_each_child_once",
+      "test_navigation_retry_is_bounded_and_succeeds",
+      "test_repeated_interruptions_do_not_corrupt_next_mission",
+      "test_same_floor_feedback_has_coherent_index_count_and_floor",
+      "test_same_named_anchor_still_dispatches_navigation",
+      "test_scan_failure_never_launches_fresh_return",
+      "test_stair_failure_propagates_and_does_not_start_localization",
+      "test_stale_state_aborts_before_child_goal"
+    ]
+  },
+  {
+    "file": "mission_manager/rostest-test_full_system_synthetic.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "testfull_system_synthetic"
+    ]
+  },
+  {
+    "file": "mission_manager/nosetests-test.test_fixture_discovery.py.xml",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_action_peer_exhaustion_is_explicit",
+      "test_asymmetric_route_fixture_drives_action_peer"
+    ]
+  },
+  {
+    "file": "mission_manager/rosunit-todo4_process_boundaries.xml",
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_fresh_websocket_round_trip_over_loopback_socket",
+      "test_malformed_input_is_rejected_over_loopback_socket",
+      "test_repeated_interruptions_do_not_fake_success",
+      "test_ros_action_round_trip_across_server_process",
+      "test_ros_service_round_trip_across_server_process",
+      "test_stale_state_is_rejected_over_loopback_socket"
+    ]
+  },
+  {
+    "file": "mission_manager/rosunit-mission_5f_rf_synthetic.xml",
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_cancellation_is_injected_alone",
+      "test_exact_route_uses_fresh_return_after_roof_scan",
+      "test_navigation_abort_is_injected_alone",
+      "test_odometry_jump_is_injected_alone",
+      "test_scan_record_failure_is_injected_alone",
+      "test_stale_localization_is_injected_alone",
+      "test_websocket_loss_is_injected_alone",
+      "test_wrong_floor_tag_is_injected_alone"
+    ]
+  },
+  {
+    "file": "mission_manager/nosetests-test.test_stair_admission.py.xml",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_context_mismatch_and_live_recheck_reject",
+      "test_valid_token_is_accepted_exactly_once"
+    ]
+  },
+  {
+    "file": "mission_manager/rosunit-scan_recorder_real_rosbag.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_six_required_topic_types_form_valid_managed_bag"
+    ]
+  },
+  {
+    "file": "mission_manager/nosetests-test.test_runtime_gating.py.xml",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_fixture_profile_requires_explicit_second_gate",
+      "test_unconfigured_stair_profile_remains_fail_closed"
+    ]
+  },
+  {
+    "file": "mission_manager/nosetests-test.test_navigation_hold.py.xml",
+    "tests": 5,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_correction_timeout_has_no_unbounded_retries",
+      "test_floor_change_and_stale_pose_disable_only_hold",
+      "test_move_base_success_outside_precision_budget_does_not_loop",
+      "test_new_mission_waits_for_terminal_cancellation",
+      "test_no_chattering_and_fixed_destination"
+    ]
+  },
+  {
+    "file": "mission_manager/nosetests-test.test_stair_entry_gate.py.xml",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_aligned_fresh_pose_accepts_wrapped_heading_at_inclusive_bounds",
+      "test_pose_or_localization_failure_rejects_entry"
+    ]
+  },
+  {
+    "file": "mission_manager/rostest-test_mission_5f_rf_synthetic.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "testmission_5f_rf_synthetic"
+    ]
+  },
+  {
+    "file": "mission_manager/rostest-test_scan_recorder_ros.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "testscan_recorder_real_rosbag"
+    ]
+  },
+  {
+    "file": "mission_manager/rosunit-full_system_synthetic.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_production_route_completes_after_state_freshness_window"
+    ]
+  },
+  {
+    "file": "mission_manager/nosetests-test.test_navigation_executor.py.xml",
+    "tests": 20,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_aborted_goal_clears_costmaps_then_retries_once",
+      "test_action_rejection_is_navigation_failure_without_retry",
+      "test_cancel_accepts_recalled_terminal_state",
+      "test_cancel_during_costmap_clear_cannot_send_retry_goal",
+      "test_cancel_during_second_readiness_cannot_send_retry_goal",
+      "test_cancel_waits_for_preempted_terminal_state",
+      "test_generation_mismatch_rejects_before_goal_send",
+      "test_lost_goal_permits_only_the_same_single_retry",
+      "test_named_map_goal_succeeds_only_after_terminal_status",
+      "test_nonblocking_cancel_request_leaves_terminal_wait_with_executor_thread",
+      "test_nonfinite_yaw_is_rejected_before_goal_send",
+      "test_repeated_abort_fails_after_exactly_one_retry",
+      "test_retry_rechecks_readiness_after_terminal_failure",
+      "test_ros_factory_uses_only_move_base_action_and_clear_service",
+      "test_stair_handoff_cancels_waits_then_requires_zero_stationary",
+      "test_stair_handoff_during_second_readiness_cannot_send_retry_goal",
+      "test_stair_handoff_rejects_missing_stationary_evidence",
+      "test_stale_success_callback_cannot_complete_new_retry",
+      "test_supervisor_non_nav_rejects_before_goal_send",
+      "test_transitioning_and_fault_never_send_goals"
+    ]
+  },
+  {
+    "file": "mission_manager/nosetests-test.test_route_planner.py.xml",
+    "tests": 15,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_bidirectional_stair_expansion_targets_each_floor_endpoint",
+      "test_current_pose_at_logical_stair_anchor_reaches_entry_first",
+      "test_current_pose_same_named_anchor_still_navigates",
+      "test_directionally_absent_stair_profile_is_not_routable",
+      "test_disabled_stair_profile_removes_that_direction_from_routing",
+      "test_equal_length_routes_use_edge_id_order_independent_of_input_order",
+      "test_existing_navigation_route_does_not_detour_to_home",
+      "test_invalid_floor_continuity_is_rejected_before_route_search",
+      "test_logical_anchor_changes_only_after_successful_committing_segment",
+      "test_multi_floor_scan_expands_all_generic_segment_types",
+      "test_planner_and_fsm_share_canonical_segment_type",
+      "test_return_is_fresh_bfs_over_asymmetric_edges",
+      "test_same_floor_route_expands_navigation_when_locations_share_floor",
+      "test_serialized_route_is_byte_for_byte_deterministic",
+      "test_unreachable_destination_is_rejected_when_no_directed_path_exists"
+    ]
+  },
+  {
+    "file": "mission_manager/rostest-test_process_boundaries.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "testtodo4_process_boundaries"
+    ]
+  },
+  {
+    "file": "mission_manager/nosetests-test.test_fsm.py.xml",
+    "tests": 7,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_cancellation_and_timeout_abort_every_active_state",
+      "test_complete_route_replay_reaches_mission_complete",
+      "test_every_legal_state_event_pair_has_the_declared_result",
+      "test_every_undeclared_state_event_pair_is_illegal",
+      "test_malformed_raw_event_has_stable_typed_error_message",
+      "test_retry_result_reexecutes_the_same_segment_state",
+      "test_state_and_segment_sets_have_no_floor_specific_variants"
+    ]
+  },
+  {
+    "file": "mission_manager/nosetests-test.test_subprocess_executor.py.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_recording_child_starts_outside_terminal_process_group"
+    ]
+  },
+  {
+    "file": "mission_manager/nosetests-test.test_mission_orchestrator.py.xml",
+    "tests": 7,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_cancelled_segment_preserves_last_confirmed_anchor",
+      "test_failed_scan_never_starts_return",
+      "test_failure_stops_before_the_next_segment",
+      "test_fresh_return_is_planned_from_confirmed_scan_anchor",
+      "test_record_route_brackets_every_loop_segment_with_one_recording",
+      "test_record_route_cancellation_finalizes_preempted_at_confirmed_anchor",
+      "test_record_route_navigation_failure_finalizes_interrupted"
+    ]
+  },
+  {
+    "file": "multifloor_manager/rostest-test_floor_transition_epoch_ros.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "testfloor_transition_epoch_ros"
+    ]
+  },
+  {
+    "file": "multifloor_manager/nosetests-test.test_transitions.py.xml",
+    "tests": 16,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_backward_and_nonfinite_clocks_are_rejected",
+      "test_baseline_schema_objects_remain_immutable",
+      "test_decimal_dwell_uses_absolute_threshold",
+      "test_disabled_conditions_do_not_count",
+      "test_dwell_requires_strictly_before_timeout",
+      "test_evaluate_rejects_epoch_different_from_begun_epoch",
+      "test_evaluate_requires_begin",
+      "test_exact_and_late_timeout_are_terminal_false",
+      "test_false_required_observation_requires_a_full_new_dwell",
+      "test_freshness_boundary_is_valid_and_future_or_stale_is_false",
+      "test_malformed_entry_is_domain_error_and_does_not_commit_time",
+      "test_malformed_observation_time_is_rejected",
+      "test_missing_false_and_wrong_epoch_reset_dwell",
+      "test_optional_count_zero_and_one_are_deterministic",
+      "test_policy_defensively_rejects_equal_dwell_and_timeout",
+      "test_policy_rejects_mutable_conditions_container"
+    ]
+  },
+  {
+    "file": "multifloor_manager/rosunit-floor_transition_late_map_ros.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_hanging_service_and_late_map_cannot_mutate_fault"
+    ]
+  },
+  {
+    "file": "multifloor_manager/nosetests-test.test_policy_final_gate.py.xml",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_false_localization_requires_a_new_dwell",
+      "test_preemption_at_second_check_cannot_commit_ready",
+      "test_success_samples_live_levels_and_commits_after_second_check",
+      "test_wrong_costmap_requires_a_new_dwell"
+    ]
+  },
+  {
+    "file": "multifloor_manager/nosetests-.home.m3tron..codex..chatgpt-projects.g-p-6aa37f17097c81919ca6c59ce41e856c.localization-startup-20260921.work.test.test_tag_evidence.py.xml",
+    "tests": 11,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_delayed_frames_cannot_lower_timestamp_high_water_or_rebuild_vote",
+      "test_equally_valid_wrong_floor_vote_aborts",
+      "test_fresh_pre_arm_detection_does_not_vote",
+      "test_future_timestamp_is_rejected_before_it_can_poison_vote_state",
+      "test_intermittent_empty_array_breaks_consecutive_vote",
+      "test_malformed_ros_boundary_is_rejected",
+      "test_stale_and_replayed_detections_do_not_vote",
+      "test_three_consecutive_fresh_route_detections_accept",
+      "test_timeout_and_dirty_mixed_array_are_rejected",
+      "test_unknown_tag_resets_a_partial_vote",
+      "test_wrong_route_tag_on_target_floor_is_rejected"
+    ]
+  },
+  {
+    "file": "multifloor_manager/nosetests-test.test_fixture_discovery.py.xml",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_maps_and_amcl_covariance_load_for_every_floor",
+      "test_stale_tf_is_rejected_by_frozen_clock"
+    ]
+  },
+  {
+    "file": "multifloor_manager/nosetests-.home.m3tron..codex..chatgpt-projects.g-p-6aa37f17097c81919ca6c59ce41e856c.localization-startup-20260921.work.test.test_map_evidence.py.xml",
+    "tests": 5,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_data_hash_distinguishes_identical_metadata",
+      "test_malformed_dirty_and_future_maps_are_rejected_at_boundary",
+      "test_pre_arm_target_map_is_ignored_until_new_generation_arrives",
+      "test_valid_target_fingerprint_advances_generation_once",
+      "test_wrong_target_and_current_fingerprint_do_not_advance"
+    ]
+  },
+  {
+    "file": "multifloor_manager/nosetests-.home.m3tron..codex..chatgpt-projects.g-p-6aa37f17097c81919ca6c59ce41e856c.localization-startup-20260921.work.test.test_site_configuration.py.xml",
+    "tests": 21,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_complete_asymmetric_building_loads_when_all_references_are_valid",
+      "test_configured_document_flag_remains_a_yaml_boolean",
+      "test_current_transition_fixture_loads_through_site_boundary",
+      "test_current_transition_policy_requires_zero_optional_count",
+      "test_dangling_graph_endpoints_are_rejected_with_a_path",
+      "test_duplicate_ids_are_rejected_with_a_path",
+      "test_empty_scan_topic_lists_are_rejected_with_a_path",
+      "test_floor_transition_policy_must_be_the_single_enabled_policy",
+      "test_future_placeholder_condition_is_unknown_until_registry_support_exists",
+      "test_invalid_yaw_is_rejected_with_a_path",
+      "test_malformed_yaml_is_path_qualified",
+      "test_mandatory_transition_conditions_cannot_be_disabled_or_optional",
+      "test_missing_map_images_are_rejected_with_a_path",
+      "test_nonpositive_tag_size_is_rejected_with_a_path",
+      "test_old_transition_predicate_arrays_are_rejected",
+      "test_transition_condition_flags_require_exact_yaml_integer_bits",
+      "test_transition_condition_names_are_closed_unique_and_complete",
+      "test_transition_fixture_loads_immutable_ordered_condition_schema",
+      "test_transition_policy_flags_require_exact_yaml_integer_bits",
+      "test_transition_temporal_values_are_strict",
+      "test_unconfigured_documents_cannot_pass_as_production_data"
+    ]
+  },
+  {
+    "file": "multifloor_manager/rostest-test_floor_transition_cancel_ros.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "testfloor_transition_cancel_ros"
+    ]
+  },
+  {
+    "file": "multifloor_manager/rostest-test_floor_transition_ros.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "testfloor_transition_ros"
+    ]
+  },
+  {
+    "file": "multifloor_manager/nosetests-test.test_startup_matching.py.xml",
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_arbitrary_nonhome_positions",
+      "test_cancellation_preempts_search",
+      "test_missing_scan_returns",
+      "test_rectangle_does_not_certify_opposite_corner",
+      "test_rotated_map_origin",
+      "test_unknown_space_and_wall_pose_rejected"
+    ]
+  },
+  {
+    "file": "multifloor_manager/rosunit-floor_transition_epoch_ros.xml",
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_costmap_identity_finishing_after_fault_cannot_advance_sequence",
+      "test_late_epoch_writer_cannot_change_rearmed_policy",
+      "test_map_parse_finishing_after_fault_cannot_advance_generation",
+      "test_policy_token_starts_timeout_only_at_begin_and_rejects_stale_epoch",
+      "test_pose_reduce_finishing_after_fault_cannot_restore_localization",
+      "test_tag_parse_finishing_after_fault_cannot_restore_state"
+    ]
+  },
+  {
+    "file": "multifloor_manager/rosunit-floor_transition_policy_blocked_ros.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_inflight_map_and_costmap_barrier_complete_ordered_transition"
+    ]
+  },
+  {
+    "file": "multifloor_manager/nosetests-test.test_readiness.py.xml",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_pre_pose_stale_dirty_and_missing_tf_evidence_is_rejected",
+      "test_ready_requires_three_post_pose_samples_and_fresh_motion_evidence",
+      "test_replayed_pose_and_expired_evidence_cannot_open_barrier",
+      "test_stale_scan_and_odometry_are_independently_rejected"
+    ]
+  },
+  {
+    "file": "multifloor_manager/nosetests-.home.m3tron..codex..chatgpt-projects.g-p-6aa37f17097c81919ca6c59ce41e856c.localization-startup-20260921.work.test.test_stair_endpoint_configuration.py.xml",
+    "tests": 12,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_cross_floor_navigation_is_rejected_through_site_boundary",
+      "test_endpoint_covariance_rejects_nonfinite_off_diagonal_and_negative_values",
+      "test_endpoint_covariance_requires_36_values",
+      "test_endpoint_entry_location_must_share_its_floor",
+      "test_endpoint_expected_tags_must_exist",
+      "test_endpoint_landing_pose_requires_normalized_quaternion",
+      "test_missing_directional_profiles_are_rejected_with_a_path",
+      "test_missing_or_extra_stair_endpoint_floor_is_rejected",
+      "test_stair_edge_source_must_be_its_floor_entry_endpoint",
+      "test_stair_loads_exactly_two_floor_keyed_endpoints",
+      "test_unreleased_single_endpoint_stair_shape_is_rejected",
+      "test_wrong_floor_or_stair_landing_tag_is_rejected"
+    ]
+  },
+  {
+    "file": "multifloor_manager/rosunit-startup_localization.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_auto_manual_busy_and_retry"
+    ]
+  },
+  {
+    "file": "multifloor_manager/rostest-test_floor_transition_policy_blocked_ros.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "testfloor_transition_policy_blocked_ros"
+    ]
+  },
+  {
+    "file": "multifloor_manager/rosunit-floor_transition_delayed_pose_ros.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_pre_response_pose_committing_after_response_cannot_advance_handshake"
+    ]
+  },
+  {
+    "file": "multifloor_manager/nosetests-test.test_map_loader.py.xml",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_fixture_yaml_resolves_to_map_server_identity",
+      "test_missing_or_dirty_map_is_rejected_before_transition"
+    ]
+  },
+  {
+    "file": "multifloor_manager/rosunit-floor_transition_ros.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_inflight_map_and_costmap_barrier_complete_ordered_transition"
+    ]
+  },
+  {
+    "file": "multifloor_manager/rostest-test_floor_transition_late_map_ros.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "testfloor_transition_late_map_ros"
+    ]
+  },
+  {
+    "file": "multifloor_manager/rostest-test_startup_localization.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "teststartup_localization"
+    ]
+  },
+  {
+    "file": "multifloor_manager/rostest-test_floor_transition_delayed_pose_ros.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "testfloor_transition_delayed_pose_ros"
+    ]
+  },
+  {
+    "file": "multifloor_manager/rosunit-floor_transition_cancel_ros.xml",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_cancelled_transition_is_preempted_and_faulted"
+    ]
+  },
+  {
+    "file": "multifloor_manager/nosetests-test.test_ros_services.py.xml",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "names": [
+      "test_clear_costmaps_service_timeout_is_reported_at_the_transition_boundary",
+      "test_nomotion_service_failure_is_reported_at_the_transition_boundary"
+    ]
+  }
+]

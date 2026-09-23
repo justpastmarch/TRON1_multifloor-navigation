@@ -1,0 +1,40 @@
+{
+  "scope": "component-only 1x recorded arrival + real worker + memory-only 40 Hz Supervisor NAV path",
+  "full_graph_test": false,
+  "external_recorded_source": true,
+  "robot_commands_sent": 0,
+  "bag": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_102101.bag",
+  "calibration_sha256": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+  "recorded_minus_header_p50_sec": 0.18687200546264648,
+  "recorded_minus_header_p99_sec": 0.3455992364883422,
+  "elapsed_sec": 105.93693645900021,
+  "processed_frames": 500,
+  "geometry_frames": 499,
+  "bootstrap_frames": 1,
+  "rejected_frames": 0,
+  "queue_max": 2,
+  "worker": {
+    "epoch": 0,
+    "queue_length": 0,
+    "dropped_scans": 0,
+    "rejected_imu": 0,
+    "worker_error": "",
+    "backend": "process"
+  },
+  "compute_p99_sec": 0.08027545268014359,
+  "completion_age_p99_sec": 0.40041402129354525,
+  "command_count": 4048,
+  "command_interval_p99_sec": 0.02517724687993905,
+  "command_interval_max_sec": 0.028211769000336062,
+  "cpu_seconds": 5.57471,
+  "peak_rss_kib": 242696,
+  "numerical_equivalence": {
+    "reference": "../../stair-tracking-fix-20260921/validation/102101/lidar_registration.csv",
+    "state_stamp_mismatches": 0,
+    "max_translation_m": 0.11051160530438192,
+    "max_rotation_deg": 2.720858404533203,
+    "pass_criteria": "<=1 mm / <=0.05 deg, identical frame/state acceptance",
+    "passed": false
+  },
+  "component_timing_pass": true
+}

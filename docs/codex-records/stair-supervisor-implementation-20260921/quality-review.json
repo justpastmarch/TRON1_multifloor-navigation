@@ -1,0 +1,68 @@
+{
+  "scope": "Implementation review; not a repeat of the whole-repository audit",
+  "skills": {
+    "shower": "Independent code reader found/fixed immutable-sample capture, admission mutation, scoped hold cancel, swept body arc, shutdown/final-send cancellation and IPC epoch/timeout issues; lifecycle tests added.",
+    "factchk": "ROS raw message and subscriber buffer behavior checked in installed upstream sources; physical stability and closed-loop accuracy remain unverified.",
+    "mandela": {
+      "patterns_fired": [
+        "Shared hallucination if estimator-to-estimator agreement were called physical accuracy",
+        "Tautology if synthetic controller fixtures were called real climbing success",
+        "Verifier = designer for component benchmark thresholds"
+      ],
+      "scope_fix": "Numerical equivalence only, named independent frozen references, reproducible scripts; measured survey/external video and real closed-loop tests required. No physical error or success-rate claim."
+    },
+    "ssotize": "Read-only comparison: frozen core/calibration hashes retained, deployment defaults agree in run.sh/launch/loader. Historical baseline reports are versioned references, not rewritten.",
+    "re0": "Runbook rewritten as current mode/config/ownership contracts; intermediate debug iterations kept out of operational instructions.",
+    "detool": "Skipped: artifact is explicitly a ROS-specific runbook with provenance, no portability claim."
+  },
+  "upstream_sources": [
+    {
+      "path": "/opt/ros/noetic/lib/python3/dist-packages/rospy/msg.py",
+      "lines": "48-78",
+      "claim": "AnyMsg retains serialized buffer without message deserialization",
+      "sha256": "fe4fec18afb214d4836de5500df4bfac432758bc339b93c79c7b30e10f01f7db",
+      "evidence": "OBSERVED installed package source"
+    },
+    {
+      "path": "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py",
+      "lines": "515-560",
+      "claim": "subscriber queue and byte buffer semantics",
+      "sha256": "e705097f636798b9c6375bcb6d25916e0a0f432a8a517f581c224e786bd0a766",
+      "evidence": "OBSERVED installed package source"
+    },
+    {
+      "path": "/opt/ros/noetic/lib/python3/dist-packages/rosbag/bag.py",
+      "lines": "548-568 and 2194",
+      "claim": "raw read_messages representation",
+      "sha256": "8c2e1f4b0e1bead5e03694c493a35b10f898bb7b051ca96aef219611b5253422",
+      "evidence": "OBSERVED installed package source"
+    },
+    {
+      "path": "/home/m3tron/catkin_ws/devel/lib/python3/dist-packages/livox_ros_driver2/msg/_CustomMsg.py",
+      "lines": "101-171",
+      "claim": "Header/custom-point wire offsets",
+      "sha256": "3d652638fd304f43f66b5f86da8619bc3cd277e48a1719fe7ad52014cbfeb12a",
+      "evidence": "OBSERVED installed package source"
+    },
+    {
+      "path": "/home/m3tron/catkin_ws/devel/lib/python3/dist-packages/livox_ros_driver2/msg/_CustomPoint.py",
+      "lines": "133-142",
+      "claim": "19-byte <I3f3B CustomPoint layout",
+      "sha256": "350a3841338298ec187460a380d0b14f192ae1bbfd5f20e88dd87b4bbe5dd562",
+      "evidence": "OBSERVED installed package source"
+    }
+  ],
+  "final_review": {
+    "remaining_epoch_enqueue_issue": "fixed: stamp/epoch/enqueue under one lock",
+    "native_entry_timeout": "fixed: process terminated/restarted; test waits for child job started signal",
+    "queue_lifecycle": "fixed: shutdown closed flag under ingress lock; reset/entry rejected during restart",
+    "targeted_process_tests": 5,
+    "targeted_process_tests_passed": true,
+    "scope": "Software lifecycle and report review, not physical commissioning"
+  },
+  "final_report_review": {
+    "finding": "performance column label confused command interval with observation interval; corrected",
+    "counts": "catkin wrapper14 separated from behavioral280",
+    "other_numeric_scope_contradictions_found": false
+  }
+}

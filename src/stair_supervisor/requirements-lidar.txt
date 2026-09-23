@@ -1,0 +1,5 @@
+# Optional off/observe/control implementation; frozen baseline environment.
+numpy==1.24.4
+scipy==1.10.1
+open3d==0.18.0
+PyYAML==6.0.3

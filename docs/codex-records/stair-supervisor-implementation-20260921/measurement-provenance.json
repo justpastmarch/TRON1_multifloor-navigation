@@ -1,0 +1,41 @@
+[
+  {
+    "bag_id": "102101",
+    "metrics": "realtime-verified-102101.json",
+    "metrics_sha256": "025b5399d91067f0a87e18aff807b40a6bfa42ef34389ec62a1b85bd004bde24",
+    "observed_utc": "2026-09-20T21:58:52.321398+00:00",
+    "spec": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/102101/spec.json",
+    "spec_sha256": "27101bad5345aeb043df323f86aa6220e2523abcad05561a1d57730cb3f1ba60",
+    "reference": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/102101/lidar_registration.csv",
+    "reference_sha256": "c54f0daf4f0981afc48f44b922bba654ccfda7872929761f5a5e7b17a687cbbb",
+    "related_code": "src/stair_supervisor/scripts/profile_lidar_stream.py",
+    "command": "numerical-python profile_lidar_stream.py SPEC OUTPUT.json",
+    "limitation": "Frozen estimator equivalence, not independent physical accuracy; component timing is not the complete ROS graph or robot socket timing."
+  },
+  {
+    "bag_id": "105713",
+    "metrics": "realtime-verified-105713.json",
+    "metrics_sha256": "a717eebe4c0d6369155b1ebc95a30dcf2bfeab06ea52fd366a23d1bc23739159",
+    "observed_utc": "2026-09-20T22:01:16.843463+00:00",
+    "spec": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/105713/spec.json",
+    "spec_sha256": "cfa93ddb171f17f4f398f01558966a57206863775b23b1153f3b5e2dbb35f213",
+    "reference": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/105713/lidar_registration.csv",
+    "reference_sha256": "bf1d7f8131e55039a00b6c508cea2bab850b7e0936bf4b013ff716154ba7253f",
+    "related_code": "src/stair_supervisor/scripts/profile_lidar_stream.py",
+    "command": "numerical-python profile_lidar_stream.py SPEC OUTPUT.json",
+    "limitation": "Frozen estimator equivalence, not independent physical accuracy; component timing is not the complete ROS graph or robot socket timing."
+  },
+  {
+    "bag_id": "103313",
+    "metrics": "replay-final/103313/metrics.json",
+    "metrics_sha256": "f640e334124312484b8747d1fcee873e42e9db40428a3088c9a023e252a8a7bc",
+    "observed_utc": "2026-09-20T22:04:10.569720+00:00",
+    "spec": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/103313/spec.json",
+    "spec_sha256": "bd70eb40582ed792f3b7e1ee3aa840aa464d776ef784f9759386546cb4cdc7a3",
+    "reference": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/103313/lidar_registration.csv",
+    "reference_sha256": "5911a56f9031301ce07ea09664cdfba313dd80c29043c7a71d983e4496c59d08",
+    "related_code": "src/stair_supervisor/scripts/replay_lidar_tracking.py",
+    "command": "numerical-python replay_lidar_tracking.py SPEC OUTPUT --reference CSV",
+    "limitation": "Frozen estimator equivalence, not independent physical accuracy; component timing is not the complete ROS graph or robot socket timing."
+  }
+]

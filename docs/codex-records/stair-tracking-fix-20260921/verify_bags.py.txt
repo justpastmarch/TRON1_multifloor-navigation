@@ -1,0 +1,51 @@
+"""Inspect actual output bag contracts and compare to identical historical frames."""
+from pathlib import Path
+import csv, json, hashlib
+import numpy as np
+from scipy.spatial.transform import Rotation
+import rosbag
+
+OUT=Path(__file__).resolve().parent
+HIST=Path('/home/m3tron/Desktop/TRON1_Modular_Navigation/build/offline_lio')
+source_config=Path('/home/m3tron/catkin_ws/src/FAST_LIO/config/mid360.yaml')
+results={}
+for run in ['102101','103313','105713']:
+    directory=OUT/'validation'/run
+    with (directory/'lidar_registration.csv').open() as stream:rows=list(csv.DictReader(stream))
+    with (HIST/run/'lidar_registration.csv').open() as stream:old=list(csv.DictReader(stream))
+    assert [x['stamp_ns'] for x in rows]==[x['stamp_ns'] for x in old]
+    poses=[];statuses=[];calibration=[];counts={}
+    with rosbag.Bag(str(directory/'lidar_registration.bag'),'r') as bag:
+        for topic,message,record in bag.read_messages():
+            counts[topic]=counts.get(topic,0)+1
+            if topic.endswith('/odom'):
+                assert message.header.stamp==record
+                p=message.pose.pose.position;q=message.pose.pose.orientation
+                poses.append([message.header.stamp.to_nsec(),p.x,p.y,p.z,q.x,q.y,q.z,q.w])
+            elif topic.endswith('/status'):
+                status=json.loads(message.data)
+                assert status['stamp_ns']==record.to_nsec()
+                statuses.append(status)
+            elif topic.endswith('/metadata'):calibration.append(json.loads(message.data))
+    assert len(statuses)==len(rows)==len(poses)
+    assert all(x['measurement_valid'] for x in statuses)
+    assert all(x['measurement_age_s']==0 for x in statuses)
+    assert statuses[0]['state']=='BOOTSTRAP'
+    assert statuses[0]['geometry_valid'] is False
+    assert all(x['state']=='TRACKED' for x in statuses[1:])
+    assert all(x['geometry_valid'] for x in statuses[1:])
+    assert sum(int(x['geometry_valid']) for x in rows)==len(rows)-1
+    assert calibration[0]['calibration_sha256']==hashlib.sha256(source_config.read_bytes()).hexdigest()
+    matrix=np.array([[float(row[k]) for k in ['x_m','y_m','z_m','qx','qy','qz','qw']] for row in rows])
+    np.testing.assert_allclose(np.asarray(poses)[:,1:],matrix,rtol=0,atol=1e-12)
+    r=Rotation.from_quat(matrix[:,3:]).as_matrix();relative=r[0].T@r
+    yaw=np.rad2deg(np.unwrap(np.arctan2(relative[:,1,0],relative[:,0,0])))
+    results[run]={'frames':len(rows),'bootstrap':1,'accepted_updates':len(rows)-1,
+        'rejected_frames':sum(not int(x['accepted']) for x in rows),
+        'last_relative_yaw_deg':float(yaw[-1]),
+        'initial_sensor_z_tilt_deg':float(np.rad2deg(np.arccos(r[0,2,2]))),
+        'end_sensor_position_m':matrix[-1,:3].tolist(),'topics':counts,
+        'header_stamp_and_csv_pose_contract':'PASS','calibration_hash_contract':'PASS',
+        'exact_historical_frame_selection':'PASS','scope':'same three known regression windows; no absolute position ground truth'}
+(OUT/'bag-validation.json').write_text(json.dumps(results,indent=2)+'\n')
+print(json.dumps({k:{'frames':v['frames'],'rejected':v['rejected_frames'],'yaw':v['last_relative_yaw_deg']} for k,v in results.items()},indent=2))

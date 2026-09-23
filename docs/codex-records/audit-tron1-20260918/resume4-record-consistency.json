@@ -1,0 +1,23 @@
+{
+  "coverage": {
+    "READ": 443,
+    "METADATA_ONLY": 1002,
+    "EXCLUDED": 3749,
+    "UNREAD": 315
+  },
+  "inventory": 5509,
+  "constraint_rows": 45,
+  "KEEP": 0,
+  "E2E_pending": 15,
+  "checkpoint_links_checked": 10,
+  "new_read_entries": 65,
+  "test_runs": {
+    "previous": 76,
+    "current": 12,
+    "total": 88,
+    "passed": 85,
+    "failed": 3
+  },
+  "truth_boundary": "Source/bag/test observations distinguished from historical claims and hardware inferences; no whole-bag/image-original inflation.",
+  "cold_read": "Minor gaps fixed: absolute artifact location, separate S/M definitions, explicit message count and next-target manifest"
+}

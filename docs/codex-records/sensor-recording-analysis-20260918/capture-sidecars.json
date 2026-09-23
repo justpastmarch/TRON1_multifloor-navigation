@@ -1,0 +1,82 @@
+[
+  {
+    "path": "manual_captures/manual-5F-rooftop_route_1788917683773755895.bag.capture.json",
+    "contents": {
+      "artifact": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/manual_captures/manual-5F-rooftop_route_1788917683773755895.bag",
+      "complete": true,
+      "missing_required": [],
+      "note": "",
+      "topic_counts": {
+        "/camera1/color/camera_info": 663,
+        "/camera1/color/image_raw/compressed": 663,
+        "/livox/imu": 4426,
+        "/livox/lidar": 221,
+        "/scan": 220,
+        "/tf": 2202,
+        "/tf_static": 5,
+        "/tron/sensor_joy": 10999,
+        "/tron/wheel_odom_raw": 2201
+      }
+    }
+  },
+  {
+    "path": "manual_captures/manual-5F-rooftop_route_1788918199558502114.bag.INCOMPLETE.json",
+    "contents": {
+      "artifact": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/manual_captures/manual-5F-rooftop_route_1788918199558502114.bag.active.invalid",
+      "complete": false,
+      "missing_required": [],
+      "note": "scan recording failed: finalized bag artifact is missing: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/manual_captures/manual-5F-rooftop_route_1788918199558502114.bag",
+      "topic_counts": {
+        "/camera1/color/camera_info": 5788,
+        "/camera1/color/image_raw/compressed": 5788,
+        "/livox/imu": 38610,
+        "/livox/lidar": 1930,
+        "/scan": 1929,
+        "/tf": 19292,
+        "/tf_static": 5,
+        "/tron/sensor_joy": 96429,
+        "/tron/wheel_odom_raw": 19279
+      }
+    }
+  },
+  {
+    "path": "manual_captures/manual-5F-rooftop_route_1788918551828137154.bag.capture.json",
+    "contents": {
+      "artifact": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/manual_captures/manual-5F-rooftop_route_1788918551828137154.bag",
+      "complete": true,
+      "missing_required": [],
+      "note": "",
+      "topic_counts": {
+        "/camera1/color/camera_info": 1043,
+        "/camera1/color/image_raw/compressed": 1042,
+        "/livox/imu": 6960,
+        "/livox/lidar": 348,
+        "/scan": 348,
+        "/tf": 3468,
+        "/tf_static": 5,
+        "/tron/sensor_joy": 17322,
+        "/tron/wheel_odom_raw": 3467
+      }
+    }
+  },
+  {
+    "path": "manual_captures/manual-5F-rooftop_route_1788920816079496577.bag.INCOMPLETE.json",
+    "contents": {
+      "artifact": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/manual_captures/manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+      "complete": false,
+      "missing_required": [],
+      "note": "scan recording failed: finalized bag artifact is missing: /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/manual_captures/manual-5F-rooftop_route_1788920816079496577.bag",
+      "topic_counts": {
+        "/camera1/color/camera_info": 14777,
+        "/camera1/color/image_raw/compressed": 10407,
+        "/livox/imu": 95998,
+        "/livox/lidar": 2690,
+        "/scan": 4912,
+        "/tf": 48615,
+        "/tf_static": 5,
+        "/tron/sensor_joy": 238381,
+        "/tron/wheel_odom_raw": 47755
+      }
+    }
+  }
+]

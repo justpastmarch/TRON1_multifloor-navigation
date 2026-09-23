@@ -1,0 +1,7 @@
+{
+  "numpy": "1.24.4",
+  "scipy": "1.10.1",
+  "open3d": "0.18.0",
+  "python": "3.8.10 (default, Mar 18 2025, 20:04:55) \n[GCC 9.4.0]",
+  "executable": "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/offline_lio/.uv-cache/environments-v2/process-bag-5e2b01a8a46b20d0/bin/python"
+}

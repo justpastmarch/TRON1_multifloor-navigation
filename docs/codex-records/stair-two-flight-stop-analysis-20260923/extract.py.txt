@@ -1,0 +1,29 @@
+from pathlib import Path
+import rosbag,json,collections,hashlib,subprocess,datetime
+R=Path('/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation');E=Path(__file__).resolve().parent
+P=R/'logs/stair_test_20260923_101300_JsJ3yN/stair.bag'
+def encode(x):
+ if hasattr(x,'to_sec'):return x.to_sec()
+ if hasattr(x,'__slots__'):return {k:encode(getattr(x,k)) for k in x.__slots__}
+ if isinstance(x,(tuple,list)):return [encode(v) for v in x]
+ if isinstance(x,bytes):return {'bytes':len(x)}
+ return x
+s=P.stat();meta={'bag':str(P),'size':s.st_size,'mtime_ns':s.st_mtime_ns,'at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'git_status':subprocess.check_output(['git','status','--porcelain=v1','--untracked-files=all'],cwd=R,text=True)}
+rows=[]
+with rosbag.Bag(str(P),'r') as b:
+ meta.update(start=b.get_start_time(),end=b.get_end_time(),topics={k:dict(type=v.msg_type,count=v.message_count) for k,v in b.get_type_and_topic_info().topics.items()})
+ topics=['/stair_supervisor/control_debug','/stair_supervisor/websocket_tx','/stair_supervisor/state','/stair_traversal/result','/stair_traversal/goal','/stair_traversal/feedback','/stair_supervisor/tracking_status','/tron/sensor_joy']
+ for topic,m,t in b.read_messages(topics=topics):
+  if topic in ('/stair_supervisor/control_debug','/stair_supervisor/websocket_tx','/stair_supervisor/tracking_status'):
+   try:d=json.loads(m.data)
+   except Exception:d=encode(m)
+  else:d=encode(m)
+  rows.append({'topic':topic,'t':t.to_sec(),'data':d})
+meta['source_unchanged_during_read']=(P.stat().st_size,P.stat().st_mtime_ns)==(s.st_size,s.st_mtime_ns)
+meta['source_sha256']={}
+for n in ('src/stair_supervisor/src/stair_supervisor/stair_feedback.py','src/stair_supervisor/src/stair_supervisor/supervisor.py','src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml','src/stair_supervisor/scripts/stair_entry_test.py'):
+ p=R/n;meta['source_sha256'][n]=hashlib.sha256(p.read_bytes()).hexdigest();dest=E/'source'/n;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(p.read_bytes())
+(E/'metadata.json').write_text(json.dumps(meta,indent=2));(E/'events.json').write_text(json.dumps(rows))
+print(json.dumps({k:v for k,v in meta.items() if k not in ('git_status','source_sha256')},indent=2))
+for r in rows:
+ if r['topic'].endswith('/result'):print(json.dumps(r))

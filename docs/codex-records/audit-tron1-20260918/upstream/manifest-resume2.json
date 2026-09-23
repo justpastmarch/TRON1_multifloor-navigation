@@ -1,0 +1,12 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/costmap_2d/plugins/static_layer.cpp",
+    "file": "costmap_2d__plugins__static_layer.cpp",
+    "sha256": "6f5ed524e1da2d88fad7dbf5b85c937693b51d186caf2a7d80d42ea9ee80d3e0"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/base_local_planner/src/trajectory_planner.cpp",
+    "file": "base_local_planner__src__trajectory_planner.cpp",
+    "sha256": "4b9aabd688bee76f1453c8e39bc6e172d7793722884118defdaaeae68934964e"
+  }
+]

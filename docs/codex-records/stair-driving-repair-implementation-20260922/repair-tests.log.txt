@@ -1,0 +1,25 @@
+test_all_entry_ack_commands_are_zero_and_do_not_consume_trial_time (test_stair_repair.ConnectedExecutionTest) ... ok
+test_cancel_during_ack_retains_stair_and_never_sends_motion (test_stair_repair.ConnectedExecutionTest) ... ok
+test_connected_test_runs_ordered_prefix_and_never_returns_arrival_success (test_stair_repair.ConnectedExecutionTest) ... ok
+test_failed_rearm_restores_retained_ownership (test_stair_repair.ConnectedExecutionTest) ... ok
+test_mid_landing_handoff_keeps_measured_correction (test_stair_repair.ConnectedExecutionTest) ... ok
+test_missing_prefix_budget_rejects_before_any_mode_request (test_stair_repair.ConnectedExecutionTest) ... ok
+test_phase_budget_ends_a_stalled_phase_before_total_budget (test_stair_repair.ConnectedExecutionTest) ... ok
+test_target_reached_does_not_allow_old_nav_to_resume (test_stair_repair.ConnectedExecutionTest) ... ok
+test_transport_failure_during_loss_response_is_a_result_not_an_exception (test_stair_repair.ConnectedExecutionTest) ... ok
+test_adjacent_regions_do_not_create_an_internal_margin_wall (test_stair_repair.ConnectedGeometryTest) ... ok
+test_body_straddling_flight_and_landing_is_supported (test_stair_repair.ConnectedGeometryTest) ... ok
+test_complete_phase_does_not_validate_an_unsent_old_forward_command (test_stair_repair.ConnectedGeometryTest) ... ok
+test_completion_never_bypasses_current_body_support (test_stair_repair.ConnectedGeometryTest) ... ok
+test_explicit_budgets_are_finite_named_and_bounded_by_profile (test_stair_repair.ConnectedGeometryTest) ... ok
+test_explicit_uncommissioned_tests_do_not_enable_normal_missions (test_stair_repair.ConnectedGeometryTest) ... ok
+test_gap_inside_body_is_rejected_even_when_every_corner_is_supported (test_stair_repair.ConnectedGeometryTest) ... ok
+test_neutral_ack_keeps_actual_command_history_zero (test_stair_repair.ConnectedGeometryTest) ... ok
+test_physical_gap_and_outer_margin_remain_blocked (test_stair_repair.ConnectedGeometryTest) ... ok
+test_uncommissioned_default_budget_is_first_flight_four_seconds (test_stair_repair.ConnectedGeometryTest) ... ok
+test_velocity_feedback_reduces_heading_and_lateral_error_in_unicycle_model (test_stair_repair.ConnectedGeometryTest) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 1.220s
+
+OK

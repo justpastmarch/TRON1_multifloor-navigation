@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import threading
 import time
+import math
 
 from geometry_msgs.msg import PoseWithCovarianceStamped
 from nav_msgs.msg import Odometry
@@ -125,6 +126,33 @@ class RosStateMonitor:
             if self._floor is None:
                 return FloorState(state=FloorState.UNKNOWN, detail="no floor state received")
             return self._floor
+
+    def hold_pose(self):
+        """Fresh map-associated AMCL pose for optional idle NAV restoration."""
+        with self._lock:
+            floor,pose=self._floor,self._pose
+            if floor is None or pose is None or floor.state != FloorState.READY:
+                return None
+            if (time.monotonic()-self._floor_received>self._freshness_sec or
+                    time.monotonic()-self._supervisor_received>self._freshness_sec or
+                    self._supervisor is None or self._supervisor.state!=SupervisorState.NAV):
+                return None
+            key=(floor.floor_id,int(floor.map_generation))
+            if self._pose_floor_key != key or time.monotonic()-self._pose_received>self._freshness_sec:
+                return None
+            age=rospy.Time.now().to_sec()-pose.header.stamp.to_sec()
+            if pose.header.frame_id!='map' or not 0<=age<=self._freshness_sec:
+                return None
+            p,q=pose.pose.pose.position,pose.pose.pose.orientation
+            values=(p.x,p.y,q.x,q.y,q.z,q.w)
+            cov=pose.pose.covariance
+            if not all(map(math.isfinite,values)) or abs(sum(v*v for v in values[2:])-1)>.01:
+                return None
+            limits=(self._entry_policy.max_covariance_x,self._entry_policy.max_covariance_y,self._entry_policy.max_covariance_yaw)
+            if any(not math.isfinite(cov[i]) or not 0<=cov[i]<=bound for i,bound in zip((0,7,35),limits)):
+                return None
+            yaw=math.atan2(2*(q.w*q.z+q.x*q.y),1-2*(q.y*q.y+q.z*q.z))
+            return (*key,p.x,p.y,yaw)
 
     def wait_for_floor(self, floor_id: str, generation: int, timeout: float) -> bool:
         """Wait until this process observes the floor action's READY generation."""

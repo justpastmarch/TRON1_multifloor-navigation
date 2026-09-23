@@ -1,0 +1,59 @@
+"""Offline raw-sensor reconstruction; no robot connection or ROS node."""
+from collections import deque
+from dataclasses import asdict
+import json
+from pathlib import Path
+import time
+import numpy as np
+import rosbag
+import yaml
+from stair_supervisor.lidar_tracking import TrackingEngine, TrackingSettings, load_imu_rotation, points_from_livox
+
+ROOT = Path('/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation')
+OUT = Path(__file__).resolve().parent
+BAG = ROOT/'logs/stair_test_20260923_091321_pEOWV9/stair.bag'
+config_path = ROOT/'src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml'
+config = yaml.safe_load(config_path.read_text())
+settings = TrackingSettings(**config['tracking'])
+rotation, checksum = load_imu_rotation(config_path.parent/config['calibration'])
+engine = TrackingEngine(settings, rotation, checksum)
+imu = deque(maxlen=settings.imu_capacity)
+pending = deque()
+rows = []
+recorded = json.loads((OUT/'stair_test_20260923_091321_pEOWV9.json').read_text())['messages']
+reference_stamps = {m['value']['stamp'] for m in recorded if m['topic'].endswith('/tracking_status') and 'stamp' in m['value']}
+with rosbag.Bag(str(BAG)) as bag:
+    initial = [m.header.stamp.to_sec() for _,m,_ in bag.read_messages(topics=['/livox/lidar'])][:40]
+parity = next(i % settings.frame_step for i,s in enumerate(initial) if s in reference_stamps)
+started = time.monotonic()
+count = 0
+def drain():
+    while pending and imu:
+        stamp, points, received = pending[0]
+        required = stamp + (settings.gravity_half_window_s if engine.last_stamp is None else 0.)
+        if imu[-1][0] < required:
+            break
+        pending.popleft()
+        result = engine.process(stamp, points, tuple(imu), received, stamp)
+        rows.append(asdict(result))
+        if len(rows) % 100 == 0:
+            print('processed',len(rows),'samples',flush=True)
+with rosbag.Bag(str(BAG)) as bag:
+    end = 1790122473.5
+    for topic,m,t in bag.read_messages(topics=['/livox/lidar','/livox/imu']):
+        stamp=m.header.stamp.to_sec()
+        if topic.endswith('/imu'):
+            w,a=m.angular_velocity,m.linear_acceleration
+            if not imu or stamp>imu[-1][0]:
+                imu.append((stamp,w.x,w.y,w.z,a.x,a.y,a.z))
+                while len(imu)>2 and imu[1][0]<stamp-settings.imu_buffer_sec:
+                    imu.popleft()
+        else:
+            if count % settings.frame_step == parity and stamp <= end:
+                pending.append((stamp,points_from_livox(m),t.to_sec()))
+            count+=1
+        drain()
+        if t.to_sec()>end+1 and not pending:
+            break
+(OUT/'replay-samples.json').write_text(json.dumps(rows))
+print(json.dumps({'samples':len(rows),'elapsed_sec':time.monotonic()-started,'physical_accuracy':'UNVERIFIED; this reconstruction is not external ground truth','pending':len(pending)}),flush=True)

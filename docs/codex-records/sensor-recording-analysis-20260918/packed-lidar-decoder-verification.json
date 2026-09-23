@@ -1,0 +1,110 @@
+[
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "declared_points": 19968,
+    "decoded_points": 19968,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260821_155022.bag",
+    "declared_points": 20064,
+    "decoded_points": 20064,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788917683773755895.bag",
+    "declared_points": 19968,
+    "decoded_points": 19968,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "declared_points": 19968,
+    "decoded_points": 19968,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "declared_points": 19968,
+    "decoded_points": 19968,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788918551828137154.bag",
+    "declared_points": 20064,
+    "decoded_points": 20064,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152248.bag",
+    "declared_points": 19872,
+    "decoded_points": 19872,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103313.bag",
+    "declared_points": 19968,
+    "decoded_points": 19968,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788918199558502114.bag.active.invalid",
+    "declared_points": 20064,
+    "decoded_points": 20064,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103200.bag",
+    "declared_points": 19968,
+    "decoded_points": 19968,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_102101.bag",
+    "declared_points": 20064,
+    "decoded_points": 20064,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "declared_points": 20064,
+    "decoded_points": 20064,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152128.bag",
+    "declared_points": 20064,
+    "decoded_points": 20064,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "declared_points": 19968,
+    "decoded_points": 19968,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_CLEAN_REPEAT_20260821_160211.bag",
+    "declared_points": 19968,
+    "decoded_points": 19968,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_231643.bag",
+    "declared_points": 2016,
+    "decoded_points": 2016,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_105713.bag",
+    "declared_points": 20064,
+    "decoded_points": 20064,
+    "three_points_equal_generated_ros_decoder": true
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152223.bag",
+    "declared_points": 20064,
+    "decoded_points": 20064,
+    "three_points_equal_generated_ros_decoder": true
+  }
+]

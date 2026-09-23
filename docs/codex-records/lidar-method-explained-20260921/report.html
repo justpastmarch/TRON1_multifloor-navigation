@@ -1,0 +1,875 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TRON LiDAR 개선 원리와 발견 과정</title><style>*{box-sizing:border-box}html{scroll-behavior:auto;scroll-padding-top:22px}body{margin:0;background:#f3f6f8;color:#243448;font-family:"Noto Sans CJK KR","NanumGothic",system-ui,sans-serif;font-size:16px;line-height:1.85}aside{position:fixed;top:0;left:0;bottom:0;width:265px;padding:28px 20px;overflow:auto;background:#142d40;color:#fff}aside strong{color:#fff;font-size:20px}aside p{font-size:12px;opacity:.72}aside a{display:block;color:#dceaf2;text-decoration:none;padding:7px 0;font-size:13px;line-height:1.5}main{margin-left:265px;padding:38px 46px 90px;max-width:1410px}article{background:#fff;padding:40px 48px;border:1px solid #dfe7ed;border-radius:14px}h1{word-break:keep-all;font-size:32px;line-height:1.45;letter-spacing:-1px;color:#142d40}h2{font-size:25px;line-height:1.5;margin:54px 0 22px;padding-bottom:12px;border-bottom:2px solid #dce8ee;color:#17485f}h3{font-size:20px;margin:32px 0 14px;color:#245369}p{margin:15px 0}strong{color:#184a5a}blockquote{margin:26px 0;padding:8px 24px;background:#eef7f4;border-left:5px solid #16856e;border-radius:0 9px 9px 0}.table-scroll{overflow:auto;margin:24px 0}table{border-collapse:collapse;width:100%;min-width:650px;font-size:14px;line-height:1.7}th,td{padding:12px 14px;border:1px solid #dce5eb;text-align:left;vertical-align:top}th{background:#eaf2f6;color:#173e55}tr:nth-child(even) td{background:#fafcfd}pre{background:#142d40;color:#edf6fa;padding:22px;border-radius:10px;white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.8 ui-monospace,monospace}code{font-size:.9em;overflow-wrap:anywhere}p code,td code,li code{background:#eef3f6;padding:2px 5px;border-radius:4px}li{margin:10px 0}a{color:#176b91;overflow-wrap:anywhere}img,svg{display:block;max-width:100%;height:auto;margin:26px auto}button{border:1px solid #dae7ee;border-radius:6px;background:transparent;color:#fff;padding:8px 16px;cursor:pointer}.topline{font-size:13px;color:#637b8a;letter-spacing:.05em;margin-bottom:15px}@media(max-width:1000px){aside{position:static;width:auto;max-height:310px}main{margin:0;padding:20px}article{padding:24px}h1{font-size:27px}}@media print{aside,.topline{display:none}body{background:#fff;font-size:10pt}main{margin:0;padding:0;max-width:none}article{border:0;padding:0}h1{font-size:22pt}h2{font-size:17pt;break-after:avoid}h3{font-size:13pt;break-after:avoid}table{min-width:0;font-size:8.5pt}tr,blockquote,svg,img{break-inside:avoid}pre{font-size:8.5pt;color:#172d40;background:#edf3f6}a{color:inherit;text-decoration:none}@page{size:A4;margin:16mm}}</style></head><body><aside><strong>TRON · LiDAR 측위</strong><p>개선 원리 · 발견 과정 · 알고리즘 계층<br>2026-09-21 / 기준 버전 v1</p><a href="#section-1">1. 질문에 먼저 답하면</a><a href="#section-2">2. 먼저 계층을 구분해야 한다</a><a href="#section-3">3. 어떻게 해결 방법을 찾았는가</a><a href="#section-4">4. 좌표계: 비슷해 보이는 두 보정을 혼동하면 안 된다</a><a href="#section-5">5. 현재 방식이 한 프레임을 처리하는 순서</a><a href="#section-6">6. ICP와 GICP는 정확히 어떻게 다른가</a><a href="#section-7">7. FAST-LIO와는 같은 계층인가, 다른 알고리즘인가</a><a href="#section-8">8. IMU 드리프트는 어떻게 다루는가</a><a href="#section-9">9. 이 선택은 일반적인가</a><a href="#section-10">10. 결과를 숫자로 읽는 법</a><a href="#section-11">11. RViz에서 좋아 보인 것 중 무엇이 실제 알고리즘 개선인가</a><a href="#section-12">12. 원래 비교 도구에서 실제 Supervisor로 옮길 때 달라진 것</a><a href="#section-13">13. 아직 구현하지 않았거나 입증하지 못한 것</a><a href="#section-14">14. 구현을 이해하기 위한 의사코드</a><a href="#section-15">15. 향후 수정할 때 보존해야 할 검증 기준</a><a href="#section-16">부록 A. 설정값은 무엇을 제한하는가</a><a href="#section-17">부록 B. 주요 주장과 증거의 강도</a><a href="#section-18">부록 C. 로컬 근거와 원 자료</a><p><button onclick="window.print()">인쇄 / PDF 저장</button></p></aside><main><div class="topline">기술 설명 문서 · 원 코드와 실험 기록에 근거</div><article><h1>TRON 계단 LiDAR 측위 개선</h1>
+<p><strong>발견 과정과 작동 원리, ICP·FAST-LIO와의 관계</strong></p>
+<p>작성일: 2026-09-21 · 기준 구현: <code>gyro-gicp-installed-20260921-v1</code> · 설명 대상: RViz에서 녹색으로 확인한 개선 측위</p>
+<blockquote><p><strong>이번 개선은 새로운 ICP를 발명하거나 FAST-LIO의 내부를 고친 작업이 아니다. 원래 사용하던 GICP 앞에 올바른 중력 초기화와 IMU 회전 예측을 붙이고, 뒤에는 실패한 측정을 새 위치처럼 보여 주지 않는 처리를 넣은 것이다.</strong> 그 결과 두 계단 BAG에서 놓치던 계단참 회전을 추적하고, 주변 점군을 더 일관되게 연결할 수 있었다.</p>
+</blockquote>
+<p>이 문서는 실제 코드와 남아 있는 실험 기록으로 발견 과정을 재구성한다. 기록에 없는 판단이나 실패 원인을 나중에 확정 사실처럼 채워 넣지 않는다. <strong>OBSERVED</strong>는 코드·기록·재계산에서 확인한 것, <strong>INFERRED</strong>는 그 근거로 해석한 것, <strong>UNVERIFIED</strong>는 외부 실측이나 실기 시험이 필요한 것이다. 일반 이론은 원 논문·공식 구현과 구분해 설명한다.</p>
+<h2 id="section-1">1. 질문에 먼저 답하면</h2>
+<div class="table-scroll"><table>
+<thead><tr>
+<th>질문</th>
+<th>답</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>녹색 LiDAR가 좋아진 핵심은?</td>
+<td>위쪽 방향을 벽이 아닌 IMU로 초기화하고, 다음 scan의 회전을 gyro로 예측한 뒤 기존 GICP가 점군으로 보정하도록 바꿨다. 거절된 위치를 최신 측위처럼 출력하던 문제도 고쳤다.</td>
+</tr>
+<tr>
+<td>ICP와 전혀 다른 알고리즘인가?</td>
+<td>아니다. <strong>정합 엔진은 수정 전에도, 수정 후에도 GICP</strong>다. GICP는 ICP 계열의 한 방법이다.</td>
+</tr>
+<tr>
+<td>FAST-LIO를 개선한 것인가?</td>
+<td>아니다. FAST-LIO가 출력한 위치를 고친 것이 아니라, 원본 LiDAR·IMU에서 별도로 위치를 추정하는 경로를 개선했다.</td>
+</tr>
+<tr>
+<td>FAST-LIO와 같은 수준의 것인가?</td>
+<td>전체 측위 시스템으로 비교하면 둘 다 LiDAR·IMU 기반 위치·자세 추정기다. 그러나 GICP 한 함수와 FAST-LIO 전체를 비교하면 계층이 다르다.</td>
+</tr>
+<tr>
+<td>IMU가 드리프트해도 쓸 수 있나?</td>
+<td>드리프트가 사라지는 것은 아니다. 이번 방식은 gyro를 주로 관측 사이의 짧은 회전 예측에 쓰고, LiDAR 정합으로 자세를 갱신한다. 가속도를 두 번 적분해 위치를 만들지 않는다.</td>
+</tr>
+<tr>
+<td>일반적인 선택인가?</td>
+<td>관성/운동 예측으로 정합 초기값을 주는 설계 자체는 기존 연구·구현에 있는 선택이다. 다만 이번의 정확한 조합과 수치는 이 시스템에 맞춘 것이며, 모두에게 최선이라는 뜻은 아니다.</td>
+</tr>
+<tr>
+<td>계단 주행까지 해결됐나?</td>
+<td>측위 개선과 주행 성공은 다른 단계다. 경로 정합, 몸체 기준 변환, 제어 응답, 실제 도착·대기 검증이 별도로 필요하다.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="section-2">2. 먼저 계층을 구분해야 한다</h2><svg aria-label="센서부터 GICP 추적기와 Supervisor까지의 기능 계층" role="img" viewbox="0 0 1000 440" xmlns="http://www.w3.org/2000/svg"><style>text{font-family:system-ui,sans-serif;fill:#203348;font-size:17px}.small{font-size:14px;fill:#53677d}.head{font-weight:700;font-size:19px}</style><defs><marker id="arrow" markerheight="8" markerwidth="8" orient="auto" refx="7" refy="4"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#617d91"></path></marker></defs><rect fill="#f1f6fa" height="440" rx="14" width="1000"></rect><rect fill="#fff" height="365" rx="14" stroke="#478fa0" stroke-width="2" width="485" x="250" y="35"></rect><text class="head" x="275" y="67">이번 측위 시스템 전체</text><text class="small" x="275" y="91">FAST-LIO2와 비교할 수 있는 기능 범위</text><g fill="#e5edf5" stroke="#b4c5d5"><rect height="74" rx="9" width="175" x="25" y="122"></rect><rect height="74" rx="9" width="175" x="25" y="263"></rect></g><text class="head" x="49" y="153">원본 LiDAR</text><text class="small" x="49" y="178">거리 점군 + 측정 시각</text><text class="head" x="49" y="294">원본 IMU</text><text class="small" x="49" y="319">각속도 + 가속도</text><g fill="#e7f4f0" stroke="#68a28f"><rect height="72" rx="8" width="180" x="275" y="123"></rect><rect height="74" rx="8" width="180" x="275" y="263"></rect><rect height="105" rx="8" width="205" x="497" y="179"></rect></g><text x="294" y="152">점군 전처리</text><text class="small" x="294" y="177">거리 · voxel · local map</text><text x="293" y="291">중력 초기화</text><text x="293" y="317">gyro 회전 예측</text><text class="head" x="524" y="211">GICP 정합 엔진</text><text class="small" x="518" y="240">ICP 계열의 내부 부품</text><text class="small" x="518" y="262">초기값 주변에서 pose 갱신</text><text x="303" y="372">측정 유효성 · 관측 시각 · 최신 지도 관리</text><rect fill="#fff" height="92" rx="8" stroke="#b4c5d5" width="190" x="785" y="125"></rect><text class="head" x="808" y="159">Stair Supervisor</text><text class="small" x="808" y="187">경로 판단 · 보정 명령</text><rect fill="#fff" height="65" rx="8" stroke="#b4c5d5" width="190" x="785" y="278"></rect><text x="831" y="317">RViz 표시</text><g fill="none" marker-end="url(#arrow)" stroke="#617d91" stroke-width="2"><path d="M200 159 H272"></path><path d="M200 300 H272"></path><path d="M455 159 H477 V199 H494"></path><path d="M455 300 H477 V261 H494"></path><path d="M735 170 H782"></path><path d="M735 310 H782"></path></g></svg>
+<p>같은 대화에서 ‘LiDAR’, ‘ICP’, ‘FAST-LIO’, ‘RViz’, ‘Supervisor’를 함께 부르면 서로 대체 가능한 제품처럼 들릴 수 있다. 실제로는 역할이 다르다.</p>
+<div class="table-scroll"><table>
+<thead><tr>
+<th>계층</th>
+<th>무엇을 하는가</th>
+<th>이번 시스템의 예</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>① 센서·원시 데이터</td>
+<td>거리를 측정하고 각속도·가속도를 기록한다</td>
+<td>Livox LiDAR 점군, IMU, wheel odometry</td>
+</tr>
+<tr>
+<td>② 시간·좌표·전처리</td>
+<td>같은 시각·축으로 해석하고 점 수를 줄인다</td>
+<td>header 시각, IMU↔LiDAR 회전, 거리 필터, voxel</td>
+</tr>
+<tr>
+<td>③ 운동 예측·정합</td>
+<td>다음 자세를 예측하고 현재 점군을 지도에 맞춘다</td>
+<td>gyro 적분, GICP</td>
+</tr>
+<tr>
+<td>④ 연속 측위</td>
+<td>여러 scan의 자세·지도·유효 상태를 관리한다</td>
+<td>이번 gyro 보조 GICP 추적기 / 다른 설계인 FAST-LIO2</td>
+</tr>
+<tr>
+<td>⑤ 경로·상태 판단·제어</td>
+<td>현재 위치를 목표와 비교해 움직임을 결정한다</td>
+<td>Stair Supervisor, 계단참 전환, 중심선 보정</td>
+</tr>
+<tr>
+<td>⑥ 표현·운영</td>
+<td>결과와 상태를 보여 주고 임무를 요청한다</td>
+<td>RViz, 웹 UI, mission manager</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>GICP는 ③의 부품이다. 이번 개선 전체는 ②~④를 묶은 추적기이고, FAST-LIO2는 자체 방식으로 ②~④를 구현한 더 넓은 측위 시스템이다.</strong> Stair Supervisor는 그 결과를 소비하는 다음 계층이다. 실제 package 경계가 이 표와 일대일로 같다는 뜻은 아니며, 이해를 위한 기능 구분이다.</p>
+<pre><code class="lang-text">원본 LiDAR ── 전처리 ─────────────────────┐
+                                        ▼
+IMU ── 축 변환 ── 초기 중력 / 짧은 회전 예측 ── GICP 정합
+                                        │
+최근 수락 scan 지도 ─────────────────────┘
+                                        ▼
+                           수락 여부 + 측정 시각 + 위치·자세
+                              ├─ RViz: 그림으로 표시
+                              └─ Supervisor: 경로와 비교 → 속도 명령
+</code></pre>
+<p>이 구조는 원본 센서에서 시작한다. <strong>발산한 FAST-LIO 위치를 다시 정렬해 녹색 위치를 만든 구조가 아니며, wheel odometry를 녹색 위치의 정답으로 주입한 구조도 아니다.</strong> [로컬 코드 C1, C2]</p>
+<h2 id="section-3">3. 어떻게 해결 방법을 찾았는가</h2>
+<h3>3.1 출발점은 ‘그림이 이상하다’는 관찰이었다</h3>
+<p>이 문서의 <code>102101</code>, <code>103313</code>, <code>105713</code>은 2026-08-27에 기록된 BAG 파일 이름의 시각 부분이다. 예를 들어 <code>105713</code>은 <code>stair_3F_to_4F_UP_20260827_105713.bag</code>를 뜻한다. 서로 다른 세 기록이지 알고리즘 버전 번호가 아니다.</p>
+<p>사용자는 같은 BAG을 RViz에서 비교했을 때 FAST-LIO·LiDAR·odom이 크게 벌어지고, 계단참을 돌아 반대 방향으로 올라가야 하는데 LiDAR가 그 회전을 따라가지 못하는 것 같다고 지적했다. 이 관찰은 실제 문제의 단서였지만, 화면만으로는 원인을 한 가지로 정할 수 없었다.</p>
+<p>가능한 구분은 적어도 세 가지였다. 첫째, <strong>좌표계가 기울어져 그림이 잘못 보이는 문제</strong>. 둘째, <strong>시간에 따른 회전 추적 자체가 중단된 문제</strong>. 셋째, <strong>서로 다른 원점·시각의 궤적을 겹쳐 비교한 문제</strong>다. FAST-LIO의 필터 발산은 이들과 또 별도로 조사해야 했다.</p>
+<h3>3.2 첫 번째 구체적 결함: ‘가장 큰 평면 = 바닥’</h3>
+<p><strong>OBSERVED:</strong> 기존 <code>level_transform_from_plane()</code>은 초기 점군 전체에서 RANSAC으로 우세 평면 하나를 찾고, 그 법선이 세계 좌표의 +Z가 되도록 회전시켰다. 바닥인지 확인하는 별도 의미 판정은 없었다. 세 기록에서 초기 센서 Z축의 기울기는 약 89°였고, 한 기록의 계산값은 약 89.62°였다. [기록 H1, 코드 C3]</p>
+<p><strong>INFERRED:</strong> 계단 입구에서는 벽이 바닥보다 넓고 많은 점을 차지할 수 있다. 당시 추출 법선이 IMU 가속도의 위쪽 방향과 거의 직각이었던 점을 함께 보면, 우세 평면으로 벽을 선택한 것으로 해석된다. 모든 원본 점에 사람이 바닥/벽 라벨을 붙여 증명한 것은 아니다.</p>
+<p>따라서 바닥 방향을 임의의 우세 평면으로 정하는 대신, <strong>초기 저동역학 구간의 가속도 방향을 사용해 중력에 맞춘 좌표계를 만드는 것</strong>을 후보로 삼았다. 이는 높이와 roll/pitch를 해석할 기준을 바로잡는 변경이다.</p>
+<p>여기서 중요한 점이 있다. 좌표계 전체를 일정하게 돌리는 것만으로는 잘못된 상대 회전 추적이 자동으로 해결되지 않는다. 수평 초기화 문제와 계단참 추적 유실 문제를 같은 문제라고 단정하지 않았다.</p>
+<h3>3.3 두 번째 결함: 정합이 실패하면 예측이 뒤처진 채 고정됐다</h3>
+<p><strong>OBSERVED:</strong> 기존 처리 루프는 마지막으로 수락한 자세를 다음 GICP의 초기값으로 사용했다. 정합이 거절되면 자세와 지도는 갱신하지 않았다. 다음 scan에서도 그 오래된 자세를 다시 초기값으로 사용했다. [코드 C3]</p>
+<p>정상적으로 매 scan이 들어맞는 동안에는 직전 자세가 괜찮은 초기값일 수 있다. 그러나 회전 중 몇 번 거절되면 초기값은 ‘직전 실제 자세’가 아니라 <strong>몇 초 전 마지막으로 성공했던 자세</strong>가 된다. 실제 로봇은 계속 돌아가므로 새 점군과 오래된 지도/초기 자세의 차이가 커진다.</p>
+<p>이렇게 한 번 뒤처지면 다음 정합도 실패하기 쉬운 구조였다. 특히 수락 검사까지 오래된 자세를 기준으로 하므로, 실제 회전을 따라잡은 후보가 오히려 큰 변화라고 거절될 가능성도 있다. 그 구조는 코드에서 확인했고, 모든 최초 거절이 어느 단일 요인 때문에 발생했는지까지 분리 증명한 것은 아니다.</p>
+<p><strong>OBSERVED:</strong> <code>105713</code>에는 166프레임 연속 거절, 첫 거절과 마지막 거절 사이 약 33초가 기록됐다. 여기서 연속 거절 구간은 첫 거절과 마지막 거절 프레임의 시각 차이로 정의했다. 약 0.2초 간격의 추적에서 몇 초를 잃는 문제가 아니라, 회전 구간 전체를 잃을 수 있는 길이였다. [H1]</p>
+<h3>3.4 세 번째 결함: 실패한 자세를 새 시각으로 다시 출력했다</h3>
+<p><strong>OBSERVED:</strong> 기존 코드는 정합이 거절돼도 마지막 자세로 새 점군을 변환하고, 새 sensor timestamp의 odometry·path·cloud를 계속 작성했다. 지도 갱신 여부는 검사했지만, 현재 측정 출력 자체는 성공에 묶여 있지 않았다. [C3]</p>
+<p>이 경우 화면에는 메시지가 계속 들어오므로 추적기가 살아 있는 것처럼 보인다. 하지만 실제 내용은 <strong>새 위치 측정이 아니라 오래된 위치의 반복</strong>이다. 이것은 위치 오차와 별개로 관측의 유효성을 잘못 표현하는 문제다.</p>
+<p>해결은 그림을 더 부드럽게 만드는 것이 아니라, 실패를 실패로 표시하는 것이었다. 이 처리는 좋은 프레임의 위치를 더 정확하게 만드는 알고리즘은 아니지만, 이후 제어가 오래된 위치를 현재 위치로 오인하지 않도록 하는 데 필요하다.</p>
+<h3>3.5 그래서 ‘초기화만 수정’과 ‘회전 예측도 추가’를 나눠 보았다</h3>
+<p>당시 <code>105713</code>에 대한 축 일치 가정 실험 기록은 다음과 같다. 아래는 <strong>최종 설치 결과가 아니라 원인 분리를 위한 중간 실험</strong>이다. 마지막 상대 yaw는 각 처리 결과의 첫 센서 자세에 대한 마지막 상대 회전에서 계산한 yaw이며, 절대 건물 방위가 아니다.</p>
+<div class="table-scroll"><table>
+<thead><tr>
+<th>실험</th>
+<th style="text-align:right">수락 프레임, 초기화 포함</th>
+<th style="text-align:right">최장 연속 거절 구간</th>
+<th style="text-align:right">마지막 상대 yaw</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>기존 방식</td>
+<td style="text-align:right">168/340</td>
+<td style="text-align:right">약 33.0초</td>
+<td style="text-align:right">약 -2.6°</td>
+</tr>
+<tr>
+<td>중력 초기화만 변경, IMU·LiDAR 축 일치 가정</td>
+<td style="text-align:right">165/340</td>
+<td style="text-align:right">약 33.6초</td>
+<td style="text-align:right">약 -0.8°</td>
+</tr>
+<tr>
+<td>중력 초기화 + gyro 회전 예측 + GICP, 축 일치 가정</td>
+<td style="text-align:right">340/340</td>
+<td style="text-align:right">없음</td>
+<td style="text-align:right">약 +178.3°</td>
+</tr>
+</tbody>
+</table></div>
+<p>중력 초기화만으로 추적 유실은 해결되지 않았다. 회전 예측을 넣은 후보에서는 같은 분석 구간에서 유실이 사라졌다. <strong>따라서 관측한 개선을 단순히 RViz의 지도를 똑바로 돌린 효과라고 설명할 수 없다.</strong> 동시에 여러 처리 조건이 관련되므로 gyro만의 보편적 개선율을 산출한 실험이라고도 말하지 않는다. [H1의 분리 실험, <code>metrics.json</code>]</p>
+<p>당시 gyro만 적분한 마지막 각도는 약 +151.4°였다. 정합을 합친 +178.3°와 다르다. 이 비교는 해당 중간 실험에서 두 출력이 동일하지 않다는 근거다. 어느 각도가 실제 회전에 더 가까운지를 외부 기준으로 검증한 결과는 아니다. 코드에서도 최종 pose를 gyro가 아니라 GICP 결과로 갱신하는 것을 확인했다.</p>
+<h3>3.6 센서 축의 실제 설정을 반영하고 원본 BAG으로 재검증했다</h3>
+<p>사용자는 기록 당시와 현재 설정이 같다고 확인했다. 이를 근거로 현재 FAST-LIO YAML에 기록된 <strong>LiDAR→IMU 초기 회전 행렬</strong>을 가져오고, 그 역회전으로 IMU 벡터를 LiDAR 축에 맞췄다.</p>
+<p>축 일치 가정은 최종 구현에 남기지 않았다. 실제 처리 코드가 원본 BAG의 IMU·LiDAR를 읽도록 적용한 뒤, 기존과 동일한 header 시각의 프레임을 재계산했다. 초기 캐시 기반 후보와 최종 설치 버전의 숫자는 조금 다르므로 이 문서는 최종 수치 표를 따로 둔다. [H2, H3]</p>
+<p>사용자가 RViz에서 시각적으로 확인한 두 기록은 <code>102101</code>, <code>105713</code>이다. <code>103313</code>은 수치 회귀 확인용이며, 세 기록 모두가 동일한 180° 정상 주행이었다고 가정하지 않았다.</p>
+<h2 id="section-4">4. 좌표계: 비슷해 보이는 두 보정을 혼동하면 안 된다</h2>
+<h3>4.1 IMU↔LiDAR 회전과 LiDAR↔몸체 장착은 다른 값이다</h3>
+<div class="table-scroll"><table>
+<thead><tr>
+<th>변환</th>
+<th>목적</th>
+<th>이번 사용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IMU → LiDAR</td>
+<td>gyro·가속도 벡터를 점군과 같은 축에서 해석</td>
+<td>YAML의 <code>mapping/extrinsic_R</code> 역회전</td>
+</tr>
+<tr>
+<td>LiDAR → body/base</td>
+<td>센서 원점의 측위를 로봇 중심 위치로 바꿈</td>
+<td>별도 몸체 장착값: XY 중앙, 높이 0.18m, pitch +5°</td>
+</tr>
+<tr>
+<td>local → stair profile</td>
+<td>이번 측위의 임의 시작점을 실제 계단 경로에 연결</td>
+<td>진입 anchor; 추적과 별도 문제</td>
+</tr>
+<tr>
+<td>local → building map</td>
+<td>건물 도면·층 지도상의 절대 위치로 연결</td>
+<td>이번 추적 개선만으로 해결하지 않음</td>
+</tr>
+</tbody>
+</table></div>
+<p>사용자가 확인한 <strong>18cm와 +5°를 IMU–LiDAR 보정 행렬 대신 넣으면 안 된다.</strong> 전자는 몸체와 센서의 관계이고, 후자는 센서 내부/장착 기준에서 IMU와 LiDAR의 축 관계다.</p>
+<h3>4.2 행렬 기호를 하나로 통일하면</h3>
+<p>이 문서에서 <code>T_A_B</code>는 <strong>B 좌표의 점을 A 좌표로 바꾸는 변환</strong>이다. <code>R_A_B</code>는 그 회전 부분이다.</p>
+<pre><code class="lang-text">p_A = R_A_B · p_B + t_A_B
+</code></pre>
+<p>설정의 <code>extrinsic_R</code>는 로컬 코드에서 LiDAR→IMU로 해석한다. gyro를 LiDAR 축에서 쓰려면 반대 방향이므로 다음과 같다.</p>
+<pre><code class="lang-text">R_L_I = transpose(R_I_L)
+ω_L   = R_L_I · ω_I
+a_L   = R_L_I · a_I
+</code></pre>
+<p>회전 행렬의 역행렬은 전치행렬이다. 현재 로더는 유한값·직교성·양의 determinant를 확인하고 <code>Rotation.from_matrix()</code>로 회전 표현을 만든 뒤 전치한다. 단순히 YAML 숫자를 아무 축에나 적용한 것이 아니다. [C1: <code>load_imu_rotation</code>]</p>
+<p>위치 결과를 몸체로 옮길 때는 다음을 사용한다.</p>
+<pre><code class="lang-text">T_local_body = T_local_lidar · inverse(T_body_lidar)
+</code></pre>
+<p>XY 장착 오프셋이 0이더라도 높이 오프셋과 회전은 남는다. 기체가 pitch/roll로 기울면 높이 방향의 센서 레버암이 수평 위치 차이에도 영향을 줄 수 있다. 그러므로 “위에서 볼 때 같은 XY”와 “항상 센서 pose가 몸체 pose와 같다”는 같은 말이 아니다.</p>
+<h3>4.3 중력으로는 yaw를 알 수 없다</h3>
+<p>초기 가속도 방향을 +Z에 맞추면 roll/pitch 기준을 정할 수 있지만, 그 축 둘레로 어느 쪽이 건물 북쪽인지까지 정하지는 못한다. 이번 방법은 자력계나 측량 기준을 추가하지 않았다.</p>
+<p>따라서 첫 자세를 기준으로 ‘180° 돌아왔다’고 추적할 수 있는 것과, 건물 지도에서 ‘북쪽을 향한다’고 아는 것은 다르다. <strong>계단 경로 원점과 방향을 맞추는 진입 정합이 여전히 필요한 이유</strong>다.</p>
+<h2 id="section-5">5. 현재 방식이 한 프레임을 처리하는 순서</h2>
+<h3>5.1 입력과 전처리</h3>
+<p>원본 LiDAR 메시지에서 <code>(x, y, z)</code>를 읽고, 유한값이며 센서로부터 0.5~20m 안에 있는 점을 사용한다. 기준 설정은 매 두 번째 LiDAR packet을 처리하고, 20cm voxel로 점을 줄인다. 기록된 세 구간의 처리 간격 중앙값은 약 0.2초다.</p>
+<p>voxel은 작은 3차원 격자 안의 여러 점을 대표점으로 줄이는 연산이다. <strong>voxel 20cm는 위치 정확도가 반드시 20cm 단위라는 뜻이 아니다.</strong> 정합 변환 자체는 연속값으로 계산한다. 반대로 20cm voxel을 쓴다고 계단의 모든 작은 형상이 보존된다는 뜻도 아니다.</p>
+<p>GICP에 넘기기 전 점군에는 반경 <code>3 × voxel = 0.6m</code>, 최대 이웃 30개를 사용해 법선을 계산한다. source와 local map을 정합 함수에 넣을 때도 voxel 처리한다. 법선은 주변 표면이 어느 방향을 보는지 나타내며, 뒤의 GICP가 사용하는 국소 표면 구조에 해당한다. [C1, C2]</p>
+<h3>5.2 최초 한 번: 가속도 중앙값으로 위쪽 방향을 정한다</h3>
+<p>초기 LiDAR 시각 <code>t₀</code>를 중심으로 앞뒤 0.5초의 보정된 가속도 표본을 고르고, 축별 중앙값을 구한다. 그 벡터를 정규화해 위쪽 방향으로 사용한다.</p>
+<pre><code class="lang-text">u = normalize(median(a_L(t)), t ∈ [t₀−0.5, t₀+0.5])
+R₀ · u = [0, 0, 1]ᵀ
+</code></pre>
+<p>중앙값은 초기 표본의 순간적인 흔들림에 덜 민감하게 하려는 선택이다. 다만 <strong>가속도계는 중력만 측정하는 센서가 아니므로</strong>, 로봇이 강하게 움직이는 구간의 중앙값이 참된 수직을 보장하지 않는다. 이 코드에는 초기 물리적 정지 상태를 별도 인증하는 완성된 검출기가 없다.</p>
+<p>초기화는 첫 좌표계를 만드는 일이다. 첫 scan에는 아직 다른 scan과 맞춘 결과가 없으므로 <code>BOOTSTRAP</code>이며 <code>geometry_valid=false</code>다. 첫 자세를 만들었다는 사실과 기하 측정이 성공했다는 사실을 분리한다.</p>
+<p><strong>오프라인/실시간 차이:</strong> BAG 파일에서는 미래 0.5초를 읽을 수 있다. 실제 스트리밍 구현은 그 시각의 표본이 실제로 도착할 때까지 기다린다. 미래 센서를 미리 아는 알고리즘으로 운용하는 것이 아니다. 시작 전에 충분한 과거 구간도 필요하다. [C1의 초기화 구간 검사]</p>
+<h3>5.3 다음 scan: 자이로로 회전만 예측한다</h3>
+<p>IMU 표본의 시각은 BAG에 기록된 시각이 아니라 메시지의 측정 header 시각이다. 인접 표본 사이의 평균 각속도로 작은 회전을 계산한다.</p>
+<pre><code class="lang-text">ω̄ᵢ = (ωᵢ + ωᵢ₊₁) / 2
+ΔRᵢ = Exp(ω̄ᵢ · Δtᵢ)
+R(tᵢ₊₁) = R(tᵢ) · ΔRᵢ
+</code></pre>
+<p>여기서 <code>Exp</code>는 3차원 회전 벡터를 회전 행렬로 바꾸는 연산이다. yaw 숫자에 z축 각속도만 더하는 방식이 아니다. pitch·roll이 있는 계단에서 센서의 세 회전축을 함께 취급한다. 필요한 LiDAR 시각 사이의 자세는 Slerp로 보간한다. [C2: <code>ImuRotation</code>]</p>
+<p>마지막으로 <strong>수락한</strong> LiDAR 시각을 <code>tₖ</code>, 현재 시각을 <code>t</code>라 하면 다음 초기값을 만든다.</p>
+<pre><code class="lang-text">R_pred(t) = R_accepted(tₖ) · ΔR_gyro(tₖ → t)
+p_pred(t) = p_accepted(tₖ)
+</code></pre>
+<p><code>R_accepted</code>는 마지막 수락 시각의 LiDAR 축을 local 좌표로 옮기는 회전이다. <code>ΔR_gyro(tₖ → t)</code>는 현재 LiDAR 축을 그 마지막 시각의 LiDAR 축으로 연결하는 상대 회전이며, 이미 IMU→LiDAR 축 변환을 적용해 계산한다. 따라서 오른쪽에 곱해 <code>현재 LiDAR → 이전 LiDAR → local</code> 순서로 연결한다.</p>
+<p>두 번째 줄이 중요하다. <strong>이번 추적기는 IMU 가속도에서 이동 위치를 적분하지 않고, 일정 속도 모델로 평행 이동을 예측하지도 않는다.</strong> 초기 평행 이동은 마지막 수락 위치를 유지하고, 새 위치는 GICP가 점군으로 찾아낸다.</p>
+<p>코드 내부에서는 IMU 창 전체의 누적 회전 표현을 만들 수 있지만, 실제 초기값에 사용하는 것은 두 시각 사이의 상대 회전이다. 매번 IMU 누적 자세를 세계 좌표의 절대 정답으로 사용하는 것이 아니다. 유실이 길어지면 상대 적분 구간도 길어져 그 장점이 약해진다.</p>
+<h3>5.4 최근 지도에 GICP로 맞춘다</h3>
+<p>source는 현재 scan이고, target은 최근에 수락한 최대 15개 scan을 local 좌표로 옮겨 쌓은 지도다. 약 5Hz로 연속 수락하는 상황이라면 약 3초 분량에 해당하지만, 실제 보관 기준은 시간 3초가 아니라 <strong>수락 scan 15개</strong>다.</p>
+<p>현재 scan을 gyro 예측 자세에서 출발시켜 지도에 맞춘다. 결과는 회전과 평행 이동을 함께 포함하는 6자유도 변환이다. 이후 자세는 gyro 예측값 그대로가 아니라 이 기하 정합 결과로 갱신한다.</p>
+<p>최근 지도는 관측들이 이미 추정된 pose로 배치된 결과다. 측량된 절대 지도는 아니다. 이전 pose가 잘못되면 지도도 잘못 쌓일 수 있고, 그 지도와 잘 맞는다는 사실만으로 절대 위치 정확도를 입증할 수 없다.</p>
+<h3>5.5 수락 검사는 ‘이전 위치에서 얼마나 변했는가’가 아니라 ‘예측에서 얼마나 고쳤는가’다</h3>
+<p>기준 구현은 다음 보정 변환을 계산한다.</p>
+<pre><code class="lang-text">ΔT = inverse(T_pred) · T_GICP
+translation_innovation = norm(ΔT의 이동 벡터)
+rotation_innovation    = angle(ΔT의 회전 행렬)
+</code></pre>
+<p>수락에 사용한 숫자는 기존과 같다.</p>
+<ul>
+<li>fitness ≥ 0.35</li>
+<li>translation innovation ≤ 0.50m</li>
+<li>rotation innovation ≤ 0.35rad, 약 20.1°</li>
+</ul>
+<p>그러나 <strong>같은 숫자를 유지했다고 판정 의미까지 같은 것은 아니다.</strong> 예전에는 마지막 수락 자세와 비교했지만, 지금은 현재 시각으로 회전을 예측한 자세와 비교한다. 0.35rad는 로봇이 계단에서 돌 수 있는 총 회전각의 한도가 아니다.</p>
+<p>설명용 예를 보자. 아래 숫자는 BAG 측정값이 아니다.</p>
+<div class="table-scroll"><table>
+<thead><tr>
+<th>항목</th>
+<th style="text-align:right">예시 값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>마지막 수락 방향</td>
+<td style="text-align:right">100°</td>
+</tr>
+<tr>
+<td>현재 GICP가 찾은 방향</td>
+<td style="text-align:right">138°</td>
+</tr>
+<tr>
+<td>gyro로 예측한 현재 방향</td>
+<td style="text-align:right">136°</td>
+</tr>
+<tr>
+<td>예전 기준의 회전 차이</td>
+<td style="text-align:right">38° → 약 20.1° 한계를 초과</td>
+</tr>
+<tr>
+<td>지금 기준의 회전 보정량</td>
+<td style="text-align:right">2° → 한계 안</td>
+</tr>
+</tbody>
+</table></div>
+<p>계단참의 180° 회전도 한 scan에서 갑자기 180°를 맞추는 것이 아니라, 여러 관측 사이의 작은 회전들이 계속 연결된 결과다. 중간 갱신을 오래 잃지 않는 것이 중요하다.</p>
+<p>정상 회전을 허용하려고 각도 한계를 180°로 늘린 것이 아니다. <strong>정상 회전으로 예상되는 부분과 정합이 추가로 수정해야 하는 부분을 분리한 것</strong>이다. 다만 잘못된 gyro 예측 근처의 잘못된 정합도 수락될 수 있으므로, 이 검사만으로 진실성이 인증되지는 않는다. [C2: <code>correction</code>과 <code>accepted</code> 계산]</p>
+<p>현재 기본 수락식에는 별도 RMSE 상한이나 엄격한 최적화 수렴 인증 항목이 없다. RMSE는 기록되는 진단값이다. <code>max_iteration=30</code>에 도달했다고 반드시 정답에 수렴했다는 뜻도 아니다.</p>
+<h3>5.6 성공하면 지도와 마지막 관측 시각을 함께 갱신한다</h3>
+<p>수락된 점군만 local map에 추가하고, 마지막 수락 자세·시각을 바꾼다. 다음 scan의 gyro 상대 회전도 새로 수락한 시각부터 계산한다. 이 때문에 LiDAR가 계속 제대로 관측되는 동안 gyro의 장시간 누적 자세를 그대로 끌고 가지 않는다.</p>
+<p>기존 비교 도구는 RViz용 전체 누적 지도도 따로 만들었다. 추적에 사용하는 <strong>최근 15개 local map</strong>과 보기 위해 저장하는 <strong>전체 누적 cloud</strong>는 다른 산출물이다. 전체 cloud를 저장했다고 loop closure나 전역 최적화가 구현된 것은 아니다.</p>
+<h3>5.7 실패하면 ‘새로운 측정 위치’를 만들지 않는다</h3>
+<p>설치된 오프라인 비교 도구는 거절된 프레임의 측정 pose를 NaN으로 기록하고, 현재 측정 odometry를 생성하지 않는다. live 경로·점군에는 빈 출력을 넣고, 복구 뒤 새 경로 구간을 시작한다. 오래된 지도가 남더라도 마지막 유효 관측 시각을 유지한다.</p>
+<p><code>PREDICTED</code>라는 진단 상태가 보여도 그것은 ‘실제로 LiDAR가 현재 위치를 측정했다’는 뜻이 아니다. 초기 <code>measurement_valid</code>와 <code>geometry_valid</code>도 구분한다. [H2, C4]</p>
+<p>나중에 Supervisor용으로 옮긴 추적 코드는 <code>BOOTSTRAP / TRACKED / DEGRADED</code>와 <code>geometry_valid</code>, <code>last_geometry_at</code> 등을 사용한다. 내부에 마지막 transform이 보관돼 있어도 ROS adapter는 <strong>새롭고 유효한 geometry 표본만</strong> <code>/stair_supervisor/lidar_odom</code>으로 내보낸다. 오프라인 도구의 상태 이름을 현재 ROS 코드의 enum과 동일하다고 설명하면 안 된다. [C1, C5]</p>
+<h3>5.8 IMU 일부가 빠지면 어떻게 되는가</h3>
+<p>IMU 예측을 지원하는 시각 범위와 표본 공백을 검사한다. 기준 공백 한계는 0.03초다. 이 한계는 gyro 예측 자료의 지원 여부를 판단하는 값이지, 그 자체로 전체 로봇의 비상정지 조건이 아니다.</p>
+<p>최종 설치 버전은 gyro 예측을 만들 수 없을 때 마지막 관측 자세를 초기값으로 같은 GICP를 시도할 수 있다. 기하 정합이 수락되면 새 시각에서 다시 이어 간다. 이후 IMU 구간이 지원되면 gyro 예측을 재개한다. 초기 연구 후보의 ‘IMU 공백 후 계속 회복하지 못할 수 있는’ 동작을 보완한 부분이다.</p>
+<p>이 복구는 <strong>가까운 지역에서 같은 정합기가 다시 맞을 기회를 주는 것</strong>이다. 큰 이동을 놓친 뒤 건물 어디서든 다시 위치를 찾는 전역 재측위는 아니다.</p>
+<h2 id="section-6">6. ICP와 GICP는 정확히 어떻게 다른가</h2>
+<h3>6.1 ICP: 대응점과 변환을 번갈아 갱신하는 틀</h3>
+<p>ICP는 대략 현재 변환으로 source를 옮긴 뒤 가까운 target 점을 짝짓고, 짝의 오차를 줄이는 변환을 반복해서 찾는다. 기본 point-to-point 오차는 다음과 같다.</p>
+<pre><code class="lang-text">E(T) = Σ ||T·pᵢ − qᵢ||²
+</code></pre>
+<p>이는 초기값 없이 아무 방향의 두 점군을 반드시 찾아 맞추는 전역 검색이 아니다. Open3D 공식 예제도 대략적인 정렬 초기값을 입력으로 사용한다. <a href="https://www.open3d.org/docs/release/tutorial/pipelines/icp_registration.html">Open3D ICP 설명</a></p>
+<h3>6.2 Point-to-plane ICP: 표면에 수직인 오차를 사용한다</h3>
+<p>target의 법선 <code>nᵢ</code>를 사용하면 다음처럼 표면 수직 방향의 오차를 줄인다.</p>
+<pre><code class="lang-text">E(T) = Σ [nᵢᵀ(T·pᵢ − qᵢ)]²
+</code></pre>
+<p>계단 옆 벽처럼 같은 평면을 서로 다른 위치에서 샘플링한 경우, 점 자체를 정확히 일대일로 겹치는 것과 표면을 맞추는 것은 다르다. 그 차이를 반영하는 방식이다. <a href="https://www.open3d.org/docs/release/tutorial/pipelines/icp_registration.html">Open3D ICP 설명</a></p>
+<h3>6.3 GICP: 양쪽 점군의 국소 표면 구조를 함께 반영한다</h3>
+<p>GICP는 ICP 계열 안에서 source·target의 국소 구조를 공분산 형태로 사용한다. 대표 목적함수는 잔차 <code>rᵢ = T·pᵢ − qᵢ</code>에 대해 다음과 같이 표현할 수 있다.</p>
+<pre><code class="lang-text">E(T) = Σ rᵢᵀ [C_target,i + R·C_source,i·Rᵀ]⁻¹ rᵢ
+</code></pre>
+<p>국소적으로 평면인 표면의 방향에 따라 잔차를 다르게 평가한다. 원 논문은 이를 point-to-plane을 양쪽 표면으로 확장한 관점으로 설명한다. 여기서 공분산은 표면 오차 모델이지, 로봇 전체 위치의 확률적 신뢰도와 같은 값이 아니다. <a href="https://www.robots.ox.ac.uk/~avsegal/resources/papers/Generalized_ICP.pdf">Segal·Hähnel·Thrun, Generalized-ICP 원 논문</a></p>
+<p>이번 구현은 Open3D 0.18.0의 <code>registration_generalized_icp()</code>를 그대로 호출한다. 우리 코드가 계산한 법선으로 Open3D가 방향성 공분산을 구성하고 GICP 변환을 계산한다. 따라서 <strong>새로운 목적함수나 정합 솔버를 만든 작업이 아니다.</strong> <a href="https://raw.githubusercontent.com/isl-org/Open3D/v0.18.0/cpp/open3d/pipelines/registration/GeneralizedICP.cpp">Open3D 0.18.0 GICP 구현</a></p>
+<h3>6.4 이번 수정 위치는 정합 엔진 ‘주변’이다</h3>
+<pre><code class="lang-text">수정 전: 우세 평면 초기화 → 마지막 성공 pose로 시작 → GICP → 거절해도 최신 출력
+수정 후: 중력 초기화 → gyro로 현재 회전 예측 → 같은 GICP → 유효 관측만 출력
+</code></pre>
+<p>gyro 예측은 GICP에 들어가는 <strong>초기값</strong>이다. 현재 코드의 GICP 목적함수에 ‘IMU와 얼마나 차이 나는지’라는 확률적 항을 더한 것은 아니다. 결과를 예측 대비 보정 한계로 검사하지만, 이것도 Kalman 공분산 기반 융합과 같지는 않다.</p>
+<p>그래서 가장 정확한 명칭은 <strong>‘중력 초기화와 gyro 회전 예측을 사용하는 scan-to-local-map GICP 측위’</strong>, 짧게는 <strong>‘IMU 회전 보조 GICP 추적’</strong>이다. ‘FAST-LIO를 단순화한 동일 알고리즘’, ‘완전한 tightly coupled LIO’, ‘오차 없는 ICP’라고 부르지 않는다.</p>
+<h2 id="section-7">7. FAST-LIO와는 같은 계층인가, 다른 알고리즘인가</h2>
+<h3>7.1 비교 대상을 맞추면 둘 다 맞는 말이다</h3>
+<p><strong>GICP 대 FAST-LIO:</strong> 부품 대 시스템이므로 계층이 다르다. GICP는 두 점군의 변환을 찾는 정합 방법이다. FAST-LIO는 IMU 예측과 LiDAR 관측으로 상태를 추정하고 지도를 관리하는 시스템이다.</p>
+<p><strong>이번 gyro-GICP 추적기 전체 대 FAST-LIO2:</strong> 둘 다 연속적인 pose를 만들어 주는 측위 시스템이므로 비교 가능한 계층이다. 다만 사용하는 상태·최적화·센서 결합 방식과 기능 범위가 다르다.</p>
+<p>FAST-LIO 논문은 LiDAR와 IMU를 tightly coupled iterated Kalman filter로 결합한다. FAST-LIO2는 이 계열에서 raw point 기반 직접 정합과 incremental ikd-Tree 지도 관리를 강조한다. 이름에 ‘direct’가 있다고 데이터 전처리 없이 아무 점이나 사용하는 뜻은 아니다. <a href="https://arxiv.org/abs/2010.08196">FAST-LIO 원 논문</a>, <a href="https://arxiv.org/abs/2107.06829">FAST-LIO2 원 논문</a>, <a href="https://github.com/hku-mars/FAST_LIO">공식 저장소</a></p>
+<h3>7.2 설치 소스에서 확인한 구체적인 차이</h3>
+<p>아래 표의 ‘이번 방식’은 실제 기준 추적 코드, FAST-LIO 열은 로컬에 설치된 FAST-LIO 계열 소스에서 확인한 내용이다. 해당 로컬 버전에는 중력 초기화 등의 프로젝트 수정이 포함돼 있어 upstream 모든 버전과 동일하다고 가정하지 않는다. [C1, C2, C6]</p>
+<div class="table-scroll"><table>
+<thead><tr>
+<th>항목</th>
+<th>이번 gyro-GICP 추적</th>
+<th>설치된 FAST-LIO 계열</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>주 상태</td>
+<td>현재 pose, 마지막 관측 시각, 최근 scan, 유효성</td>
+<td>위치·회전·속도·gyro bias·accel bias·중력·센서 외부 보정 상태</td>
+</tr>
+<tr>
+<td>IMU 각속도</td>
+<td>LiDAR 시각 사이 상대 회전 예측</td>
+<td>필터 상태 예측, bias를 고려한 회전 처리</td>
+</tr>
+<tr>
+<td>IMU 가속도</td>
+<td>초기 위쪽 방향 선정</td>
+<td>초기화, 중력·bias와 함께 운동 예측</td>
+</tr>
+<tr>
+<td>위치 예측</td>
+<td>마지막 위치 유지; 정합이 이동을 찾음</td>
+<td>속도·가속도·중력에 기반한 상태 전파</td>
+</tr>
+<tr>
+<td>LiDAR 관측 사용</td>
+<td>Open3D GICP에서 별도 pose 최적화</td>
+<td>점-표면 잔차/Jacobian을 이용한 필터 관측 갱신</td>
+</tr>
+<tr>
+<td>IMU와 LiDAR 결합</td>
+<td>초기값 보조 및 예측 대비 결과 검사</td>
+<td>반복 Kalman 갱신으로 상태와 불확실도 결합</td>
+</tr>
+<tr>
+<td>공분산</td>
+<td>로봇 상태 공분산을 전파·갱신하지 않음</td>
+<td>필터 상태 공분산과 process noise 사용</td>
+</tr>
+<tr>
+<td>점별 deskew</td>
+<td>구현하지 않음</td>
+<td>IMU 구간 자세·속도·위치로 scan 내부 점을 보정</td>
+</tr>
+<tr>
+<td>지도</td>
+<td>최근 수락 scan 최대 15개</td>
+<td>ikd-Tree 기반 지도 관리</td>
+</tr>
+<tr>
+<td>외부 보정</td>
+<td>YAML의 고정 회전만 gyro 축 변환에 사용</td>
+<td>초기 외부 보정 상태 및 설정에 따른 온라인 추정</td>
+</tr>
+<tr>
+<td>gyro bias 추정</td>
+<td>없음</td>
+<td>초기 gyro 평균 및 상태의 bias 처리</td>
+</tr>
+<tr>
+<td>전역 loop closure</td>
+<td>없음</td>
+<td>이번에 확인한 FAST-LIO 코어만으로 전역 loop closure까지 수행한다고 보지 않음</td>
+</tr>
+</tbody>
+</table></div>
+<p>FAST-LIO2도 관측과 지도 사이의 기하 관계를 반복 계산한다. 따라서 넓은 의미에서 scan matching을 사용한다. 하지만 <strong>FAST-LIO2를 ‘Open3D GICP를 호출하는 프로그램’으로 설명하는 것은 틀리다.</strong> 설치 코드는 관측 잔차와 Jacobian을 필터에 넣는 경로이며, 이번 코드는 <code>registration_generalized_icp()</code>의 결과를 pose로 받아들이는 경로다.</p>
+<p>반대로 이번 방식은 IMU와 LiDAR가 모두 들어간다고 해서 Kalman filter가 숨어 있는 것도 아니다. 추적 핵심에서 위치·속도·bias를 묶은 공분산 상태를 찾을 수 없다.</p>
+<h3>7.3 왜 FAST-LIO가 발산해도 이번 방식은 나아질 수 있었나</h3>
+<p><strong>OBSERVED:</strong> 당시 <code>102101</code>의 저장 FAST-LIO CSV 전체 구간에는 첫 위치 대비 약 12,726.6m의 최대 변위가 기록돼 있었다. 실내 계단 주행의 실제 이동량으로 해석할 수 없는 결과다. 설치 소스에는 유효 정합점이 없으면 관측 갱신을 무효화하는 처리도 있다. 하지만 <strong>그 두 사실만으로 최초 발산 원인을 특정할 수는 없다.</strong> [H1, C6]</p>
+<p><strong>구조상 차이:</strong> 이번 방법은 가속도 기반 위치 전파, 속도 상태, IMU bias·중력·외부 보정의 결합 추정 등 FAST-LIO의 여러 경로를 사용하지 않는다. 따라서 그 경로에 민감한 문제가 있었다면, 더 좁은 구조가 같은 방식으로 망가지지 않을 수 있다.</p>
+<p>이 설명은 가능한 구조적 이유이지, 실제 발산 원인의 확정 진단이 아니다. 시간 동기, 단위, 센서 외부 보정, 초기 상태, 움직임 왜곡, 관측 퇴화 중 무엇이 최초 원인이었는지는 당시 입력과 필터 내부 상태를 함께 재현해야 판단할 수 있다. 이번 개선 결과만으로 FAST-LIO가 계단에 부적합하거나 IMU 자체가 고장 났다고 결론 내리지 않는다.</p>
+<p>한 가지 설정상 주의점도 있다. 로컬 YAML에는 <code>extrinsic_est_en: false</code>가 있지만 센서 launch는 이를 <code>true</code>로 덮어쓴다. launch는 중력 정렬 초기화를 켜고 세계 중력 lock은 끈다. <strong>YAML의 초기 회전을 고정 사용한 이번 추적과, 온라인에서 외부 보정 등을 추정하는 FAST-LIO의 내부 상태는 동일하지 않다.</strong> 기록 당시/현재 설정이 같다는 사용자 확인은 실행 중 추정 상태의 동일성이나 물리적 보정 정확도의 증명이 아니다. launch 주석에 적힌 과거 실험 주장도 이번 문서에서 독립 재검증한 결과로 승격하지 않았다. [C7]</p>
+<h3>7.4 ‘더 단순하니 더 좋다’는 결론도 아니다</h3>
+<p>이번 방식의 장점은 문제 범위가 좁고, 각 단계의 실패를 관찰하기 쉽다는 것이다. 반면 가속·회전이 큰 상황의 deskew, 체계적인 bias 추정, 상태 불확실도 관리가 빠져 있다. 관측이 잘 맞는 이번 구간에서 좋아졌다는 사실과, 어떤 환경에서도 FAST-LIO보다 좋다는 주장은 다르다.</p>
+<p>올바른 비교는 같은 원본 데이터·같은 몸체 기준·같은 시간에 두 측위 결과를 만들고, 외부 기준 위치에 대한 오차와 실패·복구·지연을 비교하는 것이다. 현재 자료는 그중 회귀 재현성과 일부 실패 개선을 입증한다.</p>
+<h2 id="section-8">8. IMU 드리프트는 어떻게 다루는가</h2>
+<h3>8.1 자이로를 짧게 쓴다는 의미</h3>
+<p>gyro에 일정한 오차 <code>b</code>가 있다면, 단순화한 한 축의 각도 오차는 대략 <code>b·Δt</code>로 늘어난다. 예를 들어 <strong>가상의</strong> bias가 0.01rad/s이면 0.2초 동안은 약 0.002rad, 0.115°지만, 60초 동안 그대로 누적하면 약 34.4°가 된다. 이 숫자는 TRON IMU의 측정 bias가 아니라 시간 길이의 영향을 설명하는 예다.</p>
+<p>이번 방법은 LiDAR가 수락될 때마다 기하 pose로 기준을 갱신하고, 다음 관측까지의 상대 회전만 초기값으로 쓴다. 그래서 장시간 gyro-only 자세를 절대 방향으로 사용하는 구조와 다르다.</p>
+<p>그러나 이것은 <strong>bias를 추정해 제거했다는 뜻이 아니다.</strong> 관측이 틀리거나 오래 끊기면 누적 오차가 남는다. 반복 구조 때문에 GICP가 잘못된 자세를 계속 수락해도 오차가 생긴다. 중력 초기화 자체도 절대 yaw를 고정하지 못한다.</p>
+<h3>8.2 가속도를 위치 계산에서 뺀 이유</h3>
+<p>설치된 이번 코드에서 가속도는 초기 위쪽 방향을 얻는 데 쓰고, 위치는 점군 정합으로 얻는다. 가속도 오차를 장시간 두 번 적분하는 경로가 없다.</p>
+<p>가상의 일정 가속도 오차 <code>0.1m/s²</code>를 외부 보정 없이 10초 동안 두 번 적분하면 위치 오차 항은 <code>0.5×0.1×10²=5m</code>다. 이 예는 실제 FAST-LIO가 그렇게 단순 적분만 한다는 뜻이 아니다. FAST-LIO에는 LiDAR 관측과 bias·중력 상태가 있고, 정상적인 융합을 통해 보정하려는 구조가 있다.</p>
+<p>이번 선택은 IMU를 전부 신뢰하거나 전부 버리는 양자택일을 피한 것이다. <strong>초기 중력과 단기 회전이라는 용도만 사용하고, 이동량은 점군에 맡겼다.</strong> 그 용도가 이번 세 구간에 도움이 됐다는 증거가 있으며, 모든 주행 조건에 최적이라는 증거는 없다.</p>
+<h3>8.3 최근 ‘가만히 있어도 조금 회전’한 BAG과의 관계</h3>
+<p>진입점 BAG에서 연속 LiDAR yaw 변화는 약 -5.63°, wheel odometry는 약 +0.32°였다. 기존 측위·IMU 예측을 초기값으로 쓰지 않고 처음·끝 원본 점군 세 쌍을 직접 point-to-plane ICP로 맞추자 약 -5.57° / -5.68° / -5.68°가 나왔다. 각 쌍에 -10°·0°·+10° 초기값을 주어도 같은 해로 모였다. [H5]</p>
+<p>이 결과는 <strong>그 변화가 단순히 연속 gyro 적분만의 착시일 가능성을 낮추는 교차 확인</strong>이다. 같은 LiDAR를 사용했으므로 외부 실측 정답은 아니며, 정지 환경과 고정된 센서 장착을 전제로 실제 방향 변화가 있었을 가능성이 높다는 해석이다.</p>
+<p>여기서 쓴 point-to-plane ICP는 추가 진단 도구다. <strong>기준 추적 알고리즘을 GICP에서 point-to-plane으로 다시 바꾼 것이 아니다.</strong> 또한 이 BAG에는 명령 출력이 없어서 회전의 기계적 원인이나 실제 0 명령 여부까지 확정하지 못했다.</p>
+<h2 id="section-9">9. 이 선택은 일반적인가</h2>
+<h3>9.1 설계 패턴 자체는 기존에 존재한다</h3>
+<p>정합 초기값에 운동 예측을 사용하는 것은 새로운 발상이 아니다. 공식 Open3D 설명도 초기 정렬을 입력으로 둔다. 공개된 <code>hdl_graph_slam</code>의 scan matching 구현은 선택적으로 IMU frontend 또는 robot odometry에서 얻은 상대 변환을 초기 추정에 결합하고 정합을 실행한다. 그 구조는 이번 ‘예측 후 정합’이라는 설계의 실제 선례다. 구현과 필터·지도 방식까지 동일하다는 뜻은 아니다. <a href="https://raw.githubusercontent.com/koide3/hdl_graph_slam/master/apps/scan_matching_odometry_nodelet.cpp">hdl_graph_slam 원 구현</a></p>
+<p>가속도로 초기 중력 방향을 정하는 것도 로컬 FAST-LIO 초기화 코드에서 직접 확인할 수 있다. 따라서 ‘어떤 기하 평면을 바닥이라고 추측하기보다 관성 방향을 이용한다’는 선택 자체가 특이한 발명은 아니다. [C6]</p>
+<h3>9.2 이번 작업에서 시스템에 맞춘 부분</h3>
+<div class="table-scroll"><table>
+<thead><tr>
+<th>흔히 볼 수 있는 구성 원리</th>
+<th>이번 시스템에서 정한 구체적 선택</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>운동 예측으로 정합 초기값 보조</td>
+<td>평행 이동 예측 없이 gyro 회전만 사용</td>
+</tr>
+<tr>
+<td>관성 방향으로 초기 중력 정렬</td>
+<td>초기 ±0.5초 가속도 중앙값</td>
+</tr>
+<tr>
+<td>local map 기반 scan matching</td>
+<td>최근 수락 scan 15개, 20cm voxel</td>
+</tr>
+<tr>
+<td>관측 품질 검사</td>
+<td>fitness·예측 대비 위치/회전 보정 한계</td>
+</tr>
+<tr>
+<td>시각과 유효성 관리</td>
+<td>실패 pose를 최신 측정으로 쓰지 않고 geometry 유효성 분리</td>
+</tr>
+<tr>
+<td>비싼 정합과 제어 루프 분리</td>
+<td>기존 Supervisor 내부의 별도 계산 worker와 epoch 처리</td>
+</tr>
+</tbody>
+</table></div>
+<p>첫 열은 기존 구현에서 확인되는 설계 원리다. 두 번째 열의 숫자는 이 프로젝트에서 사용·회귀 검증한 기준값이며 업계 공통 표준은 아니다. ‘일반적’이라는 답변은 채택 비율을 조사했다는 뜻도 아니다.</p>
+<h3>9.3 왜 곧바로 알고리즘을 통째로 바꾸지 않았나</h3>
+<p>남아 있는 변경 기록에서 확인되는 선택은 기존 GICP와 주요 수치를 보존한 채, 구체적인 결함을 고치는 쪽이었다. 이 방식은 개선이 새 엔진 때문인지, 입력·예측·출력 문제 수정 때문인지 비교하기 쉽고 기존 구조 변경도 작다.</p>
+<p>처음부터 다른 SLAM 전체를 넣었다면 결과가 좋아져도 무엇이 원인이었는지 분리하기 어려워진다. 이는 최소 수정이라는 프로젝트 요구와도 맞는다. 다만 ‘작게 고쳤기 때문에 반드시 최선’은 아니다. 관측 퇴화·고속 왜곡·장거리 드리프트가 남는다면 이후 더 넓은 측위 시스템을 검토할 수 있다.</p>
+<h2 id="section-10">10. 결과를 숫자로 읽는 법</h2><img alt="정합 갱신 수락률과 대응점 잔차의 수정 전후 비교" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAB5IAAAL9CAYAAADpfSqrAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAaJAAAGiQBVa9VBAAAADh0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uMy4xLjIsIGh0dHA6Ly9tYXRwbG90bGliLm9yZy8li6FKAAAgAElEQVR4nOzdZ1RU19s28GuGDtIMIIqCRqPYSEwsiLE3xC6KYlQUW/7YNQE7EWMLdjGxRCwYRVAsxIqoSLBFjb0XVBSlKb0O5/3gyzwibWaYAZTrt9YslbPLfZji3Gfvs7dIEAQBRERERERERERERERERERE/5+4vAMgIiIiIiIiIiIiIiIiIqKKhQPJRERERERERERERERERESUDweSiYiIiIiIiIiIiIiIiIgoHw4kExERERERERERERERERFRPhxIJiIiIiIiIiIiIiIiIiKifDiQTET0CcrOzsbSpUsRGBhY3qFQKbx9+xbPnz+HIAjlHUqpRUVFIT4+XuX9pKenIzIyEpmZmSrvqyRXrlzBtWvXVNpHZmYm7t+/j8TERJX2U5FIJBI8e/YMycnJZdJfcnIyXr58+Vm8D4mIiIhIflFRUYiIiEBaWppK+7l69arK8wdZpKSk4N69eyo/XwB48+YNoqOjVd4PqU5lzPXLQmZmJiIjI5Genl7eoZTp+zQ3NxcvX74sk88fIlIeDiQTEZWh+Ph4REZGFvlISEgoUGfChAkQiUS4ePFivnZmzZqFFStWyNW/jY0NGjZsiJycHJnKe3t7QyQS4Y8//pCrH1XQ1dVFtWrVSt2Ora0t2rZtK/PvQFa5ublwd3eX6zkZNGgQrKyscP36daXGUtaioqJQq1YtdO7cWeV9rVixAnXq1KkQr8kWLVqgXbt2MpV98eIF+vTpg169ehV49OnTB5GRkYXWCwgIgLW1NebPn6/EyCu24OBg1K5dG9OmTSux7K1bt0r9/hk+fDhq1qyJiIiIUrVDRERERLJ7/fo11NXV0apVq/IOBfPnz8f333+PY8eOlVjW3t4eIpGoyIetrW2RdZs3by5z/qBKq1atQsOGDbFx40aV99WgQQPUqlVL5f1UNLt27UKvXr1w9uxZuesuWLAAffv2xZs3b1QQmXwqa65fFv744w/UqVNH7ut6qiDr+/TNmze4ePEiUlJSFO7r0KFDqFmzJiZPnqxwG0RU9tTLOwAiosqkR48e+Pfff4st8+233yIiIgLa2toAgNTUVABQyizFu3fvQhAEqKvL9vGf13fen6UVFhaGgwcP4u7du0hPT0f16tXRpk0bODk5wczMrNi66enpEItLN//pzp07uHjxIoyNjWX+Hcjq7du38Pb2hrm5OWbMmCFTnbzBbGUPaivqwoUL8Pf3x+XLlxEbGwstLS3UrVsXXbt2xdChQ2FkZFRoPXnOIz4+Hp07dy6ybPfu3YtNpJTxO9u4cSNWrVpVbBmRSAQ9PT0MHDgQM2fOLLSMIAjIzc2Vqc+UlBRcvny50PJisbjIREwikeT781MTGxuLiIgIvHz5EkZGRmjatClsbGyKrSPPc2xnZ4eUlBSZn4fS9kdEREREwNKlS3HgwIFiy4hEIhgYGMDV1RWDBw8ucDwjIwMSiaRUuebr16/RqVOnEr8Lqqurw9raGhs2bICJiUmB43n1ZflOaWlpiQYNGhR5vE6dOkUekyd/KEpGRgYiIiJKXE1HQ0MD1tbWhU7GljfHGDJkCG7dulXoMT09vXyT3j+Wk5NTYXKZ2bNnIygoSKG6YrEYZmZm8PDwQI8ePUosf/XqVRw+fBj9+vWTe/LA6dOnERYWhkWLFillMj1QeXL9wmRlZSE8PBynTp3C7du38erVK6SlpUFfXx9WVlawsbFB165d0bx5c4hEIrnaPnv2LCZMmFDk+/Hnn3+Gi4tLocdUcb4SiQTh4eF4/PgxJBIJ6tSpg/bt20NTU7PYerK+TxctWoR169Zh+/btGDFihEIxMv8m+jRxIJmIqAwNHz4cLVu2LPRYSkoKtm/fjqtXr+LRo0do0qSJUvtOSUlBTk4OqlatqtR2ZfHq1SsMGzYMp0+flv5MU1MTWVlZ8Pf3h4eHBxYuXIjp06erNI7ly5cDeD/oGxAQACcnJ6W1nXcBRF9fX2ltlpV3797BxcUFhw4dAvD+QoupqSlevHiBmzdv4sCBA5g9ezZWrlwJV1fXUvWVm5uLuLi4IpOGpKSkUrUvi7i4ONy/f1+msg8ePChyIFkeDRs2xKtXr0rdTklGjBiB/fv3l2qG8Pr16+Hm5laqODIyMjB9+nRs2bIFWVlZ+Y7Z2dlhy5YtsLa2LlUfwPvXE5ekJiIiIipbMTExePToUbFl3r59K13CtLCBZGXIzs7GvXv3ZPo+ePv2bQwdOhQDBgwoVZ+bNm0qVf3Sun79Orp06SJTWQ0NDdy8ebPYgW9ZvHv3DnFxcYUey8jIKFXbZenly5cy54GFuXv3LuLi4mQaSK4oKluu/6GcnBysWbMGy5cvx+vXrwstc+HCBezZswdz5sxBo0aN8Msvv2DQoEEy95GVlYW4uLgiP4PKctnqwMBATJ8+HVFRUfl+bmZmhkWLFmHMmDGl7kOeSTdE9HnhQDIRURmaNGlSkceysrKwe/du5ObmFjuLWVF37twBANSvX1/pbRcnISEBHTt2xIMHD9CuXTvMmzcPbdu2hZaWFl6/fo2goCB4enpixowZiImJwdKlS1USx7Fjx7Bt2zaYmpoiOTkZbm5u+O6771C3bl2ltJ+3NLGlpaVS2isrOTk5sLe3x8WLF2FtbY158+ahf//+0NHRgSAIeP78Of7880+sXbsWo0ePRnJyMqZMmaJwf6ampgUSm7I2Z84czJkzp9gyGzZswP/+9z80b95c4X4GDRqE2NhYueuJRCIsWLBA7pnrL168gJ+fHwDAyspKuqqBvL744guF6uXJyspC586dce7cORgbG2PixImwtrZGfHw8/P39ce7cObRs2RJhYWFo1qxZqfoiIiIiorK3cuVKrFy5stgynp6e8PLywtdff62yOGrVqlXigMa7d+9gbm6OrKwsfPfdd3L3sWPHDixevFjREPHFF18odQuVhg0bYtu2bcUOnqelpWHChAnIzs5Wyl1/siz5/SnYvn07tm/frlDd+Ph4mJiYyL3c9Lx586QT2mX1/PlzucoXpTLm+nnevn0LBwcHXLhwAWKxGD179sSgQYPw7bffwtzcHIaGhoiNjUVUVBTOnz+PHTt24L///oOTkxNcXV3x559/ynR3cpcuXSrEHuA+Pj6YNGkSRCIR+vXrhw4dOkBdXR3nzp3Dnj17MHbsWERGRuLXX38t71CJ6BPFgWQiogoiIiICWVlZaNGiBfT09JTe/pUrVwBAKXcBymPWrFl48OABBg4ciD179uRbntrc3Bxubm5wcHCAnZ0dli1bJneSJYvz58/DyckJIpEIO3bswIsXLzBu3Dh07twZx48fL/UMbQDSpb4aNmxY6rbK0qZNm3Dx4kW0aNECZ86cga6urvSYSCSClZUVFi5cCCcnJ9ja2sLd3R39+/f/5AbM5ZGbmyvdl6k0d+a+evVKoX2tRCIR0tLS5K6XmJgIAGjatClu3Lghd31lmTt3Ls6dO4dGjRohNDQU5ubm0mMeHh6YMmUK1q1bhwEDBuDOnTvQ0dEpt1iJiIiISPmSk5OxYcMGAFDKXXCl8eeffyIzMxM9e/aElZWV3PVjY2NLdRdraSdpfszAwKDIpXLz5C3fbG1tjcaNGyu1/8oq7xqNvKshvX79usi7YVWtMuf6/fv3x4ULF2BlZYWAgIBCVwa0sLCAhYUFWrVqhalTp2LHjh0YN24cfH19UaNGDSxcuLAcIpff9evXMX36dKirq2PPnj35Vl2YMGECxo4di169emHRokWws7ODg4NDOUZLRJ8qDiQTEVUQ27ZtAwClLrf8oeDgYADApUuXVNJ+YfKW69bR0cHvv/9e5B7HtWvXxm+//Ybhw4ejSpUqGDhwYIEyW7ZsUSiGHTt24Mcff0RGRgbWr18Pe3t7AO/vlJ41axZatWoFHx8fDBs2TKH285w4cQIAitw7qqLau3cvAGDBggX5EsuPNW3aFGPGjMHatWuxZ88e/Pzzz3L18+DBA/j5+ZWYeKurq6Nu3bpwdnZW+j7WslqzZg1u3LgBW1tbODo6KtxOUXceJCQk4M2bN9DQ0ECtWrWgpaWlcB+FKe55VLXY2Fj4+PhAXV0dAQEB+QaRgfcXLFavXo3Lly/j/Pnz8PHxkfu1REREREQV29y5cxETE4Nu3bqhY8eO5RZHZGQkFi5cCHV1dYVXvpoxYwZmzJih5MhUJyMjA+7u7gDeT+pWVFZWFhYvXlziHc1isRgmJiYYMmQIzMzMFO7vc7V582a5J1N06NABYWFhpe67sub6R44cQVhYGLS1tREaGirzKnQjRoyAlpYWhgwZghUrVmDixIlF7lEdEhIi03OkpaWFFi1aSK9DqcLChQuRnZ2NmTNnFrp0f4cOHbB8+XL873//k+7xLe9e0EREHEgmIqoAHj58CH9/f2hra2P48OGFljl8+LB0Hyp595aJjY3FqVOnALxf4jokJARdu3YtXdAyuHDhAjIzM9GlSxeYmpoWW9bR0RGurq5IT0/HH3/8AQ0NjXzH5R1Ifvz4MaZNm4bg4GBoa2tj+/bt+X63Hh4esLa2xogRIzB8+HCsWbMGixcvVuj3kpiYiJCQEABAWFgYbt++nW/md/Xq1cttFnJJ8vbtleWu7Ly7rRVZauvy5ctyLaMkEolKPbiviKtXr2LWrFnQ1dXF1q1bIRKJsHjxYuzYsaNU7e7btw8bNmxAREREvn2S1NTU0KxZMwwfPhzjx49X+qByWQsKCkJ6ejr69+9f5N0PYrEYnp6esLe3h6+vLweSiYiIiD4jR48exbp162BgYICNGzcCAI4fP46HDx/mK5eQkKDSOLKysjBs2DAkJSXBy8sLTZo0wZ07d+Do6FhgwEvepWljYmJw6NAhXLt2DQkJCdDW1kb9+vXRtWtXhZbPVqZZs2bh8ePHaNeuXZHXFmTx7t07LFiwQOby//77r3Sbnc9R3opRn9IAXGXN9fOuzTg7O8u9ldngwYPxyy+/4N69e4iIiChyT/X9+/dLVzGTxaNHj5S2rdqHkpOTERwcDE1NzWInvIwZMwaLFy/GrVu3cOnSJbRq1UrpsRDR540DyURE5UwikWDcuHHIysqCh4dHkTMeS7Pks4+PDzIzM/Htt9/i6tWrmDFjBi5fvgxNTU2F25RFTEwMAKBGjRolltXR0YGJiQmio6Px9u1bhWYzSyQSnDlzBps2bcK+ffsgkUhga2uLDRs2FLo3V9++fXH58mXMmDEDwcHB6NatG5o2bYoBAwZgwIABsLGxkanfTZs2IS0tDcbGxnj79i2mTZuG48ePS5PM+vXrw9DQsEC958+f5xtULA/Vq1fH/fv38eTJE3z55ZfFls3bZ7t69epy99OvXz/8999/xZbJyMiAg4MD3r59W+BO1rLw7Nkz9OrVC5mZmQgICJAuAx8dHa3wcnaCIMDFxQV+fn6oWrUqBgwYgMaNG8PExATJycmIjIzE4cOHMWXKFPj6+iI0NFTpy9+VpZMnTwIA+vTpU2y5Ll26wNjYGPfu3UNkZCRq165dBtERERERkSrdunULQ4YMAfB+Zai873jLly+Xfk8sC4IgwNXVFREREejduzfmzJkDAEhPT8e9e/cUbjc7OxseHh7w8fFBdnZ2geOzZs1C27ZtsX37dtSpU6fQNlJTU/MNRopEIpw+fRrt27dXOK48+/fvx5o1a1C1alX89ddfpRr0NDMzw40bNyCRSIosIwgCfvrpJ5w6dUqmnL+8Xbx4ES4uLnj8+LHCe0cXdb2mIqqsuX7exBBFtx1r2LAh7t27V+wEkwULFmDcuHHFtvPgwQMMHjwY6urqKrtb/+zZs8jKykL79u1hYmJSZDl1dXX0798fa9euxdGjRzmQTERy40AyEVE5mzp1Ks6cOYN69epJE9zCLF68GE2bNgXwfnawrLOL37x5gzVr1kj3S/Hy8oKfnx/mzZuHZcuWKeUcimJgYADgfbwlkUgk0nKFDbqWJCkpCfXq1UNsbCwAwNLSEl5eXhgxYkS+BDosLAwaGhqws7MDAHz11Vc4dOgQwsPD4eXlhVOnTuHmzZvw8vLC8+fPUbNmzWL7TUhIgLe3N8RiMUJDQ+Hi4oKQkBD4+Phg0qRJ0j4Lo6wlq0pj8ODBOHPmDBYtWoQOHToUucTUtWvX8Oeff0JNTU2h5dd1dXXxzTffFFvm8OHDePv2LerVq1fmS+A9fPgQXbp0kSaLH15gWrduHdatW1egjiwXZv7++2/4+fmhdevWCA4OLnSQePXq1fj555+xcuVKzJ8/H+vXry9QRhCEfBc7xGJxkUvFl6fbt28DQImTMNTU1NCqVSscO3YM165d40AyERER0Sfuxo0b6NKlC5KSkgpMWF61ahWioqLy/ezNmzcYOXKk0uPIycnBqFGj8NdffwF4P6j07t07VK1aFd99912hy++OHDkS27dvL7HtESNGwN/fH+bm5hg7dizat28Pc3NzJCYm4u7du/D19UV4eDjatGmD//77r9BBR5FIhPr16+f7d5UqVUpxxu9dvHgRw4cPhyAIGD9+fIl5LAAsXbpUupc1ALRu3TrfXcV51x+KEhMTgytXrkAsFmP06NGKB19GtmzZgvv378PExETuybtisRimpqbw8PCQqXxervjmzRu5+vnwukhpVdZcP28wPC4uTqH6efWKG/A2NTUtcdU9f39/AO+fB319fYViKYms+TcA2NnZYe3atbh27ZpKYiGiz1vFuwJJRFRJ5ObmYsKECfDx8UGVKlWwd+/eYr9ctm7dGr169UKvXr3QpUsXmfuZMmUKEhMT4erqinr16mHlypWwtLTE8uXLpXvmqMq3334LkUiEiIgIZGZmFlv25MmTSE9Ph42NjULL+xoYGMDW1hbOzs44ceIEnj59ChcXl3yDfRKJBB06dED37t0L1G/bti1CQkLw8uVLrFmzBr/++qtMyfeUKVMQGxuLESNGoFmzZvD19YWWlhbc3d1x5MgRuc+jrI0dOxbt2rXDmTNn0KFDhwL7+qakpGDJkiVo37490tPT4enpiXr16ik9jqysLEydOhUAMHPmTKipqSm9j6KEhITA1tYWz58/x/jx41G9enXMnz8fI0aMQGpqaqnazpvZ7eTkVOTFCrFYjBEjRgAAbt68WWiZ33//HRoaGtJHUXc4lLe85dNkmXGdNytekeXTiIiIiKji+Pvvv9G2bVvExsZi5MiREIvFcHR0xKJFi5Cbm4smTZrA3t4+30MZd+B+LC4uDt26dcPOnTvRrFkz6QpULVu2xNWrV0vV9vXr1+Hv74/atWvj8uXL8PLyQufOndG4cWPY2dlh9OjRiIiIwOTJkxEdHQ1vb+9C29HV1cW9e/ekj7t375Z6Oexz586he/fuSE1NhZaWFry9vREUFFRiPR0dHRgZGUkfeRPBZeXu7o7ExEQ4OjrmGxyvqN6+fQsA2LZtW77nQJbHnTt3EBYWBgcHB5n6MjIyAvB+v3CRSCTzQ11dHdevXwcAGBsbl+p8K2uun/cc7du3T+47z58+fYqLFy9CV1e3VAPeDx8+xKpVqyASiTBz5kyF2ykJ828iKiu8I5mIqBy8fPkSw4YNw5kzZ2BgYICjR48WuvRyaa1btw579uxBnTp1pImsiYkJgoOD0aZNGzg7O0MkEsHR0VHpfQPvl7Tu3r07jh07hqVLl8LT07PQcqmpqdJ9Up88eaJw8nLo0KFij+fNPi9sFnoec3NzTJ48Wab+VqxYgZ07d6Ju3bpYvXo1AKB58+bw9/fHwIED0a9fP2zfvh3Ozs4ynkHZU1NTw99//42RI0ciKCgI33//PapXr45atWohPT0d9+/fR1ZWlvSCxE8//aSSOJYvX45Hjx6hUaNG0kFVVcvKysK8efOwfPlyiEQirF+/Hm5ubpg1axb69OkDPz8/hIaGYt68eRg9enSBfbtl0aZNGwDvl5fv3LlzobP6k5KSsHDhQgDvJzQUpk6dOvlmGVtYWMgdS1lISUkBAJlm+OddqEpOTi70+L179+Dj4yP9t5GRUYG9tPIuQuTk5BQ5wz4rKwtv3rzBq1evcP/+fdy9excvXrzA9u3by3TCAhEREdHnJjMzE7Nnz8aqVaugpqaGrVu3YuTIkRgzZgwGDBiAuXPnYt++fVi0aBF69Oih0liOHTsGV1dXREdHo1u3bti7dy/09PQwY8YMrF69Gq1atcKoUaMwf/58mSYMfyzvLr5hw4YV+13czc0Na9euLfXAtaz+/PNPTJw4EVlZWVi1ahXs7Oxgb28PJycnrFmzBhMmTCiy7pQpUxTO7y5cuIAdO3ZAS0sLv/zyS4nlP/xeLxKJMGDAAIWWUS6NvOsAZZEDjBgxAhEREXj27FmB5cEzMjLw7Nkz6OjowNLSskBdPT09ODg4lDrnq6y5fteuXdGjRw8cPXoUY8aMwebNm2XK5WNjY+Ho6IisrCzMnz8fVatWVTiGyZMnS/dpb9KkSbFlL126lO/9UatWLfTt21emfpSZfwMlv08/zL+LIggC4uPjER0djadPn+LOnTu4e/cuRo8ejXbt2pUYJxFVUAIREZWZtLQ0YdmyZYK+vr4AQGjcuLFw9+7dYuu4uLgIAITTp09LfxYdHS0AEFq1alVkvV27dgnq6uqCtra2cP78+QLHQ0JCBD09PUFdXV1YvHixkJOTU6CMp6enAEDw9vaW/SQ/cv/+fcHQ0FAQiUTCvHnzhLS0tHzHb968KbRo0UIAIFhZWQnt27cv9AFA0NPTUzgOQRCE7OxspbQjCIKwatUqQSQSCVWqVBH++++/Asf9/f0FbW1tAYDg5OQkREVFFSiTd17//vuvQjFcvnxZsLS0FGrXri1cvXpVoTY+FBYWJowaNUqwtrYWqlatKpibmwt2dnbC/PnzhRcvXhRZ7+nTp9LXsyIuXrwo6OjoCBoaGsKVK1eKLauM16QgCMKJEyeEBg0aCAAECwsLISwsLN/x9PR0YeLEiYJIJBIACHXr1hWOHTuWr4ysr6XFixcLYrFYEIlEQosWLYQxY8YI7u7ugpubm2Bvby99nXTr1q3A+2Pr1q0CAGHChAkl9nPr1i0BgPDVV18JGRkZMvwWlE9XV1cAIMTExJRYdurUqQIAYcWKFfl+HhgYKAAo8NDW1i7QRuPGjaXn3Lp1a8HOzk6ws7MTbGxshNq1awvGxsbS5/DDh7q6uhAXFycIgiD07NmzwGcsERERERXvw+/TlpaWQkRERL7jr1+/Fnr06CH9/tW2bVvhxo0b0uOlzSHyvHr1Shg6dKgAQBCLxcK8efMK5Lb79+8XTE1Npd8pf/rpJyE3N1d6PC/nDgwMLLKf48ePCwCEwYMHFxvP4cOHBQDCDz/8UOCYsnJRQRCEzMxMYdy4cQIAQUtLS9ixY4f02PXr1wUzMzMBgDBixAghOTk5X93S5lTx8fFC/fr1ZWpDT0+v0O/2/v7+Mvd35MgRwdTUVGjatKnw7NkzhWIWBEFwdHQUAAhHjx5VuA1l+PfffwUAQvv27cusz8qU6wuCILx7907o3LmzAEBo2rSpsHv3biElJaXQstHR0cLy5csFExMTAYAwefLkfJ8P8lq3bp30OsPbt2+LLOft7V3oe8Pa2lrmvtzc3AQAwm+//VZi2WvXrkl/Hx+T9X2aF7ORkZFga2sr2NnZCW3atBGaN28u1K9fX6hWrZqgoaFRaFtr1qwRBOH/8n0XFxeZz5OIyh/vSCYiKiPe3t5Yvnw5YmJioKmpCQ8PD8yfPx+6urpK7UcQBKxcuRLu7u5QV1fHvn37YGtrW6Bcly5dEBoaip49e2L27Nn466+/cPbs2VLNuixM/fr1cfjwYTg6OmLhwoVYs2YNWrZsCX19fTx58gQ3btyAIAjo2LEjgoKCpEtAfUyW/WjLQlpaGqZPn46NGzfC0NAQR48eLXQ/oMGDB+PLL7/EwIEDERAQgGfPnuHChQtKjWXbtm3SZYm2bt2KZs2alaq9du3alfkM0SdPnqB3795IT0+Hq6srvv32W5X2d+XKFcyZMwfHjx8H8H6m+MqVKwvM4NXW1sa6devwww8/YNq0abhw4QKePn2qUJ+zZs2Cg4MDNm7ciAsXLmDnzp3IyMiASCRCnTp10LNnTzg7O2PAgAGlep2bmJgAeL+Mlra2tsLtjB07Fps2bVKorpmZGSIjIxEXF1finlHPnj0DUPTeU126dMGMGTOk/y5s7/QVK1Zg6tSpePToER4+fAixWAwtLS0YGBjA2NgY1atXh6mpKSwsLGBhYQErKytYW1ujcePG0NHRUegciYiIiCqzK1euYO7cuTh27BhEIhFGjhyJlStXFliGt1q1ajhy5Aj8/f0xc+ZMhIeH4+HDhyXuuyurd+/eYdmyZVi3bh1SU1PRqFEjbNiwodAVfvr164f27dtj3rx52Lx5M8LDw+X+3t2pUydYW1tjz549sLS0xJw5c/J9PxUEAceOHcO4ceMgFovh5uZW6nMsyuHDhzFt2jQ8fPgQlpaWCAoKyrc8to2NDc6ePYtevXphx44dCAsLw+rVq9GvX79S952ZmYm+ffviwYMHqFWrFqZPny5TvaNHj0r/LhKJpCs3yeL3339HbGwsYmNjsXfvXpn7/Fjec/7xHcKVQWXI9T9kaGiI48ePY8OGDViyZAmcnZ2hrq6OBg0awNzcHAYGBoiLi0NUVJQ0z2/WrBm2b98u8/LlhQkODpYu4+3p6Vnk9a0P/fDDD/lW3ipub+aP5S1pLct+0CXl30DJ71NXV1ecOXMGZ8+elV7f0tTUhJ6eHoyNjWFhYQEbGxvUqFEDFhYWqFmzJr766is0adJErvMiooqHA8lERGUkKCgIb9++xYgRIzB37lx89dVXMtXLS3ZkTXSHDBmCgIAAGBoaYteuXcV+CW7VqhWuXLmCMWPGIDk5udR78BSlTZs2uHPnDtatW4f9+/cjLCwM2dnZMDIygr29PVxcXDB48GCF2t65cyeGD7z8F5IAACAASURBVB8uV53U1FS5Lhz8+uuvmDNnDoD3CdiVK1fw5ZdfYu/evcUO3rZo0QJ37tzBwoUL0a1bN7lilMWwYcNw4MABiESiAkv+fgri4+Ph4OCAmJgYAP/3XHbo0EFlfbq7u+PUqVOws7PD0qVLi1xKOo+trS3Onz+PS5culWrvsq+//hq///47gPd7yPXu3RtOTk7w9/dXuM2PVatWDV5eXjh48KB0iasPJSUlITo6GkZGRqhWrVqR7dSoUUPhGKytrREZGYnHjx+jYcOGxZb977//ACDfkt0fsrCwgL29fbFtdO/eHXfv3lUsWCIiIiKS28CBAxEZGQlbW1t4e3vj+++/L7b8kCFD4OjoiNDQ0BK/28kjODgYS5cuhampKRYsWIDJkycXu3ytsbExfHx8MHPmzGK3OiqKuro6goOD0atXL3h7e8PHxwfNmjVDjRo1kJSUhDt37iAqKgra2trYunUr7OzsSnN6hXry5AkmTpwoHewZPXo0VqxYUeiEywYNGuDKlSsYP348/P39MWrUKHTt2hV6enoK9y+RSODi4oJ//vkHIpEIL168wIIFC7BgwYIS65bmuR87dizOnz8PMzOzUg2G5028dXFxkf5dETNmzMDYsWPz/czT0xN79uyRqX5GRgaA90saW1tby1RHLBZj165dhU5ir4jKI9f/mJqaGiZMmIAff/wRZ86cQVhYGG7evIlz584hJiYGjRo1gq2tLf73v/+hW7dupd5u7tKlSxgyZAgkEglEIhEWLFgAe3t71KpVq9h69erVU/j9kff6efz4cYllS8q/gZLfp1WrVsXff/8tR4RE9LngQDIRURnZuXMnNDU1S/wS+bGZM2eiX79+aN68uUzl27VrhydPnsDf3x9169YtsbyVlRVCQkKQmZmp0rt+q1atCk9PT+k+ydnZ2QrtOVtYu9bW1gpdDJDVh4NuY8eORYMGDfD7778XmrB/TE9PD0uXLlVJXK1atcKLFy9U0rYgCEhPT0dycjISEhLw5s0bvH79GlFRUYiKisKzZ8/w/PlzBAQEKLTH1M2bN9GvXz88efIETk5OGD9+PHr16oXevXvjwIED6Ny5swrO6v2+4dHR0XK337JlS7nKZ2dnFznTPTMzE8D7u9vv3r2Lt2/f4u3bt4iPj0dUVBRevnyJly9fwsPDQ64+AWDevHmYN29eocfykvfBgwdjw4YNcrcti3bt2uHYsWM4efIkevXqVWS5GzduIDIyEubm5mjcuLFKYpFV3sU0Za8OQURERPQ58vX1RXZ2tlwTZTU0NAoMUOjp6UlXjFHE0KFDkZubi0GDBsn1PU6R/ZHz1KtXD9evX8f27dsRGBiI69ev49KlS9DW1kbdunXh7OyMCRMmFHlO8+fPL1UOfOnSJRw9ehR2dnZYsmRJiXeYGhgYYPfu3Rg1ahQEQSjVIHJCQgKcnZ1x4sQJNGzYEP7+/hg8eDC8vLwgEolk2idZUX369JHpjsuSuLq64uTJk3j69Cni4+MVbqewuq9evcL9+/flaidvn2JZiEQipKamytV+UT7XXL8oampq6Ny5s7TfMWPGYMuWLZg3bx6GDBmilD727NkDV1dXpKWlSfeMnzx5Mjp06IATJ07IdG1OEXkT4/Nu1iju8+XQoUMA3q/8VZ7yPq9L83lERGWPA8lERGVE0S+ODRo0QIMGDfL9zMjICGPGjCn0jr8JEyZgwoQJcvejpaWlUHyKUsYgMgA4ODiUaukheY0fPx7jx49XSluNGzdGQkKC0pcTl4WbmxvOnj0LiUQCiUSCnJwcZGVlIT09Xfoojp6eHurUqYOUlBSZBtQ/FBgYiFGjRiE1NRWjR4/Gxo0boaamhoMHD6Jfv37o2bMnNmzYgJEjR5biDAvXqFEjNGrUSCltdevWrdDlkbOzs6Gnp4fs7Oxi6wcHByM4OLjAz0UiEUxNTfHmzRulxFmW+vfvjzlz5mDnzp3w8vKCgYFBoeW8vb0BAM7OzuW+bP2ePXtkvnuAiIiIqLLr2LGjUtoxNTVFVFSUwvXV1NTg4uKilFiaNWuGx48fw9LSssSy0dHR8Pf3R9u2bRESEiJXP1euXIGmpqaiYWLw4MGwtLSU+27n0q6O9eHAYPPmzXH48GGYmZnh5MmT6NKlCxYsWICoqCisX7++zK8ryKNFixZ4+PBhkcfr1auHx48fIzo6Wu5leDdv3ozNmzeXNkSlqKy5fnnIzc3F7NmzsWzZMqirq2Pjxo0YN24cACArKws//fQT2rRpg71795a4eoMiatSogdatW+P8+fMICAjADz/8UGi50NBQXL16FdWqVUOnTp2UHoc8HBwcVHojCBGpBgeSiYgqgLS0NBw8eBChoaG4efMmnj59iqSkJEgkEujr68PS0hJNmjRBp06d0LdvX3zxxRdyJSmxsbG4f/8+GjVqVC6Dlh+6du0aJBJJqZYJrsjOnTuHoKAgXLp0CQ8fPkRiYiKys7Ohr6+POnXqoFmzZnBwcEDv3r2xfv36coszMzMTKSkpUFNTg4aGBvT19aGhoQEdHR1UqVIFISEhkEgkcHNzQ7Vq1WBmZoZq1arBwsICderUybf/bWRkpEx9vnjxAjNnzsSuXbugoaEBHx+ffJMeunbtipCQEPTu3RujRo3CmTNnsGLFigL7F6tKWloagoKCcOzYMdy4cQMvXrxASkoKNDQ0YGxsDGtra9jZ2cHR0RHffPONdJ/lj6mrq8PDw6PQBF0sFkNbWxs6OjrSP3V0dGBoaJjvd5y3x/Hu3bsBlP1ED0VZW1ujT58+OHjwIP73v/9h586dBQaKg4KCsHPnTujp6cHd3V1pfR85cgRLly5FbGysXImphoYG2rRpgz/++KPcB7WJiIiIPjWZmZkYP348rl27Jl2yVxYikQiGhobw9PREjx49lB6XPHnZlClTMGXKFJnaff36NU6fPg2xWCx3TIcPHy7VXXgikUglS2YXJS0tDcuWLYO3tzfS09Ph4uKCDRs2SHMVCwsL/PPPP+jVqxe2bNmCq1evwtfX95NZfrm8pKam4o8//kCdOnXg6Oio9PaZ65eN8+fPY+rUqbh06RLMzMwQGBiYb5WAGTNm4IsvvsC4cePQsWNHeHp64ueff1Z6bu/u7o7+/ftjxowZaNu2bYEJMbGxsdKbIebMmVOqySwft+vm5ob79+8jKytL5npisRjVq1fHunXrlDbJn4jKgEBEROVGIpEIK1asEIyNjQUA0oempqZQo0YNwcrKStDR0cl3TFtbW5g0aZKQlJQkcz8LFiwQAAgrVqyQKz5PT08BgODt7S3vqRVJX19fEIlEctcDIOjp6RVbJj09Xfj666+FBg0aKPRo0qSJMGjQIOHNmzdyx/fw4UOhbdu2+Z4rdXV1wdzcXLCyshK0tbXzHatVq5awb98+ufspK3p6eoKsXxOePn0qABAaN25c6PG0tDTB09NT+lr+5ptvhKtXrxbZ3pMnTwQbGxsBgFC1alUhOjpaekwVr0lBEIQdO3YIZmZm+Z4jXV1dwcrKSjAzMxPEYnG+Y927dxeePn2q1BiKkpKSIuTk5JS6HT8/PwGAMH78eCVEVbSoqCjB1NRUACD06NFDOHv2rBATEyPcuXNHmDNnjqCuri4AEP76669C6wcGBgoABBcXF7n6bdasWb7nSN7Hf//9p4SzJyIiIqpcDh48WKrvYG3atFFqPIXlZWpqakK1atUKzctq1qwpBAQEyNz++fPnBQBC586d5Y5NlpxWHtevXxcGDhwo+Pr6ylVPlpxq586dgoWFhQBAMDU1FXbv3l1k2YyMDGHUqFECAEEsFufLc+XJK8tb3bp1BQD58k9VCAkJEQAIDg4OKu2nKJUt1//Y6NGjBQDFvqaLExUVJQwdOlT6GeLo6FjsNaSzZ88K1apVk/5+8nh7ewsABE9PT4Xi+FBePBYWFsLWrVuFyMhIISoqSvD395e+ru3t7QWJRFJofUXep2vWrCnVZ/+UKVNKfd5EVHZ4RzIRUTkaOXIk/Pz8oKamhuHDh8PZ2RktW7YsMCvz3bt3uHr1Kvbv34+tW7di3bp1CAsLw+nTp2W6wzg3Nzffn7LK27OqevXqctUrKRZBgWVs+vTpI535XFzb9+7dk+5Bq4hbt26hRYsW+Pnnn2Wu8/jxY9ja2iI+Ph5NmjTB1KlT0a1bN9SsWTPfHY7x8fEIDw+Hr68vgoOD4ejoiNWrV8s8+/1Tdfz4cSxYsABVq1aFl5cXpkyZUuzS5nXq1MHFixfh5eWF69evy72smLxWr16NadOmQSQSYejQoRg5ciRsbW2hr68vLSORSPD48WMcOXIEPj4+OH78OFq0aIFz587hq6++Krb9nTt34tdff1UoNk1NTTRs2BDr1q2DmZmZQm2UNQsLC5w5cwZ9+/bF0aNHcfTo0XzHtbW14evri6FDhyq137dv3wIA7t27V2A7gKLk5OSgXbt2OH/+PBITE5UaDxEREVFlkPcdbMiQIdi1a5fMK7xcuXIFzZs3V+p3MEXzMicnJ6xatQpTp05VWixl4cGDB9i7dy/09PQwatQomevl/S6Keq4SEhIwduxY5OTk4Mcff8TChQthYmJSZHtaWlrw9fWFg4MDfv31V5Us4fs5ydtWJzw8HO/evYORkVE5R6S4ip7rq8LatWuxa9cuWFtbY+nSpejbt2+x5du2bYubN29iypQpMuep8vL19YWmpia2bdtW6GfBoEGDsG3bNoVWUihK3mf/zJkzsWTJEpnrrV+/HhMnTmT+TfSJ4UAyEVE5OXr0KPz8/KCnp4eTJ0/C1ta2yLJGRkbo1KkTOnXqBA8PDzg4OODGjRvw9PTEunXrVBbj2LFjMXbsWJW1L4+DBw+WWEZXV1eu5dQ+tmbNGkydOhXR0dFy1XN3d0d8fDwGDRqEXbt2QV298P9ev/jiC/Tr1w/9+vVDYGAgBg8eDHd3dwwYMAC1atVSOO6Krm/fvti4cSOcnJxkTpK1tbWxePFiFUf2fjmmWbNmQSQSISgoCP369Su0nJqaGurXr4/69evDzc0Nw4YNQ2BgICZPnlxgoPRj8fHxuH//vsIx3rx5E82aNcPMmTMVbqOsNWrUCLdu3UJAQABCQ0Px8uVLGBkZ4ZtvvsHo0aNVcsEgb4KKPMujqaurSyfjKDLBhYiIiKiy+/A7mDzbhOR9Z1PmdzBF8rJ9+/bByckJHh4ecHR0lDkvCw0N/WS3RRk7dixatWqFZs2aFXq8atWqCAgIgLW1NerVqydzuwMHDsTAgQOVFeZn6fLly9i+fTsAIDk5GWPGjEFgYOAn+1qqyLm+qnh4eMDGxgZDhgyBmpqaTHVMTU2xa9culcWkpaWFrVu3YsKECdi5cyceP34MiUSCL7/8EkOGDFHJ5A5F8m8AqFatWr76RPRp4EAyEVE5OXHiBABI736UVc2aNbFmzRp06tQJR44cUelAcmWTt1+VvHduh4aGAgCWL19e5MWKjw0aNAh+fn4IDg7G6dOnMWLECPmC/YSIRCKMGzeuvMMoVEREBDIyMtCxY8ciB5E/pqmpiU2bNmHv3r0IDQ2FRCIpNoGUZ8+1j/n4+GDSpEl49epVoce7du2KkydPytXmxo0bsXHjRpnKqqmp4cmTJwX2WZKFlpYWhg8fjuHDh8tdl4iIiIhIXorkZY6Ojujbty/2798vV16mq6sr92Tg0kwuVaYaNWqgRo0axZbp1atXGUWjOv/88w/atWsn94CVPCuyjRkzBps3b5ap7LNnzzBw4EBkZ2djw4YN2LhxI/bt24eZM2di2bJlcsVYUVSEXD87OxuGhoZIT0+Xq56zszOcnZ1lKluvXj08fPgQwPuJFj/88IPccZaF5s2bo3nz5uUdBhF9hjiQTERUTvKWlNHS0pK7bt4Sz7LOfiTVynsuNTU15aqXV57PY/lR9LnT0NCAWCyGSCRS6ezxKlWqACh6coOVlZXKlscC3t+xq8hnFBERERFRWSvLvKx169ZyT+j8VO86/VTp6enB2tpa7oni8qhZs6ZM5a5cuYIBAwbg+fPnmDBhAsaPH4+ePXvi+++/x2+//YYnT55gy5YtMDAwUFmsnyuxWAxra2ukpaWprI+6deuqrG0iok8BB5KJiMpJ165dsXLlSvj6+sLV1RWNGzeWqV5CQgKmT58OAOjZs6dMdfISVolEoliwSvRhLJ/LAGrnzp2xd+9ezJ07F5s3b5bpAsGJEydw8OBBaGlpoWPHjmUQJRXGzs4O2traOHnyJE6fPi3Tc5Gbm4upU6dCIpHAwcFBqfsMyevPP/8st74rKnn3SC/NcvhERERE9F5F+A6mSF528uRJBAUFyZ2X5eTkyBVbdna2XOVlUZHy/IqoWbNmuHPnTrnGkJ6eDm9vbyxevBiZmZmYMWMGvL29AbwfhD537hz69euHvXv34vLly1i8eDGcnJw+m2slZUFNTQ1Xr14t7zAqrYrw2U9EqseBZCKicmJvbw9nZ2fs3r0bzZs3x5gxYzBw4EA0b95cusRynoyMDFy7dg3BwcHYuHEj4uPjYWNjg/nz58vUV94eoAsXLsTWrVvljlUkEmH79u1o2bKl3HULiyUlJQV169aV3lktj1atWkn3FKooli5dilOnTmHLli24desWJk6ciC5duhTYBzYxMRHnzp2Dn58f9uzZg9zcXKxZs6bEZcVIdUxMTLB48WJMnz4d3bp1w6hRo/DDDz+gZcuW0NHRkZYTBAGRkZE4ceIE1q9fj5s3b8LMzAyrV68ux+jpQ3nPV4sWLWSeyZ+Tk4OnT58CAPT19VUWGxEREdHnKu872I4dOxAeHi5zvXfv3gFQ7new0uRlPj4+MuVlebl6eHg4GjRoIPNdxqmpqQD+b8UhZcjbmzQwMBD//vuvQm10794da9asUVpM9N6LFy+wbds2bNiwAa9evUK1atWwdu1aODk55StXo0YNREREYMmSJVi+fDmGDh2KWbNmwcXFBQMHDkTTpk3L6QyIipf32b9kyRL4+fnJXO/ly5cAmH8TfWo4kExEVI78/PzQpEkTLF26FD4+PvDx8QHwfr+lqlWrQl1dHQkJCUhKSpLW0dTUhJubG5YsWSLzYMmAAQOwfft23Lx5U+F9mZKTkxWq9zEPDw94enri2bNnCtU3NTVVShzKVLduXZw/fx4jR47E+fPncfHiRQDvnysTExNoamoiJiYm31JLtWrVwpo1a9C/f//yCrtYenp6cu8l9amaNm0ajIyM4O7ujs2bN0v3uNLX14eJiQnS09MRFxeX766D7t27Y+PGjbCysiqvsOkjY8aMwS+//ILo6GhER0fLXE9bWxvt2rWDjY2NCqMjIiIi+jx17NgRTZs2xe3bt+XKNUUiEczMzJS6v2pReZmGhgZMTU0Lzctq1qyJ1atXw9HRUaY+GjZsiC5duuDMmTN48OCBXPEZGRlh4sSJctUpjp2dHbp3746zZ88qnOdbW1srLR4CHj9+jAEDBuDGjRsA3g+2zZkzBzNnzixyEoGGhgbmz58PNzc3LF68GJs3b4aXlxe8vLxgaWmJR48eQUNDQ2kxVqZcn1SnV69e2Lx5M548eSLX549YLEbt2rVl3p+aiCoGDiQTEZUjNTU1zJ49G5MmTcL+/fsRGhqKW7du4dmzZ4iJiUFubi6qVKmCJk2aoHHjxujQoQMGDBgAMzMzufqxsLDA5cuXVXQW8nFzc4Obm1t5h1EoExMTmJubF5ixLov69evj3Llz+Oeff7B//35cunQJjx49QkJCAnJycqCvr48GDRqgWbNm6NmzJ3r37q3UZFDZ3rx5I3NZbW1tqKmpFbiTXhXy+lB2X6NGjYKTkxOCgoJw7Ngx3LhxA1FRUXjx4gXU1dVhZmaGBg0aoE2bNnB0dMQ333yj1P6Loq6unu/PykBXVxeA/M/xjBkzMGPGDFWERERERERFMDMzkw6aVQSqzsvU1dUREhKiwjOQnaamJo4dO1beYRSrsg1ampubIzIyEm3atMGwYcMwePBgGBsby1TXxMQEK1euxKJFixAcHAx/f3988cUXSr9uUNly/YqqIp2vIu/Txo0b49GjRyqKiIgqGpFQmf43JyIiIvqE5ObmIjY2FkZGRtDS0irvcIiIiIiIiKgYmZmZzN2IiOizwoFkIiIiIiIiIiIiIiIiIiLKR1zeARARERERERERERERERERUcXySQ8k79q1C3p6eujRo0ex5c6ePYvx48ejQYMG0NbWhp6eHr7++mt4eXkhNTW12LopKSnw8vJCkyZNoKenB1NTU3Tt2hWHDh1S5qkQERERERERVRjDhg2DSCRCo0aNCj2ura0NkUhU5ENNTQ3x8fFlHDUREREREREpk3p5B6CI3NxczJ07F0uWLIFYLEZ6enqRZdeuXYspU6agXr166NatG+rVq4eUlBQcOXIEnp6eCAgIQHh4OIyNjQvUjYuLQ6dOnXDnzh0MHDgQrq6uSEpKQmBgIPr27Ys5c+bg119/VeWpEhEREREREZWpffv2Yffu3TA1NUVaWlqhZTIzM2FrawsXF5dCj6upqcHAwECVYRIREREREZGKfXJ7JCcnJ2PYsGE4cuQI1q9fj8WLF6N27do4c+ZMoeVv3bqF2NhYdOzYMd/PBUHA1KlTpQPNq1evLlB30KBBCAoKwqFDh9CzZ0/pz7Ozs+Hs7Ix9+/bh8OHDcHBwUOo5EhEREREREZWH2NhYNG7cGD/88AP+++8/REZGIjIyskA5kUgEFxcXbNu2rcxjJCIiIiIiorLxyS1tvWHDBoSFheHo0aMYN25cieWbNGlSYBAZeJ/0ent7w8DAAMHBwQWO3759G3v37sWYMWPyDSIDgIaGBrZs2QJ9fX14eXkpfjJEREREREREFciPP/4IQ0NDLFq0qLxDISIiIiIionL2yQ0kT5s2DTdv3kSXLl1K3ZampiYaNGhQ6L5NAQEBAIAxY8YUWtfQ0BCOjo64ePEiXr58WepYiIiIiIiIiMrTX3/9hQMHDmDr1q3Q1dUt73CIiIiIiIionH1yA8nq6uqoVauWUtqSSCR4+vQpGjRoUODYP//8A11dXXz33XdF1m/Xrh0AICIiQinxEBEREREREZWH6OhoTJo0CZMnT8b3338vV93U1FTExMQgKytLRdERERERERFRefjkBpKVKTAwEHFxcXBxcSlw7OHDh/jyyy8hFhf9K6pXrx4A4NGjRzL3aWBgUORDLBbDwsJC/hMhIiIiIiIiKoWxY8fiiy++kGtJ65CQEFhYWKBKlSqoVq0adHV10bp1awQGBsrdP3NlIiIiIiKiike9vAMoL8nJyfDw8EC9evUwevToAsfj4+NRp06dYtuoWrWqtKwyCIKA5ORkpKSkKKU9IiIiIiIieq9KlSrlHUKF5evri6NHjyIsLEzmJa2HDh0KS0tLWFtbw8DAABkZGbh9+zZ27twJJycnTJs2DStXrlRKfMyViYiIiIiIVKe4fLnSDiT/+OOPePXqFU6fPg0tLa0CxzMyMgr9+Ye0tbUBAJmZmTL3m5SUVOQxAwMDALzAQURERERERGXjxYsXmDZtGqZMmSLXktZ//fVXoT+fM2cOHB0dsWrVKtjb26Nbt24ytcdcmYiIiIiIqOKplEtb//bbb9i1axdWr15dZKKsra1d4gBxRkYGAEBHR0fpMRIRERERERGpkiAIcHV1hbm5uVxLWhdHR0cHmzZtglgsxpYtW5TSJhEREREREZWPSndHsp+fH2bOnInp06djwoQJRZYzMjJCQkJCsW3lHTcyMlJqjERERERERESq9scff+DUqVMIDw9X6gTpmjVrwtraGrdv31Zam0RERERERFT2KtVAclBQEEaNGgVnZ2csX7682LJfffUV/v33X+Tm5kIsLvzG7UePHgEA6tWrp/RYiYiIiIiIiFQlJiYG7u7ucHZ2Ro0aNRAZGVmgTEZGBnJycqTHzMzMZN5D2dDQEImJiUqMmIiIiIiIiMpapVna+siRI3B2doa9vT22bdsGkUhUbPkWLVogLS0NV65cKbLM2bNnAQDNmzdXaqxEREREREREqhQdHY3U1FT89ddfqFOnTqGPixcv4uXLl9J/lzQh+0PPnj2DpaWlCs+AiIiIiIiIVK1S3JF86tQpODo6om3btti7dy80NDRKrNO/f38sX74cf/75J1q0aFHgeGJiIvbt24emTZuibt26qgibiIiIiIiISCXq16+PgwcPIjc3t8gyc+fORUxMDDZt2gQA+Prrr2Vq+9ixY3j16hXc3d2VEisRERERERGVD5EgCEJ5B1EatWvXRu3atXHmzJlCj0dERKB79+6wsbFBSEgI9PT0ZG67c+fOCAsLw6FDh+Dg4CD9eXZ2NoYOHYq9e/di9+7dGDJkSGlPAwBgYGAAAEhKSlJKe0RERERERESK6tChAyIjIwsse52eng41NTVoamoWqHPu3Dn069cPOjo6uHPnjlw5eFGYKxMREREREZWPz/qO5JcvX8LBwQFZWVno3bs3/Pz8iixrb2+P2rVr5/vZjh070KZNG/Tp0weDBg1Cy5YtkZycjICAANy+fRs//vij0gaRiYiIiIiIiD4FJ06cwMiRI9G7d2989dVXMDY2RkJCAs6ePYtTp07BysoKf//9t1IGkYmIiIiIiKj8fPIDyVpaWtDS0ir02PPnz6UzlmfPnl1sO7t27SowkGxhYYFr165h6dKlOHDgAA4cOABtbW3Y2Nhg165dcHZ2Vso5EBEREREREVU0ReXb3333Hfr3749//vkHgYGByM7OhqGhIRo1agRvb2+MGzcO+vr65RAxERERERERKdMnv7T154TLdRERERHRp04ikSAnJwdMM0jZRCIR1NXVoaamVt6hUBljrkxEREREn7rc3Fzk5OQgNze3vEOhz4yqc+VP/o5kIiIiIiIqX4IgICkpCYmJiUhNTS3vcOgzp6enB0NDQxgYGEAkP3hpOwAAIABJREFUEpV3OEREREREREXKyclBfHw8EhMTIZFIyjsc+oypKlfmQDIRERERESlMEATExcUhLi6uvEOhSiI1NRWpqanIysqCiYkJB5OJiIiIiKhCEgQBUVFRSE9PL+9QqBJQVa7MgWQiIiIiIlJYUlKSdBBZS0sLRkZG0NHR4eAeKZ0gCEhPT8e7d++QmZmJuLg4aGpqwtDQsLxDIyIiIiIiKiAuLk46iGxoaAhDQ0Nu1UNKp+pcmQPJRERERESksMTERADvB5GtrKyYFJNK6ejowNDQEM+ePUNmZiYSExM5kExERERERBVScnIyAKBKlSqoXr06J1yTyqgyVxYrpRUiIiIiIqp0JBKJdE9kIyMjDiJTmVBTU4ORkRGA90t3cZ8xIiIiIiKqaCQSCTIzMwEA+vr6HEQmlVNVrsyBZCIiIiIiUkhOTo707zo6OuUYCVU2H77eOJBMREREREQVzYf5spaWVjlGQpWJKnJlDiQTEREREZFCBEGQ/p2zq6ksffh6y83NLcdIiIiIiIiICmK+TOVBFbkyB5KJiIiIiIiIiIiIiIiIiCgfDiQTEREREREREREREREREVE+HEgmIiIiIiKqgMLDwxEaGlqmfT58+BDLli3DmzdvyqzPtWvXwszMDK9fvy6zPomIiIiIiOjTxFy5bKmXa+9ERERERERUqMmTJyMjIwN3796Vu+7JkyeRkpJS6DGRSARjY2O0bt0aGhoa+Y5FRERg5syZaNWqFapVqyZzf4Ig4Pz580XuwSQSiWBubo66desWOJaQkIDY2FhkZGTI3B8RERERERFVTsyVyxYHkomIiIiIiCqYR48e4caNG/jmm28Uqj906FDExsYWW2bKlClYvXq1Qu1/LCEhAW3atCmxnK+vL0aNGqWUPomIiIiIiKhyYa5c9jiQTEREREREZWL51oPlHYLCfhrVt0z7mz17NnJzc3H16lUcOnQIffr0kav+7du3kZmZWeixAwcOYNKkSTAzM1NGqACAqlWrIiwsrMhZ1n5+fvD19YWamprS+iQiIiIiIvocMFeWHXPlsseBZCIiIiIiogpk48aNCAwMhJubG27evAlXV1eEh4ejYcOGMrdhampa6M8lEgm2bdsGTU1NDB8+XFkhQyQSoV27dkX2OWXKFGhra6N3795K65OIiIiIiIgqD+bK5UNc3gEQERERERHRe35+fpgwYQIaN26M5cuXIyAgAIaGhrCzs8Px48dL3b6Pjw+uXLmCGTNmoFatWkqIuGSbNm3CjRs3MH78eBgbG5dJn0RERERERPT5YK5cfnhHMhERERERUTnLysrC/PnzsWzZMtjY2ODEiRPQ0dGBjo4Ozp07h759+6Jnz56YOHEiPD09FUoyw8PDMWvWLNjZ2f0/9u48usar/f/4J/MkIoYEiSGG0poSPK15VmpIVYtq1UzNFDXVV4tS1VItNdVcWkVQ0mrQQYMoNUtLqxJDhRCVeZDk/P7oL6dNM52Q5IS8X2tZq86+9t7XbeXZz7pynfu+NWvWLMXHx6tYsWJZPmIrL9y4cUP/93//p4oVK2rmzJmKiIiQv7+/DAaDMebUqVP5tj8AAAAA4OFFrWx+NJIBAAAAwIwCAgI0ceJEnTt3Ts8++6zWrl2brvh1d3fXDz/8oPHjx2vx4sX69NNPNXr0aL300kt67LHHTNrj+PHj6tKli+Lj4zVs2DBZW1vL0tJSS5YsUUpKijHup59+0saNG/PkuuLj4+Xr66s7d+5o69atcnFx0ffff6/+/fvnyfoAAAAAgEcXtXLhwKOtAQAAAMAM/P391bBhQ3Xs2FF37tzR5s2btXPnzky/QW1vb6+lS5fq+PHjql+/vmbNmqUaNWqoZ8+eOe7z5Zdfql27dipWrJh8fHw0ePBgLVu2TJaWlho+fLhGjRpl/NO2bds8ubbU1FS98sorOnbsmAwGg06fPi1Jat26tWJiYhQdHW38M3Xq1DzZEwAAAADw8KNWLly1Mo1kAAAAADCDy5cvKzY2Vp988olCQkLUq1evHOd4e3tr3759+uOPPzRz5kz5+vpmGZuUlKQJEyaoW7du8vT0VFBQkAIDA9W5c2eNGDFCzZs3V2BgYF5ekiQpNjZW3bt3l5+fn8aOHasXX3xR48eP13vvvSdJcnJyUrFixYx/bG1t8zwHAAAAAMDDiVq5cNXKPNoaAAAAAMxg5MiRGjly5H3N9fLy0owZM7Ic37p1q6ZMmaJLly5p4MCBWrx4sRwdHSVJ27dv17JlyzRlyhS1aNFCAwYM0Jo1a+4rj/+6fv26unbtqhMnTmj8+PFasGCBUlNT5eDgoEmTJunMmTNaunSpnJ2d82Q/AAAAAMCjhVq5cOGOZAAAAAB4RKSmpqpZs2bq2bOnrKysFBAQoNWrVxsL4zTDhw/X+fPnNWrUKDVp0uSB9zUYDFq1apVq166ts2fPatmyZVqwYIEkydLSUqtXr9bUqVO1adMmPfHEE/L393/gPQEAAAAAMAW18v3jjmQAAAAAKEDR0dH68ccfZTAY8mzNevXqqUKFCrK0tFSTJk00YMAA9evXT9bWWZd85cqV0+LFix9476ioKHXu3FkHDx5UrVq1tGHDBtWvXz9djIWFhebOnavWrVtr2LBhOn/+vLp06fLAewMAAAAAHg3UyoWzVqaRDAAAAAAF6MiRI3leGM6ePVvTp0+XJM2fPz/b2ISEBF2/fl1xcXFycnKSh4eH8d1LtWrVUv/+/VWpUiWT93ZycpKTk5M+/vhjDRkyRDY2NlnGtm/fXhcuXMi2aAcAAAAAFD3UyoWzVi58GQEAAADAI6xt27a6du1ajt+y7t69u8LCwhQUFJTjmmXKlMl2/O7du1qyZIm2bdumc+fOKSUlxThmY2MjHx8f9erVS0OHDtXatWtNu5D/z8rKSt98843J8YWxMAYAAAAAmBe1cuGslQtnVgAAAADwiLK0tJSHh0eOcba2trKyspKnp+cD7Xfq1Cl17txZN27cUKdOnTRo0CB5enqqVKlSunXrli5evCg/Pz9NmDBBixcvlr+/v2rVqnXf+4WGhmrOnDkaNmyYGjRokGO8nZ2dLCwsjN/0BgAAAAAUPdTK6RWWWplGMgAAAAA8olJSUtS9e3fFxsbq4MGDaty4caZxkydP1rfffqvu3bvL19dX58+fz/axW9kJDQ3VqlWr1LRpU5OK46lTp2rq1Kn3tRcAAAAAALlFrWw6S3MnAAAAAADIH8eOHVNISIjGjh2bZWGcpm3btpoyZYouXbqkwMDAAsoQAAAAAICCRa1sOhrJAAAAAPCISkpKkiS5urqaFF+qVKl08wAAAAAAeNRQK5uORjIAAAAAPKIaNmwoV1dXLVu2TBEREdnG3rhxQwsWLFDJkiXVtGnTAsoQAAAAAICCRa1sOt6RDAAAAKBATBzwrLlTKHIcHR21Zs0a9erVS3Xq1NHIkSPVpk0beXh4yNXVVREREbp06ZJ27dqlTz/9VAkJCfLz85Ozs/N972lvby9J2r17txISEkye5+7urueee+6+9wUAAACAhxG1csGjVjadhcFgMJhtd6RTvHhxSVJUVJSZMwEAAABylpCQoJCQEEmSl5eXsShC3mjXrp2uXbum8+fPP/Bap06d0syZM7Vnzx4lJiZmGHdyclK3bt00Y8YMPfbYYw+0V3x8vFq1aqUTJ04oOTnZ5Hm1atXSuXPnTIrlZ69ooVYGAADAw4aaJf9QK2ctP37uaCQXIhTHAAAAeJhQGD98YmNjdebMGV25ckVxcXFycnKSl5eX6tatKzs7O3OnZzJ+9ooWamUAAAA8bKhZHi7Uylnj0dYAAAAAUEQ4OTmpcePGaty4sblTAQAAAACgUKBWzpqluRMAAAAAAAAAAAAAABQuNJIBAAAAAAAAAAAAAOnQSAYAAAAAAAAAAAAApEMjGQAAAAAAAAAAAACQDo1kAAAAAAAAAAAAAEA6NJIBAAAAAAAAAAAAAOnQSAYAAAAAAAAAAAAApEMjGQAAAAAAAAAAAACQDo1kAAAAAAAAAAAAAEA6NJIBAAAAAAAAAAAAAOnQSAYAAAAAAAAAAAAApEMjGQAAAAAAAAAAAACQjrW5EwAAAAAAZBQYGKikpCS1bdu2wPb8/ffftX37dvXv31/u7u4PtNaNGzf0xRdfyGAwZBhr1aqVvL29H2h9AAAAAEDRQ61csGgkAwAAAEAhNGbMGCUkJOjXX3/N9dz9+/crJiYm0zELCwu5urqqcePGsrGxSTd26NAhTZkyRU899dQDF8fnz5/XuHHjMh2bN29eoSuOAQAAAACFH7VywaKRDAAAAKBAuM8da+4U7tvNaR8W6H4XL17UmTNn7ruAfOmll3Tr1q1sY8aOHatFixbd1/qmaNWqVabfsAYAAAAA/INa2XTUygWPRjIAAAAAFDLTpk1TamqqTpw4oV27dsnX1zdX84ODg5WYmJjp2M6dOzV69Gi5ubnlRaqSpNDQUK1evfqBiuE6deqoV69eeZYTAAAAAODRQq1c8GgkAwAAAEAhsmLFCm3dulUjRozQ2bNnNXDgQAUGBurxxx83eY0yZcpk+nlKSorWrVsnW1tbvfLKK3mVskJDQ7Vq1aoHKo6feeYZGskAAAAAgExRK5sHjWQAAAAAKCQ+/fRTjRw5UrVq1dL777+vyMhINW3aVE2aNNHmzZvVoUOHB1p/yZIlOn78uKZOnaoKFSrkUdZ/P5orLCws07Hk5GRFRkYqOTlZLi4usre3z7N9AQAAAACPPmpl87E0dwIAAAAAUNQlJSVpypQp6tu3r2rVqqVvv/1WDg4OKlu2rA4fPqwaNWqoc+fOGjdunP7666/72iMwMFBTp05VkyZNNGvWLMXHx8vKykoWFhbGPwMGDMiT6wkPD9eMGTPk7e0tR0dHlS5dWmXLlpWjo6OqVKmioUOH6vTp03myFwAAAADg0UStbH7ckQwAAAAAZhQQEKCJEyfq3LlzevbZZ7V27Vq5uroax93d3fXDDz9o/PjxWrx4sT799FONHj1aL730kh577DGT9jh+/Li6dOmi+Ph4DRs2TNbW1rK0tNSSJUuUkpJijPvpp5+0cePGB7qeQ4cOydfXVzExMercubP69+8vNzc32dnZ6fbt2zp58qR27dql1atX691339XEiRMfaD8AAAAAwKOHWrlw1MoWhgd5MDfyVPHixSVJUVFRZs4EAAAAyFlCQoJCQkIkSV5eXjk+hsl97tiCSCtf3Jz2YZ6v6e/vr7feekvHjx9X+fLltXDhwhzfe3Tq1Cm9/vrr+vbbb2UwGNSjRw9t2bIl2zlffvml+vfvL0dHR7m7uys4OFiLFi3S8OHDM8SuW7dOAwYM0Pfff69WrVrd13V5eXkpPDxcP/74oxo0aJBpTFxcnNq1a6egoCCdPHlS3t7eudojtz97eLhRKwMAAOBhk5uahVo5PWrlwlUr82hrAAAAADCDy5cvKzY2Vp988olCQkJyLIwlydvbW/v27dMff/yhmTNnytfXN8vYpKQkTZgwQd26dZOnp6eCgoIUGBiozp07a8SIEWrevLkCAwPz8pIUFRWl0NBQ1atXL8vCWJIcHR317LPPSpJOnjyZpzkAAAAAAB5e1MqFq1amkQwAAAAAZjBy5Ej9+uuvGjx4sGxtbXM118vLSzNmzFCfPn0yHd+6dasef/xxLVy4UAMHDtRPP/2kihUrysnJSdu3b9fSpUt15swZtWjRQgMHDsyLy5H0952jtWrV0s8//yx/f/8s427cuKH169fL0tJSjRs3zrP9AQAAAAAPN2rlwlUr845kAAAAAHhEpKamqkWLFjp06JCqV6+ugIAAPf300xnihg8frm7dumnu3LmqV69enuawdetWde3aVb6+vnrqqafUsmVLubu7G9/7dOLECe3bt0+pqalavXq1atasmaf7AwAAAADwb9TK949GMgAAAAAUoOjoaP34448yGAx5tma9evVUoUIFWVpaqkmTJhowYID69esna+usS75y5cpp8eLFeZZDmscff1znzp3Tpk2btGPHDn322WcKDw+XhYWFypUrJ09PT02cOFGDBw9WhQoV8nx/5I0+ffpo06ZNevzxx/XLL79kGnPp0iXNnz9fAQEBCgsLU5kyZdSiRQtNmjQpz3/pAgAAAODRRq1cOGtlGskAAAAAUICOHDmiLl265Omas2fP1vTp0yVJ8+fPzzY2ISFB169fV1xcnJycnOTh4WF8XFitWrXUv39/VapU6YHysbe316BBgzRo0KAHWgfm4efnp88//1xlypRRXFxcpjFHjhxRp06dlJqaqj59+qh69eq6fPmyNm7cqO3bt2vLli3q2rVrAWcOAAAA4GFFrVw40UgGAAAAgALUtm1bXbt2LcdvWXfv3l1hYWEKCgrKcc0yZcpkO3737l0tWbJE27Zt07lz55SSkmIcs7GxkY+Pj3r16qWhQ4dq7dq1pl2IpJCQEFWtWjVPvzE+bNgwLVu2LM/WQ+7cunVLw4cP15gxY3Ty5EmFhoZmiImNjVXv3r1lb2+vQ4cOycvLyzg2adIktWjRQn379lVwcLDKly9fgNkDAAAAeFhRK2fPXLUyjWQAAAAAKECWlpby8PDIMc7W1lZWVlby9PR8oP1OnTqlzp0768aNG+rUqZMGDRokT09PlSpVSrdu3dLFixfl5+enCRMmaPHixfL391etWrVMWrts2bJavny5UlNTs41bu3atjh49alLR6+PjY9LeyB/Dhg2Ti4uL5syZo06dOmUas27dOoWGhuqzzz5L10SW/vmZaNu2rT766CPNmzevINIGAAAA8JCjVs6euWplGskAAAAA8IhKSUlR9+7dFRsbq4MHD6px48aZxk2ePFnffvutunfvLl9fX50/f142NjY5ru/g4KChQ4fmGHfw4EEdPXpUw4YNy/U1oOBs2rRJO3fu1IEDB+To6Jhl3JYtW+Ti4qIePXpkOt6mTRt5eXnJz8+PRjIAAACAQoda2XSW5k4AAAAAAJA/jh07ppCQEI0dOzbLwjhN27ZtNWXKFF26dEmBgYEFlCEKi7CwMI0ePVpjxoxRs2bNsoxLSUnRkSNH1LhxY1lbZ/3d9ObNm+vixYsKDw/Pj3QBAAAA4L5RK5uOO5IBAAAAFIib0z40dwpFTlJSkiTJ1dXVpPhSpUqlm4eiY8iQISpVqpTmzJmTbdzly5eVlJSkatWqZRuXNn7x4kW5ubnluH/x4sWzHIuOjpazs7NiYmJyXAcAAAAoDJKSkpSSkiJLS0ulpqame/fuf12fvLAAM8tb2V1Xfkl77/CD7B0fHy9JcnFxMWmdtJo6Pj4+T685L67l31JTU2UwGJSamqq4uDglJyebNK9YsWJZjnFHMgAAAAA8oho2bChXV1ctW7ZMERER2cbeuHFDCxYsUMmSJdW0adMCyhCFwZo1a7Rnzx6tXbs220daSzL+HJUsWTLbuLTxnH7uAAAAAKCgpdXKK1asMKlW/uCDD4psrcwdyQAAAADwiHJ0dNSaNWvUq1cv1alTRyNHjlSbNm3k4eEhV1dXRURE6NKlS9q1a5c+/fRTJSQkyM/PT87OzuZOHQXk6tWreu211zR27NhsH2mdJiEhQZJkZ2eXbZy9vb0kKTEx0aQ8oqKishxLu1s5u2/JAwAAAIVJQkKCrKysJEmWlpbG/8aDs7CwkKQH+jd1dnY21sre3t4m18olSpTIq8uQlDfX8m+WlpaysLCQlZWVHB0djXXZg6CRDAAAAACFkL29fZ4Ufd26ddNPP/2kmTNnavbs2Zo+fXqGGCcnJ3Xr1k0zZszQY4899sB7/pe9vX2OjUcUPIPBoIEDB6ps2bI5PtI6jakN4rSGs4ODw4MlCQAAAAD/Qq1csGgkAwAAAEAhtH///jxby9vbWzt27FBsbKzOnDmjK1euKC4uTk5OTvLy8lLdunXztXhdtWqVVq1alW/r4/4sW7ZM3333nQIDA01u+KZ9A//OnTvZxqWN5/U39gEAAAAUbdTKBYtGMgAAAAAUEU5OTmrcuLEaN25s7lRgZuHh4Zo0aZJ69+6t8uXLKzQ0NENMQkKCkpOTjWNubm6qXLmyrK2tdfHixWzXTxuvVq1aXqcOAAAAAHmKWjlrNJIBAAAAAChiwsLCFBsbq02bNmnTpk3Zxnp5eUmSZs6cqRkzZsjb21tBQUFKTk6WtXXmv1YIDAyUp6en3N3d8zx3AAAAAEDBoJEMAAAAAEAR89hjj+nLL79UampqljHTp09XeHi4Vq5cKUmqV6+eJOm5557TG2+8oa1bt6p3794Z5n333XcKCQnR6NGj8yd5AAAAAECBsDAYDAZzJ4G/FS9eXJIUFRVl5kwAAACAnCUkJCgkJETS33cs2tvbmzkjFBX87BWMVq1aKTQ0NMNjr+/evauqVavKzs5Ohw8fVuXKlY1jN2/eVIsWLXT58mVduHBBlSpVeuA8qJUBAADwsKFmgTnkx88ddyQDAAAAAACTlShRQl988YW6du0qHx8f9enTR9WqVdOVK1e0ceNGRUREaP369XnSRAYAAAAAmA+NZAAAAAD3xcLCwvjfPOgIBenfP2+WlpZmzOTRZmdnJzs7u0zH2rVrp1OnTumdd97Rzp07FR4eLldXVzVv3lyTJk3Sk08+WcDZAgAAAIUH9TLMIT9qZRrJAAAAAO6LtfU/5UR8fLwcHBzMmA2Kkvj4eON/W1lZmTGTR1tAQEC24zVq1NC6desKJhkAAADgIfLvejkxMZF6GQUiP2plvroNAAAA4L5YWVnJyclJ0t/vTE1JSTFzRigKUlJSdPfuXUmSk5MTjWQAAAAAhY6VlZXx6T7R0dHclYx8l1+1MnckAwAAALhvLi4uio2NVWJioi5fvqwSJUrIwcEh3WO8gLxgMBgUHx+vu3fvKjExUdLfP38AAAAAUBg5OzsrMTFRMTExCgsLk4uLC1+ERZ7L71qZRjIAAACA+1a8eHElJSXp9u3bSkxM1M2bN82dEoqI0qVLq3jx4uZOAwAAAAAyVbp0acXGxio+Pl6RkZGKjIw0d0ooAvK6VqaRDAAAAOC+WVhYqHTp0rK1tVVkZKRiY2PNnRIecU5OTnJxcVHx4sW58x0AAABAoWVhYSFPT09FREQoMjKS10EhX+VXrWxh4MHshUbaNwSioqLMnAkAAABwf1JSUpSSkqLU1FRzp4JHjKWlpaysrHgUXBFErQwAAICHXWpqqpKTk6mVkefyu1bmjmQAAAAAeYZGHwAAAAAA6VlaWsrW1tbcaQC5ZmnuBAAUnNOnT6tSpUqqWbNmtnGhoaEaMGCAPD095eDgoJo1a2r27NlKSkrKcs6ZM2fUo0cPlS1bVk5OTvL29taSJUt0Pw89uH37tsaOHavKlSvLwcFBVapU0euvv57tOySuXr2q559/Xi4uLnJyclKHDh0UHBycaWx8fLyqVKmiGTNm5Do3AHmD8+hvnEeAeXEW/Y2zCAAAAAAAZIZHWxciPK4L+emrr77Siy++qOTkZLm7uys0NDTTuAsXLqh58+YqXry4Ro8eLQ8PDx07dkwfffSRmjRpor1792a4yygwMFDPPPOMqlevrmHDhsnV1VXff/+9Vq5cqT59+mj9+vUm53nr1i01btxYMTExGjdunKpVq6ZffvlFixYtUvny5RUUFCRnZ+d0cwwGg7y9vRUdHa3JkyfL1tZWixYt0s2bN3Xp0iU5Ojqmi3/zzTe1evVqXbhwQU5OTibnBiBvcB79g/MIMB/Oon9wFqGwo1YGAAAAADMxoNBwdnY2ODs7mzsNPIIWL15ssLKyMkybNs3Qt29fQ6VKlbKMbdq0qcHLy8tw586ddJ/v3bvXYGFhYXj//ffTfZ6YmGjw8vIyNGrUyJCQkJBubNWqVQZJhm3btpmc68svv2woUaKEISQkJN3nZ8+eNTg4OBhGjRqVYc7+/fsNkgwnT540fnb9+nWDra2tYdWqVeliQ0NDDQ4ODoZNmzaZnBOAvMN59A/OI8B8OIv+wVmEhwG1MgAAAACYB4+2BoqAgIAArVixQnPmzJGFhUWWcUePHtWhQ4c0a9Ysubq6phtr3769unbtqg8//DDdIxl37typkJAQvffee7Kzs0s3Z9CgQapbt64WLVpkUp5hYWHavHmzJkyYoMqVK6cbq127toYMGaI1a9YoOjo63dgvv/wiFxcXeXt7Gz8rV66catSooV9//TVd7IQJE1S/fn299NJLJuUEIG9xHv2D8wgwH86if3AWAQAAAACArNBIBoqA3bt3a9CgQTnG7dmzR1ZWVnr22WczHe/evbuuXr2a7v16e/bskZubm5o1a5blnMOHD2f7Dr80e/fuVUpKip5//vks14qLi9OBAwfSfZ6UlCRbW9sM8fb29uneXfj9999rx44dWrx4cY65AMgfnEd/4zwCzIuz6G+cRQAAAAAAIDs0kgEYnThxQtWrV8/wnr009evXlySdPHky3Zy0z7Oak5qaqjNnzpi0v4ODg2rWrGny/pJUtWpV3b59W1euXDF+Fhsbq/Pnz6tKlSqSpJSUFI0dO1aDBw+Wj49PjrkAMC/OIwCFAWcRAAAAAAAoymgkAzC6evWqPD09sxyvUKGCMe5B5mS3v4eHR5aPmHR2dpaLi0uGtZ555hmVK1dOL730ks6dO6fffvtNffv2VXJysnr37i1JWrZsma5evao5c+YY56WmpuaYEwDz4DwCUBhwFgEAAAAAgKKMRjIAo+joaDk5OWU5njYWExPzQHPud/+09f67lp2dnbZs2aIrV66oTp06qlGjhg4cOKDPPvtM7u7uioiI0IwZMzRz5kyVLl1aR44c0ZNPPikbGxu5urpqwoQJSk5OzjE/AAWH8whAYcBZBAAAAAAAijJrcycAoHDJ6o6Xf4/9Nya7ObmJeZC1mjZtqpCQEF24cEEpKSmqWbOmbGxsJEnTp09X+fLlNWJhQHApAAAgAElEQVTECEVERKhDhw5q2rSpdu/erdDQUE2aNEnFihXTzJkzTcoRQMHgPAJQGHAWAQAAAACAoopGMgCjzO5o+be0sX/fGZPTnNjY2Axzsts/NDQ025jY2Ngs17KystITTzyR7rPTp0/rk08+UUBAgKytrbV27VpZWlrKz89PDg4OkqSoqCi99957mj59uvEXrADMi/OI8wgoDDiLOIsAAAAAACjKeLQ1ACNPT09du3Yty/G09+95eHg80Jzs9v/zzz9lMBgyHY+OjlZkZKRJa6UZM2aMnn32WbVt21aSdOrUKTVq1Mj4i1JJat26te7cuWPSuwoBFAzOI84joDDgLOIsAgAAAACgKKORDMCodu3a+v333xUdHZ3p+IkTJyRJtWrVSjcn7fOs5lhYWGS4Gyar/ePj43X+/HmT98/O5s2bdfToUS1YsMD42a1bt1SyZMl0ca6urpKk8PBwk9YFkP84jziPgMKAs4izCAAAAACAooxGMgCjjh07KiUlRV9++WWm49u3b1eZMmVUv379dHPCw8N18ODBTOfs2LFD9evXV5kyZUzaX5L8/Pyy3N/a2tp4B0124uLiNGnSJL3++uuqXLmy8fPSpUtn+KVoRESEcQxA4cB5xHkEFAacRZxFAAAAAAAUZTSSARi1bNlS9erV04wZM3T37t10Y/v375e/v79GjBghS8t/jo6ePXvK3d1dr7/+uhITE9PNWbNmjU6fPq1Ro0aZtH/lypXVtWtXLVy4UJcvX043du7cOX3yySd6+eWXjXfJZOedd96RJE2ZMiXd53Xq1NHBgwd1+/Zt42cBAQEqUaKEKlasaFKeAPIf5xHnEVAYcBZxFgEAAAAAUJRZGLJ64dZD4LPPPtOQIUPUokUL7dmzJ9vYS5cuaf78+QoICFBYWJjKlCmjFi1aaNKkSapXr16W82JiYrRw4UJt2bJFISEhcnR0lLe3t0aPHi1fX988vZ7ixYtLkqKiovJ0XeDf+vfvrx9++EGhoaGZjp88eVItWrSQu7u7xowZIw8PDx07dkwffvih6tSpowMHDqR7h54k7dmzR76+vqpTp46GDRsmV1dXff/991qxYoW6dOmiHTt2pPsFqyRFRkbKxsZGjo6O6T6/cuWKGjVqJIPBoHHjxqlatWr65Zdf9MEHH6hEiRL66aefcryDJzQ0VI8//rjWrVunXr16pRsLDw9X1apVVbt2bY0dO1a///673n77bU2cOFFz5swx8V8RQF7gPOI8AgoDziLOIhR+1MoAAAAAYCaGh1BKSoph6tSpBkkGS0tLQ8uWLbONDwoKMri6uhpcXFwMI0eONCxatMjw2muvGcqUKWOwt7c37Nq1K9N5t27dMtSpU8dgZWVl6NWrl2HBggWGN9980/DEE08YJBneeOONPL0uZ2dng7Ozc56uCfzXkCFDDNWrV8825sKFC4YXX3zR4ObmZrC1tTVUrVrVMG3aNENsbGyWc44ePWro0qWLoVSpUgZ7e3tDrVq1DPPnzzfcu3cvQ2xMTIyhZMmShsceeyzTtcLCwgxDhgwxeHh4GGxtbQ0VKlQwjBw50nD79m2TrrFnz56Gdu3aZTl+6NAhw1NPPWWws7MzuLu7GyZOnJhpngDyF+cR5xFQGHAWcRah8KNWBgAAAADzeOjuSI6OjlafPn309ddf6+OPP9bcuXNVuXJl/fDDD5nGx8bGqnbt2kpMTNShQ4fk5eVlHLtx44ZatGihW7duKTg4WOXLl083t0ePHtq+fbt27dqlzp07Gz+/d++eevfuLT8/P3311Vfq1KlTnlwb37JGUZGYmKj69eurXLly2r9/v7nTAVCEcR4BKAw4i4DsUSsDAAAAgHk8dO9IXr58uQ4cOKA9e/Zo6NChOcavW7dOoaGhWrBgQbomsiSVLVtWy5cv1927d/XRRx+lGwsODta2bds0ePDgdE1kSbKxsdHq1avl7OysWbNmPfhFAUWMnZ2dgoOD+UUpALPjPAJQGHAWAQAAAACAwuihayS/9tprOnv2rNq1a2dS/JYtW+Ti4qIePXpkOt6mTRt5eXnJz88vwzxJGjx4cKbzXFxc9Pzzz+unn37Sn3/+mYsrAAAAAAAAAAAAAIDC7aFrJFtbW6tChQomxaakpOjIkSNq3LixrK2ts4xr3ry5Ll68qPDwcONnBw8elKOjoxo0aJDlvBYtWkiSDh06ZGL2AAAAAAAAAAAAAFD4Zd1dfQRcvnxZSUlJqlatWrZxaeMXL16Um5ubJOn3339XlSpVZGmZda/93/NMlfZup8xER0fL2dlZMTExJq8HAAAAAMhZsWLFzJ0CAAAAAAAPlUe6kRwRESFJKlmyZLZxaeNp8Wn//d93KpsyDygIVT96w9wp4P/7Y8wcc6cAmA1nUeHCeYSijPOo8OAsAgAAAADg0fFIN5ITEhIkSXZ2dtnG2dvbS5ISExPTzb2feTmJiorKciztbmW+KQ88PPjfK4DCgvMIQGHAWQQAAAAAwKPjoXtHcm6Y2uhNazg7ODikm3s/8wAAAAAAAAAAAADgYfdIN5JLlCghSbpz5062cWnjafFp/30/8wAAAAAAAAAAAADgYfdIN5IrV64sa2trXbx4Mdu4tPFq1aoZP6tevbouXbqk1NTUXM0DAAAAAAAAAAAAgIfdI91ItrGxkbe3t4KCgpScnJxlXGBgoDw9PeXu7m787H//+5/i4uJ0/PjxLOf9+OOPkqSGDRvmXdIAAAAAAAAAAAAAYGaPdCNZkp577jlFRkZq69atmY5/9913CgkJ0XPPPZdhniStWrUq03mRkZHy8/NTnTp1VLVq1bxNGgAAAAAAAAAAAADM6JFvJI8YMUIlS5bUhAkTFBoamm7s5s2bGj58uOzs7DRhwoR0Y02aNFGbNm20evVqff311+nG7t27p8GDBys6OlrTpk3L70sAAAAAAAAAAAAAgAJlbe4E8luJEiX0xRdfqGvXrvLx8VGfPn1UrVo1XblyRRs3blRERITWr1+vSpUqZZi7YcMGNW3aVL6+vurRo4eefPJJRUdHa8uWLQoODtawYcP04osvmuGqAAAAAAAAAAAAACD/PPSNZDs7O9nZ2WUb065dO506dUrvvPOOdu7cqfDwcLm6uqp58+aaNGmSnnzyyUzneXh46NSpU5o3b5527typnTt3yt7eXnXr1tVnn32m3r1758clAQAAAAAAAAAAAIBZPfSN5AsXLpgUV6NGDa1bty7X65coUULz5s3TvHnzcj0XAAAAAAAAAAAAAB5Gj/w7kgEAAAAAAAAAAAAAuUMjGQAAAAAAAAAAAACQDo1kAAAAAAAAAECWvvjiC/Xq1UtVqlSRk5OTXF1dVbduXU2fPl1hYWEZ4jt27CgLC4ss/yxcuPC+8rh8+bLq1asne3t7k+ecPn1alSpVUs2aNe9rTwAAirKH/h3JAAAAAAAAAID888EHH6hkyZJ69dVXVblyZcXExCgoKEiLFi3SsmXLtG/fPtWvX98Yn5CQoNq1a+udd97JdL169erlOoejR4/K19dXkZGRSkxMNGnOV199pRdffFHJyclyd3fP9Z4AABR1NJIBAAAAAAAAAFk6cuRIhs8GDRqkUaNGqU2bNho5cqSCgoLSjZcqVUpdunTJk/39/Pz0yiuvqGfPnvLw8NDcuXNznLNkyRKNGzdOkydP1rVr13TgwIE8yQUAgKKER1sDAAAAAAAAAHLN29tbr7zyio4ePaqUlJR822f//v2aMmWK1q1bJxsbG5PmBAQEaMWKFZozZ44sLCzyLTcAAB5l3JEMAAAAAAAAALgvCQkJcnBwkKVl/t2ztGzZslzP2b17dz5kAgBA0cIdyQAAAAAAAACAXLt48aK++OIL9e3bN8u7fg0Gg5KSkgo4MwAAkBdoJAMAAAAAAAAAsmUwGBQREaFLly5p7969mjRpkho2bKj27dtr4cKFGeKDg4P1xBNPyNbWVnZ2dnJzc1O/fv106dIlM2QPAADuB4+2BgAAAAAAAABka+PGjerbt6/x79bW1po5c6amTp2a4W7kF154QU8//bRq1aolFxcXxcTE6OjRo1q+fLl27typAwcOyNvbu6AvAQAA5BKNZAAAAAAAAABAtjp37qzAwEAlJSXp5s2b+vHHHzVnzhwdOXJEmzdvlqOjozF21KhRGeZ36dJFw4YNU8OGDTVkyBAdO3asINMHAAD3gUdbAwAAAAAAAACyVbJkSTVr1kxt2rRR7969tWzZMv3888/64Ycf9NZbb5m0Rvny5TVmzBj9/PPPunLlSv4mDAAAHhiNZAAAAAAAAABArj3++OPq2bOnNm3aZPKctEda//nnn/mVFgAAyCM0kgEAAAAAAAAA96V06dK6fv26kpOTTYpPTEyUJDk7O+dnWgAAIA/QSAYAAAAAAAAA3JfDhw+rcuXKsra2Nil+3759cnZ2Vs2aNfM5MwAA8KBoJAMAAAAAAAAAcsVgMGjevHkKDAzUmDFjTJqze/durVy5UsOHDze58QwAAMyH/7cGAAAAAAAAAGRqwoQJOn36tDp27KjKlStLkkJCQrRx40adPXtWI0aM0NixY9PNqVq1qrp3765atWrJ2dlZV65c0TfffKO9e/eqQ4cOmjVrVoZ94uLidO/ePbm4uBTEZQEAABPQSAYAAAAAAAAAZKp169a6cOGCFixYoNu3b0uSypYtqxYtWmjDhg2qV69ehjm+vr766quvtHz5csXHx6tEiRLy8fHR+vXr1adPH1laZnxQpo+Pj27fvq0rV67Iyckpy3xsbW1lY2OTq2uwtbWVra1truYAAAAayQAAAAAAAACALHTp0kVdunTJ1ZwPPvgg1/tUqFBB1tbWOT7yetq0aZo2bVqu1l65cmWu8wEAADSSAQAAAAAoso4dO6bNmzcrMDBQV65c0V9//aWSJUuqYsWK6tatmwYMGKCyZctmmGdvb6/ExMQs17W0tFR4eLhKlSqVn+kDAB4h+/fvN3cKAADgP2gkAwAAAABQRC1atEhff/212rZtq/bt28vNzU03b97U999/rzfeeEPvvvuuduzYodatW6ebl5iYqEaNGqlfv36ZrmtlZaXixYsXxCUAAAAAAPIJjWQAAAAAAIqoRYsWaf369Zk+RnTnzp3q3bu3Xn75ZV2+fDnD+yhr1KihYcOGFVSqAAAAAIACZmnuBAAAAAAAgHmUKVMmy3dRduvWTf369VNYWJh+++23As4MAAAAAGBuNJIBAAAAAECmkpOTJUnFihUzcyYAAAAAgIJGIxkAAAAAAGTw888/6/PPP1enTp1UqVKlLONiY2MVHh6upKSkAswOAAAAAJDfeEcyClxQUJDmz5+vQ4cOKTIyUuXLl1e3bt305ptvqkSJEhniQ0NDNXPmTO3bt08RERGqVKmSXn75ZU2ePFm2tra52jsuLk7vvPOONm/erGvXrql06dLq1KmT3nzzTZUvXz7TOX/99ZcmTJigL7/8UnFxcfLx8dH8+fPVrFmzDLEGg0FNmzZVtWrVtGHDhlzlBgAAAADmcuPGDcXGxur27dv67bfftGfPHm3btk2+vr5as2ZNpnP27dsnDw8PXb9+XZJkZWWl//3vfxo/frx69OiRq/2LFy+e5Vh0dLScnZ0VExOTqzUBoKhZvvVbc6eA/29Yj7bmTgF4JPn5+WnXrl06ceKEwsPDZWtrKw8PD3Xq1ElDhw5V2bJl08WvWrVK+/bt09mzZ3Xr1i05OTmpYsWK6tatmwYOHJhpP8IU27dv17Zt23Ty5EndunVL9vb2qlatmj766CPVrVs30zlnz55Vr169ZG9vrxMnTtzXvkB+ye4JVDSSUaA2bNiggQMHysfHR2+99ZbKli2r4OBgLVq0SN98840OHz4sV1dXY/yFCxfUvHlzFS9eXK+//ro8PDx07NgxzZ07Vz/88IP27t0rKysrk/ZOSEhQ69at9euvv2rs2LGqV6+eQkNDtWjRIn311VcKCgpShQoVMszr16+fgoKC9H//938qVaqUVq9erfbt2+v333+Xp6dnuth169bpzJkz2rp164P9QwEAAABAASpfvrwMBoPx78WLF9fy5cs1cODATONfeuklVaxYUTVr1lTx4sWVkJCg4OBgbdy4UT179tRrr72mhQsXFlT6AAAAKAKWLFmikiVLasCAAapUqZJiYmJ09OhRLV26VKtWrdKuXbvk7e1tjH///ffVsGFDDR8+XJ6envrrr78UGBioOXPmaNWqVQoICMi0J5CVyMhI9e7dW4cOHVKnTp00fvx4ubm5KTo6WmfOnFFKSkqm87755hsNGDBAycnJcnNze+B/B6AgWRj+XSnCrNK+gR0VFWXmTPJHaGioatasqdatW2v37t2ytv7newy///676tevr0GDBmnRokXGz5s1a6br16/r+PHj6RrM+/btU4cOHfTee+9pwoQJJu0/ffp0453Q//vf/4yfX79+XT4+PnryySe1e/fudHP++OMPVatWTTt27FC3bt0k/d2Qrlixol599VXNnj3bGBsdHa3q1atrzJgxmjZtWu7+cXLJfe7YfF0fprs57UNzpwCYDWdR4cJ5hKKM86jw4Cx6eO3du1eJiYmKjY3VH3/8Yfyy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a/ny5UpJSTH3ZQAAAABmYzAYNG/ePAUGBmrMmDE5xicnJ2vMmDEKCQkxKT7NsGHDtHv3bn311VcZxt566y2Fh4dr+PDhucodeBjwaGsUmDt37mjy5Mlq1qyZXFxcdPv2bR04cEDbtm1TuXLl9O2338rFxcUYb2FhobVr16pFixZq2LChxowZIw8PDx07dkwffvihGjRooMmTJ2fYJy4uzviOrn+bPXu2vv32W7Vp00avvfaa6tatq9DQUC1atEj37t3TypUrc7yGqKgoTZs2TdOnT1e5cuXSjXXv3l2enp564YUX9MYbbygiIkJvvfWWevXqpfLly9/nvxoAAACAR01ycrJmz56td999V7Vr19ayZcv00ksvycHBIdt5AwYMkCSdPn1aS5cu1euvv66lS5dqzZo1atiwYUGkDgAAAJjFhAkTdPr0aXXs2NH4ypeQkBBt3LhRZ8+e1YgRIzR27FhjfK9evRQfH6927drJ09NTycnJ+u2337RmzRpdvXpVb7/9tp577rkM+2TVXxgxYoR27typ5557TsOHD1fz5s0VExOjrVu36uuvv9bUqVPVtm3bfP03AMyBRjIKTGpqqn755Rf5+fkpJiZGJUqUUO3atfXuu+9q6NChsre3zzDHx8dHx48f15tvvqk5c+bo7t27qlChgsaPH6833ngj01+0+Pj46Pbt27py5YqcnJyMn7u4uCgoKEizZs3Sp59+qj///FMlS1M2AKIAACAASURBVJZU+/btNXv2bFWqVCnHa5gzZ45Kly6t1157LcOYra2t9u7dqzFjxujVV1+Vvb29XnjhBX3wwQe5/JcCAAAA8KgKDQ1Vjx49ZGtrq++++05NmjTJ9Rr16tXTihUr9P777+v9999Xu3btNH36dE2cODEfMgYAAADMr3Xr1rpw4YIWLFig27dvS5LKli2rFi1aaMOGDapXr166+GeeeUYbN27U7Nmz9ddff8nKykoeHh5q3769Jk+erCpVqmS6T1b9BVtbW33zzTeaP3++PvvsM61YsUL29vZq0KCBduzYoW7duuV4Dba2trxHGQ8dC4PBYDB3Evhb8eLFJf191yvuX7t27RQWFqYTJ07Izs7u/7F33+E13///xx/nZBIZxAoxYoZW8KFWP9Su+iCovYvWKGq3pDU+VdKPmq29YhRFjab2rNqtXWqvCpWKhAhJJM7vDz/5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C6p+/fpq1aqV7OzsLHGZV/brr7+qTZs2euONN7Rnzx4VKFBAkjRw4EBNnz5dFStW1Icffqjx48fLaDSmesP7fAP9v4VoAAAAAABS0rZt21ea5+bmprVr11o4jdSwYUOznwMCArRs2TJ16dJFgwYN0pw5cySlvkDMfhkAAAAA/v6MaV3gxo0bKl++vLp06aLNmzfr3r17unPnjtavX6/27duratWqNj3K6s8//1SDBg1UokQJrVy5MqGILEmOjo4aOnSo1q1bp4kTJ2rUqFGS/u8dzvfu3Utx7ef96f3OZwAAAAAArK1Tp04J70iOiIiQxH4ZAAAAALKSNBeSe/furbCwMP30008KCQnR4cOHdfToUYWGhmrNmjU6d+6chg0bZomsr2TRokWKiIjQ6NGjZTAYkhxTv359NWjQQNOnT1dcXJyKFi0qe3t7Xbp0KcW1n/eXKFHC4rkBAAAAALC1ihUrKi4uTufOnZMk9ssAAAAAkIWkqZAcGxurbdu2adSoUapZs6ZZn8FgUMuWLdW7d28FBwenKWRaXLt2TZJUsGDBFMfly5dPkZGRunv3rhwcHFShQgUdPHhQcXFxyc75+eef5e3trXz58lkyMgDAysaPHy+DwfDCXwcPHkyY06hRoxTHTp48OdXXDwwMTHGtZs2aJTkvPDxc3bt3l6enp7Jly6YaNWpo3759SY41mUyqUaOGunTp8nJ/OAAAIN3Fx8drz549mjZtmoYOHarevXurX79+CggI0Lx583T8+HGbZXt+wtjzd6uxXwYAAACArCNV70j+97//rY8//lhOTk5m7TExMXr69Kly5syZ7Nz8+fPr0aNHaUuZBkWLFpUkbd++Xe+//36SY+Lj47V//345OTnJ09NTktSiRQsFBARo9erVat++faI5u3bt0tWrV9W/f3+rZQcAWEeHDh3k5+eXbP8PP/ygefPmKW/evAlt0dHRev311zVhwoQk55QvXz7V13/+zsDkbrTy9vZOsr1r1646ePCgPvvsM3l6emrBggVq0KCBLl68mGhOUFCQTp06pdWrV6c6FwAASF9xcXEKDAzUlClTFBERIZPJJOnZjdnPf//856JFi2rgwIHq169fsqdtWdrDhw+1du1a5c2bV76+vgnt7JcBAAAAIGtIVSF50qRJWrJkib7++mu98847Ce2urq4qUaKEFi1apHbt2sloNH/AOTw8XAsXLkzxP+utrXPnzpowYYKGDBmiPHnyqHnz5mb9MTExGjhwoC5fvqwePXrIwcFBktS3b19NmjRJQ4YMUfXq1RMK0pJ0584d9enTR05OThoyZEh6fhwAgAUULVrU7Hv9f40ZM0b169dX8eLFzdo9PT3VpEkTi+V4mbUuX76s4OBgrVu3LuHfstatW6tw4cKaM2eOPv/884SxkZGRGjFihEaOHPnCEzkAAIBtxMfH61//+pe2b9+uxo0bq0WLFipUqJB+++03TZkyRVWqVFFAQIAuXbqknTt3as2aNRo4cKDWrl2rTZs2KVu2bGnOEBkZKWdn54R98H+7ceOGunXrppCQEM2dO1f29v/33wfslwEAAAAga0hVIfnkyZMaMGCAmjRpohYtWmjatGkJ/zEdGBio1q1by9fXV23atJG3t7fi4+N15swZrVq1Sg8ePNDGjRut+iFS4u3trTVr1qh169Zq0aKFqlevrjp16sjT01PXrl3TmjVrdPv2bdWqVcvsWFIPDw999913atq0qSpWrKhOnTqpRIkSunHjhpYtW6awsDAtXrxYRYoUsdlnAwBY3r59+3T06FGtX7/e1lHMnD17VpJUu3bthDZnZ2dVq1ZNv//+u9nYsWPHysXFhf+8BQAgA5s1a5a2b9+uOXPmmJ2e1bBhQ3Xs2FHlypXTzp07NWzYMLVp00ZfffWVBgwYoMWLF6tz585as2ZNmjPMmDFDgYGBevvtt+Xn5ycPDw/du3dPZ86c0bp16yQ9u7H8f0/3Yr8MAAAAAFlDqgrJRYsW1Q8//KANGzZo4MCBKlOmjEaPHq2BAweqZcuW2r59uyZOnKgpU6bo8ePHkp69N+mf//ynRo0apbfeesuqH+JFGjZsqGvXrmnevHlatWqVpk+frujoaHl6eqpKlSr64IMP1Lhx40RPVNevX18nTpzQhAkTtH79eoWGhipnzpyqWbOmhg8fripVqtjoEwEArGX69OkqUqSIRZ88toTY2FhJkqOjo1m7s7NzwlHZknThwgVNnz5dq1evTvRKCgAAkHEsXbpU9erVS/IVTPny5dPHH3+s8ePHa+DAgXJwcJCrq6sWLVoko9GooKAg7d+/X2+++WaaMjRs2FDnz5/XgQMH9OOPP+rx48fKnj27ihYtqr59++rDDz9UiRIlkpzLfhkAAAAAMr9UFZKf8/f3V8OGDTV27FiNHDlSS5Ys0cyZM1W3bl3VrVtX0rPjrKOjo5UnTx6zo69sLWfOnBo+fLiGDx/+UvNKly6toKAg64QCAGQoN2/e1Lp16/T555/Lzs4u2XEmk0lPnjxJVNR9VTExMS8s+j4/Zvvo0aOqWbNmQo5jx46ZFb0HDhyoOnXqyN/f3yLZAACAdZw7d04BAQHJ9teoUUPh4eE6deqUKlWqlNA+ffp0rV27VsuWLUtzIfkf//iHFi1a9Mrz2S8DAAAAQOZmfPEQc9myZVNgYKBOnDihXLlyqVatWurRo4fu3bsn6VnB1svLK0MVkQEASI0ZM2bI3t5ePXv2TLL/zJkzKlu2rBwdHeXk5KS8efOqa9euunLlyitdr0aNGnJ2dpazs7NcXFzUqFEj7dmzJ8mxFSpUUKVKlfTBBx/o8OHDunbtmvr166crV66oe/fukqQff/xRO3bs0LRp0xLmmUymV8oGAACs68mTJ3J2dk62P0+ePJKk+/fvm7W7uLjI399fe/futWo+AAAAAABeupD8XJkyZbR7924FBQVp06ZNKlWqlObPn2/JbAAApJvHjx9r3rx5atu2rXLnzp2ov1WrVho0aJAmTJig7du3Kzg4WL1799bmzZtVsWJFnThxItXXevPNN/XJJ5/oo48+0qZNm7Rt2zaNHz9eISEhqlu3rhYsWJDkvGXLlsloNKpatWry8fHR4sWLNXPmTPn5+Sk2NlaDBw9Wv3795Ovrq/Pnz6t+/fpydHRUjhw59N577ykyMvKV/3wAAIBleXt76+zZs8n2X7lyRQaDQd7e3on6fH19dfv2bWvGAwAAAADg5Y62Tkrnzp3l7++vESNGqHfv3lq0aJFmzZolPz8/S+QDACBdfPvttwoLC1O/fv2S7E+qvUmTJurdu7cqV66s999/X7/88kuqrtWgQQM1aNAgUVvfvn3VuHFjDRgwQM2aNUt4Euk5X19fnTlzRhcuXNCjR49UunRpZcuWTZI0ZcoU3b9/X6NHj9aTJ0/09ttvK1++fPr+++91//59DR06VE+fPtXixYtTlREAAFhXvXr1tGLFCo0ZM0b58+dP1L948WK5u7vLx8cnUZ+Li4uioqLSIyYAAAAAIAtL9RPJV65cUe/evVWjRg1VqFBBrVq10q5duyRJbm5umjFjhg4dOqTY2FhVrlxZgwcP1sOHD60WHAAAS5o+fbqqVq2qypUrv9S8AgUKaMCAAfr1119148aNNGVwcHDQ559/rkePHmnz5s3JjitVqpQqVKiQUES+ffu2xo0bp/Hjx8vd3V0bNmzQzZs39f3336tZs2bq3Lmzpk2bpuXLl+vOnTtpyggAACxjyJAhevLkiRo2bKjjx48ntN+/f1/Dhg3TypUr1bt3bzk4OCSaGxoaKk9Pz/SMCwAAAADIglJVSD58+LBef/11rVy5Ujlz5lSpUqX066+/qkGDBpoyZUrCuMqVK+vIkSOaOnWqgoKC5Ovrq9WrV1stPAAAlrB7926dPn062aeRX6RChQqSpJCQkDRneZW1Pv74Y/n6+ia8K/nEiRMqWbKk2VGYderUUVxcnM6cOZPmjAAAIO1KlCihxYsX68KFC6pcubK8vLzk7e2tXLlyadKkSapUqZICAgKSnLt37169/vrr6ZwYAAAAAJDVpKqQ/Omnn8rLy0uXLl3Sxo0btWrVKl2+fFlNmjTRqFGj9Pjx44SxBoNBffv21fnz51WnTh21bdtWTZs2tdoHAAAgraZNm6Y8efKodevWrzQ/JiZGkuTq6prmLC+71qFDh/Ttt9/q66+/lsFgkCT99ddfypUrl9m4nDlzSnr2BBMAAMgYWrVqpZMnT+qDDz6Ql5eXcuTIodq1a2vq1Knav3+/XFxckpy3cuVKLV++PJ3TAgAAAACymlS9I/nw4cMaOnSocufOndBmZ2enESNGKDg4WCdOnFD16tXN5uTJk0dLly5Vz549X/kJLwAArO3q1asKDg7WJ598Iicnp1daY/v27XJ1dZWvr2+a82zfvl2SVKVKlReONZlM6t+/vzp27Khq1aoltOfOnTtRwTgsLCyhDwAAZBylS5fWrFmzXmqOl5eXldIAAAAAAPB/UvVEclxcnBwdHRO1Ozs7y2AwKC4uLtm5b731lk6fPv3qCQEAsKJvvvlGBoNBvXv3fqX5wcHBmjt3rvr06SN7+1Tdn5WsixcvavDgwapatWqqCskLFy7UuXPn9OWXX5q1lytXTpcuXdJvv/2W0LZ161bZ2dmpbNmyacoIAAAAAAAAAMgaUvU/3uXLl9fq1as1bNgw2dnZJbTPnj1b9vb2KleunNUCAgBgLVFRUVq4cKH8/f1VqFChFMcWL15cLVu21GuvvSZXV1fduHFDW7Zs0bZt2/T222/r3//+d6I5jx490pMnT+Tu7m7W/u6778rV1VVvvvmmPD09FRoaqiNHjmjZsmUqWLCgVq5c+cLsDx480MiRIxNeP/HfWrZsKW9vb7Vq1UoBAQEKCwvTmDFj1LZtWxUoUCAVfzIAACA9mEwmzZs3T6tWrVJISIjy5Mmjli1bql+/fmm+QQ0AAAAAgLRK1c70008/VbNmzVS6dGk1btxY2bNn1/79+7V//34NHTpUHh4e1s4JAIDFrVy5Ug8ePNDAgQNfOLZZs2bauHGjZs+ercePH8vDw0MVK1bU4sWL1alTJxmNiQ/5qFixou7evasbN26YveOwcePGmj9/vjZs2KDIyEhlz55dpUuX1ujRo9W/f3+5ubm9MM8XX3yh3Llza9CgQYn6HB0dtW3bNg0YMEC9evWSs7OzWrVqpSlTprxwXQAAkH7atm2r77//XiaTSZJ0/vx57d+/X+vXr9e2bduSPBkMAAAAAID0kqpC8r/+9S/t3r1bX3zxhVatWqXHjx+rZMmSmjdvnrp3727tjAAAWEWPHj3Uo0ePVI19lSJsoUKFZG9vn+iJope5bnK+/PLLREda/7cyZcokvG8ZAABkPKtWrdKaNWvUuHFjjRs3Tr6+vgoLC9OMGTMUGBiowMBAjRo1ytYxAQAAAABZWKrPyqpVq5Zq1aplzSwAAGQqO3bssHUEAACQQQUFBal06dJav359wk1nBQsW1Pjx43XlyhXNnDmTQjIAAAAAwKYSn8MJAAAAAACs6tixY2revHmS70Lu0KGD/vrrL507d84GyQAAAAAAeIZCMgAAAAAA6SwsLEyFCxdOsq9IkSIymUwKCQlJ51QAAAAAAPyfFI+2Pn78uIoXLy43NzeLXnT79u1q0KCBSioELgAAIABJREFURdcEAGQNXy3aYOsIAAAAaRYfHy87O7sk+57vwWNiYtIzEgAAAAAAZlJ8IvmPP/7Qa6+9prlz58pkMqX5YufOndM777yjgICANK8FAAAAAEBm5OjoaOsIAAAAAACkXEhu1qyZ1q1bp2nTpqls2bKaOXOmIiMjX/oihw4dUseOHVWxYkWVLVtW+/bte+XAAAAAAABkBpGRkQoNDU3066+//pIk3b9/P8n+0NBQhYeH2zg9AAAAACCzS/Foa0mqXLmyTpw4oYkTJyogIECffPKJWrRooXr16qlOnToqVKhQojlxcXE6dOiQdu3apQ0bNujEiROqXr269u7dqzfeeMMqHwQAAAAAgL+T4cOHa/jw4cn2d+rUKdk+Ozs7xcbGWiMWAAAAAACSUlFIliQHBweNHDlSffv21dy5c7Vo0SItXbpUBoNBbm5uyps3r/LkyaNHjx4l3D0dFxcnBwcHvfPOO/ryyy9Vv359a38WAAAAAAD+Fvr27auoqKhXnu/k5GTBNAAAAAAAJJaqQvJzHh4eCXdMnzt3Tnv37tXp06f1xx9/KCoqSq6uripbtqyKFy+uN954Q2+99ZZcXV2tlR0AAAAAgL+lb775xtYRAAAAAABI0UsVkv+br6+vfH19LZkFAAAAAAAAAAAAAJABGG0dAAAAAAAAAAAAAACQsVBIBgAAAAAAAAAAAACYoZAMAAAAAAAAAAAAADBDIRkAAAAAAAAAAAAAYIZCMgAAAAAAAAAAAADADIVkAAAAAAAAAAAAAIAZCskAAAAAAAAAAAAAADMUkgEAAAAAAAAAAAAAZtJcSL5586YlcgAAAAAAAAAAAAAAMgj7tEz+7bffVL58eR04cEBVq1a1VCYAAAAAADKd8PBwRUZGWnRNR0dH5c+f36JrAgAAAAAgpbGQHB8fL5PJpPj4eEvlAQAAAAAgU2rSpIkOHTpk0TUNBoPi4uIsuiYAAAAAAFIaC8nSs01raty+fVsHDhzQu+++m9ZLAgAAAADwt9O3b181bNjQoms6OztbdD0AAAAAAJ57YSH50KFDGjp0qM6fP6/XX39d06ZNk5+fX0K/yWRK+H1MTIzatGmjM2fOSJJ8fX313XffycXFRbt27VKXLl14ehkAAAAAkCV17NjxleY9ePBAa9euVadOnWRvn+b7wQEAAAAASBVjSp0XLlxQw4YNdfLkSZUuXVq//PKL6tevr5CQkCTHHzhwQMHBwcqTJ4/y58+vzZs3a+/evVYJDgAAAABAVnDz5k316NFDp0+ftnUUAAAAAEAWkmIhecyYMTKZTPrll1+0b98+HTx4UA8fPtS4cePMxt29e1e3bt3S1atXZTAYtGfPHv38888ymUyKjIy06gcAAAAAACAzK1mypIxGoy5cuGDrKAAAAACALCTZM7Gio6O1YcMG9ezZU76+vpKkcuXKqUuXLlq1apVmzpyZMLZFixZmcw0GQ6rfnQwAAAAAQFZ05swZLVmyRL///ruMRqMqVqyo9957T4ULFzYb5+DgIG9vb12+fNlGSQEAAAAAWVGyTySfPn1ajx8/Vr169cza69evr4iICP3+++8JbR06dNDw4cMTFZQBAAAAAEBi//73v1WhQgVNnDhRe/fu1fbt2zV27Fj5+vpqyZIlicYXLVpU165dS/+gAAAAAIAsK9lC8s2bN2UwGFSxYkWz9vLly8tkMunGjRsJbX369NGECRPUuXNn6yUFAAAAACATmDNnjsaMGaP69evr4sWLioiIUFRUlH766ScVKVJEPXr00J49e8zmFChQwGwfDgAAAACAtSVbSI6IiJAk5c6d26w9V65ckqTw8HArxgIAAAAAIPOJiYnRqFGjVKtWLW3evFnFixdP6KtZs6YOHTqk3Llza+TIkWbzvLy8FBISkt5xAQAAAABZWLKF5OjoaEmSk5OTWbuDg4NZPwAAAAAASJ39+/frr7/+UkBAQJL97u7uGjFihA4fPqw7d+4ktOfOnVt//fVXesUEAAAAACD5QnLOnDklSZGRkWbtjx49kvRscwsAAAAAAFLv8uXLMhgM8vPzS3ZMjRo1ZDKZdOXKlYQ2T09P3bt3Lz0iAgAAAAAgKYVC8vMjra9fv27WfuPGDRkMBnl6eia0GQwGK8UDAAAAACDzMBqfbcNjYmKSHRMfHy+DwSA7O7uENg8PD8XHxyfc3A0AAAAAgLXZJ9fx2muvyWQy6ddffzW7U/ro0aMJ/c/fz9S2bVs5OzsrKirKynEBAAAAAPj7Kl26tEwmk44cOaLChQsnOWbfvn2ys7OTr69vQpuLi4ukZ6eGZc+ePV2yAgAAAACytmSfSPby8tJrr72m5cuXm7UvX75cfn5+CU8sS8+Owc6XL588PDyslxQAAAAAgL+5atWqydvbW59++qkePnyYqP/mzZv66quv1LhxY7m5uSW0Ozs7S0r8+ikAAAAAAKwl2UKyJPXp00e7du1SQECATp06pY8//lgHDhxQ//79zcbNmjVLP//8s7744gvzxY1GXbx4UWfPntXZs2c5AhsAAAAAkKXZ29tr6tSpunDhgsqVK6clS5bo1KlTOnbsmKZNm6aqVasqOjpakyZNMpvn6OgoSYqOjrZFbAAAAABAFpTs0daS1KtXLwUHB2vChAkKDAyUyWSSv7+/unfvnuR4g8Egk8mU8HOxYsU0atQojRo1SiaTSSVKlLBsegAAAAAA/mZatmyp5cuXq3///urWrVvCTdcmk0llypTRxo0bVbx4cbM59vbPtu8pvVsZAAAAAABLSrGQbGdnp02bNmn16tW6cOGCypYtq5YtWyY7vkKFCpowYULCndKbNm3Szp07FR0drWzZsql+/fqWTQ8AAAAAwN9Qu3bt1LRpU23fvl0XL16UnZ2dKlasqLfeektGY+LDw54Xm58+fZreUQEAAAAAWVSKhWTp2Wa1TZs2KfY/V6RIEX388ccJP5coUYKnkAEAAAAASIKLi4uaN2+eqrEeHh4qWrSocubMaeVUAAAAAAA888JC8ov891HWAAAAAADA8kqXLq3Lly/bOgYAAAAAIAtJfF7WS/Dy8lL79u1VqFAhS+UBAAAAAAAAAAAAANhYmgrJefPm1bfffkshGQAAAACAdBIaGqqdO3faOgYAAAAAIJNLUyEZAAAAAAC8PGdnZwUFBSVqf/jwoTp16qTff/892bnr169Xw4YNrZgOAAAAAAAKyQAAAAAApLvY2FjFxsYmar9//76WL1+uq1evJjvXZDJZMxoAAAAAAJIk++Q6li9frkuXLln0YtmyZdOwYcMsuiYAAAAAAAAAAAAAwLKSLSTPmDFDBw8etOjFjEYjhWQAAAAAAAAAAAAAyOCSLSQHBwcrMjLSohdzdHS06HoAAAAAAAAAAAAAAMtLtpCcK1cu5cqVKz2zAAAAAACAdBQbG6t169Zp9erVOnTokO7cuSMXFxf5+fmpR48e6tKliwwGQ6J5zs7OiomJSXZdo9Go0NBQeXp6WjM+AAAAAMCKki0kAwAAAACAzK1du3Zav369qlatqo4dO6pgwYIKCQnRypUr1a1bN23btk3ffvttonkxMTGqVq2aunbtmuS6dnZ2cnNzs3Z8AAAAAIAVUUgGAAAAAMAGli9frhMnTpi1RUVFyWAwaObMmfrxxx+TnHf27FmLZejVq5cCAwNVqlQps/ZRo0apQYMGWr58uVq3bq3mzZsnmlu6dGn17t3bYlkAAAAAABlLioXk27dva/78+TKZTKle0NHRUY0bN5afn1+awwEAAAAAkBkZDAbt3btXe/fuTbJ/06ZNKc63s7OzSI633347yXYXFxdNmTJF1apVU3BwcJKFZAAAAABA5pZiIfncuXMaPXp0ovbn70dKrsC8Zs0a/frrrxaIBwAAAABA5nPz5k3Fxsa+8nxHR0cLpklauXLlJElhYWFWvxYAAAAAIONJsZBcu3Zt3bx5M1HBeMSIETp79qw2bNiQaM64ceP0ww8/WDYlAAAAAACZiJeXl60jvNClS5ckPTvCOiVRUVGKioqSh4dHuhS4AQAAAADpI8VCssFgUIECBRK1u7i4yNHRUQULFkzUV7Ro0Zc6ChsAAAAAAGQ8M2fOlMFgUOfOnZPs3759uwoWLKhbt25Jenbc9htvvKHBgwerdevWL3UtNze3ZPsiIyPl6uqqhw8fvtSaAADYCv9mAcgo+D5CauTIkSPZvhQLyQAAAAAAwLZMJpMiIyNTLLZa2rFjxzR//nx16tRJr7/+eqL+Dh06qHDhwvL19ZWbm5uio6N15swZLVu2TG3atNGgQYM0efLkdMsLAAAAALA8CskAAAAAAKSz27dvy2g0Kl++fCmOCwwMVGBgoCIjI5U3b1599NFHGj58uIxGo9WyRUZGqkOHDvLy8kq2GPztt98m2R4QEKB3331XU6ZMUaNGjdSwYcNUXfPBgwfJ9j0voKd0lzwAABkJ/2YByCj4PkJaWW/nCQAAAAAAkjRo0CDVqlUrxTHvv/++Ro4cqYIFC6pNmzZycXFRQECAevbsabVc8fHx6tChg27cuKG1a9cqd+7cLzU/W7Zsmjt3roxGoxYsWGCllAAAAACA9EAhGQAAAACAdHb06FE1btw42f4VK1ZowYIF6tmzp06fPq0VK1bo4sWLGjx4sBYvXqwdO3ZYJVefPn20efNmLV++XG+88cYrreHt7S1fX1+dOXPGwukAAAAAAOmJQjIAAAAAAOnszp07KlasWJJ9UVFRGjp0qMqXL69Zs2YlHGNtMBgUGBioYsWKafbs2RbPNHjwYM2bN08zZsxQ8+bN07SWu7u7TCaThZIBAAAAAGwhxXckX7t2TRMmTEi0+du/f7/CwsL0wQcfJJrz888/y8HBwbIpAQAAAADIRGJjYxUfH59k38SJE/Xnn39qyZIlsrOzM+uzs7OTv7+/Vq5cadE8AQEBmjJlisaNG6devXqleb3r16/Lz8/PAskAAAAAALaSYiH55s2bmjdvXrL98+fPT9Tm4OCQZIEZAAAAAAA84+3trcuXLydqv337tiZPnqyGDRuqXr16Sc4tXLiw/vrrL4tlGT9+vMaPH6+AgAAFBASkeb0tW7bo1q1bGj58uAXSAQAAAABsJcVC8j//+U89ffo0vbIAAAAAAJAl1KpVS6tXr9akSZPk6OiY0N6vXz/FxMRo8uTJyc6NiIhQ9uzZLZJj6tSpCggI0IABAzRu3LhUzXn8+LHs7OzMcj934MABdenSRYULF1bPnj0tkhEAAAAAYBspFpIBAAAAAIDl9e3bV4sXL1aLFi20cOFCubu7a8iQIVq/fr0GDx6sMmXKJDv30qVLypcvX5oz/PDDDxo0aJAKFiwoX1/fZN+7bDQa1aVLFzk7O0uStm3bpm7duqlp06YqWbKkcubMqXv37mnv3r3atWuXihQpoh9//FEuLi5pzggAAAAAsB0KyQAAAAAApLPKlStrzJgxGj16tAoUKCCDwaCnT5+qbt26mjBhQrLzoqKitH79erVo0SLNGc6ePStJCgkJUd++fZMdZzAY9K9//UsFCxaUJFWqVEktWrTQvn37tHr1aj158kTu7u4qW7asJk6cqA8++ECurq5pzgcAAAAAsC0KyQAAAAAA2MBnn32mqlWrasmSJYqIiFDt2rU1YMAA2dsnv1UPDw9X165d1apVqzRf/5NPPtEnn3zy0vO8vb21cOHCNF8fAAAAAJCxUUgGAAAAAMBGGjZsqIYNG6Z6vLe3t77++msrJgIAAAAA4BmjrQMAAAAAAAAAAAAAADIWCskAAAAAAAAAAAAAADMcbQ0AAAAAQDqLiIhQbGzsK893cHBQzpw5LZgIAAAAAABzFJIBAAAAAEhnefLk0dOnT195vp2dXZoK0QAAAAAAvMhLF5JjYmK0bt06NWnSRDly5LBGJgAAAAAAMrX4+Hi5u7vrnXfekZOT00vPf5U5AAAAAAC8jJcuJF+7dk0dO3bU7t27VatWLWtkAgAAAAAgU6tYsaKOHz+uHTt2qHv37urVq5d8fHxsHQsAAAAAgATGV5lkMpksnQMAAAAAgCzj6NGj2rVrl+rUqaMpU6aoZMmSatKkiTZt2mTraAAAAAAASHrFQrIkGQwGS+YAAAAAACBLqV27tr777jvduHFDY8aM0enTp9WkSRMVK1ZM//nPfxQWFmbriAAAAACALCzZo63v3r2rdu3a6enTp2btjx49ksFg0EcffSQPDw+zvmzZsmnjxo0KCgrSqlWrFB0dnWjdkSNHqn79+haKDwAAAADA31u+fPn06aefauTIkQoODtasWbM0YsQIjR49Wm3btlXfvn1VpUoVW8cEAAAAAGQxyRaS4+LidOXKlSSPsS5cuLDCw8MVHh5u1p4tWzZJ0ocffiij0ajcuXMnmhsZGZnWzAAAAAAAZDpGo1H+/v7y9/fX1atXNXPmTAUFBWnp0qWqUKGC+vXrp/bt28vZ2dnWUQEAAAAAWUCyheT8+fPrypUrL71gbGysHj9+rHnz5qlHjx5pCgcAAAAAQFbk4+OjiRMn6osvvtDKlSs1e/Zs9ejRQ0OHDtV7772nvn37qlixYraOCQAAAADIxF75HcnPHT58WN26dUv4+fkTzA4ODmldGgAAAACALM3R0VFdunTRgQMHdPz4cbVo0UKTJ0+Wn5+fraMBAAAAADK5NBeSr1+/rqVLl+rWrVuWyAMAAAAAAP5HWFiYNm/erO3bt0uSihYtattAAAAAAIBML82F5GLFislkMunixYuWyAMAAAAAAP6/48ePq3v37ipUqJACAgJUrlw5bdmyRb/99putowEAAAAAMrlk35H83OTJk7Vt2zbFxsZKkrJnz673339f/v7+kpTwTqZr167prbfesmJUAAAAAAAyv/j4eK1evVrffPONDh48KFdXV/Xq1Uv9+vVT8eLFbR0PAAAAAJBFpFhIjoyM1LBhw+Tu7i53d3dJ0p07d3T58uWEQnKuXLnk7u7O0dYAAAAAAKTBnTt3NGfOHM2ZM0e3b99W6dKlNX36dHXr1k0uLi62jgcAAAAAyGJSPNo6PDxcJpNJQUFBunr1qq5evarhw4fr3r17ZuN8fHx0+/ZtqwYFAAAAACAzOnz4sDp16qQiRYpo7NixqlixorZs2aLff/9dH374IUVkAAAAAIBNpPhEsslkejbI/v+GOTg4JLQ/5+npqYcPH1ohHgAAAAAAmU9sbKxWrlypr7/+WkePHpWbm5v69OnD8dUAAAAAgAzjhe9ITg13d3c9fvzYEksBAAAAAJDpFS1aVHfu3JGvr69mzJihLl268OQxAAAAACBDsUgh2cXFRQ8ePLDEUlZ348YNLVy4UFu3btXVq1d179495ciRQyVLltRXX32lmjVrmo2/cuWK/vOf/2jr1q26ffu28uTJo1q1amn48OEqX768jT4FAAAAAODv7M8//5S7u7sKFy6s4OBgBQcHv9R8Z2dnrV271krpAAAAAACwUCHZwcHhb/FE8pQpUxQQECB7e3s1atRIjRs3loeHh8LDw3XixAmFhYWZjT906JAaN26sp0+fqlOnTipZsqSuX7+uZcuWae3atVq1apWaNm1qo08DAAAAAPi7cnJy0v3797V169ZXng8AAAAAgDVZpJBsZ2en6OjohN8bjUY5OjpaYmmLCQwM1IgRI9S2bVvNmDFDnp6eKY6PiopS+/bt5ezsrP3798vHxyehb/jw4apVq5a6dOmiM2fOqECBAtaODwAAAADIRP4ON2MDAAAAALK2ly4kZ8+eXffu3VO3bt1kNBolSVu2bFHZsmWfLWhvr4cPH8rZ2dmySdPg7Nmz+uyzz+Tv76/ly5cn5E5JUFCQrl27puXLl5sVkSUpf/78mj17turVq6fp06crMDDQWtEBAAAAAAAAAAAAIN2lWFF1dnaWl5eXXF1dE9oaNWqkAgUKaMmSJQoKClJQUJAeP36sjh07ms3LSCZPniyDwaAZM2akqogsSatWrZK7u7tat26dZH/dunXl4+Oj77//3pJRAQAAAAAAAAAAAMDmUqyq5suXTyEhIapZs2ZCW5kyZXTjxg09ffo04Vd4eLjee+89q4d9FSaTSd9//70aNGigggULJrSHhYXp0aNHSc6Jj4/XoUOHVL16ddnbJ//Qds2aNXXp0iWFhoZaPDcAAAAAAEk5dOiQ/P39bR0DAAAAAJDJWeQdyRnZpUuXFBERoWrVqik0NFSff/65li5dqvv370uSypYtqz59+qhPnz6ys7OTJF2/fl2xsbEqUaJEims/77906ZLy5s2bqjxubm7J9kVGRsrV1VUPHz5M1VoAbI+/rwAyCr6PAGQEGfm7KEeOHLaOkKSdO3dqzZo1un79uooWLaqePXvqH//4R5Jjjx49qlGjRmnLli1ycnJK56QAAAAAgKwmSxSSJSkmJkaVKlVSzpw5NXbsWBUuXFihoaH67rvv1L9/f23dulVr166Vg4ODwsLCJEm5cuVKce3n/c/HAwAAAACQWn369NHcuXNlMplkNBr19OlTzZ07V1OnTlW/fv0Sxp06dUqjRo1ScHCwjEaj2rVrpxEjRtgwOQAAAAAgK7BYIfnkyZMaNmyY1q5dm6Hu9H7+5PHEiRPVrVs3ffPNN3JwcEjo79Wrl3r16qW5c+dq+vTpGjJkiKKjoyXphXd4P38XdExMTKrzPHjwINm+508rZ6Q/PwAp4+8rgIyC7yMAGQHfRam3atUqzZkzRx06dNDnn38uHx8fhYSEaMiQIRo4cKDKly+v3Llza/To0Vq7dq3s7OzUrVs3BQQEqFixYraODwAAAADIAlJ8R3JK/rd4evPmTe3cuTPFQqktxMfHS5IKFSqk6dOnmxWRn/vyyy/l7u6u+fPnS0p9gfh5wTlbtmyWjAwAAAAAyOTmzZunkiVLaunSpfLx8ZEkFSxYUMuXL1eZMmXUsmVL+fn5KTg4WB988IEuXryoBQsWUETG/2PvzsOqrPb3j9+bcSOoCM6KynE2JzRNTU0NhxwyHFPBgZyPOR/MIbWcLccc0JxDPamYOc+zaaVGfdPUTJxncVZAYP/+6Acngo0Imw3B+3VdXB3W+qz13JuKzvazn/UAAAAAgNWkuJFcpkwZffzxx5bMkiZiPxHfokULs3cYu7q6qlKlSjpz5owiIyPl6uoqSQoLC0ty79j52HoAAAAAAJLjp59+UtOmTWUwGOKN29jYqF+/frp37578/Px0/vx5zZs3T0WKFEmnpAAAAACArCpFjeQjR47o0qVLKlq0qKXzWJyHh4eklx9TXahQIUnS06dPVaxYMdnZ2cU9X9mc2PkSJUpYICkAAAAAIKt48OCB2ffUlStXliT5+vrGvVcFAAAAAMDaUtRIXrFihYxGo9q1a2fpPBZXtmxZOTg46MyZM0nWXbt2TdmyZZOrq6vs7e1VuXJlHT16VFFRUWbXHDp0SIULF1a+fPksHRsAAAAAkInFxMSYfUxSwYIFJf3vcUoAAAAAAKSHV24knz17VkuXLlXnzp2VI0eOtMhkUU5OTvL29tb27dsVGhqaaM2lS5d09OhReXt7xx0r5uPjo4cPH2rt2rWJrtm7d69CQ0Pl4+OTZtkBAAAAAJnX34+1jmVjk+KnUAEAAAAAYDGv/O508ODBcnFx0fjx49MiT5oICAhQRESEunXrpqdPn8abe/jwoTp16iSTyaRRo0bFjfft21dubm4aMmSILl68GG/NrVu31KdPHzk6OmrIkCHWeAkAAAAAgEzm8ePHun37doKvO3fuSPrz/Wpi87dv39b9+/fTOT0AAAAAILOze5XiKVOmaNu2bZo3b55y586dVpks7q233tLo0aP16aefqly5cvL19VX+/Pl14cIFrVq1SmFhYVq0aJGqVasWt8bV1VVff/21WrRoIS8vL/n6+qpEiRK6fPmygoKCdO/ePS1fvvwf8ZxoAAAAAEDGExAQoICAALPzvr6+ZudsbW0VGRmZFrEAAAAAAJD0Co3kNWvWaOTIkerRo4d69+6dlpnSxCeffKLq1avriy++UGBgoB4/fqx8+fKpUaNGGjp0qCpVqpRgjbe3t0JCQjRp0iRt2LBBt2/fVq5cuVSnTh0FBASoevXq6fBKAAAAAAD/dL1799bz589TvN7R0dGCaQAAAAAASMhsIzkyMlIPHz6Ug4ODxo0bpxkzZqh58+aaN29ekhteu3ZNUVFRic45ODgof/78qUucCs2aNVOzZs1eaU3p0qW1bNmytAkEAAAAAMiSXvbeGgAAAACA9Ga2kbxlyxa1adNGdnZ2ioqK0n/+8x9NnDhRNjbmH6tsMplUo0YNs/MGg8FskxkAAAAAAAAAAAAAkDGYbSSXL19e/fv318aNGxUaGqo9e/bojz/+UMmSJZPc8MMPP1T27NkTnTMajalLCwAAAAAAAAAAAABIc2YbySVLltSMGTM0bdo0BQYGatiwYXr99de1c+dOvfHGG4muMRgMCggIUMGCBdMsMAAAAAAAAAAAAAAgbZk/pzq2wMZGffv21YEDB2Q0GtWsWTOdPn3aGtkAAAAAAAAAAAAAAOngpY3kWFWqVNH27dsVGRmpjh078qxjAAAAAAAAAAAAAMikkt1IliQvLy8FBgbql19+0aRJk9IqEwAAAAAAAAAAAAAgHb1SI1mSOnbsqObNm2vq1KkKCwtLi0wAAAAAAAAAAAAAgHT0yo1kSZo6daqeP3+uOXPmWDoPAAAAAAAAAAAAACCdpaiRXKZMGTVt2lSBgYGWzgMAAAAAAAAAAAAASGd2KV04ZcoURUVFWTILAAAAAAAAAAAAACADSHEjuWzZsvG+d3BwiPdXAAAAAADwP5GRkbp582ay6x0cHJQ/f35J0rNnz3Tv3j2ZTKZE5wEAAAAAsLQUN5L/rmHDhgoPD5e9vb2ltgQAAAAAINNYvHix/v3vf8tgMCSr3mAwKCoqSidOnFDt2rUDTmA5AAAgAElEQVQVGRmZoKZ+/fravXu3paMCAAAAAGC5RrIkmsgAAAAAAJhRu3ZtjRkzJt6YyWTSlClTVLt2bdWuXTvenKOjoyTp5MmTioiI0Icffig3N7e4+V27dunw4cNpHxwAAAAAkCVZtJEMAAAAAAASV6FCBVWoUCHB+KxZs9SwYUMFBAQkui4yMlIGg0GzZs2KN54/f34dPXo0TbICAAAAAGCT3gEAAAAAAAAAAAAAABkLjWQAAAAAADKQESNG6IcffkjvGAAAAACALI6jrQEAAAAASEcGg0EGg0GStHfvXk2ZMkUmk0nVq1dP52QAAAAAgKyMRjIAAAAAAFYSFRWlwMBAFS9eXI0bN5aNjY1+/PFH5cmTR5I0cuRI5cyZU0OHDk3npAAAAACArI5GMgAAAAAAVrJ161b1799fBoNBnp6emjlzppo3by5J+vLLL/X9999r/vz5cnd3T+ekAAAAAICsjmckAwAAAABgJTdv3pQkBQQE6N69e2rZsqWGDh2qAwcOaMCAAWrRooV69epltTyRkZH6+uuv1aZNGxUuXFj29vZydXVV3bp1tXz5cplMJrNrL1y4oN69e8vT01NGo1EeHh7q1KmTfv75Z6vlBwAAAACkHas1kmNiYnT//n1rXQ4AAAAAgAzHZDLJYDBowoQJOnPmjNq3b6/p06erQYMGKlmypIKCgqya5/3331eHDh107do1derUSdOmTVOvXr106dIlde3aVb6+vomuO3bsmF5//XX997//VbNmzTRlyhS1bdtWu3btUo0aNbRp0yarvg4AAAAAgOWZPdr60KFDCg0NTdGmjo6Oat++fbyxpUuXqnfv3nrx4kWK9gQAAAAAIDPJly+fVq1apWrVqmnIkCFyc3OT0Wi0aoZevXpp8uTJKlWqVLzx0aNHq2HDhlq1apXatm2r9957L27u6dOn6tChg4xGo44cOSJPT8+4uYCAANWtW1edO3fWqVOnVLBgQau9FgAAAACAZZltJI8bN067d+9O0aYGgyFBIzkqKkoxMTEp2g8AAAAAgMxq0KBByp49u3r16qUPPvhAK1asiDdva2srSdq4caNcXV3jxr///nsZDIZUXbtx48aJjjs7O2vGjBlxdxf/tZG8bNkyXbx4UatWrYrXRJak/PnzKzAwUG+//bZmz56tyZMnpyofAAAAACD9mG0kf/HFF3HPbnpVjo6OKQ4EAAAAAEBW0717d4WGhmry5MmqU6eOevToETf3r3/9SyaTST4+PvHWmEwmFSlSJM0yVahQQZJ07969eONr1qxRzpw51bZt20TXNWjQQJ6engoODqaRDAAAAAD/YGYbyaVLl1bp0qWtmQUAAAAAgCxr3LhxOnz4sAYPHqwmTZrIw8NDktSoUSPt2bNHV65ckclkiqu3s7NT9erV0yzP+fPnJSnenw1ER0fr2LFjatCggezszP6RgurUqaMVK1bo9u3byps3b5plBAAAAACkHfPv+gAAAAAAgNXY2NgoKChIZcqU0cCBAxUcHBw3V79+favnmTdvngwGg/z8/OLGLl26pMjISJUoUSLJtbHz58+fT1YjOUeOHGbnHj9+rOzZs+vJkyfJTA4AQPriv1kAMgp+HyE5XFxczM7ZWOICz58/V3R0tCW2AgAAAAAg0zIYDDKZTGafbezh4aGBAwdqw4YNOnHihJXT/c/Jkye1aNEi+fr6qnz58nHjscdcu7m5Jbk+dv7vx2IDAAAAAP45LHJHcocOHXTx4kWFhIRYYjsAAAAAADIlf39/tW7d2mwjWZKGDx+uxYsXKzg4WFWrVrViuj89fvxYHTt2VIECBTR9+vR4c+Hh4ZIkR0fHJPcwGo2SpIiIiGRd89GjR2bnYu9WTupT8gAAZCT8NwtARsHvI6RWqhvJq1ev1saNGzVs2DBL5AEAAAAAINOys7OTu7t7kjUuLi46efKkChYsaKVU/xMdHa2OHTvq8uXLOnDggHLnzh1vPrkN4tiGs5OTU9oEBQAAAACkuVQdbb19+3b5+/urQYMGGjdunKUyAQAAAFnaZ599JoPBoDJlyiQ6v23bNjVu3Fhubm4yGo0qXbq0xo4dG9e4Sa4dO3aoa9euKl26tHLkyKEcOXLotddeU//+/XX+/Hmz6+7fvy9/f3+5u7vLyclJtWrV0uHDhxOtNZlMqlWrljp37vxK2YCsLj2ayJLUp08fbdu2TatWrVK1atUSzLu6ukqSwsLCktwndj62HgAAAADwz5PiRvLChQvl4+OjihUr6ttvv5WdnUVOyQYAAACytDNnzmj06NHy9PRMtDE8YcIENW3aVNHR0Zo6dapWrlyp9957T1OnTlXjxo0VGRmZ7GstWrRIFy9elK+vrwIDA/XFF1/I29tbK1euVIUKFbRt27ZE13Xp0kWbNm3Sxx9/rIULF8rBwUENGzbU1atXE9QuW7ZMv/zyiyZNmpT8HwIArVu3TleuXLHqNQcPHqwvv/xSc+fO1XvvvZdoTbFixWRnZ5fkh00kxc2XKFHC4jkBAAAAANaRZPf3xYsXMplMcnBwiBs7efKkRo0ape3bt6tVq1ZasWKFsmXLluZBAQAAgMwuJiZG/v7+at++vSRp//798ea/++47ffzxx+revbu+/PLLuPHWrVvr3XffVd26dTVv3jwNHDgwWddbu3ZtgrEuXbpoyJAhqlu3rnr06KHLly/LxuZ/nz/9448/tGnTJn3zzTdxjaa2bduqSJEiWrBgQbyTih4/fqzhw4drxIgRKlSoULJ/DgCk9u3b64svvlDfvn2tcr2RI0dqxowZGj9+vHr16mW2zt7eXpUrV9bRo0cVFRVl9kPlhw4dUuHChZUvX760igwAAAAASGNJ3pE8YMAAOTk5KXv27KpevbqqV6+uatWq6fvvv9eCBQu0bt26ZDeRTSaTRQIDAAAAmdX06dMVGhqqGTNmJDq/YMECZc+eXZ9//nmCuTfffFMdO3bUggULUp2jSJEiGjBggK5du6bLly/Hmzt9+rQkqV69enFjRqNRNWrU0G+//Rav9pNPPpGzs7OGDBmS6kxAVmPN99ATJ07UxIkTNXLkSI0cOfKl9T4+Pnr48GGiH0aRpL179yo0NFQ+Pj6WjgoAAAAAsKIk70iuU6eOwsPDde/ePf36668KDQ2VJDk7O8tgMCg6Olq2trYJ1g0fPlzff/99vLHz58/L2dnZgtEBAACAzOPcuXMaPXq0goKClCtXrkRrQkJCVKFCBeXMmTPReW9vbwUFBenGjRsqUKBAqvLEHqv99w+Oxh6d/ddTi6Q/m8l/PYr73Llzmj17ttauXStHR8dUZQEyI5PJpJCQENna2qpChQoyGAzJWnf9+nX9+uuveu211yxyp//MmTM1cuRI9e/fX+PHj0/Wmr59+2ratGkaMmSIatasqWLFisXN3bp1S3369JGjoyMfIgEAAACAf7gkG8kdOnRQhw4d4r6/cuWK1q9frzlz5qhXr16aO3euVq1apbJly8Zbd+PGjbimcyxnZ2f16dPHgtEBAACAzCH2SOvmzZurVatWZuvCw8OVP39+s/O5c+eW9OdzllPTSL5z544WLlyod955R3nz5o03V7x4cUnSiRMnVKdOHUl/NsROnjyp5s2bx9UNHDhQ9evXV8uWLVOcA8isrl27pubNm+uXX36RJFWpUkWbN29+6THQK1eulL+/f9yR0osWLZKfn1+Kc2zcuFGDBg1SoUKFVKZMGQUGBiZaZ2Njo86dO8toNEqSXF1d9fXXX6tFixby8vKSr6+vSpQoocuXLysoKEj37t3T8uXLVbRo0RRnAwAAAACkvyQbyX/n4eGhAQMGqH///po3b55GjRql119/XWvXrlXTpk3j6pYtW2bpnAAAAECmNXv2bJ05c0br169Psq5gwYL6/fffzc7HHi197969V7r+/fv39fDhQ128eFEHDhxQYGCgSpUqpa+++ipBbeXKlVW1alX17NlTy5YtU758+fTZZ5/pwoUL8vf3lyRt3rxZu3fvjmuSSX82m5N7xyWQ2bVq1UpnzpzRgAEDZDKZFBgYqLZt2+rgwYNm15w6dUpdunTRa6+9pvbt22vdunXq1q2bKleurAoVKqQoR+xR9deuXUvyWcwGg0HNmjWLdwe0t7e3QkJCNGnSJG3YsEG3b99Wrly5VKdOHQUEBKh69eopygQAAAAAyDiSfEayOQaDQf/+9791/PhxFS9eXK1atdKWLVssnQ0AAADI9P744w+NHDlSs2bNSnD37981bdpUoaGh2rx5c4K5J0+eaPbs2ZIU74jplzl06JDc3Nzk6emp+vXra+zYsWrXrp127dold3f3RNcEBQXJxsZGNWrUkKenp5YvX6558+apYsWKioyM1ODBg9WvXz+VKVNGZ8+elbe3txwcHOTi4qJu3brp8ePHyc4HZDYbNmzQjz/+qC+//FLTp0/XjBkztHDhQh05ckTbtm0zu27ChAlyd3fX/v37NWLECO3bt0958uRJ9nHUifnoo49kMple+hUTE5PoMdqlS5fWsmXLdOXKFUVEROjmzZtat24dTWQAAAAAyCRS1EiOVbx4cR08eFClS5dWp06d9Mcff1gqFwAAAJDpmUwm+fv7q379+urUqdNL6/v27asyZcrI19dX8+fP1++//66rV6/q22+/VfXq1VWqVClJkouLS7IzVK1aVYcPH9a+ffu0Zs0aDRkyREFBQapXr55u376d6JoyZcro1KlTOnv2rH766SfduXNHvXv3liTNmDFDDx8+1JgxY/TixQs1btxYjx8/VnBwsObPn6+tW7eqX79+yc4HZDYrV65UsWLF5OvrGzfm5+cnT09PBQUFJbomKipKW7duVbdu3eKeoZ4zZ05169ZN27Zt04sXL6ySHQAAAACQtbzS0daJcXV11aZNm1SpUiWNHz9eS5cutUQuAAAAINObM2eOQkJC4o6XfRlnZ2cdOHBAo0eP1oABA+KaR87Ozvr3v/+tFi1aaM+ePXHPSk6ObNmy6c0334z7vm3bthoyZIjeeOMN9evXT2vWrDG7NrZxHevGjRsaP368Zs6cqZw5c2rdunW6evWqDh8+rMKFC0uS7O3t5efnp6lTp770ebBAZnT48GG1aNEiwbi3t7e2bt2a6JrffvtNjx49Ut26deON161bV1OmTNGpU6dUuXLlNMkLAAAAAMi6UnVHcqwiRYpo//79mjt3riW2AwAAADK969eva/jw4Ro9erScnZ314MGDeF+RkZGKiYnRgwcP9PDhw7h1efPmVWBgoB4/fqzTp08rJCREt27d0pQpU3TmzBlJSvHzUmMVKFBAPXv2VHBw8Csdkz1s2DCVKVMm7lnJISEhKlmyZFwTWZLq16+vqKgonTp1KlUZgX+iFy9e6NatW3rjjTcSzL3++uu6fv26YmJiEsydP39eBoNBXl5e8cYrVaokk8mU5LPTAQAAAABIqVTfkRyrUqVKltoKAAAAyPRCQ0P19OlTDR06VEOHDjVbF3uM7cGDB1WnTp24cUdHR5UtWzZe7YYNG+Tl5aWcOXOmOl/u3LkVExOja9euqXjx4i+tP3bsmFauXKkjR47IYDBIku7cuSM3N7d4dbGvx9yx2UBmdvPmTUlSnjx5Esy5u7vLZDLp1q1bKlCgQLy5sLAwSUrwHPXYfWLnAQAAAACwJIs1kgEAAAAkX5UqVbR//36ZTKZE5ydPnqyQkBD997//lcFgUNWqVZPc7+jRo9q6davFTgn67rvv5OTkpIIFC7601mQy6cMPP1SnTp1Uo0aNuPHcuXMnaBjfu3cvbg7IaqKioiRJdnYJ34rb2trGq/mr2N8TNjbxDxWL/d7c7xEAAAAAAFKDRjIAAACQDpycnPTWW2+ZnV+2bJmMRqPq1av30r1++OEH+fj4qHLlyurRo0eqswUFBWnlypXq16+fnJycXlq/ZMkSnTlzRhs3bow3XqFCBU2cOFG//vqrypcvL0nasWOHbG1tVa5cuVTnBP5pYu8gvnPnToK52LuKE7tb2dXVVdKfH8T464cwYj+YEXunPwAAAAAAlmS2kbxixQqNHz/+lTbz8/PTxx9/rJiYGI0ZM0aLFy9WRESEWrVqpenTpyt79uypDgwAAABkVb/99pvmzZunGjVqKFu2bLp586Z27dqljRs3qlKlStq6dWuidzo+e/ZML168iHfk9cyZM7V27Vo1bdpUJUuWlL29vS5duqT169fr0KFD8vHx0eTJk1+a6dGjRxoxYoRGjRqV4DjeVq1aqXDhwmrTpo1Gjhype/fuaezYsWrfvn2y7nQGMhsXFxdly5ZNISEh6tKlS7y5X375RTly5JDRaEywrmTJkjKZTPr555/19ttvx43/3//9nwwGQ7KOnwcAAAAA4FWZbSS7u7urdOnSCcYvXryo06dPq2nTpgnmYv/gqHfv3lq0aJE8PT1VqFAhLV68WKdPn9ahQ4cSHMUFAAAAICEHBwc5ODgkGD927JhWrFih8PBwubu7y8vLS4sWLZKfn1/c0bh/5+Xlpbt37+ry5ctydnaWJFWvXl2HDh3SggULdOvWLUVHRyt37tyqUaOGDhw4oLp16yYr54QJE5Q7d24NGjQo0dewc+dO9e/fX7169ZLRaFSbNm00Y8aMV/hJAJlLlSpVtHv37gTje/fuNXuEfbly5ZQ9e3YdPHgwXiP58OHDcnR0jLvjHwAAAAAASzLbSG7WrJmaNWuWYHzOnDkaMGCANm3alOi6H3/8UYsWLZK/v78WLlwoGxsbLV68WD169NCiRYvUs2dPy6UHAAAAMqmFCxcmGCtbtqx+/PHHV97Lw8NDdnZ28e5WrlWrlmrVqpWqjJI0ZcoUTZkyxex82bJltWvXrlRfB8gs3nvvPf3nP//Rzp071ahRI0nSzp079csvv2j27NmJrrG3t1eTJk00d+5cBQQEyNnZWc+ePdPcuXP19ttvJ3oXMwAAAAAAqfXKtwcbDIYk5xcuXChXV1fNnj077u7jDz74QHXr1tWCBQtSlhIAAABAiu3evVunTp2So6NjekcBsrwePXooT5486tixo2bNmqWZM2eqY8eOKliwoPz9/c2u++ijj3T//n21bNlSy5YtU6tWrXT37l0NHz7ciukBAAAAAFmJ2TuSJWnr1q2KioqKN/bLL79IkjZt2iSTyRQ37urqqrp162rnzp1q2rSpsmXLFm9d69atNXDgQN29e1e5c+e2VH4AAAAAAP4xsmfPruDgYLVo0SLuSHh3d3cFBwcneB/9V15eXpo2bZqGDBmivXv3SpImTpxokZMFAAAAAABIjNlG8qNHj9S8eXMZDIZ4DeNYLVu2jPe9h4eHfv31V125ckUNGjRIUF+3bl2ZTCb9+uuvqlevXuqTAwAAAADwD/Tmm2/q/Pnz2rt3r2xsbNSgQQO5urq+dN3AgQPVoEED/fTTT6pYsaK8vLyskBYAAAAAkFWZbSTnyJFDhw4dSnBHclL1t27dkiQVKFAgwXy+fPkkSTdv3kxJTgAAACBD+Xzpt+kdAcA/mJubm9q0afPK6ypWrKiKFSumQSIAAAAAAOJL8mjrN99885U2O3XqlKQ/j+r6OxcXF0lSZGTkK+0JAAAAAAAAAAAAALCuJBvJkhQdHS1JsrW1felmzs7OkqS7d+8mmAsLC4tXAwAAAAAAErds2TLVqVMnvWMAAAAAALIwm6Qmb926pXz58snFxUW1a9fWjBkzEm0SxypYsKBsbGx048aNBHM3b96UwWBQ4cKFU58aAAAAAIBMrHPnzvL09EzvGAAAAACALCzJRvLx48cVFhamsmXL6vfff9eQIUPk6emp8ePHx92p/FcODg4qW7asDh48mGDuyJEjsrOzU/ny5S2XHgAAAAAAAAAAAABgcUkebR0eHi6DwaAtW7aoQIEC2rFjh8aOHavRo0drx44d+vbbb+Xm5hZvTfPmzTVr1ixduXJFHh4ekqSoqCh9+eWXqlevHkdbAwAAAACypI0bN+rixYsW3dPJyUk9evSw6J4AAAAAAEjJeEay9L/nIzdu3FiNGzfW5MmTNWrUKHl7e2v//v3KkSNHXG2/fv00Z84cNW/eXLNnz1auXLk0btw4nT17VjNnzkybVwEAAAAAQAY3ZcoUHT16NMkag8EgSTKZTMna08bGhkYyAAAAACBNJKuR/HcfffSR8uXLp+7du8vf31/r1q2LmytUqJAWLlyoLl26qEGDBpL+fAM8dOhQNWrUyDKpAQAAAAD4h9m0aZMeP35sdt5kMql8+fL68MMP1bt372Tt6eDgYKl4AAAAAADEk6JGsiR169ZNZ8+e1WeffaagoCD5+vrGzXXo0EGvvfaaVq5cqcjISDVt2lQNGza0SGAAAAAAAP6J3NzcEjwe6u8MBoNy5cqlokWLWikVAAAAAACJS3EjWZImTJigzZs3KyAgQK1atVK2bNni5ipWrKiKFSumOiAAAAAAAFlJ7PHWAAAAAACkpyQbyQaDQSaTyeybWFtbW02fPl1NmjTRwoULNXDgwDQJCQAAAADAP92iRYs0evToJGuePXum8ePHa8aMGS/dz2g06sKFC5aKBwAAAABAPEk2khs0aKA9e/YoT548ZmsaNWqkKlWqKDg4mEYyAAAAAABmFClSRG+99ZbF9nN0dLTYXgAAAAAA/F2SjWRXV1fVr1//pZts3Ljxpc95AgAAAAAgK2vUqJEaNWr0Smuio6P1xx9/qFSpUmmUCgAAAACAxNlYYpOCBQvKaDRaYisAAAAAAPD/bdy4UWXLllVYWFh6RwEAAAAAZDEWaSQDAAAAAIDkCQoK0vHjx5NV+69//Usmk0knTpxI41QAAAAAAMRHIxkAAAAAACsaPny41q9fn6zakiVLSpLOnTuXlpEAAAAAAEiARjIAAAAAABlUtmzZVKhQIV2+fDm9owAAAAAAshgayQAAAAAAZGB58+blGckAAAAAAKujkQwAAAAAQAZmb2+viIiI9I4BAAAAAMhiaCQDAAAAAJCB2dnZ0UgGAAAAAFgdjWQAAAAAADIwGskAAAAAgPRgl5rF7777rrJnz66VK1daKg8AAAAAAJmag4ODdu/eLaPR+NLa6Oho/frrr6pfv74VkgEAAAAA8D+paiQ/f/5cdnap2gIAAAAAgCylXr16Wrp0qY4fP56segcHB7Vv3z6NUwEAAAAAEB9dYAAAAAAArGjx4sWaNGmSnj9//tJag8GgPHnyyMnJyQrJAAAAAAD4H7ON5H379unKlStJLr5x44bu37+vFStWJOtiRqNR7dq1e7WEAAAAAABkMnnz5k3vCAAAAAAAJMlsI3nkyJE6duxYsjbp2rVrsuoMBgONZAAAAAAAAAAAAADI4Mw2khctWqQ7d+5Y9GKOjo4W3Q8AAAAAAAAAAAAAYHlmG8nlypVLMPbs2TNJUrZs2dIuEQAAAAAAAAAAAAAgXZltJCemY8eOio6O1qZNm9IqDwAAAAAAAAAAAAAgnb1SIzk6OlrR0dEJxh8/fqzvv/9eklS9enXlyJHDMukAAAAAAAAAAAAAAFZnk9oNJkyYoHz58qlx48Zq3Lix8ufPr0mTJlkiGwAAAAAAAAAAAAAgHSR5R/KcOXMkSf369Ut0fsyYMRo3bpyaNGmiLl26yGAwaPny5Ro1apQiIyM1ZswYyycGAAAAAAAAAAAAAKSpJO9I3rJli7Zu3Zro3NWrVzV58mT16tVLW7duVfv27dWuXTtt2bJFvXr10qRJk3Tt2rU0CQ0AAAAAAAAAAAAASDspPtp6/fr1MhgM+uyzzxLMTZkyRSaTSRs3bkxVOAAAAAAAAAAAAACA9aW4kXz+/HmVLl1aLi4uCeayZ8+uEiVK6MKFC6kKBwAAAAAAzPv+++/18OHD9I4BAAAAAMiEknxGclIcHR11//59s/MPHz6U0WhM6fYAAAAAAGQqW7Zs0bRp05JVazQatXXrVi1fvlxff/21wsPDZWtrq3Llyunzzz+Xvb29JKlWrVpatmyZ/Pz80jI6AAAAACALSnEj+fXXX9f06dMVEhKiypUrx5s7efKkrl+/rqpVq6Y6IAAAAAAAmcGjR48UGhoqSYqKitL169eVJ08eOTk56fnz57pz544KFSokW1vbuA9mDxw4UDExMXJzc1NkZKT27t2rRo0aqVmzZpIkk8kkk8mUbq8JAAAAAJB5pfho69atW6t06dLy8/PTxYsX48ZDQ0PVpUsXVahQQe+++64lMgIAAAAA8I/XoUMHhYaGKjQ0VIcOHZLJZNKKFSsUGhqqZcuWSZKOHTum0NBQ/fbbb5L+PO3riy++UGhoqC5duiSTyaSwsLB0fBUAAAAAgKwiyTuSu3fvbn6hnZ2+/PJLNWnSRBUqVFDdunUlSQcPHpTBYNDu3btlY5PiPjUAAAAAAJmWwWBI8vu/srOzi/dX7kAGAAAAAFhDko3k1q1bJ7n4zTff1PHjxzV+/Hh99913MplMat26tUaNGqUSJUpYNCgAAAAAAAAAAAAAwDpS/IzkWKVLl9ZXX31liSwAAAAAAAAAAAAAgAzglRrJLVq0UHR0dFplAQAAAAAg03r+/LlmzZqlmJgYPXjwQAaDQatXr9bx48f1+++/S5LmzJmjatWqycfHJ53TAgAAAACyuldqJPfs2TOtcgAAAAAAkKndvXtXI0aMiDe2YsWKeM88njx5sgwGg06dOqUyZcpYOyIAAAAAAHFs0jsAAAAAAABZgYeHhy5duqTQ0FCFhobqxIkTMplMWrhwYdzYt99+K5PJpBs3bqR3XAAAAABAFpfqZyQDAAAAAIDk8fDwiPvfLi4ukqS8efOqaNGi8er+epcyAAAAAADpIUvfkezr6yuDwaBy5cqZrblw4YJ69+4tT09PGY1GeXh4qFOnTvr555+tmBQAAAAAgLS3atUqOTs765133kmyzmg0ymAwmP2ytbXVvXv3rJQ6a/j5559VtGjRJPkR1JoAACAASURBVI88nz9/vlq2bKmiRYvKyclJefLk0euvv64pU6bowYMHr3zN06dPy8/PT4UKFZKDg4MKFSqkDz74QNeuXTO75ujRo/Lx8VHevHnl6OgoT09PDRo0KEXXBwAAAJC+zN6RXL9+fR08eNCiFzMajXr69KlF90yp4OBgrV69Wnny5NGzZ88SrTl27JiaNm2qmJgY+fr6qmTJkrp06ZKCgoK0fv16rVmzRi1atLBycgAAAABAVhYTEyNJioqKkiQZDAaL7Dlq1ChNmjRJNjY2ev78eZL1ERERqlGjhrp06ZLovK2trXLkyJHqXPjTli1b9P777ysqKkr58uUzWzdx4kS98cYbGjBggDw8PBQWFqb9+/dr9OjRmjdvng4dOqQiRYok65q7du1Sy5Yt5eHhoaFDh6po0aIKDQ3VrFmztHXrVh09elTFihWLt2bFihXy9/eXl5eXxo4dq/z58+vUqVOaOXOmtm/fru+++065cuVKzY8CAAAAgBWZbSQ3a9YswRuC1DIajRbdL6Xu3LmjPn36qH///vrpp5908eLFBDVPnz5Vhw4dZDQadeTIEXl6esbNBQQEqG7duurcubNOnTqlggULWjE9AAAAACCrcnd3V79+/TRixAhFRETIYDDI1dU1VXs+fvxYvr6+2rp1qxYsWKCJEycma13p0qXVu3fvVF0bLzdnzhwNHDhQw4YN09WrV3XgwAGztVeuXEkw1qtXL+3atUvNmzfXsGHDtHr16pde8/Hjx+rYsaNKly6tw4cPy9nZOW7Oz89Pr7/+ugYOHKgNGzbEjV+8eFE9e/ZUw4YNtWnTJtnZ/flHTq1atdL777+vKlWq6JNPPtHMmTNf5eUDAAAASEdmG8lDhw61Zg6r6t27t3LmzKkJEyaoadOmidYsW7ZMFy9e1KpVq+I1kSUpf/78CgwM1Ntvv63Zs2dr8uTJ1ogNAAAAAMhiatWqpQIFCsR9P336dK1atUrh4eGytbVVmTJl1Lhx41RdIzAwUAcOHNC2bdvk7e2d7EYyrGPHjh1asGCBPvjgA3Xt2jVFezRs2FBNmjTR0aNHk1W/bt063b17V2vXro3XRJb+fKb3mDFj1KNHD928eVP58+eXJC1dulQRERGaN29eXBM5VsmSJTVw4EDNnj1bU6dOlYODQ4peBwAAAADrMttIzqxWrlypDRs26MCBA8qWLZvZujVr1ihnzpxq27ZtovMNGjSQp6engoODaSQDAAAAAFLsr0dTP378OO45w5J0+PDheLV+fn7y8/Oz6PUHDRqk999/Xx4eHhbdF5axadMmi+wTHh6eoClsTkhIiGxsbFSzZs1E5729vWUymbRv3z516NAhbk2hQoUSfBj/r2vGjx+vEydOmN0XAAAAQMZik94BrOnGjRv68MMP1b9/f9WuXdtsXXR0tI4dO6aaNWsm+BTtX9WpU0fnz5/X7du30yIuAAAAACATuXHjhhwdHeXg4CAHB4e4O41btWoVN1a5cmVJsurzhe3s7FLVRH769Klu376tyMhIC6aCJR09elR79uwx+0zrvwsPD4/7ZzIxuXPnliSdOXMm3pqkGtWJrQEAAACQsWWpO5J79Oghd3d3TZgwIcm6S5cuKTIyUiVKlEiyLnb+/Pnzyps3b7IyJPWHAY8fP1b27Nn15MmTZO0FIP3x7yuAjILfRwAygoz8u8jFxSW9I8jFxUWdOnWSyWQyW2NjY6OSJUuqatWqVkyWMrt27VKhQoV0/fp1SZKtra2qVaumwYMHmz3dyxzeKyfPixcvZDKZkvxZREdHKywsTI8ePdKZM2e0e/duBQUFqUePHurdu3eyfo65c+dWeHi4zpw5k+iHDE6ePClJunnzZtx+efLk0f79+3X//n3Z29snWPPTTz9Jkq5fv87fSwCZHr/nAGQU/D5CciT1fvmljeTg4GBt2LBBefLkUfHixVW3bl1VqFDBogGtYcmSJdq2bdtLj7SWpHv37kmS3NzckqyLnY+tBwAAAADAnOzZs2vJkiXpHcMiOnbsqCJFiqhMmTLKkSOHwsPDderUKQUFBaldu3YaNGiQpk+fnt4xs6TPP/9c48ePj/s+W7ZsmjZtmjp37pzsPRo1aqSJEydq/vz5iT4z+7PPPpP0513IsRo3bqyVK1dqyZIl6tWrV7z66OjouH8eIiIiXun1AAAAAEg/L20kd+/eXQ8fPoz73mAwqECBAurevbt69eoVdxRXRnblyhUNGjRIAwYMSPJI61ixb4QcHR2TrDMajZJe7U3Qo0ePzM7FfgI7I3xSHkDy8O8rgIyC30cAMgJ+F2UdK1euTHR85MiRat26tWbMmKEmTZqoUaNGydqP98rJY29vL4PBkOTPom/fvmrcuLEiIiJ09epV7d69WwMHDlRISIgCAwNlY/Pyp5y99dZb8vPz09y5c+Xg4CBfX18VKFBA586d09SpU3XlyhW5u7srV65ccVk6deqkxYsXa+TIkYqIiNB7772nXLly6ddff9WYMWPiPozv5ubG30sAmR6/5wBkFPw+Qmol+e4hJiZGDx8+1JQpU/TgwQMdO3ZMEydOVLFixfTpp5+qePHiGjt2bLxPoGY0JpNJ/v7+yp8//0uPtI6V3AZx7Ot2cnJKXUgAAAAAADIBJycnLVy4UDY2Nlq8eHF6x8mSChQooNq1a+vtt99Wly5d9NVXX2nnzp1asmSJAgMDk73PkiVLNHHiRC1btkxeXl7Knz+/6tWrJzs7O23fvl3Pnj2Le+6x9Oex7Js3b9bAgQM1ceJEvfbaaypYsKCaN2+usmXLasGCBZIUbw0AAACAjC3JRnLsc5ty5sypHDlyqHr16ho2bJgOHz6s48ePq1GjRvr0009VpUoVnTlzxiqBX9X8+fO1d+9eLV26NNkNX1dXV0lSWFhYknWx87H1AAAAAABkdYULF1aZMmV06tSp9I6C/69evXqqV6+e2TvJE2NnZ6dhw4bp9u3bCg0N1fHjx3Xr1i198803evLkiZ4/f66KFSvGW+Pi4qLJkyfrwYMH+v3333XixAndvn1bixcvVmhoqCQlWAMAAAAg43rp0dbmVKlSRRs2bNDmzZvl7++v6tWra+3atWrcuLEl86XK7du3FRAQoA4dOqhgwYK6ePFigprw8HBFRUXFzeXNm1fFihWTnZ2dzp8/n+T+sfMlSpSwdHQAAAAAAP6xcubMGe8xWUh/uXPn1pEjR155nY2NjYoVK6ZixYrFjW3YsEH29vaqVatWomvs7OwS/FnJhg0blDdvXpUrV+6VMwAAAABIHyluJMdq3ry5jh8/rnfffVc+Pj765ptvMkwz+caNG3r69KlWrlz50k/denp6SpI++eQTjR49WpUrV9bRo0cVFRUlO7vEf0yHDh1S4cKFlS9fPotnBwAAAABkLiEhIdq4cWOy641GowICAhQVFaXly5fr+vXrcSeHSZKDg4PefvttVatWLS3ipsqlS5e48zQDiY6O1g8//GCRD8KHhYVpxowZ8vHxSfYx1RcuXNDSpUvVr18/s3/GAgAAACDjscj/ey9SpIj27dun+vXrq3Xr1jp69KgqVKhgia1TpVSpUvr2228VExNjtmbUqFG6ffu2Fi5cKEmqVKmSJMnHx0cjR47U2rVr1aFDhwTr9u7dq9DQUH344YdpEx4AAAAAkKns27dPY8eOTXa9jY2NAgICtHHjRvXo0SPRmkKFCunKlSsWSmgZ27dv1/Xr1xUQEJDeUSApKipKAwYMUGhoqKZNm5aqvW7cuKE2bdro0aNHmjp1arLWnDt3Tu+++65y5cqlESNGpOr6AAAAAKzLYh8DzZUrl3bs2CEvLy+1bt1ax48fV44cOSy1fYo4OTnp3XffTbJm5syZevLkid57771443379tW0adM0ZMgQ1axZM94RTrdu3VKfPn3k6OioIUOGpEV0AAAAAEAm06dPH7Vq1SrZ9Q4ODpL+fA9qMBh0/Phxubm5xc3Pnj1bM2fOtHjOl3n+/LlsbW3j8v3Vd999p86dO6tIkSLq3r271bNlZe3bt9fz58/l7e2twoULKyoqSufOndOSJUt05coVjR8/Xj4+PgnWPXv2TC9evFDOnDnjjfv7+6tWrVrKnTu37t+/rx9++EGrV6+Wvb29duzYoaJFi8arDwsL07Bhw1S7dm3lzJlTd+/e1YEDB7Ru3ToVKFBAe/bsSXANAAAAABmbRc8Typcvn1atWiVvb28NHz5cc+fOteT2VuXq6qqvv/5aLVq0kJeXl3x9fVWiRAldvnxZQUFBunfvnpYvX57gjRMAAAAAAIkxGo0peg8Ze8qWl5dXvPFSpUpZJNer2rlzp7p27aoWLVqoZMmSypUrl8LCwnTw4EHt3btXRYsW1ebNm+Xs7Jwu+TIzBweHRBv4kvTOO+8oKChI48aN0/3792Vra6tChQqpYcOGGjZsmP71r38lus7Ly0t3797V5cuX4/6excTE6MqVKxoxYoTu37+vnDlzqlSpUvrPf/6jfv36JdoQjomJ0enTpxUcHKwnT57I1dVV5cuX15QpU9SzZ08ZjUbL/SAAAAAAWIXFH0xTr149ffDBB1q4cKG6d++e4I1uRuPo6ChHR8dE57y9vRUSEqJJkyZpw4YNun37tnLlyqU6deooICBA1atXt3JaAAAAAADSVlLvkyWpatWq8vHx0eHDh7V27dq4u1nLlSunzz77TD179lT27NmtmDjriH0sV2K6du2qrl27vvKeHh4esrOzi/fsYhsbG+3ateuV9smdO7eOHDnyytcHAAAAkHEl2Ui2tbXVunXrVK1atVfadOLEibp8+bKcnJxSFc4aduzYkeR86dKltWzZMuuEAQAAAAAgnZ09ezbJ+cKFC2vJkiVWSoO0tnv37vSOAAAAACCDeukdya/y/KZY7u7u2rZtW4oCAQAAAACQFezdu1fr1q3TxYsX5ezsrDfffFPdunXjObIAAAAAgAzB4kdbAwAAAAAA8yIiIuTn56fg4GCZTCa5urrq6dOnCg4O1sSJE7Vu3TrVrVs3vWMCAAAAALI4m/QOAAAAAABAVtKvXz+tW7dOnTt31vXr1xUWFqYnT55oyZIlevHihVq2bKnQ0ND0jgkAAAAAyOJoJAMAAAAAYCVnz57VkiVL1KNHDy1dulT58+eXJNnb26tr167auXOnnjx5ok8//TSdkwIAAAAAsjoayQAAAAAAWMk333wjSRozZkyi89WqVVOHDh307bffWjMWAAAAAAAJ8IxkAAAAAACs5Ny5c3J3d1fBggXN1rzxxhtauXKlwsLC5ObmZrbOZDKlRUS8os+X0vTPKIZ2a5neEQAAAIBMhUYyAAAAAABWYm9vr/Dw8CRrIiIiJEkODg6SJKPRKJPJpDZt2ihHjhxxdT/88IPs7e3TLiwAAAAAIEujkQwAAAAAgJWUL19eT58+1U8//SQvL69Ea7Zv365ixYrJxcVFkvTWW2+pcOHCWr9+fbw6W1tb+fj4pHlmAAAAAEDWxDOSAQAAAACwkrZt28rBwUH9+/fX06dPE8wvWbJEe/bsUbdu3eLGSpQoocuXLysmJibe14sXL7RmzRprxgcAAAAAZCHckQwAAAAAgJXkz59fEyZM0NChQ1WpUiUNHTpUJUqU0KNHj7R27VqtWbNGFStW1NChQ9M7KgAAAAAgi6ORDAAAAACAFQ0ePFguLi4aMWKE+vbtK4PBIJPJJElq166dAgMDZTQa0zklAAAAACCro5EMAAAAAICV9ezZU126dNHhw4d15coVubi4qEaNGipcuHB6RwMAAAAAQBKNZAAAAAAA0oWjo6Pefvvt9I4BAAAAAECibNI7AAAAAAAAAAAAAAAgY6GRDAAAAAAAAAAAAACIh0YyAAAAAAAAAAAAACAeGskAAAAAAFhB/fr1ZWtra9EvZ2fn9H5ZAAAAAIBMyi69AwAAAAAAkBW0b99elStXtuieRqPRovsBAAAAABCLRjIAAAAAAFbQu3fv9I4AAAAAAECycbQ1AAAAAAAAAAAAACAe7kgGAAAAAMAKVq9erc8++8xi+xmNRn333XcW2w8AAAAAgL+ikQwAAAAAgBU4OjoqZ86cZudDQ0N18+ZN1axZM9n7AQAAAACQVmgkAwAAAABgBa1atVKrVq3Mzn/88cdavHix9u3bZ8VUAAAAAAAkjmckAwAAAACQgT179kxPnz5N7xgAACCD+fnnn1W0aFGVKVMmWfV79uyRu7u7mjRpkqLr3bx5U+PHj1fNmjWVJ08eGY1GlS1bVp988omeP39udt3Ro0fl4+OjvHnzytHRUZ6enho0aJAePHiQohwAAOuhkQwAAAAAQAZgMBhkMBgSjFeoUEHDhw9Ph0QAACCj2rJli2rXrq3bt28rPDz8pfWLFy/WO++8o6dPnyarPjHNmzfXvHnzVKNGDU2cOFGLFy9WtWrVNHbsWDVs2FBRUVEJ1qxYsUJ16tTR1atXNXbsWK1evVr+/v5asWKFatasqfv376coCwDAOmgkAwAAAACQAXz00Uc6efJkgvGSJUvq559/TodEABJj7TsA/+rSpUuqVKmSjEZjknUXLlzQ8OHDVbVqVeXKlUvZsmWTl5eXZs+erejo6FTnAJC+5syZo5YtW6p///5q167dS+uHDRumXr16adasWapRo0aKr7tixQpdvnxZM2bMUI8ePdSpUyetWLFCEyZM0JEjR7Rq1ap49RcvXlTPnj3VsGFDHT16VH379lWrVq308ccf69ixY7p69ao++eSTFOcBAKQ9GskAAAAAAFjR8OHD5eLiIltb23hfBQsW1K5duxLUV6hQQadOnUqHpAD+Lj3uAIz1ww8/6I033tC5c+cUERGRZG316tW1Zs0aNWzYUNOnT9f8+fPl4eGhAQMGqGPHjqnKASD97dixQwsWLNCECRMSPc3kryIjI3X48GFt3LhRffr0SdV1y5UrJzs7uwTjQ4YMkZ2dnQ4ePBhvfOnSpYqIiNC8efMSrCtZsqQGDhyopUuXKjIyMlW5AABph0YyAAAAAABW9NVXX8nDw0OdO3eO9+Xk5KSgoKAE9eXLl9f9+/d18+bNdEgLIFZ63QEoScHBwapXr56aNGmiwYMHv7R+3759On/+vCZPnqxu3bqpS5cu2rhxo3r06KE1a9YkaPYA+GfZtGmTPvjgg2TVOjg46MiRI2ratGma5XF0dJSLi4tevHgRbzwkJESFChWSp6dnouu8vb316NEjnThxIs2yAUh76XFay7Nnz/Txxx+rZMmScnJykoeHh3r16qXr168nWs9pLSlHIxkAAAAAACt6+vSp/Pz8tHTp0nhf9erV07NnzxLUFytWTNKff/gB4P+1d+9hWpXl/sDvGWaYAQYYAVHkMCADuhMQlOyiAhLBA+lGQiqE0LSN5i7UTHELpaYibrU8FWimYniCIArPBxSNwMu2yibRdJKDEAWCyCHOs35/1PDr3cwJmJn3Hfh8ros/eJ9nrXUvZW7Ww/dda6VPuu4AjIh48cUX4+qrr46HHnoocnNzq5zfvXv3cmscN25cRIQgGahR77zzTmzYsCE+97nPpXy+bdu2aNKkSYXbtWrVKiIi3nvvvVqtD6g96Xhay7Zt2+Lkk0+OO++8M77+9a/HL3/5y7j00kvjqaeeipNOOik++uijvbbxtJb9t/dzKAAAAICMUVhYGEmSxPr169NdChzS5syZU+25ZXcA1pTJkyfXyH5atmwZEbHXXYMAB2LSpEnRrFmzGDlyZMrnRx11VLzyyiuxc+fOcr8E8+6770ZExLp16+qkTqBm3XPPPXHZZZfFuHHjYuXKlTFv3rxK548bNy5uv/32uPvuu+OJJ57Y7+PeeOON8dZbb8X8+fPjs5/97J7Pzz333OjVq1dccskle123vfzyy9GtW7eUL9qdd955MWbMmPj5z38e//mf/xn9+vXb75oOZu5IBgAAgAzWvHnziPjHncwAB6Is3P6/dw0C7K+XXnopHnnkkbj++uv3XLOUGTx4cOzYsSPuvffevbbbvXt3TJo0KSLigN8hD6RHOp7WUvbe9dGjR6eEyBH/+PLK1VdfHU8++WSUlJSkjHlay/4TJAMAAEAG+7//KAuwvyZNmhRHH310nHbaaekuBTgIrF27Ns4777wYOHBgjB07dq/xYcOGRf/+/eP73/9+TJw4MZYsWRKrV6+OF154Ifr27RuFhYUREVFQUFDXpQM1IB3va1+4cGF88sknMWzYsHLHv/KVr0RExLPPPlut/XlaS9U82hoAAAAyQOPGjWPx4sVxwQUXpHy+du3ayMrKiqZNm6apMuBg8MADD8Tvfve7+PWvfx0NGjRIdzlAPbdt27YYMmRI5Ofnx+OPPx7Z2Xvfs5adnR1PPvlk3HjjjTFx4sQYP358RPwjUBo1alRcc801UVxcvOddyQBVefPNNyMi4oQTTih3vKioKFq0aBFvvfVWtfbnaS1VEyQDAABAHerQoUO0aNFir8+HDRsWv/nNb+Khhx5K+Tw7Ozu6d+8eX/ziF+uoQuBg8/7778ell14aF154YZx99tnpLgeo50pLS+Mb3/hGvPfee7Fw4cJyr2vKFBQUxKRJk+LGG2+MZcuWxcaNG6Nz587RvHnzePHFFyMiokePHnVVOlDPffTRR5GbmxtHHHFEhXPat28fH330UbX252ktVRMkAwAAQB1atGhRuZ8PHjw4Pv744zquBjjYrVu3Lr785S9Ht27d4qc//Wm6ywEOAt/97ndjzpw58dxzz0XXrl2rtU1OTk4UFxenfDZ79uxo3bp1fOYzn6mNMoGD0KZNm6Jx48aVzmnSpEls3ry5yn15Wkv1eEcyAAAAAByEyh49u3v37vjNb34TeXl56S4JqOeuu+66mDJlSkybNi369++/3/v58MMP48EHH4zzzz8/cnLc7wZUX1ZW1gHP8bSW6hMkAwAAQD1x2223xZIlS9JdBlAP7N69O772ta/FkiVL4qmnnorWrVunuySgnps8eXJcf/31cffdd8c555yz3/t5//33Y/DgwXHYYYfFNddcU4MVAge7Jk2axJYtWyqds2XLlmjSpEmF457Wsm981QcAAADqiauuuioaN27sEZBAlf7jP/4jXnjhhXjhhRfi3/7t39JdDlCP/P3vf4+dO3dG8+bN93z2wgsvxHe+853o379/dOjQIZ588sm9tsvOzo5BgwZFbm5uRESsX78+xo0bF1/84hejefPm8fHHH8e8efPiV7/6VbRp0yZeeumllGMAVKVdu3axc+fO+Nvf/lbhe5I/+uij6NWrV7ljntay7wTJAAAAkGH+/ve/V/nuL4CKXHXVVfHwww/HrFmz4gtf+EK6ywFqUcOGDaNhw4b7NL8qvXr1io8//jhWrFix566+N954I0pLS2PevHkxb968crfLysqKjz76KNq2bRsREaWlpbFkyZKYOXNmbN68OQoLC6Nbt25xyy23xJgxYyI/P7/adQNERHTr1i0iIt58880444wz9hpfvnx5rF+/Po477ri9xv71aS3z58/3tJZqEiQDAABAHbr88svjG9/4RpxwwgkVziksLIz7778/Ro8eXYeVAelU3h2A++OBBx6IW2+9Nb761a9GdnZ2uXcNNmzYME499dQDOg6QGe677759mv/8889XOad9+/aRk5OT8u7i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q1aljG3atCmZNm1asmPHjr32OXPmzCQikuOPP77C4/7pT39KjjnmmOSII45IHnvssSQikmuvvbbSc3vrrbeS3NzcZMCAAcmWLVtSxubPn5/k5+cnn/vc55LS0tK9ti0tLU2uv/76JCsrK7nwwguTc889N9FGoHbVVT8qLS1NVq9eXWENp556ahIRyT333LPX+F/+8pdytystLU2uueaaJCKSc845p0bOr2ybTZs2lTv23nvvJR07dkyysrKSxYsXV7ofYN/UVT9KkiTp379/UlRUVKP1r1mzJsnPz09GjRpV7rh+BFA91svWy5AprJfL38b1KdQta+Xyt9GLDh6uaKEc//3f/500b948eeGFF5IkSapsjvfcc08SEcmjjz5a7vhLL72UREQybty4farj9NNPTyIiWbFiRbnjgwcPTo477rhk2bJlydKlS6u1MD7nnHOSnJycZPny5eWO/+AHP0giInnmmWf2Gnv99deT7OzsZNKkSUmSJMl5551nYQy1LFP60erVqytd4Fbm2GOPTVq1alXu2L6eX3WU/UNheYt4YP/VZT+qjcXxtddem0RE8oc//KHccf0IoHoy5frUehnIlH5kvQyHNmvlfacX1S/ekQzluPzyy2Px4sUxcODAas2fPn16NG/ePIYPH17u+IABA6JTp04xc+bMfaqje/fuERGxbt26csenTp0aCxYsiKKiomrtb9u2bTFnzpw49dRTo0OHDuXOufDCCyMiyq31pJNOipKSkhg3bly1jgccuEzpR7t27YqIiIKCgn3armzbirbb1/Or7vEi9q9WoGKZ0o/2x7Zt2+JnP/tZ9O3bN0488cRy5+hHANWTKX8fWC8DmdKPrJfh0JYpvWh/WCtTHYJkKEdOTk60b9++WnN3794dCxcujD59+uz1HpR/1bdv3ygpKYk1a9ZUu46SkpLIzc2NTp06lTveqlWraNq0abX398Ybb8T27dujX79+Fc4pKiqKDh06xPz588sdr6gWoHZkQj/atWtXXH311dGgQYMYM2ZMtbYpM3ny5CgpKYlLLrmk3PF9Ob/qWLt2bdxyyy1x1FFHxdlnn11j+wXS14927NgRa9asiS1btuxzzWUefvjhWLt2bVx22WUVztGPAKonE65PI6yXgczoR9bLgLXyvtGL6p+K/6QC1bJ8+fLYsWNHFBcXVzqvbLykpCRat25d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"/>
+<h3>10.1 최종 설치 버전의 회귀 결과</h3>
+<p>다음 표는 <code>baseline.json</code>에 보존된 원본 재처리 결과다. 분모에서 초기화 1프레임을 제외해, 실제 기하 정합 갱신 시도만 센다.</p>
+<div class="table-scroll"><table>
+<thead><tr>
+<th>BAG</th>
+<th>확인 범위</th>
+<th style="text-align:right">기하 갱신 전 → 후</th>
+<th style="text-align:right">거절 전 → 후</th>
+<th style="text-align:right">RMSE 중앙값 전 → 후</th>
+<th style="text-align:right">RMSE P95 전 → 후</th>
+<th style="text-align:right">수정 후 최종 상대 yaw</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>102101</td>
+<td>사용자 RViz 시각 확인</td>
+<td style="text-align:right">449/499 → 499/499</td>
+<td style="text-align:right">50 → 0</td>
+<td style="text-align:right">7.85 → 7.90cm</td>
+<td style="text-align:right">13.99 → 11.12cm</td>
+<td style="text-align:right">+181.4°</td>
+</tr>
+<tr>
+<td>103313</td>
+<td>수치 회귀 비교</td>
+<td style="text-align:right">352/466 → 466/466</td>
+<td style="text-align:right">114 → 0</td>
+<td style="text-align:right">8.37 → 7.79cm</td>
+<td style="text-align:right">35.11 → 11.29cm</td>
+<td style="text-align:right">-107.7°</td>
+</tr>
+<tr>
+<td>105713</td>
+<td>사용자 RViz 시각 확인</td>
+<td style="text-align:right">167/339 → 339/339</td>
+<td style="text-align:right">172 → 0</td>
+<td style="text-align:right">14.91 → 8.08cm</td>
+<td style="text-align:right">33.61 → 11.02cm</td>
+<td style="text-align:right">+177.8°</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>OBSERVED:</strong> 총 프레임 1,307개는 초기화 3개와 기하 시도 1,304개로 구성된다. 거절은 336개에서 0개가 됐다. 이전·이후의 sensor header 시각 목록은 같다. [H3]</p>
+<p><code>102101</code>의 RMSE 중앙값은 소폭 증가했다. 그러므로 ‘모든 오차 지표가 줄었다’고 설명하지 않는다. 여기서 핵심적으로 나아진 것은 긴 추적 중단이 없어진 것과, 두 정상 확인 구간의 상대 회전을 추적한 것이다.</p>
+<p><code>103313</code>의 최종 방향을 180°로 맞추기 위해 결과를 바꾸지 않았다. 그 기록에는 반대 방향 회전도 있어, 다른 BAG의 예상 각도를 정답으로 강제할 수 없다.</p>
+<h3>10.2 fitness 1.0은 정확도 100%가 아니다</h3>
+<p>Open3D 0.18.0의 실제 <code>Registration.cpp</code>는 대응점 수를 source 점 수로 나눠 fitness를 계산한다. <code>inlier_rmse</code>는 선택된 대응점 사이 거리의 제곱 평균 제곱근이다. 따라서 fitness 1.0은 설정된 대응 거리 안에서 source 점마다 대응을 찾았다는 뜻이지, 로봇 위치가 100% 정확하다는 뜻이 아니다. 이 설명은 일반 문구보다 <strong>사용한 버전의 실제 구현</strong>을 기준으로 했다. <a href="https://raw.githubusercontent.com/isl-org/Open3D/v0.18.0/cpp/open3d/pipelines/registration/Registration.cpp">Open3D 0.18.0 결과 계산 코드</a></p>
+<p>반복되는 벽·계단에서는 다른 위치의 비슷한 표면에도 대응점이 생길 수 있다. GICP 내부의 표면 공분산을 사용한 최적화 목적과, 보고서에 표시한 대응점 거리 RMSE도 같은 개념으로 혼용하지 않는다.</p>
+<h3>10.3 RMSE 8cm는 로봇 위치 오차 8cm가 아니다</h3>
+<p>표의 RMSE는 각 프레임 정합의 <strong>점 대응 잔차</strong>다. 표의 중앙값·P95는 그 프레임별 RMSE를 분석 구간 전체 시도에 대해 집계한 값이다.</p>
+<p>위치 추정이 실제로 몇 cm 틀렸는지를 알려면 추적기와 독립적인 로봇 위치·자세 정답이 있어야 한다. 이 기록에는 그 정답이 없다. wheel odometry는 계단에서 별도 오차를 가질 수 있고, gyro는 이미 이번 추적의 입력이므로 둘 중 하나와 일치한다고 독립 정확도 검증이 끝나는 것도 아니다.</p>
+<h3>10.4 최신 재계산은 ‘보존 확인’이다</h3>
+<p>후속 오프라인 검증에서 원본 세 BAG의 1,307프레임을 다시 처리했을 때 상태·시각 불일치는 0이었고, 기존 기준 궤적과의 최대 위치 수치 차이는 1.69×10⁻¹⁰m 미만이었다. 이는 같은 알고리즘을 옮기고 실행해도 기준 결과가 유지된다는 회귀 증거다. <strong>실제 로봇의 위치 오차가 그 정도로 작다는 뜻은 전혀 아니다.</strong> [H4]</p>
+<p>현재 PC의 진입점 BAG 1배속 재생에서는 새 유효 결과의 관측 지연이 중앙값 0.181초, P95 0.203초, 최대 0.341초였다. 유효 표본 93개, 점군 유실·IMU 거부·worker 오류 0이었다. 로봇 통신·실기 진동·최악의 모든 제어 주기 지연까지 검증한 값은 아니다.</p>
+<h2 id="section-11">11. RViz에서 좋아 보인 것 중 무엇이 실제 알고리즘 개선인가</h2>
+<div class="table-scroll"><table>
+<thead><tr>
+<th>화면에서 보인 변화</th>
+<th>원인 계층</th>
+<th>무엇을 의미하는가</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>높이 방향과 주변 구조가 덜 뒤집힘</td>
+<td>초기 좌표계</td>
+<td>중력 기준 초기화의 효과</td>
+</tr>
+<tr>
+<td>계단참을 돌아 반대 방향으로 이어짐</td>
+<td>예측·기하 정합</td>
+<td>회전 중 추적 갱신의 연속성 개선</td>
+</tr>
+<tr>
+<td>거절 구간이 정상 궤적처럼 이어지지 않음</td>
+<td>유효성·출력</td>
+<td>모르는 위치를 아는 것처럼 그리지 않음</td>
+</tr>
+<tr>
+<td>비교 경로의 겹침이 달라짐</td>
+<td>시각·원점·몸체 변환</td>
+<td>비교 기준 정렬 효과; 곧바로 추적 정확도 개선으로 세면 안 됨</td>
+</tr>
+<tr>
+<td><code>FINAL_ARRIVAL</code> 표시가 나중으로 이동</td>
+<td>영상 annotation</td>
+<td>수동 표시 시각 수정; 추적 계산이나 실제 도착 검출 변경 아님</td>
+</tr>
+</tbody>
+</table></div>
+<p>초기 조사에서는 header 시각·공통 기준 시각·센서 원점을 맞춘 비교 함수를 별도로 검토했다. 그러나 기존 wheel/FAST-LIO 비교 builder의 모든 경로가 엄밀한 공통 몸체 기준으로 재구현됐다고 일반화하면 안 된다. 당시 문서에도 개별 시작 자세·bag 기록 시각을 쓰는 비교의 한계를 남겼다. 수치 표에서 동일한 LiDAR header 목록을 확인한 것과, 모든 RViz 색상의 절대 오차 비교가 유효한 것은 다른 조건이다. [H1, H2]</p>
+<p>사용자가 지적한 ‘2~3단 남기고 도착’은 RViz의 <code>FINAL_ARRIVAL</code> 표시였다. 조사 결과 그것은 사람이 지정한 영상 시각에 가까운 LiDAR pose를 연결한 annotation이었고, 실제 Stair Supervisor가 내린 도착 판정이 아니었다. 후속 작업에서 표시 시각을 수정하고 수동 표식임을 명시했지만 <strong>녹색 추적 계산은 보존했다.</strong> [H3]</p>
+<p>따라서 이 자료에서는 다음 두 주장만 분리해서 할 수 있다. <strong>상대 측위가 더 일관되게 계산됐다</strong>는 것은 추적 기록의 근거가 있다. <strong>로봇 몸체가 마지막 단을 완전히 벗어났다는 자동 판단이 완성됐다</strong>는 것은 그 표시로 입증할 수 없다.</p>
+<h2 id="section-12">12. 원래 비교 도구에서 실제 Supervisor로 옮길 때 달라진 것</h2>
+<h3>12.1 같은 수학을 사용해도 실행 조건은 달라진다</h3>
+<p>원래 비교 도구는 파일을 순차 처리하며 CSV·BAG을 만들어 냈다. 실제 노드는 센서가 들어오는 동안 명령과 상태를 계속 처리해야 한다. 계산 때문에 명령 갱신이 멈추거나, 오래 걸린 결과가 최신 pose처럼 도착하면 곤란하다.</p>
+<p>그래서 후속 구현은 기존 Supervisor 안에서 추적 계산을 별도 worker process로 수행하고, 센서 콜백은 유한 크기의 입력 버퍼에 전달하도록 구성했다. ROS 운영 노드를 하나 더 추가한 것과는 다르지만, OS 계산 프로세스는 별도로 존재한다. [C8]</p>
+<p>측정 시각, 수신 시각, 계산 완료 시각, 마지막 유효 geometry 시각을 나눠 기록한다. 프로세스 reset에는 epoch를 사용해 reset 이전 계산 결과나 진입 anchor가 새 실행에 섞이지 않게 한다. 정합이 잠시 늦는 것과 실제 센서 단절도 제어 정책에서 구분할 수 있도록 상태를 제공한다.</p>
+<h3>12.2 측위와 제어의 연결은 별도 검증이다</h3>
+<p>추적기는 “현재 센서가 여기 있다”를 제공한다. Supervisor는 그 위치를 몸체 기준과 계단 경로 기준으로 옮긴 뒤 “중심선보다 왼쪽인가”, “계단참에 몸체가 들어왔는가”, “다음 계단을 향하는가”를 판단해야 한다.</p>
+<pre><code class="lang-text">센서 pose 추정
+  → 몸체 pose로 변환
+  → 계단 경로 좌표로 변환
+  → 횡방향·방향·진행 오차 계산
+  → 명령 계산
+  → 실제 로봇 응답
+  → 다시 센서로 관측
+</code></pre>
+<p>마지막 단계까지 연결돼야 폐루프 주행이다. BAG은 이미 기록된 로봇 움직임이므로, 우리가 나중에 계산한 보정 명령에 맞춰 과거 로봇이 새로 움직이지 않는다. BAG으로 보정 부호나 제약 발동은 검사할 수 있지만, 그 명령을 보냈을 때 실제로 중심이 유지되는지는 별도다.</p>
+<p>후속 오프라인 제어 평가에서는 두 시각 확인 BAG의 첫 4초는 후보 제약 안에 있었으나, 더 진행하면 13.80초·22.80초에 경계 제약에 걸렸다. 이는 <strong>좋아진 측위를 보존한 상태에서도 제어 경로의 좌표·구간 전환 조건이 맞지 않을 수 있음을 보여 준다.</strong> 추적 개선의 실패로 단정하거나, 반대로 모든 제어 조건을 풀어야 한다는 결론으로 확대하지 않는다. [H4]</p>
+<h3>12.3 문서 작성 시점의 적용 상태</h3>
+<ul>
+<li>녹색 추적 기준 버전은 비교 도구에 적용·보존돼 있다.</li>
+<li>같은 추적 핵심을 쓰는 Supervisor용 구현과 원본 BAG 회귀 결과도 존재한다.</li>
+<li>직전 작업의 단일 구간 시험 추가 수정과 후보 경로는 오프라인 검증용 별도 사본이며 운영 설정에 배포하지 않았다.</li>
+<li>TRON은 사용자 설명상 꺼져 있다. 이 문서 작성에서 로봇 연결·주행·설정 변경은 하지 않았다.</li>
+</ul>
+<p>과거 보고서의 ‘Supervisor 미연동’은 당시 작업 상태다. 현재는 연동 코드가 있으나 <strong>실기 전체 층간 주행 완료가 검증된 상태는 아니다.</strong> 시점이 다른 문장의 의미를 합쳐 “처음부터 전부 구현됐다”거나 “지금도 비교 도구밖에 없다”고 설명하지 않는다.</p>
+<h2 id="section-13">13. 아직 구현하지 않았거나 입증하지 못한 것</h2>
+<div class="table-scroll"><table>
+<thead><tr>
+<th>항목</th>
+<th>현재 상태</th>
+<th>왜 중요한가</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>점별 deskew</td>
+<td>이번 추적기에는 없음</td>
+<td>한 packet 안에서 회전·이동하면 점마다 촬영 자세가 다를 수 있음</td>
+</tr>
+<tr>
+<td>gyro bias·온도 보정</td>
+<td>없음</td>
+<td>짧은 적분에도 오차가 있고 유실 시간이 길면 영향 증가</td>
+</tr>
+<tr>
+<td>IMU 가속도 기반 위치·속도 상태</td>
+<td>사용하지 않음</td>
+<td>관측이 빈약한 구간에서 관성 이동 예측의 도움을 받지 못함</td>
+</tr>
+<tr>
+<td>시간 offset 온라인 추정</td>
+<td>없음</td>
+<td>header를 쓴다는 것만으로 두 센서 시계가 물리적으로 동기화됐다고 보증하지 않음</td>
+</tr>
+<tr>
+<td>LiDAR–IMU 이동 성분의 동역학적 보상</td>
+<td>이번 예측에는 없음</td>
+<td>회전축과 센서 위치가 다를 때 더 완전한 운동 모델에는 영향</td>
+</tr>
+<tr>
+<td>초기 정지 상태 인증</td>
+<td>완성된 검출기 없음</td>
+<td>초기 가속도 중앙값에 동적 가속도가 섞일 가능성</td>
+</tr>
+<tr>
+<td>기하 퇴화 탐지</td>
+<td>별도 Hessian/관측가능성 분석 없음</td>
+<td>비슷한 벽·계단에서 내부 점수는 좋지만 특정 방향 위치가 불확실할 수 있음</td>
+</tr>
+<tr>
+<td>전역 재측위·loop closure</td>
+<td>없음</td>
+<td>큰 유실 또는 장거리 누적 오차를 자동으로 되돌리는 시스템이 아님</td>
+</tr>
+<tr>
+<td>absolute building/floor pose</td>
+<td>외부 anchor 필요</td>
+<td>local 좌표만으로 층 번호나 건물 지도 위치를 알 수 없음</td>
+</tr>
+<tr>
+<td>실제 몸체 위치 정확도</td>
+<td>외부 실측 정답 없음</td>
+<td>cm 단위 정확도·최악 오차를 인증할 수 없음</td>
+</tr>
+<tr>
+<td>실제 주행·균형·대기 성능</td>
+<td>UNVERIFIED</td>
+<td>위치를 아는 것과 구동계가 원하는 힘/속도로 반응하는 것은 다름</td>
+</tr>
+</tbody>
+</table></div>
+<p>이 목록은 알고리즘을 당장 전부 확장하라는 뜻이 아니다. <strong>이번 개선으로 무엇을 얻었고 무엇은 얻지 않았는지 명확히 하기 위한 경계</strong>다. 예를 들어 deskew는 필요성이 확인됐을 때 기준 BAG 회귀와 별도 실제 오차 평가를 거쳐 추가해야 하며, 이름만 고급스러운 기능을 넣는다고 자동으로 나아지지 않는다.</p>
+<p>특히 ‘예측된 변환이 있다’와 ‘현재 측정이 유효하다’를 계속 분리해야 한다. 장시간 관측이 없는데 예측값을 계속 발행하면 화면은 부드러워질 수 있어도, 이번에 고친 오래된 위치의 최신 측정 위장 문제가 다른 형태로 돌아온다.</p>
+<h2 id="section-14">14. 구현을 이해하기 위한 의사코드</h2>
+<p>아래는 흐름을 설명하기 위한 축약이다. 실제 ROS 실행 스크립트나 완전한 예외 처리가 아니다.</p>
+<pre><code class="lang-python"># 최초에 준비: 회전 보정, 설정, 빈 local map
+R_lidar_imu = inverse(configured_R_imu_lidar)
+last_accepted_pose = None
+last_accepted_stamp = None
+
+for scan in selected_lidar_packets:
+    t = scan.header_stamp
+    points = filter_and_voxelize(scan.xyz)
+
+    if last_accepted_pose is None:
+        # streaming에서는 필요한 표본이 실제 도착해야 진행
+        up = median_acceleration_in_lidar_axes(t - 0.5, t + 0.5)
+        pose = align_up_to_world_Z(up)
+        save_initial_scan(pose, points)
+        publish_status("BOOTSTRAP", geometry_valid=False)
+        last_accepted_pose, last_accepted_stamp = pose, t
+        continue
+
+    prediction = copy(last_accepted_pose)
+    if imu_interval_is_supported(last_accepted_stamp, t):
+        prediction.rotation *= relative_gyro_rotation(last_accepted_stamp, t)
+    # 지원되지 않으면 마지막 관측 자세를 초기값으로 기하 복구 시도
+
+    candidate = GICP(points, recent_accepted_map, initial=prediction)
+    correction = inverse(prediction) @ candidate.pose
+
+    if accepted_by_fitness_and_innovation(candidate, correction):
+        last_accepted_pose = candidate.pose
+        last_accepted_stamp = t
+        add_scan_to_local_map(candidate.pose, points)
+        publish_valid_measurement(candidate.pose, measured_at=t)
+    else:
+        publish_invalid_status(reason=candidate.reason)
+        # 새 유효 odometry를 만들지 않고 지도도 갱신하지 않음
+</code></pre>
+<p>실제 코드는 빈 점군, IMU 표본 수·순서·공백, 행렬 유효성, 초기화 지원, worker reset 등을 추가로 처리한다. 오프라인 도구와 스트리밍 코드의 초기화 출력·상태 이름 차이는 앞 절의 설명을 따른다.</p>
+<h2 id="section-15">15. 향후 수정할 때 보존해야 할 검증 기준</h2>
+<ol>
+<li><strong>같은 입력 프레임인가:</strong> 기존·수정 결과의 header 시각 목록을 먼저 비교한다. 잘 된 부분만 다르게 잘라 놓고 개선율을 계산하지 않는다.</li>
+<li><strong>같은 좌표 기준인가:</strong> 센서/몸체 원점, IMU 회전 방향, local map과 stair profile anchor를 구분한다. 중력 방향까지 임의로 없애지 않는다.</li>
+<li><strong>회전이 실제로 추적되는가:</strong> 고정된 세계 좌표 회전으로 그림을 바로 세운 효과와 시간에 따른 상대 회전 추적을 구분한다.</li>
+<li><strong>실패가 보이는가:</strong> 강제 거절·IMU 누락·worker reset 후 오래된 pose가 새 유효 측정으로 발행되지 않는지 검사한다.</li>
+<li><strong>복구가 되는가:</strong> 기하 갱신이 재수락되면 새 시각에서 gyro 예측을 재개하는지 확인한다. 실패를 영구 latch로 바꾸지 않는다.</li>
+<li><strong>정확도 기준이 독립적인가:</strong> 내부 fitness, 수락률, 입력 gyro, 동일 알고리즘 재계산만으로 실제 위치 정확도를 주장하지 않는다.</li>
+<li><strong>제어 시험인가, 기록 평가인가:</strong> 기록 궤적에 가상 명령을 계산하는 작업과 명령에 반응하는 실기 폐루프를 구분한다.</li>
+<li><strong>기준 버전과 비교 가능한가:</strong> 현재 보존한 추적 핵심·보정 파일·spec·의존성 해시와 변경점을 기록한다.</li>
+</ol>
+<p>이번 문서의 결론은 <strong>검증 가능한 초기화·회전 예측·유효성 처리로 기존 GICP의 추적을 개선했다</strong>는 것이다. 이 결과를 가장 잘 보존하는 방법도 이름이 다른 알고리즘을 계속 바꾸는 것이 아니라, 위 계약과 수치가 유지되는지 확인하면서 남은 경로·제어 문제를 따로 해결하는 것이다.</p>
+<h2 id="section-16">부록 A. 설정값은 무엇을 제한하는가</h2>
+<div class="table-scroll"><table>
+<thead><tr>
+<th>설정</th>
+<th style="text-align:right">기준값</th>
+<th>의미</th>
+<th>혼동하면 안 되는 것</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>voxel size</td>
+<td style="text-align:right">0.20m</td>
+<td>점군 축소 격자</td>
+<td>실제 로봇 위치의 양자화/정확도</td>
+</tr>
+<tr>
+<td>correspondence distance</td>
+<td style="text-align:right">0.80m</td>
+<td>대응점 탐색 거리</td>
+<td>충돌 여유·문틀 inflation</td>
+</tr>
+<tr>
+<td>max iterations</td>
+<td style="text-align:right">30</td>
+<td>정합 반복 상한</td>
+<td>정답 수렴 인증</td>
+</tr>
+<tr>
+<td>min fitness</td>
+<td style="text-align:right">0.35</td>
+<td>source 대응 비율 하한</td>
+<td>성공 확률 35%</td>
+</tr>
+<tr>
+<td>translation innovation</td>
+<td style="text-align:right">0.50m</td>
+<td>예측 대비 이동 보정 상한</td>
+<td>허용 주행 거리 또는 지도 오차 인증</td>
+</tr>
+<tr>
+<td>rotation innovation</td>
+<td style="text-align:right">0.35rad</td>
+<td>예측 대비 회전 보정 상한</td>
+<td>총 회전 허용각 20°</td>
+</tr>
+<tr>
+<td>local map scans</td>
+<td style="text-align:right">15</td>
+<td>수락 scan 보관 수</td>
+<td>15개의 계단/고정된 3초</td>
+</tr>
+<tr>
+<td>frame step</td>
+<td style="text-align:right">2</td>
+<td>packet 선택 비율</td>
+<td>모든 환경에서 고정된 5Hz 보장</td>
+</tr>
+<tr>
+<td>point range</td>
+<td style="text-align:right">0.5~20m</td>
+<td>사용할 점의 거리 범위</td>
+<td>장애물 안전거리</td>
+</tr>
+<tr>
+<td>IMU max gap</td>
+<td style="text-align:right">0.03초</td>
+<td>gyro 적분 구간 지원 검사</td>
+<td>전체 시스템의 정지 명령</td>
+</tr>
+<tr>
+<td>gravity half window</td>
+<td style="text-align:right">0.5초</td>
+<td>초기 표본 선택 반폭</td>
+<td>이미 정지했음을 증명하는 시간</td>
+</tr>
+<tr>
+<td>PREDICTED horizon</td>
+<td style="text-align:right">0.5초</td>
+<td>오프라인 진단 이름 구분</td>
+<td>그 시간 동안 측정이 유효하다는 보증</td>
+</tr>
+</tbody>
+</table></div>
+<p>이 수치들은 측위 처리 기준이다. 그 자체에 실기 safety constraint로서 KEEP 판정을 내리지 않는다. 이번 문서는 기존 값의 의미를 설명하며, 운용 중 로봇의 제약이나 속도를 변경하지 않는다.</p>
+<h2 id="section-17">부록 B. 주요 주장과 증거의 강도</h2>
+<div class="table-scroll"><table>
+<thead><tr>
+<th>주장</th>
+<th>등급</th>
+<th>범위</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>우세 평면의 법선을 +Z에 맞추던 코드가 있었다</td>
+<td>OBSERVED</td>
+<td>보존한 수정 전 소스</td>
+</tr>
+<tr>
+<td>당시 우세 평면이 벽이었다</td>
+<td>INFERRED</td>
+<td>약 89° 기울기와 IMU 방향의 불일치에서 해석</td>
+</tr>
+<tr>
+<td>gyro 예측을 추가한 후보에서 해당 추적 유실이 사라졌다</td>
+<td>OBSERVED</td>
+<td>같은 회귀 구간의 분리 실험</td>
+</tr>
+<tr>
+<td>IMU 축 보정값의 물리적 정확성이 인증됐다</td>
+<td>UNVERIFIED</td>
+<td>설정 동일성은 사용자 확인, 정확도 실측은 없음</td>
+</tr>
+<tr>
+<td>GICP에서 새로운 정합 알고리즘으로 교체했다</td>
+<td>해당 없음</td>
+<td>실제로는 GICP를 유지</td>
+</tr>
+<tr>
+<td>같은 세 BAG에서 전체 추적 갱신이 수락됐다</td>
+<td>OBSERVED</td>
+<td>초기화 제외 1,304/1,304</td>
+</tr>
+<tr>
+<td>실제 위치 오차가 RMSE 약 8cm와 같다</td>
+<td>입증되지 않음</td>
+<td>대응점 잔차와 위치 오차는 다른 지표</td>
+</tr>
+<tr>
+<td>FAST-LIO 발산 원인을 이번에 확정·수정했다</td>
+<td>UNVERIFIED</td>
+<td>별도 측위 경로를 개선한 작업</td>
+</tr>
+<tr>
+<td>이번 방식은 표준적인 설계 요소를 사용한다</td>
+<td>출처 확인</td>
+<td>ICP 초기값·관성 예측 사용의 공개 구현 선례</td>
+</tr>
+<tr>
+<td>실제 계단 완주·중심 유지가 보장된다</td>
+<td>UNVERIFIED</td>
+<td>제어 경로 및 실기 폐루프 검증 필요</td>
+</tr>
+</tbody>
+</table></div>
+<p>과거 원인 분석의 이중 영향 평가도 보존한다. 우세 평면 초기화 오류는 Safety S1 / Mobility M2, 거절 측정의 최신 출력과 추적 고착은 S2 / M3, 비교 시각·원점 불일치는 S1 / M2였다. 이는 당시 정의한 잠재 영향 점수이며 실제 사고 발생이나 이번 문서의 새 실기 판정을 뜻하지 않는다. 자세한 척도는 H1에 있다.</p>
+<h2 id="section-18">부록 C. 로컬 근거와 원 자료</h2>
+<p>아래 자료는 문서 작성 중 읽은 실제 코드·기록이다. 과거 보고서의 Git 상태·배포 여부·미완료 목록은 <strong>그 보고서가 작성된 당시의 상태</strong>로 읽어야 한다.</p>
+<h3>실험·수치 기록</h3>
+<ul>
+<li><strong>H1 — 발견 과정과 원인 분리:</strong> <a href="../stair-tracking-repair-20260921/REPORT.md">계단 회전 추적 수정 보고서</a>, <a href="../stair-tracking-repair-20260921/configured-metrics.json">설정 적용 수치</a>. 초기 축 일치 가정은 같은 디렉터리 <code>metrics.json</code>·<code>results/</code>에 보존.</li>
+<li><strong>H2 — 실제 비교 도구 적용:</strong> <a href="../stair-tracking-fix-20260921/REPORT.md">수정 적용 보고서</a>.</li>
+<li><strong>H3 — 동결한 기준 버전:</strong> <a href="../stair-tracking-baseline-20260921/REPORT.md">baseline 보고서</a>, <a href="../stair-tracking-baseline-20260921/baseline.json">정확한 수치·해시</a>, <a href="../stair-tracking-baseline-20260921/runtime-versions.json">의존성 버전</a>.</li>
+<li><strong>H4 — 최신 오프라인 검증:</strong> <a href="../stair-lidar-commissioning-20260921/offline-validation/REPORT.md">제어·실시간 재생·회귀 보고서</a>. 141개 소프트웨어 테스트 통과는 실측 위치 정확도 시험 141회를 뜻하지 않는다.</li>
+<li><strong>H5 — 무조작 회전 교차 확인:</strong> <a href="../stair-lidar-commissioning-20260921/entry-drift-check.md">원본 점군 직접 비교 기록</a>.</li>
+</ul>
+<h3>구현 위치</h3>
+<ul>
+<li><strong>C1 — 추적 상태·보정 로더·실시간 엔진:</strong> <a href="../../../src/stair_supervisor/src/stair_supervisor/lidar_tracking.py" title="소스 62행 참조">lidar_tracking.py</a>, <code>TrackingEngine.process</code>는 91행에서 시작.</li>
+<li><strong>C2 — 초기 중력·gyro·GICP 핵심:</strong> <a href="../../../src/stair_supervisor/src/stair_supervisor/lidar_tracking_core.py" title="소스 112행 참조">lidar_tracking_core.py</a>, <code>ImuRotation</code> 138행, <code>register_scan_to_map</code> 194행.</li>
+<li><strong>C3 — 수정 전 보존본:</strong> <a href="/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/original/registration_core.py" title="소스 103행 참조">평면 초기화</a>, <a href="/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/before/process_bag.py" title="소스 183행 참조">거절 뒤에도 출력하던 처리</a>.</li>
+<li><strong>C4 — 동결한 오프라인 출력 처리:</strong> <a href="/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-baseline-20260921/source-snapshot/process_bag.py" title="소스 195행 참조">process_bag.py</a>.</li>
+<li><strong>C5 — ROS 발행·유효성:</strong> <a href="../../../src/stair_supervisor/src/stair_supervisor/ros_lidar.py" title="소스 214행 참조">ros_lidar.py</a>.</li>
+<li><strong>C6 — 설치 FAST-LIO의 상태·초기화·관측:</strong> <a href="/home/m3tron/catkin_ws/src/FAST_LIO/include/use-ikfom.hpp" title="소스 12행 참조">state_ikfom 정의</a>, <a href="/home/m3tron/catkin_ws/src/FAST_LIO/src/IMU_Processing.hpp" title="소스 166행 참조">IMU 초기화</a>, <a href="/home/m3tron/catkin_ws/src/FAST_LIO/src/laserMapping.cpp" title="소스 711행 참조">유효 관측점/Jacobian</a>. 점별 왜곡 보정은 <code>IMU_Processing.hpp</code>의 <code>UndistortPcl</code> 참조.</li>
+<li><strong>C7 — 실제 launch의 설정 덮어쓰기:</strong> <a href="/home/m3tron/Desktop/TRON1_Control/tron1-control-center/sensor_integration/launch/fast_lio.launch" title="소스 21행 참조">fast_lio.launch</a>, <a href="/home/m3tron/catkin_ws/src/FAST_LIO/config/mid360.yaml" title="소스 16행 참조">YAML 초기 보정값</a>.</li>
+<li><strong>C8 — 별도 계산 프로세스:</strong> <a href="../../../src/stair_supervisor/src/stair_supervisor/lidar_process.py" title="소스 127행 참조">lidar_process.py</a>.</li>
+</ul>
+<h3>외부 원 논문·공식 구현</h3>
+<ul>
+<li>ICP 설명과 point-to-point/point-to-plane 비교: <a href="https://www.open3d.org/docs/release/tutorial/pipelines/icp_registration.html">Open3D 공식 튜토리얼</a>. 웹의 release 문서는 0.19 계열이며, 실제 사용 버전은 0.18.0으로 따로 확인했다.</li>
+<li>GICP의 정의·목적함수: <a href="https://www.robots.ox.ac.uk/~avsegal/resources/papers/Generalized_ICP.pdf">Segal, Hähnel, Thrun — Generalized-ICP</a>.</li>
+<li>사용 버전의 GICP 구현: <a href="https://raw.githubusercontent.com/isl-org/Open3D/v0.18.0/cpp/open3d/pipelines/registration/GeneralizedICP.cpp">Open3D v0.18.0 GeneralizedICP.cpp</a>.</li>
+<li>사용 버전의 fitness/RMSE 정의: <a href="https://raw.githubusercontent.com/isl-org/Open3D/v0.18.0/cpp/open3d/pipelines/registration/Registration.cpp">Open3D v0.18.0 Registration.cpp</a>.</li>
+<li>FAST-LIO의 융합 구조: <a href="https://arxiv.org/abs/2010.08196">FAST-LIO 원 논문</a>.</li>
+<li>FAST-LIO2의 범위: <a href="https://arxiv.org/abs/2107.06829">FAST-LIO2 원 논문</a>, <a href="https://github.com/hku-mars/FAST_LIO">저자 공식 저장소</a>.</li>
+<li>관성/odom 예측을 정합 초기값에 사용하는 선례: <a href="https://raw.githubusercontent.com/koide3/hdl_graph_slam/master/apps/scan_matching_odometry_nodelet.cpp">hdl_graph_slam의 scan matching 구현</a>.</li>
+</ul>
+<p>문서 작성에서는 설명·그림·근거 목록만 생성했다. 원본 BAG, 추적 코드, ROS 설정, 기존 운영 worktree는 수정하지 않았다.</p>
+</article></main></body></html>

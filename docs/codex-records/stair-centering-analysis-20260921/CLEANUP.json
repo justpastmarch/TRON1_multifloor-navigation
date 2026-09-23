@@ -1,0 +1,64 @@
+{
+  "completed_utc": "2026-09-20T16:38:36.015983+00:00",
+  "scope": "this follow-up analysis only; no original/source cleanup",
+  "temporary_paths_removed": [
+    "_scratch/blind-report-revised.md",
+    "_scratch/blind-report.md",
+    "_scratch/alignment-run.log",
+    "_scratch/matplotlib/fontlist-v310.json"
+  ],
+  "retained_artifacts": "ARTIFACTS.json; sampled clouds/images are deliberate reproducibility outputs, not temporary files",
+  "processes": [
+    {
+      "purpose": "development extraction",
+      "session_id": 90332,
+      "status": "completed"
+    },
+    {
+      "purpose": "full extraction",
+      "session_id": 12233,
+      "status": "completed"
+    },
+    {
+      "purpose": "initial geometry evaluation",
+      "session_id": 55804,
+      "status": "interrupted and exited 130; repeated NPZ decompression fixed; geometry algorithm unchanged"
+    },
+    {
+      "purpose": "completed geometry evaluation",
+      "session_id": 65310,
+      "status": "completed"
+    },
+    {
+      "purpose": "robustness checks",
+      "session_id": 47885,
+      "status": "completed"
+    },
+    {
+      "purpose": "figures",
+      "session_ids": [
+        57938,
+        95404
+      ],
+      "status": "completed"
+    },
+    {
+      "purpose": "alignment diagnostic",
+      "session_id": 42329,
+      "status": "completed"
+    }
+  ],
+  "ros_initialization_replay_publish": false,
+  "robot_or_external_device_requests": false,
+  "git_before": {
+    "head": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+    "status": ""
+  },
+  "git_after": {
+    "head": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+    "status": ""
+  },
+  "git_difference": false,
+  "original_stat_unchanged": 21,
+  "new_full_original_sha256_scan": false
+}

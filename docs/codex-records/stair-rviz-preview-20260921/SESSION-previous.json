@@ -1,0 +1,28 @@
+{
+  "status": "CLOSED",
+  "started_utc": "2026-09-20T18:19:37.362215+00:00",
+  "run": "105713",
+  "launcher_pid": 387525,
+  "runtime": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-rviz-preview-20260921/runtime-na2rzy07",
+  "ros_master_uri": "http://127.0.0.1:54269",
+  "args": [
+    "bash",
+    "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-rviz-preview-20260921/runtime-na2rzy07/replay.sh",
+    "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_105713.bag",
+    "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/105713/lidar_registration.bag",
+    "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/105713/comparison.bag",
+    "12",
+    "77"
+  ],
+  "source_script": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/replay_rviz.sh",
+  "runtime_adjustments": "log locations and script root only",
+  "cleanup": "automatic after RViz closes",
+  "robot_command_topics": [],
+  "process_group": 387527,
+  "rviz_pids": [
+    387609
+  ],
+  "temporary_artifacts_removed": true,
+  "cleanup_observed_utc": "2026-09-20T18:49:40.963534+00:00",
+  "closure_note": "Previous preview processes were already absent; termination cause not established"
+}

@@ -67,7 +67,9 @@ class RosEvidenceRuntime(RosEvidenceCallbacks):
         tf_buffer: tf2_ros.Buffer,
         policy: TransitionPolicy,
         clock: Callable[[], float] = time.monotonic,
+        require_initial_localization: bool = False,
     ) -> None:
+        self.require_initial_localization = require_initial_localization
         self.condition = threading.Condition()
         self.epoch = 0
         self.active_epoch: Optional[int] = None

@@ -1,0 +1,22 @@
+{
+  "at_utc": "2026-09-23T01:09:48.947072+00:00",
+  "counts": {
+    "/tron/wheel_odom_raw": 538,
+    "/livox/imu": 1094,
+    "/scan": 54,
+    "/livox/lidar": 29
+  },
+  "goals_sent": 0,
+  "supervisor": {
+    "state": 3,
+    "connected": false,
+    "detail": "twist send failed after watchdog budget"
+  },
+  "tracking": {
+    "state": "DEGRADED",
+    "geometry_valid": false,
+    "geometry_age_sec": 60.93728032213403,
+    "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337",
+    "worker_error": ""
+  }
+}

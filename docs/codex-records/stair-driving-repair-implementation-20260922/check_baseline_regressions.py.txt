@@ -1,0 +1,11 @@
+from pathlib import Path
+import sys,json,unittest
+sys.path.extend(["/usr/local/lib/python3.8/dist-packages","/home/m3tron/.local/lib/python3.8/site-packages","/usr/lib/python3/dist-packages"])
+HERE=Path(__file__).resolve().parent
+sys.path[:0]=[str(HERE/'before/src/stair_supervisor/src'),str(HERE/'candidate/src/stair_supervisor/test')]
+names=[
+ 'test_stair_repair.ConnectedGeometryTest.test_body_straddling_flight_and_landing_is_supported',
+ 'test_stair_repair.ConnectedGeometryTest.test_complete_phase_does_not_validate_an_unsent_old_forward_command']
+result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromNames(names))
+(HERE/'baseline-regressions.json').write_text(json.dumps(dict(tests=result.testsRun,expected_failures=2,failures=[(str(t),e) for t,e in result.failures],errors=[(str(t),e) for t,e in result.errors]),indent=2))
+raise SystemExit(0 if len(result.failures)==2 and not result.errors else 1)

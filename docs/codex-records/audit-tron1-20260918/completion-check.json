@@ -1,0 +1,80 @@
+{
+  "status": "AUDIT_COMPLETE",
+  "observed_utc": "2026-09-18T05:57:27.491412+00:00",
+  "audit_snapshot_utc": "2026-09-18T05:57:27.131751+00:00",
+  "scope": "Read-only repository audit; scenario adjudication, not hardware certification or fixes",
+  "checks": {
+    "inventory_reconciled": true,
+    "unread_zero": true,
+    "states_agree_with_integrity": true,
+    "all_15_scenarios_adjudicated": true,
+    "major_constraints_reconciled": true,
+    "keep_requires_no_unproven_exception": true,
+    "findings_evidence_and_scores": true,
+    "separate_verdicts": true,
+    "temporary_artifacts_removed": true,
+    "git_delta_reported": true,
+    "no_unreviewed_final_additions": true,
+    "no_other_baseline_file_changes": true,
+    "tests_reconciled": true,
+    "eleven_report_sections": true,
+    "reference_checks_passed": true
+  },
+  "errors": [],
+  "inventory_count": 5523,
+  "states": {
+    "READ": 761,
+    "METADATA_ONLY": 1013,
+    "EXCLUDED": 3749,
+    "UNREAD": 0
+  },
+  "initial_inventory_count": 5509,
+  "reviewed_concurrent_additions": 14,
+  "finding_count": 21,
+  "constraint_count": 67,
+  "constraint_decisions": {
+    "NARROW": 15,
+    "UNVERIFIED": 21,
+    "TUNE": 24,
+    "MAKE_RECOVERABLE": 7
+  },
+  "constraint_source_hashes_rechecked": 52,
+  "scenario_status_counts": {
+    "CONDITIONAL": 6,
+    "UNVERIFIED": 2,
+    "BLOCKED": 7
+  },
+  "tests": [
+    {
+      "receipt": "selected-unit-results.json",
+      "run": 10,
+      "failed": 0,
+      "errors": 0
+    },
+    {
+      "receipt": "selected-contract-results.json",
+      "run": 6,
+      "failed": 1,
+      "errors": 0
+    },
+    {
+      "receipt": "resume2-unit-results.json",
+      "run": 60,
+      "failed": 0,
+      "errors": 0
+    },
+    {
+      "receipt": "selected-contracts-resume4.json",
+      "run": 12,
+      "failed": 2,
+      "errors": 0
+    }
+  ],
+  "tests_run": 88,
+  "tests_passed": 85,
+  "tests_failed": 3,
+  "hardware_executions": 0,
+  "safety_verdict": "BLOCKED",
+  "mobility_verdict": "BLOCKED",
+  "report_sha256": "c60bd5d3697928a1446e0f7bb945562d37a8391a4aafe1665c5b73ee0b58c326"
+}

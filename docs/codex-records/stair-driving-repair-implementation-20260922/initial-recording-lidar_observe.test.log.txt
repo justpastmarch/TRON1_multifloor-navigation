@@ -1,0 +1,31 @@
+[INFO] [1790083587.521346]: LiDAR observation only: no robot command transport
+... logging to /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/ros-logs/rostest-m3tron-All-Series-366004.log
+[ROSUNIT] Outputting test results to /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/ros-home/test_results/stair_supervisor/rostest-test_lidar_observe.xml
+[Testcase: testlidar_observation_only] ... ok
+
+[ROSTEST]-----------------------------------------------------------------------
+
+[stair_supervisor.rosunit-lidar_observation_only/test_sensor_tracking_without_any_robot_command_surface][FAILURE]
+0 not greater than or equal to 3
+  File "/usr/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/lib/python3.8/unittest/case.py", line 676, in run
+    self._callTestMethod(testMethod)
+  File "/usr/lib/python3.8/unittest/case.py", line 633, in _callTestMethod
+    method()
+  File "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/test/test_lidar_observe_ros.py", line 39, in test_sensor_tracking_without_any_robot_command_surface
+    self.assertGreaterEqual(len(observations), 3)
+  File "/usr/lib/python3.8/unittest/case.py", line 1316, in assertGreaterEqual
+    self.fail(self._formatMessage(msg, standardMsg))
+  File "/usr/lib/python3.8/unittest/case.py", line 753, in fail
+    raise self.failureException(msg)
+--------------------------------------------------------------------------------
+
+
+SUMMARY
+[1;31m * RESULT: FAIL[0m
+ * TESTS: 1
+ * ERRORS: 0
+[1;31m * FAILURES: 1[0m
+
+rostest log file is in /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/ros-logs/rostest-m3tron-All-Series-366004.log

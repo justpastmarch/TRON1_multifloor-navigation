@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
+import hashlib
 import math
 from pathlib import Path
 import re
@@ -100,9 +101,9 @@ def _error(path: Path, field: str, detail: str) -> StairConfigurationError:
     return StairConfigurationError(path.name, field, detail)
 
 
-def _read(path: Path) -> Dict[str, YamlValue]:
+def _read(path: Path, *, content=None) -> Dict[str, YamlValue]:
     try:
-        raw = yaml.safe_load(path.read_text(encoding="utf-8"))
+        raw = yaml.safe_load(path.read_text(encoding="utf-8") if content is None else content)
     except (OSError, UnicodeError, yaml.YAMLError) as error:
         detail = "YAML parse error" if isinstance(error, yaml.YAMLError) else str(error)
         raise _error(path, "", detail) from None
@@ -258,3 +259,48 @@ def _load_robot(root: Path) -> RobotConfiguration:
 def load_stair_configuration(root: Path) -> StairSupervisorConfiguration:
     """Parse all stair-supervisor-owned YAML files into immutable values."""
     return StairSupervisorConfiguration(_load_profiles(root), _load_robot(root))
+
+
+@dataclass(frozen=True)
+class LidarConfiguration:
+    mode: str
+    observe_only: bool
+    root: Path
+    document: dict
+    source_path: str = ""
+    source_sha256: str = ""
+
+
+def load_lidar_configuration(path: Path, mode: str = "off", observe_only: bool = True) -> LidarConfiguration:
+    """Optional extension; legacy startup never imports numerical libraries."""
+    if mode not in ("off", "observe", "control"):
+        raise _error(path, "mode", "expected off, observe or control")
+    if type(observe_only) is not bool:
+        raise _error(path, "observe_only", "expected boolean")
+    if mode == "off":
+        return LidarConfiguration(mode, observe_only, path.parent, {})
+    try:
+        content = path.read_bytes()
+    except OSError as error:
+        raise _error(path, "", str(error)) from None
+    document = _read(path, content=content)
+    configured = _header(document, {"calibration", "base_from_lidar", "tracking", "routes"}, path)
+    _string(document["calibration"], path, "calibration")
+    tracking = _mapping(document["tracking"], path, "tracking")
+    keys = {"frame_step", "local_map_scans", "max_range_m", "imu_max_gap_s", "gravity_half_window_s",
+            "imu_buffer_sec", "imu_capacity", "queue_capacity", "imu_wait_sec"}
+    _keys(tracking, keys, path, "tracking")
+    for key in keys:
+        _positive(tracking, key, path, "tracking")
+    for key in ("frame_step", "local_map_scans", "imu_capacity", "queue_capacity"):
+        if type(tracking[key]) is not int:
+            raise _error(path, "tracking." + key, "expected integer")
+    if tracking["local_map_scans"] < 2 or tracking["imu_capacity"] < 2:
+        raise _error(path, "tracking", "map and IMU need at least two samples")
+    if tracking["imu_buffer_sec"] <= 2 * tracking["gravity_half_window_s"]:
+        raise _error(path, "tracking.imu_buffer_sec", "must cover gravity window")
+    _list(document["routes"], path, "routes")
+    if mode == "control" and not configured:
+        raise _error(path, "configured", "LiDAR control requires commissioned geometry/response; observe remains available")
+    return LidarConfiguration(mode, observe_only, path.parent, document,
+                              str(path.resolve()), hashlib.sha256(content).hexdigest())

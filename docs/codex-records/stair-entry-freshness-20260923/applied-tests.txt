@@ -1,0 +1,33 @@
+test_configuration_mismatch_still_fails_before_later_good_sample (test_stair_readiness.EntryFreshnessTest) ... ok
+test_fresh_first_status_returns_without_wait_notice (test_stair_readiness.EntryFreshnessTest) ... ok
+test_missing_topic_times_out_and_unregisters (test_stair_readiness.EntryFreshnessTest) ... ok
+test_nonfinite_future_and_boolean_age_never_admit (test_stair_readiness.EntryFreshnessTest) ... ok
+test_old_first_status_waits_for_next_fresh_status_on_one_subscription (test_stair_readiness.EntryFreshnessTest) ... ok
+test_only_stale_status_times_out_instead_of_relaxing_limit (test_stair_readiness.EntryFreshnessTest) ... ok
+test_shutdown_exits_without_waiting_for_deadline (test_stair_readiness.EntryFreshnessTest) ... ok
+test_time_spent_validating_cannot_bypass_timeout (test_stair_readiness.EntryFreshnessTest) ... ok
+test_time_spent_validating_counts_toward_freshness (test_stair_readiness.EntryFreshnessTest) ... ok
+test_worker_fault_is_not_retried_as_a_timestamp_delay (test_stair_readiness.EntryFreshnessTest) ... ok
+test_bound_test_request_is_consumed_only_by_its_own_goal (test_stair_readiness.ReadinessTest) ... ok
+test_client_checks_loaded_configuration_and_control_mode (test_stair_readiness.ReadinessTest) ... ok
+test_command_filter_cannot_jump_outside_acceleration_window (test_stair_readiness.ReadinessTest) ... ok
+test_concurrent_duplicate_ticket_executes_once_and_exception_is_not_finished (test_stair_readiness.ReadinessTest) ... ok
+test_display_cloud_uses_matching_stamp_and_epoch_only (test_stair_readiness.ReadinessTest) ... ok
+test_expired_bound_ticket_cannot_fall_back_to_normal_traversal (test_stair_readiness.ReadinessTest) ... ok
+test_field_configuration_has_measured_dimensions_and_useful_command_units (test_stair_readiness.ReadinessTest) ... ok
+test_forward_boundary_can_reduce_translation_without_erasing_margin (test_stair_readiness.ReadinessTest) ... ok
+test_forward_floor_does_not_bypass_slew (test_stair_readiness.ReadinessTest) ... ok
+test_frame_capture_uses_new_scan_without_reseeding_body_position (test_stair_readiness.ReadinessTest) ... ok
+test_landing_approach_does_not_reintroduce_a_margin_at_internal_join (test_stair_readiness.ReadinessTest) ... ok
+test_later_turn_requires_flat_landing_and_external_edges_still_fail (test_stair_readiness.ReadinessTest) ... ok
+test_manual_reference_preserves_gravity_and_measured_body_tilt (test_stair_readiness.ReadinessTest) ... ok
+test_pending_entry_preview_never_arms_or_consumes_reference (test_stair_readiness.ReadinessTest) ... ok
+test_archived_document_paths_do_not_relax_runtime_paths (test_process_boundary_contract.ProcessBoundaryContractTest) ... ok
+test_existing_operator_client_is_allowed_but_not_auto_launched (test_process_boundary_contract.ProcessBoundaryContractTest) ... ok
+test_rostest_process_boundary_harness_is_registered (test_process_boundary_contract.ProcessBoundaryContractTest) ... ok
+test_test_scope_ros_initializers_do_not_expand_deployed_inventory (test_process_boundary_contract.ProcessBoundaryContractTest) ... ok
+
+----------------------------------------------------------------------
+Ran 28 tests in 0.428s
+
+OK

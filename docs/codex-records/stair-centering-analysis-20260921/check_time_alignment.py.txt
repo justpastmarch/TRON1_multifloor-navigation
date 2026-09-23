@@ -1,0 +1,42 @@
+"""Post-review alignment sensitivity. Same geometry, new explicitly marked selection."""
+from pathlib import Path
+import json
+import numpy as np
+from compare_methods import main as compare
+from robustness_checks import read_traces
+OUT=Path(__file__).resolve().parent
+state=json.loads((OUT/'analysis-state.json').read_text())
+labels=json.loads((OUT/'rgb-stair-windows.json').read_text())['windows']
+mapped=[];issues=[];geometries={}
+for label in labels:
+    i=label['bag_index'];folder=OUT/'samples'/Path(state['inventory'][i]['path']).name
+    s=json.loads((folder/'summary.json').read_text());images=s['selected_images']
+    rt=np.array([x['record_t'] for x in images]);ht=np.array([x['header_t'] for x in images])
+    if len(rt)<2 or np.any(np.diff(rt)<=0) or np.any(np.diff(ht)<=0):
+        issues.append({'bag_index':i,'label':label['label'],'reason':'sampled RGB timestamps not strictly increasing or insufficient'});continue
+    start=float(np.interp(s['start']+label['start_s'],rt,ht)-s['start'])
+    end=float(np.interp(s['start']+label['end_s'],rt,ht)-s['start'])
+    if end<=start:
+        issues.append({'bag_index':i,'label':label['label'],'reason':'nonpositive remapped interval'});continue
+    row=dict(label);row.update(start_s=start,end_s=end,original_record_start_s=label['start_s'],original_record_end_s=label['end_s'])
+    mapped.append(row);geometries[i]=json.loads((folder/'geometry.json').read_text())
+(OUT/'header-aligned-windows.json').write_text(json.dumps({'method':'Diagnostic after primary evaluation. Interpolate each RGB record-time label boundary into RGB header-time using sampled frames; clamp at first/last RGB sample. Select LiDAR by header-time. Does not establish cross-sensor clock synchronization or contact phase truth. Geometry and acceptance parameters unchanged.','windows':mapped,'issues':issues},indent=2))
+compare(aligned=True)
+rows=[r for r in read_traces('header-aligned-traces.csv') if r['split']=='evaluation']
+def summary(rs):
+    dual=sum(r['mode']=='DUAL' for r in rs);v1=sum(r['mode']!='NONE' for r in rs);v2=0
+    for r in rs:
+        g=geometries[r['bag_index']][r['frame_index']]
+        conflict=r['mode'] in ('LEFT','RIGHT') and g.get('left') is not None and g.get('right') is not None
+        v2+=int(r['mode']!='NONE' and not conflict)
+    return {'samples':len(rs),'guarded_dual':dual,'v1':v1,'v2':v2,'v2_fraction':v2/len(rs) if rs else None,'v2_vs_dual_pp':100*(v2-dual)/len(rs) if rs else None}
+result={'status':'EXPLORATORY_TIME_ALIGNMENT_DIAGNOSTIC','parameters_changed':False,'issues':issues,'evaluation':summary(rows),'windows':[]}
+for w in mapped:
+    if w['split']!='evaluation':continue
+    rs=[r for r in rows if r['bag_index']==w['bag_index'] and r['window']==w['label']]
+    result['windows'].append(dict(w,**summary(rs)))
+(OUT/'time-alignment.json').write_text(json.dumps(result,indent=2))
+print('HEADER_ALIGNMENT',json.dumps(result['evaluation']))
+print('ISSUES',issues)
+for w in result['windows']:
+    if w['bag_index'] in (3,8):print('ALIGNMENT_WINDOW',w)

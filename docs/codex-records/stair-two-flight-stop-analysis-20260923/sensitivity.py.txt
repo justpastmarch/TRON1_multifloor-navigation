@@ -1,0 +1,24 @@
+from pathlib import Path
+import sys,json,numpy as np,yaml,math
+R=Path('/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation');E=Path(__file__).resolve().parent;sys.path.insert(0,str(R/'src/stair_supervisor/src'))
+from stair_supervisor.stair_feedback import StairFeedback,support_clearance
+cfg=yaml.safe_load((E/'source/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml').read_text());r=cfg['routes'][0];D=json.loads((E/'diagnosis-numeric.json').read_text());P=json.loads((E/'poses.json').read_text());ev=json.loads((E/'events.json').read_text());runs=[x for x in json.loads((E/'runs.json').read_text()) if x['result']['result_code']==5];out=[]
+for d,run in zip(D,runs):
+ p=min(P,key=lambda x:abs(x['stamp']-d['fault_sensor_stamp']));pos=np.array(p['pose'][:2]);yaw=p['yaw'];foot=np.array(p['footprint']);idx=1 if d['phase'].endswith('_2') else 0;polys=[r[k] for k in (('entry_polygon','flight_1_polygon','landing_polygon') if not idx else ('landing_polygon','flight_2_polygon','exit_polygon'))]
+ def sweep(v,w,margin=.12):return StairFeedback._swept_support(pos,yaw,foot,v,w,.9,polys,margin)
+ def clearance(v,w):
+  ts=np.linspace(0,.9,17);theta=w*ts
+  if abs(w)<1e-8:cent=pos+v*ts[:,None]*np.array([math.cos(yaw),math.sin(yaw)])
+  else:cent=pos+(v/w)*np.column_stack((np.sin(yaw+theta)-math.sin(yaw),math.cos(yaw)-np.cos(yaw+theta)))
+  rel=foot-pos;c,s=np.cos(theta)[:,None],np.sin(theta)[:,None]
+  swept=np.stack((c*rel[:,0]-s*rel[:,1],s*rel[:,0]+c*rel[:,1]),axis=2)+cent[:,None,:]
+  cs=[support_clearance(fp,polys) for fp in swept]
+  return dict(min_sampled_clearance_m=None if any(x is None for x in cs) else min(cs),interpolation_bound_m=(abs(v)+np.max(np.linalg.norm(rel,axis=1))*abs(w))*(.9/16)/2)
+ w=d['proposed_w'];validv=[v for v in np.linspace(0,.55,111) if sweep(v,w)];validw=[w0 for w0 in np.linspace(-.6,.6,241) if sweep(.55,w0)]
+ tx=[x for x in ev if x['topic'].endswith('websocket_tx') and x['data'].get('title')=='request_twist' and run['start']<x['t']<run['end']+2]
+ zeros=[x for x in tx if x['t']>=run['end'] and all(x['data']['data'].get(k,0)==0 for k in ('x','y','z'))]
+ q={'end_kst':run['end_kst'],'proposed_w_is_exact':d['proposed_w_exact'],'baseline_projection':clearance(.55,w),'raw_feedback_w_projection':clearance(.55,d['bounded_w']),'margin_sensitivity_at_full_input':{str(m):sweep(.55,w,m) for m in (0,.02,.06,.1,.12)},'max_internal_v_accepted_at_proposed_w':max(validv) if validv else None,'min_positive_w_accepted_at_full_input':min((w0 for w0 in validw if w0>0),default=None),'first_zero_after_result_ms':(zeros[0]['t']-run['end'])*1000 if zeros else None}
+ if d['proposed_w_exact']:
+  dt=(w-d['prior_w'])/.3;vmin=.55-.15*dt;q.update(exact_slew_dt=dt,min_v_permitted_by_slew=vmin,all_four_speed_candidates_identical_v=vmin,that_candidate_passes=sweep(vmin,w))
+ out.append(q);print(json.dumps(q,indent=2))
+(E/'sensitivity.json').write_text(json.dumps(out,indent=2))

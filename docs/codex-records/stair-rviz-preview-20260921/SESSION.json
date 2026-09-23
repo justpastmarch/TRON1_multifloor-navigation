@@ -1,0 +1,27 @@
+{
+  "status": "CLOSED",
+  "started_utc": "2026-09-20T18:54:50.956964+00:00",
+  "run": "102101",
+  "launcher_pid": 8352,
+  "runtime": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-rviz-preview-20260921/runtime-nd3mwo12",
+  "ros_master_uri": "http://127.0.0.1:37591",
+  "args": [
+    "bash",
+    "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-rviz-preview-20260921/runtime-nd3mwo12/replay.sh",
+    "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_102101.bag",
+    "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/102101/lidar_registration.bag",
+    "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/102101/comparison.bag",
+    "25.0",
+    "105.0"
+  ],
+  "source_script": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/replay_rviz.sh",
+  "runtime_adjustments": "log locations, script root, and hidden kilometer-scale overview labels; all comparison paths retained",
+  "cleanup": "automatic after RViz closes",
+  "robot_command_topics": [],
+  "process_group": 8354,
+  "rviz_pids": [
+    8431
+  ],
+  "ended_utc": "2026-09-20T18:56:56.168563+00:00",
+  "temporary_artifacts_removed": true
+}

@@ -1,0 +1,15 @@
+{
+  "tests": 2,
+  "expected_failures": 2,
+  "failures": [
+    [
+      "test_body_straddling_flight_and_landing_is_supported (test_stair_repair.ConnectedGeometryTest)",
+      "Traceback (most recent call last):\n  File \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/test/test_stair_repair.py\", line 48, in test_body_straddling_flight_and_landing_is_supported\n    self.assertFalse(result.faulted,result.detail)\nAssertionError: True is not false : body exceeds surveyed flight corridor\n"
+    ],
+    [
+      "test_complete_phase_does_not_validate_an_unsent_old_forward_command (test_stair_repair.ConnectedGeometryTest)",
+      "Traceback (most recent call last):\n  File \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/test/test_stair_repair.py\", line 57, in test_complete_phase_does_not_validate_an_unsent_old_forward_command\n    self.assertTrue(result.complete,result.detail);self.assertFalse(result.faulted)\nAssertionError: False is not true : correction would exceed surveyed support\n"
+    ]
+  ],
+  "errors": []
+}

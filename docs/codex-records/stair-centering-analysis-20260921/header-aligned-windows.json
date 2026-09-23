@@ -1,0 +1,216 @@
+{
+  "method": "Diagnostic after primary evaluation. Interpolate each RGB record-time label boundary into RGB header-time using sampled frames; clamp at first/last RGB sample. Select LiDAR by header-time. Does not establish cross-sensor clock synchronization or contact phase truth. Geometry and acceptance parameters unchanged.",
+  "windows": [
+    {
+      "bag_index": 7,
+      "start_s": -0.010927200317382812,
+      "end_s": 14.635372161865234,
+      "label": "development_flight1",
+      "split": "development",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 0,
+      "original_record_end_s": 15
+    },
+    {
+      "bag_index": 7,
+      "start_s": 37.71153998374939,
+      "end_s": 49.45717263221741,
+      "label": "development_flight2",
+      "split": "development",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 38,
+      "original_record_end_s": 50
+    },
+    {
+      "bag_index": 8,
+      "start_s": -1.1176857948303223,
+      "end_s": 8.660049438476562,
+      "label": "flight_view1",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 0,
+      "original_record_end_s": 13
+    },
+    {
+      "bag_index": 8,
+      "start_s": 23.777488946914673,
+      "end_s": 40.538264989852905,
+      "label": "flight_view2",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 29,
+      "original_record_end_s": 47
+    },
+    {
+      "bag_index": 9,
+      "start_s": -3.119584321975708,
+      "end_s": 1.2691335678100586,
+      "label": "flight_view1",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 0,
+      "original_record_end_s": 4
+    },
+    {
+      "bag_index": 9,
+      "start_s": 6.489048957824707,
+      "end_s": 10.54280686378479,
+      "label": "flight_view2",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 8,
+      "original_record_end_s": 12.2
+    },
+    {
+      "bag_index": 10,
+      "start_s": -0.0465092658996582,
+      "end_s": 30.78578519821167,
+      "label": "flight1",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 0,
+      "original_record_end_s": 31
+    },
+    {
+      "bag_index": 10,
+      "start_s": 50.600290060043335,
+      "end_s": 71.55621385574341,
+      "label": "flight2",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 51,
+      "original_record_end_s": 72
+    },
+    {
+      "bag_index": 11,
+      "start_s": -0.7778356075286865,
+      "end_s": 35.52961540222168,
+      "label": "flight1",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 0,
+      "original_record_end_s": 36
+    },
+    {
+      "bag_index": 11,
+      "start_s": 89.55969858169556,
+      "end_s": 117.57301068305969,
+      "label": "flight2",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 90,
+      "original_record_end_s": 118
+    },
+    {
+      "bag_index": 12,
+      "start_s": -0.28971004486083984,
+      "end_s": 65.15791535377502,
+      "label": "stair_view_with_long_pause",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 0,
+      "original_record_end_s": 68.8
+    },
+    {
+      "bag_index": 13,
+      "start_s": -1.0923125743865967,
+      "end_s": 66.71897792816162,
+      "label": "flight1",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 0,
+      "original_record_end_s": 67
+    },
+    {
+      "bag_index": 13,
+      "start_s": 105.57620549201965,
+      "end_s": 128.4851896762848,
+      "label": "flight2",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 106,
+      "original_record_end_s": 129
+    },
+    {
+      "bag_index": 13,
+      "start_s": 212.80368518829346,
+      "end_s": 267.9697804450989,
+      "label": "stair_view_with_long_pause",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 213,
+      "original_record_end_s": 272.3
+    },
+    {
+      "bag_index": 14,
+      "start_s": -4.503747463226318,
+      "end_s": 25.547778844833374,
+      "label": "flight1",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 0,
+      "original_record_end_s": 27
+    },
+    {
+      "bag_index": 14,
+      "start_s": 48.98922920227051,
+      "end_s": 69.65548896789551,
+      "label": "flight2",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 50,
+      "original_record_end_s": 71
+    },
+    {
+      "bag_index": 17,
+      "start_s": -0.004542350769042969,
+      "end_s": 17.51476263999939,
+      "label": "flight1",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 0,
+      "original_record_end_s": 18
+    },
+    {
+      "bag_index": 17,
+      "start_s": 39.575204849243164,
+      "end_s": 60.49381947517395,
+      "label": "flight2",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 40,
+      "original_record_end_s": 61
+    },
+    {
+      "bag_index": 3,
+      "start_s": 70.42898321151733,
+      "end_s": 128.18266558647156,
+      "label": "roof_up_flight1",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 72,
+      "original_record_end_s": 129
+    },
+    {
+      "bag_index": 3,
+      "start_s": 151.81636452674866,
+      "end_s": 177.72419333457947,
+      "label": "roof_up_flight2",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 168,
+      "original_record_end_s": 184
+    },
+    {
+      "bag_index": 3,
+      "start_s": 319.93043327331543,
+      "end_s": 383.90428376197815,
+      "label": "roof_down_candidate_backwards",
+      "split": "evaluation",
+      "annotation": "RGB every >=5s; stair flight view or approach, includes pauses; boundary uncertainty approximately 5s; not physical contact ground truth",
+      "original_record_start_s": 320,
+      "original_record_end_s": 384
+    }
+  ],
+  "issues": []
+}

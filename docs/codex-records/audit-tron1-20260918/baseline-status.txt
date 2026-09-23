@@ -1,0 +1,300 @@
+# branch.oid 4d77a223ef6d0c898ebe9a44cc8a60a21904f2f0
+# branch.head main
+# branch.upstream origin/main
+# branch.ab +0 -0
+1 .D N... 100644 100644 000000 1ef59877e43f9b1f61fa1ee0209634f2321650de 1ef59877e43f9b1f61fa1ee0209634f2321650de .omo/boulder.json
+1 .M N... 100644 100644 100644 9971fac9dab8c69fcc5459fa1fb051a6084a3371 9971fac9dab8c69fcc5459fa1fb051a6084a3371 .omo/run-continuation/ses_fe79dc3abffe0h8YOLMzr2MX0n.json
+1 .M N... 100644 100644 100644 3f3aa2c34f88b256f91decf08ad2019a75713d54 3f3aa2c34f88b256f91decf08ad2019a75713d54 README.md
+1 .M N... 100644 100644 100644 3f4965e6c27f7619c0b34ef0dc1fb9d2c6cdff8e 3f4965e6c27f7619c0b34ef0dc1fb9d2c6cdff8e bundle_runtime_contract.py
+1 .M N... 100644 100644 100644 9b59c829af4481beb5303c61688544f457679ec5 9b59c829af4481beb5303c61688544f457679ec5 bundle_source_contract.py
+1 .M N... 100644 100644 100644 7763704d72b38e96d52322104cef89f61a142c35 7763704d72b38e96d52322104cef89f61a142c35 config.env
+1 .M N... 100755 100755 100755 a1704ff63400c4e3c79305e1387494b07f34c9e1 a1704ff63400c4e3c79305e1387494b07f34c9e1 run.sh
+1 .M N... 100644 100644 100644 83cd6f5c2eda087736d5bd65d3fd5483d2f196ec 83cd6f5c2eda087736d5bd65d3fd5483d2f196ec src/mission_manager/CMakeLists.txt
+1 .M N... 100644 100644 100644 3b9ffe2a6f8c52a5ba89817bf7ea641d86760cc1 3b9ffe2a6f8c52a5ba89817bf7ea641d86760cc1 src/mission_manager/launch/system.launch
+1 .M N... 100644 100644 100644 c3b5ee2c495b40f12af21539506e20fcb9a928fd c3b5ee2c495b40f12af21539506e20fcb9a928fd src/mission_manager/package.xml
+1 .M N... 100644 100644 100644 15a5fc3d8f19195d648c5a1abfc53eea76796ce6 15a5fc3d8f19195d648c5a1abfc53eea76796ce6 src/mission_manager/src/mission_manager/ros_runtime.py
+1 .M N... 100644 100644 100644 34b9994f84d023f9a3031042b8d977ae70a1e3ab 34b9994f84d023f9a3031042b8d977ae70a1e3ab src/mission_manager/src/mission_manager/ros_segments.py
+1 .M N... 100644 100644 100644 163b02363368e17c748b3e49f6695efc2ed7a99c 163b02363368e17c748b3e49f6695efc2ed7a99c src/mission_manager/src/mission_manager/ros_state.py
+1 .M N... 100644 100644 100644 5c6b45b488fe0e6edbe3538b36b2d2a58a61c11b 5c6b45b488fe0e6edbe3538b36b2d2a58a61c11b src/mission_manager/test/mission_system.test
+1 .M N... 100755 100755 100755 5ef3880398890bdc5846e4858ddee04b84b49d4c 5ef3880398890bdc5846e4858ddee04b84b49d4c src/mission_manager/test/mock_mission_children.py
+1 .M N... 100755 100755 100755 0a57aa8d6ac5d75f93684a752c13cde29d0297c9 0a57aa8d6ac5d75f93684a752c13cde29d0297c9 src/mission_manager/test/test_mission_action_ros.py
+1 .M N... 100644 100644 100644 8a4713219b8ca6887a36dd8fec9bdc94ce4883a4 8a4713219b8ca6887a36dd8fec9bdc94ce4883a4 src/mission_manager/test/test_ros_segments.py
+1 .M N... 100644 100644 100644 32b469e82a94d524020e06332f8b4007a261d4be 32b469e82a94d524020e06332f8b4007a261d4be src/multifloor_manager/CMakeLists.txt
+1 .M N... 100644 100644 100644 4ed10814bdbfe0a29a5e806982748ffffe55a5c4 4ed10814bdbfe0a29a5e806982748ffffe55a5c4 src/multifloor_manager/config/maps/floor_3F.pgm
+1 .M N... 100644 100644 100644 ec92d24a5ab6dbf59b216009fb307c97f9569921 ec92d24a5ab6dbf59b216009fb307c97f9569921 src/multifloor_manager/config/maps/floor_5F.pgm
+1 .M N... 100644 100644 100644 713bbdf4d11c36d8c301e34411179eec3a4672c7 713bbdf4d11c36d8c301e34411179eec3a4672c7 src/multifloor_manager/config/nav/base_local_planner_params.yaml
+1 .M N... 100644 100644 100644 473930b84bc02b9f59062944ecab61ec7cc344d2 473930b84bc02b9f59062944ecab61ec7cc344d2 src/multifloor_manager/config/nav/global_costmap_params.yaml
+1 .M N... 100644 100644 100644 1bfb282322479a1723c95271473403fd5db8f40c 1bfb282322479a1723c95271473403fd5db8f40c src/multifloor_manager/config/nav/local_costmap_params.yaml
+1 .M N... 100644 100644 100644 b275b8e3d13a39595168dc5c50c6f94f1a654516 b275b8e3d13a39595168dc5c50c6f94f1a654516 src/multifloor_manager/launch/apriltag.launch
+1 .M N... 100644 100644 100644 bbfd08b07b97d2babbf31a81e4ef06e2b4f5f5e2 bbfd08b07b97d2babbf31a81e4ef06e2b4f5f5e2 src/multifloor_manager/launch/navigation.launch
+1 .D N... 100644 100644 000000 d4394160b60a5d334c4f9523c9da9e903e03b05c d4394160b60a5d334c4f9523c9da9e903e03b05c src/multifloor_manager/launch/pointcloud_to_laserscan.launch
+1 .M N... 100644 100644 100644 7171b50bb76bb2df86a815703754904ad6ad7081 7171b50bb76bb2df86a815703754904ad6ad7081 src/multifloor_manager/src/multifloor_manager/ros_node.py
+1 .M N... 100644 100644 100644 3b6487d2ed9717dd79274ab14ce1b68dcc9204dd 3b6487d2ed9717dd79274ab14ce1b68dcc9204dd src/multifloor_manager/src/multifloor_manager/ros_runtime.py
+1 .M N... 100644 100644 100644 05a369b472d9a4c93730ddef362a064fcc0d73d4 05a369b472d9a4c93730ddef362a064fcc0d73d4 src/stair_supervisor/CMakeLists.txt
+1 .M N... 100644 100644 100644 11ec4422b17515b1fd951d07f4718bd003091710 11ec4422b17515b1fd951d07f4718bd003091710 src/stair_supervisor/action/StairTraversal.action
+1 .M N... 100644 100644 100644 00f3aff723f2b4cd7f13813347c16104d8171b15 00f3aff723f2b4cd7f13813347c16104d8171b15 src/stair_supervisor/config/robot.yaml
+1 .M N... 100644 100644 100644 cdb1b54cde80c3b5491d2398272dee766e4976b5 cdb1b54cde80c3b5491d2398272dee766e4976b5 src/stair_supervisor/config/stair_profiles.yaml
+1 .M N... 100644 100644 100644 ace65b95f59a3bc99cff3ef518882358354e462b ace65b95f59a3bc99cff3ef518882358354e462b src/stair_supervisor/package.xml
+1 .M N... 100644 100644 100644 3f8cb8f2f30f024c57fc20de28c44cb47b06931d 3f8cb8f2f30f024c57fc20de28c44cb47b06931d src/stair_supervisor/src/stair_supervisor/configuration.py
+1 .M N... 100644 100644 100644 5673a41f506b82cc43c99bd2ee591204a29073f2 5673a41f506b82cc43c99bd2ee591204a29073f2 src/stair_supervisor/src/stair_supervisor/robot_config.py
+1 .M N... 100644 100644 100644 319cd9562ce6eedef6ea491c39d94933f560540d 319cd9562ce6eedef6ea491c39d94933f560540d src/stair_supervisor/src/stair_supervisor/robot_transport.py
+1 .M N... 100644 100644 100644 918344de3226681ce1b920db6bd8824d8a9eb51f 918344de3226681ce1b920db6bd8824d8a9eb51f src/stair_supervisor/src/stair_supervisor/ros_node.py
+1 .M N... 100644 100644 100644 f6330cb8766aef4f130ad92dbc03d2d50fdcad0e f6330cb8766aef4f130ad92dbc03d2d50fdcad0e src/stair_supervisor/src/stair_supervisor/stair_evidence.py
+1 .M N... 100644 100644 100644 2279eea9ec8b8c9ddb2d144839c23197ce5626c5 2279eea9ec8b8c9ddb2d144839c23197ce5626c5 src/stair_supervisor/src/stair_supervisor/supervisor.py
+1 .M N... 100644 100644 100644 d7332c61500423a61940c916e84ced3fa1e5fb8c d7332c61500423a61940c916e84ced3fa1e5fb8c src/stair_supervisor/src/stair_supervisor/supervisor_types.py
+1 .M N... 100644 100644 100644 fb1465a7bcb8739315f001137ceeb52ab4797f77 fb1465a7bcb8739315f001137ceeb52ab4797f77 src/stair_supervisor/test/robot_transport/test_robot_transport.py
+1 .M N... 100644 100644 100644 14cf6dcba340c1a59edd4ef0cca512b1a33e2def 14cf6dcba340c1a59edd4ef0cca512b1a33e2def src/stair_supervisor/test/robot_transport/test_robot_transport_fakes.py
+1 .M N... 100644 100644 100644 d81ff2500d1fd50f9dff4e7b9a8e1a66ebbeb644 d81ff2500d1fd50f9dff4e7b9a8e1a66ebbeb644 src/stair_supervisor/test/robot_transport/test_robot_transport_faults.py
+1 .M N... 100644 100644 100644 c88b81aa6f9fc56cb11c3bf41332acabd4ada9e1 c88b81aa6f9fc56cb11c3bf41332acabd4ada9e1 src/stair_supervisor/test/test_configuration_transition.py
+1 .M N... 100644 100644 100644 f31b4da3d0085afe1e455dade33e9eebfd9c55b4 f31b4da3d0085afe1e455dade33e9eebfd9c55b4 src/stair_supervisor/test/test_stair_evidence.py
+1 .M N... 100755 100755 100755 3b4b9533841711ed542397ace4b4d57b7b9efed7 3b4b9533841711ed542397ace4b4d57b7b9efed7 src/stair_supervisor/test/test_stair_fake_websocket_ros.py
+1 .M N... 100755 100755 100755 a8acef47d2feb24ef0415cec963468b246264046 a8acef47d2feb24ef0415cec963468b246264046 src/stair_supervisor/test/test_stair_supervisor_node.py
+1 .M N... 100644 100644 100644 86e57b5577a2f576581d61bc8d44c7f8043279d6 86e57b5577a2f576581d61bc8d44c7f8043279d6 src/stair_supervisor/test/test_supervisor.py
+1 .M N... 100644 100644 100644 a383857310aa51ec7150a27d30c56927a370135b a383857310aa51ec7150a27d30c56927a370135b src/stair_supervisor/test/test_supervisor_safety.py
+1 .M N... 100755 100755 100755 6fb76c02584432349eaaf4f7061769d00de2cfa7 6fb76c02584432349eaaf4f7061769d00de2cfa7 src/stair_supervisor/test/test_websocket_tx_ros.py
+1 .M N... 100644 100644 100644 e81e04985d748e7e33897b63b5cb77c6c1d63f9b e81e04985d748e7e33897b63b5cb77c6c1d63f9b test/fixtures/building_5f_rf_synthetic/stair_profiles.yaml
+1 .M N... 100644 100644 100644 72b804a99490098176aec4eefaf31a20af43c6a8 72b804a99490098176aec4eefaf31a20af43c6a8 test/fixtures/building_policy_blocked/stair_profiles.yaml
+1 .M N... 100644 100644 100644 72b804a99490098176aec4eefaf31a20af43c6a8 72b804a99490098176aec4eefaf31a20af43c6a8 test/fixtures/building_valid/stair_profiles.yaml
+1 .M N... 100644 100644 100644 f9253fd3eaebb11bfd7f1df888a7b32ab2ab1229 f9253fd3eaebb11bfd7f1df888a7b32ab2ab1229 test/test_launch_contract.py
+1 .M N... 100644 100644 100644 caf56d973aa5264e5dc2af3a3039279a1657b996 caf56d973aa5264e5dc2af3a3039279a1657b996 test/test_run_script_contract.py
+? .omo/run-continuation/ses_f4e59db09ffe1HFR9byHylYYmA.json
+? .omo/run-continuation/ses_f5083f9a5ffe44Q1UyW52HpuCj.json
+? .omo/run-continuation/ses_f518788edffeV5DddPOgXagZGl.json
+? .omo/run-continuation/ses_f51c52c68ffewuai1u3Eif6znP.json
+? .omo/run-continuation/ses_f51e182feffeIh5e8R0yUZgm3E.json
+? .omo/run-continuation/ses_f52059e3bffenKiinVKxHz0sFD.json
+? .omo/run-continuation/ses_f520929a0ffeDKIYo30n37to3K.json
+? .omo/run-continuation/ses_f520941f4ffeaZT7cBqyoc13Sr.json
+? .omo/run-continuation/ses_f52374d96ffeTo00I61HC7ma3m.json
+? .omo/run-continuation/ses_f524d1d4effeEZTlOV7AG8GKeX.json
+? .omo/run-continuation/ses_f524d307bffeFgIbLM8mK64uhR.json
+? .omo/run-continuation/ses_f554e5c5fffeACy5E3ExHV8X5g.json
+? .omo/run-continuation/ses_f554e6e4fffeBz8eetPjYdDAds.json
+? .omo/run-continuation/ses_f5575dc3fffeeQ5XmpjkThTClu.json
+? .omo/run-continuation/ses_f58642f9dffeGZ5sWCAffcQ8Vz.json
+? .omo/run-continuation/ses_f5875b80effeSjSKm88dnfBZ4K.json
+? .omo/run-continuation/ses_f5878d740ffe0L78Z816fjcGCa.json
+? .omo/run-continuation/ses_f5c30df71ffeHV9yIpw54G67qj.json
+? .omo/run-continuation/ses_f5c530516ffe6TynzReEo5MJkq.json
+? .omo/run-continuation/ses_f5c53118effeI1h85e4PkcJ7nY.json
+? .omo/run-continuation/ses_f5c531cf1ffedNKudDuLzK3kFI.json
+? .omo/run-continuation/ses_f5d25ca8bffePzPKYxfGcpXFBk.json
+? .omo/run-continuation/ses_f5d325942ffefMcobDyoozcUXJ.json
+? .omo/run-continuation/ses_f5d32661bffegeac8iDU7frumF.json
+? .omo/run-continuation/ses_f5fb7b2a3ffekwC6edUqjlNmTV.json
+? .omo/run-continuation/ses_f5fb7b2b1ffeMRuMpfOmoFqkG4.json
+? .omo/run-continuation/ses_f5fb7b2b2ffeuLfcX1zGXOAyWJ.json
+? .omo/run-continuation/ses_f5fb7b2b4ffeXgBzHdyFbd2oF7.json
+? .omo/run-continuation/ses_f5fb7b2b7ffekNZqSaj0jNi7Bb.json
+? .omo/run-continuation/ses_f5fb85405ffewaR2T5WAFrz1nK.json
+? .omo/run-continuation/ses_f5fb860beffeWAJloTcL1jcSER.json
+? .omo/run-continuation/ses_f5ffb2206ffeyGfSG6S5nAW1fu.json
+? .omo/run-continuation/ses_f5ffb2e87ffeyWs7SuyyXJK42z.json
+? .omo/run-continuation/ses_f6003c91cffelAVKsU2kZF15Nr.json
+? .omo/run-continuation/ses_f6003d4f0ffemc6p8YUtxyei0N.json
+? .omo/run-continuation/ses_f6007a651ffexldB96iQHl8CbH.json
+? .omo/run-continuation/ses_f6015a77affeZFqFQZcZcSkZbk.json
+? .omo/run-continuation/ses_f6015b319ffeA5NZYK8Cxt6uwp.json
+? .omo/run-continuation/ses_f601a5c2bffeOnzq0yX2w1ydmX.json
+? .omo/run-continuation/ses_f60474f76ffeOx5PqSWd4sacM3.json
+? .omo/run-continuation/ses_f60475ad8ffeN2iq1Zeh2wZEJL.json
+? .omo/run-continuation/ses_f60fb61c5ffe5KQN2PlTJ2C9J9.json
+? .omo/run-continuation/ses_f61b89f43ffeTCn12YgvowCKU9.json
+? .omo/run-continuation/ses_f61cb068bffeg6ijTyvICyFlHM.json
+? .omo/run-continuation/ses_f61cb170bffeIWKKHxmJf4FFTt.json
+? .omo/run-continuation/ses_f61d3fe56ffeJ9kxzWeESknXu7.json
+? .omo/run-continuation/ses_f62993c9fffeqD5wFOTxj1vYvI.json
+? .omo/run-continuation/ses_f62994617ffe6Q82xPHl0KMBHK.json
+? .omo/run-continuation/ses_f629951abffeJyvFYUIwhzOd5S.json
+? .omo/run-continuation/ses_f62995d8cffe1BG7o4GmiNIt23.json
+? .omo/run-continuation/ses_f629f5dd5ffe3vfYFoOwETlaPJ.json
+? .omo/run-continuation/ses_f62ca7f58ffeZNKaTqXT4mv4gI.json
+? .omo/run-continuation/ses_f62d07c39ffeY3cqu6mRdTi8l4.json
+? .omo/run-continuation/ses_f62db84b5ffeewq0otmOUXOOQB.json
+? .omo/run-continuation/ses_f62f7444bffeIKUzh22TwrlgJ2.json
+? .omo/run-continuation/ses_f62f75628ffewTaw0lh4L01POh.json
+? .omo/run-continuation/ses_f62f9c7d2ffe04Buy6mvSzjErv.json
+? .omo/run-continuation/ses_f644d3568ffeIQSo4BAzoS1j2s.json
+? .omo/run-continuation/ses_f64536920ffeLbhrEaPDverhdi.json
+? .omo/run-continuation/ses_f64564f11ffefYArsN6XpAxDi1.json
+? .omo/run-continuation/ses_f6456ad7affeMoh86mQYBDU69J.json
+? .omo/run-continuation/ses_f6456ba00ffeaRsY68YUKQqXqv.json
+? .omo/run-continuation/ses_f645ce716ffemQUDow4HkeCDT1.json
+? .omo/run-continuation/ses_f645dbe75ffeKkdRlcprehTfdV.json
+? .omo/run-continuation/ses_f646fd8bbffeY2LqeuyzsEs0sj.json
+? .omo/run-continuation/ses_f647690eaffeLpU3PniGMtQC5t.json
+? .omo/run-continuation/ses_f647766ecffeTUmalc5PrbezGL.json
+? .omo/run-continuation/ses_f647d371fffeTTDMrEM00mpxwS.json
+? .omo/run-continuation/ses_f647dfb0bffeOq0Gz2ko751uo8.json
+? .omo/run-continuation/ses_f6482453effeRyd34OXB6w4evs.json
+? .omo/run-continuation/ses_f6491074bffeuOtfc5RUONBLYu.json
+? .omo/run-continuation/ses_f64911402ffeEm7ALHu0NUe3qU.json
+? .omo/run-continuation/ses_f64911f7dffeKPqI5obFkAAL9M.json
+? .omo/run-continuation/ses_f64948ebaffeBMqmh3GrFnyJVW.json
+? .omo/run-continuation/ses_f6495494affe7y2ig7xLU3ZcKg.json
+? .omo/run-continuation/ses_f649c24c2ffevAAIDzy207TosJ.json
+? .omo/run-continuation/ses_f649f96b0ffebOIwIdpcHeMs01.json
+? .omo/run-continuation/ses_f64a3460affeAqjYBABT73FOZL.json
+? .omo/run-continuation/ses_f64a7792bffeBQF4a9AR3VALGE.json
+? .omo/run-continuation/ses_f64b34b9fffe7RhT9l9wBusXP6.json
+? .omo/run-continuation/ses_f64c0a892ffev2sIgcKcrov1PH.json
+? .omo/run-continuation/ses_f64c19c1bffe5cH04LYFmc4EAl.json
+? .omo/run-continuation/ses_f64c1a71effe3o1hj46KqIhSyi.json
+? .omo/run-continuation/ses_f64c3235affeeOW4Q9dmsGydPo.json
+? .omo/run-continuation/ses_f64cab879ffeQFlH2SbFvzPoCA.json
+? .omo/run-continuation/ses_f64d2b164ffeBmpIY7te7ALkeO.json
+? .omo/run-continuation/ses_f64d8fda3ffexpe7iz2F2XjzMi.json
+? .omo/run-continuation/ses_f64e1dabfffeAbwdgR5SNJgJc4.json
+? .omo/run-continuation/ses_f64e71851ffe9MdcAOLG3g9mBx.json
+? .omo/run-continuation/ses_f64fc5e15ffeRzdzZQ2huzn12w.json
+? .omo/run-continuation/ses_f6af5aa80ffeymLxWgae5L5bJF.json
+? .omo/run-continuation/ses_f700c3b88ffeYn93QNsypJ7SxU.json
+? DESIGN.md
+? bag_sensor_visualizer.py
+? docs/mini-pc-stack-switching-ko.md
+? docs/navigation-perception-network-incident-rca-ko.md
+? logs/20260914_101622/robot_tunnel.log
+? logs/20260914_101622/system.log
+? logs/20260914_102429/robot_tunnel.log
+? logs/20260914_102429/system.log
+? logs/20260914_102747/robot_tunnel.log
+? logs/20260914_102747/system.log
+? logs/20260914_102900/robot_tunnel.log
+? logs/20260914_102900/system.log
+? logs/20260914_110042/robot_tunnel.log
+? logs/20260914_110042/system.log
+? logs/20260914_110346/robot_tunnel.log
+? logs/20260914_110346/system.log
+? logs/20260914_111527/robot_tunnel.log
+? logs/20260914_111527/system.log
+? logs/20260914_113428/robot_tunnel.log
+? logs/20260914_113428/system.log
+? logs/20260914_113607/robot_tunnel.log
+? logs/20260914_113607/system.log
+? logs/20260914_114026/robot_tunnel.log
+? logs/20260914_114026/system.log
+? logs/20260914_114113/robot_tunnel.log
+? logs/20260914_114113/system.log
+? logs/20260914_114259/robot_tunnel.log
+? logs/20260914_114259/system.log
+? logs/20260914_114853/robot_tunnel.log
+? logs/20260914_114853/system.log
+? logs/20260914_115222/robot_tunnel.log
+? logs/20260914_115222/system.log
+? logs/20260916_103618/robot_tunnel.log
+? logs/20260916_103618/system.log
+? logs/20260916_104818/robot_tunnel.log
+? logs/20260916_104818/system.log
+? logs/20260916_105458/robot_tunnel.log
+? logs/20260916_105458/system.log
+? logs/20260916_114215/robot_tunnel.log
+? logs/20260916_114215/system.log
+? logs/20260916_114855/robot_tunnel.log
+? logs/20260916_114855/system.log
+? logs/20260916_115236/robot_tunnel.log
+? logs/20260916_115236/system.log
+? logs/20260916_115900/robot_tunnel.log
+? logs/20260916_115900/system.log
+? logs/20260916_190305/robot_tunnel.log
+? logs/20260916_190305/system.log
+? logs/20260916_194839/robot_tunnel.log
+? logs/20260916_194839/system.log
+? logs/20260916_201422/robot_tunnel.log
+? logs/20260916_201422/system.log
+? logs/20260916_203523/robot_tunnel.log
+? logs/20260916_203523/system.log
+? logs/20260916_204519/robot_tunnel.log
+? logs/20260916_204519/system.log
+? logs/20260916_210745/robot_tunnel.log
+? logs/20260916_210745/system.log
+? logs/20260916_222253/ros_master.log
+? logs/20260916_224036/ros_master.log
+? logs/20260916_224945/robot_tunnel.log
+? logs/20260916_224945/ros_master.log
+? logs/20260916_224945/system.log
+? logs/20260916_233206/robot_tunnel.log
+? logs/20260916_233206/ros_master.log
+? logs/20260916_233206/system.log
+? logs/20260917_001407/robot_tunnel.log
+? logs/20260917_001407/ros_master.log
+? logs/20260917_001407/system.log
+? logs/20260917_004754/robot_tunnel.log
+? logs/20260917_004754/ros_master.log
+? logs/20260917_004754/system.log
+? logs/20260917_010117/robot_tunnel.log
+? logs/20260917_010117/ros_master.log
+? logs/20260917_010117/system.log
+? logs/20260917_225917/robot_tunnel.log
+? logs/20260917_225917/ros_master.log
+? logs/20260917_225917/system.log
+? logs/20260917_233902/robot_tunnel.log
+? logs/20260917_233902/ros_master.log
+? logs/20260917_233902/system.log
+? logs/stair-state-replay-20260916-154342-start167/final-state.png
+? logs/stair-state-replay-20260916-154342-start167/result.json
+? logs/stair-state-replay-20260916-154342-start167/supervisor.log
+? logs/stair-state-replay-20260916-154342-start180/final-state.png
+? logs/stair-state-replay-20260916-154342-start180/result.json
+? logs/stair-state-replay-20260916-154342-start180/supervisor.log
+? logs/stair-state-replay-20260916-calibration-after/final-state.png
+? logs/stair-state-replay-20260916-calibration-after/result.json
+? logs/stair-state-replay-20260916-calibration-after/supervisor.log
+? logs/stair-state-replay-20260916-calibration-rate1/final-state.png
+? logs/stair-state-replay-20260916-calibration-rate1/result.json
+? logs/stair-state-replay-20260916-calibration-rate1/supervisor.log
+? logs/stair-state-replay-20260916-calibration-start40/final-state.png
+? logs/stair-state-replay-20260916-calibration-start40/result.json
+? logs/stair-state-replay-20260916-calibration-start40/supervisor.log
+? logs/stair-state-replay-20260916-clean-after/final-state.png
+? logs/stair-state-replay-20260916-clean-after/result.json
+? logs/stair-state-replay-20260916-clean-after/supervisor.log
+? logs/stair-state-replay-20260916-clean-gap12/final-state.png
+? logs/stair-state-replay-20260916-clean-gap12/result.json
+? logs/stair-state-replay-20260916-clean-gap12/supervisor.log
+? logs/stair-state-replay-20260916-clean-rate1/final-state.png
+? logs/stair-state-replay-20260916-clean-rate1/result.json
+? logs/stair-state-replay-20260916-clean-rate1/supervisor.log
+? logs/stair-state-replay-20260916-clean-replaycfg/final-state.png
+? logs/stair-state-replay-20260916-clean-replaycfg/result.json
+? logs/stair-state-replay-20260916-clean-replaycfg/supervisor.log
+? logs/stair-state-replay-20260916-clean-sysclock/final-state.png
+? logs/stair-state-replay-20260916-clean-sysclock/result.json
+? logs/stair-state-replay-20260916-clean-sysclock/supervisor.log
+? logs/stair-state-replay-20260916-gate-check/final-state.png
+? logs/stair-state-replay-20260916-gate-check/result.json
+? logs/stair-state-replay-20260916-gate-check/supervisor.log
+? logs/stair-state-replay-20260916-latest-check/final-state.png
+? logs/stair-state-replay-20260916-latest-check/result.json
+? logs/stair-state-replay-20260916-latest-check/supervisor.log
+? raw_sensor_display.py
+? raw_sensor_status.py
+? raw_sensor_transforms.py
+? replay_raw_sensors_rviz.sh
+? replay_stair_state_machine.sh
+? src/mission_manager/src/mission_manager/stair_admission.py
+? src/mission_manager/src/mission_manager/stair_entry_gate.py
+? src/mission_manager/test/full_system_synthetic.test
+? src/mission_manager/test/synthetic_hardware_peers.py
+? src/mission_manager/test/test_full_system_synthetic_ros.py
+? src/mission_manager/test/test_stair_admission.py
+? src/mission_manager/test/test_stair_entry_gate.py
+? src/multifloor_manager/config/maps/floor_3F.backup.pgm
+? src/multifloor_manager/rviz/wf_raw_sensor_compare.rviz
+? src/multifloor_manager/scripts/camera_info_stamp_relay.py
+? src/stair_supervisor/src/stair_supervisor/bag_replay.py
+? src/stair_supervisor/src/stair_supervisor/robot_clock.py
+? src/stair_supervisor/src/stair_supervisor/robot_tolerances.py
+? src/stair_supervisor/src/stair_supervisor/ros_bag_replay.py
+? src/stair_supervisor/src/stair_supervisor/stair_admission.py
+? src/stair_supervisor/src/stair_supervisor/state_machine_dashboard.py
+? src/stair_supervisor/srv/ValidateStairAdmission.srv
+? src/stair_supervisor/test/replay_stair_state_machine.py
+? src/stair_supervisor/test/synthetic_stair_supervisor_node.py
+? src/stair_supervisor/test/test_bag_replay.py
+? src/stair_supervisor/test/test_ros_bag_replay.py
+? src/stair_supervisor/test/test_state_machine_dashboard.py
+? test/fixtures/stair_synthetic/robot.yaml
+? test/fixtures/stair_synthetic/stair_profiles.yaml
+? test/test_bag_sensor_visualizer.py
+? test/test_replay_stair_state_machine_contract.py
+? verify_action_servers.py

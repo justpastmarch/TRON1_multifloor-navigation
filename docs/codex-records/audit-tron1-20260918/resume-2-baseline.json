@@ -1,0 +1,8 @@
+{
+  "utc": "2026-09-18T03:45:58.074120+00:00",
+  "understood_as": "Resume the same read-only complete-worktree audit; preserve existing changes and hardware state; finish E and then F only with reconciled coverage.",
+  "status_same": true,
+  "diff_same": true,
+  "staged_same": true,
+  "hash_changes": []
+}

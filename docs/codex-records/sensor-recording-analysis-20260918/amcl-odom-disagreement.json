@@ -1,0 +1,1469 @@
+[
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "comparisons": 7,
+    "initialpose_topic_recorded": false,
+    "largest_translation_corrections": [
+      {
+        "relative_record_s": [
+          162.80175733566284,
+          198.1310272216797
+        ],
+        "header_interval_s": 35.31192111968994,
+        "amcl_step_m": 0.020310740019320962,
+        "odom_step_m": 0.1069815107633004,
+        "residual_m": 0.08803813751579571,
+        "yaw_residual_deg": 5.259675139011307,
+        "covariance_after": [
+          0.8380719773514436,
+          0.22194279862567967,
+          0.34239918604423114
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          235.47436380386353,
+          272.4034163951874
+        ],
+        "header_interval_s": 37.114885568618774,
+        "amcl_step_m": 0.018859204321786872,
+        "odom_step_m": 0.1009624208582931,
+        "residual_m": 0.08635572889660637,
+        "yaw_residual_deg": 5.716400312186961,
+        "covariance_after": [
+          1.2615668838662373,
+          0.5070761870568425,
+          0.5545088689958317
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          198.1310272216797,
+          235.47436380386353
+        ],
+        "header_interval_s": 37.19148850440979,
+        "amcl_step_m": 0.04253853978583351,
+        "odom_step_m": 0.10302532687226358,
+        "residual_m": 0.07559842587476177,
+        "yaw_residual_deg": 6.308673017934028,
+        "covariance_after": [
+          1.0817082895052348,
+          0.341371530425044,
+          0.4577237967188155
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          12.045475244522095,
+          49.728468894958496
+        ],
+        "header_interval_s": 37.716535806655884,
+        "amcl_step_m": 0.06450931214586697,
+        "odom_step_m": 0.11101220656799198,
+        "residual_m": 0.04898567311978366,
+        "yaw_residual_deg": 2.974734639818531,
+        "covariance_after": [
+          0.1718011862323996,
+          0.031013677021537234,
+          0.08974655810899344
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          123.09695649147034,
+          162.80175733566284
+        ],
+        "header_interval_s": 39.685420989990234,
+        "amcl_step_m": 0.09579674709266203,
+        "odom_step_m": 0.10268673746707038,
+        "residual_m": 0.007910113192952385,
+        "yaw_residual_deg": 5.764996896401161,
+        "covariance_after": [
+          0.7878021392015047,
+          0.19232457077258314,
+          0.3461302835899985
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          85.81143856048584,
+          123.09695649147034
+        ],
+        "header_interval_s": 37.30262637138367,
+        "amcl_step_m": 0.09621367696869898,
+        "odom_step_m": 0.10209136859910055,
+        "residual_m": 0.006063642533911445,
+        "yaw_residual_deg": 6.4510128689197455,
+        "covariance_after": [
+          0.5730465889101666,
+          0.11524062622028453,
+          0.25904156612085605
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "largest_yaw_corrections": [
+      {
+        "relative_record_s": [
+          85.81143856048584,
+          123.09695649147034
+        ],
+        "header_interval_s": 37.30262637138367,
+        "amcl_step_m": 0.09621367696869898,
+        "odom_step_m": 0.10209136859910055,
+        "residual_m": 0.006063642533911445,
+        "yaw_residual_deg": 6.4510128689197455,
+        "covariance_after": [
+          0.5730465889101666,
+          0.11524062622028453,
+          0.25904156612085605
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          49.728468894958496,
+          85.81143856048584
+        ],
+        "header_interval_s": 36.09779071807861,
+        "amcl_step_m": 0.10306623358592677,
+        "odom_step_m": 0.1080017469688146,
+        "residual_m": 0.005736253026193135,
+        "yaw_residual_deg": 6.446183832182328,
+        "covariance_after": [
+          0.31177194602138414,
+          0.053920804325776395,
+          0.16439440531342123
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          198.1310272216797,
+          235.47436380386353
+        ],
+        "header_interval_s": 37.19148850440979,
+        "amcl_step_m": 0.04253853978583351,
+        "odom_step_m": 0.10302532687226358,
+        "residual_m": 0.07559842587476177,
+        "yaw_residual_deg": 6.308673017934028,
+        "covariance_after": [
+          1.0817082895052348,
+          0.341371530425044,
+          0.4577237967188155
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "method": "SE2 prediction from AMCL previous pose using header-time interpolated odometry; no interpolation across odom gaps >0.25s. Residual is disagreement, not external truth. An absent initialpose topic does not establish that no unrecorded reset occurred."
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "comparisons": 515,
+    "initialpose_topic_recorded": false,
+    "largest_translation_corrections": [
+      {
+        "relative_record_s": [
+          150.6346094608307,
+          150.84783601760864
+        ],
+        "header_interval_s": 0.20043063163757324,
+        "amcl_step_m": 0.051180673704478985,
+        "odom_step_m": 0.15043653585678493,
+        "residual_m": 0.12567776305731482,
+        "yaw_residual_deg": 0.46945142799379386,
+        "covariance_after": [
+          0.04456605771999911,
+          0.0072492019285572695,
+          0.004267815757791717
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          110.03580093383789,
+          110.29949164390564
+        ],
+        "header_interval_s": 0.29034972190856934,
+        "amcl_step_m": 0.154167074265309,
+        "odom_step_m": 0.14128305226157023,
+        "residual_m": 0.08386491879663384,
+        "yaw_residual_deg": 2.4557128654466625,
+        "covariance_after": [
+          0.06732262310722348,
+          0.36240308783829533,
+          0.16232197074407093
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          100.44104194641113,
+          100.91231894493103
+        ],
+        "header_interval_s": 0.5145094394683838,
+        "amcl_step_m": 0.17311975541613855,
+        "odom_step_m": 0.1432411294683389,
+        "residual_m": 0.08367587560028436,
+        "yaw_residual_deg": 1.3255043370524018,
+        "covariance_after": [
+          0.14608405790635004,
+          0.6058743926136785,
+          0.3760685618054776
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          97.40282154083252,
+          100.44104194641113
+        ],
+        "header_interval_s": 2.98702073097229,
+        "amcl_step_m": 0.10372756689660478,
+        "odom_step_m": 0.17547270422375352,
+        "residual_m": 0.076058315737516,
+        "yaw_residual_deg": 2.7891907695399443,
+        "covariance_after": [
+          0.17359246313380794,
+          0.7025516310448907,
+          0.43705797302230537
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          171.19665551185608,
+          171.3756079673767
+        ],
+        "header_interval_s": 0.18800806999206543,
+        "amcl_step_m": 0.09116152456939915,
+        "odom_step_m": 0.01614228718586847,
+        "residual_m": 0.07543323311943886,
+        "yaw_residual_deg": 0.8558041213013519,
+        "covariance_after": [
+          0.4163046031794835,
+          0.08909221012247315,
+          0.3165842877997409
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          100.91231894493103,
+          102.43767309188843
+        ],
+        "header_interval_s": 1.5004794597625732,
+        "amcl_step_m": 0.07381606135089216,
+        "odom_step_m": 0.02601182615144213,
+        "residual_m": 0.07130475582359867,
+        "yaw_residual_deg": 5.81476846218698,
+        "covariance_after": [
+          0.11319914186858426,
+          0.5330048444957782,
+          0.3004698046971406
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "largest_yaw_corrections": [
+      {
+        "relative_record_s": [
+          110.51947164535522,
+          110.73363161087036
+        ],
+        "header_interval_s": 0.21488046646118164,
+        "amcl_step_m": 0.13760766002285116,
+        "odom_step_m": 0.10508448154872799,
+        "residual_m": 0.05766734734594563,
+        "yaw_residual_deg": 6.7751272096753015,
+        "covariance_after": [
+          0.04393191884875591,
+          0.2508988688558915,
+          0.10334616064458357
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          100.91231894493103,
+          102.43767309188843
+        ],
+        "header_interval_s": 1.5004794597625732,
+        "amcl_step_m": 0.07381606135089216,
+        "odom_step_m": 0.02601182615144213,
+        "residual_m": 0.07130475582359867,
+        "yaw_residual_deg": 5.81476846218698,
+        "covariance_after": [
+          0.11319914186858426,
+          0.5330048444957782,
+          0.3004698046971406
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          175.18888330459595,
+          176.20814490318298
+        ],
+        "header_interval_s": 1.0116112232208252,
+        "amcl_step_m": 0.0470963259268836,
+        "odom_step_m": 0.017170968952814416,
+        "residual_m": 0.05300155324302691,
+        "yaw_residual_deg": 3.0961371968938565,
+        "covariance_after": [
+          0.10180706982150411,
+          0.021487458015620575,
+          0.07354744220185105
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "method": "SE2 prediction from AMCL previous pose using header-time interpolated odometry; no interpolation across odom gaps >0.25s. Residual is disagreement, not external truth. An absent initialpose topic does not establish that no unrecorded reset occurred."
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_102101.bag",
+    "comparisons": 332,
+    "initialpose_topic_recorded": false,
+    "largest_translation_corrections": [
+      {
+        "relative_record_s": [
+          183.2633843421936,
+          183.52759552001953
+        ],
+        "header_interval_s": 0.29996299743652344,
+        "amcl_step_m": 3.9689778197396315,
+        "odom_step_m": 0.15854529908120396,
+        "residual_m": 4.1259337386838295,
+        "yaw_residual_deg": 175.31614433547765,
+        "covariance_after": [
+          0.09136766182393785,
+          4.190511245049775,
+          5.201808543920623
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          79.31740188598633,
+          80.29886770248413
+        ],
+        "header_interval_s": 1.0000414848327637,
+        "amcl_step_m": 3.411801312654158,
+        "odom_step_m": 0.150781514252919,
+        "residual_m": 3.326295801000369,
+        "yaw_residual_deg": 106.51126220793161,
+        "covariance_after": [
+          0.8008747819068134,
+          1.900359650170497,
+          0.9867511704165685
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          149.94139528274536,
+          150.41361451148987
+        ],
+        "header_interval_s": 0.20001840591430664,
+        "amcl_step_m": 0.7165416048985095,
+        "odom_step_m": 0.010503334210793107,
+        "residual_m": 0.7118144045802705,
+        "yaw_residual_deg": 31.43758576237095,
+        "covariance_after": [
+          0.8031324107893454,
+          0.7245066897002364,
+          3.2745242614901477
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          154.47160816192627,
+          154.66519045829773
+        ],
+        "header_interval_s": 0.09994101524353027,
+        "amcl_step_m": 0.45447139643924844,
+        "odom_step_m": 0.005000936348432116,
+        "residual_m": 0.4590888369856481,
+        "yaw_residual_deg": 21.16551113146993,
+        "covariance_after": [
+          0.44250408490380266,
+          0.5435450890211193,
+          2.751163561923779
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          154.77327609062195,
+          154.8279914855957
+        ],
+        "header_interval_s": 0.09994220733642578,
+        "amcl_step_m": 0.4496287335475332,
+        "odom_step_m": 0.005093738931728384,
+        "residual_m": 0.45411251666668656,
+        "yaw_residual_deg": 16.59167687064097,
+        "covariance_after": [
+          0.35748411369382893,
+          0.5346867065621161,
+          1.8515003252837043
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          155.41877007484436,
+          155.4310266971588
+        ],
+        "header_interval_s": 0.1994762420654297,
+        "amcl_step_m": 0.41298443134841195,
+        "odom_step_m": 0.014405651483649437,
+        "residual_m": 0.4238823976651559,
+        "yaw_residual_deg": 18.900487243989318,
+        "covariance_after": [
+          0.3175677740859726,
+          0.5599907309622889,
+          1.5817006454081943
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "largest_yaw_corrections": [
+      {
+        "relative_record_s": [
+          183.2633843421936,
+          183.52759552001953
+        ],
+        "header_interval_s": 0.29996299743652344,
+        "amcl_step_m": 3.9689778197396315,
+        "odom_step_m": 0.15854529908120396,
+        "residual_m": 4.1259337386838295,
+        "yaw_residual_deg": 175.31614433547765,
+        "covariance_after": [
+          0.09136766182393785,
+          4.190511245049775,
+          5.201808543920623
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          79.31740188598633,
+          80.29886770248413
+        ],
+        "header_interval_s": 1.0000414848327637,
+        "amcl_step_m": 3.411801312654158,
+        "odom_step_m": 0.150781514252919,
+        "residual_m": 3.326295801000369,
+        "yaw_residual_deg": 106.51126220793161,
+        "covariance_after": [
+          0.8008747819068134,
+          1.900359650170497,
+          0.9867511704165685
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          154.06495451927185,
+          154.2581503391266
+        ],
+        "header_interval_s": 0.09990525245666504,
+        "amcl_step_m": 0.0809174212108097,
+        "odom_step_m": 0.0031537541666440015,
+        "residual_m": 0.07905009406130906,
+        "yaw_residual_deg": 64.78951555191829,
+        "covariance_after": [
+          0.5658749188397962,
+          0.6441206912244013,
+          4.72511584278184
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "method": "SE2 prediction from AMCL previous pose using header-time interpolated odometry; no interpolation across odom gaps >0.25s. Residual is disagreement, not external truth. An absent initialpose topic does not establish that no unrecorded reset occurred."
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103200.bag",
+    "comparisons": 20,
+    "initialpose_topic_recorded": true,
+    "largest_translation_corrections": [
+      {
+        "relative_record_s": [
+          18.53954839706421,
+          28.871882915496826
+        ],
+        "header_interval_s": 10.299885749816895,
+        "amcl_step_m": 3.155315350879744,
+        "odom_step_m": 0.039427115197239126,
+        "residual_m": 3.153808664476791,
+        "yaw_residual_deg": 172.65613470248672,
+        "covariance_after": [
+          0.029506925558365538,
+          0.035815044366351856,
+          0.010104244683228087
+        ],
+        "recorded_initialpose_in_interval": true
+      },
+      {
+        "relative_record_s": [
+          12.637226343154907,
+          13.056094884872437
+        ],
+        "header_interval_s": 0.40000271797180176,
+        "amcl_step_m": 0.12307591295039844,
+        "odom_step_m": 0.11993506679054579,
+        "residual_m": 0.17214673844326428,
+        "yaw_residual_deg": 4.275132557782578,
+        "covariance_after": [
+          0.7317466111971385,
+          0.04694937680107003,
+          0.6341019889776355
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          28.88479781150818,
+          34.335623025894165
+        ],
+        "header_interval_s": 5.599954605102539,
+        "amcl_step_m": 0.19504735424015973,
+        "odom_step_m": 0.038847521697990134,
+        "residual_m": 0.16364610681256006,
+        "yaw_residual_deg": 2.277753940416822,
+        "covariance_after": [
+          0.032030066528250245,
+          0.03199295886967235,
+          0.009790517652224924
+        ],
+        "recorded_initialpose_in_interval": true
+      },
+      {
+        "relative_record_s": [
+          9.61428165435791,
+          12.327423810958862
+        ],
+        "header_interval_s": 2.698793649673462,
+        "amcl_step_m": 0.0837894617190583,
+        "odom_step_m": 0.10836121822909349,
+        "residual_m": 0.1347110807312189,
+        "yaw_residual_deg": 1.3969421315104495,
+        "covariance_after": [
+          0.7113564767202405,
+          0.06789554637602535,
+          0.5953183422158046
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          8.650426864624023,
+          9.61428165435791
+        ],
+        "header_interval_s": 1.0011394023895264,
+        "amcl_step_m": 0.11749741211380603,
+        "odom_step_m": 0.10511443870179818,
+        "residual_m": 0.1298485448723272,
+        "yaw_residual_deg": 0.02090413117207818,
+        "covariance_after": [
+          0.6454931640104746,
+          0.08037153546330522,
+          0.5107175615343793
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          13.056094884872437,
+          13.540103435516357
+        ],
+        "header_interval_s": 0.500023603439331,
+        "amcl_step_m": 0.10567163025918559,
+        "odom_step_m": 0.10637070358583772,
+        "residual_m": 0.10752322134668672,
+        "yaw_residual_deg": 0.870043033074933,
+        "covariance_after": [
+          0.7318833572182939,
+          0.044988297274016986,
+          0.6409449868156656
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "largest_yaw_corrections": [
+      {
+        "relative_record_s": [
+          18.53954839706421,
+          28.871882915496826
+        ],
+        "header_interval_s": 10.299885749816895,
+        "amcl_step_m": 3.155315350879744,
+        "odom_step_m": 0.039427115197239126,
+        "residual_m": 3.153808664476791,
+        "yaw_residual_deg": 172.65613470248672,
+        "covariance_after": [
+          0.029506925558365538,
+          0.035815044366351856,
+          0.010104244683228087
+        ],
+        "recorded_initialpose_in_interval": true
+      },
+      {
+        "relative_record_s": [
+          12.637226343154907,
+          13.056094884872437
+        ],
+        "header_interval_s": 0.40000271797180176,
+        "amcl_step_m": 0.12307591295039844,
+        "odom_step_m": 0.11993506679054579,
+        "residual_m": 0.17214673844326428,
+        "yaw_residual_deg": 4.275132557782578,
+        "covariance_after": [
+          0.7317466111971385,
+          0.04694937680107003,
+          0.6341019889776355
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          28.88479781150818,
+          34.335623025894165
+        ],
+        "header_interval_s": 5.599954605102539,
+        "amcl_step_m": 0.19504735424015973,
+        "odom_step_m": 0.038847521697990134,
+        "residual_m": 0.16364610681256006,
+        "yaw_residual_deg": 2.277753940416822,
+        "covariance_after": [
+          0.032030066528250245,
+          0.03199295886967235,
+          0.009790517652224924
+        ],
+        "recorded_initialpose_in_interval": true
+      }
+    ],
+    "method": "SE2 prediction from AMCL previous pose using header-time interpolated odometry; no interpolation across odom gaps >0.25s. Residual is disagreement, not external truth. An absent initialpose topic does not establish that no unrecorded reset occurred."
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103313.bag",
+    "comparisons": 360,
+    "initialpose_topic_recorded": false,
+    "largest_translation_corrections": [
+      {
+        "relative_record_s": [
+          134.7581307888031,
+          134.76987528800964
+        ],
+        "header_interval_s": 0.3000514507293701,
+        "amcl_step_m": 4.3632713585797225,
+        "odom_step_m": 0.15667606115851054,
+        "residual_m": 4.518005056458307,
+        "yaw_residual_deg": 152.55643414814017,
+        "covariance_after": [
+          0.28034506499145095,
+          4.791710857844382,
+          2.1162730057538814
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          130.77463006973267,
+          131.57351851463318
+        ],
+        "header_interval_s": 0.7998971939086914,
+        "amcl_step_m": 2.6376379569391637,
+        "odom_step_m": 0.08536347500942584,
+        "residual_m": 2.7214913509673475,
+        "yaw_residual_deg": 172.93544993544884,
+        "covariance_after": [
+          0.5458984925728743,
+          2.191803318054607,
+          5.055826402573877
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          130.41854166984558,
+          130.46836233139038
+        ],
+        "header_interval_s": 0.2999911308288574,
+        "amcl_step_m": 1.042409520116221,
+        "odom_step_m": 0.157150286897916,
+        "residual_m": 0.9232504256731318,
+        "yaw_residual_deg": 20.130458014171605,
+        "covariance_after": [
+          0.6086897098555397,
+          1.7915114831253334,
+          5.175328053533626
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          129.8872275352478,
+          129.9604094028473
+        ],
+        "header_interval_s": 0.09995126724243164,
+        "amcl_step_m": 0.7642119371015492,
+        "odom_step_m": 0.12624711456700796,
+        "residual_m": 0.8749969409341491,
+        "yaw_residual_deg": 9.440807148340111,
+        "covariance_after": [
+          0.6021345270791301,
+          1.4737068219021126,
+          4.058165645523621
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          128.56865572929382,
+          129.45682430267334
+        ],
+        "header_interval_s": 0.7999286651611328,
+        "amcl_step_m": 0.5273187245559193,
+        "odom_step_m": 0.11042101634385335,
+        "residual_m": 0.41751521553175036,
+        "yaw_residual_deg": 2.9509768598161648,
+        "covariance_after": [
+          0.5578671565423576,
+          1.0994287304562107,
+          2.8566612304352073
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          89.17009925842285,
+          89.6767520904541
+        ],
+        "header_interval_s": 0.6001827716827393,
+        "amcl_step_m": 0.3387099368072161,
+        "odom_step_m": 0.14232275518773274,
+        "residual_m": 0.3138796927720934,
+        "yaw_residual_deg": 7.697036491555326,
+        "covariance_after": [
+          0.5146646621438151,
+          0.11211682274925217,
+          0.3198816351200347
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "largest_yaw_corrections": [
+      {
+        "relative_record_s": [
+          130.77463006973267,
+          131.57351851463318
+        ],
+        "header_interval_s": 0.7998971939086914,
+        "amcl_step_m": 2.6376379569391637,
+        "odom_step_m": 0.08536347500942584,
+        "residual_m": 2.7214913509673475,
+        "yaw_residual_deg": 172.93544993544884,
+        "covariance_after": [
+          0.5458984925728743,
+          2.191803318054607,
+          5.055826402573877
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          134.7581307888031,
+          134.76987528800964
+        ],
+        "header_interval_s": 0.3000514507293701,
+        "amcl_step_m": 4.3632713585797225,
+        "odom_step_m": 0.15667606115851054,
+        "residual_m": 4.518005056458307,
+        "yaw_residual_deg": 152.55643414814017,
+        "covariance_after": [
+          0.28034506499145095,
+          4.791710857844382,
+          2.1162730057538814
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          130.41854166984558,
+          130.46836233139038
+        ],
+        "header_interval_s": 0.2999911308288574,
+        "amcl_step_m": 1.042409520116221,
+        "odom_step_m": 0.157150286897916,
+        "residual_m": 0.9232504256731318,
+        "yaw_residual_deg": 20.130458014171605,
+        "covariance_after": [
+          0.6086897098555397,
+          1.7915114831253334,
+          5.175328053533626
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "method": "SE2 prediction from AMCL previous pose using header-time interpolated odometry; no interpolation across odom gaps >0.25s. Residual is disagreement, not external truth. An absent initialpose topic does not establish that no unrecorded reset occurred."
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_105713.bag",
+    "comparisons": 319,
+    "initialpose_topic_recorded": false,
+    "largest_translation_corrections": [
+      {
+        "relative_record_s": [
+          142.8871762752533,
+          143.35091948509216
+        ],
+        "header_interval_s": 0.39995813369750977,
+        "amcl_step_m": 1.6194728628225152,
+        "odom_step_m": 0.15546368433125646,
+        "residual_m": 1.7600201342727475,
+        "yaw_residual_deg": 164.0125032390693,
+        "covariance_after": [
+          0.4453055734993754,
+          1.0818618856638835,
+          3.3693983889875083
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          191.94314575195312,
+          191.96065711975098
+        ],
+        "header_interval_s": 0.10088276863098145,
+        "amcl_step_m": 1.5793054438191363,
+        "odom_step_m": 0.2450576058858062,
+        "residual_m": 1.7376882665177562,
+        "yaw_residual_deg": 177.77305234944836,
+        "covariance_after": [
+          0.17422929033125456,
+          1.006114809295937,
+          3.2624805271589046
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          191.91652393341064,
+          191.9303572177887
+        ],
+        "header_interval_s": 0.29996180534362793,
+        "amcl_step_m": 1.5170042376798438,
+        "odom_step_m": 0.30965950412752186,
+        "residual_m": 1.4061143949746546,
+        "yaw_residual_deg": 171.83568336766797,
+        "covariance_after": [
+          0.43951737817820913,
+          0.33117785068294125,
+          5.277503853653483
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          142.2999143600464,
+          142.6074502468109
+        ],
+        "header_interval_s": 0.3000657558441162,
+        "amcl_step_m": 0.6836471726113643,
+        "odom_step_m": 0.07953822452380305,
+        "residual_m": 0.622704780463362,
+        "yaw_residual_deg": 47.24754689180063,
+        "covariance_after": [
+          0.4505999946042394,
+          1.1940171205108854,
+          2.340344877483554
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          142.6074502468109,
+          142.8871762752533
+        ],
+        "header_interval_s": 0.29994773864746094,
+        "amcl_step_m": 0.47275256701731366,
+        "odom_step_m": 0.12646302993368883,
+        "residual_m": 0.48063605780760066,
+        "yaw_residual_deg": 33.41588339628164,
+        "covariance_after": [
+          0.4537467431235527,
+          1.129785882083823,
+          2.707888438763295
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          141.83583116531372,
+          142.07026600837708
+        ],
+        "header_interval_s": 0.3000977039337158,
+        "amcl_step_m": 0.29748490924487514,
+        "odom_step_m": 0.14770685256646235,
+        "residual_m": 0.4291690694987671,
+        "yaw_residual_deg": 4.553334651648238,
+        "covariance_after": [
+          0.5115448801997573,
+          1.0494404299866318,
+          1.9513988107558944
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "largest_yaw_corrections": [
+      {
+        "relative_record_s": [
+          191.94314575195312,
+          191.96065711975098
+        ],
+        "header_interval_s": 0.10088276863098145,
+        "amcl_step_m": 1.5793054438191363,
+        "odom_step_m": 0.2450576058858062,
+        "residual_m": 1.7376882665177562,
+        "yaw_residual_deg": 177.77305234944836,
+        "covariance_after": [
+          0.17422929033125456,
+          1.006114809295937,
+          3.2624805271589046
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          191.91652393341064,
+          191.9303572177887
+        ],
+        "header_interval_s": 0.29996180534362793,
+        "amcl_step_m": 1.5170042376798438,
+        "odom_step_m": 0.30965950412752186,
+        "residual_m": 1.4061143949746546,
+        "yaw_residual_deg": 171.83568336766797,
+        "covariance_after": [
+          0.43951737817820913,
+          0.33117785068294125,
+          5.277503853653483
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          142.8871762752533,
+          143.35091948509216
+        ],
+        "header_interval_s": 0.39995813369750977,
+        "amcl_step_m": 1.6194728628225152,
+        "odom_step_m": 0.15546368433125646,
+        "residual_m": 1.7600201342727475,
+        "yaw_residual_deg": 164.0125032390693,
+        "covariance_after": [
+          0.4453055734993754,
+          1.0818618856638835,
+          3.3693983889875083
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "method": "SE2 prediction from AMCL previous pose using header-time interpolated odometry; no interpolation across odom gaps >0.25s. Residual is disagreement, not external truth. An absent initialpose topic does not establish that no unrecorded reset occurred."
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "comparisons": 485,
+    "initialpose_topic_recorded": false,
+    "largest_translation_corrections": [
+      {
+        "relative_record_s": [
+          62.38595271110535,
+          72.46499609947205
+        ],
+        "header_interval_s": 10.699068546295166,
+        "amcl_step_m": 0.5237236694037134,
+        "odom_step_m": 0.052008901698127885,
+        "residual_m": 0.47447264209428036,
+        "yaw_residual_deg": 1.1118631665663559,
+        "covariance_after": [
+          0.6240555159842032,
+          0.20300257572955616,
+          0.4506988077208297
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          79.40935254096985,
+          79.61036348342896
+        ],
+        "header_interval_s": 0.1989271640777588,
+        "amcl_step_m": 0.35563610662205924,
+        "odom_step_m": 0.12959106108743046,
+        "residual_m": 0.3634101463812937,
+        "yaw_residual_deg": 4.099443671867365,
+        "covariance_after": [
+          1.1325759388978156,
+          0.5695313931032189,
+          0.11849558606469668
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          59.177494764328,
+          62.38595271110535
+        ],
+        "header_interval_s": 2.500034809112549,
+        "amcl_step_m": 0.219174439570716,
+        "odom_step_m": 0.029232093281920404,
+        "residual_m": 0.24836088829653483,
+        "yaw_residual_deg": 2.0408001316580773,
+        "covariance_after": [
+          0.2318050476498712,
+          0.0762885495637704,
+          0.11622265999667034
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          80.38567042350769,
+          80.39474534988403
+        ],
+        "header_interval_s": 0.10007739067077637,
+        "amcl_step_m": 0.22693430915323126,
+        "odom_step_m": 0.005005621072780137,
+        "residual_m": 0.2265457639805239,
+        "yaw_residual_deg": 1.1935887307772752,
+        "covariance_after": [
+          0.7568382266906468,
+          0.3875483560925801,
+          0.10037541081309019
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          78.61743354797363,
+          78.83305525779724
+        ],
+        "header_interval_s": 0.19995594024658203,
+        "amcl_step_m": 0.2454468432595243,
+        "odom_step_m": 0.15120510567662396,
+        "residual_m": 0.15418930613998577,
+        "yaw_residual_deg": 0.29838359215135746,
+        "covariance_after": [
+          1.223917668188598,
+          0.7619446538516286,
+          0.2379387011058329
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          78.52004432678223,
+          78.53034138679504
+        ],
+        "header_interval_s": 0.1999833583831787,
+        "amcl_step_m": 0.16281103492457197,
+        "odom_step_m": 0.15485416763552162,
+        "residual_m": 0.12259153597150844,
+        "yaw_residual_deg": 1.8653495725766767,
+        "covariance_after": [
+          0.7741454212880612,
+          0.47704902608711564,
+          0.23920732389447025
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "largest_yaw_corrections": [
+      {
+        "relative_record_s": [
+          170.47886204719543,
+          180.8386721611023
+        ],
+        "header_interval_s": 10.301051378250122,
+        "amcl_step_m": 0.10888684164095488,
+        "odom_step_m": 0.025627515876554017,
+        "residual_m": 0.10370423457906949,
+        "yaw_residual_deg": 5.532886207161701,
+        "covariance_after": [
+          1.2267607310735116,
+          0.20839903638487556,
+          0.4448583808840589
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          78.53034138679504,
+          78.61743354797363
+        ],
+        "header_interval_s": 0.20017623901367188,
+        "amcl_step_m": 0.207571836219424,
+        "odom_step_m": 0.15165302013515305,
+        "residual_m": 0.1022301838847274,
+        "yaw_residual_deg": 4.537650754068008,
+        "covariance_after": [
+          0.9970274804267589,
+          0.6141082211570676,
+          0.23911442791812
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          72.46499609947205,
+          76.3796820640564
+        ],
+        "header_interval_s": 3.800077199935913,
+        "amcl_step_m": 0.20784975985428153,
+        "odom_step_m": 0.12350669795256543,
+        "residual_m": 0.12001857367623087,
+        "yaw_residual_deg": 4.409858753628886,
+        "covariance_after": [
+          0.48294964697888787,
+          0.20393619606922186,
+          0.4682589196531748
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "method": "SE2 prediction from AMCL previous pose using header-time interpolated odometry; no interpolation across odom gaps >0.25s. Residual is disagreement, not external truth. An absent initialpose topic does not establish that no unrecorded reset occurred."
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "comparisons": 532,
+    "initialpose_topic_recorded": false,
+    "largest_translation_corrections": [
+      {
+        "relative_record_s": [
+          39.48602366447449,
+          39.58373999595642
+        ],
+        "header_interval_s": 0.09952640533447266,
+        "amcl_step_m": 1.9955871273813408,
+        "odom_step_m": 0.014321262593576531,
+        "residual_m": 1.9996418200169428,
+        "yaw_residual_deg": 30.473922810225613,
+        "covariance_after": [
+          0.7358064625521337,
+          0.33464329069055054,
+          0.10254988215149898
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          8.45976710319519,
+          9.085692167282104
+        ],
+        "header_interval_s": 0.19990134239196777,
+        "amcl_step_m": 0.7854520789838495,
+        "odom_step_m": 0.11127188616347726,
+        "residual_m": 0.7294112015911135,
+        "yaw_residual_deg": 34.2270863857028,
+        "covariance_after": [
+          1.119204723580408,
+          0.19629583047912114,
+          0.37282077624957466
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          69.59746432304382,
+          69.8719253540039
+        ],
+        "header_interval_s": 0.3000607490539551,
+        "amcl_step_m": 0.47557596215992,
+        "odom_step_m": 0.15148477910687433,
+        "residual_m": 0.6010784254033013,
+        "yaw_residual_deg": 4.655589843769712,
+        "covariance_after": [
+          0.010923712462911794,
+          0.2985550860566235,
+          0.01674488287679452
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          70.1950581073761,
+          70.40037059783936
+        ],
+        "header_interval_s": 0.29995203018188477,
+        "amcl_step_m": 0.23321975088165348,
+        "odom_step_m": 0.1560962660997385,
+        "residual_m": 0.37451665802820716,
+        "yaw_residual_deg": 2.083767540423562,
+        "covariance_after": [
+          0.015396904276755663,
+          0.25880567016663747,
+          0.015601667812003004
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          32.471128940582275,
+          32.969361305236816
+        ],
+        "header_interval_s": 0.49976062774658203,
+        "amcl_step_m": 0.31527801467420824,
+        "odom_step_m": 0.007755504746138015,
+        "residual_m": 0.31960372316798974,
+        "yaw_residual_deg": 7.525812496185474,
+        "covariance_after": [
+          0.44209136500566615,
+          0.019486396756079216,
+          0.08609304915734786
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          68.87813901901245,
+          69.30818367004395
+        ],
+        "header_interval_s": 0.4000716209411621,
+        "amcl_step_m": 0.3892066937877714,
+        "odom_step_m": 0.1366945184803667,
+        "residual_m": 0.2694261715713133,
+        "yaw_residual_deg": 2.4328931955070963,
+        "covariance_after": [
+          0.008420267348128618,
+          0.26859706892371094,
+          0.01678417011241983
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "largest_yaw_corrections": [
+      {
+        "relative_record_s": [
+          8.45976710319519,
+          9.085692167282104
+        ],
+        "header_interval_s": 0.19990134239196777,
+        "amcl_step_m": 0.7854520789838495,
+        "odom_step_m": 0.11127188616347726,
+        "residual_m": 0.7294112015911135,
+        "yaw_residual_deg": 34.2270863857028,
+        "covariance_after": [
+          1.119204723580408,
+          0.19629583047912114,
+          0.37282077624957466
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          39.48602366447449,
+          39.58373999595642
+        ],
+        "header_interval_s": 0.09952640533447266,
+        "amcl_step_m": 1.9955871273813408,
+        "odom_step_m": 0.014321262593576531,
+        "residual_m": 1.9996418200169428,
+        "yaw_residual_deg": 30.473922810225613,
+        "covariance_after": [
+          0.7358064625521337,
+          0.33464329069055054,
+          0.10254988215149898
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          8.115152835845947,
+          8.45976710319519
+        ],
+        "header_interval_s": 0.20012474060058594,
+        "amcl_step_m": 0.18069095121163628,
+        "odom_step_m": 0.11419072075947502,
+        "residual_m": 0.16374714355218206,
+        "yaw_residual_deg": 11.907886798007617,
+        "covariance_after": [
+          1.164241607335791,
+          0.22488082433704104,
+          0.48117265812153354
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "method": "SE2 prediction from AMCL previous pose using header-time interpolated odometry; no interpolation across odom gaps >0.25s. Residual is disagreement, not external truth. An absent initialpose topic does not establish that no unrecorded reset occurred."
+  },
+  {
+    "bag": "tag_calibration_20260827_134853.bag",
+    "comparisons": 359,
+    "initialpose_topic_recorded": false,
+    "largest_translation_corrections": [
+      {
+        "relative_record_s": [
+          10.698102235794067,
+          11.173697471618652
+        ],
+        "header_interval_s": 0.399794340133667,
+        "amcl_step_m": 0.4632696576133278,
+        "odom_step_m": 0.11780661616398287,
+        "residual_m": 0.5038317247191081,
+        "yaw_residual_deg": 11.5317334629277,
+        "covariance_after": [
+          0.43075864730384694,
+          0.2843323657749224,
+          0.13879708618904615
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          86.83470320701599,
+          87.1879231929779
+        ],
+        "header_interval_s": 0.2999269962310791,
+        "amcl_step_m": 0.47433570459571256,
+        "odom_step_m": 0.13209244752882363,
+        "residual_m": 0.38592459809831026,
+        "yaw_residual_deg": 5.892573998172188,
+        "covariance_after": [
+          0.708879518728466,
+          0.10243481957559197,
+          0.11040218717599971
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          85.12338757514954,
+          86.32981061935425
+        ],
+        "header_interval_s": 1.200052261352539,
+        "amcl_step_m": 0.41163345946762425,
+        "odom_step_m": 0.103409575333443,
+        "residual_m": 0.33465660672871655,
+        "yaw_residual_deg": 6.798892961226937,
+        "covariance_after": [
+          1.009430407897142,
+          0.14484909694452597,
+          0.13889267940715472
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          9.290129661560059,
+          9.748015880584717
+        ],
+        "header_interval_s": 0.4000382423400879,
+        "amcl_step_m": 0.22909648720304743,
+        "odom_step_m": 0.1250431773306123,
+        "residual_m": 0.31984526496610294,
+        "yaw_residual_deg": 10.180989809260607,
+        "covariance_after": [
+          0.7346295169468107,
+          0.5758200063967749,
+          0.3091071573441586
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          8.99241018295288,
+          9.290129661560059
+        ],
+        "header_interval_s": 0.2998383045196533,
+        "amcl_step_m": 0.19678166602956676,
+        "odom_step_m": 0.1206479207574011,
+        "residual_m": 0.2812476601021735,
+        "yaw_residual_deg": 8.895132517705001,
+        "covariance_after": [
+          0.6715679562977073,
+          0.6283917221534949,
+          0.321144288448725
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          86.32981061935425,
+          86.63732862472534
+        ],
+        "header_interval_s": 0.29993128776550293,
+        "amcl_step_m": 0.11393391996139919,
+        "odom_step_m": 0.15825375449048,
+        "residual_m": 0.2647581002906032,
+        "yaw_residual_deg": 1.2905481012296514,
+        "covariance_after": [
+          1.1090244379835923,
+          0.1382824994671097,
+          0.1387649488543288
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "largest_yaw_corrections": [
+      {
+        "relative_record_s": [
+          10.698102235794067,
+          11.173697471618652
+        ],
+        "header_interval_s": 0.399794340133667,
+        "amcl_step_m": 0.4632696576133278,
+        "odom_step_m": 0.11780661616398287,
+        "residual_m": 0.5038317247191081,
+        "yaw_residual_deg": 11.5317334629277,
+        "covariance_after": [
+          0.43075864730384694,
+          0.2843323657749224,
+          0.13879708618904615
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          27.98017716407776,
+          28.19406485557556
+        ],
+        "header_interval_s": 0.20001435279846191,
+        "amcl_step_m": 0.1428258362855058,
+        "odom_step_m": 0.007892756995834789,
+        "residual_m": 0.14846323468920392,
+        "yaw_residual_deg": 10.504054185881982,
+        "covariance_after": [
+          0.046770340691168144,
+          0.21388136303848881,
+          0.218263640493932
+        ],
+        "recorded_initialpose_in_interval": false
+      },
+      {
+        "relative_record_s": [
+          9.290129661560059,
+          9.748015880584717
+        ],
+        "header_interval_s": 0.4000382423400879,
+        "amcl_step_m": 0.22909648720304743,
+        "odom_step_m": 0.1250431773306123,
+        "residual_m": 0.31984526496610294,
+        "yaw_residual_deg": 10.180989809260607,
+        "covariance_after": [
+          0.7346295169468107,
+          0.5758200063967749,
+          0.3091071573441586
+        ],
+        "recorded_initialpose_in_interval": false
+      }
+    ],
+    "method": "SE2 prediction from AMCL previous pose using header-time interpolated odometry; no interpolation across odom gaps >0.25s. Residual is disagreement, not external truth. An absent initialpose topic does not establish that no unrecorded reset occurred."
+  }
+]

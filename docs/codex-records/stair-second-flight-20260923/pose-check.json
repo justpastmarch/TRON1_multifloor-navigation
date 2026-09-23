@@ -1,0 +1,13 @@
+{
+  "stamp": 1790127126.9030092,
+  "body_xyz": [
+    2.534561547167354,
+    1.33859548228169,
+    1.5340557620067083
+  ],
+  "yaw_deg": 177.6710896828627,
+  "inside_landing_with_margin": false,
+  "height_error_m": 0.004055762006708319,
+  "reference_epoch": 0,
+  "odom_frame": "stair_local_0"
+}

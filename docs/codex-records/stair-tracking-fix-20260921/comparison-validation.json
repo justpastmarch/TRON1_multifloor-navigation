@@ -1,0 +1,57 @@
+{
+  "observed_utc": "2026-09-20T17:59:58.650016+00:00",
+  "results": {
+    "102101": {
+      "comparison_bag_readable": true,
+      "comparison_pose_matches_new_lidar": true,
+      "updated_label": true,
+      "overview_poses": 321,
+      "build": {
+        "fast_lio_bounded_samples": 39,
+        "fast_lio_rejected_samples": 368,
+        "fast_lio_samples": 407,
+        "final_arrival_camera_lidar_header_delta_s": 0.035562753677368164,
+        "intermediate_landing_camera_lidar_header_delta_s": 0.008375883102416992,
+        "lidar_samples": 321,
+        "stair_entry_camera_lidar_header_delta_s": 0.025660276412963867,
+        "status": "ok",
+        "wheel_samples": 468
+      }
+    },
+    "103313": {
+      "comparison_bag_readable": true,
+      "comparison_pose_matches_new_lidar": true,
+      "updated_label": true,
+      "overview_poses": 302,
+      "build": {
+        "fast_lio_bounded_samples": 115,
+        "fast_lio_rejected_samples": 263,
+        "fast_lio_samples": 378,
+        "final_arrival_camera_lidar_header_delta_s": 0.017178058624267578,
+        "intermediate_landing_camera_lidar_header_delta_s": 0.04091382026672363,
+        "lidar_samples": 302,
+        "stair_entry_camera_lidar_header_delta_s": 0.05486416816711426,
+        "status": "ok",
+        "wheel_samples": 434
+      }
+    },
+    "105713": {
+      "comparison_bag_readable": true,
+      "comparison_pose_matches_new_lidar": true,
+      "updated_label": true,
+      "overview_poses": 219,
+      "build": {
+        "fast_lio_bounded_samples": 284,
+        "fast_lio_rejected_samples": 0,
+        "fast_lio_samples": 284,
+        "final_arrival_camera_lidar_header_delta_s": 0.04064750671386719,
+        "intermediate_landing_camera_lidar_header_delta_s": 0.03748011589050293,
+        "lidar_samples": 219,
+        "stair_entry_camera_lidar_header_delta_s": 0.08542537689208984,
+        "status": "ok",
+        "wheel_samples": 332
+      }
+    }
+  },
+  "gui_replay": "not performed; file contents and RViz config verified"
+}

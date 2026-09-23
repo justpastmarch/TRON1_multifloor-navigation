@@ -1,0 +1,10 @@
+{
+  "observed_utc": "2026-09-20T22:16:13.651605+00:00",
+  "all_preimage_hashes_match": true,
+  "inventory_count": 1764,
+  "git_before": {
+    "head": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+    "status": ""
+  },
+  "scope": "Hash/metadata preservation; not a full content audit"
+}

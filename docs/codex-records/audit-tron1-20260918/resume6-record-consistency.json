@@ -1,0 +1,44 @@
+{
+  "inventory": 5509,
+  "states": {
+    "READ": 631,
+    "METADATA_ONLY": 1009,
+    "EXCLUDED": 3749,
+    "UNREAD": 120
+  },
+  "status_lists_match": true,
+  "next_targets_unique": 120,
+  "additional_read": 79,
+  "additional_metadata_only": 7,
+  "CSV_rows": 50618,
+  "log_lines": 600190,
+  "templates_reviewed": 550,
+  "tests": {
+    "executed": 88,
+    "pass": 85,
+    "fail": 3
+  },
+  "constraint_rows": 45,
+  "keep": 0,
+  "E2E_pending": 15,
+  "temporary_artifacts": [],
+  "background_processes": [],
+  "cold_read": {
+    "reviewer": "/root/resume6_handoff_cold_read",
+    "scope": "entire standalone inline handoff",
+    "result": "usable with minor gaps",
+    "fixes": [
+      "F15 and E2E15 same set explicit",
+      "security continuation static/read-only explicit"
+    ],
+    "existing_checkpoint_details": [
+      "baseline comparison and exact delta path",
+      "S/M definitions and KEEP0",
+      "reasoned UNVERIFIED versus unresolved PENDING"
+    ]
+  },
+  "analysis_corrections": [
+    "Global wheel origin rejected; segment-normalized check0 mismatches",
+    "Integer ns extrema added instead of float-only precision"
+  ]
+}

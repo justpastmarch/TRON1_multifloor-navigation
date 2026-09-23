@@ -1,0 +1,160 @@
+{
+  "at_utc": "2026-09-22T23:20:14.074688+00:00",
+  "evidence": "OBSERVED from live ROS; no claim of physical stair completion",
+  "configured": true,
+  "configuration_hash_matches_runtime": true,
+  "mode": "control",
+  "observe_only": false,
+  "supervisor": {
+    "header": {
+      "seq": 341,
+      "stamp": 1790119122.9377081,
+      "frame_id": ""
+    },
+    "state": 1,
+    "connected": true,
+    "detail": "navigation owns commands",
+    "ownership_epoch": 0
+  },
+  "floor": {
+    "header": {
+      "seq": 370,
+      "stamp": 1790119123.2432969,
+      "frame_id": ""
+    },
+    "floor_id": "3F",
+    "map_generation": 0,
+    "state": 2,
+    "detail": "auto localization ready"
+  },
+  "tracking": {
+    "epoch": 0,
+    "queue_length": 0,
+    "dropped_scans": 0,
+    "rejected_imu": 0,
+    "worker_error": "",
+    "backend": "process",
+    "mode": "control",
+    "observe_only": false,
+    "phase_test_protocol": "bound-ticket-v1",
+    "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+    "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+    "routes": [
+      {
+        "id": "stair_3f_4f_up",
+        "commissioned": false
+      }
+    ],
+    "sequence": 885,
+    "stamp": 1790119123.0475807,
+    "received_at": 189656.114626079,
+    "measured_at": 189655.91401591818,
+    "completed_at": 189656.184598956,
+    "last_geometry_at": 189655.91401591818,
+    "geometry_valid": true,
+    "state": "TRACKED",
+    "reason": "geometry accepted",
+    "fitness": 1.0,
+    "rmse": 0.07558668217571518,
+    "translation_innovation": 0.003008203061390394,
+    "rotation_innovation": 0.0037146067544866126,
+    "prediction_source": "gyro",
+    "compute_sec": 0.0686351349868346,
+    "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+    "geometry_age_sec": 0.28287905381876044,
+    "transport_delay_sec": 0.20061016082763672,
+    "completion_age_sec": 0.2705830378108658
+  },
+  "measurement": {
+    "geometry_age_sec": {
+      "median": 0.38256693302537315,
+      "max": 0.4828472185472492
+    },
+    "completion_age_sec": {
+      "median": 0.23300863002077676,
+      "max": 0.2979407834354788
+    },
+    "transport_delay_sec": {
+      "median": 0.15462470054626465,
+      "max": 0.21756720542907715
+    },
+    "compute_sec": {
+      "median": 0.0767635449883528,
+      "max": 0.08625880102044903
+    }
+  },
+  "lidar_pose_rate_hz": 5.000066966151954,
+  "observed_command_rate_hz": 39.99929325013998,
+  "maximum_observed_twist_component": 0,
+  "active_mission_goals": [],
+  "active_navigation_goals": [],
+  "phase_test_started": false,
+  "physical_stair_traversal_verified": false,
+  "route_commissioned": false,
+  "operator_position": "flat floor away from stairs",
+  "operational_session": {
+    "at_utc": "2026-09-22T23:15:12.477577+00:00",
+    "pid": 441683,
+    "command": [
+      "bash",
+      "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_control_session.sh",
+      "start"
+    ],
+    "console": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-live-check-20260923/session-console.log",
+    "operational_session": true,
+    "purpose": "restore existing control stack and automatic recording; no movement goal submitted"
+  },
+  "automatic_recording_directory": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/logs/20260923_081522",
+  "raw_probe_note": "The extra bulk point-cloud subscriber lagged up to 2.29 seconds in the first probe; the existing controller reported fresh geometry throughout. The second probe omitted that bulk subscription. Its cause was not independently established; do not label that probe latency as controller latency.",
+  "source_changes": [],
+  "software_change": false,
+  "inspection_cleanup": {
+    "at_utc": "2026-09-22T23:21:19.600796+00:00",
+    "removed_inspection_artifacts": [
+      {
+        "path": "preflight.log",
+        "files": [
+          {
+            "path": "preflight.log",
+            "bytes": 1314,
+            "sha256": "34cedc793cbddd112ba2a06a20a73e4d2de0cfaec68a11000aa2aeda7122051b"
+          }
+        ]
+      },
+      {
+        "path": "temporary-ros-home",
+        "files": [
+          {
+            "path": "temporary-ros-home/rospack_cache_11347029993074590649",
+            "bytes": 10992,
+            "sha256": "164bb69ffebf9cd8cfbc78e881499614d00a54994c27682171436e7fd4174c97"
+          }
+        ]
+      },
+      {
+        "path": "temporary-probe-home",
+        "files": [
+          {
+            "path": "temporary-probe-home/log/tron_readonly_probe_444156_1790119024206.log",
+            "bytes": 6899,
+            "sha256": "41578a0fe8fd4bea5ba7bc36b1759e3f9f8213129e938eaa1938735e3e820d22"
+          },
+          {
+            "path": "temporary-probe-home/log/tron_readonly_probe_444480_1790119111218.log",
+            "bytes": 6432,
+            "sha256": "671a6953b7e99cd62dfcc924c6fca7018ad3aa64271d209ea5d53992c7aa0d9b"
+          }
+        ]
+      }
+    ],
+    "retained_operational_artifacts": [
+      "session-console.log",
+      "session-ros-home/",
+      "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/logs/20260923_081522/",
+      "mini PC wf_mapping ROS logs/session"
+    ],
+    "retained_operational_process": "existing run.sh stack started this turn, kept running for user driving preparation",
+    "read_only_probe_processes": "both completed and called rospy.signal_shutdown; no persistent probe added",
+    "old_project_logs": "preserved; only identified old process roots were stopped"
+  }
+}

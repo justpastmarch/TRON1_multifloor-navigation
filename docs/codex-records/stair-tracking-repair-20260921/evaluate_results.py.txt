@@ -1,0 +1,113 @@
+"""Reproducible comparison of selected offline windows, not position ground truth."""
+from pathlib import Path
+import csv, json
+import numpy as np
+from scipy.spatial.transform import Rotation, Slerp
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+from replay_candidate import OUT, OLD, META, HIST, INDICES, Gyro
+
+
+def read(path):
+    return list(csv.DictReader(path.open()))
+
+
+def column(rows, key):
+    return np.array([float(r[key]) for r in rows])
+
+
+def rotations(rows):
+    return Rotation.from_quat(np.column_stack([column(rows,k) for k in ['qx','qy','qz','qw']])).as_matrix()
+
+
+def heading(rs):
+    # Initial sensor coordinate reference; not surveyed world azimuth.
+    rel = rs[0].T @ rs
+    return np.rad2deg(np.unwrap(np.arctan2(rel[:,1,0],rel[:,0,0])))
+
+
+def invalid_runs(t, ok):
+    padded=np.r_[True,ok,True]
+    starts=np.flatnonzero(padded[:-1] & ~padded[1:])
+    ends=np.flatnonzero(~padded[:-1] & padded[1:])-1
+    return [{'start_s':float(t[a]),'end_s':float(t[b]),'span_s':float(t[b]-t[a]),'frames':int(b-a+1)} for a,b in zip(starts,ends)]
+
+
+def stats(rows):
+    t=column(rows,'stamp_ns')*1e-9
+    ok=column(rows,'accepted').astype(bool)
+    valid=[r for r,k in zip(rows,ok) if k]
+    rs=rotations(valid)
+    bad=invalid_runs(t-t[0],ok)
+    return {'frames':len(rows),'accepted_including_bootstrap':int(ok.sum()),
+        'accepted_updates':int(ok[1:].sum()),'attempted_updates':len(rows)-1,
+        'longest_reject_span_s':max([x['span_s'] for x in bad],default=0),
+        'longest_reject_frames':max([x['frames'] for x in bad],default=0),
+        'initial_sensor_z_tilt_deg':float(np.rad2deg(np.arccos(np.clip(rs[0,2,2],-1,1)))),
+        'relative_yaw_end_deg':float(heading(rs)[-1]),
+        'endpoint_m':[float(valid[-1][k]) for k in ['x_m','y_m','z_m']],
+        'fitness_min':float(min(float(r['fitness']) for r in rows)),
+        'rmse_m_p95':float(np.percentile(column(rows,'rmse_m'),95)),
+        'rejected_intervals_from_first_sensor_stamp':bad}
+
+
+def evaluate():
+    summary={'scope':'Same original LiDAR frame timestamps in three previously inspected windows. NOT holdout, NOT live acceptance, NOT physical position error.',
+        'metric_note':'Accepted counts include bootstrap; reject span is last rejected stamp minus first, not time to recovery. Relative yaw is unwrapped about initial sensor axes.',
+        'runs':{},'synthetic_tests':{'passed':5,'scope':'known rotation, gyro gap, up direction, recorded-vs-measurement time, common reference interpolation'},
+        'zero_ros_publishers':True}
+    fig,axs=plt.subplots(3,1,figsize=(12,10),layout='constrained')
+    for ax,(run,index) in zip(axs,INDICES.items()):
+        meta=META[index]
+        before=read(HIST/run/'lidar_registration.csv')
+        after=read(OUT/'results'/f'{run}-gyro-identity.csv')
+        ts=column(after,'stamp_ns')*1e-9
+        assert [r['stamp_ns'] for r in before] == [r['stamp_ns'] for r in after]
+        arr=np.load(OLD/'bags'/Path(meta['path']).name/'numeric.npz')
+        wheel=arr['/tron/wheel_odom_raw'];imu=arr['/livox/imu']
+        wrot=Slerp(wheel[:,1]-wheel[0,1],Rotation.from_quat(wheel[:,5:9]))(ts-wheel[0,1]).as_matrix()
+        giro=Gyro(imu)
+        grot=np.array([giro.relative(ts[0],t) for t in ts])
+        result={'old':stats(before),'candidate':stats(after),
+            'wheel_relative_yaw_end_deg':float(heading(wrot)[-1]),
+            'gyro_prediction_relative_yaw_end_deg':float(heading(grot)[-1]),
+            'wheel_header_minus_record_median_s':float(np.median(wheel[:,1]-wheel[:,0])),
+            'imu_header_minus_record_median_s':float(np.median(imu[:,1]-imu[:,0])),
+            'rotation_innovation_p95_deg':float(np.rad2deg(np.percentile(column(after,'rotation_innovation_rad')[1:],95))),
+            'rotation_innovation_max_deg':float(np.rad2deg(np.max(column(after,'rotation_innovation_rad')[1:]))),
+            'translation_innovation_p95_m':float(np.percentile(column(after,'translation_innovation_m')[1:],95)),
+            'sensor_first_offset_from_record_start_s':float(ts[0]-meta['start']),
+            'sensor_last_offset_from_record_start_s':float(ts[-1]-meta['start'])}
+        summary['runs'][run]=result
+        t=ts-meta['start']
+        ax.plot(t,heading(rotations(before)),color='#cc3939',label='Original geometric registration')
+        ax.plot(t,heading(rotations(after)),color='#008c83',linewidth=2.3,label='Candidate: geometry + gyro prediction')
+        ax.plot(t,heading(wrot),color='#7861b6',linestyle='--',label='Recorded wheel odometry (not ground truth)')
+        ax.plot(t,heading(grot),color='#9b8954',linestyle=':',label='Gyro integration (candidate input, not validation)')
+        bad=invalid_runs(t,column(before,'accepted').astype(bool))
+        for interval in bad:ax.axvspan(interval['start_s'],interval['end_s'],color='#cc3939',alpha=.10)
+        ax.set_title(f"{run}: accepted frames {result['old']['accepted_including_bootstrap']}/{len(before)} -> {len(after)}/{len(after)} | red shade: original rejected span",loc='left',fontsize=11)
+        ax.set_ylabel('Relative yaw (deg)');ax.grid(alpha=.2)
+    axs[-1].set_xlabel('Sensor header time minus original bag record start (s)')
+    axs[0].legend(fontsize=8,loc='upper left',ncol=2)
+    fig.suptitle('Stair landing rotation: three offline regressions\nAgreement and availability are not physical accuracy or supervisor completion',fontsize=14)
+    fig.savefig(OUT/'rotation-comparison.png',dpi=150);plt.close(fig)
+    # Check the rejected-row contract on the ablation, where rejections actually occur.
+    ablation=read(OUT/'results/105713-up_only-identity.csv')
+    for row in ablation:
+        if not int(row['accepted']):
+            assert all(np.isnan(float(row[k])) for k in ['x_m','y_m','z_m','qx','qy','qz','qw'])
+            assert row['state'] in ('PREDICTED','LOST')
+    summary['up_only_ablation_105713']=stats(ablation)
+    sensitivity=read(OUT/'results/105713-gyro-current_yaml.csv')
+    summary['current_extrinsic_sensitivity_105713']=stats(sensitivity)
+    a=summary['runs']['105713']['candidate']; b=summary['current_extrinsic_sensitivity_105713']
+    summary['extrinsic_sensitivity_note']='Current YAML rotation only; both transforms remain historically unverified; translation lever arm not modeled.'
+    summary['extrinsic_sensitivity_yaw_difference_deg']=b['relative_yaw_end_deg']-a['relative_yaw_end_deg']
+    summary['ablation_invalid_measurements_all_nan']=True
+    (OUT/'metrics.json').write_text(json.dumps(summary,indent=2)+'\n')
+    print(json.dumps({k:{'old':v['old']['relative_yaw_end_deg'],'new':v['candidate']['relative_yaw_end_deg'],'wheel':v['wheel_relative_yaw_end_deg'],'gyro':v['gyro_prediction_relative_yaw_end_deg'],'innovation_p95_deg':v['rotation_innovation_p95_deg']} for k,v in summary['runs'].items()},indent=2))
+
+
+if __name__=='__main__':evaluate()

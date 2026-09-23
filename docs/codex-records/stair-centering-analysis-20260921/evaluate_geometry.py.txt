@@ -1,0 +1,32 @@
+"""Frozen geometry evaluation on every retained bag sample; no actuation."""
+from pathlib import Path
+import json,time,hashlib,sys
+import numpy as np
+from stair_geometry import estimate,PARAMS
+
+OUT=Path(__file__).resolve().parent
+def native(v):
+    if isinstance(v,np.ndarray):return v.tolist()
+    if isinstance(v,(np.integer,np.floating)):return v.item()
+    raise TypeError(type(v))
+
+def run(index):
+    inventory=json.loads((OUT/'analysis-state.json').read_text())['inventory'];v=inventory[index]
+    folder=OUT/'samples'/Path(v['path']).name
+    result=folder/'geometry.json'
+    if result.exists():return
+    d=np.load(folder/'clouds.npz');points=d['points'];offsets=d['offsets'];rows=d['rows'];d.close();allrows=[];start=time.time()
+    for k,row in enumerate(rows):
+        pts=points[offsets[k]:offsets[k+1]]
+        now=time.perf_counter();est=estimate(pts)
+        est['compute_sec']=time.perf_counter()-now
+        est['record_t']=float(row[0]);est['header_t']=float(row[1]);est['index']=k
+        allrows.append(est)
+    result.write_text(json.dumps(allrows,default=native,separators=(',',':')))
+    print('GEOMETRY',index,'frames',len(allrows),'pairs',sum(x['valid'] for x in allrows),'elapsed',round(time.time()-start,1),flush=True)
+
+if __name__=='__main__':
+    frozen=OUT/'frozen-method.json'
+    if not frozen.exists():
+        frozen.write_text(json.dumps({'parameters':PARAMS,'geometry_sha256':hashlib.sha256((OUT/'stair_geometry.py').read_bytes()).hexdigest(),'development_bag':7,'freeze_time_utc':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'sampling':'one of every five lidar packets, no odom deskew','single_side_experiment':{'calibration':'first 3 accepted dual-sided observations within each RGB-labelled flight; no future frames','max_width_change_m':.08,'side_choice':'right if available, otherwise left','heading_disagreement_limit_deg':8,'output':'shadow measurements only; oracle RGB flight context is not an automatic deployed phase detector'},'shadow_controller':{'k_y':.6,'k_heading':1.2,'max_omega_rad_s':.25,'deadband_lateral_m':.05,'deadband_heading_deg':2,'note':'hypothetical bench settings, not user approved or firmware validated; no live commands'}},indent=2))
+    for idx in (list(map(int,sys.argv[1:])) or list(range(21))):run(idx)

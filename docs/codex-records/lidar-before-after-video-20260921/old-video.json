@@ -1,0 +1,50 @@
+{
+  "file": "01-original-floor-aligned.mp4",
+  "method": "old",
+  "fps": 10,
+  "frames": 1798,
+  "duration_s": 179.8,
+  "size": [
+    1600,
+    1000
+  ],
+  "projection": "orthographic",
+  "same_camera_across_methods": true,
+  "cloud_history_scans": 15,
+  "display_point_stride": 2,
+  "source": "Numeric BAG data reconstruction, not direct RViz screen recording",
+  "no_smoothing": true,
+  "no_final_pose_alignment": true,
+  "chapters": [
+    {
+      "run": "102101",
+      "start_video_s": 0.0,
+      "sensor_duration_s": 99.79992818800001,
+      "camera_center": [
+        3.3208266424635213,
+        0.6722711562073975,
+        1.774720795014374
+      ],
+      "pixels_per_m": 72.22222222222223,
+      "yaw_rad": 0.78,
+      "pitch_rad": 0.48,
+      "rendered_scan_count": 500,
+      "end_video_s": 105.9
+    },
+    {
+      "run": "105713",
+      "start_video_s": 105.9,
+      "sensor_duration_s": 67.80069303500001,
+      "camera_center": [
+        1.9676117852441415,
+        0.7687057335169856,
+        2.0175599943550795
+      ],
+      "pixels_per_m": 72.22222222222223,
+      "yaw_rad": 0.78,
+      "pitch_rad": 0.48,
+      "rendered_scan_count": 340,
+      "end_video_s": 179.8
+    }
+  ]
+}

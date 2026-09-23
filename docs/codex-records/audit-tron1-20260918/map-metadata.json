@@ -1,0 +1,47 @@
+[
+  {
+    "path": "src/multifloor_manager/config/maps/floor_3F.backup.pgm",
+    "bytes": 314027,
+    "magic": "P5",
+    "width": 475,
+    "height": 661,
+    "maxval": 255,
+    "scope": "Header metadata only; pixels not visually interpreted"
+  },
+  {
+    "path": "src/multifloor_manager/config/maps/floor_3F.pgm",
+    "bytes": 314034,
+    "magic": "P5",
+    "width": 475,
+    "height": 661,
+    "maxval": 255,
+    "scope": "Header metadata only; pixels not visually interpreted"
+  },
+  {
+    "path": "src/multifloor_manager/config/maps/floor_4F.pgm",
+    "bytes": 78227,
+    "magic": "P5",
+    "width": 265,
+    "height": 295,
+    "maxval": 255,
+    "scope": "Header metadata only; pixels not visually interpreted"
+  },
+  {
+    "path": "src/multifloor_manager/config/maps/floor_5F.pgm",
+    "bytes": 101807,
+    "magic": "P5",
+    "width": 366,
+    "height": 278,
+    "maxval": 255,
+    "scope": "Header metadata only; pixels not visually interpreted"
+  },
+  {
+    "path": "src/multifloor_manager/config/maps/floor_RF.pgm",
+    "bytes": 153572,
+    "magic": "P5",
+    "width": 404,
+    "height": 380,
+    "maxval": 255,
+    "scope": "Header metadata only; pixels not visually interpreted"
+  }
+]

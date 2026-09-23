@@ -1,0 +1,53 @@
+{
+  "run": "105713",
+  "frames": 340,
+  "duration_s": 67.80069303500001,
+  "old_display_transform": [
+    [
+      0.9986642031646031,
+      0.037093816689023236,
+      0.03597023882391684,
+      0.0
+    ],
+    [
+      0.034942859163660016,
+      0.02798296754201073,
+      -0.9989974725298414,
+      0.0
+    ],
+    [
+      -0.03806318314430751,
+      0.9989199178567738,
+      0.026649423970115983,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "old_rejected": 172,
+  "floor_only_rejected": 174,
+  "new_rejected": 0,
+  "inputs": [
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/offline_lio/105713/lidar_registration.csv",
+      "sha256": "9d5e8a657082d38c14b7536c284fa936325205a406f6b2b310fa7c45ae939d2f"
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/105713/lidar_registration.csv",
+      "sha256": "bf1d7f8131e55039a00b6c508cea2bab850b7e0936bf4b013ff716154ba7253f"
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-repair-20260921/inputs/105713/scans.npz",
+      "sha256": "9bdedac58601ff8e324f7b4e309498585bfbd641f449b56e43851843273e8487"
+    }
+  ],
+  "conditions": {
+    "old": "Archived old poses, one constant rigid transform to the corrected gravity frame; no recalculation",
+    "floor": "Old registration code, corrected initial gravity pose only. No gyro prediction. Old held-pose output retained.",
+    "new": "Preserved accepted baseline poses; not re-tuned for video."
+  }
+}

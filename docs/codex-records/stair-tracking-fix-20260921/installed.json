@@ -1,0 +1,21 @@
+{
+  "applied_utc": "2026-09-20T17:56:34.562745+00:00",
+  "installed": [
+    "README.md",
+    "build_comparison_bag.py",
+    "comparison_markers.py",
+    "process_bag.py",
+    "registration_core.py",
+    "replay_rviz.sh",
+    "rviz/stair_lio_compare.rviz",
+    "specs/102101_lidar.json",
+    "specs/103313_lidar.json",
+    "specs/105713_lidar.json",
+    "test_process_bag.py",
+    "test_registration_core.py"
+  ],
+  "new_ros_nodes": 0,
+  "robot_commands": 0,
+  "original_bags_modified": false,
+  "temporary_install_files_removed": true
+}

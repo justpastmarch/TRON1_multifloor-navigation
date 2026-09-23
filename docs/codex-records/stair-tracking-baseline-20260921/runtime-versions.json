@@ -1,0 +1,15 @@
+{
+  "python": "3.8.10",
+  "packages": {
+    "numpy": "1.24.4",
+    "open3d": "0.18.0",
+    "pydantic": "2.10.6",
+    "scipy": "1.10.1",
+    "PyYAML": "6.0.3",
+    "typer": "0.16.0",
+    "pycryptodomex": "3.23.0",
+    "python-gnupg": "0.5.5",
+    "rospkg": "1.6.0",
+    "Pillow": "10.4.0"
+  }
+}

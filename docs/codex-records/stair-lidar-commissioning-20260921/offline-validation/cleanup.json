@@ -1,0 +1,10 @@
+{
+  "removed": [
+    "ros-home",
+    "ros-logs",
+    "pytest-temp"
+  ],
+  "retained": "Source snapshots, input evidence, result JSON/XML, report and reproducibility logs are durable deliverables.",
+  "remaining_offline_test_processes": [],
+  "process_check_utc": "2026-09-21T04:56:36.052092+00:00"
+}

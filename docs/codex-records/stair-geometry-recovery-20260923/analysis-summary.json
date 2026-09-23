@@ -1,0 +1,33 @@
+{
+  "102101": {
+    "transitions": [],
+    "first_fault_time_sec": 13.600291728973389,
+    "first_fault_phase": "FORWARD_SEGMENT_1",
+    "first_fault_state": "SUPPORT_LIMIT",
+    "minimum_clearance_m": 0.14645437280761497,
+    "fitted_parameters": [
+      0.4773436259879847,
+      -0.15805727577661885,
+      -0.7645571663220507,
+      0.07224645663590216
+    ]
+  },
+  "105713": {
+    "transitions": [
+      {
+        "t": 19.599764585494995,
+        "phase": "FORWARD_SEGMENT_1"
+      }
+    ],
+    "first_fault_time_sec": 19.799665212631226,
+    "first_fault_phase": "LANDING",
+    "first_fault_state": "CORRIDOR_LIMIT",
+    "minimum_clearance_m": 0.09770464355274999,
+    "fitted_parameters": [
+      0.11517428895166007,
+      -0.122083581766396,
+      -0.8054917600217585,
+      0.0882438616635891
+    ]
+  }
+}

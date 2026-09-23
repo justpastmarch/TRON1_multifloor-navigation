@@ -48,6 +48,15 @@ class MissionActionRosTest(unittest.TestCase):
 
     def setUp(self) -> None:
         self._restore_home()
+        # Returning to a logical home now performs real NAV even if its ID was
+        # already the anchor. Exclude fixture setup from each scenario's count.
+        self._set_scenario("default")
+
+    def test_same_named_anchor_still_dispatches_navigation(self) -> None:
+        state, result, _ = self._run("home_3f")
+        self.assertEqual(state, GoalStatus.SUCCEEDED)
+        self.assertEqual(result.result_code, MissionResult.OK)
+        self.assertEqual(rospy.get_param("/mission_test/nav_count"), 1)
 
     def _set_scenario(self, name: str) -> None:
         with self.state_condition:

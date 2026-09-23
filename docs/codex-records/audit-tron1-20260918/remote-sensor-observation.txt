@@ -1,0 +1,89 @@
+
+FILE /home/m3localtron/catkin_ws/src/sensor_integration/launch/mid360s.launch
+<launch>
+  <arg name="user_config_path" default="$(find sensor_integration)/config/mid360s_config.json"/>
+
+  <include file="$(find livox_ros_driver2)/launch_ROS1/msg_MID360s.launch">
+    <arg name="xfer_format" value="1"/>
+    <arg name="msg_frame_id" value="mid360_link"/>
+  </include>
+
+  <param name="user_config_path" type="string" value="$(arg user_config_path)"/>
+</launch>
+
+FILE /home/m3localtron/catkin_ws/src/sensor_integration/launch/d435f.launch
+<launch>
+  <arg name="serial_no" default="$(env D435F_SERIAL)"/>
+
+  <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+    <arg name="serial_no" value="$(arg serial_no)"/>
+    <arg name="camera" value="camera1"/>
+    <arg name="tf_prefix" value="camera1"/>
+    <arg name="enable_pointcloud" value="false"/>
+    <arg name="enable_infra1" value="true"/>
+    <arg name="enable_infra2" value="true"/>
+  </include>
+</launch>
+
+FILE /home/m3localtron/catkin_ws/src/sensor_integration/launch/sensor_tf.launch
+<launch>
+  <!--
+    Livox mid360s_config.json extrinsic_parameter MUST remain identity. Do not
+    enable a Livox JSON extrinsic together with these publishers: this launch is
+    the sole TF source for the externally mounted sensor frames.
+  -->
+  <arg name="extrinsics_file"
+       default="$(find sensor_integration)/config/sensor_extrinsics.yaml"/>
+  <rosparam command="load" file="$(arg extrinsics_file)"/>
+
+  <!--
+    ROS Noetic's static_transform_publisher accepts only argv, so this loader
+    reads its YAML entry and execs it as x y tf_z yaw pitch roll parent child.
+    RPY values are stored as degrees in YAML and converted to radians here.
+    keeps the configured robot base frame out of launch code.
+  -->
+  <arg name="yaml_static_transform_loader"
+       default="python3 -c &quot;import math, os, sys, yaml; from pathlib import Path; config = yaml.safe_load(Path(sys.argv[2]).read_text(encoding='utf-8')); transform = config['extrinsics'][sys.argv[3]]; command = [sys.argv[1]] + [str(transform[key]) for key in ('x', 'y')] + [str(transform.get('tf_z', transform['z']))] + [str(math.radians(float(transform[key]))) for key in ('yaw', 'pitch', 'roll')] + [config['robot_base_frame'], sys.argv[3]] + sys.argv[4:]; os.execvp(command[0], command)&quot;"/>
+
+  <node pkg="tf2_ros" type="static_transform_publisher"
+        name="sensor_tf_base_to_mid360"
+        launch-prefix="$(arg yaml_static_transform_loader)"
+        args="$(arg extrinsics_file) mid360_link"/>
+  <node pkg="tf2_ros" type="static_transform_publisher"
+        name="sensor_tf_base_to_camera1"
+        launch-prefix="$(arg yaml_static_transform_loader)"
+        args="$(arg extrinsics_file) camera1_link"/>
+
+  <!--
+    FAST-LIO2 publishes /cloud_registered in its own world frame
+    "camera_init", which coincides with planar_odom's "odom" origin
+    (planar_odom reprojects /lio_odom's camera_init pose as /odom).
+    This identity edge links the two world frames so RViz can transform
+    the point cloud into base_Link. Keep it an exactly-zero transform.
+  -->
+  <node pkg="tf2_ros" type="static_transform_publisher"
+        name="sensor_tf_odom_to_camera_init"
+        args="0 0 0 0 0 0 odom camera_init"/>
+</launch>
+
+FILE /home/m3localtron/catkin_ws/src/sensor_integration/scripts/wf_odom_bridge.py
+#!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.8"
+# dependencies = []
+# ///
+
+# ─── How to run ───
+# roslaunch sensor_integration wf_mapping.launch
+# ──────────────────
+
+"""Execute the shared TRON1 WF odometry bridge from the ROS package."""
+
+from __future__ import annotations
+
+from sensor_integration.wf_odom_bridge import main
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+

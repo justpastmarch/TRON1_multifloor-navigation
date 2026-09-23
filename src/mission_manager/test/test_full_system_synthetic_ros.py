@@ -26,7 +26,7 @@ class FullSystemSyntheticTest(unittest.TestCase):
     def setUpClass(cls) -> None:
         require_loopback_ros()
         rospy.init_node("full_system_synthetic_test", anonymous=True)
-        fixture_root = Path(__file__).resolve().parents[2] / "test" / "fixtures" / "stair_synthetic"
+        fixture_root = Path(__file__).resolve().parents[3] / "test" / "fixtures" / "stair_synthetic"
         cls.hardware = SyntheticHardwarePeers(stair_config_dir=fixture_root)
         cls.floor_states: list[FloorState] = []
         cls.floor_phases: list[str] = []

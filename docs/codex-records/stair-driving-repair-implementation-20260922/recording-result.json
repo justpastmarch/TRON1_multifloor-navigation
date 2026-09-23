@@ -1,0 +1,13 @@
+{
+  "topics": {
+    "/stair_supervisor/lidar_odom": 10,
+    "/stair_supervisor/tracking_status": 39,
+    "/test/imu": 150,
+    "/test/lidar": 30
+  },
+  "normal_index_readable": true,
+  "configuration_hash": "fff0d2f4cd7c0bf1f4535890460b36ca60d42078e2b6e77e8b74553e20e2f05d",
+  "mode": "observe",
+  "robot_commands_sent": 0,
+  "initial_attempt": "Recorder connection was mistaken for adapter readiness by the test. Adapter heartbeat wait added; rerun passed."
+}

@@ -1,0 +1,233 @@
+{
+  "observed_utc": "2026-09-20T22:27:54.895201+00:00",
+  "files": [
+    {
+      "path": "REPORT.md",
+      "bytes": 21299,
+      "sha256": "8a116b540e329f76ff0748bf7f1f69d487332d293942ec7485856e6de8ea2c48",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "application-receipt.json",
+      "bytes": 5157,
+      "sha256": "5de3e4ebb79562f53c04a2dd3ab24e58e6ef3d2653353447e7a5e60d92fa0313",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "baseline-preservation-check.json",
+      "bytes": 284,
+      "sha256": "5aa6d51004fc57844037a45cb11c902fd053d4f24da8d8d9fbf03a8e2ef7fbb5",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "catkin-results-final.txt",
+      "bytes": 52,
+      "sha256": "bf4734d155b34f1de8168e8847deb32a54eeccfd94645f2e2e6dc9b9e26c3dd3",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "changes.patch",
+      "bytes": 221705,
+      "sha256": "c508399c48b3b85d53bc9055cf2994d4c78cab835457f3900ca5a7700810966b",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "cleanup-receipt.json",
+      "bytes": 18399,
+      "sha256": "d616b63df51d058165f0fde2c0bb88aa28a7f6035caccc2fd45f01273056295d",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "delivery-manifest.json",
+      "bytes": 10740,
+      "sha256": "f884c6640077610df4e46fb9f717d5f30b17ab4375b4bea76e44c7573d48008d",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "external-cleanup-inspection.json",
+      "bytes": 2597,
+      "sha256": "5d7444e7f2b9a2e41e5622d47b5e9ca5942dec444cb3e3d43f86c4b10e256db8",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "final-check.json",
+      "bytes": 606,
+      "sha256": "9b10eaf7ee008c00abd10dabc587d0062f9e3723c1c7a369b5381f4ad5381780",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "html-check.json",
+      "bytes": 147,
+      "sha256": "c4053b0d53f839254682d4c15dbce04642ea95cb0fe473ad497d02fe070ffa16",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "launch-dry-check.txt",
+      "bytes": 145,
+      "sha256": "73b8fed52656c4ec36deb99afff015d1e2065c8587c444d03c559ac64f14da33",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "measurement-provenance.json",
+      "bytes": 3091,
+      "sha256": "789498605522d32d5ee6a5f54d62e222be31584784e5893b6915b1a365464478",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "quality-review.json",
+      "bytes": 3864,
+      "sha256": "480f660c9f81d22717356e4ce2d0a7b19c5da79b7ce0438f742ab2d772808758",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "realtime-105713.json",
+      "bytes": 963,
+      "sha256": "847c612a245b3bd83b1d461c182d2d9a8334421841f68c792d704192953edd78",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "realtime-final-102101.json",
+      "bytes": 1487,
+      "sha256": "f33576720bb86bcd33d352a12490612696a9179eb598846c914782267e2466f5",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "realtime-final-102101.poses.json",
+      "bytes": 171786,
+      "sha256": "69834e53885fcc8fa7282aa7862bb0ba4e4320a290f89ab55028fda156414af2",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "realtime-process-105713.json",
+      "bytes": 997,
+      "sha256": "944055f7efc85c739c4f007bc85def63cff3fa124aa151686bfd1bcf93497244",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "realtime-process-raw-105713.json",
+      "bytes": 1143,
+      "sha256": "ad8ef24777b4004c699ef5f1d48084f549a5df58d8095791a42802a5d0dac37c",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "realtime-verified-102101.json",
+      "bytes": 1502,
+      "sha256": "025b5399d91067f0a87e18aff807b40a6bfa42ef34389ec62a1b85bd004bde24",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "realtime-verified-102101.poses.json",
+      "bytes": 171685,
+      "sha256": "6b33434cf55ed7e401ed222bf4ef0bb7fff18390787a9a3244b711c6387e3b90",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "realtime-verified-105713.json",
+      "bytes": 1500,
+      "sha256": "a717eebe4c0d6369155b1ebc95a30dcf2bfeab06ea52fd366a23d1bc23739159",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "realtime-verified-105713.poses.json",
+      "bytes": 116713,
+      "sha256": "79ee7325a9f54373b5802ee10c9bb65e81b6fe6d23db9a1c641a275777971f62",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "render-check.json",
+      "bytes": 497,
+      "sha256": "2ef8efa5fe9ffaab8431e2dd1340a4bbca2b3a368b54db04c463a453741ccfbd",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "replay/102101/metrics.json",
+      "bytes": 929,
+      "sha256": "0166fce7fcce6adf4fb614d4a6304e608ad3d35cb4c1c23de13baf14c3c30d77",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "replay/102101/poses.json",
+      "bytes": 239402,
+      "sha256": "21eb07b56be41c579cb0e93a082291106d577002d25486e860cc62412785e245",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "replay/103313/metrics.json",
+      "bytes": 928,
+      "sha256": "a295fcd92602d92642ab52daf6e026822852c04ede8d5184de0344197c875a96",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "replay/103313/poses.json",
+      "bytes": 222728,
+      "sha256": "18aed9f2d7a539bcfaa592d4cce85c4c6682ba3721526bc244bfcf8ccb2905fb",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "replay/105713/metrics.json",
+      "bytes": 927,
+      "sha256": "ca7bd0a9cbe5b6ba48d6c1de3ea04654ed93f6b384b378b521ea06b450f1ffa9",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "replay/105713/poses.json",
+      "bytes": 163118,
+      "sha256": "4a458a80cb362b955f0ace9cf5ada9aeb6f7b87343230ae77698e8c96ca505fe",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "replay-final/103313/metrics.json",
+      "bytes": 927,
+      "sha256": "f640e334124312484b8747d1fcee873e42e9db40428a3088c9a023e252a8a7bc",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "replay-final/103313/poses.json",
+      "bytes": 222724,
+      "sha256": "98a430a48bd5a5a778c4694163d27b39db7b34b4c55d4e83da8209ed2f5ff982",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "report-preview.png",
+      "bytes": 324774,
+      "sha256": "d8c1dca2ad36d1dd98005d7ebc7e6599451834b8ec08144ee22936751373cb2d",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "report.css",
+      "bytes": 2323,
+      "sha256": "228cfba7fff44b1833118325c962fe2b8c5abf7a18702cd738cbd3affae2f2f1",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "report.html",
+      "bytes": 31155,
+      "sha256": "7daf56827ca9b84cd2f750affcb8fb7a26ec1b7b989731672b123c612980a9e8",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "runtime-versions.json",
+      "bytes": 285,
+      "sha256": "e6c13286203b5c6609797a9330ac080ec8a9ec433ce04660f545bb0e6c5c6dd7",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "state.json",
+      "bytes": 711334,
+      "sha256": "2063e34a5599ae54c5fcfe20626018d3cbe89656c094ace793f99e45d9d37d24",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "static-checks.json",
+      "bytes": 2717,
+      "sha256": "9f701dddc542dbe41171b817132631ba20880f692d500784704f817bae0858bc",
+      "retention": "durable report, delivery or reproducibility evidence"
+    },
+    {
+      "path": "test-results.json",
+      "bytes": 108470,
+      "sha256": "fbea1039197dde312eabcdc5c6e3d16a83f520042037f435f761f035a8907d3b",
+      "retention": "durable report, delivery or reproducibility evidence"
+    }
+  ]
+}

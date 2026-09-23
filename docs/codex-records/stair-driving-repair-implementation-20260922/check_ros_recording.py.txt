@@ -1,0 +1,37 @@
+import os,subprocess,time,signal,json,xmlrpc.client
+from pathlib import Path
+HERE=Path(__file__).resolve().parent
+if __name__=='__main__':
+ env=os.environ.copy();env.update(ROS_MASTER_URI='http://127.0.0.1:11439',ROS_IP='127.0.0.1',ROS_HOME=str(HERE/'ros-home'),ROS_LOG_DIR=str(HERE/'ros-logs'),STAIR_LIDAR_TEST_PYTHON=env['TRON_STAIR_PYTHON']);env.pop('ROS_HOSTNAME',None)
+ records=[];master=None;recorder=None
+ try:
+  master=subprocess.Popen(['roscore','-p','11439'],env=env,stdout=(HERE/'recording-roscore.log').open('w'),stderr=subprocess.STDOUT,start_new_session=True)
+  for _ in range(100):
+   if master.poll() is not None:raise RuntimeError('isolated master exited')
+   try:
+    if xmlrpc.client.ServerProxy(env['ROS_MASTER_URI']).getPid('/offline_validation')[0]==1:break
+   except OSError:pass
+   time.sleep(.1)
+  else:raise RuntimeError('isolated master unavailable')
+  for launch in ['lidar_observe.test']:
+   recorder=subprocess.Popen(['rosbag','record','-O',str(HERE/'recording-smoke.bag'),'/test/lidar','/test/imu','/stair_supervisor/lidar_odom','/stair_supervisor/tracking_status'],env=env,stdout=(HERE/'recording-smoke.log').open('w'),stderr=subprocess.STDOUT,start_new_session=True)
+   time.sleep(1)
+   log=HERE/('recording-'+launch+'.log');started=time.time()
+   process=subprocess.Popen(['rostest','--reuse-master','stair_supervisor',launch],env=env,stdout=log.open('w'),stderr=subprocess.STDOUT,start_new_session=True)
+   try:code=process.wait(timeout=180)
+   except subprocess.TimeoutExpired:
+    os.killpg(process.pid,signal.SIGINT)
+    try:process.wait(timeout=10)
+    except subprocess.TimeoutExpired:os.killpg(process.pid,signal.SIGKILL);process.wait()
+    code=124
+   records.append(dict(launch=launch,exit_code=code,elapsed_s=time.time()-started,log=str(log)))
+ finally:
+  if recorder is not None and recorder.poll() is None:
+   os.killpg(recorder.pid,signal.SIGINT)
+   try:recorder.wait(timeout=12)
+   except subprocess.TimeoutExpired:os.killpg(recorder.pid,signal.SIGKILL);recorder.wait()
+  if master is not None and master.poll() is None:
+   os.killpg(master.pid,signal.SIGINT)
+   try:master.wait(timeout=10)
+   except subprocess.TimeoutExpired:os.killpg(master.pid,signal.SIGKILL);master.wait()
+  (HERE/'recording-ros-results.json').write_text(json.dumps(records,indent=2))

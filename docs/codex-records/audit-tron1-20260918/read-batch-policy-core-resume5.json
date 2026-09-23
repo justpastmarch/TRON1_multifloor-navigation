@@ -1,0 +1,22 @@
+[
+  ".omo/evidence/yaml-transition-policy-runtime/package-ownership/baseline-scan.txt",
+  ".omo/evidence/yaml-transition-policy-runtime/package-ownership/cleanup.json",
+  ".omo/evidence/yaml-transition-policy-runtime/package-ownership/commands.txt",
+  ".omo/evidence/yaml-transition-policy-runtime/package-ownership/diff-inventory.json",
+  ".omo/evidence/yaml-transition-policy-runtime/package-ownership/generated-inventory-after.json",
+  ".omo/evidence/yaml-transition-policy-runtime/package-ownership/generated-inventory-before.json",
+  ".omo/evidence/yaml-transition-policy-runtime/package-ownership/receipt.yaml",
+  ".omo/evidence/yaml-transition-policy-runtime/package-ownership/test-results.txt",
+  ".omo/evidence/yaml-transition-policy-runtime/policy-evaluator/baseline.json",
+  ".omo/evidence/yaml-transition-policy-runtime/policy-evaluator/cleanup.json",
+  ".omo/evidence/yaml-transition-policy-runtime/policy-evaluator/commands.txt",
+  ".omo/evidence/yaml-transition-policy-runtime/policy-evaluator/diff-inventory.json",
+  ".omo/evidence/yaml-transition-policy-runtime/policy-evaluator/receipt.yaml",
+  ".omo/evidence/yaml-transition-policy-runtime/policy-evaluator/test-results.txt",
+  ".omo/evidence/yaml-transition-policy-runtime/policy-schema/baseline.json",
+  ".omo/evidence/yaml-transition-policy-runtime/policy-schema/cleanup.json",
+  ".omo/evidence/yaml-transition-policy-runtime/policy-schema/commands.txt",
+  ".omo/evidence/yaml-transition-policy-runtime/policy-schema/diff-inventory.json",
+  ".omo/evidence/yaml-transition-policy-runtime/policy-schema/receipt.yaml",
+  ".omo/evidence/yaml-transition-policy-runtime/policy-schema/test-results.txt"
+]

@@ -1,0 +1,72 @@
+Panels:
+  - Class: rviz/Displays
+    Name: Displays
+  - Class: rviz/Views
+    Name: Views
+Visualization Manager:
+  Class: ""
+  Global Options:
+    Background Color: 30; 30; 34
+    Fixed Frame: stair_local_0
+    Frame Rate: 20
+  Displays:
+    - Class: rviz/PointCloud2
+      Name: Measured aligned scans
+      Enabled: true
+      Value: true
+      Topic: /stair_supervisor/aligned_cloud
+      Queue Size: 2
+      Style: Points
+      Size (Pixels): 2
+      Size (m): 0.03
+      Color Transformer: FlatColor
+      Color: 180; 190; 200
+      Decay Time: 2
+      Position Transformer: XYZ
+    - Class: rviz/Grid
+      Name: Metric grid
+      Enabled: true
+      Value: true
+      Cell Size: 0.5
+      Plane Cell Count: 30
+      Reference Frame: <Fixed Frame>
+      Color: 90; 90; 100
+    - Class: rviz/Odometry
+      Name: Measured LiDAR poses
+      Enabled: true
+      Value: true
+      Topic: /stair_supervisor/lidar_odom
+      Keep: 300
+      Position Tolerance: 0.02
+      Angle Tolerance: 0.02
+      Shape: Arrow
+      Color: 0; 230; 90
+      Shaft Length: 0.12
+      Shaft Radius: 0.012
+      Head Length: 0.07
+      Head Radius: 0.035
+      Covariance:
+        Value: false
+    - Class: rviz/MarkerArray
+      Name: Body, support, target and phase
+      Enabled: true
+      Value: true
+      Marker Topic: /stair_supervisor/geometry_markers
+      Queue Size: 10
+  Tools:
+    - Class: rviz/Interact
+    - Class: rviz/MoveCamera
+    - Class: rviz/Select
+  Views:
+    Current:
+      Class: rviz/Orbit
+      Distance: 8
+      Pitch: 0.55
+      Yaw: 0.9
+      Focal Point:
+        X: 1.5
+        Y: 0.7
+        Z: 1.3
+Window Geometry:
+  Width: 1400
+  Height: 900

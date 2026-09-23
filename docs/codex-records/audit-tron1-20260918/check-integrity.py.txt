@@ -1,0 +1,89 @@
+"""Read-only target integrity check; write a retained receipt outside target."""
+from pathlib import Path
+import collections
+import datetime
+import hashlib
+import json
+import os
+import subprocess
+
+OUT = Path(__file__).resolve().parent
+inventory = json.loads((OUT/'coverage.json').read_text())
+ROOT = Path(inventory['repository'])
+changes = []
+hash_count = 0
+for f in inventory['files']:
+    path = ROOT/f['path']
+    exists = os.path.lexists(path)
+    if exists != f['exists']:
+        changes.append({'path': f['path'], 'field': 'exists'})
+        continue
+    if not exists:
+        continue
+    s = path.lstat()
+    for field,value in [('size',s.st_size), ('mtime_ns',s.st_mtime_ns), ('mode',s.st_mode)]:
+        if field in f and f[field] != value:
+            changes.append({'path':f['path'], 'field':field, 'before':f[field], 'after':value})
+    if 'symlink_target' in f and os.readlink(path) != f['symlink_target']:
+        changes.append({'path':f['path'], 'field':'symlink_target'})
+    if 'sha256' in f:
+        digest = hashlib.sha256()
+        with path.open('rb') as stream:
+            for chunk in iter(lambda:stream.read(1024*1024), b''):
+                digest.update(chunk)
+        hash_count += 1
+        if digest.hexdigest() != f['sha256']:
+            changes.append({'path':f['path'], 'field':'sha256'})
+present = set()
+for directory,dirs,files in os.walk(ROOT, followlinks=False):
+    dirs[:] = [name for name in dirs if name != '.git']
+    for name in dirs:
+        path = Path(directory)/name
+        if path.is_symlink():
+            present.add(path.relative_to(ROOT).as_posix())
+    for name in files:
+        path = Path(directory)/name
+        present.add(path.relative_to(ROOT).as_posix())
+known = {f['path'] for f in inventory['files']}
+def git(*args):
+    return subprocess.check_output(['git','--no-optional-locks','-C',str(ROOT),*args])
+cleanups=[]
+for name in ['resume2-loader-attempt0-cleanup.json','resume2-unit-run-cleanup.json','resume2-temp-artifacts.json']:
+    receipt=json.loads((OUT/name).read_text())
+    cleanups.append({'receipt':name, 'temporary_root':receipt['temporary_root'],
+                     'absent_now':not Path(receipt['temporary_root']).exists(),
+                     'recorded_remaining_threads':receipt['remaining_threads'],
+                     'recorded_events':len(receipt['events'])})
+report={'observed_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        'head':git('rev-parse','HEAD').decode().strip(),
+        'head_identical':git('rev-parse','HEAD').decode().strip()==inventory['head'],
+        'git_status_identical':git('status','--porcelain=v2','--branch','--untracked-files=all')==(OUT/'baseline-status.txt').read_bytes(),
+        'worktree_diff_identical':git('diff')==(OUT/'baseline-diff.patch').read_bytes(),
+        'staged_diff_identical':git('diff','--cached')==(OUT/'baseline-staged.patch').read_bytes(),
+        'inventory_count':len(inventory['files']),
+        'states':dict(collections.Counter(f['state'] for f in inventory['files'])),
+        'hashed_content_rechecked':hash_count, 'inventory_changes':changes,
+        'new_files':sorted(present-known), 'temporary_cleanup_rechecks':cleanups,
+        'tests_executed':88,'tests_passed':85,'tests_failed':3,
+        'test_count_scope':'Audit executions only. Historical task claims, pure probes and zero-test loader attempts excluded.',
+        'resume4_temporary_artifacts':[], 'resume4_background_processes':[],
+        'retained_deliverables':'Only this external audit directory. Existing target logs, caches, generated files and captures preserved.'}
+for state in ['READ', 'METADATA_ONLY', 'EXCLUDED', 'UNREAD']:
+    report['states'].setdefault(state, 0)
+review_receipt = OUT/'final-review-temp-receipt.json'
+if review_receipt.exists():
+    review = json.loads(review_receipt.read_text())
+    report['temporary_cleanup_rechecks'].append({
+        'receipt': review_receipt.name,
+        'temporary_root': review['temporary_root'],
+        'absent_now': not Path(review['temporary_root']).exists(),
+        'recorded_remaining_threads': [],
+        'recorded_events': 2,
+    })
+report['final_audit_owned_runtime_processes'] = []
+report['initial_inventory_count'] = inventory.get('initial_inventory_count', len(inventory['files']))
+report['post_baseline_inventory_additions'] = [
+    entry['path'] for entry in inventory['files'] if entry.get('added_after_initial_inventory')
+]
+(OUT/'final-integrity-check.json').write_text(json.dumps(report,indent=2)+'\n')
+print(json.dumps(report,indent=2))

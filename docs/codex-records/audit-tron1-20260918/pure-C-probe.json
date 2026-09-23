@@ -1,0 +1,57 @@
+{
+  "validation_scope": "Pure source logic with fake motion/recording peers; no ROS, sockets, subprocess, hardware, or target writes. Not an E2E/hardware pass.",
+  "production_config": {
+    "floors": 4,
+    "locations": 11,
+    "edges": 15,
+    "stairs_enabled": 6
+  },
+  "home_3f->stair_3f_up_entry": [
+    "NAVIGATION"
+  ],
+  "stair_5f_to_rf->stair_rf_landing": [
+    "STAIR",
+    "FLOOR_TRANSITION"
+  ],
+  "stair_5f_to_rf->home_3f": {
+    "exception": "RoutePlanningError",
+    "message": "stair_5f_to_rf -> home_3f: no directed route"
+  },
+  "stair_4f_to_5f->home_3f": {
+    "exception": "RoutePlanningError",
+    "message": "stair_4f_to_5f -> home_3f: no directed route"
+  },
+  "landing_continuous_drift": {
+    "sample_speed_mps": 0.4,
+    "net_displacement_m": 2.02,
+    "phase_complete": true,
+    "faulted": false,
+    "detail": "progress=5.000000 threshold=5.000000 freshness=0.000000 reason=stationary dwell"
+  },
+  "floor_confirmed_age11s": {
+    "ready": false,
+    "conditions": [
+      [
+        "T_FLOOR_CONFIRMED",
+        false,
+        "stale"
+      ],
+      [
+        "T_LOCALIZED",
+        true,
+        "true"
+      ],
+      [
+        "T_COSTMAP_READY",
+        true,
+        "true"
+      ]
+    ]
+  },
+  "recorder_exit_after_success": {
+    "returned": false,
+    "exception": "IllegalTransitionError",
+    "message": "event SEGMENT_FAILED is illegal while mission is in NEXT_SEGMENT"
+  }
+}
+

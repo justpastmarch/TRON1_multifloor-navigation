@@ -1,0 +1,115 @@
+{
+  "reviewed_utc": "2026-09-18T08:47:02.170584+00:00",
+  "payloads": {
+    "bags": 21,
+    "all_index_counts_match": true,
+    "parser_errors": 0,
+    "messages": 2360693,
+    "points": 569099136,
+    "nonfinite_xyz": 0
+  },
+  "cold_review": {
+    "skill": "sip -> shower",
+    "agent": "sensor_report_cold_read",
+    "read_entire_report": true,
+    "verdict": "understandable as analysis; small clarifications required",
+    "fixes_applied": [
+      "Opening describes small independent sensor changes rather than absolute position proof",
+      "Recording observation gaps distinguished from confirmed packet loss",
+      "HOLD pending thresholds and yaw requirements restated",
+      "NARROW/TUNE/KEEP vocabulary defined",
+      "Door/photo/mail row marked as inherited design scope",
+      "Next NAV validation scope and success evidence clarified"
+    ]
+  },
+  "factchk": {
+    "evidence": "Direct original payloads and installed primary package source",
+    "verified": [
+      "sensor_msgs/Imu units and unavailable covariance contract",
+      "Livox driver g-unit declaration and direct assignment",
+      "actionlib_msgs status=4 ABORTED",
+      "WebSocket observation occurs after send returns; not actuator ACK"
+    ],
+    "flagged": [
+      "historical executable versions are not established by current source",
+      "header times can be rewritten",
+      "odometry is not external ground truth"
+    ]
+  },
+  "mandela": {
+    "patterns_relevant": [
+      "Shared hallucination: odometry and copied TF are one evidence source; derived video is not independent",
+      "Verifier=designer: ICP residual is not physical error or externally calibrated accuracy"
+    ],
+    "independence_fix": [
+      "Cross-check separate LiDAR and RGB streams",
+      "Keep physical ground truth UNVERIFIED; request external measurement for deployment criteria",
+      "Packed lidar parser checked against generated ROS message decoder"
+    ],
+    "limitations": "One cold reader assessed document comprehension only, not raw data correctness"
+  },
+  "ssotize_read_only": {
+    "canonical_numeric_sources": [
+      "bags/*/numeric.npz",
+      "drift-cross-check.json",
+      "amcl-odom-disagreement.json",
+      "rooftop-gap-details.json",
+      "action-state-evidence.json"
+    ],
+    "prior_artifacts_checked": [
+      "../audit-tron1-20260918/FINAL-AUDIT.md",
+      "../tron1-web-mission-plan/IMPLEMENTATION-PLAN-DRAFT.md"
+    ],
+    "result": "New measured evidence narrows prior UNVERIFIED drift/localization questions. Existing motion hold requirements and no fabricated ground-truth rule remain consistent. No consolidation or source mutation."
+  },
+  "re0": {
+    "scope": "report only",
+    "changes": "Removed absolute-position implication, clarified evidence clocks and inherited feature proposals; references and limits kept together"
+  },
+  "skipped": {
+    "detool": "This is a ROS-specific provenance report; it makes no portability claim."
+  },
+  "visual_checks": {
+    "bag_selected_frames": 208,
+    "original_stills": 36,
+    "video_decoded": 280,
+    "video_visually_sampled": 12,
+    "plots_viewed": 4,
+    "html": "Structural/link checks; no browser rendering claim"
+  },
+  "html_structure_and_link_check": {
+    "passed": true,
+    "pages": {
+      "report.html": {
+        "links_images_checked": 26,
+        "headings": 9,
+        "tables": 3
+      },
+      "METHODS.html": {
+        "links_images_checked": 4,
+        "headings": 5,
+        "tables": 1
+      },
+      "bag-index.html": {
+        "links_images_checked": 107,
+        "headings": 1,
+        "tables": 1
+      }
+    },
+    "errors": []
+  },
+  "final_coverage_check": {
+    "inventory": 62,
+    "READ": 62,
+    "UNREAD": 0
+  },
+  "followup_20260920": {
+    "correction": "scan producer uses raw odometry for deskew; complete independence claim is narrowed",
+    "impact": "No sensor numbers changed; R1 remains inference supported also by separate RGB. Raw LiDAR/external ground truth required before estimator approval.",
+    "source": [
+      "/home/m3tron/Desktop/TRON1_Control/tron1-control-center/sensor_integration/src/mid360s_laserscan.py",
+      "/home/m3tron/Desktop/TRON1_Control/tron1-control-center/sensor_integration/launch/wf_mapping.launch"
+    ],
+    "repository_mutation": false
+  }
+}

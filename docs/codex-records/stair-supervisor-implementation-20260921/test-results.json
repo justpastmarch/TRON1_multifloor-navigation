@@ -1,0 +1,3266 @@
+{
+  "observed_utc": "2026-09-20T22:16:13.651704+00:00",
+  "environment": "Isolated local clone, fake hardware/local test ROS masters; no physical robot commands",
+  "catkin_summary": "Summary: 294 tests, 0 errors, 0 failures, 0 skipped",
+  "catkin_xml": [
+    {
+      "path": "build/test_results/mission_manager/nosetests-test.test_fixture_discovery.py.xml",
+      "sha256": "7c2b3bf8efdb1fbf30df0a102b39011d26107f0b78b86b7838b9a278df979bd9",
+      "observed_utc": "2026-09-20T22:04:53.393398+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "2",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_fixture_discovery.MissionFixtureDiscoveryTest",
+            "name": "test_action_peer_exhaustion_is_explicit",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_fixture_discovery.MissionFixtureDiscoveryTest",
+            "name": "test_asymmetric_route_fixture_drives_action_peer",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/nosetests-test.test_fsm.py.xml",
+      "sha256": "0d799569a0514e6e05bc74c0fa12534f44b07c9a06c007f4947cc0cf0ac849f6",
+      "observed_utc": "2026-09-20T22:04:56.257376+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "7",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_fsm.MissionFSMTest",
+            "name": "test_cancellation_and_timeout_abort_every_active_state",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_fsm.MissionFSMTest",
+            "name": "test_complete_route_replay_reaches_mission_complete",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_fsm.MissionFSMTest",
+            "name": "test_every_legal_state_event_pair_has_the_declared_result",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_fsm.MissionFSMTest",
+            "name": "test_every_undeclared_state_event_pair_is_illegal",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_fsm.MissionFSMTest",
+            "name": "test_malformed_raw_event_has_stable_typed_error_message",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_fsm.MissionFSMTest",
+            "name": "test_retry_result_reexecutes_the_same_segment_state",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_fsm.MissionFSMTest",
+            "name": "test_state_and_segment_sets_have_no_floor_specific_variants",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/nosetests-test.test_mission_orchestrator.py.xml",
+      "sha256": "90f669f4da9cb676ac1809da8fb64c5dd550b859da03bd304beb5a6ebdbb0ce4",
+      "observed_utc": "2026-09-20T22:04:55.393382+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "7",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_mission_orchestrator.MissionOrchestratorTest",
+            "name": "test_cancelled_segment_preserves_last_confirmed_anchor",
+            "time": "0.030"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_mission_orchestrator.MissionOrchestratorTest",
+            "name": "test_failed_scan_never_starts_return",
+            "time": "0.028"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_mission_orchestrator.MissionOrchestratorTest",
+            "name": "test_failure_stops_before_the_next_segment",
+            "time": "0.027"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_mission_orchestrator.MissionOrchestratorTest",
+            "name": "test_fresh_return_is_planned_from_confirmed_scan_anchor",
+            "time": "0.028"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_mission_orchestrator.MissionOrchestratorTest",
+            "name": "test_record_route_brackets_every_loop_segment_with_one_recording",
+            "time": "0.027"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_mission_orchestrator.MissionOrchestratorTest",
+            "name": "test_record_route_cancellation_finalizes_preempted_at_confirmed_anchor",
+            "time": "0.027"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_mission_orchestrator.MissionOrchestratorTest",
+            "name": "test_record_route_navigation_failure_finalizes_interrupted",
+            "time": "0.027"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/nosetests-test.test_navigation_executor.py.xml",
+      "sha256": "1c43086f4335cc25c5f26b4551615c7a6dff9b3195739ac6c3663822ecbdd288",
+      "observed_utc": "2026-09-20T22:04:54.981385+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "20",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_aborted_goal_clears_costmaps_then_retries_once",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_action_rejection_is_navigation_failure_without_retry",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_cancel_accepts_recalled_terminal_state",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_cancel_during_costmap_clear_cannot_send_retry_goal",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_cancel_during_second_readiness_cannot_send_retry_goal",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_cancel_waits_for_preempted_terminal_state",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_generation_mismatch_rejects_before_goal_send",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_lost_goal_permits_only_the_same_single_retry",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_named_map_goal_succeeds_only_after_terminal_status",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_nonblocking_cancel_request_leaves_terminal_wait_with_executor_thread",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_nonfinite_yaw_is_rejected_before_goal_send",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_repeated_abort_fails_after_exactly_one_retry",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_retry_rechecks_readiness_after_terminal_failure",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_ros_factory_uses_only_move_base_action_and_clear_service",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_stair_handoff_cancels_waits_then_requires_zero_stationary",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_stair_handoff_during_second_readiness_cannot_send_retry_goal",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_stair_handoff_rejects_missing_stationary_evidence",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_stale_success_callback_cannot_complete_new_retry",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_supervisor_non_nav_rejects_before_goal_send",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_executor.NavigationExecutorTest",
+            "name": "test_transitioning_and_fault_never_send_goals",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/nosetests-test.test_navigation_hold.py.xml",
+      "sha256": "5d520fd1524af53d959192c1ee9c47f8c2e6a9096d30987c9d0995b3935dd531",
+      "observed_utc": "2026-09-20T22:04:55.617381+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "5",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_navigation_hold.HoldTest",
+            "name": "test_correction_timeout_has_no_unbounded_retries",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_hold.HoldTest",
+            "name": "test_floor_change_and_stale_pose_disable_only_hold",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_hold.HoldTest",
+            "name": "test_move_base_success_outside_precision_budget_does_not_loop",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_hold.HoldTest",
+            "name": "test_new_mission_waits_for_terminal_cancellation",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_navigation_hold.HoldTest",
+            "name": "test_no_chattering_and_fixed_destination",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/nosetests-test.test_ros_segments.py.xml",
+      "sha256": "baed97b1900c73216c8cf55f14200a8142e0eb4a6f3c1b481bcfbfbc90fd8ce2",
+      "observed_utc": "2026-09-20T22:04:52.885402+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "3",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_ros_segments.RosSegmentIdentifierTest",
+            "name": "test_route_recording_resolves_profile_and_mission_identity",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_ros_segments.RosSegmentIdentifierTest",
+            "name": "test_stair_and_floor_adapters_use_their_receiver_keys",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_ros_segments.RosSegmentIdentifierTest",
+            "name": "test_stair_entry_mismatch_sends_no_child_goal",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/nosetests-test.test_route_planner.py.xml",
+      "sha256": "82bc04f75a80bf8f9386373b9c102dd91416ed7cf51d50ade0404e335100f59d",
+      "observed_utc": "2026-09-20T22:04:56.497374+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "12",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_route_planner.BuildingPlannerTest",
+            "name": "test_bidirectional_stair_expansion_targets_each_floor_endpoint",
+            "time": "0.038"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_route_planner.BuildingPlannerTest",
+            "name": "test_directionally_absent_stair_profile_is_not_routable",
+            "time": "0.056"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_route_planner.BuildingPlannerTest",
+            "name": "test_disabled_stair_profile_removes_that_direction_from_routing",
+            "time": "0.036"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_route_planner.BuildingPlannerTest",
+            "name": "test_equal_length_routes_use_edge_id_order_independent_of_input_order",
+            "time": "0.027"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_route_planner.BuildingPlannerTest",
+            "name": "test_invalid_floor_continuity_is_rejected_before_route_search",
+            "time": "0.029"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_route_planner.BuildingPlannerTest",
+            "name": "test_logical_anchor_changes_only_after_successful_committing_segment",
+            "time": "0.028"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_route_planner.BuildingPlannerTest",
+            "name": "test_multi_floor_scan_expands_all_generic_segment_types",
+            "time": "0.026"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_route_planner.BuildingPlannerTest",
+            "name": "test_planner_and_fsm_share_canonical_segment_type",
+            "time": "0.028"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_route_planner.BuildingPlannerTest",
+            "name": "test_return_is_fresh_bfs_over_asymmetric_edges",
+            "time": "0.029"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_route_planner.BuildingPlannerTest",
+            "name": "test_same_floor_route_expands_navigation_when_locations_share_floor",
+            "time": "0.029"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_route_planner.BuildingPlannerTest",
+            "name": "test_serialized_route_is_byte_for_byte_deterministic",
+            "time": "0.028"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_route_planner.BuildingPlannerTest",
+            "name": "test_unreachable_destination_is_rejected_when_no_directed_path_exists",
+            "time": "0.028"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/nosetests-test.test_runtime_gating.py.xml",
+      "sha256": "e742da65da3b7620508a942e7390bfac561e8f3ad5738224d4776ef35fbfd992",
+      "observed_utc": "2026-09-20T22:04:53.021401+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "2",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_runtime_gating.RuntimeGatingTest",
+            "name": "test_fixture_profile_requires_explicit_second_gate",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_runtime_gating.RuntimeGatingTest",
+            "name": "test_unconfigured_stair_profile_remains_fail_closed",
+            "time": "0.094"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/nosetests-test.test_scan_recorder.py.xml",
+      "sha256": "31c30cb93c3fbb0658b50a589d8fed4e5ff5a581083e215d14b030a93b9e833f",
+      "observed_utc": "2026-09-20T22:04:54.537389+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "22",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_active_artifact_marker_is_rejected_as_stale_generation",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_artifact_path_outside_profile_output_root_is_rejected",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_artifact_validation_rejects_zero_duration_messages_and_malformed_yaml",
+            "time": "0.003"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_cancellation_returns_preempted_valid_artifact",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_discarded_session_invalidates_active_artifact_without_validation",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_disk_precheck_fails_before_subprocess_start",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_duration_starts_after_delayed_active_artifact_readiness",
+            "time": "0.002"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_forced_termination_marks_generated_active_bag_invalid",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_invalid_profile_fails_before_subprocess_start",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_missing_mandatory_topic_rejects_artifact",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_nonfinite_duration_metadata_is_rejected",
+            "time": "0.004"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_readiness_timeout_reaps_without_returning_artifact",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_rosbag_info_subprocess_failure_rejects_artifact",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_scan_failure_maps_to_mission_result_without_artifact_return",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_session_detects_process_exit_between_route_segments",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_sigint_timeout_kills_process_and_marks_artifact_invalid",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_stale_artifact_is_rejected_before_recording",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_started_session_remains_active_until_explicit_finish",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_subprocess_failure_has_no_success_return",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_unexpected_wait_exception_still_reaps_owned_process",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_unwritable_output_shape_fails_before_subprocess_start",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_scan_recorder.ScanRecorderTest",
+            "name": "test_valid_recording_uses_explicit_topics_and_validates_artifact",
+            "time": "0.002"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/nosetests-test.test_stair_admission.py.xml",
+      "sha256": "baef09cd5fa85f8cae219144b461f242a51f9af60f50889633a4fa3e1923fac6",
+      "observed_utc": "2026-09-20T22:04:53.641396+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "2",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_stair_admission.StairAdmissionBrokerTest",
+            "name": "test_context_mismatch_and_live_recheck_reject",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_stair_admission.StairAdmissionBrokerTest",
+            "name": "test_valid_token_is_accepted_exactly_once",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/nosetests-test.test_stair_entry_gate.py.xml",
+      "sha256": "0e33624589b17294287e0a11a0b62885bc3f6d7cb123d3305fa3bb7d31da3d18",
+      "observed_utc": "2026-09-20T22:04:53.885394+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "2",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_stair_entry_gate.StairEntryGateTest",
+            "name": "test_aligned_fresh_pose_accepts_wrapped_heading_at_inclusive_bounds",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_stair_entry_gate.StairEntryGateTest",
+            "name": "test_pose_or_localization_failure_rejects_entry",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/nosetests-test.test_subprocess_executor.py.xml",
+      "sha256": "51a337e2a6e41a954cf59be26073d141a01fb276d4f2f52a14c0bc1a3a87cdd9",
+      "observed_utc": "2026-09-20T22:04:54.281391+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "1",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_subprocess_executor.SubprocessExecutorTest",
+            "name": "test_recording_child_starts_outside_terminal_process_group",
+            "time": "0.001"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/rostest-test_full_system_synthetic.xml",
+      "sha256": "3e2c8adada0df01b2306a962c2bf402f9956649b15a34cc9effdc37ec7721ce2",
+      "observed_utc": "2026-09-20T22:05:22.521168+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "19.753"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "rostest.runner.RosTest",
+            "name": "testfull_system_synthetic",
+            "time": "19.7526"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/rostest-test_mission_5f_rf_synthetic.xml",
+      "sha256": "994e7307069fc0210e16953a3fb95aac7730f131f9a3c3144b4ecf0ac6143036",
+      "observed_utc": "2026-09-20T22:05:13.361242+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "5.820"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "rostest.runner.RosTest",
+            "name": "testmission_5f_rf_synthetic",
+            "time": "5.8196"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/rostest-test_mission_system.xml",
+      "sha256": "4d0dc10bcfabe97dc119219d5f893ce0e011f9c3ad49687558a664fcdc7364e1",
+      "observed_utc": "2026-09-20T22:05:23.729159+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "9.426"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "rostest.runner.RosTest",
+            "name": "testmission_action_ros",
+            "time": "9.4259"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/rostest-test_process_boundaries.xml",
+      "sha256": "998e73d0ff0fbac0ce0fe686e016b5faed42780e65b3a89023e68ce47cddaa6b",
+      "observed_utc": "2026-09-20T22:05:26.145139+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "2.813"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "rostest.runner.RosTest",
+            "name": "testtodo4_process_boundaries",
+            "time": "2.8128"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/rostest-test_scan_recorder_ros.xml",
+      "sha256": "288f048d0bd5550376cc260d03d98a402cff0f715cdbf3ae74d07980fe182ebb",
+      "observed_utc": "2026-09-20T22:05:06.641294+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "4.219"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "rostest.runner.RosTest",
+            "name": "testscan_recorder_real_rosbag",
+            "time": "4.2187"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/rosunit-full_system_synthetic.xml",
+      "sha256": "a64ca1bf6dee7577da0ea8737f47ffd6efd6015619c9e8b9083b994efcc50b0c",
+      "observed_utc": "2026-09-20T22:05:21.689175+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "17.727"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "__main__.FullSystemSyntheticTest",
+            "name": "test_production_route_completes_after_state_freshness_window",
+            "time": "17.3210"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/rosunit-mission_5f_rf_synthetic.xml",
+      "sha256": "564f9f18bc0c83ba1ee5415617bbd333592f27ac2ea9862ff72264dd9c1169ba",
+      "observed_utc": "2026-09-20T22:05:12.641247+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "8",
+        "time": "3.971"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "__main__.Mission5fRfSyntheticRosTest",
+            "name": "test_cancellation_is_injected_alone",
+            "time": "0.0220"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.Mission5fRfSyntheticRosTest",
+            "name": "test_exact_route_uses_fresh_return_after_roof_scan",
+            "time": "0.6846"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.Mission5fRfSyntheticRosTest",
+            "name": "test_navigation_abort_is_injected_alone",
+            "time": "0.3739"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.Mission5fRfSyntheticRosTest",
+            "name": "test_odometry_jump_is_injected_alone",
+            "time": "0.4926"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.Mission5fRfSyntheticRosTest",
+            "name": "test_scan_record_failure_is_injected_alone",
+            "time": "0.4723"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.Mission5fRfSyntheticRosTest",
+            "name": "test_stale_localization_is_injected_alone",
+            "time": "0.5102"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.Mission5fRfSyntheticRosTest",
+            "name": "test_websocket_loss_is_injected_alone",
+            "time": "0.5160"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.Mission5fRfSyntheticRosTest",
+            "name": "test_wrong_floor_tag_is_injected_alone",
+            "time": "0.5213"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/rosunit-mission_action_ros.xml",
+      "sha256": "0c1cf752a6854f142669e531e9d4d50f9ff5dae4885fad6667d6dd3d6d09de42",
+      "observed_utc": "2026-09-20T22:05:23.005165+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "15",
+        "time": "7.581"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "__main__.MissionActionRosTest",
+            "name": "test_busy_goal_is_rejected_without_preempting_active_goal",
+            "time": "0.0226"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.MissionActionRosTest",
+            "name": "test_cancellation_then_resume_uses_confirmed_anchor",
+            "time": "0.3165"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.MissionActionRosTest",
+            "name": "test_communication_failure_aborts_before_floor_transition",
+            "time": "0.4505"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.MissionActionRosTest",
+            "name": "test_dirty_scan_artifact_is_rejected",
+            "time": "1.2036"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.MissionActionRosTest",
+            "name": "test_fresh_return_completes_with_validated_scan_artifact",
+            "time": "1.1430"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.MissionActionRosTest",
+            "name": "test_localization_failure_stops_before_next_navigation",
+            "time": "0.4520"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.MissionActionRosTest",
+            "name": "test_malformed_and_unknown_goals_are_rejected_before_children",
+            "time": "0.0134"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.MissionActionRosTest",
+            "name": "test_misleading_child_success_is_mission_abort",
+            "time": "0.4379"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.MissionActionRosTest",
+            "name": "test_multi_floor_mission_executes_each_child_once",
+            "time": "0.3019"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.MissionActionRosTest",
+            "name": "test_navigation_retry_is_bounded_and_succeeds",
+            "time": "0.2993"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.MissionActionRosTest",
+            "name": "test_repeated_interruptions_do_not_corrupt_next_mission",
+            "time": "0.3462"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.MissionActionRosTest",
+            "name": "test_same_floor_feedback_has_coherent_index_count_and_floor",
+            "time": "0.3062"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.MissionActionRosTest",
+            "name": "test_scan_failure_never_launches_fresh_return",
+            "time": "0.7477"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.MissionActionRosTest",
+            "name": "test_stair_failure_propagates_and_does_not_start_localization",
+            "time": "0.4454"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.MissionActionRosTest",
+            "name": "test_stale_state_aborts_before_child_goal",
+            "time": "0.7191"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/rosunit-scan_recorder_real_rosbag.xml",
+      "sha256": "ff87e494b6ced5019066baab613165af82d6104c86663de4817ec9524a887749",
+      "observed_utc": "2026-09-20T22:05:06.609295+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "2.986"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "__main__.RealRosbagRecorderTest",
+            "name": "test_six_required_topic_types_form_valid_managed_bag",
+            "time": "2.9504"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/mission_manager/rosunit-todo4_process_boundaries.xml",
+      "sha256": "43183e5463abbc78436fec546b18939232c2a4475251232361aa6fe698c37c01",
+      "observed_utc": "2026-09-20T22:05:26.109140+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "6",
+        "time": "1.704"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "__main__.ProcessBoundaryTest",
+            "name": "test_fresh_websocket_round_trip_over_loopback_socket",
+            "time": "0.0010"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.ProcessBoundaryTest",
+            "name": "test_malformed_input_is_rejected_over_loopback_socket",
+            "time": "0.0007"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.ProcessBoundaryTest",
+            "name": "test_repeated_interruptions_do_not_fake_success",
+            "time": "0.0021"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.ProcessBoundaryTest",
+            "name": "test_ros_action_round_trip_across_server_process",
+            "time": "0.0009"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.ProcessBoundaryTest",
+            "name": "test_ros_service_round_trip_across_server_process",
+            "time": "0.0014"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.ProcessBoundaryTest",
+            "name": "test_stale_state_is_rejected_over_loopback_socket",
+            "time": "0.0006"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/nosetests-.home.m3tron..codex..chatgpt-projects.g-p-6aa37f17097c81919ca6c59ce41e856c.stair-supervisor-implementation-20260921.worktree.test.test_map_evidence.py.xml",
+      "sha256": "e9db41acbac03534a5375deedaa851a861c11b4451340482feabaff1581e3fc4",
+      "observed_utc": "2026-09-20T22:05:00.433343+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "5",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test.test_map_evidence.MapEvidenceTest",
+            "name": "test_data_hash_distinguishes_identical_metadata",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_map_evidence.MapEvidenceTest",
+            "name": "test_malformed_dirty_and_future_maps_are_rejected_at_boundary",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_map_evidence.MapEvidenceTest",
+            "name": "test_pre_arm_target_map_is_ignored_until_new_generation_arrives",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_map_evidence.MapEvidenceTest",
+            "name": "test_valid_target_fingerprint_advances_generation_once",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_map_evidence.MapEvidenceTest",
+            "name": "test_wrong_target_and_current_fingerprint_do_not_advance",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/nosetests-.home.m3tron..codex..chatgpt-projects.g-p-6aa37f17097c81919ca6c59ce41e856c.stair-supervisor-implementation-20260921.worktree.test.test_site_configuration.py.xml",
+      "sha256": "86aa769e329bece2670acb3ea062c3ac0f0f2e18abfee9dd28dcaa83122194a5",
+      "observed_utc": "2026-09-20T22:05:01.609334+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "21",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_complete_asymmetric_building_loads_when_all_references_are_valid",
+            "time": "0.033"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_configured_document_flag_remains_a_yaml_boolean",
+            "time": "0.024"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_current_transition_fixture_loads_through_site_boundary",
+            "time": "0.030"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_current_transition_policy_requires_zero_optional_count",
+            "time": "0.069"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_dangling_graph_endpoints_are_rejected_with_a_path",
+            "time": "0.033"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_duplicate_ids_are_rejected_with_a_path",
+            "time": "0.011"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_empty_scan_topic_lists_are_rejected_with_a_path",
+            "time": "0.012"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_floor_transition_policy_must_be_the_single_enabled_policy",
+            "time": "0.073"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_future_placeholder_condition_is_unknown_until_registry_support_exists",
+            "time": "0.025"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_invalid_yaw_is_rejected_with_a_path",
+            "time": "0.010"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_malformed_yaml_is_path_qualified",
+            "time": "0.026"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_mandatory_transition_conditions_cannot_be_disabled_or_optional",
+            "time": "0.046"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_missing_map_images_are_rejected_with_a_path",
+            "time": "0.027"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_nonpositive_tag_size_is_rejected_with_a_path",
+            "time": "0.027"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_old_transition_predicate_arrays_are_rejected",
+            "time": "0.024"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_transition_condition_flags_require_exact_yaml_integer_bits",
+            "time": "0.315"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_transition_condition_names_are_closed_unique_and_complete",
+            "time": "0.068"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_transition_fixture_loads_immutable_ordered_condition_schema",
+            "time": "0.029"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_transition_policy_flags_require_exact_yaml_integer_bits",
+            "time": "0.140"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_transition_temporal_values_are_strict",
+            "time": "0.111"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_site_configuration.SiteConfigurationTest",
+            "name": "test_unconfigured_documents_cannot_pass_as_production_data",
+            "time": "0.011"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/nosetests-.home.m3tron..codex..chatgpt-projects.g-p-6aa37f17097c81919ca6c59ce41e856c.stair-supervisor-implementation-20260921.worktree.test.test_stair_endpoint_configuration.py.xml",
+      "sha256": "b24e6d4ebeec0952f28ab91e18c3ee364be7634d73e81aa96ca82bd6ef85084e",
+      "observed_utc": "2026-09-20T22:04:59.861348+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "12",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test.test_stair_endpoint_configuration.StairEndpointConfigurationTest",
+            "name": "test_cross_floor_navigation_is_rejected_through_site_boundary",
+            "time": "0.036"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_stair_endpoint_configuration.StairEndpointConfigurationTest",
+            "name": "test_endpoint_covariance_rejects_nonfinite_off_diagonal_and_negative_values",
+            "time": "0.095"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_stair_endpoint_configuration.StairEndpointConfigurationTest",
+            "name": "test_endpoint_covariance_requires_36_values",
+            "time": "0.033"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_stair_endpoint_configuration.StairEndpointConfigurationTest",
+            "name": "test_endpoint_entry_location_must_share_its_floor",
+            "time": "0.043"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_stair_endpoint_configuration.StairEndpointConfigurationTest",
+            "name": "test_endpoint_expected_tags_must_exist",
+            "time": "0.049"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_stair_endpoint_configuration.StairEndpointConfigurationTest",
+            "name": "test_endpoint_landing_pose_requires_normalized_quaternion",
+            "time": "0.065"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_stair_endpoint_configuration.StairEndpointConfigurationTest",
+            "name": "test_missing_directional_profiles_are_rejected_with_a_path",
+            "time": "0.043"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_stair_endpoint_configuration.StairEndpointConfigurationTest",
+            "name": "test_missing_or_extra_stair_endpoint_floor_is_rejected",
+            "time": "0.062"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_stair_endpoint_configuration.StairEndpointConfigurationTest",
+            "name": "test_stair_edge_source_must_be_its_floor_entry_endpoint",
+            "time": "0.035"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_stair_endpoint_configuration.StairEndpointConfigurationTest",
+            "name": "test_stair_loads_exactly_two_floor_keyed_endpoints",
+            "time": "0.029"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_stair_endpoint_configuration.StairEndpointConfigurationTest",
+            "name": "test_unreleased_single_endpoint_stair_shape_is_rejected",
+            "time": "0.029"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_stair_endpoint_configuration.StairEndpointConfigurationTest",
+            "name": "test_wrong_floor_or_stair_landing_tag_is_rejected",
+            "time": "0.087"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/nosetests-.home.m3tron..codex..chatgpt-projects.g-p-6aa37f17097c81919ca6c59ce41e856c.stair-supervisor-implementation-20260921.worktree.test.test_tag_evidence.py.xml",
+      "sha256": "8b134cf5a0cc61ab1d2f4ef9c28ea2a70d12be1f5f0df3f23a52771775e9f50c",
+      "observed_utc": "2026-09-20T22:05:02.001331+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "11",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test.test_tag_evidence.AprilTagEvidenceTest",
+            "name": "test_delayed_frames_cannot_lower_timestamp_high_water_or_rebuild_vote",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_tag_evidence.AprilTagEvidenceTest",
+            "name": "test_equally_valid_wrong_floor_vote_aborts",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_tag_evidence.AprilTagEvidenceTest",
+            "name": "test_fresh_pre_arm_detection_does_not_vote",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_tag_evidence.AprilTagEvidenceTest",
+            "name": "test_future_timestamp_is_rejected_before_it_can_poison_vote_state",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_tag_evidence.AprilTagEvidenceTest",
+            "name": "test_intermittent_empty_array_breaks_consecutive_vote",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_tag_evidence.AprilTagEvidenceTest",
+            "name": "test_malformed_ros_boundary_is_rejected",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_tag_evidence.AprilTagEvidenceTest",
+            "name": "test_stale_and_replayed_detections_do_not_vote",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_tag_evidence.AprilTagEvidenceTest",
+            "name": "test_three_consecutive_fresh_route_detections_accept",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_tag_evidence.AprilTagEvidenceTest",
+            "name": "test_timeout_and_dirty_mixed_array_are_rejected",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_tag_evidence.AprilTagEvidenceTest",
+            "name": "test_unknown_tag_resets_a_partial_vote",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test.test_tag_evidence.AprilTagEvidenceTest",
+            "name": "test_wrong_route_tag_on_target_floor_is_rejected",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/nosetests-test.test_fixture_discovery.py.xml",
+      "sha256": "fb5c75129a978679a5fbc156a4896ac6680b25428b3cdeee541668a6d8e56897",
+      "observed_utc": "2026-09-20T22:05:01.665334+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "2",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_fixture_discovery.MultifloorFixtureDiscoveryTest",
+            "name": "test_maps_and_amcl_covariance_load_for_every_floor",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_fixture_discovery.MultifloorFixtureDiscoveryTest",
+            "name": "test_stale_tf_is_rejected_by_frozen_clock",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/nosetests-test.test_map_loader.py.xml",
+      "sha256": "49931f69d5568c9134d3db5d16f9989f2d4027d723bc631bced4bf454e191fb3",
+      "observed_utc": "2026-09-20T22:05:00.089346+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "2",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_map_loader.MapLoaderTest",
+            "name": "test_fixture_yaml_resolves_to_map_server_identity",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_map_loader.MapLoaderTest",
+            "name": "test_missing_or_dirty_map_is_rejected_before_transition",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/nosetests-test.test_policy_final_gate.py.xml",
+      "sha256": "490d48917f66e6e62ee9e66995b7987f47827e44af86dffc35a444181aa5b288",
+      "observed_utc": "2026-09-20T22:05:01.229337+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "4",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_policy_final_gate.PolicyFinalGateTest",
+            "name": "test_false_localization_requires_a_new_dwell",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_policy_final_gate.PolicyFinalGateTest",
+            "name": "test_preemption_at_second_check_cannot_commit_ready",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_policy_final_gate.PolicyFinalGateTest",
+            "name": "test_success_samples_live_levels_and_commits_after_second_check",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_policy_final_gate.PolicyFinalGateTest",
+            "name": "test_wrong_costmap_requires_a_new_dwell",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/nosetests-test.test_readiness.py.xml",
+      "sha256": "fb5d5393a89e04f508ea41fa68b649361f9d3465cb4b96b072b1a7fbd7983d37",
+      "observed_utc": "2026-09-20T22:05:00.733341+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "4",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_readiness.LocalizationReadinessTest",
+            "name": "test_pre_pose_stale_dirty_and_missing_tf_evidence_is_rejected",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_readiness.LocalizationReadinessTest",
+            "name": "test_ready_requires_three_post_pose_samples_and_fresh_motion_evidence",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_readiness.LocalizationReadinessTest",
+            "name": "test_replayed_pose_and_expired_evidence_cannot_open_barrier",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_readiness.LocalizationReadinessTest",
+            "name": "test_stale_scan_and_odometry_are_independently_rejected",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/nosetests-test.test_ros_services.py.xml",
+      "sha256": "8b658e0fbe18cec63fe4b82655968804dffaa0149492e851882fd3fc85f9716a",
+      "observed_utc": "2026-09-20T22:04:59.633349+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "2",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_ros_services.RosServiceFailureTest",
+            "name": "test_clear_costmaps_service_timeout_is_reported_at_the_transition_boundary",
+            "time": "0.011"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_ros_services.RosServiceFailureTest",
+            "name": "test_nomotion_service_failure_is_reported_at_the_transition_boundary",
+            "time": "0.001"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/nosetests-test.test_transitions.py.xml",
+      "sha256": "475d74558939609a31ac22613e5a38090a7595cfdb33e873a51c4eefd1f7b78d",
+      "observed_utc": "2026-09-20T22:04:59.173353+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "16",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_transitions.TransitionManagerTest",
+            "name": "test_backward_and_nonfinite_clocks_are_rejected",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_transitions.TransitionManagerTest",
+            "name": "test_baseline_schema_objects_remain_immutable",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_transitions.TransitionManagerTest",
+            "name": "test_decimal_dwell_uses_absolute_threshold",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_transitions.TransitionManagerTest",
+            "name": "test_disabled_conditions_do_not_count",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_transitions.TransitionManagerTest",
+            "name": "test_dwell_requires_strictly_before_timeout",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_transitions.TransitionManagerTest",
+            "name": "test_evaluate_rejects_epoch_different_from_begun_epoch",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_transitions.TransitionManagerTest",
+            "name": "test_evaluate_requires_begin",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_transitions.TransitionManagerTest",
+            "name": "test_exact_and_late_timeout_are_terminal_false",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_transitions.TransitionManagerTest",
+            "name": "test_false_required_observation_requires_a_full_new_dwell",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_transitions.TransitionManagerTest",
+            "name": "test_freshness_boundary_is_valid_and_future_or_stale_is_false",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_transitions.TransitionManagerTest",
+            "name": "test_malformed_entry_is_domain_error_and_does_not_commit_time",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_transitions.TransitionManagerTest",
+            "name": "test_malformed_observation_time_is_rejected",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_transitions.TransitionManagerTest",
+            "name": "test_missing_false_and_wrong_epoch_reset_dwell",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_transitions.TransitionManagerTest",
+            "name": "test_optional_count_zero_and_one_are_deterministic",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_transitions.TransitionManagerTest",
+            "name": "test_policy_defensively_rejects_equal_dwell_and_timeout",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_transitions.TransitionManagerTest",
+            "name": "test_policy_rejects_mutable_conditions_container",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/rostest-test_floor_transition_cancel_ros.xml",
+      "sha256": "330e2acda0128957a30599b06559da326d49eafff6547b541d174b5792702280",
+      "observed_utc": "2026-09-20T22:05:29.293114+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "2.212"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "rostest.runner.RosTest",
+            "name": "testfloor_transition_cancel_ros",
+            "time": "2.2115"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/rostest-test_floor_transition_delayed_pose_ros.xml",
+      "sha256": "450ca953b35cac354babae57f98aafc297f4dd93416e31ecbffb1dc84a36d465",
+      "observed_utc": "2026-09-20T22:05:31.497096+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "1.308"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "rostest.runner.RosTest",
+            "name": "testfloor_transition_delayed_pose_ros",
+            "time": "1.3073"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/rostest-test_floor_transition_epoch_ros.xml",
+      "sha256": "428841ae7a4dec7a5d550d69e36b6bbcb59af0f4d532aaa3f5479df2ed6e1c87",
+      "observed_utc": "2026-09-20T22:05:33.557080+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "1.206"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "rostest.runner.RosTest",
+            "name": "testfloor_transition_epoch_ros",
+            "time": "1.2054"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/rostest-test_floor_transition_late_map_ros.xml",
+      "sha256": "8fc2c16e42c6f7f9098e17c7a62f9f9115cdffb996e57cda5b7e5224825fbd33",
+      "observed_utc": "2026-09-20T22:05:44.696989+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "3.611"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "rostest.runner.RosTest",
+            "name": "testfloor_transition_late_map_ros",
+            "time": "3.6110"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/rostest-test_floor_transition_policy_blocked_ros.xml",
+      "sha256": "bd8ff09c57b52087378817fff99c190a8c1447d083b95a46c6e8f8690ec08fcd",
+      "observed_utc": "2026-09-20T22:05:46.696972+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "13.240"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "rostest.runner.RosTest",
+            "name": "testfloor_transition_policy_blocked_ros",
+            "time": "13.2392"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/rostest-test_floor_transition_ros.xml",
+      "sha256": "898f817cf48959f38eba52a72c81d8509ce82d3b516f1d0dcbe52137e9323f2a",
+      "observed_utc": "2026-09-20T22:05:40.185026+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "5.718"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "rostest.runner.RosTest",
+            "name": "testfloor_transition_ros",
+            "time": "5.7178"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/rosunit-floor_transition_cancel_ros.xml",
+      "sha256": "746089f5385c12d4293b18dff710ddc8bd2d0e2cd8cf7623ab36bfa509da7f01",
+      "observed_utc": "2026-09-20T22:05:28.561120+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "0.377"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "__main__.FloorTransitionCancelRosTest",
+            "name": "test_cancelled_transition_is_preempted_and_faulted",
+            "time": "0.2457"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/rosunit-floor_transition_delayed_pose_ros.xml",
+      "sha256": "f32e1065e98d2956356fcf17d85ec7b2e992461818cb5ab2065322e88d2f0642",
+      "observed_utc": "2026-09-20T22:05:31.453097+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "0.139"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "__main__.DelayedPoseRosTest",
+            "name": "test_pre_response_pose_committing_after_response_cannot_advance_handshake",
+            "time": "0.0014"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/rosunit-floor_transition_epoch_ros.xml",
+      "sha256": "00956f89d08f4023ab8ae673b79d1b33354e6600c71c01b005f236c9e24b1cca",
+      "observed_utc": "2026-09-20T22:05:33.501080+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "6",
+        "time": "0.139"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "__main__.CallbackEpochRosTest",
+            "name": "test_costmap_identity_finishing_after_fault_cannot_advance_sequence",
+            "time": "0.0011"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.CallbackEpochRosTest",
+            "name": "test_late_epoch_writer_cannot_change_rearmed_policy",
+            "time": "0.0004"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.CallbackEpochRosTest",
+            "name": "test_map_parse_finishing_after_fault_cannot_advance_generation",
+            "time": "0.0005"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.CallbackEpochRosTest",
+            "name": "test_policy_token_starts_timeout_only_at_begin_and_rejects_stale_epoch",
+            "time": "0.0002"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.CallbackEpochRosTest",
+            "name": "test_pose_reduce_finishing_after_fault_cannot_restore_localization",
+            "time": "0.0004"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.CallbackEpochRosTest",
+            "name": "test_tag_parse_finishing_after_fault_cannot_restore_state",
+            "time": "0.0004"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/rosunit-floor_transition_late_map_ros.xml",
+      "sha256": "4cf3631b11f343bc18bdefc1bd520e4eec1295057a245d2a2624c06d3eb06efb",
+      "observed_utc": "2026-09-20T22:05:43.964995+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "1.759"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "__main__.LateMapRosTest",
+            "name": "test_hanging_service_and_late_map_cannot_mutate_fault",
+            "time": "1.6273"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/rosunit-floor_transition_policy_blocked_ros.xml",
+      "sha256": "61887a3be4d94663291d8c446fd9e5e849c402a29f26c1a2733fdd470f7d6fbf",
+      "observed_utc": "2026-09-20T22:05:45.956978+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "11.327"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "__main__.FloorTransitionRosTest",
+            "name": "test_inflight_map_and_costmap_barrier_complete_ordered_transition",
+            "time": "11.1918"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/multifloor_manager/rosunit-floor_transition_ros.xml",
+      "sha256": "e96aa7123371512678a6e2ad6d330c72006391c6535314f9747fbcf6f92a5cc2",
+      "observed_utc": "2026-09-20T22:05:39.457032+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "3.871"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "__main__.FloorTransitionRosTest",
+            "name": "test_inflight_map_and_costmap_barrier_complete_ordered_transition",
+            "time": "3.7412"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/stair_supervisor/nosetests-test.robot_transport.xml",
+      "sha256": "af91212a5537bcce076459111e79a417478935714f1708a125ca0fe48d979aa5",
+      "observed_utc": "2026-09-20T22:04:57.561365+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "28",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_config.RobotConfigTest",
+            "name": "test_connection_and_stream_configuration_remain_separate",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_config.RobotConfigTest",
+            "name": "test_stream_rate_below_documented_minimum_is_rejected",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_conversion.RobotConversionTest",
+            "name": "test_any_nonfinite_component_fails_closed_to_zero",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_conversion.RobotConversionTest",
+            "name": "test_physical_twist_is_normalized_and_clipped",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_protocol.RobotProtocolTest",
+            "name": "test_dirty_generated_response_fields_and_nonfinite_data_are_rejected",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_protocol.RobotProtocolTest",
+            "name": "test_fractional_millisecond_robot_timestamp_is_normalized",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_protocol.RobotProtocolTest",
+            "name": "test_malformed_or_incomplete_response_is_rejected",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_protocol.RobotProtocolTest",
+            "name": "test_request_uses_documented_guid_json_envelope",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport.RobotTransportTest",
+            "name": "test_documented_high_level_helpers_emit_typed_payloads",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport.RobotTransportTest",
+            "name": "test_mode_request_latches_fault_after_all_attempts_fail",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport.RobotTransportTest",
+            "name": "test_mode_request_succeeds_after_one_transient_send_failure",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport.RobotTransportTest",
+            "name": "test_mode_wait_runs_feedback_and_releases_pending_receipt_on_interrupt",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport.RobotTransportTest",
+            "name": "test_nonfinite_update_emits_zero_over_mocked_websocket",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport.RobotTransportTest",
+            "name": "test_robot_clock_offset_uses_response_order_for_status_freshness",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport.RobotTransportTest",
+            "name": "test_stand_acknowledgement_can_keep_reporting_walk",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport.RobotTransportTest",
+            "name": "test_start_accepts_observed_firmware_frame_order",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport.RobotTransportTest",
+            "name": "test_start_verifies_stand_then_walk_status_before_motion",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport.RobotTransportTest",
+            "name": "test_successful_frames_are_observed_byte_for_byte_after_send",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport.RobotTransportTest",
+            "name": "test_transient_twist_send_failure_is_tolerated_inside_budget",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport.RobotTransportTest",
+            "name": "test_twist_send_failure_latches_fault_when_outage_budget_is_exhausted",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport.RobotTransportTest",
+            "name": "test_watchdog_and_close_send_repeated_zero_commands",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport_faults.RobotTransportFaultTest",
+            "name": "test_correlated_success_without_expected_walk_status_faults",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport_faults.RobotTransportFaultTest",
+            "name": "test_disconnect_fault_prevents_reconnect_or_resume",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport_faults.RobotTransportFaultTest",
+            "name": "test_malformed_response_latches_fault",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport_faults.RobotTransportFaultTest",
+            "name": "test_send_failure_is_tolerated_then_latches_fault_after_outage_budget",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport_faults.RobotTransportFaultTest",
+            "name": "test_stale_post_request_status_cannot_arm_motion",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_robot_transport_faults.RobotTransportFaultTest",
+            "name": "test_timeout_cleans_pending_request_and_latches_fault",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "robot_transport.test_yaw_calibration_cli.YawCalibrationCliTest",
+            "name": "test_help_exposes_safe_calibration_controls",
+            "time": "0.092"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/stair_supervisor/nosetests-test.test_bag_replay.py.xml",
+      "sha256": "73a1ee06ecdccb109c248fcb9e752cf87eea03a3ae9bc241b657623a30ed100f",
+      "observed_utc": "2026-09-20T22:04:57.517366+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "2",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_bag_replay",
+            "name": "test_restamp_odometry_preserves_recorded_pose_and_uses_current_time",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_bag_replay",
+            "name": "test_odometry_sample_uses_record_time_and_recorded_planar_pose",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/stair_supervisor/nosetests-test.test_configuration_transition.py.xml",
+      "sha256": "1c36584b8e9af09b5d01d34d8dabaeda640370ddc6cdfd53650ae73e5eafcafb",
+      "observed_utc": "2026-09-20T22:04:58.321360+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "9",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_configuration_transition.StairConfigurationTransitionTest",
+            "name": "test_disabled_empty_profiles_load_as_empty_tuple",
+            "time": "0.002"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_configuration_transition.StairConfigurationTransitionTest",
+            "name": "test_disabled_nonempty_stair_profiles_reject",
+            "time": "0.001"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_configuration_transition.StairConfigurationTransitionTest",
+            "name": "test_empty_profiles_reject_before_existing_traversal_lock",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_configuration_transition.StairConfigurationTransitionTest",
+            "name": "test_empty_profiles_reject_before_ownership_state_or_motion",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_configuration_transition.StairConfigurationTransitionTest",
+            "name": "test_fresh_nav_forwards_through_existing_transport_seam",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_configuration_transition.StairConfigurationTransitionTest",
+            "name": "test_nonzero_legacy_alignment_is_rejected",
+            "time": "0.012"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_configuration_transition.StairConfigurationTransitionTest",
+            "name": "test_required_measured_profile_field_is_rejected_when_missing",
+            "time": "0.012"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_configuration_transition.StairConfigurationTransitionTest",
+            "name": "test_robot_configured_false_rejects",
+            "time": "0.002"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_configuration_transition.StairConfigurationTransitionTest",
+            "name": "test_sample_gap_above_freshness_is_rejected",
+            "time": "0.013"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/stair_supervisor/nosetests-test.test_fixture_discovery.py.xml",
+      "sha256": "b83f437213f6aa51c4af31424c19729501eafda5e02396f7b912bc55ef7b8a4b",
+      "observed_utc": "2026-09-20T22:04:58.285360+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "3",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_fixture_discovery.CatkinFixtureDiscoveryTest",
+            "name": "test_fixture_corpus_is_real_when_catkin_discovers_tests",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_fixture_discovery.CatkinFixtureDiscoveryTest",
+            "name": "test_fixture_helpers_are_absent_from_install_rules",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_fixture_discovery.CatkinFixtureDiscoveryTest",
+            "name": "test_fresh_transcript_drives_websocket_peer_without_network",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/stair_supervisor/nosetests-test.test_stair_evidence.py.xml",
+      "sha256": "b3c16ef77f03100b34869538f2c8aae3561ddb98f314af921cbf1d09d24a7cb5",
+      "observed_utc": "2026-09-20T22:04:57.981362+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "7",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_stair_evidence.StairEvidenceFaultTest",
+            "name": "test_invalid_observations_latch_fault",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_stair_evidence.StairEvidenceFaultTest",
+            "name": "test_recorded_gap_then_jump_cannot_become_later_progress",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_stair_evidence.StairEvidenceFaultTest",
+            "name": "test_reverse_distance_and_yaw_fault_in_both_directions",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_stair_evidence.StairEvidenceHappyPathTest",
+            "name": "test_align_completes_without_yaw_progress",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_stair_evidence.StairEvidenceHappyPathTest",
+            "name": "test_all_seven_phases_complete_for_up_and_down_profiles",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_stair_evidence.StairEvidenceHappyPathTest",
+            "name": "test_dwell_resets_after_motion",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_stair_evidence.StairEvidenceHappyPathTest",
+            "name": "test_flight_distance_uses_odometry_only",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/stair_supervisor/nosetests-test.test_state_machine_dashboard.py.xml",
+      "sha256": "31445319d78476a48a38248d769e8844fef76e225f8f23d1543289da46d52d4b",
+      "observed_utc": "2026-09-20T22:04:58.817356+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "4",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_state_machine_dashboard",
+            "name": "test_phase_visual_state_distinguishes_completed_active_and_pending",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_state_machine_dashboard",
+            "name": "test_active_phase_becomes_fault_node_on_terminal_rejection",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_state_machine_dashboard",
+            "name": "test_dashboard_renders_fixed_readable_canvas_with_status_variation",
+            "time": "0.017"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_state_machine_dashboard",
+            "name": "test_each_terminal_outcome_has_its_own_semantic_color",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/stair_supervisor/nosetests-test.test_supervisor.py.xml",
+      "sha256": "382137bbc8f2264db5193f9266dac7bf780235674928fa9d437fe01a064910b4",
+      "observed_utc": "2026-09-20T22:04:57.921363+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "11",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_supervisor.StairSupervisorTest",
+            "name": "test_align_is_observable_but_first_nonzero_stair_command_is_forward",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_supervisor.StairSupervisorTest",
+            "name": "test_cancel_is_honored_at_safe_checkpoint",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_supervisor.StairSupervisorTest",
+            "name": "test_disabled_profile_changes_neither_mode_nor_motion",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_supervisor.StairSupervisorTest",
+            "name": "test_disconnect_latches_fault_and_shutdown_never_restarts",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_supervisor.StairSupervisorTest",
+            "name": "test_landing_turn_can_curve_to_the_return_flight",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_supervisor.StairSupervisorTest",
+            "name": "test_rejected_admission_cannot_take_ownership_or_touch_transport",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_supervisor.StairSupervisorTest",
+            "name": "test_shutdown_sends_zero_before_closing",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_supervisor.StairSupervisorTest",
+            "name": "test_stair_profile_speed_is_not_capped_by_flat_navigation_limit",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_supervisor.StairSupervisorTest",
+            "name": "test_stale_and_nonfinite_navigation_are_zeroed",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_supervisor.StairSupervisorTest",
+            "name": "test_timeout_latches_fault_without_retry",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_supervisor.StairSupervisorTest",
+            "name": "test_traversal_owns_commands_and_advances_epoch",
+            "time": "0.000"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/stair_supervisor/nosetests-test.test_supervisor_safety.py.xml",
+      "sha256": "c070c677442eb130d536c840e91738180c1f4933bf54d0b1141c4bacb174ba13",
+      "observed_utc": "2026-09-20T22:04:58.753356+00:00",
+      "attributes": {
+        "name": "nosetests",
+        "tests": "5",
+        "errors": "0",
+        "failures": "0",
+        "skip": "0"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "test_supervisor_safety.StairSupervisorSafetyTest",
+            "name": "test_cancel_during_safe_evidence_wait_preempts_without_fault",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_supervisor_safety.StairSupervisorSafetyTest",
+            "name": "test_cancel_from_each_moving_phase_waits_for_next_safe_checkpoint",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_supervisor_safety.StairSupervisorSafetyTest",
+            "name": "test_close_interruption_is_latched_and_shutdown_is_idempotent",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_supervisor_safety.StairSupervisorSafetyTest",
+            "name": "test_evidence_fault_after_motion_allows_no_later_nonzero_command",
+            "time": "0.000"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "test_supervisor_safety.StairSupervisorSafetyTest",
+            "name": "test_inflight_nav_tick_finishes_before_stair_handoff",
+            "time": "0.051"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/stair_supervisor/rostest-test_stair_supervisor_node.xml",
+      "sha256": "e8c1e3bfe9cd00f9dba9131f56be0e5862ac0dc6628d39b747dd74133d3b529b",
+      "observed_utc": "2026-09-20T22:05:32.569088+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "3",
+        "time": "7.928"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "rostest.runner.RosTest",
+            "name": "teststair_fake_websocket_qa",
+            "time": "2.5089"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "rostest.runner.RosTest",
+            "name": "teststair_supervisor_node_boundary",
+            "time": "4.0118"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "rostest.runner.RosTest",
+            "name": "testwebsocket_tx_surface",
+            "time": "1.4068"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/stair_supervisor/rosunit-stair_fake_websocket_qa.xml",
+      "sha256": "72afbc6304c6141ce2a1e5f3d7c2b117faf6cf7467fac8bedaffefdaecaf4462",
+      "observed_utc": "2026-09-20T22:05:27.105132+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "1.379"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "__main__.StairFakeWebSocketRosTest",
+            "name": "test_action_feedback_state_and_tx_complete_without_robot_motion",
+            "time": "1.2444"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/stair_supervisor/rosunit-stair_supervisor_node_boundary.xml",
+      "sha256": "64690a6228b00b2efed65cc2d1e789724358e7b2a4d7178e50a6ce3c395b1498",
+      "observed_utc": "2026-09-20T22:05:31.085100+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "2",
+        "time": "2.887"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "__main__.StairSupervisorNodeBoundaryTest",
+            "name": "test_action_transcript_covers_ownership_and_fail_closed_paths",
+            "time": "2.5669"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.StairSupervisorNodeBoundaryTest",
+            "name": "test_successful_transport_frame_is_published_byte_for_byte",
+            "time": "0.0103"
+          },
+          "failures": []
+        }
+      ]
+    },
+    {
+      "path": "build/test_results/stair_supervisor/rosunit-websocket_tx_surface.xml",
+      "sha256": "06653978cef37f31a57d9b33857bc5a426f1dfa26b879af67fb5f35c4c8d58ca",
+      "observed_utc": "2026-09-20T22:05:32.489088+00:00",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "2",
+        "time": "0.353"
+      },
+      "cases": [
+        {
+          "attributes": {
+            "classname": "__main__.WebSocketTxRosTest",
+            "name": "test_failed_send_is_tolerated_then_latches_fault_after_outage_budget",
+            "time": "0.2030"
+          },
+          "failures": []
+        },
+        {
+          "attributes": {
+            "classname": "__main__.WebSocketTxRosTest",
+            "name": "test_watchdog_and_close_success_frames_match_the_socket_bytes",
+            "time": "0.0152"
+          },
+          "failures": []
+        }
+      ]
+    }
+  ],
+  "optional": [
+    {
+      "source": "lidar-control-final.log",
+      "observed_utc": "2026-09-20T22:07:46.655926+00:00",
+      "tests": 27,
+      "passed": true,
+      "source_sha256": "6ef90c2091aa18fe127eae6b4b08b4b51706e0f6d6ee53d355501445e5bc6c9a",
+      "cases": [
+        "test_150_degree_turn_does_not_complete_next_flight (test_lidar_control.FeedbackTest) ... ok",
+        "test_arc_sweep_checks_intermediate_body_not_only_endpoints (test_lidar_control.FeedbackTest) ... ok",
+        "test_capture_uses_the_corresponding_immutable_sample (test_lidar_control.FeedbackTest) ... ok",
+        "test_entry_outside_support_cannot_complete (test_lidar_control.FeedbackTest) ... ok",
+        "test_front_sensor_or_last_two_steps_cannot_complete_flight (test_lidar_control.FeedbackTest) ... ok",
+        "test_hold_target_does_not_follow_drift (test_lidar_control.FeedbackTest) ... ok",
+        "test_invalid_gain_downhill_and_unverified_response_are_rejected (test_lidar_control.FeedbackTest) ... ok",
+        "test_landmark_transform_and_ambiguity (test_lidar_control.FeedbackTest) ... ok",
+        "test_mount_lever_arm_and_entry_transform_are_not_ignored (test_lidar_control.FeedbackTest) ... ok",
+        "test_normal_five_hz_never_hits_legacy_gap_fault (test_lidar_control.FeedbackTest) ... ok",
+        "test_old_accepted_scan_and_missing_scan_share_degraded_then_expired (test_lidar_control.FeedbackTest) ... ok",
+        "test_old_epoch_never_reuses_anchor (test_lidar_control.FeedbackTest) ... ok",
+        "test_preflight_admission_does_not_mutate_active_hold (test_lidar_control.FeedbackTest) ... ok",
+        "test_repeated_pose_cannot_fill_stationary_dwell (test_lidar_control.FeedbackTest) ... ok",
+        "test_side_error_and_wrong_heading_have_correct_correction_sign (test_lidar_control.FeedbackTest) ... ok",
+        "test_single_rejection_recovers_in_same_phase_without_pose_restamp (test_lidar_control.FeedbackTest) ... ok",
+        "test_small_backward_slip_is_observed_not_discarded (test_lidar_control.FeedbackTest) ... ok",
+        "test_small_tracking_noise_is_inside_steering_deadband (test_lidar_control.FeedbackTest) ... ok",
+        "test_cancel_during_final_send_does_not_commit_nav_success (test_lidar_control.OwnershipTest) ... ok",
+        "test_cancel_with_lidar_never_disables_stair_or_closes (test_lidar_control.OwnershipTest) ... ok",
+        "test_late_arrival_release_does_not_clear_a_new_nav_command (test_lidar_control.OwnershipTest) ... ok",
+        "test_off_configuration_does_not_need_lidar_file (test_lidar_control.OwnershipTest) ... ok",
+        "test_shutdown_cannot_be_followed_by_late_success_or_nav_state (test_lidar_control.OwnershipTest) ... ok",
+        "test_bootstrap_does_not_use_only_half_of_gravity_window (test_lidar_control.StreamingTest) ... ok",
+        "test_bootstrap_waits_for_arrived_future_half_window (test_lidar_control.StreamingTest) ... ok",
+        "test_buffer_bounds_duplicate_and_reset_epochs (test_lidar_control.StreamingTest) ... ok",
+        "test_inflight_result_cannot_cross_reset (test_lidar_control.StreamingTest) ... ok"
+      ],
+      "command": "numerical-python -m unittest discover -s src/stair_supervisor/test -p test_lidar_control.py -v"
+    },
+    {
+      "source": "lidar-adapter-final.log",
+      "observed_utc": "2026-09-20T22:07:48.651908+00:00",
+      "tests": 7,
+      "passed": true,
+      "source_sha256": "8d3ad22b37c203cdc3164390f7cdd2faf0d51170130672fc04e32967bfef6da6",
+      "cases": [
+        "test_auto_entry_requires_matching_template_and_independent_error_budget (test_lidar_ros_adapter.AdapterTest) ... ok",
+        "test_clock_reversal_invalidates_epoch_and_does_not_emit_future_pose (test_lidar_ros_adapter.AdapterTest) ... ok",
+        "test_entry_job_is_serializable_for_compute_process (test_lidar_ros_adapter.AdapterTest) ... ok",
+        "test_markers_use_route_frame_and_expire_without_hiding_stale_pose (test_lidar_ros_adapter.AdapterTest) ... ok",
+        "test_observe_only_main_never_constructs_transport_or_command_node (test_lidar_ros_adapter.AdapterTest) ... ok",
+        "test_raw_decoder_is_identical_to_generated_message_xyz (test_lidar_ros_adapter.AdapterTest) ... ok",
+        "test_rejected_geometry_never_publishes_retimestamped_odometry (test_lidar_ros_adapter.AdapterTest) ... ok"
+      ],
+      "command": "numerical-python -m unittest discover -s src/stair_supervisor/test -p test_lidar_ros_adapter.py -v"
+    },
+    {
+      "source": "lidar-process-final.log",
+      "observed_utc": "2026-09-20T22:15:01.963424+00:00",
+      "tests": 5,
+      "passed": true,
+      "source_sha256": "ef9242fbc2eeb0492e3ef70a5aafe2e9425f8b32d9e668cff09339919eb308a2",
+      "cases": [
+        "test_entry_timeout_terminates_native_owner_and_reacquires (test_lidar_process.ProcessTest) ... ok",
+        "test_reset_rejects_old_frame_and_recovers_new_frame (test_lidar_process.ProcessTest) ... ok",
+        "test_restart_blocks_reset_and_entry_on_retired_queue (test_lidar_process.ProcessTest) ... ok",
+        "test_shutdown_waits_for_inflight_sensor_enqueue (test_lidar_process.ProcessTest) ... ok",
+        "test_worker_exit_removes_old_valid_sample (test_lidar_process.ProcessTest) ... ok"
+      ],
+      "command": "numerical-python -m unittest discover -s src/stair_supervisor/test -p test_lidar_process.py -v"
+    }
+  ],
+  "observation_ros": [
+    {
+      "source": "rosunit-lidar_observation_only.xml",
+      "observed_utc": "2026-09-20T22:05:54.736906+00:00",
+      "sha256": "e8a3ea8b688ca38fc53edd2e7643c54a433659d82b9557a2ccbdf61fb86d57dc",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "6.177"
+      },
+      "cases": [
+        {
+          "classname": "__main__.ObservationTest",
+          "name": "test_sensor_tracking_without_any_robot_command_surface",
+          "time": "6.1771"
+        }
+      ]
+    },
+    {
+      "source": "rostest-test_lidar_observe.xml",
+      "observed_utc": "2026-09-20T22:05:56.068895+00:00",
+      "sha256": "1c0a72f3dcfa96f87ec51242af0eca71a1f930dc463ee02b1f48285cda5b6aea",
+      "attributes": {
+        "errors": "0",
+        "failures": "0",
+        "name": "unittest.suite.TestSuite",
+        "tests": "1",
+        "time": "8.622"
+      },
+      "cases": [
+        {
+          "classname": "rostest.runner.RosTest",
+          "name": "testlidar_observation_only",
+          "time": "8.6216"
+        }
+      ]
+    }
+  ],
+  "commands": [
+    "catkin_make -j2",
+    "catkin_make run_tests -j2",
+    "catkin_test_results build/test_results",
+    "rostest stair_supervisor lidar_observe.test (numerical Python, localhost isolated ROS master)"
+  ],
+  "catkin_count": 294,
+  "optional_count": 39,
+  "observation_ros_test_count": 1,
+  "count_note": "Catkin 294 result items include 280 test cases and 14 launch wrappers. Optional tests 39 and observation ROS case 1 are reported separately.",
+  "catkin_behavioral_cases": 280,
+  "catkin_launch_wrappers": 14
+}

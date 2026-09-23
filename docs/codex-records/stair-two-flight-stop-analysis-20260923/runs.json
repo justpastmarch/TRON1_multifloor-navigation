@@ -1,0 +1,1692 @@
+[
+  {
+    "start_kst": "2026-09-23T10:27:57.483929",
+    "end_kst": "2026-09-23T10:28:13.074317",
+    "start": 1790126877.4839287,
+    "end": 1790126893.0743175,
+    "duration": 15.590388774871826,
+    "result": {
+      "result_code": 5,
+      "reason": "no bounded correction within connected support",
+      "ownership_epoch": 0
+    },
+    "debug_states": {
+      "TRACKED": 128,
+      "DEGRADED": 27,
+      "SUPPORT_LIMIT": 1,
+      "RECOVERING": 1
+    },
+    "phases": {
+      "VERIFY_ENTRY": 12,
+      "ALIGN": 10,
+      "FORWARD_SEGMENT_1": 135
+    },
+    "feedback_tail": [
+      {
+        "topic": "/stair_traversal/feedback",
+        "t": 1790126893.0121152,
+        "data": {
+          "header": {
+            "seq": 500,
+            "stamp": 1790126893.0117657,
+            "frame_id": ""
+          },
+          "status": {
+            "goal_id": {
+              "stamp": 1790126877.4839287,
+              "id": "/stair_entry_test_client_542072_1790126877086-1-1790126877.484"
+            },
+            "status": 1,
+            "text": "This goal has been accepted by the simple action server"
+          },
+          "feedback": {
+            "phase": "FORWARD_SEGMENT_1",
+            "detail": "bounded tracking delay; phase progress suspended"
+          }
+        }
+      },
+      {
+        "topic": "/stair_traversal/feedback",
+        "t": 1790126893.0378845,
+        "data": {
+          "header": {
+            "seq": 501,
+            "stamp": 1790126893.0374413,
+            "frame_id": ""
+          },
+          "status": {
+            "goal_id": {
+              "stamp": 1790126877.4839287,
+              "id": "/stair_entry_test_client_542072_1790126877086-1-1790126877.484"
+            },
+            "status": 1,
+            "text": "This goal has been accepted by the simple action server"
+          },
+          "feedback": {
+            "phase": "FORWARD_SEGMENT_1",
+            "detail": "bounded tracking delay; phase progress suspended"
+          }
+        }
+      },
+      {
+        "topic": "/stair_traversal/feedback",
+        "t": 1790126893.073374,
+        "data": {
+          "header": {
+            "seq": 502,
+            "stamp": 1790126893.073102,
+            "frame_id": ""
+          },
+          "status": {
+            "goal_id": {
+              "stamp": 1790126877.4839287,
+              "id": "/stair_entry_test_client_542072_1790126877086-1-1790126877.484"
+            },
+            "status": 1,
+            "text": "This goal has been accepted by the simple action server"
+          },
+          "feedback": {
+            "phase": "FORWARD_SEGMENT_1",
+            "detail": "no bounded correction within connected support"
+          }
+        }
+      }
+    ],
+    "first_pose": {
+      "topic": "/stair_supervisor/control_debug",
+      "t": 1790126877.581249,
+      "data": {
+        "tracking_state": "TRACKED",
+        "loss_response": false,
+        "age": 0.25956665122066624,
+        "epoch": 0,
+        "sequence": 5132,
+        "phase": "VERIFY_ENTRY",
+        "pose": [
+          -0.45067318590575917,
+          -0.00111673274186333,
+          0.006227323707930721
+        ],
+        "yaw": 0.001053414870479838,
+        "roll": -0.06526767560200494,
+        "pitch": -0.04078165350384822,
+        "velocity": [
+          -0.02385084770925155,
+          -0.001033144087887546,
+          0.009485633811389019
+        ],
+        "angular_velocity": -0.005783867084934999,
+        "ey": 0.0,
+        "epsi": 0.001053414870479838,
+        "command": [
+          0.0,
+          0.0
+        ],
+        "landing_supported": false,
+        "exit_supported": false,
+        "compute_sec": 0.0599457890202757,
+        "target": [
+          -0.45,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "progress": 0.0,
+        "phase_complete": false,
+        "transition_ready": false,
+        "boundary_adjusted": false,
+        "proposed_command": [
+          0.0,
+          0.0
+        ],
+        "below_flight_command_floor": false,
+        "prediction_horizon_sec": 0.9,
+        "neutral_only": true,
+        "support_regions": [
+          "entry_polygon"
+        ],
+        "footprint_supported": true,
+        "current_supported": true,
+        "margin_m": 0.02,
+        "anchor_uncertainty_m": 0.1,
+        "effective_margin_m": 0.12000000000000001,
+        "clearance_m": 0.22549860544916425,
+        "height_error_m": 0.006227323707930721,
+        "completion_checks": {
+          "body_in_region": true,
+          "position": true,
+          "yaw": true,
+          "settled": false,
+          "new_phase_observation": true
+        },
+        "settling": {
+          "rate_mode": "window_net_drift",
+          "samples": 2,
+          "window_sec": 0.19985675811767578
+        },
+        "incomplete_conditions": [
+          "settled"
+        ],
+        "phase_test": {
+          "state": "MODE_ACK",
+          "target_phase": "EXIT_CONFIRM",
+          "phases": [
+            "VERIFY_ENTRY",
+            "ALIGN",
+            "FORWARD_SEGMENT_1",
+            "LANDING",
+            "TURN_TO_NEXT_FLIGHT",
+            "FORWARD_SEGMENT_2",
+            "EXIT_CONFIRM"
+          ],
+          "max_duration_sec": 255.0
+        },
+        "route_id": "stair_3f_4f_up",
+        "run_id": "stair_3f_4f_up:0:5124",
+        "anchor_epoch": 0,
+        "anchor_sequence": 5124,
+        "anchor_source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+        "pending_entries": [],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+      }
+    },
+    "last_poses": [
+      {
+        "topic": "/stair_supervisor/control_debug",
+        "t": 1790126892.7803452,
+        "data": {
+          "tracking_state": "TRACKED",
+          "loss_response": false,
+          "age": 0.4513503950147424,
+          "epoch": 0,
+          "sequence": 5207,
+          "phase": "FORWARD_SEGMENT_1",
+          "pose": [
+            1.736199834931846,
+            -0.03585048141347559,
+            1.1737145125012385
+          ],
+          "yaw": -0.029494093250544574,
+          "roll": -0.025377730646186043,
+          "pitch": 0.0630429206838329,
+          "velocity": [
+            0.125522245095895,
+            -0.016427368068195815,
+            -0.09086763589481847
+          ],
+          "angular_velocity": -0.0014326406859245383,
+          "ey": -0.03585048141347559,
+          "epsi": -0.029494093250544574,
+          "command": [
+            0.55,
+            0.012772148933077224
+          ],
+          "landing_supported": false,
+          "exit_supported": false,
+          "compute_sec": 0.05520374400657602,
+          "target": [
+            2.8750000000000004,
+            0.0,
+            1.53,
+            0.0
+          ],
+          "progress": 2.186199834931846,
+          "phase_complete": false,
+          "transition_ready": false,
+          "boundary_adjusted": false,
+          "proposed_command": [
+            0.55,
+            0.012772148933077224
+          ],
+          "below_flight_command_floor": false,
+          "prediction_horizon_sec": 0.9,
+          "neutral_only": false,
+          "support_regions": [
+            "entry_polygon",
+            "flight_1_polygon",
+            "landing_polygon"
+          ],
+          "footprint_supported": true,
+          "current_supported": true,
+          "margin_m": 0.02,
+          "anchor_uncertainty_m": 0.1,
+          "effective_margin_m": 0.12000000000000001,
+          "clearance_m": 0.34768715815893375,
+          "height_error_m": 0.35628548749876154,
+          "completion_checks": {
+            "progress": false,
+            "ascent_seen": true,
+            "height": false,
+            "body_in_next_region": false,
+            "new_phase_observation": true
+          },
+          "settling": null,
+          "incomplete_conditions": [
+            "progress",
+            "height",
+            "body_in_next_region"
+          ],
+          "phase_test": {
+            "state": "RUNNING",
+            "target_phase": "EXIT_CONFIRM",
+            "phases": [
+              "VERIFY_ENTRY",
+              "ALIGN",
+              "FORWARD_SEGMENT_1",
+              "LANDING",
+              "TURN_TO_NEXT_FLIGHT",
+              "FORWARD_SEGMENT_2",
+              "EXIT_CONFIRM"
+            ],
+            "max_duration_sec": 255.0,
+            "current_phase": "FORWARD_SEGMENT_1",
+            "phase_budget_sec": 45.0,
+            "elapsed_sec": 14.907934485003352,
+            "phase_elapsed_sec": 12.996623045997694
+          },
+          "route_id": "stair_3f_4f_up",
+          "run_id": "stair_3f_4f_up:0:5124",
+          "anchor_epoch": 0,
+          "anchor_sequence": 5124,
+          "anchor_source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+          "pending_entries": [],
+          "observation_only": false,
+          "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+          "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+        }
+      },
+      {
+        "topic": "/stair_supervisor/control_debug",
+        "t": 1790126892.873066,
+        "data": {
+          "tracking_state": "TRACKED",
+          "loss_response": false,
+          "age": 0.34738164363079704,
+          "epoch": 0,
+          "sequence": 5208,
+          "phase": "FORWARD_SEGMENT_1",
+          "pose": [
+            1.7577817847074388,
+            -0.046570597313027595,
+            1.2299743315934377
+          ],
+          "yaw": -0.019467888759459387,
+          "roll": -0.08116537818415547,
+          "pitch": 0.03465579662624931,
+          "velocity": [
+            0.10809979898346575,
+            -0.05369498056804696,
+            0.2817945180092426
+          ],
+          "angular_velocity": 0.05021931295934798,
+          "ey": -0.046570597313027595,
+          "epsi": -0.019467888759459387,
+          "command": [
+            0.55,
+            0.010508466803269311
+          ],
+          "landing_supported": false,
+          "exit_supported": false,
+          "compute_sec": 0.055403164005838335,
+          "target": [
+            2.8750000000000004,
+            0.0,
+            1.53,
+            0.0
+          ],
+          "progress": 2.207781784707439,
+          "phase_complete": false,
+          "transition_ready": false,
+          "boundary_adjusted": false,
+          "proposed_command": [
+            0.55,
+            0.010508466803269311
+          ],
+          "below_flight_command_floor": false,
+          "prediction_horizon_sec": 0.9,
+          "neutral_only": false,
+          "support_regions": [
+            "entry_polygon",
+            "flight_1_polygon",
+            "landing_polygon"
+          ],
+          "footprint_supported": true,
+          "current_supported": true,
+          "margin_m": 0.02,
+          "anchor_uncertainty_m": 0.1,
+          "effective_margin_m": 0.12000000000000001,
+          "clearance_m": 0.3398229485391061,
+          "height_error_m": 0.3000256684065623,
+          "completion_checks": {
+            "progress": false,
+            "ascent_seen": true,
+            "height": false,
+            "body_in_next_region": false,
+            "new_phase_observation": true
+          },
+          "settling": null,
+          "incomplete_conditions": [
+            "progress",
+            "height",
+            "body_in_next_region"
+          ],
+          "phase_test": {
+            "state": "RUNNING",
+            "target_phase": "EXIT_CONFIRM",
+            "phases": [
+              "VERIFY_ENTRY",
+              "ALIGN",
+              "FORWARD_SEGMENT_1",
+              "LANDING",
+              "TURN_TO_NEXT_FLIGHT",
+              "FORWARD_SEGMENT_2",
+              "EXIT_CONFIRM"
+            ],
+            "max_duration_sec": 255.0,
+            "current_phase": "FORWARD_SEGMENT_1",
+            "phase_budget_sec": 45.0,
+            "elapsed_sec": 15.003609662991948,
+            "phase_elapsed_sec": 13.09229822398629
+          },
+          "route_id": "stair_3f_4f_up",
+          "run_id": "stair_3f_4f_up:0:5124",
+          "anchor_epoch": 0,
+          "anchor_sequence": 5124,
+          "anchor_source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+          "pending_entries": [],
+          "observation_only": false,
+          "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+          "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+        }
+      },
+      {
+        "topic": "/stair_supervisor/control_debug",
+        "t": 1790126892.9746492,
+        "data": {
+          "tracking_state": "TRACKED",
+          "loss_response": false,
+          "age": 0.4482068806537427,
+          "epoch": 0,
+          "sequence": 5208,
+          "phase": "FORWARD_SEGMENT_1",
+          "pose": [
+            1.7577817847074388,
+            -0.046570597313027595,
+            1.2299743315934377
+          ],
+          "yaw": -0.019467888759459387,
+          "roll": -0.08116537818415547,
+          "pitch": 0.03465579662624931,
+          "velocity": [
+            0.10809979898346575,
+            -0.05369498056804696,
+            0.2817945180092426
+          ],
+          "angular_velocity": 0.05021931295934798,
+          "ey": -0.046570597313027595,
+          "epsi": -0.019467888759459387,
+          "command": [
+            0.55,
+            0.010508466803269311
+          ],
+          "landing_supported": false,
+          "exit_supported": false,
+          "compute_sec": 0.055403164005838335,
+          "target": [
+            2.8750000000000004,
+            0.0,
+            1.53,
+            0.0
+          ],
+          "progress": 2.207781784707439,
+          "phase_complete": false,
+          "transition_ready": false,
+          "boundary_adjusted": false,
+          "proposed_command": [
+            0.55,
+            0.010508466803269311
+          ],
+          "below_flight_command_floor": false,
+          "prediction_horizon_sec": 0.9,
+          "neutral_only": false,
+          "support_regions": [
+            "entry_polygon",
+            "flight_1_polygon",
+            "landing_polygon"
+          ],
+          "footprint_supported": true,
+          "current_supported": true,
+          "margin_m": 0.02,
+          "anchor_uncertainty_m": 0.1,
+          "effective_margin_m": 0.12000000000000001,
+          "clearance_m": 0.3398229485391061,
+          "height_error_m": 0.3000256684065623,
+          "completion_checks": {
+            "progress": false,
+            "ascent_seen": true,
+            "height": false,
+            "body_in_next_region": false,
+            "new_phase_observation": true
+          },
+          "settling": null,
+          "incomplete_conditions": [
+            "progress",
+            "height",
+            "body_in_next_region"
+          ],
+          "phase_test": {
+            "state": "RUNNING",
+            "target_phase": "EXIT_CONFIRM",
+            "phases": [
+              "VERIFY_ENTRY",
+              "ALIGN",
+              "FORWARD_SEGMENT_1",
+              "LANDING",
+              "TURN_TO_NEXT_FLIGHT",
+              "FORWARD_SEGMENT_2",
+              "EXIT_CONFIRM"
+            ],
+            "max_duration_sec": 255.0,
+            "current_phase": "FORWARD_SEGMENT_1",
+            "phase_budget_sec": 45.0,
+            "elapsed_sec": 15.104434900014894,
+            "phase_elapsed_sec": 13.193123461009236
+          },
+          "route_id": "stair_3f_4f_up",
+          "run_id": "stair_3f_4f_up:0:5124",
+          "anchor_epoch": 0,
+          "anchor_sequence": 5124,
+          "anchor_source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+          "pending_entries": [],
+          "observation_only": false,
+          "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+          "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+        }
+      }
+    ],
+    "fault_debug": [
+      {
+        "topic": "/stair_supervisor/control_debug",
+        "t": 1790126893.082922,
+        "data": {
+          "tracking_state": "SUPPORT_LIMIT",
+          "loss_response": true,
+          "proposed_command": [
+            0.55,
+            0.03485491100899953
+          ],
+          "prediction_horizon_sec": 0.9,
+          "support_regions": [
+            "entry_polygon",
+            "flight_1_polygon",
+            "landing_polygon"
+          ],
+          "footprint_supported": true,
+          "current_supported": true,
+          "margin_m": 0.02,
+          "anchor_uncertainty_m": 0.1,
+          "effective_margin_m": 0.12000000000000001,
+          "clearance_m": 0.24244261329299077,
+          "height_error_m": 0.2562365626553256,
+          "completion_checks": {
+            "progress": false,
+            "ascent_seen": true,
+            "height": false,
+            "body_in_next_region": false,
+            "new_phase_observation": true
+          },
+          "settling": null,
+          "incomplete_conditions": [
+            "progress",
+            "height",
+            "body_in_next_region"
+          ],
+          "phase": "FORWARD_SEGMENT_1",
+          "command": [
+            0.55,
+            0.010508466803269311
+          ],
+          "phase_test": {
+            "state": "STOPPED",
+            "target_phase": "EXIT_CONFIRM",
+            "phases": [
+              "VERIFY_ENTRY",
+              "ALIGN",
+              "FORWARD_SEGMENT_1",
+              "LANDING",
+              "TURN_TO_NEXT_FLIGHT",
+              "FORWARD_SEGMENT_2",
+              "EXIT_CONFIRM"
+            ],
+            "max_duration_sec": 255.0,
+            "current_phase": "FORWARD_SEGMENT_1",
+            "phase_budget_sec": 45.0,
+            "elapsed_sec": 15.21631976601202,
+            "phase_elapsed_sec": 13.305008327006362,
+            "reason": "no bounded correction within connected support"
+          },
+          "route_id": "stair_3f_4f_up",
+          "run_id": "stair_3f_4f_up:0:5124",
+          "anchor_epoch": 0,
+          "anchor_sequence": 5124,
+          "anchor_source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+          "pending_entries": [],
+          "observation_only": false,
+          "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+          "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+        }
+      }
+    ],
+    "nonzero_tx_count": 481,
+    "last_nonzero_tx": {
+      "topic": "/stair_supervisor/websocket_tx",
+      "t": 1790126893.0378745,
+      "data": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790126893038,
+        "guid": "8b426e09-8118-4d58-ace1-115d27a0fd89",
+        "data": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.006693290957496377
+        }
+      }
+    },
+    "tracking_states": {
+      "TRACKED": 155
+    },
+    "max_age": 0.7697585311543662
+  },
+  {
+    "start_kst": "2026-09-23T10:33:58.989533",
+    "end_kst": "2026-09-23T10:33:58.995781",
+    "start": 1790127238.9895332,
+    "end": 1790127238.9957807,
+    "duration": 0.006247520446777344,
+    "result": {
+      "result_code": 4,
+      "reason": "test start pose is outside its entry/landing region or height; use from_entry",
+      "ownership_epoch": 0
+    },
+    "debug_states": {
+      "HANDOFF_OVERDUE": 1
+    },
+    "phases": {
+      "FORWARD_SEGMENT_1": 1
+    },
+    "feedback_tail": [],
+    "first_pose": null,
+    "last_poses": [],
+    "fault_debug": [],
+    "nonzero_tx_count": 0,
+    "last_nonzero_tx": null,
+    "tracking_states": {},
+    "max_age": null
+  },
+  {
+    "start_kst": "2026-09-23T10:34:44.579526",
+    "end_kst": "2026-09-23T10:34:44.582925",
+    "start": 1790127284.5795264,
+    "end": 1790127284.5829246,
+    "duration": 0.0033981800079345703,
+    "result": {
+      "result_code": 4,
+      "reason": "test start pose is outside its entry/landing region or height; use from_entry",
+      "ownership_epoch": 0
+    },
+    "debug_states": {
+      "HANDOFF_OVERDUE": 1
+    },
+    "phases": {
+      "FORWARD_SEGMENT_1": 1
+    },
+    "feedback_tail": [],
+    "first_pose": null,
+    "last_poses": [],
+    "fault_debug": [],
+    "nonzero_tx_count": 0,
+    "last_nonzero_tx": null,
+    "tracking_states": {},
+    "max_age": null
+  },
+  {
+    "start_kst": "2026-09-23T10:35:14.190318",
+    "end_kst": "2026-09-23T10:35:21.104719",
+    "start": 1790127314.1903179,
+    "end": 1790127321.104719,
+    "duration": 6.914401054382324,
+    "result": {
+      "result_code": 5,
+      "reason": "body/clearance exceeds connected support",
+      "ownership_epoch": 0
+    },
+    "debug_states": {
+      "TRACKED": 68,
+      "DEGRADED": 1,
+      "RECOVERING": 1
+    },
+    "phases": {
+      "FORWARD_SEGMENT_2": 70
+    },
+    "feedback_tail": [
+      {
+        "topic": "/stair_traversal/feedback",
+        "t": 1790127321.0508204,
+        "data": {
+          "header": {
+            "seq": 681,
+            "stamp": 1790127321.0506766,
+            "frame_id": ""
+          },
+          "status": {
+            "goal_id": {
+              "stamp": 1790127314.1903179,
+              "id": "/stair_entry_test_client_551811_1790127313815-1-1790127314.190"
+            },
+            "status": 1,
+            "text": "This goal has been accepted by the simple action server"
+          },
+          "feedback": {
+            "phase": "FORWARD_SEGMENT_2",
+            "detail": "bounded tracking delay; phase progress suspended"
+          }
+        }
+      },
+      {
+        "topic": "/stair_traversal/feedback",
+        "t": 1790127321.0766191,
+        "data": {
+          "header": {
+            "seq": 682,
+            "stamp": 1790127321.0764437,
+            "frame_id": ""
+          },
+          "status": {
+            "goal_id": {
+              "stamp": 1790127314.1903179,
+              "id": "/stair_entry_test_client_551811_1790127313815-1-1790127314.190"
+            },
+            "status": 1,
+            "text": "This goal has been accepted by the simple action server"
+          },
+          "feedback": {
+            "phase": "FORWARD_SEGMENT_2",
+            "detail": "bounded tracking delay; phase progress suspended"
+          }
+        }
+      },
+      {
+        "topic": "/stair_traversal/feedback",
+        "t": 1790127321.1040401,
+        "data": {
+          "header": {
+            "seq": 683,
+            "stamp": 1790127321.1037674,
+            "frame_id": ""
+          },
+          "status": {
+            "goal_id": {
+              "stamp": 1790127314.1903179,
+              "id": "/stair_entry_test_client_551811_1790127313815-1-1790127314.190"
+            },
+            "status": 1,
+            "text": "This goal has been accepted by the simple action server"
+          },
+          "feedback": {
+            "phase": "FORWARD_SEGMENT_2",
+            "detail": "body/clearance exceeds connected support"
+          }
+        }
+      }
+    ],
+    "first_pose": {
+      "topic": "/stair_supervisor/control_debug",
+      "t": 1790127314.273022,
+      "data": {
+        "tracking_state": "TRACKED",
+        "loss_response": false,
+        "age": 0.3422274655022193,
+        "epoch": 0,
+        "sequence": 7315,
+        "phase": "FORWARD_SEGMENT_2",
+        "pose": [
+          2.980439426316065,
+          1.3266509296060334,
+          1.5264813785925693
+        ],
+        "yaw": -3.04225339400114,
+        "roll": -0.01226075889867671,
+        "pitch": 0.08337927006535345,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "angular_velocity": 0.0,
+        "ey": 0.14334907039396683,
+        "epsi": 0.09933925958865356,
+        "command": [
+          0.007641133501601871,
+          -0.015282267003203742
+        ],
+        "landing_supported": true,
+        "exit_supported": false,
+        "compute_sec": 0.05777457301155664,
+        "target": [
+          -0.6349999999999998,
+          1.4700000000000002,
+          3.2300000000000004,
+          3.141592653589793
+        ],
+        "progress": -0.4604394263160647,
+        "phase_complete": false,
+        "transition_ready": false,
+        "boundary_adjusted": false,
+        "proposed_command": [
+          0.007641133501601871,
+          -0.015282267003203742
+        ],
+        "below_flight_command_floor": true,
+        "prediction_horizon_sec": 0.9,
+        "neutral_only": false,
+        "support_regions": [
+          "landing_polygon",
+          "flight_2_polygon",
+          "exit_polygon"
+        ],
+        "footprint_supported": true,
+        "current_supported": true,
+        "margin_m": 0.02,
+        "anchor_uncertainty_m": 0.1,
+        "effective_margin_m": 0.12000000000000001,
+        "clearance_m": 0.34410745703091333,
+        "height_error_m": 1.7035186214074312,
+        "completion_checks": {
+          "progress": false,
+          "ascent_seen": false,
+          "height": false,
+          "body_in_next_region": false,
+          "new_phase_observation": false
+        },
+        "settling": null,
+        "incomplete_conditions": [
+          "progress",
+          "ascent_seen",
+          "height",
+          "body_in_next_region",
+          "new_phase_observation"
+        ],
+        "phase_test": {
+          "state": "MODE_ACK",
+          "target_phase": "FORWARD_SEGMENT_2",
+          "phases": [
+            "FORWARD_SEGMENT_2"
+          ],
+          "max_duration_sec": 45.0
+        },
+        "route_id": "stair_3f_4f_up",
+        "run_id": "stair_3f_4f_up:0:7308",
+        "anchor_epoch": 0,
+        "anchor_sequence": 7308,
+        "anchor_source": "operator mid-route test; retained route frame, current scan; no position relabeling",
+        "pending_entries": [],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+      }
+    },
+    "last_poses": [
+      {
+        "topic": "/stair_supervisor/control_debug",
+        "t": 1790127320.7723045,
+        "data": {
+          "tracking_state": "TRACKED",
+          "loss_response": false,
+          "age": 0.4310912163928151,
+          "epoch": 0,
+          "sequence": 7347,
+          "phase": "FORWARD_SEGMENT_2",
+          "pose": [
+            2.3330371375027283,
+            1.265103719075029,
+            1.4570538691326047
+          ],
+          "yaw": 3.1264901193078867,
+          "roll": 0.008181644881862358,
+          "pitch": 0.2125466639773614,
+          "velocity": [
+            -0.14074283970445062,
+            -0.030971354649429256,
+            -0.045858645567643526
+          ],
+          "angular_velocity": -0.05281058511907527,
+          "ey": 0.20489628092497125,
+          "epsi": -0.015102534281906445,
+          "command": [
+            0.55,
+            -0.06471369832373994
+          ],
+          "landing_supported": false,
+          "exit_supported": false,
+          "compute_sec": 0.050016246997984126,
+          "target": [
+            -0.6349999999999998,
+            1.4700000000000002,
+            3.2300000000000004,
+            3.141592653589793
+          ],
+          "progress": 0.18696286249727212,
+          "phase_complete": false,
+          "transition_ready": false,
+          "boundary_adjusted": false,
+          "proposed_command": [
+            0.55,
+            -0.06471369832373994
+          ],
+          "below_flight_command_floor": false,
+          "prediction_horizon_sec": 0.9,
+          "neutral_only": false,
+          "support_regions": [
+            "landing_polygon",
+            "flight_2_polygon",
+            "exit_polygon"
+          ],
+          "footprint_supported": true,
+          "current_supported": true,
+          "margin_m": 0.02,
+          "anchor_uncertainty_m": 0.1,
+          "effective_margin_m": 0.12000000000000001,
+          "clearance_m": 0.18224097532138558,
+          "height_error_m": 1.7729461308673957,
+          "completion_checks": {
+            "progress": false,
+            "ascent_seen": false,
+            "height": false,
+            "body_in_next_region": false,
+            "new_phase_observation": true
+          },
+          "settling": null,
+          "incomplete_conditions": [
+            "progress",
+            "ascent_seen",
+            "height",
+            "body_in_next_region"
+          ],
+          "phase_test": {
+            "state": "RUNNING",
+            "target_phase": "FORWARD_SEGMENT_2",
+            "phases": [
+              "FORWARD_SEGMENT_2"
+            ],
+            "max_duration_sec": 45.0,
+            "current_phase": "FORWARD_SEGMENT_2",
+            "phase_budget_sec": 45.0,
+            "elapsed_sec": 6.051226268988103,
+            "phase_elapsed_sec": 6.051222060981672
+          },
+          "route_id": "stair_3f_4f_up",
+          "run_id": "stair_3f_4f_up:0:7308",
+          "anchor_epoch": 0,
+          "anchor_sequence": 7308,
+          "anchor_source": "operator mid-route test; retained route frame, current scan; no position relabeling",
+          "pending_entries": [],
+          "observation_only": false,
+          "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+          "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+        }
+      },
+      {
+        "topic": "/stair_supervisor/control_debug",
+        "t": 1790127320.8833463,
+        "data": {
+          "tracking_state": "TRACKED",
+          "loss_response": false,
+          "age": 0.34500188028323464,
+          "epoch": 0,
+          "sequence": 7348,
+          "phase": "FORWARD_SEGMENT_2",
+          "pose": [
+            2.310039547235828,
+            1.2525735962861244,
+            1.4720220961147212
+          ],
+          "yaw": 3.118375055519411,
+          "roll": -0.01201465682986969,
+          "pitch": 0.21115728467115222,
+          "velocity": [
+            -0.11495804905953007,
+            -0.06263432183857948,
+            0.07482167269589547
+          ],
+          "angular_velocity": -0.04056476745128632,
+          "ey": 0.21742640371387578,
+          "epsi": -0.02321759807038193,
+          "command": [
+            0.55,
+            -0.06564065796959334
+          ],
+          "landing_supported": false,
+          "exit_supported": false,
+          "compute_sec": 0.052111504977801815,
+          "target": [
+            -0.6349999999999998,
+            1.4700000000000002,
+            3.2300000000000004,
+            3.141592653589793
+          ],
+          "progress": 0.20996045276417252,
+          "phase_complete": false,
+          "transition_ready": false,
+          "boundary_adjusted": false,
+          "proposed_command": [
+            0.55,
+            -0.06564065796959334
+          ],
+          "below_flight_command_floor": false,
+          "prediction_horizon_sec": 0.9,
+          "neutral_only": false,
+          "support_regions": [
+            "landing_polygon",
+            "flight_2_polygon",
+            "exit_polygon"
+          ],
+          "footprint_supported": true,
+          "current_supported": true,
+          "margin_m": 0.02,
+          "anchor_uncertainty_m": 0.1,
+          "effective_margin_m": 0.12000000000000001,
+          "clearance_m": 0.1676083436633816,
+          "height_error_m": 1.7579779038852792,
+          "completion_checks": {
+            "progress": false,
+            "ascent_seen": false,
+            "height": false,
+            "body_in_next_region": false,
+            "new_phase_observation": true
+          },
+          "settling": null,
+          "incomplete_conditions": [
+            "progress",
+            "ascent_seen",
+            "height",
+            "body_in_next_region"
+          ],
+          "phase_test": {
+            "state": "RUNNING",
+            "target_phase": "FORWARD_SEGMENT_2",
+            "phases": [
+              "FORWARD_SEGMENT_2"
+            ],
+            "max_duration_sec": 45.0,
+            "current_phase": "FORWARD_SEGMENT_2",
+            "phase_budget_sec": 45.0,
+            "elapsed_sec": 6.165185879013734,
+            "phase_elapsed_sec": 6.1651816710073035
+          },
+          "route_id": "stair_3f_4f_up",
+          "run_id": "stair_3f_4f_up:0:7308",
+          "anchor_epoch": 0,
+          "anchor_sequence": 7308,
+          "anchor_source": "operator mid-route test; retained route frame, current scan; no position relabeling",
+          "pending_entries": [],
+          "observation_only": false,
+          "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+          "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+        }
+      },
+      {
+        "topic": "/stair_supervisor/control_debug",
+        "t": 1790127320.9742515,
+        "data": {
+          "tracking_state": "TRACKED",
+          "loss_response": false,
+          "age": 0.45093203327269293,
+          "epoch": 0,
+          "sequence": 7348,
+          "phase": "FORWARD_SEGMENT_2",
+          "pose": [
+            2.310039547235828,
+            1.2525735962861244,
+            1.4720220961147212
+          ],
+          "yaw": 3.118375055519411,
+          "roll": -0.01201465682986969,
+          "pitch": 0.21115728467115222,
+          "velocity": [
+            -0.11495804905953007,
+            -0.06263432183857948,
+            0.07482167269589547
+          ],
+          "angular_velocity": -0.04056476745128632,
+          "ey": 0.21742640371387578,
+          "epsi": -0.02321759807038193,
+          "command": [
+            0.55,
+            -0.06564065796959334
+          ],
+          "landing_supported": false,
+          "exit_supported": false,
+          "compute_sec": 0.052111504977801815,
+          "target": [
+            -0.6349999999999998,
+            1.4700000000000002,
+            3.2300000000000004,
+            3.141592653589793
+          ],
+          "progress": 0.20996045276417252,
+          "phase_complete": false,
+          "transition_ready": false,
+          "boundary_adjusted": false,
+          "proposed_command": [
+            0.55,
+            -0.06564065796959334
+          ],
+          "below_flight_command_floor": false,
+          "prediction_horizon_sec": 0.9,
+          "neutral_only": false,
+          "support_regions": [
+            "landing_polygon",
+            "flight_2_polygon",
+            "exit_polygon"
+          ],
+          "footprint_supported": true,
+          "current_supported": true,
+          "margin_m": 0.02,
+          "anchor_uncertainty_m": 0.1,
+          "effective_margin_m": 0.12000000000000001,
+          "clearance_m": 0.1676083436633816,
+          "height_error_m": 1.7579779038852792,
+          "completion_checks": {
+            "progress": false,
+            "ascent_seen": false,
+            "height": false,
+            "body_in_next_region": false,
+            "new_phase_observation": true
+          },
+          "settling": null,
+          "incomplete_conditions": [
+            "progress",
+            "ascent_seen",
+            "height",
+            "body_in_next_region"
+          ],
+          "phase_test": {
+            "state": "RUNNING",
+            "target_phase": "FORWARD_SEGMENT_2",
+            "phases": [
+              "FORWARD_SEGMENT_2"
+            ],
+            "max_duration_sec": 45.0,
+            "current_phase": "FORWARD_SEGMENT_2",
+            "phase_budget_sec": 45.0,
+            "elapsed_sec": 6.271116032003192,
+            "phase_elapsed_sec": 6.271111823996762
+          },
+          "route_id": "stair_3f_4f_up",
+          "run_id": "stair_3f_4f_up:0:7308",
+          "anchor_epoch": 0,
+          "anchor_sequence": 7308,
+          "anchor_source": "operator mid-route test; retained route frame, current scan; no position relabeling",
+          "pending_entries": [],
+          "observation_only": false,
+          "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+          "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+        }
+      }
+    ],
+    "fault_debug": [],
+    "nonzero_tx_count": 180,
+    "last_nonzero_tx": {
+      "topic": "/stair_supervisor/websocket_tx",
+      "t": 1790127321.0768356,
+      "data": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790127321077,
+        "guid": "5d7278ee-a8f8-479e-8045-4ae8b078d1cb",
+        "data": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": -0.041809336286365184
+        }
+      }
+    },
+    "tracking_states": {
+      "TRACKED": 69
+    },
+    "max_age": 0.5692913002567366
+  },
+  {
+    "start_kst": "2026-09-23T10:37:17.292361",
+    "end_kst": "2026-09-23T10:37:17.298623",
+    "start": 1790127437.2923605,
+    "end": 1790127437.2986228,
+    "duration": 0.006262302398681641,
+    "result": {
+      "result_code": 4,
+      "reason": "test start pose is outside its entry/landing region or height; use from_entry",
+      "ownership_epoch": 0
+    },
+    "debug_states": {
+      "HANDOFF_OVERDUE": 1
+    },
+    "phases": {
+      "FORWARD_SEGMENT_2": 1
+    },
+    "feedback_tail": [],
+    "first_pose": null,
+    "last_poses": [],
+    "fault_debug": [],
+    "nonzero_tx_count": 0,
+    "last_nonzero_tx": null,
+    "tracking_states": {},
+    "max_age": null
+  },
+  {
+    "start_kst": "2026-09-23T10:37:55.000220",
+    "end_kst": "2026-09-23T10:38:07.018419",
+    "start": 1790127475.00022,
+    "end": 1790127487.018419,
+    "duration": 12.01819896697998,
+    "result": {
+      "result_code": 5,
+      "reason": "no bounded correction within connected support",
+      "ownership_epoch": 0
+    },
+    "debug_states": {
+      "TRACKED": 117,
+      "DEGRADED": 3,
+      "RECOVERING": 1
+    },
+    "phases": {
+      "FORWARD_SEGMENT_2": 121
+    },
+    "feedback_tail": [
+      {
+        "topic": "/stair_traversal/feedback",
+        "t": 1790127486.955805,
+        "data": {
+          "header": {
+            "seq": 1057,
+            "stamp": 1790127486.9555635,
+            "frame_id": ""
+          },
+          "status": {
+            "goal_id": {
+              "stamp": 1790127475.00022,
+              "id": "/stair_entry_test_client_555241_1790127474653-1-1790127475.000"
+            },
+            "status": 1,
+            "text": "This goal has been accepted by the simple action server"
+          },
+          "feedback": {
+            "phase": "FORWARD_SEGMENT_2",
+            "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_2"
+          }
+        }
+      },
+      {
+        "topic": "/stair_traversal/feedback",
+        "t": 1790127486.9858708,
+        "data": {
+          "header": {
+            "seq": 1058,
+            "stamp": 1790127486.9857237,
+            "frame_id": ""
+          },
+          "status": {
+            "goal_id": {
+              "stamp": 1790127475.00022,
+              "id": "/stair_entry_test_client_555241_1790127474653-1-1790127475.000"
+            },
+            "status": 1,
+            "text": "This goal has been accepted by the simple action server"
+          },
+          "feedback": {
+            "phase": "FORWARD_SEGMENT_2",
+            "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_2"
+          }
+        }
+      },
+      {
+        "topic": "/stair_traversal/feedback",
+        "t": 1790127487.018642,
+        "data": {
+          "header": {
+            "seq": 1059,
+            "stamp": 1790127487.0176737,
+            "frame_id": ""
+          },
+          "status": {
+            "goal_id": {
+              "stamp": 1790127475.00022,
+              "id": "/stair_entry_test_client_555241_1790127474653-1-1790127475.000"
+            },
+            "status": 1,
+            "text": "This goal has been accepted by the simple action server"
+          },
+          "feedback": {
+            "phase": "FORWARD_SEGMENT_2",
+            "detail": "no bounded correction within connected support"
+          }
+        }
+      }
+    ],
+    "first_pose": {
+      "topic": "/stair_supervisor/control_debug",
+      "t": 1790127475.0733743,
+      "data": {
+        "tracking_state": "TRACKED",
+        "loss_response": false,
+        "age": 0.3576867032388691,
+        "epoch": 0,
+        "sequence": 8119,
+        "phase": "FORWARD_SEGMENT_2",
+        "pose": [
+          2.97832667248744,
+          1.2566355278449537,
+          1.569771160699638
+        ],
+        "yaw": -3.1002034679771966,
+        "roll": 0.1277971293181746,
+        "pitch": 0.060510327858743655,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "angular_velocity": 0.0,
+        "ey": 0.2133644721550465,
+        "epsi": 0.04138918561259632,
+        "command": [
+          0.007836881848925259,
+          -0.015673763697850517
+        ],
+        "landing_supported": true,
+        "exit_supported": false,
+        "compute_sec": 0.07369288100744598,
+        "target": [
+          -0.6349999999999998,
+          1.4700000000000002,
+          3.2300000000000004,
+          3.141592653589793
+        ],
+        "progress": -0.4583266724874395,
+        "phase_complete": false,
+        "transition_ready": false,
+        "boundary_adjusted": false,
+        "proposed_command": [
+          0.007836881848925259,
+          -0.015673763697850517
+        ],
+        "below_flight_command_floor": true,
+        "prediction_horizon_sec": 0.9,
+        "neutral_only": false,
+        "support_regions": [
+          "landing_polygon",
+          "flight_2_polygon",
+          "exit_polygon"
+        ],
+        "footprint_supported": true,
+        "current_supported": true,
+        "margin_m": 0.02,
+        "anchor_uncertainty_m": 0.1,
+        "effective_margin_m": 0.12000000000000001,
+        "clearance_m": 0.294874398162202,
+        "height_error_m": 1.6602288393003624,
+        "completion_checks": {
+          "progress": false,
+          "ascent_seen": false,
+          "height": false,
+          "body_in_next_region": false,
+          "new_phase_observation": false
+        },
+        "settling": null,
+        "incomplete_conditions": [
+          "progress",
+          "ascent_seen",
+          "height",
+          "body_in_next_region",
+          "new_phase_observation"
+        ],
+        "phase_test": {
+          "state": "MODE_ACK",
+          "target_phase": "FORWARD_SEGMENT_2",
+          "phases": [
+            "FORWARD_SEGMENT_2"
+          ],
+          "max_duration_sec": 45.0
+        },
+        "route_id": "stair_3f_4f_up",
+        "run_id": "stair_3f_4f_up:0:8112",
+        "anchor_epoch": 0,
+        "anchor_sequence": 8112,
+        "anchor_source": "operator mid-route test; retained route frame, current scan; no position relabeling",
+        "pending_entries": [],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+      }
+    },
+    "last_poses": [
+      {
+        "topic": "/stair_supervisor/control_debug",
+        "t": 1790127486.7732651,
+        "data": {
+          "tracking_state": "TRACKED",
+          "loss_response": false,
+          "age": 0.4587577594211325,
+          "epoch": 0,
+          "sequence": 8177,
+          "phase": "FORWARD_SEGMENT_2",
+          "pose": [
+            0.5500899250508371,
+            1.5908437836648728,
+            2.4258999528187717
+          ],
+          "yaw": -3.044695936379096,
+          "roll": 0.15066534844509566,
+          "pitch": 0.23005681030346306,
+          "velocity": [
+            -0.28755965785491266,
+            -0.04212521468808109,
+            0.07616024307050587
+          ],
+          "angular_velocity": 0.028207542168544174,
+          "ey": -0.12084378366487258,
+          "epsi": 0.09689671721069738,
+          "command": [
+            0.55,
+            -0.012370730531747053
+          ],
+          "landing_supported": false,
+          "exit_supported": false,
+          "compute_sec": 0.06095511498278938,
+          "target": [
+            -0.6349999999999998,
+            1.4700000000000002,
+            3.2300000000000004,
+            3.141592653589793
+          ],
+          "progress": 1.9699100749491634,
+          "phase_complete": false,
+          "transition_ready": false,
+          "boundary_adjusted": false,
+          "proposed_command": [
+            0.55,
+            -0.012370730531747053
+          ],
+          "below_flight_command_floor": false,
+          "prediction_horizon_sec": 0.9,
+          "neutral_only": false,
+          "support_regions": [
+            "landing_polygon",
+            "flight_2_polygon",
+            "exit_polygon"
+          ],
+          "footprint_supported": true,
+          "current_supported": true,
+          "margin_m": 0.02,
+          "anchor_uncertainty_m": 0.1,
+          "effective_margin_m": 0.12000000000000001,
+          "clearance_m": 0.25080942522174965,
+          "height_error_m": 0.8041000471812287,
+          "completion_checks": {
+            "progress": false,
+            "ascent_seen": true,
+            "height": false,
+            "body_in_next_region": false,
+            "new_phase_observation": true
+          },
+          "settling": null,
+          "incomplete_conditions": [
+            "progress",
+            "height",
+            "body_in_next_region"
+          ],
+          "phase_test": {
+            "state": "RUNNING",
+            "target_phase": "FORWARD_SEGMENT_2",
+            "phases": [
+              "FORWARD_SEGMENT_2"
+            ],
+            "max_duration_sec": 45.0,
+            "current_phase": "FORWARD_SEGMENT_2",
+            "phase_budget_sec": 45.0,
+            "elapsed_sec": 11.461010891012847,
+            "phase_elapsed_sec": 11.46100791101344
+          },
+          "route_id": "stair_3f_4f_up",
+          "run_id": "stair_3f_4f_up:0:8112",
+          "anchor_epoch": 0,
+          "anchor_sequence": 8112,
+          "anchor_source": "operator mid-route test; retained route frame, current scan; no position relabeling",
+          "pending_entries": [],
+          "observation_only": false,
+          "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+          "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+        }
+      },
+      {
+        "topic": "/stair_supervisor/control_debug",
+        "t": 1790127486.8864086,
+        "data": {
+          "tracking_state": "TRACKED",
+          "loss_response": false,
+          "age": 0.3535370747267734,
+          "epoch": 0,
+          "sequence": 8178,
+          "phase": "FORWARD_SEGMENT_2",
+          "pose": [
+            0.5061320513689754,
+            1.6055066054124898,
+            2.4394936928928397
+          ],
+          "yaw": 3.0227535248502946,
+          "roll": 0.11545912107752646,
+          "pitch": 0.20716961067928136,
+          "velocity": [
+            -0.21953781326915356,
+            0.07323019866985747,
+            0.06789090827297176
+          ],
+          "angular_velocity": -1.0774446509049425,
+          "ey": -0.1355066054124896,
+          "epsi": -0.11883912873949853,
+          "command": [
+            0.55,
+            0.006848639570180726
+          ],
+          "landing_supported": false,
+          "exit_supported": false,
+          "compute_sec": 0.07203838299028575,
+          "target": [
+            -0.6349999999999998,
+            1.4700000000000002,
+            3.2300000000000004,
+            3.141592653589793
+          ],
+          "progress": 2.013867948631025,
+          "phase_complete": false,
+          "transition_ready": false,
+          "boundary_adjusted": false,
+          "proposed_command": [
+            0.55,
+            0.006848639570180726
+          ],
+          "below_flight_command_floor": false,
+          "prediction_horizon_sec": 0.9,
+          "neutral_only": false,
+          "support_regions": [
+            "landing_polygon",
+            "flight_2_polygon",
+            "exit_polygon"
+          ],
+          "footprint_supported": true,
+          "current_supported": true,
+          "margin_m": 0.02,
+          "anchor_uncertainty_m": 0.1,
+          "effective_margin_m": 0.12000000000000001,
+          "clearance_m": 0.23209443468430546,
+          "height_error_m": 0.7905063071071607,
+          "completion_checks": {
+            "progress": false,
+            "ascent_seen": true,
+            "height": false,
+            "body_in_next_region": false,
+            "new_phase_observation": true
+          },
+          "settling": null,
+          "incomplete_conditions": [
+            "progress",
+            "height",
+            "body_in_next_region"
+          ],
+          "phase_test": {
+            "state": "RUNNING",
+            "target_phase": "FORWARD_SEGMENT_2",
+            "phases": [
+              "FORWARD_SEGMENT_2"
+            ],
+            "max_duration_sec": 45.0,
+            "current_phase": "FORWARD_SEGMENT_2",
+            "phase_budget_sec": 45.0,
+            "elapsed_sec": 11.556018289003987,
+            "phase_elapsed_sec": 11.556015309004579
+          },
+          "route_id": "stair_3f_4f_up",
+          "run_id": "stair_3f_4f_up:0:8112",
+          "anchor_epoch": 0,
+          "anchor_sequence": 8112,
+          "anchor_source": "operator mid-route test; retained route frame, current scan; no position relabeling",
+          "pending_entries": [],
+          "observation_only": false,
+          "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+          "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+        }
+      },
+      {
+        "topic": "/stair_supervisor/control_debug",
+        "t": 1790127486.973215,
+        "data": {
+          "tracking_state": "TRACKED",
+          "loss_response": false,
+          "age": 0.44727006973698735,
+          "epoch": 0,
+          "sequence": 8178,
+          "phase": "FORWARD_SEGMENT_2",
+          "pose": [
+            0.5061320513689754,
+            1.6055066054124898,
+            2.4394936928928397
+          ],
+          "yaw": 3.0227535248502946,
+          "roll": 0.11545912107752646,
+          "pitch": 0.20716961067928136,
+          "velocity": [
+            -0.21953781326915356,
+            0.07323019866985747,
+            0.06789090827297176
+          ],
+          "angular_velocity": -1.0774446509049425,
+          "ey": -0.1355066054124896,
+          "epsi": -0.11883912873949853,
+          "command": [
+            0.55,
+            0.034968538073244904
+          ],
+          "landing_supported": false,
+          "exit_supported": false,
+          "compute_sec": 0.07203838299028575,
+          "target": [
+            -0.6349999999999998,
+            1.4700000000000002,
+            3.2300000000000004,
+            3.141592653589793
+          ],
+          "progress": 2.013867948631025,
+          "phase_complete": false,
+          "transition_ready": false,
+          "boundary_adjusted": false,
+          "proposed_command": [
+            0.55,
+            0.034968538073244904
+          ],
+          "below_flight_command_floor": false,
+          "prediction_horizon_sec": 0.9,
+          "neutral_only": false,
+          "support_regions": [
+            "landing_polygon",
+            "flight_2_polygon",
+            "exit_polygon"
+          ],
+          "footprint_supported": true,
+          "current_supported": true,
+          "margin_m": 0.02,
+          "anchor_uncertainty_m": 0.1,
+          "effective_margin_m": 0.12000000000000001,
+          "clearance_m": 0.23209443468430546,
+          "height_error_m": 0.7905063071071607,
+          "completion_checks": {
+            "progress": false,
+            "ascent_seen": true,
+            "height": false,
+            "body_in_next_region": false,
+            "new_phase_observation": true
+          },
+          "settling": null,
+          "incomplete_conditions": [
+            "progress",
+            "height",
+            "body_in_next_region"
+          ],
+          "phase_test": {
+            "state": "RUNNING",
+            "target_phase": "FORWARD_SEGMENT_2",
+            "phases": [
+              "FORWARD_SEGMENT_2"
+            ],
+            "max_duration_sec": 45.0,
+            "current_phase": "FORWARD_SEGMENT_2",
+            "phase_budget_sec": 45.0,
+            "elapsed_sec": 11.6497512840142,
+            "phase_elapsed_sec": 11.649748304014793
+          },
+          "route_id": "stair_3f_4f_up",
+          "run_id": "stair_3f_4f_up:0:8112",
+          "anchor_epoch": 0,
+          "anchor_sequence": 8112,
+          "anchor_source": "operator mid-route test; retained route frame, current scan; no position relabeling",
+          "pending_entries": [],
+          "observation_only": false,
+          "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+          "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+        }
+      }
+    ],
+    "fault_debug": [],
+    "nonzero_tx_count": 375,
+    "last_nonzero_tx": {
+      "topic": "/stair_supervisor/websocket_tx",
+      "t": 1790127486.986395,
+      "data": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790127486986,
+        "guid": "0f0e299c-c783-42ae-b083-8ec92953abd1",
+        "data": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.02819031220987097
+        }
+      }
+    },
+    "tracking_states": {
+      "TRACKED": 120
+    },
+    "max_age": 0.569752988172695
+  }
+]

@@ -61,6 +61,8 @@ class SupervisorClock(Protocol):
 
 
 class CommandTransport(Protocol):
+    def request_stair_mode_with_feedback(self, enabled: bool, progress) -> None: ...
+
     @property
     def stream_period_sec(self) -> float: ...
 

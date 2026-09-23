@@ -1,0 +1,5473 @@
+[
+  {
+    "position": [
+      -0.4546720692983712,
+      -0.0004670521355312563,
+      -0.0032246190313862944
+    ],
+    "yaw_deg": 0.3030845105199689,
+    "t": 0.2001638412475586,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 2,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.4546720692983712,
+        -0.0004670521355312563,
+        -0.0032246190313862944
+      ],
+      "yaw": 0.005289822620368848,
+      "roll": -0.024961041645828377,
+      "pitch": -0.09798308730480003,
+      "velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "angular_velocity": 0.0,
+      "ey": -0.0004670521355312563,
+      "epsi": 0.005289822620368848,
+      "command": [
+        0.03152457475662231,
+        0.0
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": -0.004672069298371162,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3207697942098334,
+      "height_error_m": 1.5532246190313863,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.4551288239302048,
+      -0.0013039195905585966,
+      -0.0002641281900931658
+    ],
+    "yaw_deg": 0.879655433263551,
+    "t": 0.4000885486602783,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 3,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.4551288239302048,
+        -0.0013039195905585966,
+        -0.0002641281900931658
+      ],
+      "yaw": 0.015352883593506212,
+      "roll": -0.023660285359339426,
+      "pitch": -0.09359975085381299,
+      "velocity": [
+        -0.002284633238905942,
+        -0.004185913116279977,
+        0.014808028880500312
+      ],
+      "angular_velocity": 0.05033425384669152,
+      "ey": -0.0013039195905585966,
+      "epsi": 0.015352883593506212,
+      "command": [
+        0.06151328086853027,
+        0.0
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": -0.005128823930204807,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3179266160584139,
+      "height_error_m": 1.5502641281900933,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.46319438341430513,
+      -0.00047540222876105197,
+      -0.001612503905813717
+    ],
+    "yaw_deg": 1.5294060358656967,
+    "t": 0.6000781059265137,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 4,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.46319438341430513,
+        -0.00047540222876105197,
+        -0.001612503905813717
+      ],
+      "yaw": 0.02669317092573089,
+      "roll": -0.02253831870595381,
+      "pitch": -0.08552920447101992,
+      "velocity": [
+        -0.040329903192710556,
+        0.0041428031199378275,
+        -0.006742230615199228
+      ],
+      "angular_velocity": 0.056704397405750354,
+      "ey": -0.00047540222876105197,
+      "epsi": 0.02669317092573089,
+      "command": [
+        0.09151171445846557,
+        -0.005543927043472557
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": -0.013194383414305122,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3071372257704732,
+      "height_error_m": 1.5516125039058137,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.46918138074812593,
+      -0.0020354699688783693,
+      0.004705067127055623
+    ],
+    "yaw_deg": 2.097194561596501,
+    "t": 0.800257682800293,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 5,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.46918138074812593,
+        -0.0020354699688783693,
+        0.004705067127055623
+      ],
+      "yaw": 0.03660295015477796,
+      "roll": -0.023819760534947432,
+      "pitch": -0.06841353250713537,
+      "velocity": [
+        -0.029908132624317733,
+        -0.007793341181358367,
+        0.03155951836611586
+      ],
+      "angular_velocity": 0.04950444687619437,
+      "ey": -0.0020354699688783693,
+      "epsi": 0.03660295015477796,
+      "command": [
+        0.12153865098953245,
+        -0.0114897945809008
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": -0.01918138074812592,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2986299191137285,
+      "height_error_m": 1.5452949328729444,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.4622983270365945,
+      -0.00227373865535636,
+      -0.0010615932520937343
+    ],
+    "yaw_deg": 2.6686896349316047,
+    "t": 1.0000836849212646,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 6,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.4622983270365945,
+        -0.00227373865535636,
+        -0.0010615932520937343
+      ],
+      "yaw": 0.04657742084340198,
+      "roll": -0.020440210289874222,
+      "pitch": -0.06227476438767352,
+      "velocity": [
+        0.034445235547296386,
+        -0.0011923807910331223,
+        -0.028858408405019822
+      ],
+      "angular_velocity": 0.049915779642058906,
+      "ey": -0.00227373865535636,
+      "epsi": 0.046577420843401975,
+      "command": [
+        0.1430136188929651,
+        -0.017474476994075207
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": -0.012298327036594503,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.30319331688032536,
+      "height_error_m": 1.5510615932520937,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.4591749872009028,
+      -0.0014731896626998119,
+      -0.00447113975528024
+    ],
+    "yaw_deg": 3.4468660668902076,
+    "t": 1.1991479396820068,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 7,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.4591749872009028,
+        -0.0014731896626998119,
+        -0.00447113975528024
+      ],
+      "yaw": 0.06015916174250122,
+      "roll": -0.019394263502812755,
+      "pitch": -0.05570803734247335,
+      "velocity": [
+        0.015690108902001124,
+        0.004021560744889824,
+        -0.01712786912589848
+      ],
+      "angular_velocity": 0.06822792427210654,
+      "ey": -0.0014731896626998119,
+      "epsi": 0.06015916174250122,
+      "command": [
+        0.14129185098914565,
+        -0.025623521533534754
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": -0.009174987200902762,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3032978597489555,
+      "height_error_m": 1.5544711397552802,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.4415736200849814,
+      -0.001361071359087732,
+      -0.004350619024153485
+    ],
+    "yaw_deg": 4.308919618412065,
+    "t": 1.4001879692077637,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 8,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.4415736200849814,
+        -0.001361071359087732,
+        -0.004350619024153485
+      ],
+      "yaw": 0.07520483454506821,
+      "roll": -0.01954218317912663,
+      "pitch": -0.05508440566400281,
+      "velocity": [
+        0.08755155457070957,
+        0.0005576914402398433,
+        0.0005994862386911581
+      ],
+      "angular_velocity": 0.07483918918067692,
+      "ey": -0.001361071359087732,
+      "epsi": 0.07520483454506821,
+      "command": [
+        0.13933192494520083,
+        -0.03465092521507495
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.0084263799150186,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.31774213025245146,
+      "height_error_m": 1.5543506190241536,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.42691493112792434,
+      0.0015508256134214734,
+      -0.007384075025683168
+    ],
+    "yaw_deg": 5.514277936829103,
+    "t": 1.600036382675171,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 9,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.42691493112792434,
+        0.0015508256134214734,
+        -0.007384075025683168
+      ],
+      "yaw": 0.09624230586774773,
+      "roll": -0.01925445435702571,
+      "pitch": -0.05415069598708911,
+      "velocity": [
+        0.07334903841729884,
+        0.014570528341892987,
+        -0.015178784504208244
+      ],
+      "angular_velocity": 0.10526714201867042,
+      "ey": 0.0015508256134214734,
+      "epsi": 0.09624230586774775,
+      "command": [
+        0.13663776507475167,
+        -0.047273408008682676
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.023085068872075676,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3280708650617169,
+      "height_error_m": 1.5573840750256833,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.3963193984447918,
+      0.0020713147382653485,
+      -0.0037241503217240457
+    ],
+    "yaw_deg": 6.956176056279868,
+    "t": 1.800060749053955,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 10,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.3963193984447918,
+        0.0020713147382653485,
+        -0.0037241503217240457
+      ],
+      "yaw": 0.12140817553047807,
+      "roll": -0.018430379386766345,
+      "pitch": -0.06625953636041364,
+      "velocity": [
+        0.1529590281275736,
+        0.0026021286019635727,
+        0.018297394313592567
+      ],
+      "angular_velocity": 0.1258140201532946,
+      "ey": 0.0020713147382653485,
+      "epsi": 0.12140817553047809,
+      "command": [
+        0.13351378578715223,
+        -0.06237292980632087
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.05368060155520821,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3538542832370629,
+      "height_error_m": 1.553724150321724,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.3768841741553098,
+      0.0024512165969690475,
+      0.0007291831529074033
+    ],
+    "yaw_deg": 8.080138364291269,
+    "t": 2.0001933574676514,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 11,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.3768841741553098,
+        0.0024512165969690475,
+        0.0007291831529074033
+      ],
+      "yaw": 0.14102501847359167,
+      "roll": -0.01809080857674166,
+      "pitch": -0.07002163750580365,
+      "velocity": [
+        0.097111732283563,
+        0.0018982506734654644,
+        0.0222519134184566
+      ],
+      "angular_velocity": 0.09801922384663778,
+      "ey": 0.0024512165969690475,
+      "epsi": 0.14102501847359167,
+      "command": [
+        0.1311789396224259,
+        -0.07414303557218903
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.07311582584469023,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.35823085140126126,
+      "height_error_m": 1.5492708168470926,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.34956681723537686,
+      0.006831177687192526,
+      0.003676707268719437
+    ],
+    "yaw_deg": 8.79583779005174,
+    "t": 2.199963092803955,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 12,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.34956681723537686,
+        0.006831177687192526,
+        0.003676707268719437
+      ],
+      "yaw": 0.1535163299077446,
+      "roll": -0.018702486494546713,
+      "pitch": -0.05548823094769856,
+      "velocity": [
+        0.13674422141044204,
+        0.02192504827044999,
+        0.014754607903194166
+      ],
+      "angular_velocity": 0.06252854774585528,
+      "ey": 0.006831177687192526,
+      "epsi": 0.15351632990774458,
+      "command": [
+        0.12927161821625863,
+        -0.08163782243268076
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.10043318276462315,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.35146543094697047,
+      "height_error_m": 1.5463232927312807,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.30107182190516857,
+      0.011351243209798552,
+      0.013494276855572113
+    ],
+    "yaw_deg": 7.001245507539049,
+    "t": 2.400118827819824,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 13,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.30107182190516857,
+        0.011351243209798552,
+        0.013494276855572113
+      ],
+      "yaw": 0.12219478584701789,
+      "roll": -0.017254666833904357,
+      "pitch": -0.06851654849970976,
+      "velocity": [
+        0.24228631433600148,
+        0.02258274299383756,
+        0.0490496541908944
+      ],
+      "angular_velocity": -0.15648586865744032,
+      "ey": 0.011351243209798552,
+      "epsi": 0.12219478584701789,
+      "command": [
+        0.12210095514582976,
+        -0.06284489599624475
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.14892817809483144,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3529662084532654,
+      "height_error_m": 1.536505723144428,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.2775938476600727,
+      0.02207839527536968,
+      -0.0019350115882538488
+    ],
+    "yaw_deg": 4.94673951401753,
+    "t": 2.5999720096588135,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 14,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.2775938476600727,
+        0.02207839527536968,
+        -0.0019350115882538488
+      ],
+      "yaw": 0.08633689175811009,
+      "roll": -0.018594538090114583,
+      "pitch": -0.07975209151289323,
+      "velocity": [
+        0.11747610935717182,
+        0.05367516277130581,
+        -0.07720311631693956
+      ],
+      "angular_velocity": -0.17942118188439218,
+      "ey": 0.02207839527536968,
+      "epsi": 0.08633689175811009,
+      "command": [
+        0.13532833925581655,
+        -0.042057597889279465
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.1724061523399273,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.34942966993521174,
+      "height_error_m": 1.551935011588254,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.23848027344225045,
+      0.025957608337856528,
+      0.0008223522146164897
+    ],
+    "yaw_deg": 5.599841288632179,
+    "t": 2.800044059753418,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 15,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.23848027344225045,
+        0.025957608337856528,
+        0.0008223522146164897
+      ],
+      "yaw": 0.09773566807575364,
+      "roll": -0.01952071426975407,
+      "pitch": -0.07217143227012823,
+      "velocity": [
+        0.19549744304278052,
+        0.019389080387053337,
+        0.01378185409489488
+      ],
+      "angular_velocity": 0.05697335690944144,
+      "ey": 0.025957608337856528,
+      "epsi": 0.09773566807575364,
+      "command": [
+        0.12941732997435376,
+        -0.05025458825173599
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.21151972655774956,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.34322954907142866,
+      "height_error_m": 1.5491776477853836,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.21061035089984578,
+      0.021514547516435015,
+      0.0005106527329444555
+    ],
+    "yaw_deg": 6.361216867388168,
+    "t": 3.000142812728882,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 16,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.21061035089984578,
+        0.021514547516435015,
+        0.0005106527329444555
+      ],
+      "yaw": 0.11102417876932304,
+      "roll": -0.012714732173738025,
+      "pitch": -0.06583982550044978,
+      "velocity": [
+        0.13928084072478994,
+        -0.02220434038370205,
+        -0.0015577282568585264
+      ],
+      "angular_velocity": 0.06640976265953462,
+      "ey": 0.021514547516435015,
+      "epsi": 0.11102417876932304,
+      "command": [
+        0.1324458020892016,
+        -0.0566726233803801
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.23938964910015423,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.344992827445884,
+      "height_error_m": 1.5494893472670557,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.17098831805866344,
+      0.03315470916489124,
+      0.0069525134751255435
+    ],
+    "yaw_deg": 6.160580431598631,
+    "t": 3.199965000152588,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 17,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.17098831805866344,
+        0.03315470916489124,
+        0.0069525134751255435
+      ],
+      "yaw": 0.10752241236532943,
+      "roll": -0.02099942483675496,
+      "pitch": -0.08203617715582683,
+      "velocity": [
+        0.19828645333146702,
+        0.058252598465325794,
+        0.03223796528921819
+      ],
+      "angular_velocity": -0.0175244123244853,
+      "ey": 0.03315470916489124,
+      "epsi": 0.10752241236532943,
+      "command": [
+        0.12712364372290796,
+        -0.05864562011494361
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.2790116819413366,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.33408768352613727,
+      "height_error_m": 1.5430474865248744,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.15403712742543962,
+      0.030132378969286736,
+      0.007754494391944172
+    ],
+    "yaw_deg": 5.277523916791914,
+    "t": 3.3999669551849365,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 18,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.15403712742543962,
+        0.030132378969286736,
+        0.007754494391944172
+      ],
+      "yaw": 0.09211016870076616,
+      "roll": -0.016146953706061253,
+      "pitch": -0.06943666012830774,
+      "velocity": [
+        0.08475512467106684,
+        -0.015111503260633952,
+        0.004009865387010417
+      ],
+      "angular_velocity": -0.07706046504430655,
+      "ey": 0.030132378969286736,
+      "epsi": 0.09211016870076616,
+      "command": [
+        0.13366094549829977,
+        -0.04834045834774408
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.2959628725745604,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3401818273245163,
+      "height_error_m": 1.542245505608056,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.11430792566096233,
+      0.03794419803193109,
+      0.007398928798640875
+    ],
+    "yaw_deg": 4.434595918344805,
+    "t": 3.6001064777374268,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 19,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.11430792566096233,
+        0.03794419803193109,
+        0.007398928798640875
+      ],
+      "yaw": 0.07739829977061846,
+      "roll": -0.018337504655025625,
+      "pitch": -0.05895481333625848,
+      "velocity": [
+        0.19850752743780323,
+        0.039031866185228664,
+        -0.001776588595638545
+      ],
+      "angular_velocity": -0.07350806448680941,
+      "ey": 0.03794419803193109,
+      "epsi": 0.07739829977061846,
+      "command": [
+        0.12998148207385388,
+        -0.04224747366158098
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.3356920743390377,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3353813051127525,
+      "height_error_m": 1.5426010712013591,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.08282929275381573,
+      0.03969486543233157,
+      0.004008509940640614
+    ],
+    "yaw_deg": 2.8659357369090563,
+    "t": 3.7993152141571045,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 20,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.08282929275381573,
+        0.03969486543233157,
+        0.004008509940640614
+      ],
+      "yaw": 0.05002001475963301,
+      "roll": -0.015086396036512127,
+      "pitch": -0.07496727082911125,
+      "velocity": [
+        0.15801833530448095,
+        0.008788105541276608,
+        -0.017019428559887983
+      ],
+      "angular_velocity": -0.13743516224763844,
+      "ey": 0.03969486543233157,
+      "epsi": 0.05002001475963301,
+      "command": [
+        0.1376506852632644,
+        -0.02643323624512988
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.3671707072461843,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3393811994358934,
+      "height_error_m": 1.5459914900593594,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.0589677971977784,
+      0.04337563847268407,
+      -0.0016820312141317961
+    ],
+    "yaw_deg": 2.2792065467717557,
+    "t": 4.000112295150757,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 21,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.0589677971977784,
+        0.04337563847268407,
+        -0.0016820312141317961
+      ],
+      "yaw": 0.03977965857417727,
+      "roll": -0.019233838098289834,
+      "pitch": -0.04490132873192091,
+      "velocity": [
+        0.11883387665775703,
+        0.01833080950249897,
+        -0.028339760352155227
+      ],
+      "angular_velocity": -0.050998531127947326,
+      "ey": 0.04337563847268407,
+      "epsi": 0.03977965857417727,
+      "command": [
+        0.13848429713538155,
+        -0.02157729309797981
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.3910322028022216,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3378971757491748,
+      "height_error_m": 1.5516820312141317,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.03636067640971725,
+      0.046341051343159106,
+      0.0034580220766566305
+    ],
+    "yaw_deg": 2.2606400782069147,
+    "t": 4.200095891952515,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 22,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.03636067640971725,
+        0.046341051343159106,
+        0.0034580220766566305
+      ],
+      "yaw": 0.03945561256725277,
+      "roll": -0.0203379230637758,
+      "pitch": -0.028258076184578106,
+      "velocity": [
+        0.11304487542781529,
+        0.014828280508499058,
+        0.025702374459659918
+      ],
+      "angular_velocity": -0.00162036293029437,
+      "ey": 0.046341051343159106,
+      "epsi": 0.03945561256725277,
+      "command": [
+        0.13814741284964602,
+        -0.022420759998491368
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.41363932359028277,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.33500378943324527,
+      "height_error_m": 1.5465419779233434,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.018693238284822368,
+      0.048086107685850116,
+      0.0028414437634009526
+    ],
+    "yaw_deg": 2.322029865425996,
+    "t": 4.400018215179443,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 23,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.018693238284822368,
+        0.048086107685850116,
+        0.0028414437634009526
+      ],
+      "yaw": 0.040527066481324474,
+      "roll": -0.01867459821969709,
+      "pitch": -0.034689016458988205,
+      "velocity": [
+        0.08837151269416195,
+        0.008728671788743786,
+        -0.0030840893768316682
+      ],
+      "angular_velocity": 0.005359351055837404,
+      "ey": 0.048086107685850116,
+      "epsi": 0.04052706648132447,
+      "command": [
+        0.13778999148596105,
+        -0.02367440206687624
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.4313067617151776,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3330213281712137,
+      "height_error_m": 1.547158556236599,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.028459798655077213,
+      0.04520383402660471,
+      0.009440044154486404
+    ],
+    "yaw_deg": 2.3530757481323556,
+    "t": 4.600108623504639,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 24,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.028459798655077213,
+        0.04520383402660471,
+        0.009440044154486404
+      ],
+      "yaw": 0.041068919353738416,
+      "roll": -0.018808893212261965,
+      "pitch": -0.019212226246235094,
+      "velocity": [
+        -0.0488107373661901,
+        -0.014404856701381778,
+        0.032978094483975116
+      ],
+      "angular_velocity": 0.002708040215167637,
+      "ey": 0.04520383402660471,
+      "epsi": 0.041068919353738416,
+      "command": [
+        0.13808686587527766,
+        -0.02299071800958872
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.4215402013449228,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.335786110567813,
+      "height_error_m": 1.5405599558455136,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.017533282167772203,
+      0.04255044384088489,
+      0.022355346327388725
+    ],
+    "yaw_deg": 2.3211733401139507,
+    "t": 4.7992103099823,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 25,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.017533282167772203,
+        0.04255044384088489,
+        0.022355346327388725
+      ],
+      "yaw": 0.04051211729450261,
+      "roll": -0.022229206808156737,
+      "pitch": 0.003429854422124304,
+      "velocity": [
+        0.054879075514666455,
+        -0.01332680919313823,
+        0.06486786928523278
+      ],
+      "angular_velocity": -0.002796571285187371,
+      "ey": 0.04255044384088489,
+      "epsi": 0.04051211729450261,
+      "command": [
+        0.13849615468450244,
+        -0.021727950209045298
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.4324667178322278,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.33857772714664786,
+      "height_error_m": 1.5276446536726114,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.008828138196621586,
+      0.0453004520989243,
+      0.011115588402407506
+    ],
+    "yaw_deg": 2.297117867933263,
+    "t": 5.00001072883606,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 26,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.008828138196621586,
+        0.0453004520989243,
+        0.011115588402407506
+      ],
+      "yaw": 0.04009227010182771,
+      "roll": -0.019985809717633692,
+      "pitch": 0.01727810034849039,
+      "velocity": [
+        0.04335222018381573,
+        0.013695231681972743,
+        -0.055974773305462994
+      ],
+      "angular_velocity": -0.0020908681120862943,
+      "ey": 0.0453004520989243,
+      "epsi": 0.04009227010182771,
+      "command": [
+        0.13819882603953584,
+        -0.022438544783754153
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.4411718618033784,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3359113692362932,
+      "height_error_m": 1.5388844115975926,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      -0.008390936142049832,
+      0.04429219855413526,
+      0.01300317879221305
+    ],
+    "yaw_deg": 2.3046679746543233,
+    "t": 5.200084686279297,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 27,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        -0.008390936142049832,
+        0.04429219855413526,
+        0.01300317879221305
+      ],
+      "yaw": 0.040224044322987165,
+      "roll": -0.020643051335154837,
+      "pitch": 0.025562186864927002,
+      "velocity": [
+        0.0021852022130156167,
+        -0.005039404216688642,
+        0.009434463205142874
+      ],
+      "angular_velocity": 0.0006586275537476611,
+      "ey": 0.04429219855413526,
+      "epsi": 0.04022404432298716,
+      "command": [
+        0.13831051492789423,
+        -0.022164720575773657
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.4416090638579502,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3368974586208102,
+      "height_error_m": 1.536996821207787,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.0010624865962861798,
+      0.04489266523606727,
+      0.009042513726330942
+    ],
+    "yaw_deg": 2.2881800423680407,
+    "t": 5.3999574184417725,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 28,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.0010624865962861798,
+        0.04489266523606727,
+        0.009042513726330942
+      ],
+      "yaw": 0.03993627561774566,
+      "roll": -0.019995708697014416,
+      "pitch": 0.03430010035840047,
+      "velocity": [
+        0.04729721076035209,
+        0.0030042451285645522,
+        -0.019815934985381107
+      ],
+      "angular_velocity": -0.0014397597017264917,
+      "ey": 0.04489266523606727,
+      "epsi": 0.03993627561774566,
+      "command": [
+        0.13827064742754994,
+        -0.022202222691304962
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.45106248659628617,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3363598510087099,
+      "height_error_m": 1.540957486273669,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.005195199607947874,
+      0.04533739113753279,
+      0.010148683620250759
+    ],
+    "yaw_deg": 2.2516536396111158,
+    "t": 5.59998083114624,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 29,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.005195199607947874,
+        0.04533739113753279,
+        0.010148683620250759
+      ],
+      "yaw": 0.03929876962572778,
+      "roll": -0.019773197305304014,
+      "pitch": 0.048163926445238474,
+      "velocity": [
+        0.020661146391736294,
+        0.002223369231893856,
+        0.0055302020846638095
+      ],
+      "angular_velocity": -0.003187156860281094,
+      "ey": 0.04533739113753279,
+      "epsi": 0.03929876962572777,
+      "command": [
+        0.1382952232520486,
+        -0.02197537316160716
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.4551951996079479,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.33605899944384854,
+      "height_error_m": 1.5398513163797494,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.015552832301652079,
+      0.044859531540304046,
+      0.007349639862657548
+    ],
+    "yaw_deg": 2.213156981391558,
+    "t": 5.800100803375244,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 30,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.015552832301652079,
+        0.044859531540304046,
+        0.007349639862657548
+      ],
+      "yaw": 0.03862687618878156,
+      "roll": -0.01943592395983478,
+      "pitch": 0.05996429363127195,
+      "velocity": [
+        0.05175711638542316,
+        -0.002387865598351734,
+        -0.013986828632927118
+      ],
+      "angular_velocity": -0.003357453179022792,
+      "ey": 0.044859531540304046,
+      "epsi": 0.03862687618878155,
+      "command": [
+        0.13844197668745092,
+        -0.021404986240409367
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.46555283230165206,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.33668761649173673,
+      "height_error_m": 1.5426503601373425,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.034636994060670306,
+      0.045366995336072705,
+      0.016103473845165472
+    ],
+    "yaw_deg": 2.2869699470824942,
+    "t": 5.999203443527222,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 31,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.034636994060670306,
+        0.045366995336072705,
+        0.016103473845165472
+      ],
+      "yaw": 0.03991515547075001,
+      "roll": -0.02183209950374205,
+      "pitch": 0.07827815366706903,
+      "velocity": [
+        0.0958508724166141,
+        0.00254875472962742,
+        0.0439664384953711
+      ],
+      "angular_velocity": 0.0064704279209210494,
+      "ey": 0.045366995336072705,
+      "epsi": 0.03991515547075001,
+      "command": [
+        0.13821290609864603,
+        -0.022355566138109476
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.4846369940606703,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.33593009087417847,
+      "height_error_m": 1.5338965261548345,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.055712773462989265,
+      0.04719407645537785,
+      0.014766770399189333
+    ],
+    "yaw_deg": 2.096429095069157,
+    "t": 6.199992895126343,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 32,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.055712773462989265,
+        0.04719407645537785,
+        0.014766770399189333
+      ],
+      "yaw": 0.03658959024356201,
+      "roll": -0.027372163139116917,
+      "pitch": 0.11735294797004163,
+      "velocity": [
+        0.10496457475463922,
+        0.009099487571453384,
+        -0.006657239388475877
+      ],
+      "angular_velocity": -0.016562449873250996,
+      "ey": 0.04719407645537785,
+      "epsi": 0.03658959024356201,
+      "command": [
+        0.1384040049771925,
+        -0.020999705393553475
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.5057127734629893,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.33489291425934276,
+      "height_error_m": 1.5352332296008107,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.10189337741933086,
+      0.06999940395314777,
+      0.07900985051503012
+    ],
+    "yaw_deg": 2.532326137504969,
+    "t": 6.4000749588012695,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 33,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.10189337741933086,
+        0.06999940395314777,
+        0.07900985051503012
+      ],
+      "yaw": 0.044197428833772374,
+      "roll": -0.05284377484938391,
+      "pitch": 0.10622903261324822,
+      "velocity": [
+        0.2308083148890907,
+        0.11397986945407425,
+        0.32108365405615014
+      ],
+      "angular_velocity": 0.03802359117292401,
+      "ey": 0.06999940395314777,
+      "epsi": 0.044197428833772374,
+      "command": [
+        0.12576660482523086,
+        -0.03354627317189916
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.5518933774193309,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3107046203465356,
+      "height_error_m": 1.47099014948497,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.19625957520738088,
+      0.00011785888427266718,
+      0.07217817224717388
+    ],
+    "yaw_deg": -21.478351688585853,
+    "t": 6.600211143493652,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 34,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.19625957520738088,
+        0.00011785888427266718,
+        0.07217817224717388
+      ],
+      "yaw": -0.3748679548671069,
+      "roll": -0.056096048352328454,
+      "pitch": 0.14221745180086012,
+      "velocity": [
+        0.471509926768588,
+        -0.3491699673214306,
+        -0.034135147916189185
+      ],
+      "angular_velocity": -2.093901132096623,
+      "ey": 0.00011785888427266718,
+      "epsi": -0.3748679548671069,
+      "command": [
+        0.09574617712137344,
+        0.026494582235815675
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.6462595752073809,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3236297620743326,
+      "height_error_m": 1.4778218277528261,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.25526908096474976,
+      0.02116142783901713,
+      0.14812218167493107
+    ],
+    "yaw_deg": -19.52363518931292,
+    "t": 6.800033807754517,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 35,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.25526908096474976,
+        0.02116142783901713,
+        0.14812218167493107
+      ],
+      "yaw": -0.34075171601173687,
+      "roll": -0.07050438445636512,
+      "pitch": 0.06407609241238348,
+      "velocity": [
+        0.29530937331679863,
+        0.10531122199067734,
+        0.380057035615409
+      ],
+      "angular_velocity": 0.1707325792175005,
+      "ey": 0.02116142783901713,
+      "epsi": -0.34075171601173687,
+      "command": [
+        0.09578701445940081,
+        0.08644138151407495
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.7052690809647497,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3069231844208929,
+      "height_error_m": 1.4018778183250689,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.3277332492963956,
+      0.0242748324915946,
+      0.24844590011426373
+    ],
+    "yaw_deg": -11.627601802799319,
+    "t": 7.000030755996704,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 36,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.3277332492963956,
+        0.0242748324915946,
+        0.24844590011426373
+      ],
+      "yaw": -0.20293993556967652,
+      "roll": 0.029334507511514257,
+      "pitch": 0.0768649536213566,
+      "velocity": [
+        0.36232637031988557,
+        0.015567260800436192,
+        0.5016262464057454
+      ],
+      "angular_velocity": 0.6890694165751788,
+      "ey": 0.0242748324915946,
+      "epsi": -0.20293993556967654,
+      "command": [
+        0.09810918804556455,
+        0.10979579445778183
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.7777332492963955,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.32532470219819826,
+      "height_error_m": 1.3015540998857362,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.39567679560711083,
+      0.08008467011649445,
+      0.3221546441324557
+    ],
+    "yaw_deg": -2.509805000837041,
+    "t": 7.200124025344849,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 37,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.39567679560711083,
+        0.08008467011649445,
+        0.3221546441324557
+      ],
+      "yaw": -0.04380436084762541,
+      "roll": -0.07155661943322976,
+      "pitch": -0.03733334422254761,
+      "velocity": [
+        0.3395593791438307,
+        0.2789191151042451,
+        0.3683719310415449
+      ],
+      "angular_velocity": 0.7953069847900248,
+      "ey": 0.08008467011649445,
+      "epsi": -0.04380436084762541,
+      "command": [
+        0.11016754298439115,
+        0.049767813653338475
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.8456767956071108,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3008867328863697,
+      "height_error_m": 1.2278453558675444,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.4612263803040485,
+      0.08583132744895743,
+      0.3487795519597397
+    ],
+    "yaw_deg": -5.579671263505528,
+    "t": 7.399320363998413,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 38,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.4612263803040485,
+        0.08583132744895743,
+        0.3487795519597397
+      ],
+      "yaw": -0.09738363472708358,
+      "roll": -0.0929453939133268,
+      "pitch": -0.08240874775178278,
+      "velocity": [
+        0.3290702285996295,
+        0.028849211643680702,
+        0.13366163257442767
+      ],
+      "angular_velocity": -0.2689772023000957,
+      "ey": 0.08583132744895743,
+      "epsi": -0.09738363472708358,
+      "command": [
+        0.10597352950934023,
+        0.024917240717149076
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.9112263803040486,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2845659764575295,
+      "height_error_m": 1.2012204480402604,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.4807019072695036,
+      0.06425355274803593,
+      0.38222008927803097
+    ],
+    "yaw_deg": -4.587480230785485,
+    "t": 7.6001200675964355,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 39,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.4807019072695036,
+        0.06425355274803593,
+        0.38222008927803097
+      ],
+      "yaw": -0.08006663439735605,
+      "roll": -0.06476329535702123,
+      "pitch": -0.06789526772277532,
+      "velocity": [
+        0.09698981928998687,
+        -0.10745919597629326,
+        0.16653678625559787
+      ],
+      "angular_velocity": 0.08624016878229139,
+      "ey": 0.06425355274803593,
+      "epsi": -0.08006663439735606,
+      "command": [
+        0.13108219332754087,
+        0.022079261664635086
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.9307019072695036,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.30906216769229145,
+      "height_error_m": 1.167779910721969,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.5049956563371097,
+      0.04309098788524189,
+      0.3835374550161814
+    ],
+    "yaw_deg": -4.725650448585206,
+    "t": 7.799280881881714,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 40,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.5049956563371097,
+        0.04309098788524189,
+        0.3835374550161814
+      ],
+      "yaw": -0.08247815962615886,
+      "roll": -0.038612461018666916,
+      "pitch": -0.022163485993863745,
+      "velocity": [
+        0.12198056708488703,
+        -0.1062586781377623,
+        0.006614583008600514
+      ],
+      "angular_velocity": -0.012108432260919231,
+      "ey": 0.04309098788524189,
+      "epsi": -0.08247815962615884,
+      "command": [
+        0.13326591292204967,
+        0.03093307450389467
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.9549956563371098,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3293248716597274,
+      "height_error_m": 1.1664625449838186,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.5181722336671383,
+      0.02858980878049813,
+      0.3885034360484161
+    ],
+    "yaw_deg": -4.645668774916083,
+    "t": 8.000235557556152,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 41,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.5181722336671383,
+        0.02858980878049813,
+        0.3885034360484161
+      ],
+      "yaw": -0.081082216079377,
+      "roll": -0.022784647947982607,
+      "pitch": 0.002764572201328669,
+      "velocity": [
+        0.06556989672325696,
+        -0.07216144165879848,
+        0.024711945694062508
+      ],
+      "angular_velocity": 0.006946559178565146,
+      "ey": 0.02858980878049813,
+      "epsi": -0.081082216079377,
+      "command": [
+        0.13517507573369833,
+        0.03517092106248588
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.9681722336671383,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3439830130700668,
+      "height_error_m": 1.161496563951584,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.5439210172061348,
+      0.0176078861239453,
+      0.37998872972144226
+    ],
+    "yaw_deg": -3.4217237207409776,
+    "t": 8.200191020965576,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 42,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.5439210172061348,
+        0.0176078861239453,
+        0.37998872972144226
+      ],
+      "yaw": -0.059720345020521044,
+      "roll": -0.014204477432343689,
+      "pitch": 0.02446672415156233,
+      "velocity": [
+        0.128772593156277,
+        -0.05492184344103925,
+        -0.04258301414620174
+      ],
+      "angular_velocity": 0.1068331452145217,
+      "ey": 0.0176078861239453,
+      "epsi": -0.05972034502052104,
+      "command": [
+        0.13923333266840332,
+        0.025360231500346646
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 0.9939210172061348,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3593861470502966,
+      "height_error_m": 1.170011270278558,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.5584296757748306,
+      0.010709971756251806,
+      0.3755444560851987
+    ],
+    "yaw_deg": -2.9484183777922603,
+    "t": 8.399300813674927,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 43,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.5584296757748306,
+        0.010709971756251806,
+        0.3755444560851987
+      ],
+      "yaw": -0.051459608418785004,
+      "roll": -0.017277363847086873,
+      "pitch": 0.060235843136836026,
+      "velocity": [
+        0.07286762931783419,
+        -0.03464377253288937,
+        -0.02232071851298173
+      ],
+      "angular_velocity": 0.04148834916319061,
+      "ey": 0.010709971756251806,
+      "epsi": -0.051459608418785,
+      "command": [
+        0.14122038777958715,
+        0.020403789539305023
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.0084296757748306,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.36805706014790485,
+      "height_error_m": 1.1744555439148012,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.5669037130080709,
+      0.01006579253694073,
+      0.3676806454914688
+    ],
+    "yaw_deg": -2.7932600976733255,
+    "t": 8.600020170211792,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 44,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.5669037130080709,
+        0.01006579253694073,
+        0.3676806454914688
+      ],
+      "yaw": -0.04875158556897793,
+      "roll": -0.013244913760813479,
+      "pitch": 0.0931679421348135,
+      "velocity": [
+        0.04221833598636443,
+        -0.0032093527521485582,
+        -0.039178137721289544
+      ],
+      "angular_velocity": 0.013491587939151777,
+      "ey": 0.01006579253694073,
+      "epsi": -0.04875158556897793,
+      "command": [
+        0.14166748969338766,
+        0.018778975829420775
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.016903713008071,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3692905284149146,
+      "height_error_m": 1.1823193545085313,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.6005157738700087,
+      0.00822376763975165,
+      0.36630571923448674
+    ],
+    "yaw_deg": -2.6901346227714953,
+    "t": 8.800212144851685,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 45,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.6005157738700087,
+        0.00822376763975165,
+        0.36630571923448674
+      ],
+      "yaw": -0.04695170648925822,
+      "roll": -0.01418919149902649,
+      "pitch": 0.12094325457132353,
+      "velocity": [
+        0.16789914242266468,
+        -0.009201292411958736,
+        -0.006868038838496284
+      ],
+      "angular_velocity": 0.008990765403844726,
+      "ey": 0.00822376763975165,
+      "epsi": -0.04695170648925821,
+      "command": [
+        0.14174431864999346,
+        0.01769904838158895
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.0505157738700086,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.37154562267203817,
+      "height_error_m": 1.1836942807655133,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.6084827322041543,
+      0.008719116341845344,
+      0.36859496575831596
+    ],
+    "yaw_deg": -2.9500842959374323,
+    "t": 9.000054597854614,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 46,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.6084827322041543,
+        0.008719116341845344,
+        0.36859496575831596
+      ],
+      "yaw": -0.051488684175486965,
+      "roll": -0.019352289571138888,
+      "pitch": 0.15253899757927888,
+      "velocity": [
+        0.039866195667788505,
+        0.0024786960660777707,
+        0.011455256325319747
+      ],
+      "angular_velocity": -0.022702772199069403,
+      "ey": 0.008719116341845344,
+      "epsi": -0.051488684175486965,
+      "command": [
+        0.14148169814144637,
+        0.020421234993326202
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.0584827322041543,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3701417150430777,
+      "height_error_m": 1.181405034241684,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.6357155160912596,
+      0.012277296376009198,
+      0.3537000178912012
+    ],
+    "yaw_deg": -3.13107028029957,
+    "t": 9.200069904327393,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 47,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.6357155160912596,
+        0.012277296376009198,
+        0.3537000178912012
+      ],
+      "yaw": -0.05464748550256924,
+      "roll": -0.019305302779433115,
+      "pitch": 0.18983696676788384,
+      "velocity": [
+        0.13615349928637435,
+        0.01778953869537037,
+        -0.0744690400439025
+      ],
+      "angular_velocity": -0.01579279797524986,
+      "ey": 0.012277296376009198,
+      "epsi": -0.05464748550256924,
+      "command": [
+        0.14059097937146875,
+        0.022316515789575563
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.0857155160912597,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.36598689828202213,
+      "height_error_m": 1.196299982108799,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.6733003914648384,
+      0.012902304475281642,
+      0.37094907854288206
+    ],
+    "yaw_deg": -2.988369301326767,
+    "t": 9.400187730789185,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 48,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.6733003914648384,
+        0.012902304475281642,
+        0.37094907854288206
+      ],
+      "yaw": -0.05215688357367464,
+      "roll": -0.016868274076571405,
+      "pitch": 0.19985785355745633,
+      "velocity": [
+        0.1878137297316428,
+        0.0031232005180296895,
+        0.08619452327988471
+      ],
+      "angular_velocity": 0.012445677493754545,
+      "ey": 0.012902304475281642,
+      "epsi": -0.05215688357367463,
+      "command": [
+        0.13762422049873535,
+        0.0208221546322388
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.1233003914648385,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.36589985921447366,
+      "height_error_m": 1.1790509214571179,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.6946564888400777,
+      -0.03662813679229884,
+      0.404156203761049
+    ],
+    "yaw_deg": 4.4604712793201795,
+    "t": 9.600079774856567,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 49,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.6946564888400777,
+        -0.03662813679229884,
+        0.404156203761049
+      ],
+      "yaw": 0.0778499100147808,
+      "roll": 0.023404945318123004,
+      "pitch": 0.12229325858603918,
+      "velocity": [
+        0.10683815594001426,
+        -0.24778595615783475,
+        0.16612529714775914
+      ],
+      "angular_velocity": 0.6503850325560264,
+      "ey": -0.03662813679229884,
+      "epsi": 0.0778499100147808,
+      "command": [
+        0.13459215318753207,
+        -0.030418122619597907
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.1446564888400776,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.33669696428556983,
+      "height_error_m": 1.145843796238951,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.8280604998654195,
+      0.08107877486521786,
+      0.43465855245423546
+    ],
+    "yaw_deg": 17.202448516688012,
+    "t": 9.800265550613403,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 50,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.8280604998654195,
+        0.08107877486521786,
+        0.43465855245423546
+      ],
+      "yaw": 0.3002393660210205,
+      "roll": -0.05640668402206704,
+      "pitch": 0.06523552979589406,
+      "velocity": [
+        0.6664010493302313,
+        0.5879883883483028,
+        0.15237021001051257
+      ],
+      "angular_velocity": 1.1109153743089837,
+      "ey": 0.08107877486521786,
+      "epsi": 0.3002393660210205,
+      "command": [
+        0.10456428682400667,
+        -0.09047385534664869
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.2780604998654195,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.25317088212297917,
+      "height_error_m": 1.1153414475457646,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.8857832925006107,
+      0.09835485395523005,
+      0.5326809982637273
+    ],
+    "yaw_deg": 12.416183722992102,
+    "t": 10.000307321548462,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 51,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.8857832925006107,
+        0.09835485395523005,
+        0.5326809982637273
+      ],
+      "yaw": 0.21670328649873974,
+      "roll": -0.12912963046315754,
+      "pitch": 0.13712440814480714,
+      "velocity": [
+        0.2885536973871836,
+        0.0863623582677674,
+        0.49000988819137054
+      ],
+      "angular_velocity": -0.4175931813231141,
+      "ey": 0.09835485395523005,
+      "epsi": 0.21670328649873977,
+      "command": [
+        0.09997044339540674,
+        -0.1469741952716084
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.3357832925006108,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2516651513365945,
+      "height_error_m": 1.0173190017362728,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      0.9551111617670798,
+      0.07715088491167972,
+      0.6151188726976898
+    ],
+    "yaw_deg": 1.7459167429853804,
+    "t": 10.199244499206543,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 52,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        0.9551111617670798,
+        0.07715088491167972,
+        0.6151188726976898
+      ],
+      "yaw": 0.0304719956307905,
+      "roll": -0.12941163327429928,
+      "pitch": 0.1153378515223171,
+      "velocity": [
+        0.34849126785956935,
+        -0.10658625649145477,
+        0.4143914948650315
+      ],
+      "angular_velocity": -0.9361311598982781,
+      "ey": 0.07715088491167972,
+      "epsi": 0.030471995630790498,
+      "command": [
+        0.11057582140329252,
+        -0.08729304197418408
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.4051111617670797,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.30812636239369673,
+      "height_error_m": 0.9348811273023102,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.0322132142708589,
+      -0.009693537534458549,
+      0.6599205027271943
+    ],
+    "yaw_deg": -16.93602904556102,
+    "t": 10.400144577026367,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 53,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.0322132142708589,
+        -0.009693537534458549,
+        0.6599205027271943
+      ],
+      "yaw": -0.2955894690584326,
+      "roll": 0.018555037583838682,
+      "pitch": 0.07874211949905476,
+      "velocity": [
+        0.3837830892874393,
+        -0.43227669888721526,
+        0.22300454293344998
+      ],
+      "angular_velocity": -1.6230031776376361,
+      "ey": -0.009693537534458549,
+      "epsi": -0.2955894690584326,
+      "command": [
+        0.08977557818113274,
+        -0.02702301862823682
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.4822132142708588,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3248570229474834,
+      "height_error_m": 0.8900794972728058,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.0987755865082003,
+      -0.017268069615766626,
+      0.7262989954280241
+    ],
+    "yaw_deg": -15.46576821447855,
+    "t": 10.600231170654297,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 54,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.0987755865082003,
+        -0.017268069615766626,
+        0.7262989954280241
+      ],
+      "yaw": -0.26992857669293524,
+      "roll": 0.01609192456778234,
+      "pitch": -0.01092157436060875,
+      "velocity": [
+        0.3326678266166959,
+        -0.03785626984781035,
+        0.3317488268317654
+      ],
+      "angular_velocity": 0.1282489341250667,
+      "ey": -0.017268069615766626,
+      "epsi": -0.26992857669293524,
+      "command": [
+        0.09699359174491938,
+        0.03300295946014208
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.5487755865082002,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3209012183635261,
+      "height_error_m": 0.8237010045719759,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": false,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "ascent_seen",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.1363577163902914,
+      -0.00848120930954923,
+      0.800247404092084
+    ],
+    "yaw_deg": -13.016450126164997,
+    "t": 10.800134420394897,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 55,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.1363577163902914,
+        -0.00848120930954923,
+        0.800247404092084
+      ],
+      "yaw": -0.22717991162321052,
+      "roll": 0.08873481640766494,
+      "pitch": -0.06678327098187305,
+      "velocity": [
+        0.18800159542608033,
+        0.04395556509271081,
+        0.36992099308048826
+      ],
+      "angular_velocity": 0.21384677400290616,
+      "ey": -0.00848120930954923,
+      "epsi": -0.22717991162321052,
+      "command": [
+        0.11860028466013592,
+        0.09297393438232227
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.5863577163902913,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3372988943614552,
+      "height_error_m": 0.7497525959079161,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.1896567169643106,
+      0.08814319451729953,
+      0.8812854225956749
+    ],
+    "yaw_deg": -4.71201269064626,
+    "t": 11.000192880630493,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 56,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.1896567169643106,
+        0.08814319451729953,
+        0.8812854225956749
+      ],
+      "yaw": -0.08224013584753424,
+      "roll": -0.0431922942940463,
+      "pitch": -0.07763114058592298,
+      "velocity": [
+        0.2664171288295058,
+        0.4829808432648164,
+        0.405071689585923
+      ],
+      "angular_velocity": 0.7244871104425689,
+      "ey": 0.08814319451729953,
+      "epsi": -0.08224013584753424,
+      "command": [
+        0.11516520030540592,
+        0.03295639631164356
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.6396567169643106,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2844607810342221,
+      "height_error_m": 0.6687145774043252,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.226416983870431,
+      0.13172141399456178,
+      0.8672168307858218
+    ],
+    "yaw_deg": -8.043516644250529,
+    "t": 11.200166702270508,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 57,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.226416983870431,
+        0.13172141399456178,
+        0.8672168307858218
+      ],
+      "yaw": -0.14038584888113714,
+      "roll": -0.1255085391952033,
+      "pitch": -0.13005092496936038,
+      "velocity": [
+        0.18382539576752646,
+        0.21791962127777964,
+        -0.0703521675711076
+      ],
+      "angular_velocity": -0.29076662413480614,
+      "ey": 0.13172141399456178,
+      "epsi": -0.14038584888113714,
+      "command": [
+        0.11569479628798568,
+        0.03465703891861969
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.676416983870431,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2315383193629439,
+      "height_error_m": 0.6827831692141783,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.2279587766872633,
+      0.13588550813039044,
+      0.8973903469624923
+    ],
+    "yaw_deg": -8.422097421375296,
+    "t": 11.3993079662323,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 58,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.2279587766872633,
+        0.13588550813039044,
+        0.8973903469624923
+      ],
+      "yaw": -0.14699332992672318,
+      "roll": -0.1416500418688217,
+      "pitch": -0.1321398250174249,
+      "velocity": [
+        0.007742206643460963,
+        0.020910252616592812,
+        0.1515181513684664
+      ],
+      "angular_velocity": -0.0331798689740855,
+      "ey": 0.13588550813039044,
+      "epsi": -0.14699332992672318,
+      "command": [
+        0.11692452595692596,
+        0.03716409459843128
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.6779587766872632,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2267158661778641,
+      "height_error_m": 0.6526096530375077,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.2334685278149413,
+      0.11291236947279684,
+      0.9131549262722203
+    ],
+    "yaw_deg": -7.905376244994673,
+    "t": 11.600195407867432,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 59,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.2334685278149413,
+        0.11291236947279684,
+        0.9131549262722203
+      ],
+      "yaw": -0.13797484408410293,
+      "roll": -0.1431008623714235,
+      "pitch": -0.10279123773410272,
+      "velocity": [
+        0.02742705608091372,
+        -0.11435826187342903,
+        0.07847468802136912
+      ],
+      "angular_velocity": 0.04489322861207199,
+      "ey": 0.11291236947279684,
+      "epsi": -0.13797484408410293,
+      "command": [
+        0.11991488790861868,
+        0.039793601623016886
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.6834685278149413,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2511741365013027,
+      "height_error_m": 0.6368450737277798,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.2298118294671627,
+      0.06376987819369553,
+      0.8959967658945545
+    ],
+    "yaw_deg": -8.618583710655534,
+    "t": 11.800305843353271,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 60,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.2298118294671627,
+        0.06376987819369553,
+        0.8959967658945545
+      ],
+      "yaw": -0.15042266260968934,
+      "roll": -0.07746945564190637,
+      "pitch": -0.048316506102031136,
+      "velocity": [
+        -0.018273401578986378,
+        -0.24557685439937346,
+        -0.08574345628706585
+      ],
+      "angular_velocity": -0.06220474457199028,
+      "ey": 0.06376987819369553,
+      "epsi": -0.15042266260968937,
+      "command": [
+        0.12353889104009048,
+        0.06446216468605422
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.6798118294671627,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2958858457464463,
+      "height_error_m": 0.6540032341054456,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.232566011959552,
+      0.019431296980588063,
+      0.8970411347291731
+    ],
+    "yaw_deg": -8.231319442177936,
+    "t": 11.999295473098755,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 61,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.232566011959552,
+        0.019431296980588063,
+        0.8970411347291731
+      ],
+      "yaw": -0.14366362604942798,
+      "roll": -0.04014290536329696,
+      "pitch": -0.00010973943744314424,
+      "velocity": [
+        0.013840834298310256,
+        -0.2228185522522882,
+        0.005248358097627821
+      ],
+      "angular_velocity": 0.033966777911524686,
+      "ey": 0.019431296980588063,
+      "epsi": -0.14366362604942798,
+      "command": [
+        0.12896625806708034,
+        0.07572620011769081
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.682566011959552,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.3408529262266878,
+      "height_error_m": 0.6529588652708269,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.2435837196801747,
+      -0.022966382779835537,
+      0.8955770595366406
+    ],
+    "yaw_deg": -9.62826944680618,
+    "t": 12.200141906738281,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 62,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.2435837196801747,
+        -0.022966382779835537,
+        0.8955770595366406
+      ],
+      "yaw": -0.16804500311594087,
+      "roll": 0.000943379117902591,
+      "pitch": 0.02424853056596936,
+      "velocity": [
+        0.054856377188140085,
+        -0.21109500921742919,
+        -0.007289525464814757
+      ],
+      "angular_velocity": -0.12139312919178795,
+      "ey": -0.022966382779835537,
+      "epsi": -0.16804500311594087,
+      "command": [
+        0.12594338037094657,
+        0.09139326033054097
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.6935837196801746,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.33258264957435807,
+      "height_error_m": 0.6544229404633595,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.2692700915680015,
+      -0.04909337745043785,
+      0.8968861553289815
+    ],
+    "yaw_deg": -13.37897565377838,
+    "t": 12.39925241470337,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 63,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.2692700915680015,
+        -0.04909337745043785,
+        0.8968861553289815
+      ],
+      "yaw": -0.23350717570259363,
+      "roll": 0.037986958521724484,
+      "pitch": 0.00964753425178775,
+      "velocity": [
+        0.12900560673739384,
+        -0.1312185626847149,
+        0.0065747197660230485
+      ],
+      "angular_velocity": -0.32877306805992845,
+      "ey": -0.04909337745043785,
+      "epsi": -0.23350717570259366,
+      "command": [
+        0.11694989498581869,
+        0.13981501201724347
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.7192700915680015,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.2951293827979659,
+      "height_error_m": 0.6531138446710185,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.306235754177415,
+      -0.07780034138628096,
+      0.7625663667898995
+    ],
+    "yaw_deg": -17.162480029534734,
+    "t": 12.600129842758179,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 64,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.306235754177415,
+        -0.07780034138628096,
+        0.7625663667898995
+      ],
+      "yaw": -0.29954178432315476,
+      "roll": 0.08155660623031097,
+      "pitch": 0.06811317440323882,
+      "velocity": [
+        0.18402098716301446,
+        -0.1429078628386779,
+        -0.6686654137289767
+      ],
+      "angular_velocity": -0.3287308547306944,
+      "ey": -0.07780034138628096,
+      "epsi": -0.29954178432315476,
+      "command": [
+        0.10683391524800423,
+        0.1894832145671252
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.756235754177415,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.25706161451050336,
+      "height_error_m": 0.7874336332101005,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.4007606210145422,
+      -0.08193209379584201,
+      0.8338847431313691
+    ],
+    "yaw_deg": -19.82821596924704,
+    "t": 12.800269842147827,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 65,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.4007606210145422,
+        -0.08193209379584201,
+        0.8338847431313691
+      ],
+      "yaw": -0.34606765345987955,
+      "roll": -0.04456191108382343,
+      "pitch": 0.14386734062975307,
+      "velocity": [
+        0.4722937300159511,
+        -0.02064431109304158,
+        0.35634244308465923
+      ],
+      "angular_velocity": -0.2324666197592244,
+      "ey": -0.08193209379584201,
+      "epsi": -0.3460676534598796,
+      "command": [
+        0.07681291533955696,
+        0.2
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.8507606210145422,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.24559816342731589,
+      "height_error_m": 0.716115256868631,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.4447272175228525,
+      -0.17670851119253908,
+      0.9053779348989385
+    ],
+    "yaw_deg": -26.418257937238973,
+    "t": 12.999267101287842,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 66,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.4447272175228525,
+        -0.17670851119253908,
+        0.9053779348989385
+      ],
+      "yaw": -0.46108558364594554,
+      "roll": 0.06988263020571178,
+      "pitch": 0.049246480195722864,
+      "velocity": [
+        0.22094071394910678,
+        -0.47626996374865793,
+        0.35926721843574105
+      ],
+      "angular_velocity": -0.5779875093914699,
+      "ey": -0.17670851119253908,
+      "epsi": -0.46108558364594554,
+      "command": [
+        0.08646318444663773,
+        0.2
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.8947272175228524,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.13763839250054544,
+      "height_error_m": 0.6446220651010616,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.4684934015982207,
+      -0.15806945540808795,
+      0.9445098194359896
+    ],
+    "yaw_deg": -22.010569986593584,
+    "t": 13.1992928981781,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 67,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.4684934015982207,
+        -0.15806945540808795,
+        0.9445098194359896
+      ],
+      "yaw": -0.3841569165067022,
+      "roll": 0.06812769648322249,
+      "pitch": 0.041171226087356544,
+      "velocity": [
+        0.11881559501251332,
+        0.09318325973062952,
+        0.1956341889167436
+      ],
+      "angular_velocity": 0.3845937290850996,
+      "ey": -0.15806945540808795,
+      "epsi": -0.3841569165067022,
+      "command": [
+        0.09726198613356851,
+        0.2
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.9184934015982207,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.16479640494263026,
+      "height_error_m": 0.6054901805640105,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.48494666249637,
+      -0.15110557044687495,
+      0.9675964293983511
+    ],
+    "yaw_deg": -30.046311885788416,
+    "t": 13.400118827819824,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 68,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.48494666249637,
+        -0.15110557044687495,
+        0.9675964293983511
+      ],
+      "yaw": -0.5244070704881143,
+      "roll": 0.04158166840447681,
+      "pitch": -0.005014694284161211,
+      "velocity": [
+        0.08192797079292606,
+        0.034676224198920295,
+        0.11495831242284503
+      ],
+      "angular_velocity": -0.6983667608640997,
+      "ey": -0.15110557044687495,
+      "epsi": -0.5244070704881143,
+      "command": [
+        0.08952483934486775,
+        0.2
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.93494666249637,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.15661853178166574,
+      "height_error_m": 0.5824035706016489,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.5257335547073276,
+      -0.1595727657825912,
+      0.9870822187336579
+    ],
+    "yaw_deg": -30.891123886509696,
+    "t": 13.600291728973389,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": false,
+    "detail": "LiDAR geometry/feedback: FORWARD_SEGMENT_1",
+    "debug": {
+      "tracking_state": "TRACKED",
+      "loss_response": false,
+      "age": 0.009999990463256836,
+      "epoch": 0,
+      "sequence": 69,
+      "phase": "FORWARD_SEGMENT_1",
+      "pose": [
+        1.5257335547073276,
+        -0.1595727657825912,
+        0.9870822187336579
+      ],
+      "yaw": -0.5391518214610613,
+      "roll": 0.05240668156119574,
+      "pitch": 0.008677902422177489,
+      "velocity": [
+        0.20375831081984228,
+        -0.04229940859587461,
+        0.0973447915427776
+      ],
+      "angular_velocity": -0.07366007530477596,
+      "ey": -0.1595727657825912,
+      "epsi": -0.5391518214610613,
+      "command": [
+        0.08487912311375913,
+        0.2
+      ],
+      "landing_supported": false,
+      "exit_supported": false,
+      "compute_sec": 0.0,
+      "target": [
+        3.25,
+        0.0,
+        1.55,
+        0.0
+      ],
+      "progress": 1.9757335547073276,
+      "phase_complete": false,
+      "transition_ready": false,
+      "prediction_horizon_sec": 0.9,
+      "neutral_only": false,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.14714980690695978,
+      "height_error_m": 0.5629177812663422,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  },
+  {
+    "position": [
+      1.520474768222084,
+      -0.17765336544428573,
+      0.9668472183860959
+    ],
+    "yaw_deg": -32.004015674223496,
+    "t": 13.799304485321045,
+    "phase": "FORWARD_SEGMENT_1",
+    "complete": false,
+    "faulted": true,
+    "detail": "correction would exceed surveyed support",
+    "debug": {
+      "tracking_state": "SUPPORT_LIMIT",
+      "loss_response": true,
+      "proposed_command": [
+        0.08639414280680202,
+        0.2
+      ],
+      "prediction_horizon_sec": 0.9,
+      "support_regions": [
+        "entry_polygon",
+        "flight_1_polygon",
+        "landing_polygon"
+      ],
+      "footprint_supported": true,
+      "current_supported": true,
+      "margin_m": 0.02,
+      "anchor_uncertainty_m": 0.1,
+      "effective_margin_m": 0.12000000000000001,
+      "clearance_m": 0.12786379551766003,
+      "height_error_m": 0.5831527816139042,
+      "completion_checks": {
+        "progress": false,
+        "ascent_seen": true,
+        "height": false,
+        "body_in_next_region": false,
+        "new_phase_observation": true
+      },
+      "incomplete_conditions": [
+        "progress",
+        "height",
+        "body_in_next_region"
+      ]
+    }
+  }
+]

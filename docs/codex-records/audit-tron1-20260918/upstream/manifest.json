@@ -1,0 +1,47 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/costmap_2d/src/costmap_2d_ros.cpp",
+    "file": "costmap_2d__src__costmap_2d_ros.cpp",
+    "sha256": "85a1b4a5cbe03dda903911967783780d259f8ce2c9e366ffc6e226dec2787075"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/costmap_2d/src/footprint.cpp",
+    "file": "costmap_2d__src__footprint.cpp",
+    "sha256": "6f0b4c77fe518180928930249b7022afccf79fddf17c2f343f00725f221911b4"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/costmap_2d/plugins/inflation_layer.cpp",
+    "file": "costmap_2d__plugins__inflation_layer.cpp",
+    "sha256": "1f2eaf35bff7bd5091a0bd6a6c5e41319b8097436719abf72c1e0b5fad562514"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/costmap_2d/include/costmap_2d/inflation_layer.h",
+    "file": "costmap_2d__include__costmap_2d__inflation_layer.h",
+    "sha256": "2693eedf70146fba4410af7cfaf64aa5d6ed37a303b20c1f135cfede7abd6b3a"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/costmap_2d/plugins/obstacle_layer.cpp",
+    "file": "costmap_2d__plugins__obstacle_layer.cpp",
+    "sha256": "0ce426ba02ea267c45a41b7368df52450afc02150efc9e8fa6a199a86e39150f"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/costmap_2d/src/observation_buffer.cpp",
+    "file": "costmap_2d__src__observation_buffer.cpp",
+    "sha256": "41bb349ebc6894fa7a878deeb1e042b41b9e4a1d4647ce98085294f5ce2448d0"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/base_local_planner/src/trajectory_planner_ros.cpp",
+    "file": "base_local_planner__src__trajectory_planner_ros.cpp",
+    "sha256": "7f374f7c7f370c9d086a1637aaee85e838182bfa4ffcde2593afd15857762a40"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/move_base/src/move_base.cpp",
+    "file": "move_base__src__move_base.cpp",
+    "sha256": "6aefdf9795436cb1940ae529554912aa64a63495c510676afb45d6834b7aee1c"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/amcl/src/amcl_node.cpp",
+    "file": "amcl__src__amcl_node.cpp",
+    "sha256": "dbb3b89db9affafad12ebc6f36b6821186e0df9d75fca5075b45d6051bf429c3"
+  }
+]

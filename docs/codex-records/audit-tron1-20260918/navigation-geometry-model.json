@@ -1,0 +1,56 @@
+{
+  "assumption": "official noetic 16 vertex radius footprint + coordinate-sign padding; analytical model, not runtime costmap or measured body",
+  "unpadded_radius_m": 0.28,
+  "padding_xy_m": 0.02,
+  "padded_inscribed_m": 0.2940348463082267,
+  "padded_circumscribed_m": 0.308284271247462,
+  "inflation_cells": 7,
+  "inflation_cutoff_axis_m": 0.35000000000000003,
+  "axis_cells": [
+    {
+      "cells": 0,
+      "distance_m": 0.0,
+      "cost": 254
+    },
+    {
+      "cells": 1,
+      "distance_m": 0.05,
+      "cost": 253
+    },
+    {
+      "cells": 2,
+      "distance_m": 0.1,
+      "cost": 253
+    },
+    {
+      "cells": 3,
+      "distance_m": 0.15000000000000002,
+      "cost": 253
+    },
+    {
+      "cells": 4,
+      "distance_m": 0.2,
+      "cost": 253
+    },
+    {
+      "cells": 5,
+      "distance_m": 0.25,
+      "cost": 253
+    },
+    {
+      "cells": 6,
+      "distance_m": 0.30000000000000004,
+      "cost": 246
+    },
+    {
+      "cells": 7,
+      "distance_m": 0.35000000000000003,
+      "cost": 201
+    },
+    {
+      "cells": 8,
+      "distance_m": 0.4,
+      "cost": 0
+    }
+  ]
+}

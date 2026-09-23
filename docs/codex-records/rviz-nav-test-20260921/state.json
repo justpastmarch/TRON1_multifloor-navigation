@@ -1,0 +1,35 @@
+{
+  "started_utc": "2026-09-21T00:07:44.846320+00:00",
+  "understood_as": "Prepare live RViz and automatic/manual 3F localization, then operator-triggered flat NAV to stair entry. No stair climb; command-owner startup awaits operator flat-floor readiness because STAND/WALK requests are sent.",
+  "repo": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation",
+  "master": "http://192.168.1.26:11311",
+  "owned_processes": [
+    {
+      "role": "rviz_localization_navigation",
+      "pid": 84945,
+      "log": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/rviz-nav-test-20260921/view-and-localize.log"
+    }
+  ],
+  "git_before": " M README.md\n M bundle_runtime_contract.py\n M config.env\n M run.sh\n M src/mission_manager/CMakeLists.txt\n M src/mission_manager/launch/system.launch\n M src/mission_manager/src/mission_manager/mission_action_server.py\n M src/mission_manager/src/mission_manager/mission_orchestrator.py\n M src/mission_manager/src/mission_manager/navigation_executor.py\n M src/mission_manager/src/mission_manager/ros_runtime.py\n M src/mission_manager/src/mission_manager/ros_state.py\n M src/mission_manager/src/mission_manager/route_planner.py\n M src/mission_manager/test/mission_5f_rf_synthetic.test\n M src/mission_manager/test/mock_mission_children.py\n M src/mission_manager/test/test_full_system_synthetic_ros.py\n M src/mission_manager/test/test_mission_action_ros.py\n M src/mission_manager/test/test_route_planner.py\n M src/mission_manager/test/test_runtime_gating.py\n M src/multifloor_manager/CMakeLists.txt\n M src/multifloor_manager/launch/navigation.launch\n M src/multifloor_manager/package.xml\n M src/multifloor_manager/rviz/wf_navigation.rviz\n M src/multifloor_manager/scripts/rviz_tf_reconnect.py\n M src/multifloor_manager/src/multifloor_manager/ros_callbacks.py\n M src/multifloor_manager/src/multifloor_manager/ros_node.py\n M src/multifloor_manager/src/multifloor_manager/ros_runtime.py\n M src/stair_supervisor/CMakeLists.txt\n M src/stair_supervisor/package.xml\n M src/stair_supervisor/src/stair_supervisor/configuration.py\n M src/stair_supervisor/src/stair_supervisor/robot_client.py\n M src/stair_supervisor/src/stair_supervisor/robot_transport.py\n M src/stair_supervisor/src/stair_supervisor/ros_entrypoint.py\n M src/stair_supervisor/src/stair_supervisor/ros_node.py\n M src/stair_supervisor/src/stair_supervisor/supervisor.py\n M src/stair_supervisor/src/stair_supervisor/supervisor_types.py\n M src/stair_supervisor/test/robot_transport/test_robot_transport.py\n M src/stair_supervisor/test/stair_sensor_fixture.py\n M src/stair_supervisor/test/test_websocket_tx_ros.py\n M test/test_bundle_contract.py\n M test/test_legacy_rviz_viewer_contract.py\n M test/test_rviz_tf_reconnect.py\n M test/test_system_operator_contract.py\n?? docs/stair-lidar-integration.md\n?? docs/startup-localization-ko.md\n?? src/mission_manager/src/mission_manager/navigation_hold.py\n?? src/mission_manager/test/test_navigation_hold.py\n?? src/multifloor_manager/src/multifloor_manager/ros_startup_localization.py\n?? src/multifloor_manager/src/multifloor_manager/startup_matching.py\n?? src/multifloor_manager/test/startup_localization.test\n?? src/multifloor_manager/test/test_startup_localization_ros.py\n?? src/multifloor_manager/test/test_startup_matching.py\n?? src/stair_supervisor/config/lidar_imu_baseline.yaml\n?? src/stair_supervisor/config/stair_lidar.yaml\n?? src/stair_supervisor/requirements-lidar.txt\n?? src/stair_supervisor/scripts/profile_lidar_stream.py\n?? src/stair_supervisor/scripts/replay_lidar_tracking.py\n?? src/stair_supervisor/src/stair_supervisor/lidar_process.py\n?? src/stair_supervisor/src/stair_supervisor/lidar_tracking.py\n?? src/stair_supervisor/src/stair_supervisor/lidar_tracking_core.py\n?? src/stair_supervisor/src/stair_supervisor/ros_lidar.py\n?? src/stair_supervisor/src/stair_supervisor/stair_feedback.py\n?? src/stair_supervisor/test/lidar_observe.test\n?? src/stair_supervisor/test/test_lidar_control.py\n?? src/stair_supervisor/test/test_lidar_observe_ros.py\n?? src/stair_supervisor/test/test_lidar_process.py\n?? src/stair_supervisor/test/test_lidar_ros_adapter.py\n",
+  "motion_goal_sent": false,
+  "operator_ready": "User confirmed 3F flat floor with controller stop available",
+  "retained_operational_artifacts": [
+    "env.sh",
+    "view-and-localize.launch",
+    "navigation.rviz",
+    "nav-config/",
+    "ros-home/",
+    "ros-log/",
+    "view-and-localize.log"
+  ],
+  "scope": "flat NAV to stair_3f_up_entry only; all stair profiles disabled in session copy, production config unchanged",
+  "localization_observation": {
+    "state": "READY",
+    "source": "auto",
+    "floor": "3F",
+    "x": 0.6888193351562557,
+    "y": -2.2466294735632966,
+    "yaw": -0.30663528494798176,
+    "physical_accuracy": "not independently confirmed"
+  }
+}

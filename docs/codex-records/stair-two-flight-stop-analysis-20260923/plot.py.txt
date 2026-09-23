@@ -1,0 +1,26 @@
+from pathlib import Path
+import json,numpy as np,math,os,tempfile,shutil
+cache=tempfile.mkdtemp(prefix='stair-plot-',dir='/tmp');os.environ['MPLCONFIGDIR']=cache
+try:
+ import matplotlib;matplotlib.use('Agg')
+ import matplotlib.pyplot as plt
+ from matplotlib.patches import Polygon
+ E=Path(__file__).resolve().parent;events=json.loads((E/'events.json').read_text());poses=json.loads((E/'poses.json').read_text());runs=[x for x in json.loads((E/'runs.json').read_text()) if x['result']['result_code']==5];D=json.loads((E/'diagnosis-numeric.json').read_text())
+ fig,axs=plt.subplots(3,3,figsize=(15,10),dpi=160)
+ for col,(run,d) in enumerate(zip(runs,D)):
+  a=axs[0,col];p=[p for p in poses if run['start']-1<=p['t']<=run['end']+4];t=np.array([x['t']-run['end'] for x in p]);target=math.pi if col else 0
+  yaw=[math.degrees(math.atan2(math.sin(x['yaw']-target),math.cos(x['yaw']-target))) for x in p]
+  a.plot(t,yaw,color='#2663b5',lw=1.6);a.axvline(0,color='#d34d4d',ls='--');a.axhline(0,color='gray',lw=.7);a.set_title(['Flight 1: 10:28:13','Flight 2 entry: 10:35:21','Flight 2 retry: 10:38:07'][col]);a.set_ylabel('Heading error (deg)');a.grid(alpha=.2)
+  a=axs[1,col];tx=[x for x in events if x['topic'].endswith('websocket_tx') and x['data'].get('title')=='request_twist' and run['start']-1<=x['t']<=run['end']+4]
+  a.step([x['t']-run['end'] for x in tx],[x['data']['data']['x'] for x in tx],where='post',color='#ca6a0c',label='Sent forward input');a.axvline(0,color='#d34d4d',ls='--');a.set_ylim(-.05,1.1);a.set_ylabel('Normalized x command');a.set_xlabel('Seconds relative to result');a.grid(alpha=.2)
+  a=axs[2,col];p0=min(poses,key=lambda p:abs(p['stamp']-d['fault_sensor_stamp']));pos=np.array(p0['pose'][:2]);yaw0=p0['yaw'];fp=np.array(p0['footprint']);w=d['proposed_w'];v=.55;ts=np.linspace(0,.9,17);theta=w*ts
+  cen=pos+(v/w)*np.column_stack((np.sin(yaw0+theta)-math.sin(yaw0),math.cos(yaw0)-np.cos(yaw0+theta)))
+  a.add_patch(Polygon(fp,fill=True,color='#4482c1',alpha=.3,label='Body at stop sample'))
+  displayed=[fp]
+  for i in (4,8,12,16):
+   c,s=math.cos(theta[i]),math.sin(theta[i]);q=(fp-pos)@np.array([[c,s],[-s,c]])+cen[i];a.add_patch(Polygon(q,fill=False,edgecolor='#d88b27',alpha=.7));displayed.append(q)
+  edge=-.615 if col==0 else (.855 if col==1 else 2.085);a.axhline(edge,color='#b32929',lw=2,label='Configured outer edge');margin=edge+.12 if col in (0,1) else edge-.12;a.axhline(margin,color='#b32929',ls='--',label='12 cm margin')
+  a.plot(cen[:,0],cen[:,1],color='#d88b27');a.set_aspect('equal');a.set_xlim(np.vstack(displayed)[:,0].min()-.1,np.vstack(displayed)[:,0].max()+.1);a.set_ylim(min(fp[:,1].min(),edge)-.15,max(fp[:,1].max(),edge)+.15);a.set_xlabel('Route X (m)');a.set_ylabel('Route Y (m)');a.grid(alpha=.2);a.set_title('Recorded pose + frozen command projection' if col==0 else 'Near-fault pose + assumed slew command')
+ axs[2,0].legend(fontsize=7,loc='best');fig.suptitle('Stair stops: faults while ascending, not arrival detections\nProjection is a software-model calculation; joystick input was not recorded.',fontsize=14)
+ fig.tight_layout(rect=(0,0,1,.94));fig.savefig(E/'stop-analysis.png');plt.close(fig)
+finally:shutil.rmtree(cache,ignore_errors=True)

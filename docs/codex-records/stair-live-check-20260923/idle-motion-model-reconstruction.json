@@ -1,0 +1,27 @@
+{
+  "from_amcl_scan_stamp": 1790119642.7937863,
+  "to_amcl_scan_stamp": 1790119688.5837653,
+  "span_sec": 45.789978981018066,
+  "tf_samples": 4683,
+  "tf_start": [
+    1790119642.7937863,
+    0.07666206723003188,
+    -1.7360289695248572,
+    -1.1666325232539374
+  ],
+  "tf_end": [
+    1790119688.5837653,
+    -0.023347908013141565,
+    -1.798169193966589,
+    -1.192714929055206
+  ],
+  "delta_translation_m": 0.1177429515589318,
+  "delta_rotation_deg": -1.4944117719602208,
+  "diff_rot1_deg": -81.30253149834382,
+  "diff_rot2_deg": 79.80811972638361,
+  "diff_translation_gaussian_sigma_m": 0.7935252390674019,
+  "diff_rot1_gaussian_sigma_deg": 23.232470352357513,
+  "diff_rot2_gaussian_sigma_deg": 22.392039675527517,
+  "caveat": "Reconstruction from recorded planar TF and runtime alpha values using upstream ODOM_MODEL_DIFF formula. Exact runtime internal update endpoints and per-particle random draws were not instrumented; not a replay success or absolute accuracy measure.",
+  "upstream": "https://github.com/ros-planning/navigation/blob/noetic-devel/amcl/src/amcl/sensors/amcl_odom.cpp#L154-L198"
+}

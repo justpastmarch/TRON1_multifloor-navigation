@@ -1,0 +1,2041 @@
+{
+  "understood_as": "Read-only diagnosis of VERIFY_ENTRY timeout in the latest physical phase test; preserve recording, commands, and reference placement. No goal or mode switch will be sent.",
+  "bag": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/logs/stair_test_20260923_091308_DFihob/stair.bag",
+  "messages": [
+    {
+      "time": 1790122398.2092936,
+      "topic": "/stair_supervisor/state",
+      "value": "header: \n  seq: 6895\n  stamp: \n    secs: 1790122397\n    nsecs: 936333894\n  frame_id: ''\nstate: 1\nconnected: True\ndetail: \"navigation owns commands\"\nownership_epoch: 0"
+    },
+    {
+      "time": 1790122398.211434,
+      "topic": "/stair_traversal/status",
+      "value": "header: \n  seq: 17218\n  stamp: \n    secs: 1790122398\n    nsecs: 134338140\n  frame_id: ''\nstatus_list: []"
+    },
+    {
+      "time": 1790122398.2227092,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398222,
+        "guid": "982bf912-c06e-44f8-a352-7c2afc15057f",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.2425914,
+      "topic": "/stair_supervisor/control_debug",
+      "value": {
+        "phase": "VERIFY_ENTRY",
+        "command": [
+          0.0,
+          0.0
+        ],
+        "pending_entries": [
+          {
+            "route_id": "stair_3f_4f_up",
+            "epoch": 0,
+            "sequence": 12199,
+            "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+            "age_sec": 1012.393465512665
+          }
+        ],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+      }
+    },
+    {
+      "time": 1790122398.2432752,
+      "topic": "/stair_supervisor/tracking_status",
+      "value": {
+        "epoch": 0,
+        "queue_length": 0,
+        "dropped_scans": 0,
+        "rejected_imu": 0,
+        "worker_error": "",
+        "backend": "process",
+        "mode": "control",
+        "observe_only": false,
+        "phase_test_protocol": "bound-ticket-v1",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false
+          }
+        ],
+        "sequence": 17258,
+        "stamp": 1790122397.9481966,
+        "received_at": 192930.981213871,
+        "measured_at": 192930.8146320019,
+        "completed_at": 192931.035826707,
+        "last_geometry_at": 192930.8146320019,
+        "geometry_valid": true,
+        "state": "TRACKED",
+        "reason": "geometry accepted",
+        "fitness": 1.0,
+        "rmse": 0.06131834348177306,
+        "translation_innovation": 0.0016947592720187317,
+        "rotation_innovation": 0.0036633458555327186,
+        "prediction_source": "gyro",
+        "compute_sec": 0.0531781830068212,
+        "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "geometry_age_sec": 0.28226842611911707,
+        "transport_delay_sec": 0.1665818691253662,
+        "completion_age_sec": 0.2211947051109746
+      }
+    },
+    {
+      "time": 1790122398.2476563,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398247,
+        "guid": "43044699-23ee-487c-8c99-6b85c850845a",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.272644,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398272,
+        "guid": "d475ec16-d081-484a-ba15-ad4e5f012d46",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.297698,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398297,
+        "guid": "839703ae-3910-4979-8cf2-525a605e389a",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.322672,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398322,
+        "guid": "2f7134b7-051f-45a0-b4fa-657c92919977",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.3310943,
+      "topic": "/stair_supervisor/control_debug",
+      "value": {
+        "phase": "VERIFY_ENTRY",
+        "command": [
+          0.0,
+          0.0
+        ],
+        "pending_entries": [
+          {
+            "route_id": "stair_3f_4f_up",
+            "epoch": 0,
+            "sequence": 12199,
+            "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+            "age_sec": 1012.4832814526744
+          }
+        ],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+      }
+    },
+    {
+      "time": 1790122398.3317358,
+      "topic": "/stair_supervisor/tracking_status",
+      "value": {
+        "epoch": 0,
+        "queue_length": 0,
+        "dropped_scans": 0,
+        "rejected_imu": 0,
+        "worker_error": "",
+        "backend": "process",
+        "mode": "control",
+        "observe_only": false,
+        "phase_test_protocol": "bound-ticket-v1",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false
+          }
+        ],
+        "sequence": 17258,
+        "stamp": 1790122397.9481966,
+        "received_at": 192930.981213871,
+        "measured_at": 192930.8146320019,
+        "completed_at": 192931.035826707,
+        "last_geometry_at": 192930.8146320019,
+        "geometry_valid": true,
+        "state": "TRACKED",
+        "reason": "geometry accepted",
+        "fitness": 1.0,
+        "rmse": 0.06131834348177306,
+        "translation_innovation": 0.0016947592720187317,
+        "rotation_innovation": 0.0036633458555327186,
+        "prediction_source": "gyro",
+        "compute_sec": 0.0531781830068212,
+        "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "geometry_age_sec": 0.3822284160996787,
+        "transport_delay_sec": 0.1665818691253662,
+        "completion_age_sec": 0.2211947051109746
+      }
+    },
+    {
+      "time": 1790122398.3344493,
+      "topic": "/stair_traversal/status",
+      "value": "header: \n  seq: 17219\n  stamp: \n    secs: 1790122398\n    nsecs: 334305524\n  frame_id: ''\nstatus_list: []"
+    },
+    {
+      "time": 1790122398.347742,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398347,
+        "guid": "727e3faa-0382-42bb-aa09-efcd0396f442",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.3726602,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398372,
+        "guid": "2de7229c-84d3-451b-a9a7-e7e51a71767a",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.3977635,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398397,
+        "guid": "9587f426-017c-45c0-8f7e-d8dff8c04928",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.4229276,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398422,
+        "guid": "81e15d2e-94c0-44c2-bb2d-50f9d33f21c4",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.4447262,
+      "topic": "/stair_supervisor/state",
+      "value": "header: \n  seq: 6896\n  stamp: \n    secs: 1790122398\n    nsecs: 439650297\n  frame_id: ''\nstate: 1\nconnected: True\ndetail: \"navigation owns commands\"\nownership_epoch: 0"
+    },
+    {
+      "time": 1790122398.4447527,
+      "topic": "/stair_supervisor/tracking_status",
+      "value": {
+        "epoch": 0,
+        "queue_length": 0,
+        "dropped_scans": 0,
+        "rejected_imu": 0,
+        "worker_error": "",
+        "backend": "process",
+        "mode": "control",
+        "observe_only": false,
+        "phase_test_protocol": "bound-ticket-v1",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false
+          }
+        ],
+        "sequence": 17259,
+        "stamp": 1790122398.1481369,
+        "received_at": 192931.179472686,
+        "measured_at": 192931.01457119102,
+        "completed_at": 192931.237070418,
+        "last_geometry_at": 192931.01457119102,
+        "geometry_valid": true,
+        "state": "TRACKED",
+        "reason": "geometry accepted",
+        "fitness": 1.0,
+        "rmse": 0.0609897778531742,
+        "translation_innovation": 0.0026294862888006456,
+        "rotation_innovation": 0.0036008556308772584,
+        "prediction_source": "gyro",
+        "compute_sec": 0.055765601980965585,
+        "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "geometry_age_sec": 0.28238389498437755,
+        "transport_delay_sec": 0.1649014949798584,
+        "completion_age_sec": 0.2224992269766517
+      }
+    },
+    {
+      "time": 1790122398.4447625,
+      "topic": "/stair_supervisor/control_debug",
+      "value": {
+        "phase": "VERIFY_ENTRY",
+        "command": [
+          0.0,
+          0.0
+        ],
+        "pending_entries": [
+          {
+            "route_id": "stair_3f_4f_up",
+            "epoch": 0,
+            "sequence": 12199,
+            "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+            "age_sec": 1012.5952386856661
+          }
+        ],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+      }
+    },
+    {
+      "time": 1790122398.4477434,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398447,
+        "guid": "68d977d3-9040-4529-b29e-4286137662db",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.4727778,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398472,
+        "guid": "cc8e32f4-9374-4118-96ae-74015423deeb",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.4976616,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398497,
+        "guid": "29ade349-2334-4a4f-9ca4-1275478ac445",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.522701,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398522,
+        "guid": "92953630-f76a-4b56-a2b8-547d37cd5c4a",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.5314085,
+      "topic": "/stair_supervisor/tracking_status",
+      "value": {
+        "epoch": 0,
+        "queue_length": 0,
+        "dropped_scans": 0,
+        "rejected_imu": 0,
+        "worker_error": "",
+        "backend": "process",
+        "mode": "control",
+        "observe_only": false,
+        "phase_test_protocol": "bound-ticket-v1",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false
+          }
+        ],
+        "sequence": 17259,
+        "stamp": 1790122398.1481369,
+        "received_at": 192931.179472686,
+        "measured_at": 192931.01457119102,
+        "completed_at": 192931.237070418,
+        "last_geometry_at": 192931.01457119102,
+        "geometry_valid": true,
+        "state": "TRACKED",
+        "reason": "geometry accepted",
+        "fitness": 1.0,
+        "rmse": 0.0609897778531742,
+        "translation_innovation": 0.0026294862888006456,
+        "rotation_innovation": 0.0036008556308772584,
+        "prediction_source": "gyro",
+        "compute_sec": 0.055765601980965585,
+        "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "geometry_age_sec": 0.3822631959919818,
+        "transport_delay_sec": 0.1649014949798584,
+        "completion_age_sec": 0.2224992269766517
+      }
+    },
+    {
+      "time": 1790122398.5316527,
+      "topic": "/stair_supervisor/control_debug",
+      "value": {
+        "phase": "VERIFY_ENTRY",
+        "command": [
+          0.0,
+          0.0
+        ],
+        "pending_entries": [
+          {
+            "route_id": "stair_3f_4f_up",
+            "epoch": 0,
+            "sequence": 12199,
+            "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+            "age_sec": 1012.6832432376686
+          }
+        ],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+      }
+    },
+    {
+      "time": 1790122398.5344973,
+      "topic": "/stair_traversal/status",
+      "value": "header: \n  seq: 17220\n  stamp: \n    secs: 1790122398\n    nsecs: 534316301\n  frame_id: ''\nstatus_list: []"
+    },
+    {
+      "time": 1790122398.5477018,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398547,
+        "guid": "c1bd6186-69f9-435e-a97e-fb3d08f454ef",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.5728595,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398572,
+        "guid": "7129c68a-ed83-498c-80d8-40dddd69c12f",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.5977437,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398597,
+        "guid": "741f9c52-7ea4-426d-93ab-a34e97e26cf8",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.622727,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398622,
+        "guid": "d554d599-7ff4-4b43-8af8-052967e818e8",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.6414583,
+      "topic": "/stair_supervisor/control_debug",
+      "value": {
+        "phase": "VERIFY_ENTRY",
+        "command": [
+          0.0,
+          0.0
+        ],
+        "pending_entries": [
+          {
+            "route_id": "stair_3f_4f_up",
+            "epoch": 0,
+            "sequence": 12199,
+            "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+            "age_sec": 1012.7926249006705
+          }
+        ],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+      }
+    },
+    {
+      "time": 1790122398.6415818,
+      "topic": "/stair_supervisor/tracking_status",
+      "value": {
+        "epoch": 0,
+        "queue_length": 0,
+        "dropped_scans": 0,
+        "rejected_imu": 0,
+        "worker_error": "",
+        "backend": "process",
+        "mode": "control",
+        "observe_only": false,
+        "phase_test_protocol": "bound-ticket-v1",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false
+          }
+        ],
+        "sequence": 17260,
+        "stamp": 1790122398.348181,
+        "received_at": 192931.371357723,
+        "measured_at": 192931.21461705756,
+        "completed_at": 192931.431753949,
+        "last_geometry_at": 192931.21461705756,
+        "geometry_valid": true,
+        "state": "TRACKED",
+        "reason": "geometry accepted",
+        "fitness": 1.0,
+        "rmse": 0.06422991948372932,
+        "translation_innovation": 0.006690780714409951,
+        "rotation_innovation": 0.005623546843419818,
+        "prediction_source": "gyro",
+        "compute_sec": 0.05893301000469364,
+        "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "geometry_age_sec": 0.2825110184494406,
+        "transport_delay_sec": 0.15674066543579102,
+        "completion_age_sec": 0.21713689144235104
+      }
+    },
+    {
+      "time": 1790122398.6476994,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398647,
+        "guid": "8a440771-5cf0-4d52-825d-86978349ccf2",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.6727133,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398672,
+        "guid": "6d4b05b1-9e9b-45e9-9100-c8da3ee18928",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.6976502,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398697,
+        "guid": "fd637f5d-34f6-45ce-886d-842d8bdd11ec",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.7226257,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398722,
+        "guid": "c29291e8-310b-4e92-927e-b1983c0e788e",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.7316577,
+      "topic": "/stair_supervisor/tracking_status",
+      "value": {
+        "epoch": 0,
+        "queue_length": 0,
+        "dropped_scans": 0,
+        "rejected_imu": 0,
+        "worker_error": "",
+        "backend": "process",
+        "mode": "control",
+        "observe_only": false,
+        "phase_test_protocol": "bound-ticket-v1",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false
+          }
+        ],
+        "sequence": 17260,
+        "stamp": 1790122398.348181,
+        "received_at": 192931.371357723,
+        "measured_at": 192931.21461705756,
+        "completed_at": 192931.431753949,
+        "last_geometry_at": 192931.21461705756,
+        "geometry_valid": true,
+        "state": "TRACKED",
+        "reason": "geometry accepted",
+        "fitness": 1.0,
+        "rmse": 0.06422991948372932,
+        "translation_innovation": 0.006690780714409951,
+        "rotation_innovation": 0.005623546843419818,
+        "prediction_source": "gyro",
+        "compute_sec": 0.05893301000469364,
+        "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "geometry_age_sec": 0.3822113964415621,
+        "transport_delay_sec": 0.15674066543579102,
+        "completion_age_sec": 0.21713689144235104
+      }
+    },
+    {
+      "time": 1790122398.73179,
+      "topic": "/stair_supervisor/control_debug",
+      "value": {
+        "phase": "VERIFY_ENTRY",
+        "command": [
+          0.0,
+          0.0
+        ],
+        "pending_entries": [
+          {
+            "route_id": "stair_3f_4f_up",
+            "epoch": 0,
+            "sequence": 12199,
+            "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+            "age_sec": 1012.8832368516596
+          }
+        ],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+      }
+    },
+    {
+      "time": 1790122398.7345333,
+      "topic": "/stair_traversal/status",
+      "value": "header: \n  seq: 17221\n  stamp: \n    secs: 1790122398\n    nsecs: 734326362\n  frame_id: ''\nstatus_list: []"
+    },
+    {
+      "time": 1790122398.7479472,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398747,
+        "guid": "7b9ec14a-6fd3-4a98-b952-447897217695",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.7726452,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398772,
+        "guid": "f85ced0a-bcb1-4f2a-b923-93c211a31dc0",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.7984889,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398797,
+        "guid": "404e35d3-71c4-4ba0-baa3-2ed3f2788dcf",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.8229618,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398822,
+        "guid": "7ef2b981-ba02-42b6-88bf-0ca2dcf4898e",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.8445337,
+      "topic": "/stair_supervisor/tracking_status",
+      "value": {
+        "epoch": 0,
+        "queue_length": 0,
+        "dropped_scans": 0,
+        "rejected_imu": 0,
+        "worker_error": "",
+        "backend": "process",
+        "mode": "control",
+        "observe_only": false,
+        "phase_test_protocol": "bound-ticket-v1",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false
+          }
+        ],
+        "sequence": 17261,
+        "stamp": 1790122398.5482168,
+        "received_at": 192931.572402361,
+        "measured_at": 192931.4146536618,
+        "completed_at": 192931.664796692,
+        "last_geometry_at": 192931.4146536618,
+        "geometry_valid": true,
+        "state": "TRACKED",
+        "reason": "geometry accepted",
+        "fitness": 1.0,
+        "rmse": 0.0740222556817166,
+        "translation_innovation": 0.003984439378147897,
+        "rotation_innovation": 0.002738574480167844,
+        "prediction_source": "gyro",
+        "compute_sec": 0.09140043798834085,
+        "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "geometry_age_sec": 0.28237307618837804,
+        "transport_delay_sec": 0.15774869918823242,
+        "completion_age_sec": 0.250143030192703
+      }
+    },
+    {
+      "time": 1790122398.8445342,
+      "topic": "/stair_supervisor/control_debug",
+      "value": {
+        "phase": "VERIFY_ENTRY",
+        "command": [
+          0.0,
+          0.0
+        ],
+        "pending_entries": [
+          {
+            "route_id": "stair_3f_4f_up",
+            "epoch": 0,
+            "sequence": 12199,
+            "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+            "age_sec": 1012.995540985663
+          }
+        ],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+      }
+    },
+    {
+      "time": 1790122398.847901,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398847,
+        "guid": "6e4364d5-d40d-4f88-91f2-d28a22d04d53",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.8726966,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398872,
+        "guid": "dc3e5292-af82-4996-8d9b-d9e565d30047",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.8978093,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398897,
+        "guid": "fdecb190-d179-4327-8323-a1badf3fa573",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.9229496,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398922,
+        "guid": "6f8620d0-e9f3-4f95-a0db-1b3df17116e6",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.933761,
+      "topic": "/stair_supervisor/tracking_status",
+      "value": {
+        "epoch": 0,
+        "queue_length": 0,
+        "dropped_scans": 0,
+        "rejected_imu": 0,
+        "worker_error": "",
+        "backend": "process",
+        "mode": "control",
+        "observe_only": false,
+        "phase_test_protocol": "bound-ticket-v1",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false
+          }
+        ],
+        "sequence": 17261,
+        "stamp": 1790122398.5482168,
+        "received_at": 192931.572402361,
+        "measured_at": 192931.4146536618,
+        "completed_at": 192931.664796692,
+        "last_geometry_at": 192931.4146536618,
+        "geometry_valid": true,
+        "state": "TRACKED",
+        "reason": "geometry accepted",
+        "fitness": 1.0,
+        "rmse": 0.0740222556817166,
+        "translation_innovation": 0.003984439378147897,
+        "rotation_innovation": 0.002738574480167844,
+        "prediction_source": "gyro",
+        "compute_sec": 0.09140043798834085,
+        "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "geometry_age_sec": 0.38252634918899275,
+        "transport_delay_sec": 0.15774869918823242,
+        "completion_age_sec": 0.250143030192703
+      }
+    },
+    {
+      "time": 1790122398.9351308,
+      "topic": "/stair_supervisor/control_debug",
+      "value": {
+        "phase": "VERIFY_ENTRY",
+        "command": [
+          0.0,
+          0.0
+        ],
+        "pending_entries": [
+          {
+            "route_id": "stair_3f_4f_up",
+            "epoch": 0,
+            "sequence": 12199,
+            "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+            "age_sec": 1013.0837346736807
+          }
+        ],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+      }
+    },
+    {
+      "time": 1790122398.9351716,
+      "topic": "/stair_traversal/status",
+      "value": "header: \n  seq: 17222\n  stamp: \n    secs: 1790122398\n    nsecs: 934714794\n  frame_id: ''\nstatus_list: []"
+    },
+    {
+      "time": 1790122398.9367704,
+      "topic": "/stair_supervisor/state",
+      "value": "header: \n  seq: 6897\n  stamp: \n    secs: 1790122398\n    nsecs: 936389923\n  frame_id: ''\nstate: 1\nconnected: True\ndetail: \"navigation owns commands\"\nownership_epoch: 0"
+    },
+    {
+      "time": 1790122398.9478488,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398947,
+        "guid": "4eb6ef88-174f-415a-8af2-6ced0d1c1d08",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.972714,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398972,
+        "guid": "d5a29745-00e2-4c7e-82c8-f83361cbc202",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122398.997738,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122398997,
+        "guid": "4687224e-93d5-49ed-bd2d-17d0fd300af2",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.0226517,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399022,
+        "guid": "5fabd3b4-6b0f-4a7a-9ca0-8f2f3973d06f",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.0427513,
+      "topic": "/stair_supervisor/tracking_status",
+      "value": {
+        "epoch": 0,
+        "queue_length": 0,
+        "dropped_scans": 0,
+        "rejected_imu": 0,
+        "worker_error": "",
+        "backend": "process",
+        "mode": "control",
+        "observe_only": false,
+        "phase_test_protocol": "bound-ticket-v1",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false
+          }
+        ],
+        "sequence": 17262,
+        "stamp": 1790122398.7481813,
+        "received_at": 192931.811777019,
+        "measured_at": 192931.61461749027,
+        "completed_at": 192931.888789078,
+        "last_geometry_at": 192931.61461749027,
+        "geometry_valid": true,
+        "state": "TRACKED",
+        "reason": "geometry accepted",
+        "fitness": 1.0,
+        "rmse": 0.061868104245093605,
+        "translation_innovation": 0.006580730868220505,
+        "rotation_innovation": 0.0038218523521729494,
+        "prediction_source": "gyro",
+        "compute_sec": 0.07588634599233046,
+        "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "geometry_age_sec": 0.2822930387337692,
+        "transport_delay_sec": 0.1971595287322998,
+        "completion_age_sec": 0.2741715877200477
+      }
+    },
+    {
+      "time": 1790122399.0427752,
+      "topic": "/stair_supervisor/control_debug",
+      "value": {
+        "phase": "VERIFY_ENTRY",
+        "command": [
+          0.0,
+          0.0
+        ],
+        "pending_entries": [
+          {
+            "route_id": "stair_3f_4f_up",
+            "epoch": 0,
+            "sequence": 12199,
+            "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+            "age_sec": 1013.1940501906793
+          }
+        ],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+      }
+    },
+    {
+      "time": 1790122399.047791,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399047,
+        "guid": "c139ce29-13a8-4421-8302-7e03060a6d1e",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.0727465,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399072,
+        "guid": "b0b707c8-17d6-4c03-b5fc-524333e95d13",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.0976925,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399097,
+        "guid": "635429fa-43a1-4daa-a3a0-4e1bbd4f48af",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.122756,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399122,
+        "guid": "a145869b-22aa-49ab-a147-0409c017bb7a",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.1322546,
+      "topic": "/stair_supervisor/control_debug",
+      "value": {
+        "phase": "VERIFY_ENTRY",
+        "command": [
+          0.0,
+          0.0
+        ],
+        "pending_entries": [
+          {
+            "route_id": "stair_3f_4f_up",
+            "epoch": 0,
+            "sequence": 12199,
+            "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+            "age_sec": 1013.2833513696678
+          }
+        ],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+      }
+    },
+    {
+      "time": 1790122399.13232,
+      "topic": "/stair_supervisor/tracking_status",
+      "value": {
+        "epoch": 0,
+        "queue_length": 0,
+        "dropped_scans": 0,
+        "rejected_imu": 0,
+        "worker_error": "",
+        "backend": "process",
+        "mode": "control",
+        "observe_only": false,
+        "phase_test_protocol": "bound-ticket-v1",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false
+          }
+        ],
+        "sequence": 17262,
+        "stamp": 1790122398.7481813,
+        "received_at": 192931.811777019,
+        "measured_at": 192931.61461749027,
+        "completed_at": 192931.888789078,
+        "last_geometry_at": 192931.61461749027,
+        "geometry_valid": true,
+        "state": "TRACKED",
+        "reason": "geometry accepted",
+        "fitness": 1.0,
+        "rmse": 0.061868104245093605,
+        "translation_innovation": 0.006580730868220505,
+        "rotation_innovation": 0.0038218523521729494,
+        "prediction_source": "gyro",
+        "compute_sec": 0.07588634599233046,
+        "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "geometry_age_sec": 0.3822850557335187,
+        "transport_delay_sec": 0.1971595287322998,
+        "completion_age_sec": 0.2741715877200477
+      }
+    },
+    {
+      "time": 1790122399.1346478,
+      "topic": "/stair_traversal/status",
+      "value": "header: \n  seq: 17223\n  stamp: \n    secs: 1790122399\n    nsecs: 134341716\n  frame_id: ''\nstatus_list: []"
+    },
+    {
+      "time": 1790122399.147797,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399147,
+        "guid": "15343312-0d19-48d2-997c-4ac10d498361",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.1732535,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399172,
+        "guid": "643734e0-81af-4133-9754-b5d12733f85e",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.197623,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399197,
+        "guid": "dd2f06a0-5c37-4b04-9f34-f3ed04e87f71",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.222848,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399222,
+        "guid": "849b8c81-9f3a-4eb8-bac2-3d5cedfe4b8c",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.2390966,
+      "topic": "/stair_supervisor/tracking_status",
+      "value": {
+        "epoch": 0,
+        "queue_length": 0,
+        "dropped_scans": 0,
+        "rejected_imu": 0,
+        "worker_error": "",
+        "backend": "process",
+        "mode": "control",
+        "observe_only": false,
+        "phase_test_protocol": "bound-ticket-v1",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false
+          }
+        ],
+        "sequence": 17263,
+        "stamp": 1790122398.9480417,
+        "received_at": 192931.97075822,
+        "measured_at": 192931.81447674875,
+        "completed_at": 192932.0428482,
+        "last_geometry_at": 192931.81447674875,
+        "geometry_valid": true,
+        "state": "TRACKED",
+        "reason": "geometry accepted",
+        "fitness": 1.0,
+        "rmse": 0.06949108323832545,
+        "translation_innovation": 0.008520195752291898,
+        "rotation_innovation": 0.004007622325293334,
+        "prediction_source": "gyro",
+        "compute_sec": 0.07120679900981486,
+        "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "geometry_age_sec": 0.2825036082358565,
+        "transport_delay_sec": 0.1562814712524414,
+        "completion_age_sec": 0.22837145125959069
+      }
+    },
+    {
+      "time": 1790122399.2391675,
+      "topic": "/stair_supervisor/control_debug",
+      "value": {
+        "phase": "VERIFY_ENTRY",
+        "command": [
+          0.0,
+          0.0
+        ],
+        "pending_entries": [
+          {
+            "route_id": "stair_3f_4f_up",
+            "epoch": 0,
+            "sequence": 12199,
+            "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+            "age_sec": 1013.3906654476596
+          }
+        ],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+      }
+    },
+    {
+      "time": 1790122399.24776,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399247,
+        "guid": "34fb29a1-5f76-4027-be5b-d1fe823ef1da",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.2727835,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399272,
+        "guid": "f393b8b8-82df-4abe-b573-afb61485e3a8",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.2978714,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399297,
+        "guid": "fb3bdd7d-516d-40bd-b871-f9da5b7e46c6",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.3227606,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399322,
+        "guid": "65d5435f-3a38-42c9-9add-0a9bc26bb70f",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.3315825,
+      "topic": "/stair_supervisor/control_debug",
+      "value": {
+        "phase": "VERIFY_ENTRY",
+        "command": [
+          0.0,
+          0.0
+        ],
+        "pending_entries": [
+          {
+            "route_id": "stair_3f_4f_up",
+            "epoch": 0,
+            "sequence": 12199,
+            "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+            "age_sec": 1013.4832329346682
+          }
+        ],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+      }
+    },
+    {
+      "time": 1790122399.3316011,
+      "topic": "/stair_supervisor/tracking_status",
+      "value": {
+        "epoch": 0,
+        "queue_length": 0,
+        "dropped_scans": 0,
+        "rejected_imu": 0,
+        "worker_error": "",
+        "backend": "process",
+        "mode": "control",
+        "observe_only": false,
+        "phase_test_protocol": "bound-ticket-v1",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false
+          }
+        ],
+        "sequence": 17263,
+        "stamp": 1790122398.9480417,
+        "received_at": 192931.97075822,
+        "measured_at": 192931.81447674875,
+        "completed_at": 192932.0428482,
+        "last_geometry_at": 192931.81447674875,
+        "geometry_valid": true,
+        "state": "TRACKED",
+        "reason": "geometry accepted",
+        "fitness": 1.0,
+        "rmse": 0.06949108323832545,
+        "translation_innovation": 0.008520195752291898,
+        "rotation_innovation": 0.004007622325293334,
+        "prediction_source": "gyro",
+        "compute_sec": 0.07120679900981486,
+        "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "geometry_age_sec": 0.3823572092514951,
+        "transport_delay_sec": 0.1562814712524414,
+        "completion_age_sec": 0.22837145125959069
+      }
+    },
+    {
+      "time": 1790122399.3344934,
+      "topic": "/stair_traversal/status",
+      "value": "header: \n  seq: 17224\n  stamp: \n    secs: 1790122399\n    nsecs: 334325313\n  frame_id: ''\nstatus_list: []"
+    },
+    {
+      "time": 1790122399.3478355,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399347,
+        "guid": "e91bf172-7ce4-4e9a-ab3b-ab56224c98ea",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.3728254,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399372,
+        "guid": "ebf253b4-640b-46eb-9f05-a9a466bd39ee",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.3978007,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399397,
+        "guid": "3e398782-626e-46d0-9141-6780720640a4",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.4226637,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399422,
+        "guid": "da7129d6-7f0d-4738-bd5a-baa014af5075",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.4380183,
+      "topic": "/stair_supervisor/control_debug",
+      "value": {
+        "phase": "VERIFY_ENTRY",
+        "command": [
+          0.0,
+          0.0
+        ],
+        "pending_entries": [
+          {
+            "route_id": "stair_3f_4f_up",
+            "epoch": 0,
+            "sequence": 12199,
+            "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+            "age_sec": 1013.5896193846711
+          }
+        ],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+      }
+    },
+    {
+      "time": 1790122399.4380212,
+      "topic": "/stair_supervisor/tracking_status",
+      "value": {
+        "epoch": 0,
+        "queue_length": 0,
+        "dropped_scans": 0,
+        "rejected_imu": 0,
+        "worker_error": "",
+        "backend": "process",
+        "mode": "control",
+        "observe_only": false,
+        "phase_test_protocol": "bound-ticket-v1",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false
+          }
+        ],
+        "sequence": 17264,
+        "stamp": 1790122399.148201,
+        "received_at": 192932.172093851,
+        "measured_at": 192932.01463840666,
+        "completed_at": 192932.22474319,
+        "last_geometry_at": 192932.01463840666,
+        "geometry_valid": true,
+        "state": "TRACKED",
+        "reason": "geometry accepted",
+        "fitness": 1.0,
+        "rmse": 0.06546244051469993,
+        "translation_innovation": 0.013367945586057082,
+        "rotation_innovation": 0.006211770792970356,
+        "prediction_source": "gyro",
+        "compute_sec": 0.051788369979476556,
+        "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "geometry_age_sec": 0.2821945413306821,
+        "transport_delay_sec": 0.1574554443359375,
+        "completion_age_sec": 0.21010478332755156
+      }
+    },
+    {
+      "time": 1790122399.4382539,
+      "topic": "/stair_supervisor/state",
+      "value": "header: \n  seq: 6898\n  stamp: \n    secs: 1790122399\n    nsecs: 438061714\n  frame_id: ''\nstate: 1\nconnected: True\ndetail: \"navigation owns commands\"\nownership_epoch: 0"
+    },
+    {
+      "time": 1790122399.4476655,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399447,
+        "guid": "07c2da18-3250-4d07-942c-fb0eba2aa86a",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.4729548,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399472,
+        "guid": "c07d1cf3-b90d-4069-aedf-07c41c76059b",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.4976337,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399497,
+        "guid": "3fb2b604-2740-418c-8040-caa60af53c89",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.5228984,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399522,
+        "guid": "367b0fbc-3c91-440d-9a94-609774be2029",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.531748,
+      "topic": "/stair_supervisor/control_debug",
+      "value": {
+        "phase": "VERIFY_ENTRY",
+        "command": [
+          0.0,
+          0.0
+        ],
+        "pending_entries": [
+          {
+            "route_id": "stair_3f_4f_up",
+            "epoch": 0,
+            "sequence": 12199,
+            "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+            "age_sec": 1013.6832090086536
+          }
+        ],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+      }
+    },
+    {
+      "time": 1790122399.5317626,
+      "topic": "/stair_supervisor/tracking_status",
+      "value": {
+        "epoch": 0,
+        "queue_length": 0,
+        "dropped_scans": 0,
+        "rejected_imu": 0,
+        "worker_error": "",
+        "backend": "process",
+        "mode": "control",
+        "observe_only": false,
+        "phase_test_protocol": "bound-ticket-v1",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false
+          }
+        ],
+        "sequence": 17264,
+        "stamp": 1790122399.148201,
+        "received_at": 192932.172093851,
+        "measured_at": 192932.01463840666,
+        "completed_at": 192932.22474319,
+        "last_geometry_at": 192932.01463840666,
+        "geometry_valid": true,
+        "state": "TRACKED",
+        "reason": "geometry accepted",
+        "fitness": 1.0,
+        "rmse": 0.06546244051469993,
+        "translation_innovation": 0.013367945586057082,
+        "rotation_innovation": 0.006211770792970356,
+        "prediction_source": "gyro",
+        "compute_sec": 0.051788369979476556,
+        "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "geometry_age_sec": 0.38216209135134704,
+        "transport_delay_sec": 0.1574554443359375,
+        "completion_age_sec": 0.21010478332755156
+      }
+    },
+    {
+      "time": 1790122399.534543,
+      "topic": "/stair_traversal/status",
+      "value": "header: \n  seq: 17225\n  stamp: \n    secs: 1790122399\n    nsecs: 534323453\n  frame_id: ''\nstatus_list: []"
+    },
+    {
+      "time": 1790122399.5476973,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399547,
+        "guid": "cbe35c5a-8b9c-41eb-8943-62d07b8c14ec",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.5727184,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399572,
+        "guid": "dd36182b-d178-42bd-a7f3-a03efe26d8be",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.5977938,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399597,
+        "guid": "bdff5c1c-2536-4878-89a8-88c6893cec02",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.6227424,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399622,
+        "guid": "63ea7cf6-bcf8-4023-9b56-256bd4019d77",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.6377437,
+      "topic": "/stair_supervisor/control_debug",
+      "value": {
+        "phase": "VERIFY_ENTRY",
+        "command": [
+          0.0,
+          0.0
+        ],
+        "pending_entries": [
+          {
+            "route_id": "stair_3f_4f_up",
+            "epoch": 0,
+            "sequence": 12199,
+            "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+            "age_sec": 1013.789525140659
+          }
+        ],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+      }
+    },
+    {
+      "time": 1790122399.6381764,
+      "topic": "/stair_supervisor/tracking_status",
+      "value": {
+        "epoch": 0,
+        "queue_length": 0,
+        "dropped_scans": 0,
+        "rejected_imu": 0,
+        "worker_error": "",
+        "backend": "process",
+        "mode": "control",
+        "observe_only": false,
+        "phase_test_protocol": "bound-ticket-v1",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false
+          }
+        ],
+        "sequence": 17265,
+        "stamp": 1790122399.348157,
+        "received_at": 192932.381736013,
+        "measured_at": 192932.21458956867,
+        "completed_at": 192932.436941409,
+        "last_geometry_at": 192932.21458956867,
+        "geometry_valid": true,
+        "state": "TRACKED",
+        "reason": "geometry accepted",
+        "fitness": 1.0,
+        "rmse": 0.062930643278069,
+        "translation_innovation": 0.007640547334074914,
+        "rotation_innovation": 0.002910375001224727,
+        "prediction_source": "gyro",
+        "compute_sec": 0.053038343001389876,
+        "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "geometry_age_sec": 0.28227508533746004,
+        "transport_delay_sec": 0.1671464443206787,
+        "completion_age_sec": 0.2223518403188791
+      }
+    },
+    {
+      "time": 1790122399.6477153,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399647,
+        "guid": "97a4f51f-73c0-43ea-a4c4-c382d0f79a3d",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.672925,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399672,
+        "guid": "8023cd96-aebd-426c-b854-b4624eea4350",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.6977959,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399697,
+        "guid": "c0974109-f89d-4ab2-8ff5-737f389f45d6",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.7227106,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399722,
+        "guid": "8be44c6b-47c1-4324-86b4-4383afc34953",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    },
+    {
+      "time": 1790122399.7317007,
+      "topic": "/stair_supervisor/control_debug",
+      "value": {
+        "phase": "VERIFY_ENTRY",
+        "command": [
+          0.0,
+          0.0
+        ],
+        "pending_entries": [
+          {
+            "route_id": "stair_3f_4f_up",
+            "epoch": 0,
+            "sequence": 12199,
+            "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition",
+            "age_sec": 1013.883277832676
+          }
+        ],
+        "observation_only": false,
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+      }
+    },
+    {
+      "time": 1790122399.7317111,
+      "topic": "/stair_supervisor/tracking_status",
+      "value": {
+        "epoch": 0,
+        "queue_length": 0,
+        "dropped_scans": 0,
+        "rejected_imu": 0,
+        "worker_error": "",
+        "backend": "process",
+        "mode": "control",
+        "observe_only": false,
+        "phase_test_protocol": "bound-ticket-v1",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false
+          }
+        ],
+        "sequence": 17265,
+        "stamp": 1790122399.348157,
+        "received_at": 192932.381736013,
+        "measured_at": 192932.21458956867,
+        "completed_at": 192932.436941409,
+        "last_geometry_at": 192932.21458956867,
+        "geometry_valid": true,
+        "state": "TRACKED",
+        "reason": "geometry accepted",
+        "fitness": 1.0,
+        "rmse": 0.062930643278069,
+        "translation_innovation": 0.007640547334074914,
+        "rotation_innovation": 0.002910375001224727,
+        "prediction_source": "gyro",
+        "compute_sec": 0.053038343001389876,
+        "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "geometry_age_sec": 0.3822712663386483,
+        "transport_delay_sec": 0.1671464443206787,
+        "completion_age_sec": 0.2223518403188791
+      }
+    },
+    {
+      "time": 1790122399.7343554,
+      "topic": "/stair_traversal/status",
+      "value": "header: \n  seq: 17226\n  stamp: \n    secs: 1790122399\n    nsecs: 734171867\n  frame_id: ''\nstatus_list: []"
+    },
+    {
+      "time": 1790122399.747727,
+      "topic": "/stair_supervisor/websocket_tx",
+      "value": {
+        "accid": "WF_TRON1A_632",
+        "title": "request_twist",
+        "timestamp": 1790122399747,
+        "guid": "add2e1e2-8b56-4aad-aa9e-6005e5a64054",
+        "data": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    }
+  ]
+}

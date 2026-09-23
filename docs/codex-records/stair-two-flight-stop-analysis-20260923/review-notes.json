@@ -1,0 +1,12 @@
+{
+  "independent_cold_read": "completed",
+  "applied": [
+    "Static accepted commands are not dynamically reachable under existing slew; no physical recovery claim",
+    "IMU uses full 3D integration; shared sources not independent truth",
+    "Near-fault reconstructions explicitly separate from exact first fault",
+    "Height discrepancy cause left unverified",
+    "Recovery requires justified uncertainty and hard-boundary preservation",
+    "TX observer is after socket send, not actuator confirmation"
+  ],
+  "metrics_independence": "Frozen recorded poses and controller model are candidate-selection evidence, not closed-loop success evaluation. External physical ground truth remains required."
+}

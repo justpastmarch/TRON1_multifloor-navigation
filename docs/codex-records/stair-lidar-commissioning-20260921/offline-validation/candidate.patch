@@ -1,0 +1,97 @@
+--- /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py
++++ /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/candidate/stair_supervisor/supervisor.py
+@@ -206,7 +206,14 @@
+             # LiDAR anchor, surveyed route and phase geometry remain mandatory.
+             if self._lidar_control is not None:
+                 try:
+-                    self._lidar_control.prepare(profile, self._clock.monotonic())
++                    if phase_test is not None:
++                        candidate = self._lidar_control.routes.get(profile.id)
++                        if candidate is not None and not candidate["commissioned"] and (
++                                test_phase is not Phase.FORWARD_SEGMENT_1 or duration > 4.0):
++                            raise ValueError("uncommissioned route permits first flight only, at most 4 seconds")
++                        self._lidar_control.prepare(profile, self._clock.monotonic(), phase_test=True)
++                    else:
++                        self._lidar_control.prepare(profile, self._clock.monotonic())
+                 except ValueError as error:
+                     return TraversalResult(ResultCode.ENTRY_REJECTED, str(error))
+             with self._state_lock:
+@@ -226,13 +233,14 @@
+     def _execute_phase_test(self, profile, phase, duration, cancellation_requested):
+         """One phase only; no automatic advance, WALK handoff, or arrival success."""
+         try:
+-            self._evidence.arm(profile, self._clock.monotonic())
++            self._evidence.arm(profile, self._clock.monotonic(), phase_test=True)
+         except ValueError as error:
+             with self._state_lock:
+                 self._state = SupervisorState.NAV
+             return TraversalResult(ResultCode.ENTRY_REJECTED, str(error))
+         try:
+-            self._set_lidar_mode(True, cancellation_requested, phase_override=phase)
++            self._set_lidar_mode(True, cancellation_requested, phase_override=phase, neutral_only=True)
++            self._lidar_control.reset_command(self._clock.monotonic())
+             self._evidence.begin_phase(phase, self._clock.monotonic())
+             deadline = self._clock.monotonic() + duration
+             while True:
+@@ -325,7 +333,7 @@
+             self._latch_fault()
+             return TraversalResult(ResultCode.COMMUNICATION_LOST, str(error))
+ 
+-    def _set_lidar_mode(self, enabled, cancellation_requested, phase_override=None):
++    def _set_lidar_mode(self, enabled, cancellation_requested, phase_override=None, neutral_only=False):
+         """Maintain measured support correction while mode acknowledgment waits."""
+         phase = phase_override if phase_override is not None else (Phase.VERIFY_ENTRY if enabled else Phase.EXIT_CONFIRM)
+         started = self._clock.monotonic()
+@@ -344,7 +352,8 @@
+             self._feedback(report)
+             if report.faulted:
+                 raise _LidarTransitionFailed(report.detail)
+-            self._transport.update_twist(*self._lidar_control.command())
++            command = (0., 0.) if neutral_only else self._lidar_control.command()
++            self._transport.update_twist(*command)
+             self._transport.send_current()
+             next_send = now + self._transport.stream_period_sec
+         self._transport.request_stair_mode_with_feedback(enabled, progress)
+--- /home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_feedback.py
++++ /home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/candidate/stair_supervisor/stair_feedback.py
+@@ -184,12 +184,12 @@
+             self.anchors[route_id] = anchor
+             return anchor
+ 
+-    def prepare(self, profile, now):
++    def prepare(self, profile, now, *, phase_test=False):
+         with self._lock:
+             route = self.routes.get(profile.id)
+             anchor = self.anchors.get(profile.id)
+             sample = self.worker.snapshot()
+-            if route is None or not route["commissioned"] or profile.direction is not Direction.UP:
++            if route is None or (not route["commissioned"] and not phase_test) or profile.direction is not Direction.UP:
+                 raise ValueError("no commissioned LiDAR route for this stair/direction")
+             if (anchor is None or anchor.epoch != self.worker.epoch or sample is None or
+                     sample.epoch != self.worker.epoch or not sample.geometry_valid):
+@@ -198,9 +198,9 @@
+                 raise ValueError("entry anchor/observation is stale")
+             return route, anchor
+ 
+-    def arm(self, profile, started_at):
+-        with self._lock:
+-            self.route, self.anchor = self.prepare(profile, started_at)
++    def arm(self, profile, started_at, *, phase_test=False):
++        with self._lock:
++            self.route, self.anchor = self.prepare(profile, started_at, phase_test=phase_test)
+             self.profile = profile
+             self.started_at = started_at
+             self._history.clear()
+@@ -214,6 +214,12 @@
+             self._phase_sequence = 0
+             self._flight_seen = [False, False]
+             self.anchors.pop(profile.id, None)  # a later goal needs new entry evidence
++
++    def reset_command(self, now):
++        """Synchronize slew history with zero actually sent during test handoff."""
++        with self._lock:
++            self._last_command = (0., 0.)
++            self._last_command_at = now
+ 
+     def begin_phase(self, phase, now):
+         with self._lock:

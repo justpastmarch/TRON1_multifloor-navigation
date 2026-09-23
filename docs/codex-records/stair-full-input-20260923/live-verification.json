@@ -1,0 +1,58 @@
+{
+  "at_utc": "2026-09-23T00:52:13.601444+00:00",
+  "tracking_count": 49,
+  "debug_count": 49,
+  "latest_tracking": {
+    "epoch": 0,
+    "queue_length": 0,
+    "dropped_scans": 0,
+    "rejected_imu": 0,
+    "worker_error": "",
+    "backend": "process",
+    "mode": "control",
+    "observe_only": false,
+    "phase_test_protocol": "bound-ticket-v1",
+    "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+    "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337",
+    "routes": [
+      {
+        "id": "stair_3f_4f_up",
+        "commissioned": false
+      }
+    ],
+    "sequence": 30,
+    "stamp": 1790124733.0500984,
+    "received_at": 195266.10885045,
+    "measured_at": 195265.91653344102,
+    "completed_at": 195266.151641491,
+    "last_geometry_at": 195265.91653344102,
+    "geometry_valid": true,
+    "state": "TRACKED",
+    "reason": "geometry accepted",
+    "fitness": 1.0,
+    "rmse": 0.07148203465088618,
+    "translation_innovation": 0.0033571114212311405,
+    "rotation_innovation": 0.0028981023878749705,
+    "prediction_source": "gyro",
+    "compute_sec": 0.04151418397668749,
+    "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+    "geometry_age_sec": 0.43841548898490146,
+    "transport_delay_sec": 0.19231700897216797,
+    "completion_age_sec": 0.2351080499647651
+  },
+  "latest_debug": {
+    "phase": "VERIFY_ENTRY",
+    "command": [
+      0.0,
+      0.0
+    ],
+    "pending_entries": [],
+    "observation_only": false,
+    "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+    "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337"
+  },
+  "latest_state": "header: \n  seq: 3\n  stamp: \n    secs: 1790124727\n    nsecs: 206338405\n  frame_id: ''\nstate: 0\nconnected: False\ndetail: \"starting\"\nownership_epoch: 0",
+  "new_configuration_loaded": true,
+  "nonzero_twists": [],
+  "goals_sent": 0
+}

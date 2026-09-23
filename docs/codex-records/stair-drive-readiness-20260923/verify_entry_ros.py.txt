@@ -1,0 +1,120 @@
+"""Isolated localhost client/adapter test. No robot transport is constructed."""
+import os,sys,json,time,signal,subprocess,xmlrpc.client
+from pathlib import Path
+from types import SimpleNamespace
+from dataclasses import replace
+HERE=Path(__file__).resolve().parent
+import run_units
+import numpy as np
+import rospy,actionlib
+from nav_msgs.msg import Odometry
+from std_msgs.msg import String
+from std_srvs.srv import Trigger
+from visualization_msgs.msg import MarkerArray
+from stair_supervisor.configuration import load_lidar_configuration,load_stair_configuration
+from stair_supervisor.stair_feedback import StairFeedback
+from stair_supervisor.stair_evidence import Phase
+from stair_supervisor.ros_lidar import RosLidarInterface
+from stair_supervisor.ros_node import RosStairSupervisorNode
+from stair_supervisor.msg import StairTraversalAction,StairTraversalResult
+from test_lidar_control import sample,Worker
+
+env=os.environ.copy()
+env.update(ROS_MASTER_URI='http://127.0.0.1:11473',ROS_IP='127.0.0.1',
+    ROS_HOME=str(HERE/'ros-home'),ROS_LOG_DIR=str(HERE/'ros-logs'),PYTHONDONTWRITEBYTECODE='1')
+env.pop('ROS_HOSTNAME',None);os.environ.update(env)
+package=HERE/'candidate/src/stair_supervisor'
+cfg=load_lidar_configuration(package/'config/stair_lidar_3f_4f_test.yaml','control',False)
+profiles=load_stair_configuration(package/'config')
+records=[];goals=[];master=None;timer=None;service=None;server=None
+try:
+    master=subprocess.Popen(['roscore','-p','11473'],env=env,stdout=(HERE/'entry-roscore.log').open('w'),stderr=subprocess.STDOUT,start_new_session=True)
+    for _ in range(80):
+        if master.poll() is not None:raise RuntimeError('isolated master failed')
+        try:
+            if xmlrpc.client.ServerProxy(env['ROS_MASTER_URI']).getPid('/entry_validation')[0]==1:break
+        except OSError:pass
+        time.sleep(.1)
+    else:raise RuntimeError('master unavailable')
+    rospy.init_node('stair_supervisor',disable_signals=True)
+    adapter=RosLidarInterface.__new__(RosLidarInterface)
+    adapter.configuration=cfg;adapter.clock=SimpleNamespace(monotonic=time.monotonic)
+    adapter.worker=Worker();adapter.control=StairFeedback(adapter.worker,cfg.document['base_from_lidar'],cfg.document['routes'])
+    adapter.odom=rospy.Publisher('~lidar_odom',Odometry,queue_size=2)
+    adapter.status=rospy.Publisher('~tracking_status',String,queue_size=2)
+    adapter.control_debug=rospy.Publisher('~control_debug',String,queue_size=2)
+    adapter.markers=rospy.Publisher('~geometry_markers',MarkerArray,queue_size=2)
+    adapter._published=None;adapter._observing=False
+    mount=np.array(cfg.document['base_from_lidar']);sequence=[0];drift=[0.]
+    def publish(_event):
+        sequence[0]+=1;now=time.monotonic();pose=mount.copy();pose[0,3]+=drift[0]
+        adapter.worker.value=replace(sample(sequence[0],now),stamp=rospy.Time.now().to_sec(),transform=tuple(pose.flat))
+        adapter._publish(None)
+    publish(None)
+    service=rospy.Service('~capture_entry',Trigger,adapter._capture_entry)
+    rospy.set_param('~config_dir',str(package/'config'))
+    boundary=RosStairSupervisorNode.__new__(RosStairSupervisorNode);cancel_case=[False]
+    def execute_request(goal,request):
+        try:
+            profile=next(p for p in profiles.profiles if p.id==goal.stair_id)
+            adapter.control.test_plan(profile,Phase(request['phase']),request['max_duration_sec'],request['from_entry'])
+            adapter.control.arm(profile,time.monotonic(),phase_test=True,start_phase=Phase.VERIFY_ENTRY)
+            goals.append(request)
+            if cancel_case[0]:
+                deadline=time.monotonic()+8.
+                while not server.is_preempt_requested() and time.monotonic()<deadline:time.sleep(.02)
+                assert server.is_preempt_requested(),'cancel not delivered'
+                server.set_preempted(StairTraversalResult(result_code=5,reason='phase test interrupted; synthetic boundary only'))
+            else:
+                server.set_aborted(StairTraversalResult(result_code=5,reason='phase test target reached; synthetic ROS boundary only'))
+            adapter.control.interrupt()
+        except Exception as error:
+            server.set_aborted(StairTraversalResult(result_code=4,reason=str(error)))
+    boundary._execute_request=execute_request
+    server=actionlib.SimpleActionServer('/stair_traversal',StairTraversalAction,execute_cb=boundary._execute,auto_start=False)
+    boundary._action=server;server.start()
+    timer=rospy.Timer(rospy.Duration(.05),publish)
+    command=[str(package/'scripts/stair_python.sh'),str(package/'scripts/stair_entry_test.py')]
+    def call(args):
+        result=subprocess.run(command+args,env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,timeout=20)
+        records.append(dict(args=args,exit_code=result.returncode,stdout=result.stdout,stderr=result.stderr))
+        assert result.returncode==0,result.stderr+result.stdout
+    call(['preview',str(cfg.source_path),'--placed-at-entry'])
+    assert not goals
+    anchor=adapter.control.anchors['stair_3f_4f_up'];before=anchor.local_from_profile
+    assert adapter.control.anchor is None and adapter.control.command()==(0.,0.)
+    drift[0]=.02
+    call(['run',str(cfg.source_path)])
+    assert len(goals)==1 and goals[0]['from_entry'] is True
+    assert adapter.control.anchor.local_from_profile==before
+    assert not rospy.has_param('~phase_test')
+    assert not rospy.get_param('~phase_test_requests',{})
+    assert not rospy.get_param('~phase_test_receipts',{})
+    assert not adapter.control.anchors
+    # Ctrl+C targets this ticket's actual goal and reports termination acknowledgement.
+    drift[0]=0.;cancel_case[0]=True
+    call(['preview',str(cfg.source_path),'--placed-at-entry'])
+    child=subprocess.Popen(command+['run',str(cfg.source_path)],env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,start_new_session=True)
+    try:
+        deadline=time.monotonic()+12.
+        while len(goals)<2 and child.poll() is None and time.monotonic()<deadline:time.sleep(.02)
+        assert len(goals)==2,'second goal not received'
+        os.killpg(child.pid,signal.SIGINT)
+        stdout,stderr=child.communicate(timeout=8.)
+        records.append(dict(operation='interrupt',exit_code=child.returncode,stdout=stdout,stderr=stderr))
+        assert 'Test handling termination acknowledged;' in stderr,stderr
+        assert not rospy.get_param('~phase_test_requests',{})
+        assert not rospy.get_param('~phase_test_receipts',{})
+    finally:
+        if child.poll() is None:os.killpg(child.pid,signal.SIGKILL);child.wait()
+    print('PASS: preview without arm/goal, fixed reference despite drift, bound request consumption, targeted cancellation acknowledgement.')
+finally:
+    if timer:timer.shutdown()
+    if service:service.shutdown()
+    rospy.signal_shutdown('isolated entry check finished')
+    if master and master.poll() is None:
+        os.killpg(master.pid,signal.SIGINT)
+        try:master.wait(timeout=8)
+        except subprocess.TimeoutExpired:os.killpg(master.pid,signal.SIGKILL);master.wait()
+    (HERE/'entry-ros-results.json').write_text(json.dumps(dict(records=records,goal_count=len(goals),robot_transports_created=0,
+        scope='synthetic adapter/client ROS boundary; no closed-loop or hardware validation'),indent=2))

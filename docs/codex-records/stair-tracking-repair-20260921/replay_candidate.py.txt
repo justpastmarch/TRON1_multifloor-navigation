@@ -1,0 +1,210 @@
+"""Offline diagnostic replay. No ROS node, publisher, commands, or pose consumers.
+
+Measured poses exist only on accepted geometric updates. The separate prediction
+is diagnostic and is never evidence that the robot completed a turn or arrived.
+"""
+from pathlib import Path
+from collections import deque
+import argparse, csv, json, struct, time, hashlib
+import yaml
+import numpy as np
+from scipy.spatial.transform import Rotation, Slerp
+import rosbag
+from registration_core import RegistrationConfig, register_scan_to_map, voxel_downsample_points
+
+OUT = Path(__file__).resolve().parent
+ROOT = Path('/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation')
+OLD = OUT.parent / 'sensor-recording-analysis-20260918'
+HIST = Path('/home/m3tron/Desktop/TRON1_Modular_Navigation/build/offline_lio')
+META = json.loads((OLD / 'bag-metadata.json').read_text())
+INDICES = {'102101': 11, '103313': 13, '105713': 14}
+DT = np.dtype([('offset', '<u4'), ('x', '<f4'), ('y', '<f4'), ('z', '<f4'),
+               ('reflectivity', 'u1'), ('tag', 'u1'), ('line', 'u1')])
+CFG = RegistrationConfig(.20, .80, 30, .35, .50, .35)
+EXTRINSIC_CONFIG = Path('/home/m3tron/catkin_ws/src/FAST_LIO/config/mid360.yaml')
+
+
+def configured_extrinsic():
+    """Read configured lidar-to-IMU rotation; convert gyro vectors into lidar axes.
+
+    This is the static YAML initialization, not FAST-LIO's online extrinsic state.
+    User confirmed the recording and current configuration match on 2026-09-21.
+    """
+    content = EXTRINSIC_CONFIG.read_bytes()
+    config = yaml.safe_load(content)
+    r_il = np.array(config['mapping']['extrinsic_R'], dtype=float).reshape(3,3)
+    if not np.isfinite(r_il).all() or not np.allclose(r_il.T @ r_il,np.eye(3),atol=1e-3) or np.linalg.det(r_il)<0:
+        raise ValueError('configured extrinsic is not approximately a proper rotation')
+    return Rotation.from_matrix(r_il).as_matrix().T, {
+        'source':str(EXTRINSIC_CONFIG), 'sha256':hashlib.sha256(content).hexdigest(),
+        'configured_lidar_to_imu_rotation':r_il.tolist(),
+        'configured_translation_not_applied_m':config['mapping']['extrinsic_T'],
+        'scope':'fixed configured rotation only; online estimation and translation not reproduced',
+        'configuration_history':'recording/current equality confirmed by user; physical accuracy not verified'}
+
+
+def level_from_up(up):
+    """Minimal rotation carrying the supplied SENSOR-frame up vector to world Z."""
+    up = np.asarray(up, dtype=float)
+    if not np.isfinite(up).all() or np.linalg.norm(up) < 1e-9:
+        raise ValueError('invalid up observation')
+    up /= np.linalg.norm(up)
+    target = np.array([0., 0., 1.])
+    v = np.cross(up, target)
+    c = np.clip(up @ target, -1., 1.)
+    if c < -1 + 1e-8:
+        return Rotation.from_rotvec([np.pi, 0, 0]).as_matrix()
+    skew = np.array([[0, -v[2], v[1]], [v[2], 0, -v[0]], [-v[1], v[0], 0]])
+    return np.eye(3) + skew + skew @ skew / (1 + c)
+
+
+class Gyro:
+    """Trapezoidal SO(3) integration; no acceleration or wheel translation input."""
+    def __init__(self, imu, r_lidar_imu=None):
+        self.times = imu[:, 1]
+        if np.any(np.diff(self.times) <= 0):
+            raise ValueError('IMU sensor timestamps must strictly increase')
+        self.r_li = np.eye(3) if r_lidar_imu is None else r_lidar_imu
+        omega = imu[:, 2:5] @ self.r_li.T
+        if not np.isfinite(omega).all():
+            raise ValueError('nonfinite gyro input')
+        rotations = [np.eye(3)]
+        for i, dt in enumerate(np.diff(self.times)):
+            rotations.append(rotations[-1] @ Rotation.from_rotvec(.5 * (omega[i] + omega[i+1]) * dt).as_matrix())
+        self.interpolator = Slerp(self.times - self.times[0], Rotation.from_matrix(rotations))
+
+    def relative(self, start, end):
+        if start < self.times[0] or end > self.times[-1] or end < start:
+            raise ValueError('gyro interval outside recorded sensor times')
+        i = max(0, np.searchsorted(self.times, start) - 1)
+        j = min(len(self.times), np.searchsorted(self.times, end) + 1)
+        # This rejects missing *measurement support*, not legitimate robot motion.
+        if len(self.times[i:j]) < 2 or np.max(np.diff(self.times[i:j])) > .03:
+            raise ValueError('gyro gap exceeds experimental 30 ms support limit')
+        r = self.interpolator(np.array([start, end]) - self.times[0]).as_matrix()
+        return r[0].T @ r[1]
+
+
+def load_scans(run):
+    """Read exactly the header stamps in the old result, preserving the population."""
+    dst = OUT / 'inputs' / run
+    dst.mkdir(parents=True, exist_ok=True)
+    cache = dst / 'scans.npz'
+    if cache.exists():
+        return np.load(cache)
+    baseline = list(csv.DictReader((HIST / run / 'lidar_registration.csv').open()))
+    wanted = {int(row['stamp_ns']) for row in baseline}
+    meta = META[INDICES[run]]
+    clouds, rows, offsets = [], [], [0]
+    read_packets = read_points = 0
+    verified = False
+    with rosbag.Bag(str(ROOT / meta['path']), 'r') as bag:
+        for topic, raw, bt in bag.read_messages(topics=['/livox/lidar'], raw=True):
+            typ, data, md5, pos, cls = raw
+            seq, sec, nsec, length = struct.unpack_from('<IIII', data, 0)
+            stamp_ns = sec * 1000000000 + nsec
+            if stamp_ns not in wanted:
+                continue
+            off = 16 + length
+            count = struct.unpack_from('<I', data, off + 16)[0]
+            assert len(data) == off + 20 + 19 * count
+            a = np.frombuffer(data, dtype=DT, count=count, offset=off+20)
+            if not verified:
+                msg = cls(); msg.deserialize(data)
+                for k in [0, count//2, count-1]:
+                    p = msg.points[k]
+                    assert tuple(a[k]) == (p.offset_time, p.x, p.y, p.z, p.reflectivity, p.tag, p.line)
+                verified = True
+            xyz = np.column_stack([a['x'], a['y'], a['z']]).astype(float)
+            dist2 = np.einsum('ij,ij->i', xyz, xyz)
+            xyz = xyz[np.isfinite(xyz).all(axis=1) & (dist2 >= .25) & (dist2 <= 400)]
+            cloud = voxel_downsample_points(xyz, .20)
+            clouds.append(cloud.astype(np.float32)); offsets.append(offsets[-1] + len(cloud))
+            rows.append([stamp_ns, bt.to_nsec()]); read_packets += 1; read_points += count
+    assert len(rows) == len(baseline)
+    assert np.all(np.diff(np.array(rows, dtype=np.int64)[:, 0]) > 0)
+    np.savez_compressed(cache, points=np.vstack(clouds), offsets=np.array(offsets), rows=np.array(rows, dtype=np.int64))
+    (dst/'extraction.json').write_text(json.dumps({'selected_packets': read_packets,
+        'selected_points': read_points, 'decoder_checked': verified, 'bag': str(ROOT/meta['path']),
+        'scope': 'full raw lidar payload only at existing CSV frame stamps; all lidar headers scanned; all other topics excluded from this extraction'}, indent=2))
+    return np.load(cache)
+
+
+def replay(run, mode, extrinsic):
+    started = time.time()
+    data = load_scans(run)
+    meta = META[INDICES[run]]
+    numeric = np.load(OLD/'bags'/Path(meta['path']).name/'numeric.npz')
+    imu = numeric['/livox/imu']
+    r_li = np.eye(3)
+    extrinsic_metadata = {'scope':'identity ablation, not the configured sensor rotation'}
+    if extrinsic == 'current_yaml':
+        r_li, extrinsic_metadata = configured_extrinsic()
+    gyro = Gyro(imu, r_li)
+    stamps = data['rows'][:, 0].astype(float) * 1e-9
+    initial_acc = np.median(imu[np.abs(imu[:,1]-stamps[0]) < .5, 5:8], axis=0) @ r_li.T
+    pose = np.eye(4); pose[:3,:3] = level_from_up(initial_acc)
+    initial = pose.copy()
+    local = deque(maxlen=15)
+    last_valid_time = stamps[0]
+    rows = []
+    for i, stamp in enumerate(stamps):
+        points = data['points'][data['offsets'][i]:data['offsets'][i+1]].astype(float)
+        prediction = pose.copy()
+        supported = True
+        if mode == 'gyro' and i:
+            try:
+                prediction[:3,:3] = pose[:3,:3] @ gyro.relative(last_valid_time, stamp)
+            except ValueError:
+                supported = False
+        # No velocity prediction, no wheel input: retain old translation initialization.
+        admitted = i == 0
+        fitness, rmse, step, angle = 1., 0., 0., 0.
+        candidate = prediction.copy()
+        if i and supported:
+            result = register_scan_to_map(points, np.vstack(local), prediction, CFG)
+            candidate = result.transform.copy()
+            admitted = result.accepted
+            fitness, rmse = result.fitness, result.inlier_rmse_m
+            step, angle = result.translation_step_m, result.rotation_step_rad
+        elif i:
+            fitness = rmse = step = angle = float('nan')
+        if admitted:
+            pose = candidate
+            last_valid_time = stamp
+            local.append(points @ pose[:3,:3].T + pose[:3,3])
+        age = stamp-last_valid_time
+        state = ('BOOTSTRAP' if i == 0 else 'TRACKED') if admitted else ('PREDICTED' if supported and age <= .5 else 'LOST')
+        # NaNs intentionally prevent rejected or unsupported rows being mistaken for measurements.
+        measured = pose if admitted else np.full((4,4), np.nan)
+        q = Rotation.from_matrix(pose[:3,:3]).as_quat() if admitted else np.full(4, np.nan)
+        relative_rotation = initial[:3,:3].T @ candidate[:3,:3]
+        rel = np.arctan2(relative_rotation[1,0], relative_rotation[0,0])
+        rows.append([int(data['rows'][i,0]), stamp-meta['start'], state, int(admitted), age,
+                     *measured[:3,3], *q, fitness, rmse, step, angle, rel,
+                     *prediction[:3,3], *Rotation.from_matrix(prediction[:3,:3]).as_quat()])
+        if i % 100 == 0:
+            print(run, mode, extrinsic, i, '/', len(stamps), state, round(time.time()-started,1), flush=True)
+    target = OUT/'results'/f'{run}-{mode}-{extrinsic}.csv'
+    target.parent.mkdir(exist_ok=True)
+    with target.open('w') as f:
+        writer = csv.writer(f)
+        writer.writerow(['stamp_ns','t_s','state','accepted','measurement_age_s','x_m','y_m','z_m','qx','qy','qz','qw',
+                         'fitness','rmse_m','translation_innovation_m','rotation_innovation_rad','candidate_relative_yaw_rad',
+                         'pred_x_m','pred_y_m','pred_z_m','pred_qx','pred_qy','pred_qz','pred_qw'])
+        writer.writerows(rows)
+    (target.with_suffix('.json')).write_text(json.dumps({'run':run,'mode':mode,'extrinsic':extrinsic,
+        'extrinsic_metadata':extrinsic_metadata,
+        'initial_up_sensor':(initial_acc/np.linalg.norm(initial_acc)).tolist(),
+        'initial_transform':initial.tolist(),'initial_imu_window':'+/- 0.5 sensor seconds, median acceleration, not certified stationary',
+        'gyro_max_gap_s':float(np.max(np.diff(imu[:,1]))),'elapsed_s':time.time()-started,
+        'scope':'offline diagnostic; no ROS output; no absolute ground truth; no supervisor completion evidence',
+        'config':CFG._asdict()},indent=2))
+    print('FINISHED',target.name,round(time.time()-started,1),flush=True)
+
+
+if __name__ == '__main__':
+    ap = argparse.ArgumentParser(); ap.add_argument('run', choices=INDICES)
+    ap.add_argument('--mode',choices=['up_only','gyro'],default='gyro')
+    ap.add_argument('--extrinsic',choices=['identity','current_yaml'],default='current_yaml')
+    args=ap.parse_args(); replay(args.run,args.mode,args.extrinsic)

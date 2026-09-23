@@ -1,0 +1,27 @@
+{
+  "tests": 143,
+  "failures": [],
+  "errors": [
+    [
+      "test_nonzero_legacy_alignment_is_rejected (test_configuration_transition.StairConfigurationTransitionTest)",
+      "Traceback (most recent call last):\n  File \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/candidate/src/stair_supervisor/test/test_configuration_transition.py\", line 111, in test_nonzero_legacy_alignment_is_rejected\n    document = yaml.safe_load(fixture.read_text(encoding=\"utf-8\"))\n  File \"/usr/lib/python3.8/pathlib.py\", line 1236, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n  File \"/usr/lib/python3.8/pathlib.py\", line 1222, in open\n    return io.open(self, mode, buffering, encoding, errors, newline,\n  File \"/usr/lib/python3.8/pathlib.py\", line 1078, in _opener\n    return self._accessor.open(self, flags, mode)\nFileNotFoundError: [Errno 2] No such file or directory: '/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/candidate/test/fixtures/building_valid/stair_profiles.yaml'\n"
+    ],
+    [
+      "test_required_measured_profile_field_is_rejected_when_missing (test_configuration_transition.StairConfigurationTransitionTest)",
+      "Traceback (most recent call last):\n  File \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/candidate/src/stair_supervisor/test/test_configuration_transition.py\", line 123, in test_required_measured_profile_field_is_rejected_when_missing\n    document = yaml.safe_load(fixture.read_text(encoding=\"utf-8\"))\n  File \"/usr/lib/python3.8/pathlib.py\", line 1236, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n  File \"/usr/lib/python3.8/pathlib.py\", line 1222, in open\n    return io.open(self, mode, buffering, encoding, errors, newline,\n  File \"/usr/lib/python3.8/pathlib.py\", line 1078, in _opener\n    return self._accessor.open(self, flags, mode)\nFileNotFoundError: [Errno 2] No such file or directory: '/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/candidate/test/fixtures/building_valid/stair_profiles.yaml'\n"
+    ],
+    [
+      "test_sample_gap_above_freshness_is_rejected (test_configuration_transition.StairConfigurationTransitionTest)",
+      "Traceback (most recent call last):\n  File \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/candidate/src/stair_supervisor/test/test_configuration_transition.py\", line 135, in test_sample_gap_above_freshness_is_rejected\n    document = yaml.safe_load(fixture.read_text(encoding=\"utf-8\"))\n  File \"/usr/lib/python3.8/pathlib.py\", line 1236, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n  File \"/usr/lib/python3.8/pathlib.py\", line 1222, in open\n    return io.open(self, mode, buffering, encoding, errors, newline,\n  File \"/usr/lib/python3.8/pathlib.py\", line 1078, in _opener\n    return self._accessor.open(self, flags, mode)\nFileNotFoundError: [Errno 2] No such file or directory: '/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/candidate/test/fixtures/building_valid/stair_profiles.yaml'\n"
+    ],
+    [
+      "test_fixture_discovery (unittest.loader._FailedTest)",
+      "ImportError: Failed to import test module: test_fixture_discovery\nTraceback (most recent call last):\n  File \"/usr/lib/python3.8/unittest/loader.py\", line 154, in loadTestsFromName\n    module = __import__(module_name)\n  File \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/candidate/src/stair_supervisor/test/test_fixture_discovery.py\", line 9, in <module>\n    from fixture_support import inspect_fixtures, load_websocket_transcript  # noqa: E402\nModuleNotFoundError: No module named 'fixture_support'\n\n"
+    ],
+    [
+      "test_recorded_gap_then_jump_cannot_become_later_progress (test_stair_evidence.StairEvidenceFaultTest)",
+      "Traceback (most recent call last):\n  File \"/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/candidate/src/stair_supervisor/test/test_stair_evidence.py\", line 198, in test_recorded_gap_then_jump_cannot_become_later_progress\n    recorded = json.loads(fixture_path.read_text(encoding=\"utf-8\"))\n  File \"/usr/lib/python3.8/pathlib.py\", line 1236, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n  File \"/usr/lib/python3.8/pathlib.py\", line 1222, in open\n    return io.open(self, mode, buffering, encoding, errors, newline,\n  File \"/usr/lib/python3.8/pathlib.py\", line 1078, in _opener\n    return self._accessor.open(self, flags, mode)\nFileNotFoundError: [Errno 2] No such file or directory: '/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/candidate/test/fixtures/stair_evidence/recorded_discontinuity.json'\n"
+    ]
+  ],
+  "skipped": []
+}

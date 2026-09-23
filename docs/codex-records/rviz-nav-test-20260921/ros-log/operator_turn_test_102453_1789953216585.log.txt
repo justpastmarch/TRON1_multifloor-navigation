@@ -1,0 +1,28 @@
+[rospy.client][INFO] 2026-09-21 10:13:36,611: init_node, name[/operator_turn_test_102453_1789953216585], pid[102453]
+[xmlrpc][INFO] 2026-09-21 10:13:36,611: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2026-09-21 10:13:36,611: Started XML-RPC server [http://192.168.1.26:45617/]
+[rospy.impl.masterslave][INFO] 2026-09-21 10:13:36,611: _ready: http://192.168.1.26:45617/
+[rospy.init][INFO] 2026-09-21 10:13:36,611: ROS Slave URI: [http://192.168.1.26:45617/]
+[rospy.registration][INFO] 2026-09-21 10:13:36,612: Registering with master node http://192.168.1.26:11311
+[xmlrpc][INFO] 2026-09-21 10:13:36,612: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2026-09-21 10:13:36,712: registered with master
+[rospy.rosout][INFO] 2026-09-21 10:13:36,712: initializing /rosout core topic
+[rospy.rosout][INFO] 2026-09-21 10:13:36,716: connected to core topic /rosout
+[rospy.simtime][INFO] 2026-09-21 10:13:36,717: /use_sim_time is not set, will not subscribe to simulated time [/clock] topic
+[rospy.internal][INFO] 2026-09-21 10:13:36,724: topic[/mission/status] adding connection to [http://192.168.1.26:40189/], count 0
+[rospy.internal][INFO] 2026-09-21 10:13:36,735: topic[/move_base/status] adding connection to [http://192.168.1.26:41603/], count 0
+[rospy.internal][INFO] 2026-09-21 10:13:36,747: topic[/stair_supervisor/state] adding connection to [http://192.168.1.26:44837/], count 0
+[rospy.internal][INFO] 2026-09-21 10:13:36,767: topic[/tron/wheel_odom_raw] adding connection to [http://192.168.1.56:45633/], count 0
+[rospy.internal][INFO] 2026-09-21 10:13:36,862: topic[/navigation/cmd_vel] adding connection to [/stair_supervisor], count 0
+[rospy.internal][INFO] 2026-09-21 10:13:36,960: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2026-09-21 10:13:37,366: topic[/navigation/cmd_vel] adding connection to [/record_1789953217083257037], count 1
+[rospy.core][INFO] 2026-09-21 10:13:42,209: signal_shutdown [atexit]
+[rospy.internal][INFO] 2026-09-21 10:13:42,209: topic[/navigation/cmd_vel] removing connection to /record_1789953217083257037
+[rospy.internal][INFO] 2026-09-21 10:13:42,211: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2026-09-21 10:13:42,211: topic[/navigation/cmd_vel] removing connection to /stair_supervisor
+[rospy.internal][INFO] 2026-09-21 10:13:42,211: topic[/mission/status] removing connection to http://192.168.1.26:40189/
+[rospy.internal][INFO] 2026-09-21 10:13:42,211: topic[/move_base/status] removing connection to http://192.168.1.26:41603/
+[rospy.internal][INFO] 2026-09-21 10:13:42,212: topic[/stair_supervisor/state] removing connection to http://192.168.1.26:44837/
+[rospy.internal][INFO] 2026-09-21 10:13:42,212: topic[/stair_supervisor/state] removing connection to http://192.168.1.26:44837/
+[rospy.internal][INFO] 2026-09-21 10:13:42,212: topic[/tron/wheel_odom_raw] removing connection to http://192.168.1.56:45633/
+[rospy.impl.masterslave][INFO] 2026-09-21 10:13:42,213: atexit

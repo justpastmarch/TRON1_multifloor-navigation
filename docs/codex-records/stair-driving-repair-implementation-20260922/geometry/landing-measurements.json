@@ -1,0 +1,47 @@
+{
+  "102101": {
+    "horizontal_landing_candidates": 717,
+    "xyz_quantiles_1_50_99_percent": [
+      [
+        2.8121060061028746,
+        -0.37751800481576364,
+        0.7392952770126616
+      ],
+      [
+        3.629246312169273,
+        0.21653238266738234,
+        0.793178946902646
+      ],
+      [
+        4.330357405282682,
+        1.3854045787007452,
+        0.8404583920760135
+      ]
+    ],
+    "front_edge_x_1_percent_m": 2.8121060061028746,
+    "landing_surface_height_median_m": 0.793178946902646
+  },
+  "105713": {
+    "horizontal_landing_candidates": 647,
+    "xyz_quantiles_1_50_99_percent": [
+      [
+        2.5566148506479722,
+        -0.36238650705212305,
+        0.695102242171588
+      ],
+      [
+        3.3958216540979773,
+        0.5327831996672565,
+        0.7360597364928081
+      ],
+      [
+        3.967548738458528,
+        1.7291570202844613,
+        0.7748784909390356
+      ]
+    ],
+    "front_edge_x_1_percent_m": 2.5566148506479722,
+    "landing_surface_height_median_m": 0.7360597364928081
+  },
+  "evidence": "OBSERVED point samples; inferred plane/edge association. First-body frames differ; no independent survey or first-step boundary."
+}

@@ -1,0 +1,276 @@
+{
+  "at_utc": "2026-09-22T20:20:15.516026+00:00",
+  "scope": "startup/configuration verification; not physical driving validation",
+  "software_status": "APPLIED: deployed local startup and production configuration checks PASS",
+  "operating_configuration": {
+    "configured": true,
+    "lidar_mode": "control",
+    "observe_only": false,
+    "recording_enabled": true,
+    "route": "stair_3f_4f_up",
+    "commissioned": false,
+    "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+  },
+  "node_or_launch_changes": false,
+  "checks": {
+    "wrapper_tests": {
+      "tests": 27,
+      "errors": [],
+      "failures": []
+    },
+    "full_local_run_check": "PASS in fresh shell environment",
+    "production_bundle": "PASS",
+    "session_check": {
+      "mode": "control",
+      "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+      "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+      "calibration_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/lidar_imu_baseline.yaml",
+      "calibration_sha256": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+      "configured": true,
+      "python": "/home/m3tron/.cache/uv/environments-v2/test-registration-core-26ae8f8cf1a8e532/bin/python",
+      "numpy": "1.24.4",
+      "scipy": "1.10.1",
+      "open3d": "0.18.0",
+      "routes": [
+        {
+          "id": "stair_3f_4f_up",
+          "commissioned": false,
+          "phase_test_limits": {
+            "VERIFY_ENTRY": 5.0,
+            "ALIGN": 15.0,
+            "FORWARD_SEGMENT_1": 45.0,
+            "LANDING": 10.0,
+            "TURN_TO_NEXT_FLIGHT": 120.0,
+            "FORWARD_SEGMENT_2": 45.0,
+            "EXIT_CONFIRM": 15.0
+          }
+        }
+      ],
+      "robot_commands_sent": 0
+    },
+    "expanded_launch": {
+      "resolved_parameters": {
+        "/stair_supervisor/lidar_mode": "control",
+        "/stair_supervisor/lidar_observe_only": false,
+        "/stair_supervisor/lidar_config": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-live-readiness-20260923/candidate/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "/stair_supervisor/config_dir": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config"
+      },
+      "configured": true,
+      "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+      "scope": "roslaunch parameter expansion only; no live master or robot"
+    },
+    "deployed_preflight": {
+      "at_utc": "2026-09-22T20:18:41.165178+00:00",
+      "configuration": {
+        "mode": "control",
+        "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+        "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+        "calibration_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/lidar_imu_baseline.yaml",
+        "calibration_sha256": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+        "configured": true,
+        "python": "/home/m3tron/.cache/uv/environments-v2/test-registration-core-26ae8f8cf1a8e532/bin/python",
+        "numpy": "1.24.4",
+        "scipy": "1.10.1",
+        "open3d": "0.18.0",
+        "routes": [
+          {
+            "id": "stair_3f_4f_up",
+            "commissioned": false,
+            "phase_test_limits": {
+              "VERIFY_ENTRY": 5.0,
+              "ALIGN": 15.0,
+              "FORWARD_SEGMENT_1": 45.0,
+              "LANDING": 10.0,
+              "TURN_TO_NEXT_FLIGHT": 120.0,
+              "FORWARD_SEGMENT_2": 45.0,
+              "EXIT_CONFIRM": 15.0
+            }
+          }
+        ],
+        "robot_commands_sent": 0
+      },
+      "local_runtime_check": "PASS",
+      "production_site_check": "PASS",
+      "hardware_connection_check": "FAIL",
+      "hardware_error": "ssh: connect to host 192.168.1.56 port 22: No route to host",
+      "exit_code": 255,
+      "scope": "actual deployed run.sh --preflight; no ROS production processes started"
+    }
+  },
+  "kinematic_check": {
+    "scope": "synthetic perfect pose and ideal velocity response; NOT physical validation",
+    "results": [
+      {
+        "lateral_offset": 0.0,
+        "yaw_offset": 0.0,
+        "phases": [
+          {
+            "phase": "VERIFY_ENTRY",
+            "at": 0.8000000000000114,
+            "duration": 0.8000000000000114
+          },
+          {
+            "phase": "ALIGN",
+            "at": 1.6000000000000227,
+            "duration": 0.8000000000000114
+          },
+          {
+            "phase": "FORWARD_SEGMENT_1",
+            "at": 13.800000000000196,
+            "duration": 12.200000000000173
+          },
+          {
+            "phase": "LANDING",
+            "at": 14.000000000000199,
+            "duration": 0.20000000000000284
+          },
+          {
+            "phase": "TURN_TO_NEXT_FLIGHT",
+            "at": 73.99999999999778,
+            "duration": 59.999999999997584
+          },
+          {
+            "phase": "FORWARD_SEGMENT_2",
+            "at": 87.19999999999703,
+            "duration": 13.19999999999925
+          },
+          {
+            "phase": "EXIT_CONFIRM",
+            "at": 94.99999999999659,
+            "duration": 7.799999999999557
+          }
+        ],
+        "failure": null,
+        "elapsed": 94.99999999999659,
+        "completed": true
+      },
+      {
+        "lateral_offset": 0.03,
+        "yaw_offset": 0.0,
+        "phases": [
+          {
+            "phase": "VERIFY_ENTRY",
+            "at": 0.8000000000000114,
+            "duration": 0.8000000000000114
+          },
+          {
+            "phase": "ALIGN",
+            "at": 1.6000000000000227,
+            "duration": 0.8000000000000114
+          },
+          {
+            "phase": "FORWARD_SEGMENT_1",
+            "at": 14.000000000000199,
+            "duration": 12.400000000000176
+          },
+          {
+            "phase": "LANDING",
+            "at": 14.200000000000202,
+            "duration": 0.20000000000000284
+          },
+          {
+            "phase": "TURN_TO_NEXT_FLIGHT",
+            "at": 74.79999999999774,
+            "duration": 60.599999999997536
+          },
+          {
+            "phase": "FORWARD_SEGMENT_2",
+            "at": 87.99999999999699,
+            "duration": 13.19999999999925
+          },
+          {
+            "phase": "EXIT_CONFIRM",
+            "at": 95.79999999999654,
+            "duration": 7.799999999999557
+          }
+        ],
+        "failure": null,
+        "elapsed": 95.79999999999654,
+        "completed": true
+      },
+      {
+        "lateral_offset": 0.0,
+        "yaw_offset": 0.05235987755982989,
+        "phases": [
+          {
+            "phase": "VERIFY_ENTRY",
+            "at": 0.8000000000000114,
+            "duration": 0.8000000000000114
+          },
+          {
+            "phase": "ALIGN",
+            "at": 1.6000000000000227,
+            "duration": 0.8000000000000114
+          },
+          {
+            "phase": "FORWARD_SEGMENT_1",
+            "at": 14.200000000000202,
+            "duration": 12.600000000000179
+          },
+          {
+            "phase": "LANDING",
+            "at": 14.400000000000205,
+            "duration": 0.20000000000000284
+          },
+          {
+            "phase": "TURN_TO_NEXT_FLIGHT",
+            "at": 74.99999999999773,
+            "duration": 60.59999999999752
+          },
+          {
+            "phase": "FORWARD_SEGMENT_2",
+            "at": 88.19999999999698,
+            "duration": 13.19999999999925
+          },
+          {
+            "phase": "EXIT_CONFIRM",
+            "at": 95.99999999999653,
+            "duration": 7.799999999999557
+          }
+        ],
+        "failure": null,
+        "elapsed": 95.99999999999653,
+        "completed": true
+      }
+    ]
+  },
+  "hardware": {
+    "status": "CONNECTED and stack READY",
+    "observed_at_utc": "2026-09-22T23:18:44.007182+00:00",
+    "robot_position": "flat floor away from stairs; user confirmed",
+    "production_nodes_started": true,
+    "movement_goals_submitted": 0,
+    "maximum_observed_twist_component": 0,
+    "live_evidence": "live-health-20260923.json"
+  },
+  "review": {
+    "shower": "initial defects in existing shell signal/failure/HOME handling fixed; reviewer found no concrete remaining defect in supplied fixes",
+    "mandela": "ideal kinematic response and perfect pose share scenario geometry; diagnostic only, no physical success rate or tracking accuracy claim",
+    "factchk": "claims limited to current code, local checks and observed connection failure; ROS dump-params behavior checked in installed roslaunch source",
+    "ssotize": "read-only consistency audit: config.env selects single route file; historical snapshots preserved, current guide and runbook updated",
+    "re0": "current application guide rewritten with current entrypoint and limitations",
+    "detool": "skipped; installation-specific operational instructions"
+  },
+  "cleanup": {
+    "at_utc": "2026-09-22T20:19:22.779415+00:00",
+    "temporary_groups_removed": 7,
+    "temporary_file_count": 1909,
+    "temporary_bytes": 130251514,
+    "remaining_ros_or_test_processes": [],
+    "all_requested_paths_absent": true,
+    "retained": "changed source/doc copies, original files, baseline/deployment manifests, structured results, synthetic traces and reproduction scripts as durable evidence; previous workdirs untouched",
+    "manifest": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-live-readiness-20260923/cleanup.json"
+  },
+  "deployment": {
+    "changed_files": 11,
+    "baseline_file_count": 1899,
+    "unrelated_hash_changes": [],
+    "existing_git_entries_preserved": true,
+    "all_src_files_unchanged": true,
+    "git_status_identical": false,
+    "git_status_difference": "only the reviewed launcher/config/validator/tests/docs changes",
+    "manifest": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-live-readiness-20260923/deployment.json"
+  },
+  "overall_status": "LIVE_STACK_READY; physical stair traversal and normal mission commissioning remain unverified",
+  "latest_runtime_observation": "live-health-20260923.json"
+}

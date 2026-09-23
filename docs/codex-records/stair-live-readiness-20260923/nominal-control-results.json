@@ -1,0 +1,137 @@
+{
+  "scope": "synthetic perfect pose and ideal velocity response; NOT physical validation",
+  "results": [
+    {
+      "lateral_offset": 0.0,
+      "yaw_offset": 0.0,
+      "phases": [
+        {
+          "phase": "VERIFY_ENTRY",
+          "at": 0.8000000000000114,
+          "duration": 0.8000000000000114
+        },
+        {
+          "phase": "ALIGN",
+          "at": 1.6000000000000227,
+          "duration": 0.8000000000000114
+        },
+        {
+          "phase": "FORWARD_SEGMENT_1",
+          "at": 13.800000000000196,
+          "duration": 12.200000000000173
+        },
+        {
+          "phase": "LANDING",
+          "at": 14.000000000000199,
+          "duration": 0.20000000000000284
+        },
+        {
+          "phase": "TURN_TO_NEXT_FLIGHT",
+          "at": 73.99999999999778,
+          "duration": 59.999999999997584
+        },
+        {
+          "phase": "FORWARD_SEGMENT_2",
+          "at": 87.19999999999703,
+          "duration": 13.19999999999925
+        },
+        {
+          "phase": "EXIT_CONFIRM",
+          "at": 94.99999999999659,
+          "duration": 7.799999999999557
+        }
+      ],
+      "failure": null,
+      "elapsed": 94.99999999999659,
+      "completed": true
+    },
+    {
+      "lateral_offset": 0.03,
+      "yaw_offset": 0.0,
+      "phases": [
+        {
+          "phase": "VERIFY_ENTRY",
+          "at": 0.8000000000000114,
+          "duration": 0.8000000000000114
+        },
+        {
+          "phase": "ALIGN",
+          "at": 1.6000000000000227,
+          "duration": 0.8000000000000114
+        },
+        {
+          "phase": "FORWARD_SEGMENT_1",
+          "at": 14.000000000000199,
+          "duration": 12.400000000000176
+        },
+        {
+          "phase": "LANDING",
+          "at": 14.200000000000202,
+          "duration": 0.20000000000000284
+        },
+        {
+          "phase": "TURN_TO_NEXT_FLIGHT",
+          "at": 74.79999999999774,
+          "duration": 60.599999999997536
+        },
+        {
+          "phase": "FORWARD_SEGMENT_2",
+          "at": 87.99999999999699,
+          "duration": 13.19999999999925
+        },
+        {
+          "phase": "EXIT_CONFIRM",
+          "at": 95.79999999999654,
+          "duration": 7.799999999999557
+        }
+      ],
+      "failure": null,
+      "elapsed": 95.79999999999654,
+      "completed": true
+    },
+    {
+      "lateral_offset": 0.0,
+      "yaw_offset": 0.05235987755982989,
+      "phases": [
+        {
+          "phase": "VERIFY_ENTRY",
+          "at": 0.8000000000000114,
+          "duration": 0.8000000000000114
+        },
+        {
+          "phase": "ALIGN",
+          "at": 1.6000000000000227,
+          "duration": 0.8000000000000114
+        },
+        {
+          "phase": "FORWARD_SEGMENT_1",
+          "at": 14.200000000000202,
+          "duration": 12.600000000000179
+        },
+        {
+          "phase": "LANDING",
+          "at": 14.400000000000205,
+          "duration": 0.20000000000000284
+        },
+        {
+          "phase": "TURN_TO_NEXT_FLIGHT",
+          "at": 74.99999999999773,
+          "duration": 60.59999999999752
+        },
+        {
+          "phase": "FORWARD_SEGMENT_2",
+          "at": 88.19999999999698,
+          "duration": 13.19999999999925
+        },
+        {
+          "phase": "EXIT_CONFIRM",
+          "at": 95.99999999999653,
+          "duration": 7.799999999999557
+        }
+      ],
+      "failure": null,
+      "elapsed": 95.99999999999653,
+      "completed": true
+    }
+  ]
+}

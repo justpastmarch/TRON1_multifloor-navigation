@@ -1,0 +1,55 @@
+{
+  "updated_utc": "2026-09-20T20:19:40.325075+00:00",
+  "files": [
+    {
+      "path": "PLAN.md",
+      "bytes": 49889,
+      "sha256": "4170d37a3184e33e6c8c5716feac9b6ee142c66fe85460dbd9cf78582df995f8"
+    },
+    {
+      "path": "baseline.json",
+      "bytes": 40871,
+      "sha256": "5fd1f573287e0a21ce7b42e18b62592c7a3e133667e3ab84ca1865a986247545"
+    },
+    {
+      "path": "clarifications.json",
+      "bytes": 4321,
+      "sha256": "58dab3688fab33ba9e3e70326ce6f842d65b5bee99ea3385ad6dab3c10c00c53"
+    },
+    {
+      "path": "compatibility-check.json",
+      "bytes": 2695,
+      "sha256": "a86b2956fe82bfa70c42011a1c326d369d71c1780c37e9a9547c2fea41b05898"
+    },
+    {
+      "path": "html-check.json",
+      "bytes": 169,
+      "sha256": "d82f9f6e713b426d650d177180a4ace47812bae0822ad56e2c826cb858bbad57"
+    },
+    {
+      "path": "render-check.json",
+      "bytes": 511,
+      "sha256": "0ee73e097899ad696380de6d878a30cc705dafa064dd2d39ea7e65227db52366"
+    },
+    {
+      "path": "report-preview.png",
+      "bytes": 399201,
+      "sha256": "cb7785c2c77ef24e6ab7a77c3ed6ba194e2f32822eeecaa347187526452b10e9"
+    },
+    {
+      "path": "report.css",
+      "bytes": 2009,
+      "sha256": "6f9ee84ca25f797b8072e645c73fbec192f51bbe3df9d38a5ad984baea0a9737"
+    },
+    {
+      "path": "report.html",
+      "bytes": 59600,
+      "sha256": "125d9047f7b9240cf24dd93bfe72e03400a74e65d8fec22ea0ba8a66b6807dd3"
+    },
+    {
+      "path": "state.json",
+      "bytes": 63343,
+      "sha256": "dd722846b7fccb20f0e1bb6a7b9a171912b797c7272a6e677b5dc0efc3ce988a"
+    }
+  ]
+}

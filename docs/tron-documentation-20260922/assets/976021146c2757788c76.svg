@@ -1,0 +1,275 @@
+<svg aria-label="코드에서 재구성한 E2E 소유권 흐름" class="architecture-svg" height="895pt" role="img" viewbox="0.00 0.00 1120.20 895.20" width="1120pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g class="graph" id="diagram-2-graph0" transform="scale(1 1) rotate(0) translate(21.6 873.6)">
+<title>audit</title>
+<!-- O -->
+<g class="node" id="diagram-2-node1">
+<title>O</title>
+<path d="M417,-852C417,-852 371,-852 371,-852 365,-852 359,-846 359,-840 359,-840 359,-828 359,-828 359,-822 365,-816 371,-816 371,-816 417,-816 417,-816 423,-816 429,-822 429,-828 429,-828 429,-840 429,-840 429,-846 423,-852 417,-852" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="394" y="-831.2">Operator</text>
+</g>
+<!-- R -->
+<g class="node" id="diagram-2-node2">
+<title>R</title>
+<path d="M471,-784C471,-784 317,-784 317,-784 311,-784 305,-778 305,-772 305,-772 305,-760 305,-760 305,-754 311,-748 317,-748 317,-748 471,-748 471,-748 477,-748 483,-754 483,-760 483,-760 483,-772 483,-772 483,-778 477,-784 471,-784" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="394" y="-763.2">run.sh: 검사와 로컬 process 소유</text>
+</g>
+<!-- O&#45;&gt;R -->
+<g class="edge" id="diagram-2-edge1">
+<title>O-&gt;R</title>
+<path d="M394,-815.66C394,-808.29 394,-799.57 394,-791.55" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="396.45,-791.45 394,-784.45 391.55,-791.45 396.45,-791.45" stroke="#8399ab"></polygon>
+</g>
+<!-- M -->
+<g class="node" id="diagram-2-node3">
+<title>M</title>
+<path d="M138,-716C138,-716 12,-716 12,-716 6,-716 0,-710 0,-704 0,-704 0,-692 0,-692 0,-686 6,-680 12,-680 12,-680 138,-680 138,-680 144,-680 150,-686 150,-692 150,-692 150,-704 150,-704 150,-710 144,-716 138,-716" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="75" y="-695.2">Workstation ROS master</text>
+</g>
+<!-- R&#45;&gt;M -->
+<g class="edge" id="diagram-2-edge2">
+<title>R-&gt;M</title>
+<path d="M311.43,-747.92C263.93,-738.09 204.45,-725.78 157.03,-715.97" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="157.47,-713.56 150.12,-714.54 156.48,-718.36 157.47,-713.56" stroke="#8399ab"></polygon>
+</g>
+<!-- X -->
+<g class="node" id="diagram-2-node4">
+<title>X</title>
+<path d="M434,-716C434,-716 184,-716 184,-716 178,-716 172,-710 172,-704 172,-704 172,-692 172,-692 172,-686 178,-680 184,-680 184,-680 434,-680 434,-680 440,-680 446,-686 446,-692 446,-692 446,-704 446,-704 446,-710 440,-716 434,-716" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="309" y="-695.2">Mini PC wf_mapping: LiDAR·scan·odom·camera</text>
+</g>
+<!-- R&#45;&gt;X -->
+<g class="edge" id="diagram-2-edge3">
+<title>R-&gt;X</title>
+<path d="M371.67,-747.66C361.03,-739.4 348.19,-729.43 336.92,-720.68" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="338.22,-718.58 331.18,-716.22 335.21,-722.45 338.22,-718.58" stroke="#8399ab"></polygon>
+</g>
+<!-- T -->
+<g class="node" id="diagram-2-node5">
+<title>T</title>
+<path d="M607,-104C607,-104 489,-104 489,-104 483,-104 477,-98 477,-92 477,-92 477,-80 477,-80 477,-74 483,-68 489,-68 489,-68 607,-68 607,-68 613,-68 619,-74 619,-80 619,-80 619,-92 619,-92 619,-98 613,-104 607,-104" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="548" y="-83.2">SSH WebSocket tunnel</text>
+</g>
+<!-- R&#45;&gt;T -->
+<g class="edge" id="diagram-2-edge4">
+<title>R-&gt;T</title>
+<path d="M423.54,-747.97C435.51,-739.72 448.48,-728.81 457,-716 478.68,-683.41 480,-670.14 480,-631 480,-631 480,-631 480,-221 480,-178.25 507.86,-135.33 527.92,-109.97" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="530.07,-111.2 532.57,-104.21 526.26,-108.12 530.07,-111.2" stroke="#8399ab"></polygon>
+</g>
+<!-- L -->
+<g class="node" id="diagram-2-node6">
+<title>L</title>
+<path d="M781.5,-716C781.5,-716 706.5,-716 706.5,-716 700.5,-716 694.5,-710 694.5,-704 694.5,-704 694.5,-692 694.5,-692 694.5,-686 700.5,-680 706.5,-680 706.5,-680 781.5,-680 781.5,-680 787.5,-680 793.5,-686 793.5,-692 793.5,-692 793.5,-704 793.5,-704 793.5,-710 787.5,-716 781.5,-716" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="744" y="-695.2">system.launch</text>
+</g>
+<!-- R&#45;&gt;L -->
+<g class="edge" id="diagram-2-edge5">
+<title>R-&gt;L</title>
+<path d="M483.23,-748.17C547.51,-736.05 632.32,-720.06 687.49,-709.66" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="687.98,-712.06 694.41,-708.35 687.07,-707.24 687.98,-712.06" stroke="#8399ab"></polygon>
+</g>
+<!-- B -->
+<g class="node" id="diagram-2-node16">
+<title>B</title>
+<path d="M607,-36C607,-36 489,-36 489,-36 483,-36 477,-30 477,-24 477,-24 477,-12 477,-12 477,-6 483,0 489,0 489,0 607,0 607,0 613,0 619,-6 619,-12 619,-12 619,-24 619,-24 619,-30 613,-36 607,-36" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="548" y="-15.2">Robot WebSocket peer</text>
+</g>
+<!-- T&#45;&gt;B -->
+<g class="edge" id="diagram-2-edge19">
+<title>T-&gt;B</title>
+<path d="M548,-67.66C548,-60.29 548,-51.57 548,-43.55" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="550.45,-43.45 548,-36.45 545.55,-43.45 550.45,-43.45" stroke="#8399ab"></polygon>
+</g>
+<!-- MM -->
+<g class="node" id="diagram-2-node7">
+<title>MM</title>
+<path d="M984.5,-648C984.5,-648 733.5,-648 733.5,-648 727.5,-648 721.5,-642 721.5,-636 721.5,-636 721.5,-624 721.5,-624 721.5,-618 727.5,-612 733.5,-612 733.5,-612 984.5,-612 984.5,-612 990.5,-612 996.5,-618 996.5,-624 996.5,-624 996.5,-636 996.5,-636 996.5,-642 990.5,-648 984.5,-648" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="859" y="-627.2">mission_manager: goal·route·confirmed anchor</text>
+</g>
+<!-- L&#45;&gt;MM -->
+<g class="edge" id="diagram-2-edge6">
+<title>L-&gt;MM</title>
+<path d="M773.91,-679.83C788.96,-671.2 807.3,-660.67 823.09,-651.61" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="824.38,-653.69 829.24,-648.08 821.94,-649.44 824.38,-653.69" stroke="#8399ab"></polygon>
+</g>
+<!-- FM -->
+<g class="node" id="diagram-2-node8">
+<title>FM</title>
+<path d="M939,-376C939,-376 667,-376 667,-376 661,-376 655,-370 655,-364 655,-364 655,-352 655,-352 655,-346 661,-340 667,-340 667,-340 939,-340 939,-340 945,-340 951,-346 951,-352 951,-352 951,-364 951,-364 951,-370 945,-376 939,-376" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="803" y="-355.2">multifloor_manager: map·initialpose·floor evidence</text>
+</g>
+<!-- L&#45;&gt;FM -->
+<g class="edge" id="diagram-2-edge7">
+<title>L-&gt;FM</title>
+<path d="M793.53,-694C861.13,-688.9 977.42,-676.21 1008,-648 1036.77,-621.47 1031,-602.14 1031,-563 1031,-563 1031,-563 1031,-493 1031,-430 965.5,-396.04 904.71,-378.09" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="905.12,-375.65 897.71,-376.08 903.77,-380.36 905.12,-375.65" stroke="#8399ab"></polygon>
+</g>
+<!-- S -->
+<g class="node" id="diagram-2-node9">
+<title>S</title>
+<path d="M919.5,-172C919.5,-172 686.5,-172 686.5,-172 680.5,-172 674.5,-166 674.5,-160 674.5,-160 674.5,-148 674.5,-148 674.5,-142 680.5,-136 686.5,-136 686.5,-136 919.5,-136 919.5,-136 925.5,-136 931.5,-142 931.5,-148 931.5,-148 931.5,-160 931.5,-160 931.5,-166 925.5,-172 919.5,-172" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="803" y="-151.2">stair_supervisor: NAV/STAIR command owner</text>
+</g>
+<!-- L&#45;&gt;S -->
+<g class="edge" id="diagram-2-edge8">
+<title>L-&gt;S</title>
+<path d="M793.51,-694.06C866.29,-688.85 997.59,-675.82 1035,-648 1068.82,-622.86 1077,-605.14 1077,-563 1077,-563 1077,-563 1077,-289 1077,-220.78 1007.61,-187.29 938.67,-170.85" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="938.95,-168.4 931.58,-169.21 937.85,-173.17 938.95,-168.4" stroke="#8399ab"></polygon>
+</g>
+<!-- N -->
+<g class="node" id="diagram-2-node10">
+<title>N</title>
+<path d="M701,-308C701,-308 541,-308 541,-308 535,-308 529,-302 529,-296 529,-296 529,-284 529,-284 529,-278 535,-272 541,-272 541,-272 701,-272 701,-272 707,-272 713,-278 713,-284 713,-284 713,-296 713,-296 713,-302 707,-308 701,-308" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="621" y="-287.2">map_server·AMCL·move_base</text>
+</g>
+<!-- L&#45;&gt;N -->
+<g class="edge" id="diagram-2-edge9">
+<title>L-&gt;N</title>
+<path d="M694.46,-690.33C643.71,-682.52 569.42,-668.06 549,-648 521.08,-620.58 526,-602.14 526,-563 526,-563 526,-563 526,-425 526,-378.48 564.57,-336.84 592.56,-312.75" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="594.23,-314.55 598,-308.16 591.07,-310.8 594.23,-314.55" stroke="#8399ab"></polygon>
+</g>
+<!-- V -->
+<g class="node" id="diagram-2-node11">
+<title>V</title>
+<path d="M687.5,-648C687.5,-648 572.5,-648 572.5,-648 566.5,-648 560.5,-642 560.5,-636 560.5,-636 560.5,-624 560.5,-624 560.5,-618 566.5,-612 572.5,-612 572.5,-612 687.5,-612 687.5,-612 693.5,-612 699.5,-618 699.5,-624 699.5,-624 699.5,-636 699.5,-636 699.5,-642 693.5,-648 687.5,-648" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="630" y="-627.2">RViz·AprilTag detector</text>
+</g>
+<!-- L&#45;&gt;V -->
+<g class="edge" id="diagram-2-edge10">
+<title>L-&gt;V</title>
+<path d="M714.35,-679.83C699.44,-671.2 681.25,-660.67 665.6,-651.61" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="666.79,-649.47 659.51,-648.08 664.34,-653.71 666.79,-649.47" stroke="#8399ab"></polygon>
+</g>
+<!-- P -->
+<g class="node" id="diagram-2-node12">
+<title>P</title>
+<path d="M916.5,-580C916.5,-580 801.5,-580 801.5,-580 795.5,-580 789.5,-574 789.5,-568 789.5,-568 789.5,-556 789.5,-556 789.5,-550 795.5,-544 801.5,-544 801.5,-544 916.5,-544 916.5,-544 922.5,-544 928.5,-550 928.5,-556 928.5,-556 928.5,-568 928.5,-568 928.5,-574 922.5,-580 916.5,-580" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="859" y="-559.2">Directed route planner</text>
+</g>
+<!-- MM&#45;&gt;P -->
+<g class="edge" id="diagram-2-edge11">
+<title>MM-&gt;P</title>
+<path d="M859,-611.66C859,-604.29 859,-595.57 859,-587.55" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="861.45,-587.45 859,-580.45 856.55,-587.45 861.45,-587.45" stroke="#8399ab"></polygon>
+</g>
+<!-- Z -->
+<g class="node" id="diagram-2-node18">
+<title>Z</title>
+<path d="M755.5,-580C755.5,-580 592.5,-580 592.5,-580 586.5,-580 580.5,-574 580.5,-568 580.5,-568 580.5,-556 580.5,-556 580.5,-550 586.5,-544 592.5,-544 592.5,-544 755.5,-544 755.5,-544 761.5,-544 767.5,-550 767.5,-556 767.5,-556 767.5,-568 767.5,-568 767.5,-574 761.5,-580 755.5,-580" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="674" y="-559.2">result·cancel·recording finalize</text>
+</g>
+<!-- MM&#45;&gt;Z -->
+<g class="edge" id="diagram-2-edge23">
+<title>MM-&gt;Z</title>
+<path d="M810.88,-611.83C785.72,-602.86 754.82,-591.83 728.75,-582.53" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="729.3,-580.13 721.88,-580.08 727.65,-584.74 729.3,-580.13" stroke="#8399ab"></polygon>
+</g>
+<!-- FM&#45;&gt;N -->
+<g class="edge" id="diagram-2-edge22">
+<title>FM-&gt;N</title>
+<path d="M755.66,-339.83C730.91,-330.86 700.51,-319.83 674.86,-310.53" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="675.52,-308.17 668.11,-308.08 673.85,-312.77 675.52,-308.17" stroke="#8399ab"></polygon>
+</g>
+<!-- F2 -->
+<g class="node" id="diagram-2-node20">
+<title>F2</title>
+<path d="M907,-308C907,-308 747,-308 747,-308 741,-308 735,-302 735,-296 735,-296 735,-284 735,-284 735,-278 741,-272 747,-272 747,-272 907,-272 907,-272 913,-272 919,-278 919,-284 919,-284 919,-296 919,-296 919,-302 913,-308 907,-308" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="827" y="-287.2">Floor FAULT: 공개 재시도 경로 없음</text>
+</g>
+<!-- FM&#45;&gt;F2 -->
+<g class="edge" id="diagram-2-edge25">
+<title>FM-&gt;F2</title>
+<path d="M809.31,-339.66C812.04,-332.14 815.29,-323.21 818.25,-315.06" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="820.56,-315.87 820.65,-308.45 815.96,-314.2 820.56,-315.87" stroke="#8399ab"></polygon>
+</g>
+<!-- S&#45;&gt;T -->
+<g class="edge" id="diagram-2-edge18">
+<title>S-&gt;T</title>
+<path d="M737,-135.92C701.44,-126.72 657.5,-115.34 620.93,-105.88" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="621.11,-103.39 613.72,-104.01 619.89,-108.14 621.11,-103.39" stroke="#8399ab"></polygon>
+</g>
+<!-- F -->
+<g class="node" id="diagram-2-node19">
+<title>F</title>
+<path d="M885,-104C885,-104 721,-104 721,-104 715,-104 709,-98 709,-92 709,-92 709,-80 709,-80 709,-74 715,-68 721,-68 721,-68 885,-68 885,-68 891,-68 897,-74 897,-80 897,-80 897,-92 897,-92 897,-98 891,-104 885,-104" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="803" y="-83.2">Transport FAULT: 현 복구 경로 없음</text>
+</g>
+<!-- S&#45;&gt;F -->
+<g class="edge" id="diagram-2-edge24">
+<title>S-&gt;F</title>
+<path d="M803,-135.66C803,-128.29 803,-119.57 803,-111.55" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="805.45,-111.45 803,-104.45 800.55,-111.45 805.45,-111.45" stroke="#8399ab"></polygon>
+</g>
+<!-- C -->
+<g class="node" id="diagram-2-node15">
+<title>C</title>
+<path d="M806.5,-240C806.5,-240 699.5,-240 699.5,-240 693.5,-240 687.5,-234 687.5,-228 687.5,-228 687.5,-216 687.5,-216 687.5,-210 693.5,-204 699.5,-204 699.5,-204 806.5,-204 806.5,-204 812.5,-204 818.5,-210 818.5,-216 818.5,-216 818.5,-228 818.5,-228 818.5,-234 812.5,-240 806.5,-240" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="753" y="-219.2">/navigation/cmd_vel</text>
+</g>
+<!-- N&#45;&gt;C -->
+<g class="edge" id="diagram-2-edge15">
+<title>N-&gt;C</title>
+<path d="M655.34,-271.83C672.75,-263.12 694.03,-252.49 712.27,-243.37" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="713.67,-245.4 718.84,-240.08 711.48,-241.02 713.67,-245.4" stroke="#8399ab"></polygon>
+</g>
+<!-- NA -->
+<g class="node" id="diagram-2-node13">
+<title>NA</title>
+<path d="M680.5,-444C680.5,-444 597.5,-444 597.5,-444 591.5,-444 585.5,-438 585.5,-432 585.5,-432 585.5,-420 585.5,-420 585.5,-414 591.5,-408 597.5,-408 597.5,-408 680.5,-408 680.5,-408 686.5,-408 692.5,-414 692.5,-420 692.5,-420 692.5,-432 692.5,-432 692.5,-438 686.5,-444 680.5,-444" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="639" y="-423.2">NAV child action</text>
+</g>
+<!-- P&#45;&gt;NA -->
+<g class="edge" id="diagram-2-edge12">
+<title>P-&gt;NA</title>
+<path d="M830.69,-543.76C790.43,-519.23 716.71,-474.33 673.37,-447.93" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="674.45,-445.73 667.2,-444.18 671.91,-449.91 674.45,-445.73" stroke="#8399ab"></polygon>
+</g>
+<!-- ST -->
+<g class="node" id="diagram-2-node14">
+<title>ST</title>
+<path d="M904.5,-512C904.5,-512 813.5,-512 813.5,-512 807.5,-512 801.5,-506 801.5,-500 801.5,-500 801.5,-488 801.5,-488 801.5,-482 807.5,-476 813.5,-476 813.5,-476 904.5,-476 904.5,-476 910.5,-476 916.5,-482 916.5,-488 916.5,-488 916.5,-500 916.5,-500 916.5,-506 910.5,-512 904.5,-512" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="859" y="-491.2">STAIR child action</text>
+</g>
+<!-- P&#45;&gt;ST -->
+<g class="edge" id="diagram-2-edge13">
+<title>P-&gt;ST</title>
+<path d="M859,-543.66C859,-536.29 859,-527.57 859,-519.55" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="861.45,-519.45 859,-512.45 856.55,-519.45 861.45,-519.45" stroke="#8399ab"></polygon>
+</g>
+<!-- NA&#45;&gt;N -->
+<g class="edge" id="diagram-2-edge14">
+<title>NA-&gt;N</title>
+<path d="M636.68,-407.76C633.52,-384.24 627.85,-341.98 624.26,-315.27" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="626.67,-314.79 623.31,-308.18 621.81,-315.44 626.67,-314.79" stroke="#8399ab"></polygon>
+</g>
+<!-- ST&#45;&gt;S -->
+<g class="edge" id="diagram-2-edge17">
+<title>ST-&gt;S</title>
+<path d="M898.18,-475.8C913.25,-467.77 929.76,-457.07 942,-444 970.95,-413.11 985,-401.34 985,-359 985,-359 985,-359 985,-289 985,-230.02 922.25,-194.1 870.44,-174.5" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="871.27,-172.19 863.86,-172.07 869.58,-176.79 871.27,-172.19" stroke="#8399ab"></polygon>
+</g>
+<!-- FT -->
+<g class="node" id="diagram-2-node17">
+<title>FT</title>
+<path d="M919,-444C919,-444 763,-444 763,-444 757,-444 751,-438 751,-432 751,-432 751,-420 751,-420 751,-414 757,-408 763,-408 763,-408 919,-408 919,-408 925,-408 931,-414 931,-420 931,-420 931,-432 931,-432 931,-438 925,-444 919,-444" fill="#f0f5fa" stroke="#bfd0df"></path>
+<text font-family="Noto Sans CJK KR" font-size="11.00" text-anchor="middle" x="841" y="-423.2">stair success 뒤 floor transition</text>
+</g>
+<!-- ST&#45;&gt;FT -->
+<g class="edge" id="diagram-2-edge20">
+<title>ST-&gt;FT</title>
+<path d="M854.27,-475.66C852.26,-468.29 849.88,-459.57 847.7,-451.55" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="849.97,-450.56 845.76,-444.45 845.24,-451.85 849.97,-450.56" stroke="#8399ab"></polygon>
+</g>
+<!-- C&#45;&gt;S -->
+<g class="edge" id="diagram-2-edge16">
+<title>C-&gt;S</title>
+<path d="M766.14,-203.66C772.06,-195.84 779.14,-186.49 785.51,-178.09" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="787.5,-179.51 789.78,-172.45 783.6,-176.55 787.5,-179.51" stroke="#8399ab"></polygon>
+</g>
+<!-- FT&#45;&gt;FM -->
+<g class="edge" id="diagram-2-edge21">
+<title>FT-&gt;FM</title>
+<path d="M831.02,-407.66C826.6,-399.99 821.34,-390.85 816.57,-382.58" fill="none" stroke="#8399ab"></path>
+<polygon fill="#8399ab" points="818.67,-381.3 813.05,-376.45 814.42,-383.74 818.67,-381.3" stroke="#8399ab"></polygon>
+</g>
+</g>
+</svg>

@@ -1,0 +1,18 @@
+from pathlib import Path
+import os,sys,json,hashlib,runpy,subprocess,unittest
+HERE=Path(__file__).resolve().parent;BASE=json.loads((HERE/'baseline.json').read_text());REPO=Path(BASE['repository'])
+sys.path.extend(['/home/m3tron/.local/lib/python3.8/site-packages','/usr/lib/python3/dist-packages','/usr/local/lib/python3.8/dist-packages','/opt/ros/noetic/lib/python3/dist-packages','/home/m3tron/catkin_ws/devel/lib/python3/dist-packages'])
+sys.path[:0]=[str(REPO/'src/stair_supervisor/src'),str(REPO/'src/stair_supervisor/test')]
+import stair_supervisor
+assert Path(stair_supervisor.__file__).resolve().is_relative_to(REPO) if hasattr(Path,'is_relative_to') else str(Path(stair_supervisor.__file__).resolve()).startswith(str(REPO)+'/')
+names=['test_stair_repair.ConnectedGeometryTest.test_body_straddling_flight_and_landing_is_supported','test_stair_repair.ConnectedGeometryTest.test_complete_phase_does_not_validate_an_unsent_old_forward_command','test_stair_repair.ConnectedExecutionTest.test_all_entry_ack_commands_are_zero_and_do_not_consume_trial_time']
+r=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromNames(names));assert r.wasSuccessful()
+result=dict(module_path=stair_supervisor.__file__,tests=r.testsRun,passed=r.wasSuccessful(),frozen_files={})
+for name in ['lidar_tracking_core.py','lidar_tracking.py','lidar_process.py','robot_transport.py']:
+ rel='src/stair_supervisor/src/stair_supervisor/'+name
+ digest=hashlib.sha256((REPO/rel).read_bytes()).hexdigest();assert digest==BASE['files_sha256'][rel];result['frozen_files'][rel]=digest
+rel='src/stair_supervisor/config/lidar_imu_baseline.yaml';digest=hashlib.sha256((REPO/rel).read_bytes()).hexdigest();assert digest==BASE['files_sha256'][rel];result['frozen_files'][rel]=digest
+result['git_diff_check']=subprocess.run(['git','-C',str(REPO),'diff','--check','--']+[e['path'] for e in json.loads((HERE/'deployment.json').read_text())['files']],text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout
+(HERE/'deployed-verification.json').write_text(json.dumps(result,indent=2))
+sys.argv=[str(REPO/'src/stair_supervisor/scripts/check_lidar_config.py'),str(HERE.parent/'stair-lidar-commissioning-20260921/offline-validation/config/stair_lidar.yaml')]
+runpy.run_path(sys.argv[0],run_name='__main__')

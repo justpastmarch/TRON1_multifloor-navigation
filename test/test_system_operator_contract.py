@@ -110,7 +110,7 @@ class SystemOperatorContractTest(unittest.TestCase):
             with self.subTest(token=token):
                 self.assertIn(token, rviz)
         self.assertNotIn("Class: rviz/SetGoal", rviz)
-        self.assertNotIn("Class: rviz/SetInitialPose", rviz)
+        self.assertIn("Class: rviz/SetInitialPose", rviz)
         self.assertNotIn("/move_base_simple/goal", rviz)
 
 

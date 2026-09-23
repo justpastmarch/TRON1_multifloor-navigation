@@ -1,0 +1,58 @@
+{
+  "scope": "Pure existing evidence tracker and recorded CSV; no ROS/transport/robot created. Step/yaw counts independent diagnostics; first sample-gap fault dominates actual evaluation.",
+  "results": {
+    "102101": {
+      "input": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/102101/lidar_registration.csv",
+      "sha256": "c54f0daf4f0981afc48f44b922bba654ccfda7872929761f5a5e7b17a687cbbb",
+      "intervals": 499,
+      "interval_median_s": 0.200004816,
+      "intervals_above_current_0_12s": 499,
+      "xy_steps_above_current_0_10m": 12,
+      "yaw_steps_above_current_0_20rad": 20,
+      "xy_step_max_m": 0.17898665705821384,
+      "yaw_step_max_rad": 0.4650822531357297,
+      "existing_tracker_second_sample": {
+        "faulted": true,
+        "detail": "progress=0.000000 threshold=0.000000 freshness=inf reason=odometry sample gap"
+      }
+    },
+    "103313": {
+      "input": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/103313/lidar_registration.csv",
+      "sha256": "5911a56f9031301ce07ea09664cdfba313dd80c29043c7a71d983e4496c59d08",
+      "intervals": 466,
+      "interval_median_s": 0.2000175715,
+      "intervals_above_current_0_12s": 466,
+      "xy_steps_above_current_0_10m": 9,
+      "yaw_steps_above_current_0_20rad": 37,
+      "xy_step_max_m": 0.16023752420023651,
+      "yaw_step_max_rad": 0.4901084694515994,
+      "existing_tracker_second_sample": {
+        "faulted": true,
+        "detail": "progress=0.000000 threshold=0.000000 freshness=inf reason=odometry sample gap"
+      }
+    },
+    "105713": {
+      "input": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-tracking-fix-20260921/validation/105713/lidar_registration.csv",
+      "sha256": "bf1d7f8131e55039a00b6c508cea2bab850b7e0936bf4b013ff716154ba7253f",
+      "intervals": 339,
+      "interval_median_s": 0.200007916,
+      "intervals_above_current_0_12s": 339,
+      "xy_steps_above_current_0_10m": 8,
+      "yaw_steps_above_current_0_20rad": 15,
+      "xy_step_max_m": 0.13855488113206665,
+      "yaw_step_max_rad": 0.4730503156906904,
+      "existing_tracker_second_sample": {
+        "faulted": true,
+        "detail": "progress=0.000000 threshold=0.000000 freshness=inf reason=odometry sample gap"
+      }
+    }
+  },
+  "configured_turn": {
+    "target_rad": 2.964,
+    "tolerance_rad": 0.35,
+    "target_deg": 169.824690476776,
+    "tolerance_deg": 20.05352282957881,
+    "earliest_completion_deg": 149.7711676471972,
+    "evidence": "Code evaluates progress + tolerance >= abs(target); no physical turn experiment."
+  }
+}

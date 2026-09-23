@@ -1,0 +1,30 @@
+{
+  "observed_utc": "2026-09-18T04:40:26.098625+00:00",
+  "files": [
+    {
+      "path": ".omo/plans/5f-rf-autonomous-route-repetition.md",
+      "lines": 504,
+      "sha256": "ac63d317aa5ffce28b6f2632a916dfaf1b5231dbc1919e70241c8dfc6f362bdc"
+    },
+    {
+      "path": ".omo/plans/modular-architecture-expansion.md",
+      "lines": 281,
+      "sha256": "a9fa6566c0d09930545ae19e5c6ac8ea46ee01032f73483dc40bb5e94561ae69"
+    },
+    {
+      "path": ".omo/plans/tron1-multifloor-mvp.md",
+      "lines": 269,
+      "sha256": "fd685b5f5706f6fd0ae086cda68565164efb1e3ac0409cc32675017b0dc8f3c9"
+    },
+    {
+      "path": ".omo/plans/tron1-stair-simulation.md",
+      "lines": 288,
+      "sha256": "32c68cd0823667908012cd3e96ec446038f9b2a14ffa2fa6707e5c32f8e7720e"
+    },
+    {
+      "path": ".omo/plans/yaml-transition-policy-runtime.md",
+      "lines": 246,
+      "sha256": "d1b3745e9eb569ffcf3f34d2ff63b0989f9e1d7c94255c119c1abe902256919e"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "seed": 79423,
+  "coverage_comparisons": 729,
+  "disagreements": [],
+  "timing": {
+    "union": {
+      "median_ms": 0.7222489948617294,
+      "p95_ms": 1.1395424604415894,
+      "max_ms": 1.1991550272796303
+    },
+    "sweep": {
+      "median_ms": 12.971931020729244,
+      "p95_ms": 20.746830850839615,
+      "max_ms": 21.659235004335642
+    }
+  },
+  "scope": "synthetic polygon correctness and local isolated timing; not closed-loop robot validation"
+}

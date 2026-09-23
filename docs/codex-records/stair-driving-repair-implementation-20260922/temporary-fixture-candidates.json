@@ -1,0 +1,122 @@
+[
+  {
+    "path": "/home/m3tron/.local/state/codex-desktop/tmp/tmpez34lmbb",
+    "mtime": 1790081671.9778945,
+    "files": {
+      "robot.yaml": "schema_version: 1\nconfigured: true\nmove_base:\n  max_vel_x: 0.35\n  max_vel_theta: 1.0\n  min_in_place_vel_theta: 0.2\n  acc_lim_x: 0.4\n  acc_lim_theta: 2.0\nwebsocket_full_scale:\n  linear_mps: 0.55\n  angular_radps: 1.8\ncommand_topics:\n  - /navigation/cmd_vel\n",
+      "stair_profiles.yaml": "configured: true\nprofiles:\n- alignment_yaw_rad: 0.4\n  angular_speed: 0.25\n  direction: UP\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: 1.0\n  flight_2_distance_m: 0.8\n  id: cautious_up\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: 0.5\n  linear_speed: 0.12\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 60.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.2\n  direction: DOWN\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: -1.0\n  flight_2_distance_m: -0.8\n  id: cautious_down\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: -0.5\n  linear_speed: 0.1\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 70.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.3\n  direction: UP\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: 1.0\n  flight_2_distance_m: 0.8\n  id: standard_up\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: 0.5\n  linear_speed: 0.16\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 55.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.22\n  direction: DOWN\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: -1.0\n  flight_2_distance_m: -0.8\n  id: standard_down\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: -0.5\n  linear_speed: 0.13\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 65.0\n  yaw_tolerance_rad: 0.02\nschema_version: 1\n"
+    }
+  },
+  {
+    "path": "/home/m3tron/.local/state/codex-desktop/tmp/tmptys_up6b",
+    "mtime": 1790082961.4727104,
+    "files": {
+      "robot.yaml": "schema_version: 1\nconfigured: true\nmove_base:\n  max_vel_x: 0.35\n  max_vel_theta: 1.0\n  min_in_place_vel_theta: 0.2\n  acc_lim_x: 0.4\n  acc_lim_theta: 2.0\nwebsocket_full_scale:\n  linear_mps: 0.55\n  angular_radps: 1.8\ncommand_topics:\n  - /navigation/cmd_vel\n",
+      "stair_profiles.yaml": "configured: true\nprofiles:\n- alignment_yaw_rad: 0.4\n  angular_speed: 0.25\n  direction: UP\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: 1.0\n  flight_2_distance_m: 0.8\n  id: cautious_up\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: 0.5\n  linear_speed: 0.12\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 60.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.2\n  direction: DOWN\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: -1.0\n  flight_2_distance_m: -0.8\n  id: cautious_down\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: -0.5\n  linear_speed: 0.1\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 70.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.3\n  direction: UP\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: 1.0\n  flight_2_distance_m: 0.8\n  id: standard_up\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: 0.5\n  linear_speed: 0.16\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 55.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.22\n  direction: DOWN\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: -1.0\n  flight_2_distance_m: -0.8\n  id: standard_down\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: -0.5\n  linear_speed: 0.13\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 65.0\n  yaw_tolerance_rad: 0.02\nschema_version: 1\n"
+    }
+  },
+  {
+    "path": "/home/m3tron/.local/state/codex-desktop/tmp/tmpczczhr64",
+    "mtime": 1790081560.2704036,
+    "files": {
+      "robot.yaml": "schema_version: 1\nconfigured: true\nmove_base:\n  max_vel_x: 0.35\n  max_vel_theta: 1.0\n  min_in_place_vel_theta: 0.2\n  acc_lim_x: 0.4\n  acc_lim_theta: 2.0\nwebsocket_full_scale:\n  linear_mps: 0.55\n  angular_radps: 1.8\ncommand_topics:\n  - /navigation/cmd_vel\n",
+      "stair_profiles.yaml": "schema_version: 1\nconfigured: false\nprofiles:\n  - id: test_up\n    direction: UP\n    enabled: true\n    linear_speed: 0.12\n    angular_speed: 0.25\n    timeout_sec: 2.0\n"
+    }
+  },
+  {
+    "path": "/home/m3tron/.local/state/codex-desktop/tmp/tmpk619e1k2",
+    "mtime": 1790082961.50471,
+    "files": {
+      "robot.yaml": "schema_version: 1\nconfigured: true\nmove_base:\n  max_vel_x: 0.35\n  max_vel_theta: 1.0\n  min_in_place_vel_theta: 0.2\n  acc_lim_x: 0.4\n  acc_lim_theta: 2.0\nwebsocket_full_scale:\n  linear_mps: 0.55\n  angular_radps: 1.8\ncommand_topics:\n  - /navigation/cmd_vel\n",
+      "stair_profiles.yaml": "configured: true\nprofiles:\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.25\n  direction: UP\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: 1.0\n  flight_2_distance_m: 0.8\n  id: cautious_up\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: 0.5\n  linear_speed: 0.12\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.1\n  timeout_sec: 60.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.2\n  direction: DOWN\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: -1.0\n  flight_2_distance_m: -0.8\n  id: cautious_down\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: -0.5\n  linear_speed: 0.1\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 70.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.3\n  direction: UP\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: 1.0\n  flight_2_distance_m: 0.8\n  id: standard_up\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: 0.5\n  linear_speed: 0.16\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 55.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.22\n  direction: DOWN\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: -1.0\n  flight_2_distance_m: -0.8\n  id: standard_down\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: -0.5\n  linear_speed: 0.13\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 65.0\n  yaw_tolerance_rad: 0.02\nschema_version: 1\n"
+    }
+  },
+  {
+    "path": "/home/m3tron/.local/state/codex-desktop/tmp/tmp9jfzn77i",
+    "mtime": 1790081560.2704036,
+    "files": {
+      "robot.yaml": "schema_version: 1\nconfigured: false\nmove_base:\n  max_vel_x: 0.35\n  max_vel_theta: 1.0\n  min_in_place_vel_theta: 0.2\n  acc_lim_x: 0.4\n  acc_lim_theta: 2.0\nwebsocket_full_scale:\n  linear_mps: 0.55\n  angular_radps: 1.8\ncommand_topics:\n  - /navigation/cmd_vel\n",
+      "stair_profiles.yaml": "schema_version: 1\nconfigured: false\nprofiles: []\n"
+    }
+  },
+  {
+    "path": "/home/m3tron/.local/state/codex-desktop/tmp/tmpwlvi3eks",
+    "mtime": 1790081672.0178943,
+    "files": {
+      "robot.yaml": "schema_version: 1\nconfigured: true\nmove_base:\n  max_vel_x: 0.35\n  max_vel_theta: 1.0\n  min_in_place_vel_theta: 0.2\n  acc_lim_x: 0.4\n  acc_lim_theta: 2.0\nwebsocket_full_scale:\n  linear_mps: 0.55\n  angular_radps: 1.8\ncommand_topics:\n  - /navigation/cmd_vel\n",
+      "stair_profiles.yaml": "configured: true\nprofiles:\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.25\n  direction: UP\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: 1.0\n  flight_2_distance_m: 0.8\n  id: cautious_up\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: 0.5\n  linear_speed: 0.12\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.1\n  timeout_sec: 60.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.2\n  direction: DOWN\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: -1.0\n  flight_2_distance_m: -0.8\n  id: cautious_down\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: -0.5\n  linear_speed: 0.1\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 70.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.3\n  direction: UP\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: 1.0\n  flight_2_distance_m: 0.8\n  id: standard_up\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: 0.5\n  linear_speed: 0.16\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 55.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.22\n  direction: DOWN\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: -1.0\n  flight_2_distance_m: -0.8\n  id: standard_down\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: -0.5\n  linear_speed: 0.13\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 65.0\n  yaw_tolerance_rad: 0.02\nschema_version: 1\n"
+    }
+  },
+  {
+    "path": "/home/m3tron/.local/state/codex-desktop/tmp/tmp9c4h0yux",
+    "mtime": 1790081671.9658947,
+    "files": {
+      "robot.yaml": "schema_version: 1\nconfigured: true\nmove_base:\n  max_vel_x: 0.35\n  max_vel_theta: 1.0\n  min_in_place_vel_theta: 0.2\n  acc_lim_x: 0.4\n  acc_lim_theta: 2.0\nwebsocket_full_scale:\n  linear_mps: 0.55\n  angular_radps: 1.8\ncommand_topics:\n  - /navigation/cmd_vel\n",
+      "stair_profiles.yaml": "schema_version: 1\nconfigured: false\nprofiles:\n  - id: test_up\n    direction: UP\n    enabled: true\n    linear_speed: 0.12\n    angular_speed: 0.25\n    timeout_sec: 2.0\n"
+    }
+  },
+  {
+    "path": "/home/m3tron/.local/state/codex-desktop/tmp/tmpo9eq7rtm",
+    "mtime": 1790081560.2664037,
+    "files": {
+      "robot.yaml": "schema_version: 1\nconfigured: true\nmove_base:\n  max_vel_x: 0.35\n  max_vel_theta: 1.0\n  min_in_place_vel_theta: 0.2\n  acc_lim_x: 0.4\n  acc_lim_theta: 2.0\nwebsocket_full_scale:\n  linear_mps: 0.55\n  angular_radps: 1.8\ncommand_topics:\n  - /navigation/cmd_vel\n",
+      "stair_profiles.yaml": "schema_version: 1\nconfigured: false\nprofiles: []\n"
+    }
+  },
+  {
+    "path": "/home/m3tron/.local/state/codex-desktop/tmp/tmp6luj5kk_",
+    "mtime": 1790082961.4887102,
+    "files": {
+      "robot.yaml": "schema_version: 1\nconfigured: true\nmove_base:\n  max_vel_x: 0.35\n  max_vel_theta: 1.0\n  min_in_place_vel_theta: 0.2\n  acc_lim_x: 0.4\n  acc_lim_theta: 2.0\nwebsocket_full_scale:\n  linear_mps: 0.55\n  angular_radps: 1.8\ncommand_topics:\n  - /navigation/cmd_vel\n",
+      "stair_profiles.yaml": "configured: true\nprofiles:\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.25\n  direction: UP\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: 1.0\n  flight_2_distance_m: 0.8\n  id: cautious_up\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: 0.5\n  linear_speed: 0.12\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  sensor_freshness_sec: 0.2\n  timeout_sec: 60.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.2\n  direction: DOWN\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: -1.0\n  flight_2_distance_m: -0.8\n  id: cautious_down\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: -0.5\n  linear_speed: 0.1\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 70.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.3\n  direction: UP\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: 1.0\n  flight_2_distance_m: 0.8\n  id: standard_up\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: 0.5\n  linear_speed: 0.16\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 55.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.22\n  direction: DOWN\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: -1.0\n  flight_2_distance_m: -0.8\n  id: standard_down\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: -0.5\n  linear_speed: 0.13\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 65.0\n  yaw_tolerance_rad: 0.02\nschema_version: 1\n"
+    }
+  },
+  {
+    "path": "/home/m3tron/.local/state/codex-desktop/tmp/tmpu2e3kztj",
+    "mtime": 1790081672.0058944,
+    "files": {
+      "robot.yaml": "schema_version: 1\nconfigured: false\nmove_base:\n  max_vel_x: 0.35\n  max_vel_theta: 1.0\n  min_in_place_vel_theta: 0.2\n  acc_lim_x: 0.4\n  acc_lim_theta: 2.0\nwebsocket_full_scale:\n  linear_mps: 0.55\n  angular_radps: 1.8\ncommand_topics:\n  - /navigation/cmd_vel\n",
+      "stair_profiles.yaml": "schema_version: 1\nconfigured: false\nprofiles: []\n"
+    }
+  },
+  {
+    "path": "/home/m3tron/.local/state/codex-desktop/tmp/tmp7r430qfp",
+    "mtime": 1790082961.4647105,
+    "files": {
+      "robot.yaml": "schema_version: 1\nconfigured: true\nmove_base:\n  max_vel_x: 0.35\n  max_vel_theta: 1.0\n  min_in_place_vel_theta: 0.2\n  acc_lim_x: 0.4\n  acc_lim_theta: 2.0\nwebsocket_full_scale:\n  linear_mps: 0.55\n  angular_radps: 1.8\ncommand_topics:\n  - /navigation/cmd_vel\n",
+      "stair_profiles.yaml": "schema_version: 1\nconfigured: false\nprofiles:\n  - id: test_up\n    direction: UP\n    enabled: true\n    linear_speed: 0.12\n    angular_speed: 0.25\n    timeout_sec: 2.0\n"
+    }
+  },
+  {
+    "path": "/home/m3tron/.local/state/codex-desktop/tmp/tmptelyv93w",
+    "mtime": 1790082961.4647105,
+    "files": {
+      "robot.yaml": "schema_version: 1\nconfigured: true\nmove_base:\n  max_vel_x: 0.35\n  max_vel_theta: 1.0\n  min_in_place_vel_theta: 0.2\n  acc_lim_x: 0.4\n  acc_lim_theta: 2.0\nwebsocket_full_scale:\n  linear_mps: 0.55\n  angular_radps: 1.8\ncommand_topics:\n  - /navigation/cmd_vel\n",
+      "stair_profiles.yaml": "schema_version: 1\nconfigured: false\nprofiles: []\n"
+    }
+  },
+  {
+    "path": "/home/m3tron/.local/state/codex-desktop/tmp/tmpu7h_eodd",
+    "mtime": 1790081671.9658947,
+    "files": {
+      "robot.yaml": "schema_version: 1\nconfigured: true\nmove_base:\n  max_vel_x: 0.35\n  max_vel_theta: 1.0\n  min_in_place_vel_theta: 0.2\n  acc_lim_x: 0.4\n  acc_lim_theta: 2.0\nwebsocket_full_scale:\n  linear_mps: 0.55\n  angular_radps: 1.8\ncommand_topics:\n  - /navigation/cmd_vel\n",
+      "stair_profiles.yaml": "schema_version: 1\nconfigured: false\nprofiles: []\n"
+    }
+  },
+  {
+    "path": "/home/m3tron/.local/state/codex-desktop/tmp/tmpql4qrpgy",
+    "mtime": 1790082961.49271,
+    "files": {
+      "robot.yaml": "schema_version: 1\nconfigured: false\nmove_base:\n  max_vel_x: 0.35\n  max_vel_theta: 1.0\n  min_in_place_vel_theta: 0.2\n  acc_lim_x: 0.4\n  acc_lim_theta: 2.0\nwebsocket_full_scale:\n  linear_mps: 0.55\n  angular_radps: 1.8\ncommand_topics:\n  - /navigation/cmd_vel\n",
+      "stair_profiles.yaml": "schema_version: 1\nconfigured: false\nprofiles: []\n"
+    }
+  },
+  {
+    "path": "/home/m3tron/.local/state/codex-desktop/tmp/tmphn6pucyq",
+    "mtime": 1790081671.9978945,
+    "files": {
+      "robot.yaml": "schema_version: 1\nconfigured: true\nmove_base:\n  max_vel_x: 0.35\n  max_vel_theta: 1.0\n  min_in_place_vel_theta: 0.2\n  acc_lim_x: 0.4\n  acc_lim_theta: 2.0\nwebsocket_full_scale:\n  linear_mps: 0.55\n  angular_radps: 1.8\ncommand_topics:\n  - /navigation/cmd_vel\n",
+      "stair_profiles.yaml": "configured: true\nprofiles:\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.25\n  direction: UP\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: 1.0\n  flight_2_distance_m: 0.8\n  id: cautious_up\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: 0.5\n  linear_speed: 0.12\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  sensor_freshness_sec: 0.2\n  timeout_sec: 60.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.2\n  direction: DOWN\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: -1.0\n  flight_2_distance_m: -0.8\n  id: cautious_down\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: -0.5\n  linear_speed: 0.1\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 70.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.3\n  direction: UP\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: 1.0\n  flight_2_distance_m: 0.8\n  id: standard_up\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: 0.5\n  linear_speed: 0.16\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 55.0\n  yaw_tolerance_rad: 0.02\n- alignment_yaw_rad: 0.0\n  angular_speed: 0.22\n  direction: DOWN\n  distance_tolerance_m: 0.02\n  enabled: true\n  exit_dwell_sec: 0.2\n  flight_1_distance_m: -1.0\n  flight_2_distance_m: -0.8\n  id: standard_down\n  landing_dwell_sec: 0.2\n  landing_turn_yaw_rad: -0.5\n  linear_speed: 0.13\n  max_odom_step_m: 0.4\n  max_sample_gap_sec: 0.15\n  max_yaw_step_rad: 0.3\n  sensor_freshness_sec: 0.2\n  timeout_sec: 65.0\n  yaw_tolerance_rad: 0.02\nschema_version: 1\n"
+    }
+  }
+]

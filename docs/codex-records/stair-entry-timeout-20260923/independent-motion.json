@@ -1,0 +1,40 @@
+{
+  "interval": [
+    1790122466.82,
+    1790122471.83
+  ],
+  "wheel_count": 491,
+  "wheel_net_xyz_m": [
+    -0.02980046880256282,
+    0.12434279140842319,
+    0.0
+  ],
+  "wheel_net_yaw_deg": -0.14599977208203785,
+  "wheel_linear_x_mps": {
+    "min": -0.0840531855068063,
+    "median": -0.03226833171570602,
+    "p95": 0.0237657547274625,
+    "max": 0.04717676338323939
+  },
+  "wheel_angular_z_radps": {
+    "min": -0.16245639324188232,
+    "median": -0.003465659450739622,
+    "p95": 0.08335339650511742,
+    "max": 0.12969239056110382
+  },
+  "imu_count": 1007,
+  "gyro_projected_on_instant_accel_abs_radps": {
+    "min": 3.605762885481384e-05,
+    "median": 0.030336707294628798,
+    "p95": 0.11066758929193797,
+    "max": 0.19678630804607364
+  },
+  "gyro_magnitude_radps": {
+    "min": 0.004933864844047227,
+    "median": 0.05699237940474216,
+    "p95": 0.1996067961507586,
+    "max": 0.3352058777935231
+  },
+  "gyro_projection_exceeds_point04_fraction": 0.40218470705064546,
+  "caveat": "Accelerometer projection is a corroborating signal, not a gravity ground-truth estimate or controller yaw; wheel odometry can slip."
+}

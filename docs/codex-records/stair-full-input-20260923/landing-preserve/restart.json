@@ -1,0 +1,8 @@
+{
+  "at_utc": "2026-09-23T01:10:22.229913+00:00",
+  "old_pid": 493637,
+  "new_pid": 518699,
+  "automatic_recording": false,
+  "goals_sent": 0,
+  "reason": "Recover latched disconnect after robot reboot and load flat-phase command cap"
+}

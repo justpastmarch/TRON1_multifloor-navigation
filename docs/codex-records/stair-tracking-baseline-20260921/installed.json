@@ -1,0 +1,44 @@
+{
+  "applied_utc": "2026-09-20T19:12:18.158382+00:00",
+  "changes": [
+    {
+      "relative": "README.md",
+      "before_sha256": "7d26fbc829450f3b7f0ca3bfdbabf671dffc2355147b6a1947b64b5df7439b55",
+      "after_sha256": "387fca4ef296983b23655e5e20aeac0337261d6c623c347ee4d43be33b387526",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/README.md"
+    },
+    {
+      "relative": "comparison_markers.py",
+      "before_sha256": "624196f4ae3291ab17307c1609965fb27edec0804d8740616c821aaba15655a3",
+      "after_sha256": "24785217b92e7f0caf205a8b9bea67b193f00586f32d99e38638b91fcf797adc",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/comparison_markers.py"
+    },
+    {
+      "relative": "build_comparison_bag.py",
+      "before_sha256": "6a2ec8a164586968ff9cabb99b78cead8d8b05bb783df58603eaf1edc31feb50",
+      "after_sha256": "8b784865309233bd35766ea94276ea4b23b59dc1138cc5eddc5a48a4f665684b",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/build_comparison_bag.py"
+    },
+    {
+      "relative": "specs/102101_comparison.json",
+      "before_sha256": "0e5a1339ebbe99d7735a9f8abb6652b9922c37c4cc8d746ee1fb69725662a4b5",
+      "after_sha256": "c80793f1eabcba8053950c941c1f4b58d15368c12bd1836ad18a94e2e6c23834",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/102101_comparison.json"
+    },
+    {
+      "relative": "specs/105713_comparison.json",
+      "before_sha256": "b152f53beda025b5770be0551a34b21d6aa722802c033d334ac56d604dc43f74",
+      "after_sha256": "e937c8213fe9c51d0aa22757bd8e13b154e357e2bae7cc7c73378c0671c10ef5",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/105713_comparison.json"
+    },
+    {
+      "relative": "test_comparison_markers.py",
+      "before_sha256": null,
+      "after_sha256": "70942fa7a268866b734fc33b6952c92e147e6d611cf52b00df66e3c13e040d60",
+      "target": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/test_comparison_markers.py"
+    }
+  ],
+  "estimator_modified": false,
+  "production_nodes_modified": false,
+  "temporary_install_files_removed": true
+}

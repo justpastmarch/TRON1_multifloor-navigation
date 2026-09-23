@@ -1,0 +1,1199 @@
+[
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/camera1/color/camera_info",
+    "from_rel": 231.46581101417542,
+    "to_rel": 239.71063232421875,
+    "gap": 8.244821310043335
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/camera1/color/camera_info",
+    "from_rel": 496.6910743713379,
+    "to_rel": 498.29477047920227,
+    "gap": 1.6036961078643799
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/livox/imu",
+    "from_rel": 231.46490216255188,
+    "to_rel": 236.8389253616333,
+    "gap": 5.374023199081421
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/livox/imu",
+    "from_rel": 494.60598731040955,
+    "to_rel": 498.0377597808838,
+    "gap": 3.431772470474243
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/livox/imu",
+    "from_rel": 498.03780221939087,
+    "to_rel": 499.4391145706177,
+    "gap": 1.4013123512268066
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/camera1/color/image_raw/compressed",
+    "from_rel": 227.82519960403442,
+    "to_rel": 236.64652705192566,
+    "gap": 8.821327447891235
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/camera1/color/image_raw/compressed",
+    "from_rel": 216.22094655036926,
+    "to_rel": 221.58402490615845,
+    "gap": 5.363078355789185
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/camera1/color/image_raw/compressed",
+    "from_rel": 221.58402490615845,
+    "to_rel": 224.15498399734497,
+    "gap": 2.5709590911865234
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/camera1/color/image_raw/compressed",
+    "from_rel": 224.15498399734497,
+    "to_rel": 226.0361225605011,
+    "gap": 1.881138563156128
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/camera1/color/image_raw/compressed",
+    "from_rel": 226.0361225605011,
+    "to_rel": 227.82519960403442,
+    "gap": 1.7890770435333252
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/scan",
+    "from_rel": 495.11637926101685,
+    "to_rel": 508.4392349720001,
+    "gap": 13.322855710983276
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/scan",
+    "from_rel": 230.45786333084106,
+    "to_rel": 238.21067214012146,
+    "gap": 7.7528088092803955
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/scan",
+    "from_rel": 238.263041973114,
+    "to_rel": 239.57043027877808,
+    "gap": 1.3073883056640625
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/tf",
+    "from_rel": 237.72923755645752,
+    "to_rel": 246.04636096954346,
+    "gap": 8.317123413085938
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/tf",
+    "from_rel": 230.18799114227295,
+    "to_rel": 237.7047824859619,
+    "gap": 7.516791343688965
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/tf",
+    "from_rel": 498.22670221328735,
+    "to_rel": 505.3525698184967,
+    "gap": 7.125867605209351
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/tf",
+    "from_rel": 495.73332357406616,
+    "to_rel": 498.2264087200165,
+    "gap": 2.4930851459503174
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/tf",
+    "from_rel": 222.6043677330017,
+    "to_rel": 223.63955783843994,
+    "gap": 1.0351901054382324
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/tron/sensor_joy",
+    "from_rel": 231.1373643875122,
+    "to_rel": 237.47756600379944,
+    "gap": 6.3402016162872314
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/tron/sensor_joy",
+    "from_rel": 497.16413164138794,
+    "to_rel": 500.1007409095764,
+    "gap": 2.9366092681884766
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/tron/sensor_joy",
+    "from_rel": 494.4798209667206,
+    "to_rel": 497.1631739139557,
+    "gap": 2.6833529472351074
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/livox/lidar",
+    "from_rel": 218.0223331451416,
+    "to_rel": 237.0335624217987,
+    "gap": 19.011229276657104
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/livox/lidar",
+    "from_rel": 40.625505685806274,
+    "to_rel": 47.778879165649414,
+    "gap": 7.15337347984314
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/livox/lidar",
+    "from_rel": 63.07838535308838,
+    "to_rel": 67.77323341369629,
+    "gap": 4.69484806060791
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/livox/lidar",
+    "from_rel": 47.778879165649414,
+    "to_rel": 52.02024579048157,
+    "gap": 4.241366624832153
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/livox/lidar",
+    "from_rel": 67.77323341369629,
+    "to_rel": 71.40090489387512,
+    "gap": 3.627671480178833
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/tron/wheel_odom_raw",
+    "from_rel": 232.0262746810913,
+    "to_rel": 236.56913542747498,
+    "gap": 4.542860746383667
+  },
+  {
+    "bag": "manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+    "topic": "/tron/wheel_odom_raw",
+    "from_rel": 494.4012987613678,
+    "to_rel": 497.6284534931183,
+    "gap": 3.2271547317504883
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 123.09695649147034,
+    "to_rel": 162.80175733566284,
+    "gap": 39.704800844192505
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 12.045475244522095,
+    "to_rel": 49.728468894958496,
+    "gap": 37.6829936504364
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 198.1310272216797,
+    "to_rel": 235.47436380386353,
+    "gap": 37.34333658218384
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 85.81143856048584,
+    "to_rel": 123.09695649147034,
+    "gap": 37.2855179309845
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 235.47436380386353,
+    "to_rel": 272.4034163951874,
+    "gap": 36.92905259132385
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/move_base/local_costmap/costmap",
+    "from_rel": 120.45473265647888,
+    "to_rel": 140.25453090667725,
+    "gap": 19.799798250198364
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/move_base/local_costmap/costmap",
+    "from_rel": 178.05448412895203,
+    "to_rel": 197.25456738471985,
+    "gap": 19.200083255767822
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/move_base/local_costmap/costmap",
+    "from_rel": 85.05476188659668,
+    "to_rel": 104.25457119941711,
+    "gap": 19.199809312820435
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/move_base/local_costmap/costmap",
+    "from_rel": 197.25456738471985,
+    "to_rel": 215.85452818870544,
+    "gap": 18.599960803985596
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/move_base/local_costmap/costmap",
+    "from_rel": 10.654625415802002,
+    "to_rel": 29.254567861557007,
+    "gap": 18.599942445755005
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/move_base/local_costmap/costmap_updates",
+    "from_rel": 175.05448961257935,
+    "to_rel": 176.25488138198853,
+    "gap": 1.2003917694091797
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/move_base/local_costmap/costmap_updates",
+    "from_rel": 177.45445680618286,
+    "to_rel": 178.654602766037,
+    "gap": 1.200145959854126
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/move_base/local_costmap/costmap_updates",
+    "from_rel": 157.65449833869934,
+    "to_rel": 158.85463118553162,
+    "gap": 1.2001328468322754
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/move_base/local_costmap/costmap_updates",
+    "from_rel": 103.65451860427856,
+    "to_rel": 104.85462355613708,
+    "gap": 1.2001049518585205
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/move_base/local_costmap/costmap_updates",
+    "from_rel": 10.05457067489624,
+    "to_rel": 11.254668712615967,
+    "gap": 1.2000980377197266
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/rosout",
+    "from_rel": 50.56169080734253,
+    "to_rel": 51.63699126243591,
+    "gap": 1.0753004550933838
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/rosout",
+    "from_rel": 157.1204092502594,
+    "to_rel": 158.15390062332153,
+    "gap": 1.0334913730621338
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/rosout",
+    "from_rel": 45.52315974235535,
+    "to_rel": 46.552164793014526,
+    "gap": 1.0290050506591797
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/rosout",
+    "from_rel": 117.92274165153503,
+    "to_rel": 118.94686436653137,
+    "gap": 1.024122714996338
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/rosout",
+    "from_rel": 1.2779898643493652,
+    "to_rel": 2.301248788833618,
+    "gap": 1.023258924484253
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/particlecloud",
+    "from_rel": 123.09704661369324,
+    "to_rel": 162.80192947387695,
+    "gap": 39.704882860183716
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/particlecloud",
+    "from_rel": 12.045565843582153,
+    "to_rel": 49.72861695289612,
+    "gap": 37.683051109313965
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/particlecloud",
+    "from_rel": 198.13110375404358,
+    "to_rel": 235.4744210243225,
+    "gap": 37.34331727027893
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/particlecloud",
+    "from_rel": 85.81146478652954,
+    "to_rel": 123.09704661369324,
+    "gap": 37.285581827163696
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/particlecloud",
+    "from_rel": 235.4744210243225,
+    "to_rel": 272.4034466743469,
+    "gap": 36.929025650024414
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/move_base/global_costmap/costmap_updates",
+    "from_rel": 188.18227124214172,
+    "to_rel": 190.18485975265503,
+    "gap": 2.0025885105133057
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/move_base/global_costmap/costmap_updates",
+    "from_rel": 232.18237233161926,
+    "to_rel": 234.18431544303894,
+    "gap": 2.0019431114196777
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/move_base/global_costmap/costmap_updates",
+    "from_rel": 23.18225407600403,
+    "to_rel": 25.184056282043457,
+    "gap": 2.0018022060394287
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/move_base/global_costmap/costmap_updates",
+    "from_rel": 194.18200993537903,
+    "to_rel": 196.18381142616272,
+    "gap": 2.0018014907836914
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/move_base/global_costmap/costmap_updates",
+    "from_rel": 59.1823046207428,
+    "to_rel": 61.18357229232788,
+    "gap": 2.001267671585083
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/rosout_agg",
+    "from_rel": 50.561728954315186,
+    "to_rel": 51.637189626693726,
+    "gap": 1.07546067237854
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/rosout_agg",
+    "from_rel": 157.1204285621643,
+    "to_rel": 158.15392327308655,
+    "gap": 1.0334947109222412
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/rosout_agg",
+    "from_rel": 45.52315950393677,
+    "to_rel": 46.552308320999146,
+    "gap": 1.029148817062378
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/rosout_agg",
+    "from_rel": 117.92351269721985,
+    "to_rel": 118.94687509536743,
+    "gap": 1.023362398147583
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_210849.bag",
+    "topic": "/rosout_agg",
+    "from_rel": 1.2779979705810547,
+    "to_rel": 2.301248788833618,
+    "gap": 1.0232508182525635
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_231643.bag",
+    "topic": "/rosout",
+    "from_rel": 46.19538617134094,
+    "to_rel": 47.20907497406006,
+    "gap": 1.0136888027191162
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_231643.bag",
+    "topic": "/rosout",
+    "from_rel": 45.178133726119995,
+    "to_rel": 46.185893535614014,
+    "gap": 1.0077598094940186
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_231643.bag",
+    "topic": "/rosout",
+    "from_rel": 5.656925916671753,
+    "to_rel": 6.657186508178711,
+    "gap": 1.000260591506958
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/rosout",
+    "from_rel": 169.28352332115173,
+    "to_rel": 170.49469542503357,
+    "gap": 1.211172103881836
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/rosout",
+    "from_rel": 204.40653824806213,
+    "to_rel": 205.53565549850464,
+    "gap": 1.1291172504425049
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/rosout",
+    "from_rel": 285.8243863582611,
+    "to_rel": 286.922810792923,
+    "gap": 1.0984244346618652
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/rosout",
+    "from_rel": 235.59159517288208,
+    "to_rel": 236.6820228099823,
+    "gap": 1.0904276371002197
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/rosout",
+    "from_rel": 242.59145164489746,
+    "to_rel": 243.67940855026245,
+    "gap": 1.0879569053649902
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 16.639775276184082,
+    "to_rel": 44.968406438827515,
+    "gap": 28.328631162643433
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 125.63127064704895,
+    "to_rel": 148.06617188453674,
+    "gap": 22.434901237487793
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 274.6379225254059,
+    "to_rel": 286.47524881362915,
+    "gap": 11.837326288223267
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 78.60654044151306,
+    "to_rel": 90.00806856155396,
+    "gap": 11.401528120040894
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 6.992884397506714,
+    "to_rel": 15.481405973434448,
+    "gap": 8.488521575927734
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/mission/feedback",
+    "from_rel": 52.55975961685181,
+    "to_rel": 146.17381644248962,
+    "gap": 93.61405682563782
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/move_base/goal",
+    "from_rel": 146.1738259792328,
+    "to_rel": 227.78667879104614,
+    "gap": 81.61285281181335
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/move_base/goal",
+    "from_rel": 81.37405586242676,
+    "to_rel": 146.1738259792328,
+    "gap": 64.79977011680603
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/move_base/goal",
+    "from_rel": 52.55976462364197,
+    "to_rel": 81.37405586242676,
+    "gap": 28.81429123878479
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/navigation/cmd_vel",
+    "from_rel": 91.57512879371643,
+    "to_rel": 146.17407059669495,
+    "gap": 54.598941802978516
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/move_base/feedback",
+    "from_rel": 91.57509708404541,
+    "to_rel": 146.17522931098938,
+    "gap": 54.60013222694397
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/move_base/result",
+    "from_rel": 91.575119972229,
+    "to_rel": 227.77437162399292,
+    "gap": 136.19925165176392
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/move_base/result",
+    "from_rel": 227.77437162399292,
+    "to_rel": 265.78707456588745,
+    "gap": 38.01270294189453
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/move_base/result",
+    "from_rel": 81.36062550544739,
+    "to_rel": 91.575119972229,
+    "gap": 10.214494466781616
+  },
+  {
+    "bag": "stair_3F_to_4F_FULL_20260916_234018.bag",
+    "topic": "/mission/result",
+    "from_rel": 91.57522916793823,
+    "to_rel": 265.78763008117676,
+    "gap": 174.21240091323853
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152128.bag",
+    "topic": "/livox/lidar",
+    "from_rel": 19.217039823532104,
+    "to_rel": 21.459994554519653,
+    "gap": 2.242954730987549
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152128.bag",
+    "topic": "/livox/lidar",
+    "from_rel": 24.915975332260132,
+    "to_rel": 26.75896978378296,
+    "gap": 1.8429944515228271
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152128.bag",
+    "topic": "/livox/lidar",
+    "from_rel": 36.03343224525452,
+    "to_rel": 37.56353998184204,
+    "gap": 1.5301077365875244
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152128.bag",
+    "topic": "/livox/lidar",
+    "from_rel": 11.11721420288086,
+    "to_rel": 12.501435041427612,
+    "gap": 1.384220838546753
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152128.bag",
+    "topic": "/livox/lidar",
+    "from_rel": 26.75896978378296,
+    "to_rel": 28.13771390914917,
+    "gap": 1.378744125366211
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152128.bag",
+    "topic": "/camera1/color/image_raw",
+    "from_rel": 36.45651698112488,
+    "to_rel": 40.072181940078735,
+    "gap": 3.6156649589538574
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152128.bag",
+    "topic": "/camera1/color/image_raw",
+    "from_rel": 25.640693187713623,
+    "to_rel": 28.012297868728638,
+    "gap": 2.3716046810150146
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152128.bag",
+    "topic": "/camera1/color/image_raw",
+    "from_rel": 10.994688510894775,
+    "to_rel": 12.736043930053711,
+    "gap": 1.7413554191589355
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152128.bag",
+    "topic": "/camera1/color/image_raw",
+    "from_rel": 14.57924222946167,
+    "to_rel": 16.300615072250366,
+    "gap": 1.7213728427886963
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152128.bag",
+    "topic": "/camera1/color/image_raw",
+    "from_rel": 19.519056797027588,
+    "to_rel": 21.199456453323364,
+    "gap": 1.6803996562957764
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152223.bag",
+    "topic": "/camera1/color/image_raw",
+    "from_rel": 4.319159269332886,
+    "to_rel": 5.730269432067871,
+    "gap": 1.4111101627349854
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152248.bag",
+    "topic": "/camera1/color/image_raw",
+    "from_rel": 134.8983371257782,
+    "to_rel": 138.49091577529907,
+    "gap": 3.592578649520874
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152248.bag",
+    "topic": "/camera1/color/image_raw",
+    "from_rel": 131.0386140346527,
+    "to_rel": 133.05898237228394,
+    "gap": 2.0203683376312256
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152248.bag",
+    "topic": "/camera1/color/image_raw",
+    "from_rel": 133.05898237228394,
+    "to_rel": 134.8983371257782,
+    "gap": 1.8393547534942627
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152248.bag",
+    "topic": "/camera1/color/image_raw",
+    "from_rel": 129.44067192077637,
+    "to_rel": 131.0386140346527,
+    "gap": 1.5979421138763428
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152248.bag",
+    "topic": "/camera1/color/image_raw",
+    "from_rel": 138.49091577529907,
+    "to_rel": 139.73776412010193,
+    "gap": 1.2468483448028564
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152248.bag",
+    "topic": "/livox/lidar",
+    "from_rel": 129.8405134677887,
+    "to_rel": 135.09863305091858,
+    "gap": 5.258119583129883
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152248.bag",
+    "topic": "/livox/lidar",
+    "from_rel": 135.09863305091858,
+    "to_rel": 140.0178666114807,
+    "gap": 4.919233560562134
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260824_152248.bag",
+    "topic": "/livox/lidar",
+    "from_rel": 140.0178666114807,
+    "to_rel": 141.241779088974,
+    "gap": 1.2239124774932861
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_102101.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 185.23468470573425,
+    "to_rel": 204.60083389282227,
+    "gap": 19.366149187088013
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_102101.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 10.79428482055664,
+    "to_rel": 23.55296277999878,
+    "gap": 12.758677959442139
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_102101.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 60.695783615112305,
+    "to_rel": 67.84118819236755,
+    "gap": 7.145404577255249
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_102101.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 4.593588829040527,
+    "to_rel": 9.752259731292725,
+    "gap": 5.158670902252197
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_102101.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 172.00921154022217,
+    "to_rel": 176.67964053153992,
+    "gap": 4.670428991317749
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103200.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 18.53954839706421,
+    "to_rel": 28.871882915496826,
+    "gap": 10.332334518432617
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103200.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 0.0,
+    "to_rel": 8.650426864624023,
+    "gap": 8.650426864624023
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103200.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 34.420170068740845,
+    "to_rel": 40.20965313911438,
+    "gap": 5.789483070373535
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103200.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 28.88479781150818,
+    "to_rel": 34.335623025894165,
+    "gap": 5.450825214385986
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103200.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 9.61428165435791,
+    "to_rel": 12.327423810958862,
+    "gap": 2.713142156600952
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103200.bag",
+    "topic": "/initialpose",
+    "from_rel": 28.76640009880066,
+    "to_rel": 34.262550592422485,
+    "gap": 5.496150493621826
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103313.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 17.012266874313354,
+    "to_rel": 24.45968008041382,
+    "gap": 7.447413206100464
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103313.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 196.53214240074158,
+    "to_rel": 203.20580887794495,
+    "gap": 6.673666477203369
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103313.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 0.0,
+    "to_rel": 5.625588417053223,
+    "gap": 5.625588417053223
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103313.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 9.267425775527954,
+    "to_rel": 14.858247756958008,
+    "gap": 5.590821981430054
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_103313.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 38.14096021652222,
+    "to_rel": 43.731297731399536,
+    "gap": 5.590337514877319
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_105713.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 152.88275361061096,
+    "to_rel": 166.8026773929596,
+    "gap": 13.919923782348633
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_105713.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 174.08074927330017,
+    "to_rel": 185.3903923034668,
+    "gap": 11.309643030166626
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_105713.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 0.0007686614990234375,
+    "to_rel": 9.76814889907837,
+    "gap": 9.767380237579346
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_105713.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 195.80218124389648,
+    "to_rel": 203.10205149650574,
+    "gap": 7.299870252609253
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_105713.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 83.18345594406128,
+    "to_rel": 88.82203936576843,
+    "gap": 5.638583421707153
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_105713.bag",
+    "topic": "/livox/lidar",
+    "from_rel": 186.29978442192078,
+    "to_rel": 187.3000946044922,
+    "gap": 1.0003101825714111
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_105713.bag",
+    "topic": "/camera1/color/image_raw",
+    "from_rel": 188.4349808692932,
+    "to_rel": 189.67277002334595,
+    "gap": 1.2377891540527344
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_105713.bag",
+    "topic": "/camera1/color/image_raw",
+    "from_rel": 172.5821657180786,
+    "to_rel": 173.598042011261,
+    "gap": 1.015876293182373
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 170.47886204719543,
+    "to_rel": 180.8386721611023,
+    "gap": 10.35981011390686
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 62.38595271110535,
+    "to_rel": 72.46499609947205,
+    "gap": 10.0790433883667
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 142.4257345199585,
+    "to_rel": 148.266699552536,
+    "gap": 5.840965032577515
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 153.49607276916504,
+    "to_rel": 158.92817878723145,
+    "gap": 5.432106018066406
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 44.089025259017944,
+    "to_rel": 49.30992937088013,
+    "gap": 5.220904111862183
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "topic": "/particlecloud",
+    "from_rel": 170.47896027565002,
+    "to_rel": 180.83875036239624,
+    "gap": 10.359790086746216
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "topic": "/particlecloud",
+    "from_rel": 62.38606286048889,
+    "to_rel": 72.46502542495728,
+    "gap": 10.078962564468384
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "topic": "/particlecloud",
+    "from_rel": 142.42580771446228,
+    "to_rel": 148.26677656173706,
+    "gap": 5.84096884727478
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "topic": "/particlecloud",
+    "from_rel": 153.4962282180786,
+    "to_rel": 158.928293466568,
+    "gap": 5.43206524848938
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "topic": "/particlecloud",
+    "from_rel": 44.08905053138733,
+    "to_rel": 49.31002902984619,
+    "gap": 5.220978498458862
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "topic": "/tag_detections",
+    "from_rel": 126.56301951408386,
+    "to_rel": 202.67605662345886,
+    "gap": 76.113037109375
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "topic": "/tag_detections",
+    "from_rel": 52.077839612960815,
+    "to_rel": 125.30058526992798,
+    "gap": 73.22274565696716
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "topic": "/tag_detections",
+    "from_rel": 36.8306930065155,
+    "to_rel": 51.367393255233765,
+    "gap": 14.536700248718262
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "topic": "/tag_detections",
+    "from_rel": 9.081371307373047,
+    "to_rel": 20.80378556251526,
+    "gap": 11.722414255142212
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_150034.bag",
+    "topic": "/tag_detections",
+    "from_rel": 21.66499423980713,
+    "to_rel": 24.01707673072815,
+    "gap": 2.3520824909210205
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 75.33498859405518,
+    "to_rel": 84.31823348999023,
+    "gap": 8.983244895935059
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 166.04884934425354,
+    "to_rel": 174.60357904434204,
+    "gap": 8.554729700088501
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 174.60357904434204,
+    "to_rel": 182.99001264572144,
+    "gap": 8.386433601379395
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 57.08640933036804,
+    "to_rel": 62.688809394836426,
+    "gap": 5.602400064468384
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 85.85002660751343,
+    "to_rel": 91.09692716598511,
+    "gap": 5.24690055847168
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "topic": "/particlecloud",
+    "from_rel": 75.33503556251526,
+    "to_rel": 84.31829619407654,
+    "gap": 8.98326063156128
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "topic": "/particlecloud",
+    "from_rel": 166.04888129234314,
+    "to_rel": 174.60361790657043,
+    "gap": 8.554736614227295
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "topic": "/particlecloud",
+    "from_rel": 174.60361790657043,
+    "to_rel": 182.99008989334106,
+    "gap": 8.38647198677063
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "topic": "/particlecloud",
+    "from_rel": 57.086482763290405,
+    "to_rel": 62.688913106918335,
+    "gap": 5.60243034362793
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "topic": "/particlecloud",
+    "from_rel": 85.85005688667297,
+    "to_rel": 91.09700107574463,
+    "gap": 5.246944189071655
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "topic": "/tag_detections",
+    "from_rel": 82.08574080467224,
+    "to_rel": 188.68886971473694,
+    "gap": 106.6031289100647
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "topic": "/tag_detections",
+    "from_rel": 72.10553932189941,
+    "to_rel": 81.48892617225647,
+    "gap": 9.383386850357056
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "topic": "/tag_detections",
+    "from_rel": 51.50901818275452,
+    "to_rel": 55.47951650619507,
+    "gap": 3.9704983234405518
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "topic": "/tag_detections",
+    "from_rel": 12.256405591964722,
+    "to_rel": 13.93278980255127,
+    "gap": 1.6763842105865479
+  },
+  {
+    "bag": "stair_3F_to_4F_UP_20260827_154342.bag",
+    "topic": "/tag_detections",
+    "from_rel": 16.18267250061035,
+    "to_rel": 17.52747678756714,
+    "gap": 1.344804286956787
+  },
+  {
+    "bag": "tag_calibration_20260827_134853.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 136.78571033477783,
+    "to_rel": 143.7077658176422,
+    "gap": 6.92205548286438
+  },
+  {
+    "bag": "tag_calibration_20260827_134853.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 65.87248110771179,
+    "to_rel": 71.78962993621826,
+    "gap": 5.91714882850647
+  },
+  {
+    "bag": "tag_calibration_20260827_134853.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 31.60601019859314,
+    "to_rel": 37.46290850639343,
+    "gap": 5.856898307800293
+  },
+  {
+    "bag": "tag_calibration_20260827_134853.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 148.3289999961853,
+    "to_rel": 153.9036898612976,
+    "gap": 5.574689865112305
+  },
+  {
+    "bag": "tag_calibration_20260827_134853.bag",
+    "topic": "/amcl_pose",
+    "from_rel": 43.33507513999939,
+    "to_rel": 48.20682978630066,
+    "gap": 4.8717546463012695
+  },
+  {
+    "bag": "tag_calibration_20260827_134853.bag",
+    "topic": "/tag_detections",
+    "from_rel": 3.9753811359405518,
+    "to_rel": 179.0962929725647,
+    "gap": 175.12091183662415
+  },
+  {
+    "bag": "tag_calibration_20260827_134853.bag",
+    "topic": "/tag_detections",
+    "from_rel": 2.2274460792541504,
+    "to_rel": 3.6931684017181396,
+    "gap": 1.4657223224639893
+  },
+  {
+    "bag": "tag_calibration_20260827_134853.bag",
+    "topic": "/particlecloud",
+    "from_rel": 136.78573989868164,
+    "to_rel": 143.70780611038208,
+    "gap": 6.9220662117004395
+  },
+  {
+    "bag": "tag_calibration_20260827_134853.bag",
+    "topic": "/particlecloud",
+    "from_rel": 65.87249112129211,
+    "to_rel": 71.78970837593079,
+    "gap": 5.917217254638672
+  },
+  {
+    "bag": "tag_calibration_20260827_134853.bag",
+    "topic": "/particlecloud",
+    "from_rel": 31.606055736541748,
+    "to_rel": 37.46295714378357,
+    "gap": 5.856901407241821
+  },
+  {
+    "bag": "tag_calibration_20260827_134853.bag",
+    "topic": "/particlecloud",
+    "from_rel": 148.3290183544159,
+    "to_rel": 153.90373015403748,
+    "gap": 5.574711799621582
+  },
+  {
+    "bag": "tag_calibration_20260827_134853.bag",
+    "topic": "/particlecloud",
+    "from_rel": 43.3351411819458,
+    "to_rel": 48.20687556266785,
+    "gap": 4.871734380722046
+  }
+]

@@ -1,0 +1,82 @@
+{
+  "time_utc": "2026-09-22T18:53:40.423896+00:00",
+  "doc_hash_checks": {
+    "docs/stair-driving-repair-20260922/REPORT.md": true,
+    "docs/stair-driving-repair-20260922/evidence/recovered-site.json": true,
+    "docs/tron-documentation-20260922/APPLICATION_GUIDE.md": true,
+    "docs/stair-driving-repair-20260922/GEOMETRY_RECOVERY.md": true,
+    "docs/stair-driving-repair-20260922/evidence/fixed-geometry-fit.json": true,
+    "docs/stair-driving-repair-20260922/evidence/common-route-results.json": true
+  },
+  "git_new_entries": [
+    "?? docs/stair-driving-repair-20260922/GEOMETRY_RECOVERY.md",
+    "?? docs/stair-driving-repair-20260922/evidence/common-route-results.json",
+    "?? docs/stair-driving-repair-20260922/evidence/fixed-geometry-fit.json",
+    "?? docs/stair-driving-repair-20260922/evidence/recovered-site.json"
+  ],
+  "git_missing_baseline_entries": [],
+  "source_geometry_unchanged": true,
+  "runtime_modified_this_turn": false,
+  "temporary_files_removed": [
+    {
+      "path": "stair-geometry-recovery-20260923/geometry/102101-scans.npz",
+      "bytes": 21475059,
+      "sha256": "4aee43f7819f778f33dbe001e87a64da86115c7f0566992c15dc7ddba0955122"
+    },
+    {
+      "path": "stair-geometry-recovery-20260923/geometry/105713-scans.npz",
+      "bytes": 15930374,
+      "sha256": "ce42f3b4840f8d53a078e86507e0171aa1a42daeb18117066095db4006c0fb6d"
+    },
+    {
+      "path": "stair-geometry-recovery-20260923/geometry/102101-horizontal-fit.npy",
+      "bytes": 106832,
+      "sha256": "30e7c4f913716308dfe01b2525c8239f82ebc09e5672c7c5dba20e1eb2b6ac1a"
+    },
+    {
+      "path": "stair-geometry-recovery-20260923/geometry/105713-horizontal-fit.npy",
+      "bytes": 78344,
+      "sha256": "ac7f70063864a722f0411149a5e25d26f6d997cc17b09f2456b798ba9e4e05a1"
+    },
+    {
+      "path": "stair-geometry-recovery-20260923/extract-scans.log",
+      "bytes": 880,
+      "sha256": "9175073b3f7e0e546bf7e009fd33cb02829c38ca83746a0f5caa52cdccadefad"
+    },
+    {
+      "path": "stair-geometry-recovery-20260923/extract-second.log",
+      "bytes": 30,
+      "sha256": "05ff59435fedad90529be8c8190a34d36b8bcaa49c15f899e2e3da3af9d25d69"
+    },
+    {
+      "path": "stair-geometry-recovery-20260923/fixed-geometry-fit.log",
+      "bytes": 246,
+      "sha256": "86ebf4e7afef5acfab639fd3c87db348ac806aca73a2e1148c1e358a57b56d96"
+    },
+    {
+      "path": "stair-geometry-recovery-20260923/common-route.log",
+      "bytes": 200,
+      "sha256": "8e955b35a0181c229c80162d438192f5238917ab13dcb8f8ac524a3813753b9a"
+    }
+  ],
+  "cache_dirs_remaining": [],
+  "retained_artifacts": "analysis scripts, geometry metadata, policy traces and results, source excerpts, before/candidate docs, application manifests",
+  "final_doc_hashes": {
+    "docs/stair-driving-repair-20260922/REPORT.md": "e26c8e1b6c9e0c9287de8a806f1e7a455bae217a979a89a9b26ddca7e3efd324",
+    "docs/stair-driving-repair-20260922/evidence/recovered-site.json": "d561029917d51fabba38f312f32609fce87b329dd064ec8e37bf38ce7670b632",
+    "docs/tron-documentation-20260922/APPLICATION_GUIDE.md": "3ec084801df1667eab29beaf02817a7caca7700d345832cdd95c00a9ccbaacef",
+    "docs/stair-driving-repair-20260922/GEOMETRY_RECOVERY.md": "f81f61daf0a7756ceb8ee3774c7d9b06f96b76369296a3f74b4d3585048acb6b",
+    "docs/stair-driving-repair-20260922/evidence/fixed-geometry-fit.json": "6f81b73ac639e54281ecd499b4979ec29f5fee54c2182a99371805615d6cf21a",
+    "docs/stair-driving-repair-20260922/evidence/common-route-results.json": "749c77667752f106b75ceabaf5b033daf998d97ac1711441f157ed4422bfa610"
+  },
+  "final_time_utc": "2026-09-22T18:55:02.413557+00:00",
+  "local_document_links_resolve": true,
+  "review": {
+    "shower": "One context-free full-text reviewer: main conclusion clear; clarified metric numerator/denominator, BAG mapping, baseline reference and S/M meaning.",
+    "factchk": "Dimension claims checked against original operator messages from read-only local conversation database and pre-existing site config; derived heights are arithmetic. No new general-world or upstream API claim added.",
+    "mandela": "Shared-data fit/score and future-scan leakage are explicitly disclosed. The fit statistic is descriptive; neither independent accuracy nor causal closed-loop driving success is asserted. Independent entry-only localization and physical closed-loop evaluation remain unverified.",
+    "ssotize_audit": "Original messages and pre-existing site config are primary. Current report, guide and recovery document agree. Historical 2026-09-22 results remain dated history; pending-input handoff in WORKLOG corrected. No consolidation or historical archive rewrite.",
+    "re0": "Removed stale current waiting status; clarified metric and references after reading complete changed documents.",
+    "detool": "Skipped: documents are provenance and operational notes, not portability claims."
+  }
+}

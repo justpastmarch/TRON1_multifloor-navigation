@@ -1,0 +1,334 @@
+{
+  "at_utc": "2026-09-22T23:17:16.998177+00:00",
+  "topics": {
+    "/stair_supervisor/state": {
+      "count": 25,
+      "first": 189557.234302662,
+      "last": 189568.807789671,
+      "hz": 2.07370518334861,
+      "age_last_sec": 0.001443863,
+      "age_max_sec": 0.429146051
+    },
+    "/multifloor/floor_state": {
+      "count": 25,
+      "first": 189557.238207999,
+      "last": 189569.110064505,
+      "hz": 2.0215877767647963,
+      "age_last_sec": 0.000247478,
+      "age_max_sec": 0.128436566
+    },
+    "/stair_supervisor/websocket_tx": {
+      "count": 481,
+      "first": 189557.239290198,
+      "last": 189569.239351876,
+      "hz": 39.99979440771785,
+      "age_last_sec": null,
+      "age_max_sec": null
+    },
+    "/mission/status": {
+      "count": 61,
+      "first": 189557.239421559,
+      "last": 189569.099512092,
+      "hz": 5.058983304807455,
+      "age_last_sec": 0.000189304,
+      "age_max_sec": 0.140140533
+    },
+    "/move_base/status": {
+      "count": 61,
+      "first": 189557.240917205,
+      "last": 189569.218330136,
+      "hz": 5.0094290265853765,
+      "age_last_sec": 0.000234851,
+      "age_max_sec": 0.022830346
+    },
+    "/stair_supervisor/tracking_status": {
+      "count": 120,
+      "first": 189557.297135715,
+      "last": 189569.205801603,
+      "hz": 9.99272304043715,
+      "age_last_sec": null,
+      "age_max_sec": null
+    },
+    "/stair_supervisor/control_debug": {
+      "count": 120,
+      "first": 189557.297235498,
+      "last": 189569.205907557,
+      "hz": 9.992717862268716,
+      "age_last_sec": null,
+      "age_max_sec": null
+    },
+    "/stair_supervisor/lidar_odom": {
+      "count": 60,
+      "first": 189557.397700325,
+      "last": 189569.197855139,
+      "hz": 4.9999344017073035,
+      "age_last_sec": 0.284102201,
+      "age_max_sec": 0.391150713
+    },
+    "/camera1/color/camera_info": {
+      "count": 195,
+      "first": 189557.428088682,
+      "last": 189569.232766035,
+      "hz": 16.434163696186975,
+      "age_last_sec": 0.08538937546166991,
+      "age_max_sec": 0.09728050273461913
+    },
+    "/livox/imu": {
+      "count": 611,
+      "first": 189557.436155532,
+      "last": 189569.232923859,
+      "hz": 51.7090768497417,
+      "age_last_sec": 0.024786472097656276,
+      "age_max_sec": 0.06899452160510255
+    },
+    "/tron/wheel_odom_raw": {
+      "count": 616,
+      "first": 189557.436585051,
+      "last": 189569.232474556,
+      "hz": 52.136805769525274,
+      "age_last_sec": 0.024865865796264652,
+      "age_max_sec": 0.1497569084355469
+    },
+    "/scan": {
+      "count": 119,
+      "first": 189557.476095814,
+      "last": 189569.232183632,
+      "hz": 10.037352716882866,
+      "age_last_sec": 0.06680727091992189,
+      "age_max_sec": 0.12432622984692387
+    },
+    "/livox/lidar": {
+      "count": 101,
+      "first": 189557.884979352,
+      "last": 189569.208220214,
+      "hz": 8.831393875549873,
+      "age_last_sec": 1.894572019093994,
+      "age_max_sec": 2.294441938020996
+    }
+  },
+  "latest": {
+    "/stair_supervisor/state": {
+      "header": {
+        "seq": 166,
+        "stamp": 1790119035.9399154,
+        "frame_id": ""
+      },
+      "state": 1,
+      "connected": true,
+      "detail": "navigation owns commands",
+      "ownership_epoch": 0
+    },
+    "/multifloor/floor_state": {
+      "header": {
+        "seq": 195,
+        "stamp": 1790119036.2433865,
+        "frame_id": ""
+      },
+      "floor_id": "3F",
+      "map_generation": 0,
+      "state": 2,
+      "detail": "auto localization ready"
+    },
+    "/mission/status": {
+      "header": {
+        "seq": 474,
+        "stamp": 1790119036.232896,
+        "frame_id": ""
+      },
+      "status_list": []
+    },
+    "/move_base/status": {
+      "header": {
+        "seq": 457,
+        "stamp": 1790119036.3516684,
+        "frame_id": ""
+      },
+      "status_list": []
+    },
+    "/stair_supervisor/tracking_status": {
+      "epoch": 0,
+      "queue_length": 0,
+      "dropped_scans": 0,
+      "rejected_imu": 0,
+      "worker_error": "",
+      "backend": "process",
+      "mode": "control",
+      "observe_only": false,
+      "phase_test_protocol": "bound-ticket-v1",
+      "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+      "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f",
+      "routes": [
+        {
+          "id": "stair_3f_4f_up",
+          "commissioned": false
+        }
+      ],
+      "sequence": 450,
+      "stamp": 1790119036.047323,
+      "received_at": 189569.090144028,
+      "measured_at": 189568.9137581485,
+      "completed_at": 189569.177853641,
+      "last_geometry_at": 189568.9137581485,
+      "geometry_valid": true,
+      "state": "TRACKED",
+      "reason": "geometry accepted",
+      "fitness": 1.0,
+      "rmse": 0.0744817804477029,
+      "translation_innovation": 0.002396387143041913,
+      "rotation_innovation": 0.003181509032869676,
+      "prediction_source": "gyro",
+      "compute_sec": 0.08590455600642599,
+      "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+      "geometry_age_sec": 0.28313834450091235,
+      "transport_delay_sec": 0.17638587951660156,
+      "completion_age_sec": 0.26409549251548015
+    },
+    "/stair_supervisor/control_debug": {
+      "phase": "VERIFY_ENTRY",
+      "command": [
+        0.0,
+        0.0
+      ],
+      "pending_entries": [],
+      "observation_only": false,
+      "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+      "config_sha256": "d3bc4483554385668e650b838989fc9876e1864dc13300b43348835ac0e13d2f"
+    },
+    "/stair_supervisor/lidar_odom": {
+      "header": {
+        "seq": 444,
+        "stamp": 1790119036.047323,
+        "frame_id": "stair_local_0"
+      },
+      "child_frame_id": "stair_lidar_sensor",
+      "pose": {
+        "pose": {
+          "position": {
+            "x": 0.569912229950756,
+            "y": 0.09303367703324054,
+            "z": 0.26020877407876597
+          },
+          "orientation": {
+            "x": -0.03782252823408312,
+            "y": 0.04893809251256936,
+            "z": 0.2654347366364571,
+            "w": 0.9621428792263382
+          }
+        },
+        "covariance": [
+          1000000.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1000000.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1000000.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1000000.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1000000.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1000000.0
+        ]
+      },
+      "twist": {
+        "twist": {
+          "linear": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "angular": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          }
+        },
+        "covariance": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  },
+  "tracking_summary": {
+    "geometry_age_sec": {
+      "median": 0.3827691692567896,
+      "max": 0.48341657931450754
+    },
+    "completion_age_sec": {
+      "median": 0.2505775476747658,
+      "max": 0.3046840216848068
+    },
+    "transport_delay_sec": {
+      "median": 0.16883635520935059,
+      "max": 0.2254960536956787
+    },
+    "compute_sec": {
+      "median": 0.0796554289991036,
+      "max": 0.09791495397803374
+    }
+  },
+  "transmitted_request_counts": {
+    "request_twist": 481
+  },
+  "maximum_observed_twist_component": 0.0,
+  "probe_command_publishers": 0
+}

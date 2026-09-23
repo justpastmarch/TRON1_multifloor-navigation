@@ -1,0 +1,21 @@
+--- original/registration_core.py
++++ candidate/registration_core.py
+@@ -1,4 +1,4 @@
+-"""Generalized ICP with motion gates and no inertial integration."""
++"""Original GICP implementation; callers may supply an inertial pose prediction."""
+ 
+ from __future__ import annotations
+ 
+@@ -29,7 +29,11 @@
+ 
+ 
+ class RegistrationConfig(NamedTuple):
+-    """Geometric registration and one-frame physical acceptance limits."""
++    """Geometric registration and correction limits relative to initial_transform.
++
++    These are innovation gates, not independent proof of one-frame physical motion.
++    Names stay compatible with the original offline configuration.
++    """
+ 
+     voxel_size_m: float
+     correspondence_distance_m: float

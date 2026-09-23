@@ -1,0 +1,295 @@
+{
+  "scope": "three known regression windows, not holdout or physical accuracy",
+  "configuration_confirmation": {
+    "received_utc": "2026-09-20T17:25:46.721357+00:00",
+    "user_statement": "기록 당시와 현재 설정이 같음",
+    "provenance": "user-provided configuration history, not a runtime parameter dump or physical calibration certificate",
+    "scope": "recording-time and current configuration are the same",
+    "implication": "use current YAML rotation in all three offline regressions; preserve distinction between configured initial extrinsics and online estimated state"
+  },
+  "configuration": {
+    "source": "/home/m3tron/catkin_ws/src/FAST_LIO/config/mid360.yaml",
+    "sha256": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+    "configured_lidar_to_imu_rotation": [
+      [
+        0.989895,
+        -0.135195,
+        -0.042775
+      ],
+      [
+        0.13629,
+        0.990384,
+        0.023781
+      ],
+      [
+        0.039149,
+        -0.02937,
+        0.998802
+      ]
+    ],
+    "configured_translation_not_applied_m": [
+      0.01203,
+      -0.04045,
+      0.06974
+    ],
+    "scope": "fixed configured rotation only; online estimation and translation not reproduced",
+    "configuration_history": "recording/current equality confirmed by user; physical accuracy not verified"
+  },
+  "runs": {
+    "102101": {
+      "original": {
+        "frames": 500,
+        "accepted_including_bootstrap": 450,
+        "accepted_updates": 449,
+        "attempted_updates": 499,
+        "longest_reject_span_s": 8.000113487243652,
+        "longest_reject_frames": 41,
+        "initial_sensor_z_tilt_deg": 89.61670819956399,
+        "relative_yaw_end_deg": 27.46809700281529,
+        "endpoint_m": [
+          6.700079408153496,
+          -3.465080620100228,
+          1.7240907947522894
+        ],
+        "fitness_min": 0.5494367959949937,
+        "rmse_m_p95": 0.1398016295808148,
+        "rejected_intervals_from_first_sensor_stamp": [
+          {
+            "start_s": 6.800139904022217,
+            "end_s": 6.999962329864502,
+            "span_s": 0.19982242584228516,
+            "frames": 2
+          },
+          {
+            "start_s": 10.600073337554932,
+            "end_s": 11.000062942504883,
+            "span_s": 0.39998960494995117,
+            "frames": 3
+          },
+          {
+            "start_s": 44.5991485118866,
+            "end_s": 45.19905710220337,
+            "span_s": 0.5999085903167725,
+            "frames": 4
+          },
+          {
+            "start_s": 61.1994891166687,
+            "end_s": 69.19960260391235,
+            "span_s": 8.000113487243652,
+            "frames": 41
+          }
+        ]
+      },
+      "identity_ablation": {
+        "frames": 500,
+        "accepted_including_bootstrap": 500,
+        "accepted_updates": 499,
+        "attempted_updates": 499,
+        "longest_reject_span_s": 0,
+        "longest_reject_frames": 0,
+        "initial_sensor_z_tilt_deg": 1.0839060794599966,
+        "relative_yaw_end_deg": 180.08343847232007,
+        "endpoint_m": [
+          0.6890387171918216,
+          1.4467898225166755,
+          2.994471055067032
+        ],
+        "fitness_min": 0.9694137638062872,
+        "rmse_m_p95": 0.11151984650377088,
+        "rejected_intervals_from_first_sensor_stamp": []
+      },
+      "configured": {
+        "frames": 500,
+        "accepted_including_bootstrap": 500,
+        "accepted_updates": 499,
+        "attempted_updates": 499,
+        "longest_reject_span_s": 0,
+        "longest_reject_frames": 0,
+        "initial_sensor_z_tilt_deg": 1.8043842109987764,
+        "relative_yaw_end_deg": 180.1909820711524,
+        "endpoint_m": [
+          0.5779227949327885,
+          1.523541674787836,
+          3.0527901067618393
+        ],
+        "fitness_min": 0.9694137638062872,
+        "rmse_m_p95": 0.11150203447388898,
+        "rejected_intervals_from_first_sensor_stamp": []
+      },
+      "relative_yaw_difference_end_deg": 0.10754359883233633,
+      "relative_yaw_difference_abs_max_deg": 0.6040285914739627,
+      "trajectory_difference_in_common_initial_sensor_axes_p95_m": 0.0761303556058089,
+      "trajectory_difference_in_common_initial_sensor_axes_max_m": 0.08695524695968314,
+      "difference_note": "difference between two estimates, NOT error from physical ground truth"
+    },
+    "103313": {
+      "original": {
+        "frames": 467,
+        "accepted_including_bootstrap": 353,
+        "accepted_updates": 352,
+        "attempted_updates": 466,
+        "longest_reject_span_s": 15.200331926345825,
+        "longest_reject_frames": 77,
+        "initial_sensor_z_tilt_deg": 88.9149040299946,
+        "relative_yaw_end_deg": 163.9877935104293,
+        "endpoint_m": [
+          0.7881746989330393,
+          4.412232503609435,
+          -3.727090795118383
+        ],
+        "fitness_min": 0.40069686411149824,
+        "rmse_m_p95": 0.35107446506854373,
+        "rejected_intervals_from_first_sensor_stamp": [
+          {
+            "start_s": 7.399128675460815,
+            "end_s": 7.800129413604736,
+            "span_s": 0.4010007381439209,
+            "frames": 3
+          },
+          {
+            "start_s": 38.59910035133362,
+            "end_s": 39.199182987213135,
+            "span_s": 0.6000826358795166,
+            "frames": 4
+          },
+          {
+            "start_s": 49.39918613433838,
+            "end_s": 52.39934968948364,
+            "span_s": 3.0001635551452637,
+            "frames": 16
+          },
+          {
+            "start_s": 52.799302101135254,
+            "end_s": 67.99963402748108,
+            "span_s": 15.200331926345825,
+            "frames": 77
+          },
+          {
+            "start_s": 69.79959058761597,
+            "end_s": 72.39975905418396,
+            "span_s": 2.600168466567993,
+            "frames": 14
+          }
+        ]
+      },
+      "identity_ablation": {
+        "frames": 467,
+        "accepted_including_bootstrap": 467,
+        "accepted_updates": 466,
+        "attempted_updates": 466,
+        "longest_reject_span_s": 0,
+        "longest_reject_frames": 0,
+        "initial_sensor_z_tilt_deg": 10.569532524519229,
+        "relative_yaw_end_deg": -108.3088799580178,
+        "endpoint_m": [
+          -1.384376905088644,
+          1.1343403427863923,
+          3.281978876289429
+        ],
+        "fitness_min": 0.9863013698630136,
+        "rmse_m_p95": 0.1114215075363733,
+        "rejected_intervals_from_first_sensor_stamp": []
+      },
+      "configured": {
+        "frames": 467,
+        "accepted_including_bootstrap": 467,
+        "accepted_updates": 466,
+        "attempted_updates": 466,
+        "longest_reject_span_s": 0,
+        "longest_reject_frames": 0,
+        "initial_sensor_z_tilt_deg": 8.868818285388574,
+        "relative_yaw_end_deg": -108.08089663825244,
+        "endpoint_m": [
+          -1.498761153109707,
+          1.1323073291212293,
+          3.1799209099781134
+        ],
+        "fitness_min": 0.9863013698630136,
+        "rmse_m_p95": 0.11202836062752396,
+        "rejected_intervals_from_first_sensor_stamp": []
+      },
+      "relative_yaw_difference_end_deg": 0.22798331976535735,
+      "relative_yaw_difference_abs_max_deg": 0.8523599475011423,
+      "trajectory_difference_in_common_initial_sensor_axes_p95_m": 0.04928235198386685,
+      "trajectory_difference_in_common_initial_sensor_axes_max_m": 0.06598824559047647,
+      "difference_note": "difference between two estimates, NOT error from physical ground truth"
+    },
+    "105713": {
+      "original": {
+        "frames": 340,
+        "accepted_including_bootstrap": 168,
+        "accepted_updates": 167,
+        "attempted_updates": 339,
+        "longest_reject_span_s": 33.00065755844116,
+        "longest_reject_frames": 166,
+        "initial_sensor_z_tilt_deg": 89.6481066330332,
+        "relative_yaw_end_deg": -2.60281150266319,
+        "endpoint_m": [
+          4.2657756088015715,
+          3.9277150128079783,
+          -0.1690890252167273
+        ],
+        "fitness_min": 0.5106598984771573,
+        "rmse_m_p95": 0.33600713688991013,
+        "rejected_intervals_from_first_sensor_stamp": [
+          {
+            "start_s": 5.199969291687012,
+            "end_s": 6.1997716426849365,
+            "span_s": 0.9998023509979248,
+            "frames": 6
+          },
+          {
+            "start_s": 19.999772787094116,
+            "end_s": 53.00043034553528,
+            "span_s": 33.00065755844116,
+            "frames": 166
+          }
+        ]
+      },
+      "identity_ablation": {
+        "frames": 340,
+        "accepted_including_bootstrap": 340,
+        "accepted_updates": 339,
+        "attempted_updates": 339,
+        "longest_reject_span_s": 0,
+        "longest_reject_frames": 0,
+        "initial_sensor_z_tilt_deg": 2.3377579365265237,
+        "relative_yaw_end_deg": 178.2698448478357,
+        "endpoint_m": [
+          -0.35736636637877295,
+          1.252934625796933,
+          3.3146247239574858
+        ],
+        "fitness_min": 0.9873646209386282,
+        "rmse_m_p95": 0.10723842422067979,
+        "rejected_intervals_from_first_sensor_stamp": []
+      },
+      "configured": {
+        "frames": 340,
+        "accepted_including_bootstrap": 340,
+        "accepted_updates": 339,
+        "attempted_updates": 339,
+        "longest_reject_span_s": 0,
+        "longest_reject_frames": 0,
+        "initial_sensor_z_tilt_deg": 1.2486306492620187,
+        "relative_yaw_end_deg": 177.98868672702017,
+        "endpoint_m": [
+          -0.47725931777149705,
+          1.3596551658914826,
+          3.3186661501931507
+        ],
+        "fitness_min": 0.9886578449905482,
+        "rmse_m_p95": 0.10829641213559389,
+        "rejected_intervals_from_first_sensor_stamp": []
+      },
+      "relative_yaw_difference_end_deg": -0.28115812081554736,
+      "relative_yaw_difference_abs_max_deg": 0.6445551264040432,
+      "trajectory_difference_in_common_initial_sensor_axes_p95_m": 0.053284948455634945,
+      "trajectory_difference_in_common_initial_sensor_axes_max_m": 0.08141570912417788,
+      "difference_note": "difference between two estimates, NOT error from physical ground truth"
+    }
+  },
+  "evidence": "OBSERVED for computed metrics; configuration history supplied by user; physical calibration UNVERIFIED",
+  "reused_105713": "previous static-matrix sensitivity result; exact equality to current YAML verified, not rerun",
+  "synthetic_tests_passed": 6
+}

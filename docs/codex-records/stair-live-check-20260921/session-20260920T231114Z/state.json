@@ -1,0 +1,46 @@
+{
+  "started_utc": "2026-09-20T23:11:14.143297+00:00",
+  "session_id": "session-20260920T231114Z",
+  "understood_as": "Start existing sensor stack and verify live sensor input; do not start autonomous command owners or send motion/mode commands.",
+  "master": "http://192.168.1.26:11311",
+  "mini_pc": "m3localtron@192.168.1.56",
+  "repository": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation",
+  "git_before": " M run.sh\n M src/mission_manager/CMakeLists.txt\n M src/mission_manager/launch/system.launch\n M src/mission_manager/src/mission_manager/mission_action_server.py\n M src/mission_manager/src/mission_manager/navigation_executor.py\n M src/mission_manager/src/mission_manager/ros_runtime.py\n M src/mission_manager/src/mission_manager/ros_state.py\n M src/mission_manager/test/mission_5f_rf_synthetic.test\n M src/mission_manager/test/mock_mission_children.py\n M src/mission_manager/test/test_full_system_synthetic_ros.py\n M src/mission_manager/test/test_runtime_gating.py\n M src/stair_supervisor/CMakeLists.txt\n M src/stair_supervisor/package.xml\n M src/stair_supervisor/src/stair_supervisor/configuration.py\n M src/stair_supervisor/src/stair_supervisor/robot_client.py\n M src/stair_supervisor/src/stair_supervisor/robot_transport.py\n M src/stair_supervisor/src/stair_supervisor/ros_entrypoint.py\n M src/stair_supervisor/src/stair_supervisor/ros_node.py\n M src/stair_supervisor/src/stair_supervisor/supervisor.py\n M src/stair_supervisor/src/stair_supervisor/supervisor_types.py\n M src/stair_supervisor/test/robot_transport/test_robot_transport.py\n M src/stair_supervisor/test/stair_sensor_fixture.py\n M src/stair_supervisor/test/test_websocket_tx_ros.py\n?? docs/stair-lidar-integration.md\n?? src/mission_manager/src/mission_manager/navigation_hold.py\n?? src/mission_manager/test/test_navigation_hold.py\n?? src/stair_supervisor/config/lidar_imu_baseline.yaml\n?? src/stair_supervisor/config/stair_lidar.yaml\n?? src/stair_supervisor/requirements-lidar.txt\n?? src/stair_supervisor/scripts/profile_lidar_stream.py\n?? src/stair_supervisor/scripts/replay_lidar_tracking.py\n?? src/stair_supervisor/src/stair_supervisor/lidar_process.py\n?? src/stair_supervisor/src/stair_supervisor/lidar_tracking.py\n?? src/stair_supervisor/src/stair_supervisor/lidar_tracking_core.py\n?? src/stair_supervisor/src/stair_supervisor/ros_lidar.py\n?? src/stair_supervisor/src/stair_supervisor/stair_feedback.py\n?? src/stair_supervisor/test/lidar_observe.test\n?? src/stair_supervisor/test/test_lidar_control.py\n?? src/stair_supervisor/test/test_lidar_observe_ros.py\n?? src/stair_supervisor/test/test_lidar_process.py\n?? src/stair_supervisor/test/test_lidar_ros_adapter.py\n",
+  "owned_processes": [
+    {
+      "role": "ros_master",
+      "pid": 65539,
+      "log": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-live-check-20260921/session-20260920T231114Z/master.log"
+    },
+    {
+      "role": "stair_supervisor_observe_only",
+      "pid": 66061,
+      "log": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-live-check-20260921/session-20260920T231114Z/observation.log",
+      "robot_transport": false
+    }
+  ],
+  "robot_motion_commands_sent": 0,
+  "retention": "Operational sensor session intentionally kept running for user; runtime logs tracked here, not disposable audit processes.",
+  "master_reused": false,
+  "master_ready": true,
+  "remote_sensor_session": {
+    "started": true,
+    "session": "wf_mapping",
+    "pane_pid": 4242,
+    "runtime_dir": "/home/m3localtron/.local/state/tron1-sensor-session/session-20260920T231114Z",
+    "startup_note": "Initial pane lookup used unsupported exact target syntax; list-panes confirmed running. No duplicate launch."
+  },
+  "observer_started_utc": "2026-09-20T23:14:19.205889+00:00",
+  "status": "SENSORS_AND_OBSERVATION_RUNNING",
+  "git_after": " M run.sh\n M src/mission_manager/CMakeLists.txt\n M src/mission_manager/launch/system.launch\n M src/mission_manager/src/mission_manager/mission_action_server.py\n M src/mission_manager/src/mission_manager/navigation_executor.py\n M src/mission_manager/src/mission_manager/ros_runtime.py\n M src/mission_manager/src/mission_manager/ros_state.py\n M src/mission_manager/test/mission_5f_rf_synthetic.test\n M src/mission_manager/test/mock_mission_children.py\n M src/mission_manager/test/test_full_system_synthetic_ros.py\n M src/mission_manager/test/test_runtime_gating.py\n M src/stair_supervisor/CMakeLists.txt\n M src/stair_supervisor/package.xml\n M src/stair_supervisor/src/stair_supervisor/configuration.py\n M src/stair_supervisor/src/stair_supervisor/robot_client.py\n M src/stair_supervisor/src/stair_supervisor/robot_transport.py\n M src/stair_supervisor/src/stair_supervisor/ros_entrypoint.py\n M src/stair_supervisor/src/stair_supervisor/ros_node.py\n M src/stair_supervisor/src/stair_supervisor/supervisor.py\n M src/stair_supervisor/src/stair_supervisor/supervisor_types.py\n M src/stair_supervisor/test/robot_transport/test_robot_transport.py\n M src/stair_supervisor/test/stair_sensor_fixture.py\n M src/stair_supervisor/test/test_websocket_tx_ros.py\n?? docs/stair-lidar-integration.md\n?? src/mission_manager/src/mission_manager/navigation_hold.py\n?? src/mission_manager/test/test_navigation_hold.py\n?? src/stair_supervisor/config/lidar_imu_baseline.yaml\n?? src/stair_supervisor/config/stair_lidar.yaml\n?? src/stair_supervisor/requirements-lidar.txt\n?? src/stair_supervisor/scripts/profile_lidar_stream.py\n?? src/stair_supervisor/scripts/replay_lidar_tracking.py\n?? src/stair_supervisor/src/stair_supervisor/lidar_process.py\n?? src/stair_supervisor/src/stair_supervisor/lidar_tracking.py\n?? src/stair_supervisor/src/stair_supervisor/lidar_tracking_core.py\n?? src/stair_supervisor/src/stair_supervisor/ros_lidar.py\n?? src/stair_supervisor/src/stair_supervisor/stair_feedback.py\n?? src/stair_supervisor/test/lidar_observe.test\n?? src/stair_supervisor/test/test_lidar_control.py\n?? src/stair_supervisor/test/test_lidar_observe_ros.py\n?? src/stair_supervisor/test/test_lidar_process.py\n?? src/stair_supervisor/test/test_lidar_ros_adapter.py\n",
+  "git_status_unchanged": true,
+  "updated_utc": "2026-09-20T23:16:52.382287+00:00",
+  "active_ros_master": "http://192.168.1.26:11311",
+  "tracking_summary": "tracking-summary.json",
+  "temporary_probe_nodes": "completed and unregistered",
+  "operational_processes_retained": true,
+  "temporary_probe_logs_removed": [
+    "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-live-check-20260921/session-20260920T231114Z/ros-log/codex_sensor_probe_65897_1789945994466.log",
+    "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-live-check-20260921/session-20260920T231114Z/ros-log/codex_tracking_probe_66278_1789946095721.log"
+  ]
+}

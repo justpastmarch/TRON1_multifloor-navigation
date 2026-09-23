@@ -1,0 +1,6 @@
+Matplotlib created a temporary cache directory at /home/m3tron/.local/state/codex-desktop/tmp/matplotlib-25hx0kif because the default path (/home/m3tron/.config/matplotlib) is not a writable directory; it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+102101 landing [(0.78, 193), (0.76, 175), (0.8, 138), (0.74, 46), (0.82, 15), (1.76, 13)]
+102101 entry [(0.22, 3), (0.26, 1), (0.24, 1), (0.28, 1), (0.16, 1), (0.3, 0)]
+105713 landing [(0.74, 216), (0.72, 192), (0.7, 148), (0.76, 68), (0.56, 18), (1.72, 14)]
+105713 entry [(0.3, 0), (0.28, 0), (-0.3, 0), (-0.32, 0), (-0.34, 0), (-0.36, 0)]
+{'target': '105713 first-body/gravity frame', 'source': '102101 first-body/gravity frame', 'target_from_source': [[0.9993147382885382, -0.029991348077533952, 0.021692691852369352, -0.31040029188096613], [0.029859649151527584, 0.999533804636132, 0.006369830623052768, -0.007187240183768415], [-0.021873618627408876, -0.005717729454154344, 0.9997443935216801, 0.009671444381344214], [0.0, 0.0, 0.0, 1.0]], 'fitness': 0.9964539007092199, 'inlier_rmse_m': 0.08532045222744504, 'interpretation': 'offline full-map geometric consistency only; not independent position accuracy or a live entry localization result'}

@@ -1,0 +1,80 @@
+{
+  "102101": {
+    "frames": 500,
+    "bootstrap": 1,
+    "accepted_updates": 499,
+    "rejected_frames": 0,
+    "last_relative_yaw_deg": 181.42397594724767,
+    "initial_sensor_z_tilt_deg": 1.9971843801337856,
+    "end_sensor_position_m": [
+      0.5640512421986099,
+      1.5028848971887026,
+      2.994069381194705
+    ],
+    "topics": {
+      "/lidar_registration/metadata": 1,
+      "/lidar_registration/odom": 500,
+      "/lidar_registration/path": 500,
+      "/lidar_registration/cloud": 500,
+      "/lidar_registration/local_map": 50,
+      "/lidar_registration/status": 500,
+      "/lidar_registration/global_map": 1
+    },
+    "header_stamp_and_csv_pose_contract": "PASS",
+    "calibration_hash_contract": "PASS",
+    "exact_historical_frame_selection": "PASS",
+    "scope": "same three known regression windows; no absolute position ground truth"
+  },
+  "103313": {
+    "frames": 467,
+    "bootstrap": 1,
+    "accepted_updates": 466,
+    "rejected_frames": 0,
+    "last_relative_yaw_deg": -107.68314001396301,
+    "initial_sensor_z_tilt_deg": 9.886746296908925,
+    "end_sensor_position_m": [
+      -1.4575515088089779,
+      1.129178009631729,
+      3.2303421078176595
+    ],
+    "topics": {
+      "/lidar_registration/metadata": 1,
+      "/lidar_registration/odom": 467,
+      "/lidar_registration/path": 467,
+      "/lidar_registration/cloud": 467,
+      "/lidar_registration/local_map": 47,
+      "/lidar_registration/status": 467,
+      "/lidar_registration/global_map": 1
+    },
+    "header_stamp_and_csv_pose_contract": "PASS",
+    "calibration_hash_contract": "PASS",
+    "exact_historical_frame_selection": "PASS",
+    "scope": "same three known regression windows; no absolute position ground truth"
+  },
+  "105713": {
+    "frames": 340,
+    "bootstrap": 1,
+    "accepted_updates": 339,
+    "rejected_frames": 0,
+    "last_relative_yaw_deg": 177.7950566905341,
+    "initial_sensor_z_tilt_deg": 1.1815051073016372,
+    "end_sensor_position_m": [
+      -0.46446559682681265,
+      1.3334167043666216,
+      3.3316422430305965
+    ],
+    "topics": {
+      "/lidar_registration/metadata": 1,
+      "/lidar_registration/odom": 340,
+      "/lidar_registration/path": 340,
+      "/lidar_registration/cloud": 340,
+      "/lidar_registration/local_map": 34,
+      "/lidar_registration/status": 340,
+      "/lidar_registration/global_map": 1
+    },
+    "header_stamp_and_csv_pose_contract": "PASS",
+    "calibration_hash_contract": "PASS",
+    "exact_historical_frame_selection": "PASS",
+    "scope": "same three known regression windows; no absolute position ground truth"
+  }
+}

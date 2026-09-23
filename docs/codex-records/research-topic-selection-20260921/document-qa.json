@@ -1,0 +1,26 @@
+{
+  "h2_count": 11,
+  "table_count": 10,
+  "local_links_checked": 7,
+  "missing_local_links": [],
+  "broken_internal_anchors": [],
+  "external_urls": [
+    "https://arxiv.org/abs/2107.06829",
+    "https://arxiv.org/abs/2203.03749",
+    "https://arxiv.org/abs/2211.16335",
+    "https://arxiv.org/abs/2309.08603",
+    "https://arxiv.org/abs/2409.16573",
+    "https://arxiv.org/abs/2607.22145",
+    "https://arxiv.org/html/2409.16573v3#S2.SS2.SSS3",
+    "https://com.khu.ac.kr/biz_kor/user/bbs/BMSR00040/view.do?boardId=549586&menuNo=14500163",
+    "https://github.com/hku-mars/FAST_LIO",
+    "https://github.com/vectr-ucla/direct_lidar_inertial_odometry",
+    "https://jkros.org/_PR/view/?aidx=40705&bidx=3673",
+    "https://news.khu.ac.kr/kor/user/bbs/BMSR00044/view.do?boardId=320461&catId=&menuNo=200218",
+    "https://research.chalmers.se/en/publication/547196",
+    "https://research.yonsei.ac.kr/innovation/FAQ.do?articleNo=163728&attachNo=140124&mode=download",
+    "https://roboticsproceedings.org/rss05/p21.html",
+    "https://www.andrew.cmu.edu/user/amj1/papers/ROB2020_Autonomous_Stairwell_Ascent.pdf"
+  ],
+  "markdown_characters": 17101
+}

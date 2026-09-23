@@ -1,0 +1,79 @@
+{
+  "time_utc": "2026-09-22T20:17:35.180464+00:00",
+  "files": [
+    {
+      "path": "stair_control_session.sh",
+      "before_sha256": "875b7efa44e93dfa9b052ea9eded41b12586c5f45b2809b28411274433828e66",
+      "after_sha256": "1b14b4867b66faadbf53fe584fdba1733c08e4af00105d1fe6c233411c741f0a"
+    },
+    {
+      "path": "run.sh",
+      "before_sha256": "a61c0dad1e876ea4f2b89aeb36f793de5ecdaafba59ecb3258270dcbacf4f271",
+      "after_sha256": "80859864d8373267e1b65fd3dfcc88abd2994b5ce8acf37731589aaeb8e1fd61"
+    },
+    {
+      "path": "bundle_source_contract.py",
+      "before_sha256": "f90ad4652faf05115e862e00c2f0ebe8d18691c010ac9155ff4d0e458563e3bf",
+      "after_sha256": "54455048bdfb3457099e237da4742ca7fab2dacfa9525d97b3f5fbdc008d68f6"
+    },
+    {
+      "path": "config.env",
+      "before_sha256": "f6574c0519302325d35a14d1578061daca97d52cb1f0fad28105b40885222d4c",
+      "after_sha256": "6752e2a5e99dec6431815709fbc40ea5031946570fc848319caac900051a5fa3"
+    },
+    {
+      "path": "test/test_workspace_layout.py",
+      "before_sha256": "93e48b12cabde0d7c49378da20d099b8cb32dd766b29713e3571a74967ab3683",
+      "after_sha256": "7d75260a3cc54b58b57371764872f40c57d0ea64dd9f281b41f2de43482e9838"
+    },
+    {
+      "path": "test/test_process_boundary_contract.py",
+      "before_sha256": "069ba2eb5fc43d22ed1c9d606da0a8317a72f039372946b671410a1e8349461d",
+      "after_sha256": "b2e77d4278b357d0a3f1c6d8ffaa43cf20a0daa00d2c77bb308a2990366ad9fe"
+    },
+    {
+      "path": "test/test_startup_shell_failures.py",
+      "before_sha256": null,
+      "after_sha256": "fc6079ca7fd50b3499ee5983523d9bd20d5c9a8991d7c8260c1d89e9f9960ed9"
+    },
+    {
+      "path": "docs/stair-drive-readiness-20260923/LIVE_READINESS.md",
+      "before_sha256": null,
+      "after_sha256": "e52f1cc0cd530df9058a85ed0fd0902848a057850b2c9f6e1ce19c3cb5190007"
+    },
+    {
+      "path": "docs/stair-drive-readiness-20260923/RUNBOOK.md",
+      "before_sha256": "eb4f2540da77b22ff5914293f80dfddbdcb989c47a34045999dba39067a813c4",
+      "after_sha256": "1f02c05320db46521cc4f1caf10bd5a353594d85838f3cb5d5568caac9a30f96"
+    },
+    {
+      "path": "docs/stair-drive-readiness-20260923/evidence/live-readiness.json",
+      "before_sha256": null,
+      "after_sha256": "fb1e6b09b77ceff2bdb7f841957cb17ee4ee887979cbab1d649425626c334a82"
+    },
+    {
+      "path": "docs/tron-documentation-20260922/APPLICATION_GUIDE.md",
+      "before_sha256": "0e671d481631d7a3f57017e7ae4cf043a263060c24eed69e91ec8b3a3ab660ac",
+      "after_sha256": "611aeb7cf0d65682df24dd2a3ec1a989b5a63e0e5289ffd1eabb2947e1b619c6"
+    }
+  ],
+  "baseline_file_count": 1899,
+  "unrelated_hash_changes": [],
+  "baseline_git_entries_missing": [],
+  "new_git_entries": [
+    " M bundle_source_contract.py",
+    " M test/test_process_boundary_contract.py",
+    " M test/test_workspace_layout.py",
+    "?? docs/stair-drive-readiness-20260923/LIVE_READINESS.md",
+    "?? docs/stair-drive-readiness-20260923/evidence/live-readiness.json",
+    "?? test/test_startup_shell_failures.py"
+  ],
+  "src_files_changed": [],
+  "hardware_commands_sent": 0,
+  "production_processes_started": false,
+  "finalized_at_utc": "2026-09-22T20:20:15.516026+00:00",
+  "cleanup_complete": true,
+  "configuration_true": true,
+  "hardware_connection": "unavailable",
+  "physical_driving_verified": false
+}

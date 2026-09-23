@@ -1,0 +1,55 @@
+"""Kinematic configuration sanity check, not robot dynamics or tracking accuracy."""
+from pathlib import Path
+import json,math,sys,time
+import numpy as np
+HERE=Path(__file__).resolve().parent
+ROOT=Path('/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation')
+sys.path.insert(0,str(ROOT/'src/stair_supervisor/src'))
+from stair_supervisor.configuration import load_lidar_configuration,load_stair_configuration
+from stair_supervisor.stair_feedback import StairFeedback,se2
+from stair_supervisor.lidar_tracking import TrackingSample
+from stair_supervisor.stair_evidence import Phase
+cfg=load_lidar_configuration(ROOT/'src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml','control',False)
+profile=load_stair_configuration(ROOT/'src/stair_supervisor/config').profiles[0]
+class Worker:
+ epoch=0
+ def snapshot(self):return self.value
+ def diagnostics(self):return {'worker_error':''}
+def height(x,phase):
+ if phase in (Phase.VERIFY_ENTRY,Phase.ALIGN,Phase.FORWARD_SEGMENT_1):return float(np.clip(x/2.52,0.,1.)*1.53)
+ if phase in (Phase.LANDING,Phase.TURN_TO_NEXT_FLIGHT):return 1.53
+ return 1.53+float(np.clip((2.52-x)/2.80,0.,1.)*1.70)
+all_results=[]
+for offset,yaw_offset in [(0.,0.),(.03,0.),(0.,math.radians(3))]:
+ worker=Worker();worker.value=None
+ c=StairFeedback(worker,cfg.document['base_from_lidar'],cfg.document['routes']);phase=Phase.VERIFY_ENTRY
+ state=[-.45,offset,0.,yaw_offset];seq=1;now=100.
+ def sample():
+  pose=se2(state[0],state[1],state[3]);pose[2,3]=state[2]
+  lidar=pose@np.array(cfg.document['base_from_lidar']);return TrackingSample(0,seq,now,now,now,now,now,tuple(lidar.flat),True,'TRACKED','synthetic instantaneous kinematics')
+ worker.value=sample()
+ body=se2(-.45,offset,yaw_offset)
+ c.capture_entry(profile.id,body,.1,'synthetic placement independent of controller error',now)
+ c.arm(profile,now,phase_test=True,start_phase=phase);c.begin_phase(phase,now)
+ transitions=[];trace=[];failure=None;phase_start=now
+ for tick in range(1500):
+  now+=.2;seq+=1;state[2]=height(state[0],phase);worker.value=sample();report=c.evaluate(phase,now)
+  trace.append({'t':round(now-100,3),'phase':phase.value,'state':list(state),'command':list(c.command()),'turn_index':c.turn_index,'debug':c.debug})
+  if report.faulted:
+   failure={'reason':report.detail,'debug':c.debug};break
+  if report.complete:
+   transitions.append({'phase':phase.value,'at':now-100,'duration':now-phase_start})
+   if phase==Phase.EXIT_CONFIRM:break
+   phase=list(Phase)[list(Phase).index(phase)+1];phase_start=now;c.begin_phase(phase,now);continue
+  if now-phase_start > cfg.document['routes'][0]['phase_test_limits'][phase.value]:
+   failure={'reason':'configured per-phase budget exhausted','phase':phase.value,'debug':c.debug};break
+  v,omega=c.command();dt=.2
+  if abs(omega)<1e-9:state[0]+=v*dt*math.cos(state[3]);state[1]+=v*dt*math.sin(state[3])
+  else:
+   state[0]+=v/omega*(math.sin(state[3]+omega*dt)-math.sin(state[3]));state[1]+=v/omega*(math.cos(state[3])-math.cos(state[3]+omega*dt))
+  state[3]=(state[3]+omega*dt+math.pi)%(2*math.pi)-math.pi
+ result={'lateral_offset':offset,'yaw_offset':yaw_offset,'phases':transitions,'failure':failure,'elapsed':now-100,'completed':phase==Phase.EXIT_CONFIRM and report.complete}
+ all_results.append(result)
+ (HERE/('nominal-trace-%d.json'%len(all_results))).write_text(json.dumps(trace,indent=2,default=lambda v:v.item() if hasattr(v,"item") else str(v)))
+ print(json.dumps(result,indent=2,default=lambda v:v.item() if hasattr(v,"item") else str(v)),flush=True)
+(HERE/'nominal-control-results.json').write_text(json.dumps({'scope':'synthetic perfect pose and ideal velocity response; NOT physical validation','results':all_results},indent=2,default=lambda v:v.item() if hasattr(v,'item') else str(v)))

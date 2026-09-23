@@ -1,0 +1,23 @@
+{
+  "counts": {
+    "/livox/imu": 1162,
+    "/tron/wheel_odom_raw": 581,
+    "/scan": 58,
+    "/livox/lidar": 47
+  },
+  "goals_sent": 0,
+  "supervisor": {
+    "state": 1,
+    "connected": true,
+    "detail": "navigation owns commands"
+  },
+  "tracking": {
+    "state": "TRACKED",
+    "geometry_valid": true,
+    "geometry_age_sec": 0.36978925121366046,
+    "config_sha256": "61b26d3e59e6778e6a31ff00252e8332966cd953a87dc484fb8e89d6a320d337",
+    "worker_error": ""
+  },
+  "at_utc": "2026-09-23T01:11:15.943455+00:00",
+  "duration_sec": 6.005567885993514
+}

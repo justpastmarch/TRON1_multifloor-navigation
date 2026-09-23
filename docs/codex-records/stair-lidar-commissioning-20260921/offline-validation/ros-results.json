@@ -1,0 +1,14 @@
+[
+  {
+    "launch": "stair_supervisor_node.test",
+    "exit_code": 0,
+    "elapsed_s": 8.382202386856079,
+    "log": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/stair_supervisor_node.test.log"
+  },
+  {
+    "launch": "lidar_observe.test",
+    "exit_code": 0,
+    "elapsed_s": 8.880196809768677,
+    "log": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-lidar-commissioning-20260921/offline-validation/lidar_observe.test.log"
+  }
+]

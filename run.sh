@@ -47,7 +47,7 @@ if [[ "${1:-}" == "--record-manual" ]]; then
     if [[ "$SENSOR_JOY_RECEIVER_AUTOSTART" == "1" ]]; then
         receiver_status="$(ssh -o BatchMode=yes -o ConnectTimeout=5 \
             "${MINI_PC_USER}@${MINI_PC_HOST}" \
-            "root='\${HOME}/.local/share/tron1-sensor-joy'; pattern='^/home/${MINI_PC_USER}/.local/share/tron1-sensor-joy/venv/bin/python /home/${MINI_PC_USER}/.local/share/tron1-sensor-joy/sensor_joy_bridge.py'; existing=\$(pgrep -f \"\$pattern\" || true); if [ -n \"\$existing\" ]; then printf 'reused pid=%s' \"\$existing\"; else test -x \"\$root/venv/bin/python\" && test -x \"\$root/sensor_joy_bridge.py\"; nohup setsid bash -lc 'source /opt/ros/noetic/setup.bash; source ${MINI_PC_WORKSPACE}/devel/setup.bash; export ROS_MASTER_URI=http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT}; export ROS_IP=${MINI_PC_ROS_IP}; export ROBOT_TYPE=${ROBOT_TYPE}; unset ROS_HOSTNAME; exec /home/${MINI_PC_USER}/.local/share/tron1-sensor-joy/venv/bin/python /home/${MINI_PC_USER}/.local/share/tron1-sensor-joy/sensor_joy_bridge.py --robot-ip ${ROBOT_HOST} --topic ${SENSOR_JOY_TOPIC}' >\"\$root/receiver.log\" 2>&1 < /dev/null & pid=\$!; printf '%s\\n' \"\$pid\" >\"\$root/receiver.pid\"; printf 'started pid=%s' \"\$pid\"; fi")"
+            "root=\"\${HOME}/.local/share/tron1-sensor-joy\"; pattern='^/home/${MINI_PC_USER}/.local/share/tron1-sensor-joy/venv/bin/python /home/${MINI_PC_USER}/.local/share/tron1-sensor-joy/sensor_joy_bridge.py'; existing=\$(pgrep -f \"\$pattern\" || true); if [ -n \"\$existing\" ]; then printf 'reused pid=%s' \"\$existing\"; else test -x \"\$root/venv/bin/python\" && test -x \"\$root/sensor_joy_bridge.py\" || exit 1; nohup setsid bash -lc 'source /opt/ros/noetic/setup.bash; source ${MINI_PC_WORKSPACE}/devel/setup.bash; export ROS_MASTER_URI=http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT}; export ROS_IP=${MINI_PC_ROS_IP}; export ROBOT_TYPE=${ROBOT_TYPE}; unset ROS_HOSTNAME; exec /home/${MINI_PC_USER}/.local/share/tron1-sensor-joy/venv/bin/python /home/${MINI_PC_USER}/.local/share/tron1-sensor-joy/sensor_joy_bridge.py --robot-ip ${ROBOT_HOST} --topic ${SENSOR_JOY_TOPIC}' >\"\$root/receiver.log\" 2>&1 < /dev/null & pid=\$!; printf '%s\\n' \"\$pid\" >\"\$root/receiver.pid\"; printf 'started pid=%s' \"\$pid\"; fi")"
         printf '[SSH] SensorJoy receiver: %s\n' "$receiver_status"
     fi
     if [[ "$MANUAL_CAPTURE_OUTPUT_BASE" != /* ]]; then
@@ -100,7 +100,6 @@ local_check() {
     for command_name in python3 ssh timeout flock ip awk pgrep roscore roslaunch rostopic rospack rosnode; do
         require_command "$command_name"
     done
-    source_workspace
     local package_name
     for package_name in mission_manager multifloor_manager stair_supervisor rviz \
         map_server amcl move_base pointcloud_to_laserscan apriltag_ros; do
@@ -112,7 +111,17 @@ local_check() {
         printf 'Workstation clock is not NTP-synchronized.\n' >&2
         return 1
     fi
-    printf '[CHECK] bundle, fixture, packages, and local software: OK\n'
+    case "${STAIR_LIDAR_MODE:-off}" in
+        off) ;;
+        control|observe)
+            : "${STAIR_PYTHON:?Set the existing LiDAR Python runner}"
+            : "${STAIR_LIDAR_CONFIG:?Set the LiDAR configuration}"
+            "$STAIR_PYTHON" "$ROOT/src/stair_supervisor/scripts/check_lidar_config.py" \
+                "$STAIR_LIDAR_CONFIG" --mode "$STAIR_LIDAR_MODE"
+            ;;
+        *) printf 'Invalid STAIR_LIDAR_MODE: %s\n' "$STAIR_LIDAR_MODE" >&2; return 1 ;;
+    esac
+    printf '[CHECK] bundle, fixture, packages, local software, and selected stair config: OK\n'
 }
 
 production_check() {
@@ -127,7 +136,7 @@ remote_check() {
     ssh -o BatchMode=yes -o ConnectTimeout=5 "$target" \
         "test -r /opt/ros/noetic/setup.bash && test -r '${MINI_PC_WORKSPACE}/devel/setup.bash' && test -r '${MINI_PC_WORKSPACE}/src/sensor_integration/launch/wf_mapping.launch' && command -v tmux >/dev/null"
     ssh -o BatchMode=yes -o ConnectTimeout=5 "$target" \
-        "source /opt/ros/noetic/setup.bash; source '${MINI_PC_WORKSPACE}/devel/setup.bash'; export ROS_MASTER_URI=http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT}; export ROS_IP=${MINI_PC_ROS_IP}; export D435F_SERIAL=${D435F_SERIAL}; unset ROS_HOSTNAME; roslaunch --files sensor_integration wf_mapping.launch >/dev/null; roslaunch --files sensor_integration d435f.launch >/dev/null"
+        "source /opt/ros/noetic/setup.bash && source '${MINI_PC_WORKSPACE}/devel/setup.bash' && export ROS_MASTER_URI=http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT} && export ROS_IP=${MINI_PC_ROS_IP} && export D435F_SERIAL=${D435F_SERIAL} && unset ROS_HOSTNAME && roslaunch --files sensor_integration wf_mapping.launch >/dev/null && roslaunch --files sensor_integration d435f.launch >/dev/null"
     if [[ "$(ssh -o BatchMode=yes "$target" 'timedatectl show -p NTPSynchronized --value')" != "yes" ]]; then
         printf 'Mini PC clock is not NTP-synchronized.\n' >&2
         return 1
@@ -143,6 +152,9 @@ remote_check() {
     ssh -o BatchMode=yes "$target" "ping -c 1 -W 2 '${ROBOT_HOST}' >/dev/null"
     printf '[CHECK] mini PC, clock, SSH, and robot route: OK\n'
 }
+
+# Load ROS before validators import package initializers and before CLI checks.
+source_workspace
 
 if [[ "${1:-}" == "--check" ]]; then
     local_check
@@ -185,6 +197,7 @@ LOG_DIR="${ROOT}/logs/$(date +%Y%m%d_%H%M%S)"
 mkdir -p "$LOG_DIR"
 pids=()
 LAST_PID=""
+stair_record_pid=""
 
 start_component() {
     local name="$1"
@@ -204,10 +217,26 @@ cleanup() {
     done
     sleep 2
     for pid in "${pids[@]:-}"; do
+        [[ "$pid" == "$stair_record_pid" ]] && continue
         kill -TERM "$pid" 2>/dev/null || true
     done
+    # rosbag needs time to finish its index after SIGINT. Do not terminate it
+    # after the generic two-second grace period used for other components.
+    if [[ -n "$stair_record_pid" ]]; then
+        for _ in {1..40}; do
+            kill -0 "$stair_record_pid" 2>/dev/null || break
+            sleep .25
+        done
+        if kill -0 "$stair_record_pid" 2>/dev/null; then
+            printf '[BAG] recorder did not finish; preserve .active for recovery. PID=%s\n' "$stair_record_pid" >&2
+            kill -TERM "$stair_record_pid" 2>/dev/null || true
+        fi
+        wait "$stair_record_pid" 2>/dev/null || true
+    fi
 }
-trap cleanup INT TERM EXIT
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 start_component ros_master roscore -p "$ROS_MASTER_PORT"
 master_pid="$LAST_PID"
@@ -222,7 +251,7 @@ fi
 printf '[START] workstation ROS master: %s\n' "$ROS_MASTER_URI"
 
 SENSOR_STACK_ACTION="$(ssh -o BatchMode=yes -o ConnectTimeout=5 "$SSH_TARGET" \
-     "mapping_status=; sensor_ready=1; source /opt/ros/noetic/setup.bash && source ${MINI_PC_WORKSPACE}/devel/setup.bash && export ROS_MASTER_URI=http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT} && export ROS_IP=${MINI_PC_ROS_IP} && unset ROS_HOSTNAME || sensor_ready=0; if [ \"\$sensor_ready\" = 1 ]; then for topic in /livox/lidar /tron/wheel_odom_raw /scan ${CAMERA_IMAGE_TOPIC} ${CAMERA_INFO_TOPIC}; do timeout 5s rostopic echo -n 1 \"\$topic\" >/dev/null 2>&1 || { sensor_ready=0; break; }; done; fi; if [ \"\$sensor_ready\" = 1 ]; then mapping_status=reused; else tmux kill-session -t wf_mapping 2>/dev/null || true; pkill -INT -f '^/usr/bin/python3 /opt/ros/noetic/bin/roslaunch sensor_integration wf_mapping.launch$' 2>/dev/null || true; sleep 5; pkill -TERM -f '^/usr/bin/python3 /opt/ros/noetic/bin/roslaunch sensor_integration wf_mapping.launch$' 2>/dev/null || true; tmux new-session -d -s wf_mapping 'source /opt/ros/noetic/setup.bash; source ${MINI_PC_WORKSPACE}/devel/setup.bash; export ROS_MASTER_URI=http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT}; export ROS_IP=${MINI_PC_ROS_IP}; export D435F_SERIAL=${D435F_SERIAL}; unset ROS_HOSTNAME; exec roslaunch sensor_integration wf_mapping.launch'; mapping_status='restart requested'; fi; printf 'mapping=%s' \"\$mapping_status\"")"
+     "mapping_status=; sensor_ready=1; source /opt/ros/noetic/setup.bash && source ${MINI_PC_WORKSPACE}/devel/setup.bash && export ROS_MASTER_URI=http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT} && export ROS_IP=${MINI_PC_ROS_IP} && unset ROS_HOSTNAME || sensor_ready=0; if [ \"\$sensor_ready\" = 1 ]; then for topic in /livox/lidar /tron/wheel_odom_raw /scan ${CAMERA_IMAGE_TOPIC} ${CAMERA_INFO_TOPIC}; do timeout 5s rostopic echo -n 1 \"\$topic\" >/dev/null 2>&1 || { sensor_ready=0; break; }; done; fi; if [ \"\$sensor_ready\" = 1 ]; then mapping_status=reused; else tmux kill-session -t wf_mapping 2>/dev/null || true; pkill -INT -f '^/usr/bin/python3 /opt/ros/noetic/bin/roslaunch sensor_integration wf_mapping.launch$' 2>/dev/null || true; sleep 5; pkill -TERM -f '^/usr/bin/python3 /opt/ros/noetic/bin/roslaunch sensor_integration wf_mapping.launch$' 2>/dev/null || true; tmux new-session -d -s wf_mapping 'source /opt/ros/noetic/setup.bash; source ${MINI_PC_WORKSPACE}/devel/setup.bash; export ROS_MASTER_URI=http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT}; export ROS_IP=${MINI_PC_ROS_IP}; export D435F_SERIAL=${D435F_SERIAL}; unset ROS_HOSTNAME; exec roslaunch sensor_integration wf_mapping.launch' || exit 1; mapping_status='restart requested'; fi; printf 'mapping=%s' \"\$mapping_status\"")"
 printf '[SSH] mini PC sensor stack: %s\n' "$SENSOR_STACK_ACTION"
 
 if pgrep -f '[a]priltag_ros_continuous_node' >/dev/null 2>&1 || \
@@ -243,7 +272,32 @@ if ! kill -0 "$tunnel_pid" 2>/dev/null; then
 fi
 printf '[SSH] robot WebSocket tunnel: OK\n'
 
-start_component system roslaunch mission_manager system.launch \
+lidar_launch_args=()
+if [ -n "${STAIR_LIDAR_CONFIG:-}" ]; then
+    lidar_launch_args+=("stair_lidar_config:=$STAIR_LIDAR_CONFIG")
+fi
+if [ -n "${ARRIVAL_HOLD_SETTINGS:-}" ]; then
+    lidar_launch_args+=("arrival_hold_enabled:=true" "arrival_hold_settings:=$ARRIVAL_HOLD_SETTINGS")
+fi
+if [[ "${STAIR_RECORD:-0}" == "1" ]]; then
+    : "${STAIR_LIDAR_CONFIG:?STAIR_RECORD needs an explicit LiDAR config}"
+    : "${STAIR_PYTHON:?STAIR_RECORD needs the LiDAR Python interpreter}"
+    "$STAIR_PYTHON" "$ROOT/src/stair_supervisor/scripts/check_lidar_config.py" \
+        "$STAIR_LIDAR_CONFIG" --mode "${STAIR_LIDAR_MODE:-control}" --snapshot-dir "$LOG_DIR"
+    start_component stair_bag rosbag record --split --size=1024 -O "$LOG_DIR/stair" \
+        /livox/lidar /livox/imu /tron/wheel_odom_raw /tron/sensor_joy /scan /tf /tf_static \
+        /navigation/cmd_vel /stair_supervisor/websocket_tx /stair_supervisor/state \
+        /stair_supervisor/tracking_status /stair_supervisor/control_debug /stair_supervisor/geometry_markers \
+        /stair_supervisor/lidar_odom /stair_traversal/goal /stair_traversal/cancel \
+        /stair_traversal/feedback /stair_traversal/result /mission/status /multifloor/floor_state
+    stair_record_pid="$LAST_PID"
+    printf '[BAG] automatic stair recording: %s\n' "$LOG_DIR"
+fi
+start_component system roslaunch mission_manager system.launch "${lidar_launch_args[@]}" \
+    startup_localization:="${STARTUP_LOCALIZATION:-auto}" \
+    stair_lidar_mode:="${STAIR_LIDAR_MODE:-off}" \
+    stair_lidar_observe_only:="${STAIR_LIDAR_OBSERVE_ONLY:-true}" \
+    stair_python:="${STAIR_PYTHON:-}" \
     cloud_in:="$POINTCLOUD_TOPIC" image_rect:="$CAMERA_IMAGE_TOPIC" \
     camera_info:="$CAMERA_INFO_TOPIC" tag_topic:="$TAG_DETECTIONS_TOPIC" \
     initial_floor:="$INITIAL_FLOOR" home_location_id:="$HOME_LOCATION_ID" \
@@ -349,7 +403,18 @@ for topic in /mission/status /multifloor/floor_transition/status /stair_traversa
     wait_for_action_server "$topic"
 done
 python3 "${ROOT}/verify_action_servers.py"
-wait_for_value /multifloor/floor_state/state 2
+printf '%s\n' '[LOCALIZATION] Finding the current pose. Use RViz 2D Pose Estimate to set position and direction.'
+while true; do
+    kill -0 "$system_pid" 2>/dev/null || { printf 'System launch exited.\n' >&2; exit 1; }
+    if [[ -n "$stair_record_pid" ]] && ! kill -0 "$stair_record_pid" 2>/dev/null; then
+        printf '[BAG] recording exited; see %s/stair_bag.log. Mission continues.\n' "$LOG_DIR" >&2
+        stair_record_pid=""
+    fi
+    floor_state="$(timeout 3s rostopic echo -n 1 /multifloor/floor_state/state 2>/dev/null | tr -cd '[:digit:]' || true)"
+    [[ "$floor_state" == "2" ]] && break
+    [[ "$floor_state" == "3" ]] && { printf 'Floor manager fault.\n' >&2; exit 1; }
+    sleep 1
+done
 wait_for_value /stair_supervisor/state/state 1
 for topic in /scan /tron/wheel_odom_raw /tf "$TAG_DETECTIONS_TOPIC"; do
     wait_for_stream "$topic"
@@ -376,7 +441,14 @@ printf '%s\n' \
     '[READY] Mission, floor-transition, and stair action servers are ready.' \
     '[READY] FloorState=READY and SupervisorState=NAV.' \
     '[READY] Fresh scan, odometry, TF, and AprilTag input verified.' \
-    '[READY] Submit goals only through /mission.' \
+    '[READY] Normal missions use /mission; explicit stair trials use stair_entry_test.py.' \
     '[READY] Stop with Ctrl+C. The mini-PC sensor stack remains running.' \
     "[LOG] ${LOG_DIR}"
+if [[ -n "$stair_record_pid" ]]; then
+    # Recording failure is visible without making it a mobility stop gate.
+    wait -n "$system_pid" "$stair_record_pid" || true
+    if kill -0 "$system_pid" 2>/dev/null && ! kill -0 "$stair_record_pid" 2>/dev/null; then
+        printf '[BAG] recording exited; mission continues. See %s/stair_bag.log\n' "$LOG_DIR" >&2
+    fi
+fi
 wait "$system_pid"

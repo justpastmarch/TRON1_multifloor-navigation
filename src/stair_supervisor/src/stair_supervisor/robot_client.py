@@ -125,6 +125,12 @@ class DirectRobotClient:
             raise RobotClientError("WebSocket connection failed") from error
         self._connection = connection
 
+    def set_receive_timeout(self, timeout: float) -> None:
+        """Bound a synchronous mode wait while the owner supplies feedback."""
+        if self._connection is None:
+            raise RobotClientError("WebSocket is not connected")
+        self._connection.settimeout(timeout)
+
     def observe_sent_frames(self, observer: Callable[[str], None]) -> None:
         """Report exact request frames after their socket send succeeds."""
         self._sent_observer = observer

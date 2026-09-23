@@ -1,0 +1,82 @@
+{
+  "at_utc": "2026-09-22T23:40:46.389522+00:00",
+  "operation": "stop_current_bag_recording",
+  "signal": "SIGINT",
+  "recorder_pid": 442258,
+  "recorder_exited": true,
+  "wrapper_exited": true,
+  "nodes": {
+    "/stair_supervisor": [
+      1,
+      "",
+      442304
+    ],
+    "/mission_manager": [
+      1,
+      "",
+      442309
+    ],
+    "/multifloor_manager": [
+      1,
+      "",
+      442301
+    ],
+    "/rviz": [
+      1,
+      "",
+      442310
+    ],
+    "/tron1_wf_odom_bridge": [
+      1,
+      "",
+      7162
+    ],
+    "/livox_lidar_publisher2": [
+      1,
+      "",
+      7163
+    ]
+  },
+  "bags": [
+    {
+      "name": "stair_0.bag",
+      "bytes": 1074044418,
+      "indexed_readable": true,
+      "messages": 133936
+    },
+    {
+      "name": "stair_1.bag",
+      "bytes": 1074255713,
+      "indexed_readable": true,
+      "messages": 134642
+    },
+    {
+      "name": "stair_2.bag",
+      "bytes": 1074261980,
+      "indexed_readable": true,
+      "messages": 134680
+    },
+    {
+      "name": "stair_3.bag",
+      "bytes": 1074239545,
+      "indexed_readable": true,
+      "messages": 134637
+    },
+    {
+      "name": "stair_4.bag",
+      "bytes": 1074265638,
+      "indexed_readable": true,
+      "messages": 134675
+    },
+    {
+      "name": "stair_5.bag",
+      "bytes": 542797184,
+      "indexed_readable": true,
+      "messages": 68074
+    }
+  ],
+  "active_files": [],
+  "total_bag_bytes": 5913864478,
+  "deleted_bag_files": [],
+  "startup_recording_setting_changed": false
+}

@@ -53,7 +53,7 @@ class LegacyRvizViewerContractTest(unittest.TestCase):
         self.assertIn("rviz/SetGoal", tools)
         self.assertIn("/initialpose", manual_source)
         self.assertIn("/move_base_simple/goal", manual_source)
-        self.assertNotIn("rviz/SetInitialPose", managed_source)
+        self.assertIn("rviz/SetInitialPose", managed_source)
         self.assertNotIn("rviz/SetGoal", managed_source)
         self.assertNotIn("/move_base_simple/goal", managed_source)
 

@@ -1,0 +1,12 @@
+{
+  "command": "source /opt/ros/noetic/setup.bash; source ./devel/setup.bash; bash ./run.sh --check",
+  "cwd": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation",
+  "started_at_utc": "2026-09-22T12:16:41.341765+00:00",
+  "ended_at_utc": "2026-09-22T12:16:43.192267+00:00",
+  "exit_code": 0,
+  "output": "SITE_CONFIG_OK floors=3 locations=7 edges=9\nBUNDLE_OK\n[CHECK] bundle, fixture, packages, and local software: OK\n",
+  "git_status_unchanged_during_check": true,
+  "temporary_ros_home": "/home/m3tron/.local/state/codex-desktop/tmp/tron-doc-local-check-2qlx340m",
+  "temporary_ros_home_removed": true,
+  "robot_or_minipc_contacted": false
+}

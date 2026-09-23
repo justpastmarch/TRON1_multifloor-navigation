@@ -1,0 +1,73 @@
+"""Independent area oracle for support coverage plus local timing measurement."""
+from pathlib import Path
+from itertools import combinations
+import json
+import math
+import sys
+import time
+import numpy as np
+from scipy.spatial import ConvexHull
+
+HERE=Path(__file__).resolve().parent
+sys.path.insert(0,str(HERE/'candidate/src/stair_supervisor/src'))
+from stair_supervisor.stair_feedback import inside_support_union, StairFeedback
+
+def cross(a,b):return a[0]*b[1]-a[1]*b[0]
+def clip(subject, polygon):
+    vertices=[tuple(p) for p in subject]
+    for a,b in zip(polygon,np.roll(polygon,-1,axis=0)):
+        if not vertices:return []
+        out=[]
+        for p,q in zip(vertices,vertices[1:]+vertices[:1]):
+            p,q=np.array(p),np.array(q)
+            dp,dq=cross(b-a,p-a),cross(b-a,q-a)
+            if dp>=0:out.append(tuple(p))
+            if (dp>=0)!=(dq>=0):out.append(tuple(p+(q-p)*dp/(dp-dq)))
+        vertices=out
+    return vertices
+def area(p):
+    if len(p)<3:return 0.
+    return abs(sum(cross(a,b) for a,b in zip(p,list(p[1:])+[p[0]])))/2
+def reference(body,regions):
+    covered=0.
+    for size in range(1,len(regions)+1):
+        for group in combinations(regions,size):
+            p=body
+            for polygon in group:p=clip(p,polygon)
+            covered+=(1 if size%2 else -1)*area(p)
+    return area(body)-covered<=max(1e-9,area(body)*1e-8)
+def box(x0,y0,x1,y1):return np.array([[x0,y0],[x1,y0],[x1,y1],[x0,y1]],float)
+def hull(p):return p[ConvexHull(p).vertices]
+
+rng=np.random.default_rng(79423)
+checks=0;disagreements=[]
+for i in range(700):
+    regions=[hull(rng.normal(size=(8,2))*.7+rng.uniform(-1,1,2)) for _ in range(int(rng.integers(1,4)))]
+    angle=rng.uniform(-math.pi,math.pi);rot=np.array([[math.cos(angle),-math.sin(angle)],[math.sin(angle),math.cos(angle)]])
+    body=box(-.3,-.225,.3,.225)@rot.T+rng.uniform(-1,1,2)
+    expected=reference(body,regions);actual=inside_support_union(body,regions)
+    checks+=1
+    if bool(actual)!=expected:disagreements.append({'case':i,'margin':0,'expected':expected,'actual':bool(actual)})
+    if i<150 and expected:
+        margin=.07;angles=np.arange(64)*2*math.pi/64
+        offsets=margin*np.column_stack((np.cos(angles),np.sin(angles)))
+        actual=inside_support_union(body,regions,margin)
+        # Inscribed and circumscribed disk polygons bracket the true round buffer.
+        test=hull((body[:,None,:]+offsets*(1 if actual else 1/math.cos(math.pi/64))).reshape(-1,2))
+        expected=reference(test,regions);checks+=1
+        if bool(actual)!=expected:disagreements.append({'case':i,'margin':margin,'expected':expected,'actual':bool(actual)})
+
+body=box(1.6,-.2,2.,.2)
+regions=[box(-1,-.615,1.8,.615),box(1.8,-.615,3.28,2.085)]
+functions={'union':lambda:inside_support_union(body,regions,.12),
+           'sweep':lambda:StairFeedback._swept_support(np.array([1.8,0]),0,body,.15,.1,.9,regions,.12)}
+timing={}
+for name,fn in functions.items():
+    fn();times=[]
+    for _ in range(100):
+        start=time.perf_counter();fn();times.append((time.perf_counter()-start)*1000)
+    timing[name]={'median_ms':float(np.median(times)),'p95_ms':float(np.percentile(times,95)),'max_ms':max(times)}
+result={'seed':79423,'coverage_comparisons':checks,'disagreements':disagreements,'timing':timing,
+        'scope':'synthetic polygon correctness and local isolated timing; not closed-loop robot validation'}
+(HERE/'geometry-verification.json').write_text(json.dumps(result,indent=2));print(json.dumps(result,indent=2))
+raise SystemExit(bool(disagreements))

@@ -1,0 +1,19 @@
+{
+  "temporary_root": "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-w_xf47o3",
+  "events": [
+    {
+      "event": "open",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-w_xf47o3"
+      ]
+    },
+    {
+      "event": "os.rmdir",
+      "paths": [
+        "/home/m3tron/.local/state/codex-desktop/tmp/tron1-audit-resume2-w_xf47o3"
+      ]
+    }
+  ],
+  "root_removed": true,
+  "remaining_threads": []
+}

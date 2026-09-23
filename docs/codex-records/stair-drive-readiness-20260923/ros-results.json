@@ -1,0 +1,14 @@
+[
+  {
+    "launch": "stair_supervisor_node.test",
+    "exit_code": 0,
+    "elapsed_s": 8.283053398132324,
+    "log": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/stair_supervisor_node.test.log"
+  },
+  {
+    "launch": "lidar_observe.test",
+    "exit_code": 0,
+    "elapsed_s": 9.281271696090698,
+    "log": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-drive-readiness-20260923/lidar_observe.test.log"
+  }
+]

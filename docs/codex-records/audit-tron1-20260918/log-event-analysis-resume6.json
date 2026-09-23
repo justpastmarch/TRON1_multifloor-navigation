@@ -1,0 +1,903 @@
+{
+  "parameter_values": {
+    "/amcl/base_frame_id": {
+      "base_Link": 34
+    },
+    "/amcl/global_frame_id": {
+      "map": 34
+    },
+    "/amcl/gui_publish_rate": {
+      "2.0": 34
+    },
+    "/amcl/initial_cov_aa": {
+      "0.01": 34
+    },
+    "/amcl/initial_cov_xx": {
+      "0.01": 34
+    },
+    "/amcl/initial_cov_yy": {
+      "0.01": 34
+    },
+    "/amcl/initial_pose_a": {
+      "0.0": 2,
+      "1.455898": 32
+    },
+    "/amcl/initial_pose_x": {
+      "0.0": 2,
+      "2.59913": 32
+    },
+    "/amcl/initial_pose_y": {
+      "0.0": 2,
+      "-1.983942": 32
+    },
+    "/amcl/laser_max_range": {
+      "1.35": 2,
+      "12.0": 32
+    },
+    "/amcl/laser_min_range": {
+      "0.3": 34
+    },
+    "/amcl/max_beams": {
+      "60": 2
+    },
+    "/amcl/max_particles": {
+      "500": 2,
+      "2000": 32
+    },
+    "/amcl/min_particles": {
+      "100": 2,
+      "500": 32
+    },
+    "/amcl/odom_frame_id": {
+      "odom": 34
+    },
+    "/amcl/recovery_alpha_fast": {
+      "0.0": 34
+    },
+    "/amcl/recovery_alpha_slow": {
+      "0.0": 34
+    },
+    "/amcl/resample_interval": {
+      "1": 34
+    },
+    "/amcl/save_pose_rate": {
+      "0.5": 34
+    },
+    "/amcl/scan_topic": {
+      "/scan": 34
+    },
+    "/amcl/transform_tolerance": {
+      "0.3": 34
+    },
+    "/amcl/update_min_a": {
+      "0.1": 34
+    },
+    "/amcl/update_min_d": {
+      "0.1": 34
+    },
+    "/amcl/use_map_topic": {
+      "True": 34
+    },
+    "/map_server/frame_id": {
+      "map": 34
+    },
+    "/move_base/TrajectoryPlannerROS/acc_lim_theta": {
+      "2.0": 34
+    },
+    "/move_base/TrajectoryPlannerROS/acc_lim_x": {
+      "0.6": 1,
+      "0.4": 33
+    },
+    "/move_base/TrajectoryPlannerROS/acc_lim_y": {
+      "0.0": 34
+    },
+    "/move_base/TrajectoryPlannerROS/gdist_scale": {
+      "0.4": 34
+    },
+    "/move_base/TrajectoryPlannerROS/heading_lookahead": {
+      "0.6": 34
+    },
+    "/move_base/TrajectoryPlannerROS/holonomic_robot": {
+      "False": 34
+    },
+    "/move_base/TrajectoryPlannerROS/latch_xy_goal_tolerance": {
+      "True": 34
+    },
+    "/move_base/TrajectoryPlannerROS/max_vel_theta": {
+      "1.57": 2,
+      "0.8": 32
+    },
+    "/move_base/TrajectoryPlannerROS/max_vel_x": {
+      "0.55": 1,
+      "0.35": 1,
+      "0.5": 28,
+      "0.4": 1,
+      "0.3": 3
+    },
+    "/move_base/TrajectoryPlannerROS/min_in_place_vel_theta": {
+      "0.4": 2,
+      "0.25": 32
+    },
+    "/move_base/TrajectoryPlannerROS/min_vel_theta": {
+      "-1.57": 2,
+      "-0.8": 32
+    },
+    "/move_base/TrajectoryPlannerROS/min_vel_x": {
+      "0.0": 34
+    },
+    "/move_base/TrajectoryPlannerROS/pdist_scale": {
+      "0.8": 34
+    },
+    "/move_base/TrajectoryPlannerROS/sim_granularity": {
+      "0.05": 34
+    },
+    "/move_base/TrajectoryPlannerROS/sim_time": {
+      "1.2": 34
+    },
+    "/move_base/TrajectoryPlannerROS/vtheta_samples": {
+      "24": 34
+    },
+    "/move_base/TrajectoryPlannerROS/vx_samples": {
+      "12": 34
+    },
+    "/move_base/TrajectoryPlannerROS/xy_goal_tolerance": {
+      "0.25": 34
+    },
+    "/move_base/TrajectoryPlannerROS/yaw_goal_tolerance": {
+      "0.2": 34
+    },
+    "/move_base/base_global_planner": {
+      "navfn/NavfnROS": 34
+    },
+    "/move_base/base_local_planner": {
+      "base_local_planne...": 34
+    },
+    "/move_base/controller_frequency": {
+      "5.0": 34
+    },
+    "/move_base/global_costmap/cost_scaling_factor": {
+      "4.0": 2
+    },
+    "/move_base/global_costmap/footprint_padding": {
+      "0.02": 34
+    },
+    "/move_base/global_costmap/global_frame": {
+      "map": 34
+    },
+    "/move_base/global_costmap/inflation_radius": {
+      "0.55": 2
+    },
+    "/move_base/global_costmap/observation_sources": {
+      "scan": 2
+    },
+    "/move_base/global_costmap/obstacle_range": {
+      "1.3": 2
+    },
+    "/move_base/global_costmap/plugins": {
+      "[{'name': 'static...": 34
+    },
+    "/move_base/global_costmap/publish_frequency": {
+      "1.0": 34
+    },
+    "/move_base/global_costmap/raytrace_range": {
+      "1.4": 2
+    },
+    "/move_base/global_costmap/resolution": {
+      "0.05": 34
+    },
+    "/move_base/global_costmap/robot_base_frame": {
+      "base_Link": 34
+    },
+    "/move_base/global_costmap/robot_radius": {
+      "0.28": 34
+    },
+    "/move_base/global_costmap/rolling_window": {
+      "False": 34
+    },
+    "/move_base/global_costmap/scan/clearing": {
+      "True": 2
+    },
+    "/move_base/global_costmap/scan/data_type": {
+      "LaserScan": 2
+    },
+    "/move_base/global_costmap/scan/marking": {
+      "True": 2
+    },
+    "/move_base/global_costmap/scan/sensor_frame": {
+      "base_Link": 2
+    },
+    "/move_base/global_costmap/scan/topic": {
+      "/scan": 2
+    },
+    "/move_base/global_costmap/static_map": {
+      "True": 2
+    },
+    "/move_base/global_costmap/transform_tolerance": {
+      "0.5": 34
+    },
+    "/move_base/global_costmap/update_frequency": {
+      "1.0": 34
+    },
+    "/move_base/local_costmap/cost_scaling_factor": {
+      "4.0": 2
+    },
+    "/move_base/local_costmap/footprint_padding": {
+      "0.02": 34
+    },
+    "/move_base/local_costmap/global_frame": {
+      "odom": 34
+    },
+    "/move_base/local_costmap/height": {
+      "4.0": 34
+    },
+    "/move_base/local_costmap/inflation_radius": {
+      "0.55": 2
+    },
+    "/move_base/local_costmap/observation_sources": {
+      "scan": 2
+    },
+    "/move_base/local_costmap/obstacle_range": {
+      "1.3": 2
+    },
+    "/move_base/local_costmap/plugins": {
+      "[{'name': 'obstac...": 34
+    },
+    "/move_base/local_costmap/publish_frequency": {
+      "2.0": 34
+    },
+    "/move_base/local_costmap/raytrace_range": {
+      "1.4": 2
+    },
+    "/move_base/local_costmap/resolution": {
+      "0.05": 34
+    },
+    "/move_base/local_costmap/robot_base_frame": {
+      "base_Link": 34
+    },
+    "/move_base/local_costmap/robot_radius": {
+      "0.28": 34
+    },
+    "/move_base/local_costmap/rolling_window": {
+      "True": 34
+    },
+    "/move_base/local_costmap/scan/clearing": {
+      "True": 2
+    },
+    "/move_base/local_costmap/scan/data_type": {
+      "LaserScan": 2
+    },
+    "/move_base/local_costmap/scan/marking": {
+      "True": 2
+    },
+    "/move_base/local_costmap/scan/sensor_frame": {
+      "base_Link": 2
+    },
+    "/move_base/local_costmap/scan/topic": {
+      "/scan": 2
+    },
+    "/move_base/local_costmap/static_map": {
+      "False": 2
+    },
+    "/move_base/local_costmap/transform_tolerance": {
+      "0.5": 34
+    },
+    "/move_base/local_costmap/update_frequency": {
+      "5.0": 34
+    },
+    "/move_base/local_costmap/width": {
+      "4.0": 34
+    },
+    "/move_base/oscillation_distance": {
+      "0.2": 34
+    },
+    "/move_base/oscillation_timeout": {
+      "10.0": 34
+    },
+    "/move_base/planner_patience": {
+      "5.0": 34
+    },
+    "/rosdistro": {
+      "noetic": 34
+    },
+    "/rosversion": {
+      "1.17.4": 34
+    },
+    "/amcl/first_map_only": {
+      "False": 32
+    },
+    "/amcl/force_update_after_initialpose": {
+      "True": 32
+    },
+    "/amcl/laser_max_beams": {
+      "60": 32
+    },
+    "/apriltag_ros_continuous_node/max_hamming_dist": {
+      "2": 32
+    },
+    "/apriltag_ros_continuous_node/publish_tf": {
+      "True": 32
+    },
+    "/apriltag_ros_continuous_node/standalone_tags": {
+      "[{'id': 300, 'siz...": 32
+    },
+    "/apriltag_ros_continuous_node/tag_blur": {
+      "0.0": 32
+    },
+    "/apriltag_ros_continuous_node/tag_bundles": {
+      "[]": 32
+    },
+    "/apriltag_ros_continuous_node/tag_debug": {
+      "0": 32
+    },
+    "/apriltag_ros_continuous_node/tag_decimate": {
+      "1.0": 32
+    },
+    "/apriltag_ros_continuous_node/tag_family": {
+      "tagStandard41h12": 32
+    },
+    "/apriltag_ros_continuous_node/tag_refine_edges": {
+      "1": 32
+    },
+    "/apriltag_ros_continuous_node/tag_threads": {
+      "2": 32
+    },
+    "/apriltag_ros_continuous_node/transport_hint": {
+      "compressed": 20,
+      "raw": 12
+    },
+    "/mission_manager/allow_test_fixture": {
+      "False": 32
+    },
+    "/mission_manager/config_profile": {
+      "production": 32
+    },
+    "/mission_manager/home_location_id": {
+      "home_3f": 32
+    },
+    "/mission_manager/initial_location_id": {
+      "home_3f": 32
+    },
+    "/mission_manager/inspect_profile_id": {
+      "roof_scan_profile": 32
+    },
+    "/mission_manager/scan_output_base": {
+      "/var/lib/tron1/scans": 32
+    },
+    "/move_base/global_costmap/inflation_layer/cost_scaling_factor": {
+      "4.0": 32
+    },
+    "/move_base/global_costmap/inflation_layer/inflation_radius": {
+      "0.55": 31,
+      "0.33": 1
+    },
+    "/move_base/local_costmap/inflation_layer/cost_scaling_factor": {
+      "4.0": 32
+    },
+    "/move_base/local_costmap/inflation_layer/inflation_radius": {
+      "0.55": 31,
+      "0.33": 1
+    },
+    "/move_base/local_costmap/obstacle_layer/observation_sources": {
+      "scan": 32
+    },
+    "/move_base/local_costmap/obstacle_layer/scan/clearing": {
+      "True": 32
+    },
+    "/move_base/local_costmap/obstacle_layer/scan/data_type": {
+      "LaserScan": 32
+    },
+    "/move_base/local_costmap/obstacle_layer/scan/marking": {
+      "True": 32
+    },
+    "/move_base/local_costmap/obstacle_layer/scan/obstacle_range": {
+      "1.3": 32
+    },
+    "/move_base/local_costmap/obstacle_layer/scan/raytrace_range": {
+      "1.4": 32
+    },
+    "/move_base/local_costmap/obstacle_layer/scan/sensor_frame": {
+      "base_Link": 32
+    },
+    "/move_base/local_costmap/obstacle_layer/scan/topic": {
+      "/scan": 32
+    },
+    "/move_base/recovery_behavior_enabled": {
+      "False": 32
+    },
+    "/multifloor_manager/config_root": {
+      "/home/m3tron/Desk...": 32
+    },
+    "/multifloor_manager/initial_floor": {
+      "3F": 32
+    },
+    "/multifloor_manager/tag_topic": {
+      "/tag_detections": 32
+    },
+    "/pointcloud_to_laserscan/angle_increment": {
+      "0.00872665": 21
+    },
+    "/pointcloud_to_laserscan/angle_max": {
+      "3.14159": 21
+    },
+    "/pointcloud_to_laserscan/angle_min": {
+      "-3.14159": 21
+    },
+    "/pointcloud_to_laserscan/concurrency_level": {
+      "1": 21
+    },
+    "/pointcloud_to_laserscan/inf_epsilon": {
+      "1.0": 21
+    },
+    "/pointcloud_to_laserscan/max_height": {
+      "0.2": 21
+    },
+    "/pointcloud_to_laserscan/min_height": {
+      "-0.2": 21
+    },
+    "/pointcloud_to_laserscan/range_max": {
+      "1.35": 21
+    },
+    "/pointcloud_to_laserscan/range_min": {
+      "0.3": 21
+    },
+    "/pointcloud_to_laserscan/scan_time": {
+      "0.1": 21
+    },
+    "/pointcloud_to_laserscan/target_frame": {
+      "base_Link": 21
+    },
+    "/pointcloud_to_laserscan/transform_tolerance": {
+      "0.05": 21
+    },
+    "/pointcloud_to_laserscan/use_inf": {
+      "True": 21
+    },
+    "/stair_supervisor/accid": {
+      "WF_TRON1A_632": 32
+    },
+    "/stair_supervisor/config_dir": {
+      "/home/m3tron/Desk...": 32
+    },
+    "/stair_supervisor/websocket_url": {
+      "ws://127.0.0.1:5000": 32
+    }
+  },
+  "events": {
+    "logs/20260819_125758/navigation.log": {},
+    "logs/20260819_132949/navigation.log": {
+      "costmap_tf": {
+        "count": 710,
+        "first_line": 4,
+        "last_line": 762,
+        "first_original": "[WARN] [1787113888.304513512]: Costmap2DROS transform timeout. Current time: 1787113888.3045, global_pose stamp: 1787113887.7762, tolerance: 0.5000",
+        "last_original": "[WARN] [1787124417.304488550]: Costmap2DROS transform timeout. Current time: 1787124417.3044, global_pose stamp: 1787123667.2848, tolerance: 0.5000",
+        "pose_age_min": 0.5018000602722168,
+        "pose_age_max": 750.0195999145508
+      },
+      "scan_absent": {
+        "count": 49,
+        "first_line": 53,
+        "last_line": 760,
+        "first_original": "[WARN] [1787123695.547720807]: No laser scan received (and thus no pose updates have been published) for 27.933803 seconds.  Verify that data is being published on the /scan topic.",
+        "last_original": "[WARN] [1787124415.547706714]: No laser scan received (and thus no pose updates have been published) for 747.933787 seconds.  Verify that data is being published on the /scan topic.",
+        "absent_sec_min": 27.933803,
+        "absent_sec_max": 747.933787
+      }
+    },
+    "logs/20260914_101622/system.log": {
+      "scan_absent": {
+        "count": 2,
+        "first_line": 22,
+        "last_line": 23,
+        "first_original": "[WARN] [1789348601.168272923]: No laser scan received (and thus no pose updates have been published) for 1789348601.168227 seconds.  Verify that data is being published on the /scan topic.",
+        "last_original": "[WARN] [1789348616.168306023]: No laser scan received (and thus no pose updates have been published) for 1789348616.168266 seconds.  Verify that data is being published on the /scan topic.",
+        "absent_sec_min": 1789348601.168227,
+        "absent_sec_max": 1789348616.168266
+      },
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 33,
+        "last_line": 33,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260914_102429/system.log": {
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 18,
+        "last_line": 18,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260914_102747/system.log": {
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 3,
+        "last_line": 3,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260914_102900/system.log": {
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 3,
+        "last_line": 3,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260914_110042/system.log": {
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 3,
+        "last_line": 3,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260914_110346/system.log": {
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 3,
+        "last_line": 3,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260914_111527/system.log": {
+      "scan_absent": {
+        "count": 1,
+        "first_line": 3,
+        "last_line": 3,
+        "first_original": "[WARN] [1789352146.680134956]: No laser scan received (and thus no pose updates have been published) for 1789352146.680085 seconds.  Verify that data is being published on the /scan topic.",
+        "last_original": "[WARN] [1789352146.680134956]: No laser scan received (and thus no pose updates have been published) for 1789352146.680085 seconds.  Verify that data is being published on the /scan topic.",
+        "absent_sec_min": 1789352146.680085,
+        "absent_sec_max": 1789352146.680085
+      },
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 4,
+        "last_line": 4,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260914_113428/system.log": {
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 97,
+        "last_line": 97,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260914_113607/system.log": {
+      "scan_absent": {
+        "count": 1,
+        "first_line": 3,
+        "last_line": 3,
+        "first_original": "[WARN] [1789353386.387577729]: No laser scan received (and thus no pose updates have been published) for 1789353386.387531 seconds.  Verify that data is being published on the /scan topic.",
+        "last_original": "[WARN] [1789353386.387577729]: No laser scan received (and thus no pose updates have been published) for 1789353386.387531 seconds.  Verify that data is being published on the /scan topic.",
+        "absent_sec_min": 1789353386.387531,
+        "absent_sec_max": 1789353386.387531
+      },
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 270,
+        "last_line": 270,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260914_114026/system.log": {
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 71,
+        "last_line": 71,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260914_114113/system.log": {
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 61,
+        "last_line": 61,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260914_114259/system.log": {
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 89,
+        "last_line": 89,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260914_114853/system.log": {
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 7,
+        "last_line": 7,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260914_115222/system.log": {
+      "scan_absent": {
+        "count": 1,
+        "first_line": 3,
+        "last_line": 3,
+        "first_original": "[WARN] [1789354361.579479980]: No laser scan received (and thus no pose updates have been published) for 1789354361.579433 seconds.  Verify that data is being published on the /scan topic.",
+        "last_original": "[WARN] [1789354361.579479980]: No laser scan received (and thus no pose updates have been published) for 1789354361.579433 seconds.  Verify that data is being published on the /scan topic.",
+        "absent_sec_min": 1789354361.579433,
+        "absent_sec_max": 1789354361.579433
+      },
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 14,
+        "last_line": 14,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260916_103618/system.log": {
+      "scan_absent": {
+        "count": 3,
+        "first_line": 3,
+        "last_line": 6,
+        "first_original": "[WARN] [1789522596.712306054]: No laser scan received (and thus no pose updates have been published) for 1789522596.712262 seconds.  Verify that data is being published on the /scan topic.",
+        "last_original": "[WARN] [1789522626.712244051]: No laser scan received (and thus no pose updates have been published) for 1789522626.712211 seconds.  Verify that data is being published on the /scan topic.",
+        "absent_sec_min": 1789522596.712262,
+        "absent_sec_max": 1789522626.712211
+      }
+    },
+    "logs/20260916_104818/system.log": {
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 18,
+        "last_line": 18,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260916_105458/system.log": {
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 27,
+        "last_line": 27,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260916_114215/system.log": {
+      "scan_absent": {
+        "count": 1,
+        "first_line": 3,
+        "last_line": 3,
+        "first_original": "[WARN] [1789526554.408913053]: No laser scan received (and thus no pose updates have been published) for 1789526554.408875 seconds.  Verify that data is being published on the /scan topic.",
+        "last_original": "[WARN] [1789526554.408913053]: No laser scan received (and thus no pose updates have been published) for 1789526554.408875 seconds.  Verify that data is being published on the /scan topic.",
+        "absent_sec_min": 1789526554.408875,
+        "absent_sec_max": 1789526554.408875
+      },
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 9,
+        "last_line": 9,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260916_114855/system.log": {
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 18,
+        "last_line": 18,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260916_115236/system.log": {
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 22,
+        "last_line": 22,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260916_115900/system.log": {},
+    "logs/20260916_190305/system.log": {},
+    "logs/20260916_194839/system.log": {
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 16,
+        "last_line": 16,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260916_201422/system.log": {
+      "apriltag_assert": {
+        "count": 1,
+        "first_line": 31,
+        "last_line": 31,
+        "first_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed.",
+        "last_original": "apriltag_ros_continuous_node: /tmp/binarydeb/ros-noetic-apriltag-3.2.0/common/zarray.h:132: zarray_size: Assertion `za != NULL' failed."
+      }
+    },
+    "logs/20260916_203523/system.log": {
+      "costmap_tf": {
+        "count": 13,
+        "first_line": 16,
+        "last_line": 28,
+        "first_original": "[WARN] [1789558600.113448022]: Costmap2DROS transform timeout. Current time: 1789558600.1134, global_pose stamp: 1789558598.7876, tolerance: 0.5000",
+        "last_original": "[WARN] [1789558691.113465732]: Costmap2DROS transform timeout. Current time: 1789558691.1134, global_pose stamp: 1789558690.2834, tolerance: 0.5000",
+        "pose_age_min": 0.6429998874664307,
+        "pose_age_max": 3.3332998752593994
+      }
+    },
+    "logs/20260916_204519/system.log": {
+      "costmap_tf": {
+        "count": 8,
+        "first_line": 43,
+        "last_line": 51,
+        "first_original": "[WARN] [1789559196.341637900]: Costmap2DROS transform timeout. Current time: 1789559196.3416, global_pose stamp: 1789559195.7656, tolerance: 0.5000",
+        "last_original": "[WARN] [1789559292.341695222]: Costmap2DROS transform timeout. Current time: 1789559292.3417, global_pose stamp: 1789559289.6734, tolerance: 0.5000",
+        "pose_age_min": 0.5590000152587891,
+        "pose_age_max": 2.668300151824951
+      }
+    },
+    "logs/20260916_210745/system.log": {},
+    "logs/20260916_224945/system.log": {
+      "costmap_tf": {
+        "count": 237,
+        "first_line": 20,
+        "last_line": 273,
+        "first_original": "[WARN] [1789568281.828058226]: Costmap2DROS transform timeout. Current time: 1789568281.8280, global_pose stamp: 1789568281.2874, tolerance: 0.5000",
+        "last_original": "[WARN] [1789568540.228011010]: Costmap2DROS transform timeout. Current time: 1789568540.2280, global_pose stamp: 1789568281.2874, tolerance: 0.5000",
+        "pose_age_min": 0.540600061416626,
+        "pose_age_max": 258.9405999183655
+      },
+      "scan_absent": {
+        "count": 17,
+        "first_line": 35,
+        "last_line": 270,
+        "first_original": "[WARN] [1789568297.454416867]: No laser scan received (and thus no pose updates have been published) for 16.203559 seconds.  Verify that data is being published on the /scan topic.",
+        "last_original": "[WARN] [1789568537.454445676]: No laser scan received (and thus no pose updates have been published) for 256.203573 seconds.  Verify that data is being published on the /scan topic.",
+        "absent_sec_min": 16.203559,
+        "absent_sec_max": 256.203573
+      },
+      "transport_fault": {
+        "count": 1,
+        "first_line": 289,
+        "last_line": 289,
+        "first_original": "[ERROR] [1789568542.443744]: robot command transport fault: twist send failed after watchdog budget",
+        "last_original": "[ERROR] [1789568542.443744]: robot command transport fault: twist send failed after watchdog budget"
+      }
+    },
+    "logs/20260917_001407/system.log": {
+      "oscillation": {
+        "count": 7,
+        "first_line": 19,
+        "last_line": 30,
+        "first_original": "[ERROR] [1789571992.624706470]: Aborting because the robot appears to be oscillating over and over. Even after executing all recovery behaviors",
+        "last_original": "[ERROR] [1789572536.375012610]: Aborting because the robot appears to be oscillating over and over. Even after executing all recovery behaviors"
+      }
+    },
+    "logs/20260917_004754/system.log": {},
+    "logs/20260917_010117/system.log": {
+      "oscillation": {
+        "count": 4,
+        "first_line": 21,
+        "last_line": 26,
+        "first_original": "[ERROR] [1789575195.403906353]: Aborting because the robot appears to be oscillating over and over. Even after executing all recovery behaviors",
+        "last_original": "[ERROR] [1789575328.868143334]: Aborting because the robot appears to be oscillating over and over. Even after executing all recovery behaviors"
+      },
+      "costmap_tf": {
+        "count": 70518,
+        "first_line": 27,
+        "last_line": 551273,
+        "first_original": "[WARN] [1789575558.238544822]: Costmap2DROS transform timeout. Current time: 1789575558.2385, global_pose stamp: 1789575557.7354, tolerance: 0.5000",
+        "last_original": "[WARN] [1789652884.239734777]: Costmap2DROS transform timeout. Current time: 1789652884.2397, global_pose stamp: 1789575557.7354, tolerance: 0.5000",
+        "pose_age_min": 0.5031001567840576,
+        "pose_age_max": 77326.50430011749
+      },
+      "plan_pose_unavailable": {
+        "count": 475562,
+        "first_line": 29,
+        "last_line": 475610,
+        "first_original": "[WARN] [1789575558.300089529]: Unable to get starting pose of robot, unable to create global plan",
+        "last_original": "[WARN] [1789575568.516813182]: Unable to get starting pose of robot, unable to create global plan"
+      },
+      "plan_abort": {
+        "count": 2,
+        "first_line": 241737,
+        "last_line": 475611,
+        "first_original": "[ERROR] [1789575563.499959254]: Aborting because a valid plan could not be found. Even after executing all recovery behaviors",
+        "last_original": "[ERROR] [1789575568.516911831]: Aborting because a valid plan could not be found. Even after executing all recovery behaviors"
+      },
+      "scan_absent": {
+        "count": 5155,
+        "first_line": 475618,
+        "last_line": 551274,
+        "first_original": "[WARN] [1789575574.514485947]: No laser scan received (and thus no pose updates have been published) for 16.826014 seconds.  Verify that data is being published on the /scan topic.",
+        "last_original": "[WARN] [1789652884.514472295]: No laser scan received (and thus no pose updates have been published) for 77326.825992 seconds.  Verify that data is being published on the /scan topic.",
+        "absent_sec_min": 16.826014,
+        "absent_sec_max": 77326.825992
+      },
+      "transport_fault": {
+        "count": 1,
+        "first_line": 551297,
+        "last_line": 551297,
+        "first_original": "[ERROR] [1789575670.746389]: robot command transport fault: twist send failed after watchdog budget",
+        "last_original": "[ERROR] [1789575670.746389]: robot command transport fault: twist send failed after watchdog budget"
+      }
+    },
+    "logs/20260917_233902/system.log": {
+      "oscillation": {
+        "count": 15,
+        "first_line": 18,
+        "last_line": 43,
+        "first_original": "[ERROR] [1789656042.084241972]: Aborting because the robot appears to be oscillating over and over. Even after executing all recovery behaviors",
+        "last_original": "[ERROR] [1789656803.684192710]: Aborting because the robot appears to be oscillating over and over. Even after executing all recovery behaviors"
+      },
+      "plan_abort": {
+        "count": 1,
+        "first_line": 37,
+        "last_line": 37,
+        "first_original": "[ERROR] [1789656651.476476673]: Aborting because a valid plan could not be found. Even after executing all recovery behaviors",
+        "last_original": "[ERROR] [1789656651.476476673]: Aborting because a valid plan could not be found. Even after executing all recovery behaviors"
+      },
+      "control_abort": {
+        "count": 2,
+        "first_line": 38,
+        "last_line": 40,
+        "first_original": "[ERROR] [1789656686.621841045]: Aborting because a valid control could not be found. Even after executing all recovery behaviors",
+        "last_original": "[ERROR] [1789656738.387218636]: Aborting because a valid control could not be found. Even after executing all recovery behaviors"
+      },
+      "costmap_tf": {
+        "count": 37882,
+        "first_line": 44,
+        "last_line": 40690,
+        "first_original": "[WARN] [1789656822.754447005]: Costmap2DROS transform timeout. Current time: 1789656822.7544, global_pose stamp: 1789656822.1510, tolerance: 0.5000",
+        "last_original": "[WARN] [1789698367.154445847]: Costmap2DROS transform timeout. Current time: 1789698367.1544, global_pose stamp: 1789656975.0638, tolerance: 0.5000",
+        "pose_age_min": 0.6033999919891357,
+        "pose_age_max": 41392.09060001373
+      },
+      "scan_absent": {
+        "count": 2764,
+        "first_line": 63,
+        "last_line": 40687,
+        "first_original": "[WARN] [1789656844.010636195]: No laser scan received (and thus no pose updates have been published) for 21.920220 seconds.  Verify that data is being published on the /scan topic.",
+        "last_original": "[WARN] [1789698364.012355199]: No laser scan received (and thus no pose updates have been published) for 41389.025745 seconds.  Verify that data is being published on the /scan topic.",
+        "absent_sec_min": 19.024081,
+        "absent_sec_max": 41389.025745
+      },
+      "transport_fault": {
+        "count": 1,
+        "first_line": 40718,
+        "last_line": 40718,
+        "first_original": "[ERROR] [1789656895.550137]: robot command transport fault: twist send failed after watchdog budget",
+        "last_original": "[ERROR] [1789656895.550137]: robot command transport fault: twist send failed after watchdog budget"
+      }
+    }
+  },
+  "unknown_tag_ids": {
+    "1891": 1,
+    "6": 1,
+    "572": 1,
+    "601": 9,
+    "1583": 1,
+    "1665": 1,
+    "1720": 2
+  },
+  "decoded_replacements": 0,
+  "total_lines": 600190,
+  "scope": "all lines parsed; all550 normalized event/parameter/trace templates reviewed; repeated numeric values aggregated; historical logs not current runtime"
+}

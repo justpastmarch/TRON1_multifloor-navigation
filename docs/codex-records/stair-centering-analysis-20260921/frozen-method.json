@@ -1,0 +1,47 @@
+{
+  "parameters": {
+    "roi_x": [
+      -0.25,
+      2.4
+    ],
+    "roi_y": [
+      0.18,
+      2.4
+    ],
+    "roi_z": [
+      0.02,
+      1.7
+    ],
+    "plane_threshold_m": 0.035,
+    "iterations": 360,
+    "min_inliers": 65,
+    "min_x_span_m": 0.65,
+    "min_z_span_m": 0.3,
+    "min_inlier_fraction": 0.055,
+    "min_normal_y": 0.7,
+    "max_normal_z": 0.55,
+    "max_pair_angle_deg": 8.0,
+    "min_width_m": 0.75,
+    "max_width_m": 2.4,
+    "seed": 921
+  },
+  "geometry_sha256": "759f909bfc912eb48be98b4a182063a07dd56ead15e55a54802fe3994c07f941",
+  "development_bag": 7,
+  "freeze_time_utc": "2026-09-20T16:06:51Z",
+  "sampling": "one of every five lidar packets, no odom deskew",
+  "single_side_experiment": {
+    "calibration": "first 3 accepted dual-sided observations within each RGB-labelled flight; no future frames",
+    "max_width_change_m": 0.08,
+    "side_choice": "right if available, otherwise left",
+    "heading_disagreement_limit_deg": 8,
+    "output": "shadow measurements only; oracle RGB flight context is not an automatic deployed phase detector"
+  },
+  "shadow_controller": {
+    "k_y": 0.6,
+    "k_heading": 1.2,
+    "max_omega_rad_s": 0.25,
+    "deadband_lateral_m": 0.05,
+    "deadband_heading_deg": 2,
+    "note": "hypothetical bench settings, not user approved or firmware validated; no live commands"
+  }
+}

@@ -1,0 +1,924 @@
+{
+  "102101": {
+    "point_count": 4446,
+    "fits": [
+      {
+        "parameters": [
+          0.4773436259879847,
+          -0.15805727577661885,
+          -0.7645571663220507,
+          0.07224645663590216
+        ],
+        "loss": 0.01615052530677335,
+        "fraction_model_within_10cm": 0.5309112217990039,
+        "per_surface": {
+          "flight1_1": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.9376368928335976
+          },
+          "flight1_2": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.9124526210281778
+          },
+          "flight1_3": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.6540098820711717
+          },
+          "flight1_4": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.3308990555905306
+          },
+          "flight1_5": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.7,
+            "median_distance_m": 0.059818639360022956
+          },
+          "flight1_6": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.5818181818181818,
+            "median_distance_m": 0.08273979048873994
+          },
+          "flight1_7": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.5272727272727272,
+            "median_distance_m": 0.08993746313622228
+          },
+          "flight1_8": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.43636363636363634,
+            "median_distance_m": 0.12086236710063233
+          },
+          "flight1_9": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.8,
+            "median_distance_m": 0.0504358744830591
+          },
+          "flight2_1": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.2990359854057778
+          },
+          "flight2_10": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.6,
+            "median_distance_m": 0.08967595378381811
+          },
+          "flight2_2": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.10909090909090909,
+            "median_distance_m": 0.19309191186942484
+          },
+          "flight2_3": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.20909090909090908,
+            "median_distance_m": 0.1463717110366015
+          },
+          "flight2_4": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.6818181818181818,
+            "median_distance_m": 0.08358049644878657
+          },
+          "flight2_5": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.8363636363636363,
+            "median_distance_m": 0.061413008376635554
+          },
+          "flight2_6": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.8818181818181818,
+            "median_distance_m": 0.05603140608446214
+          },
+          "flight2_7": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.8181818181818182,
+            "median_distance_m": 0.06277193499377423
+          },
+          "flight2_8": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.7818181818181819,
+            "median_distance_m": 0.07520179809189759
+          },
+          "flight2_9": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.7636363636363637,
+            "median_distance_m": 0.06711344958466373
+          },
+          "landing": {
+            "model_points": 1323,
+            "fraction_within_10cm": 0.6439909297052154,
+            "median_distance_m": 0.058412363428098496
+          }
+        }
+      },
+      {
+        "parameters": [
+          0.4658052581746882,
+          -0.13967355606516627,
+          -0.7647585150544508,
+          0.06439879403957952
+        ],
+        "loss": 0.016219050090881246,
+        "fraction_model_within_10cm": 0.5312042191620275,
+        "per_surface": {
+          "flight1_1": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.9330458923184585
+          },
+          "flight1_2": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.9111680357188727
+          },
+          "flight1_3": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.6626776197606378
+          },
+          "flight1_4": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.3389363641439428
+          },
+          "flight1_5": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.6454545454545455,
+            "median_distance_m": 0.06257846179324789
+          },
+          "flight1_6": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.5636363636363636,
+            "median_distance_m": 0.08948737649993693
+          },
+          "flight1_7": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.5,
+            "median_distance_m": 0.09763459992803004
+          },
+          "flight1_8": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.4,
+            "median_distance_m": 0.13150688804748212
+          },
+          "flight1_9": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.7727272727272727,
+            "median_distance_m": 0.055186278553479504
+          },
+          "flight2_1": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.2981777880644258
+          },
+          "flight2_10": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.6454545454545455,
+            "median_distance_m": 0.09312616135657178
+          },
+          "flight2_2": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.1,
+            "median_distance_m": 0.1930011638303466
+          },
+          "flight2_3": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.2,
+            "median_distance_m": 0.14408323970165898
+          },
+          "flight2_4": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.6727272727272727,
+            "median_distance_m": 0.0863729498952359
+          },
+          "flight2_5": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.8545454545454545,
+            "median_distance_m": 0.06014428828432415
+          },
+          "flight2_6": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9,
+            "median_distance_m": 0.052411806014097645
+          },
+          "flight2_7": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.8181818181818182,
+            "median_distance_m": 0.06359772865006608
+          },
+          "flight2_8": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.7545454545454545,
+            "median_distance_m": 0.07395145380603886
+          },
+          "flight2_9": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.7818181818181819,
+            "median_distance_m": 0.06321872889779627
+          },
+          "landing": {
+            "model_points": 1323,
+            "fraction_within_10cm": 0.654572940287226,
+            "median_distance_m": 0.05824701176252148
+          }
+        }
+      },
+      {
+        "parameters": [
+          0.4325489060242997,
+          -0.12698030521358325,
+          -0.7657851376660577,
+          0.05661727413480309
+        ],
+        "loss": 0.01636934567759936,
+        "fraction_model_within_10cm": 0.5259302666276003,
+        "per_surface": {
+          "flight1_1": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.9198467289837526
+          },
+          "flight1_2": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.9167163067673313
+          },
+          "flight1_3": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.6905680495917995
+          },
+          "flight1_4": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.36698710535255574
+          },
+          "flight1_5": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.5454545454545454,
+            "median_distance_m": 0.08703647761295402
+          },
+          "flight1_6": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.41818181818181815,
+            "median_distance_m": 0.11480879847279371
+          },
+          "flight1_7": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.39090909090909093,
+            "median_distance_m": 0.12736431632234427
+          },
+          "flight1_8": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.3,
+            "median_distance_m": 0.1581082639392281
+          },
+          "flight1_9": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.6727272727272727,
+            "median_distance_m": 0.06859265899646791
+          },
+          "flight2_1": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.29803634779908544
+          },
+          "flight2_10": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.6181818181818182,
+            "median_distance_m": 0.0897538374647483
+          },
+          "flight2_2": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.14545454545454545,
+            "median_distance_m": 0.18875214175838703
+          },
+          "flight2_3": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.23636363636363636,
+            "median_distance_m": 0.1384191916845231
+          },
+          "flight2_4": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.6727272727272727,
+            "median_distance_m": 0.07661070493568387
+          },
+          "flight2_5": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.8909090909090909,
+            "median_distance_m": 0.057334418554296024
+          },
+          "flight2_6": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9181818181818182,
+            "median_distance_m": 0.05318463797057745
+          },
+          "flight2_7": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.8727272727272727,
+            "median_distance_m": 0.05601278613457323
+          },
+          "flight2_8": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.7818181818181819,
+            "median_distance_m": 0.07168702950595503
+          },
+          "flight2_9": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.8545454545454545,
+            "median_distance_m": 0.06069601247625485
+          },
+          "landing": {
+            "model_points": 1323,
+            "fraction_within_10cm": 0.6651549508692366,
+            "median_distance_m": 0.05565216343226922
+          }
+        }
+      },
+      {
+        "parameters": [
+          0.2055912176188063,
+          0.00742715897103857,
+          -0.7724555542101502,
+          -0.016244129128631407
+        ],
+        "loss": 0.01854429431589165,
+        "fraction_model_within_10cm": 0.4860826252563727,
+        "per_surface": {
+          "flight1_1": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.8571896140231854
+          },
+          "flight1_2": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.8019192751800166
+          },
+          "flight1_3": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.8194354406296307
+          },
+          "flight1_4": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.5904751692521105
+          },
+          "flight1_5": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.2943518177549822
+          },
+          "flight1_6": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.19991549613869547
+          },
+          "flight1_7": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.1967933401881931
+          },
+          "flight1_8": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.18352671486335853
+          },
+          "flight1_9": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.17170656914567095
+          },
+          "flight2_1": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.01818181818181818,
+            "median_distance_m": 0.2826353243809931
+          },
+          "flight2_10": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.7090909090909091,
+            "median_distance_m": 0.08636832116794232
+          },
+          "flight2_2": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.2727272727272727,
+            "median_distance_m": 0.14184971065008295
+          },
+          "flight2_3": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.32727272727272727,
+            "median_distance_m": 0.11996932192825954
+          },
+          "flight2_4": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9545454545454546,
+            "median_distance_m": 0.05752068730433288
+          },
+          "flight2_5": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9818181818181818,
+            "median_distance_m": 0.05477249615145782
+          },
+          "flight2_6": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9545454545454546,
+            "median_distance_m": 0.05002408239152194
+          },
+          "flight2_7": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9727272727272728,
+            "median_distance_m": 0.043945538587284554
+          },
+          "flight2_8": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.8636363636363636,
+            "median_distance_m": 0.06474258309801287
+          },
+          "flight2_9": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9454545454545454,
+            "median_distance_m": 0.0613991149192341
+          },
+          "landing": {
+            "model_points": 1323,
+            "fraction_within_10cm": 0.671957671957672,
+            "median_distance_m": 0.057060921852479636
+          }
+        }
+      }
+    ]
+  },
+  "105713": {
+    "point_count": 3259,
+    "fits": [
+      {
+        "parameters": [
+          0.11517428895166007,
+          -0.122083581766396,
+          -0.8054917600217585,
+          0.0882438616635891
+        ],
+        "loss": 0.01459600870119036,
+        "fraction_model_within_10cm": 0.5728098447113976,
+        "per_surface": {
+          "flight1_1": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 1.1509698290050414
+          },
+          "flight1_2": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 1.004973181815976
+          },
+          "flight1_3": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.6923850799310051
+          },
+          "flight1_4": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.37039691450902457
+          },
+          "flight1_5": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.6181818181818182,
+            "median_distance_m": 0.0829201867069399
+          },
+          "flight1_6": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.5181818181818182,
+            "median_distance_m": 0.09635729041421012
+          },
+          "flight1_7": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.2818181818181818,
+            "median_distance_m": 0.1271224501971388
+          },
+          "flight1_8": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.39090909090909093,
+            "median_distance_m": 0.1157224671144727
+          },
+          "flight1_9": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.5636363636363636,
+            "median_distance_m": 0.09345788029705142
+          },
+          "flight2_1": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.28442792926999527
+          },
+          "flight2_10": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.43636363636363634,
+            "median_distance_m": 0.10717228647467696
+          },
+          "flight2_2": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.1,
+            "median_distance_m": 0.20072104211731773
+          },
+          "flight2_3": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.4,
+            "median_distance_m": 0.1198955008366705
+          },
+          "flight2_4": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.7818181818181819,
+            "median_distance_m": 0.05973183101400843
+          },
+          "flight2_5": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9363636363636364,
+            "median_distance_m": 0.038153078498248935
+          },
+          "flight2_6": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9636363636363636,
+            "median_distance_m": 0.033294144701181895
+          },
+          "flight2_7": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9727272727272728,
+            "median_distance_m": 0.04099347783060925
+          },
+          "flight2_8": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.8636363636363636,
+            "median_distance_m": 0.051998537400550555
+          },
+          "flight2_9": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.8090909090909091,
+            "median_distance_m": 0.06418590317266563
+          },
+          "landing": {
+            "model_points": 1323,
+            "fraction_within_10cm": 0.7596371882086168,
+            "median_distance_m": 0.047869327514346846
+          }
+        }
+      },
+      {
+        "parameters": [
+          0.1028834308344777,
+          -0.12419211792518639,
+          -0.8061011599735948,
+          0.0829610444582716
+        ],
+        "loss": 0.01461493682666187,
+        "fraction_model_within_10cm": 0.5651919132727805,
+        "per_surface": {
+          "flight1_1": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 1.146430195071342
+          },
+          "flight1_2": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 1.0079702480764317
+          },
+          "flight1_3": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.703564804556086
+          },
+          "flight1_4": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.38040884720432977
+          },
+          "flight1_5": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.5545454545454546,
+            "median_distance_m": 0.09375674875048348
+          },
+          "flight1_6": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.4636363636363636,
+            "median_distance_m": 0.10774657699121004
+          },
+          "flight1_7": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.2545454545454545,
+            "median_distance_m": 0.12942062744032212
+          },
+          "flight1_8": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.33636363636363636,
+            "median_distance_m": 0.11632694669340227
+          },
+          "flight1_9": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.5,
+            "median_distance_m": 0.09994914797843535
+          },
+          "flight2_1": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.2799298523263573
+          },
+          "flight2_10": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.41818181818181815,
+            "median_distance_m": 0.10668418010412961
+          },
+          "flight2_2": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.08181818181818182,
+            "median_distance_m": 0.1962337395387681
+          },
+          "flight2_3": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.4,
+            "median_distance_m": 0.11585864570183224
+          },
+          "flight2_4": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.8,
+            "median_distance_m": 0.05732534372682261
+          },
+          "flight2_5": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9454545454545454,
+            "median_distance_m": 0.038977035544368814
+          },
+          "flight2_6": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9636363636363636,
+            "median_distance_m": 0.03358521417632526
+          },
+          "flight2_7": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9545454545454546,
+            "median_distance_m": 0.04044317591815532
+          },
+          "flight2_8": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.8636363636363636,
+            "median_distance_m": 0.053795136215210634
+          },
+          "flight2_9": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.8090909090909091,
+            "median_distance_m": 0.06437139307759154
+          },
+          "landing": {
+            "model_points": 1323,
+            "fraction_within_10cm": 0.764172335600907,
+            "median_distance_m": 0.04757480624414816
+          }
+        }
+      },
+      {
+        "parameters": [
+          0.039164163763824915,
+          -0.05846514716327699,
+          -0.8120292816215925,
+          0.053632140756809527
+        ],
+        "loss": 0.01487278463133599,
+        "fraction_model_within_10cm": 0.5508350424846177,
+        "per_surface": {
+          "flight1_1": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 1.1179759976876706
+          },
+          "flight1_2": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 1.0269074386489194
+          },
+          "flight1_3": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.7526182969375883
+          },
+          "flight1_4": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.43492660172392494
+          },
+          "flight1_5": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.34545454545454546,
+            "median_distance_m": 0.1324741746384827
+          },
+          "flight1_6": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.2636363636363636,
+            "median_distance_m": 0.1329922140364932
+          },
+          "flight1_7": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.045454545454545456,
+            "median_distance_m": 0.12789126719113939
+          },
+          "flight1_8": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.16363636363636364,
+            "median_distance_m": 0.11831949150314378
+          },
+          "flight1_9": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.44545454545454544,
+            "median_distance_m": 0.10464308508253166
+          },
+          "flight2_1": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.27343074226291814
+          },
+          "flight2_10": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.36363636363636365,
+            "median_distance_m": 0.1102828728408968
+          },
+          "flight2_2": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.1,
+            "median_distance_m": 0.19036997796555133
+          },
+          "flight2_3": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.45454545454545453,
+            "median_distance_m": 0.11380471486519173
+          },
+          "flight2_4": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.8454545454545455,
+            "median_distance_m": 0.05038572273276285
+          },
+          "flight2_5": {
+            "model_points": 110,
+            "fraction_within_10cm": 1.0,
+            "median_distance_m": 0.03305519320823161
+          },
+          "flight2_6": {
+            "model_points": 110,
+            "fraction_within_10cm": 1.0,
+            "median_distance_m": 0.030484946206357118
+          },
+          "flight2_7": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9818181818181818,
+            "median_distance_m": 0.038094426281735136
+          },
+          "flight2_8": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9181818181818182,
+            "median_distance_m": 0.05503983051877167
+          },
+          "flight2_9": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9,
+            "median_distance_m": 0.06401368315979397
+          },
+          "landing": {
+            "model_points": 1323,
+            "fraction_within_10cm": 0.7702191987906274,
+            "median_distance_m": 0.04941031084339643
+          }
+        }
+      },
+      {
+        "parameters": [
+          0.12384564688120835,
+          -0.05881344947347332,
+          -0.8047595214104886,
+          0.0708171532936293
+        ],
+        "loss": 0.014918792069068593,
+        "fraction_model_within_10cm": 0.5602109581013771,
+        "per_surface": {
+          "flight1_1": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 1.1432458950961628
+          },
+          "flight1_2": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 1.0018063175029315
+          },
+          "flight1_3": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.6769552995308922
+          },
+          "flight1_4": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.3610465217890892
+          },
+          "flight1_5": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.6818181818181818,
+            "median_distance_m": 0.07039872478437274
+          },
+          "flight1_6": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.5636363636363636,
+            "median_distance_m": 0.08802703089977398
+          },
+          "flight1_7": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.3181818181818182,
+            "median_distance_m": 0.12240507474386705
+          },
+          "flight1_8": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.41818181818181815,
+            "median_distance_m": 0.11184367079967092
+          },
+          "flight1_9": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.6,
+            "median_distance_m": 0.08619200235075358
+          },
+          "flight2_1": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.0,
+            "median_distance_m": 0.29003299346570877
+          },
+          "flight2_10": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.36363636363636365,
+            "median_distance_m": 0.11259871448353048
+          },
+          "flight2_2": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.07272727272727272,
+            "median_distance_m": 0.22783252148357552
+          },
+          "flight2_3": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.3,
+            "median_distance_m": 0.137518723377257
+          },
+          "flight2_4": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.6454545454545455,
+            "median_distance_m": 0.07036067513867883
+          },
+          "flight2_5": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9090909090909091,
+            "median_distance_m": 0.04150036236318617
+          },
+          "flight2_6": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9818181818181818,
+            "median_distance_m": 0.03625369687056618
+          },
+          "flight2_7": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.9090909090909091,
+            "median_distance_m": 0.043415409532046444
+          },
+          "flight2_8": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.7636363636363637,
+            "median_distance_m": 0.06002432426305534
+          },
+          "flight2_9": {
+            "model_points": 110,
+            "fraction_within_10cm": 0.7727272727272727,
+            "median_distance_m": 0.0689948427163533
+          },
+          "landing": {
+            "model_points": 1323,
+            "fraction_within_10cm": 0.7551020408163265,
+            "median_distance_m": 0.04879497583552711
+          }
+        }
+      }
+    ]
+  },
+  "definition": {
+    "dimensions_fixed": {
+      "dimension_source": "operator-provided stair measurements",
+      "flight_1_steps": 9,
+      "flight_2_steps": 10,
+      "landing_between_flights": true,
+      "landing_depth_m": 1.48,
+      "landing_width_m": 2.7,
+      "riser_height_m": 0.17,
+      "stair_width_m": 1.23,
+      "tread_depth_m": 0.28
+    },
+    "parameters": "observed_first_body_from_nominal_stair: tx,ty,tz,yaw",
+    "model_convention": "9 tread rectangles then landing then 10 return tread rectangles, as existing simulation world; top tread and landing overlap in height, count convention not independent truth",
+    "evidence": "INFERRED alignment; same LiDAR estimates provide observations; incomplete model coverage and repeated risers can alias; NOT a validated live entry anchor"
+  }
+}

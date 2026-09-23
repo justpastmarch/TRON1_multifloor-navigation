@@ -1,0 +1,11 @@
+{
+  "at_utc": "2026-09-23T01:33:08.113332+00:00",
+  "client_updated": true,
+  "server_changed": false,
+  "restart_performed": false,
+  "goals_sent": 0,
+  "tests_passed": 95,
+  "current_landing_admission": false,
+  "pose_source": "LiDAR estimate, not external ground truth",
+  "temporary_probe_dirs": []
+}

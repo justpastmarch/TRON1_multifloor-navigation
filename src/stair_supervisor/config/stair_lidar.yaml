@@ -1,0 +1,24 @@
+schema_version: 1
+# Observation works without surveyed body geometry. No physical gains/response
+# or inter-floor geometry are inferred from the successful offline traces.
+configured: false
+calibration: lidar_imu_baseline.yaml
+# Mount confirmed by operator 2026-09-21: centered XY, 0.18 m above
+# body-top base reference, forward pitch +5 deg; roll/yaw retain existing 0.
+# T_base_lidar maps LiDAR coordinates into the existing base_Link frame.
+base_from_lidar:
+  - [0.996194698091746, 0.0, 0.087155742747658, 0.0]
+  - [0.0, 1.0, 0.0, 0.0]
+  - [-0.087155742747658, 0.0, 0.996194698091746, 0.18]
+  - [0.0, 0.0, 0.0, 1.0]
+tracking:
+  frame_step: 2
+  local_map_scans: 15
+  max_range_m: 20.0
+  imu_max_gap_s: 0.03
+  gravity_half_window_s: 0.5
+  imu_buffer_sec: 8.0
+  imu_capacity: 4096
+  queue_capacity: 8
+  imu_wait_sec: 0.15
+routes: []

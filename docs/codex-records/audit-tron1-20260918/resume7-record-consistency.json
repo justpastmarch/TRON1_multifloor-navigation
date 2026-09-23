@@ -1,0 +1,56 @@
+{
+  "observed_utc": "2026-09-18T05:13:21.657018+00:00",
+  "checks": {
+    "inventory_reconciles": true,
+    "read_list_matches": true,
+    "unread_list_matches": true,
+    "metadata-only_list_matches": true,
+    "excluded_list_matches": true,
+    "next_targets_match": true,
+    "new_read106_distinct": true,
+    "lossless_index_reconstructs_every_file": true,
+    "scenario_pending15": true,
+    "only_known_metadata_delta": true,
+    "old_temp_absent": true
+  },
+  "states": {
+    "READ": 737,
+    "METADATA_ONLY": 1010,
+    "EXCLUDED": 3749,
+    "UNREAD": 13
+  },
+  "new_read": 106,
+  "new_metadata_only": 1,
+  "audit_complete": false,
+  "phase": "E ongoing; F not started",
+  "temporary_artifacts": [],
+  "background_processes": [],
+  "retained_artifacts": [
+    "phase-E-resume7.md",
+    "read-batch-images-resume7.json",
+    "read-batch-text-small-resume7.json",
+    "read-batch-dedup-resume7.json",
+    "remaining-exact-lines-resume7.json",
+    "video-metadata-resume7.json",
+    "resume7-concurrent-change.json",
+    "resume7-record-consistency.json"
+  ],
+  "quality": {
+    "factchk": "Images, exact CSV times and extractor lines192-222 crosschecked; historical scope and latest integrity receipt verified",
+    "mandela": "Derived stills, overlay and historical tests are not independent physical verification; no audit test count inflation",
+    "ssotize_audit": "Coverage/counts/file lists/next targets checked; no target consolidation",
+    "re0": "Checkpoint current counts, delta, resume point updated",
+    "detool": "Skipped: provenance-specific handoff, no portability claim",
+    "shower": {
+      "scope": "Self-contained handoff synopsis, entire cold read; not full historical report review",
+      "verdict": "Re-entry possible with minor ambiguities",
+      "fixes": [
+        "Clarified45 constraints means provisional inventory, not45unread constraints",
+        "Named both updatedAt fields",
+        "Added exact-line-index revalidation requirement",
+        "Referenced scenario/constraint/failure/temp receipts"
+      ],
+      "agent": "/root/resume7_handoff_cold_read"
+    }
+  }
+}

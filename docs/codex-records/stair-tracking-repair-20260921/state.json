@@ -1,0 +1,592 @@
+{
+  "status": "OFFLINE_CANDIDATE_EVALUATED",
+  "created_utc": "2026-09-20T17:06:58.160479+00:00",
+  "production_repo": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation",
+  "git_head_before": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+  "git_status_before": "",
+  "comparison_project_git": "empty .git directory; git worktree baseline unavailable",
+  "inputs": [
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/.ruff_cache/.gitignore",
+      "size": 35,
+      "mtime_ns": 1787887688338308443,
+      "sha256": "9e3a60f1e6ec4ae60215c11d54b171392745ec25e9dded433d5bd921363af316",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "EXCLUDED",
+      "read_scope": "pre-existing cache; content hash for preservation only"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/.ruff_cache/0.16.5/16784368067056306936",
+      "size": 460,
+      "mtime_ns": 1787895528574940927,
+      "sha256": "ba2e4aa43fdbcdbeb83f040a5916fe7da02bb83eb01144cf17219aa7b3b80555",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "EXCLUDED",
+      "read_scope": "pre-existing cache; content hash for preservation only"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/.ruff_cache/0.6.9/1127350676634526257",
+      "size": 143,
+      "mtime_ns": 1787899606046152120,
+      "sha256": "c47c99876ca625273d2e7e812d2bfd00ecbfa366fe94bf7bd3521a4e0d1126dd",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "EXCLUDED",
+      "read_scope": "pre-existing cache; content hash for preservation only"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/.ruff_cache/CACHEDIR.TAG",
+      "size": 43,
+      "mtime_ns": 1787887688338308443,
+      "sha256": "5953156d7e0c564a427251316eaf26f8870e6483ae2197f916b630e4f93e31ae",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "EXCLUDED",
+      "read_scope": "pre-existing cache; content hash for preservation only"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/README.md",
+      "size": 4112,
+      "mtime_ns": 1787901141705977196,
+      "sha256": "69038062d1e082146f5196fc7184f09c3009c1aed2f72cfcb2605744d3309499",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/build_comparison_bag.py",
+      "size": 7641,
+      "mtime_ns": 1787898009884831290,
+      "sha256": "03a1b7e51e4bf8a879c13490b705e335f2eba3b643b57e5353614b70702d87e1",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/comparison_markers.py",
+      "size": 5214,
+      "mtime_ns": 1787900176661681705,
+      "sha256": "e24047a2d4f02581dce6f7d395bdfff3e14d1c9af03417dfdbeb13923d90b44b",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/comparison_trajectory.py",
+      "size": 4755,
+      "mtime_ns": 1787897858821076643,
+      "sha256": "aa0d251172981d67227f9fc8979c98c77044ee7cade62fbd2b76634779d2814c",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "READ",
+      "read_scope": "comparison tool input; read status not implied"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/event_camera.py",
+      "size": 914,
+      "mtime_ns": 1787893865640853373,
+      "sha256": "3fc055215e2d28c39670f6fe840fd884d74b680a7d6d7a8b151b6c32fef18b77",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/process_bag.py",
+      "size": 10387,
+      "mtime_ns": 1787901141705977196,
+      "sha256": "646526a715e08baa3d591582fd37cf27a34555c283e1620032a4387c062c73ff",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "READ",
+      "read_scope": "comparison tool input; read status not implied"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/registration_core.py",
+      "size": 6691,
+      "mtime_ns": 1787901141701977262,
+      "sha256": "06f1c7f3dee4d88447fe91dd5cc4397da416c79fb07a50e180663168d4dfdc50",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "READ",
+      "read_scope": "comparison tool input; read status not implied"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/replay_rviz.sh",
+      "size": 3201,
+      "mtime_ns": 1789106598046666488,
+      "sha256": "69dd584553258a7acd21b69845e89813de685938235c05e20c44b923202be368",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/run_all.sh",
+      "size": 1266,
+      "mtime_ns": 1787886430824091104,
+      "sha256": "24e5007f5cb42802864e55e0cfe81030eb3d57c9350996962592de7582437bc9",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/run_fast_lio_replay.sh",
+      "size": 2868,
+      "mtime_ns": 1787884417135400549,
+      "sha256": "f1de760f8b74be80cc8705b18d9105c51d1beb7d4c5559d3ff01f3cb5581086f",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "READ",
+      "read_scope": "comparison tool input; read status not implied"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/rviz/stair_lio_compare.rviz",
+      "size": 7482,
+      "mtime_ns": 1787901141705977196,
+      "sha256": "ca33db902533eeed2bace43f25a2d05547ae4a0a5e9e40d2967be195f98b3199",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/102101_comparison.json",
+      "size": 885,
+      "mtime_ns": 1787897927547086077,
+      "sha256": "0e5a1339ebbe99d7735a9f8abb6652b9922c37c4cc8d746ee1fb69725662a4b5",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/102101_lidar.json",
+      "size": 761,
+      "mtime_ns": 1787897927535086416,
+      "sha256": "8e11d13c665b721ddb3f5f2053cfade58c11f07fde1f00f9fc2c780970ab93ca",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/103313_comparison.json",
+      "size": 884,
+      "mtime_ns": 1787898539892563927,
+      "sha256": "3b72da1bb75301b98628a2c3eb155bdcdf89c4298ea9a1cdfde834ef285a0813",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/103313_lidar.json",
+      "size": 760,
+      "mtime_ns": 1787897927547086077,
+      "sha256": "09a19211b1c420b108b8471de900b3b8bdf106559b1a582f56d337ccd61f1aed",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/105713_comparison.json",
+      "size": 884,
+      "mtime_ns": 1787897927547086077,
+      "sha256": "b152f53beda025b5770be0551a34b21d6aa722802c033d334ac56d604dc43f74",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/specs/105713_lidar.json",
+      "size": 760,
+      "mtime_ns": 1787897927547086077,
+      "sha256": "ce80b1f7babc3b3604a918eeacf084f5b356625f1bd07dd52ccd326b2e3111ed",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/test_registration_core.py",
+      "size": 5163,
+      "mtime_ns": 1787901079579006651,
+      "sha256": "e31a84597f95356b0e6c3aa05d87b5aa46bde98bc7ea2d2d6c90f42eb7810525",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/test_traversal_events.py",
+      "size": 1921,
+      "mtime_ns": 1787897686434607800,
+      "sha256": "54dbc25de9f3af1004ab3d1358584337d0fe4a170ac70b5335ab954357c412bc",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/tools/offline_lio/traversal_events.py",
+      "size": 2271,
+      "mtime_ns": 1787897721001428290,
+      "sha256": "3a379b3d5798e7a3ab5d4e5b8b751e094b47dc06bb2ee8e09bb70170d58c0bff",
+      "scope": "comparison tool input; read status not implied",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_102101.bag",
+      "size": 3563871958,
+      "mtime_ns": 1787793888018227885,
+      "scope": "selected lidar packet windows only; imu/odom from prior numeric extraction",
+      "unchanged": true,
+      "status": "READ",
+      "read_scope": "all LiDAR headers; selected full point packets at historical CSV stamps; no new full-topic bag audit"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_103313.bag",
+      "size": 4370811763,
+      "mtime_ns": 1787794667798558110,
+      "scope": "selected lidar packet windows only; imu/odom from prior numeric extraction",
+      "unchanged": true,
+      "status": "READ",
+      "read_scope": "all LiDAR headers; selected full point packets at historical CSV stamps; no new full-topic bag audit"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_105713.bag",
+      "size": 1507746956,
+      "mtime_ns": 1787797116939047023,
+      "scope": "selected lidar packet windows only; imu/odom from prior numeric extraction",
+      "unchanged": true,
+      "status": "READ",
+      "read_scope": "all LiDAR headers; selected full point packets at historical CSV stamps; no new full-topic bag audit"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/offline_lio/102101/lidar_registration.csv",
+      "size": 92827,
+      "mtime_ns": 1787901452501603345,
+      "sha256": "2c76b5458aa4145b9748f44de3394893d699096ea1da1af2bad7dceedebb66f4",
+      "scope": "read for metrics/prediction or extrinsic sensitivity",
+      "unchanged": true,
+      "status": "READ",
+      "read_scope": "read for metrics/prediction or extrinsic sensitivity"
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_102101.bag/numeric.npz",
+      "size": 7173284,
+      "mtime_ns": 1789720094086868374,
+      "sha256": "15e68f19a94d4a0cb88ee97c4d330f74a1ff27ce54a7a3b1501d8af24060deff",
+      "scope": "read for metrics/prediction or extrinsic sensitivity",
+      "unchanged": true,
+      "status": "READ",
+      "read_scope": "only IMU and wheel arrays used in this experiment; other keys not re-analyzed"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/offline_lio/103313/lidar_registration.csv",
+      "size": 87986,
+      "mtime_ns": 1787901462869912886,
+      "sha256": "8166e267aee451b99e48bc6110493d7d0976e163878cd7144d817d3fa3e1791f",
+      "scope": "read for metrics/prediction or extrinsic sensitivity",
+      "unchanged": true,
+      "status": "READ",
+      "read_scope": "read for metrics/prediction or extrinsic sensitivity"
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_103313.bag/numeric.npz",
+      "size": 8635621,
+      "mtime_ns": 1789720110798594579,
+      "sha256": "aaf66cbf966a97eb47b17fb4120c87448e72896b4d258fca26663536adc3c0ca",
+      "scope": "read for metrics/prediction or extrinsic sensitivity",
+      "unchanged": true,
+      "status": "READ",
+      "read_scope": "only IMU and wheel arrays used in this experiment; other keys not re-analyzed"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/offline_lio/105713/lidar_registration.csv",
+      "size": 65876,
+      "mtime_ns": 1787901433329009625,
+      "sha256": "9d5e8a657082d38c14b7536c284fa936325205a406f6b2b310fa7c45ae939d2f",
+      "scope": "read for metrics/prediction or extrinsic sensitivity",
+      "unchanged": true,
+      "status": "READ",
+      "read_scope": "read for metrics/prediction or extrinsic sensitivity"
+    },
+    {
+      "path": "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/sensor-recording-analysis-20260918/bags/stair_3F_to_4F_UP_20260827_105713.bag/numeric.npz",
+      "size": 6572282,
+      "mtime_ns": 1789720118106493187,
+      "sha256": "320f9a8e5755938a3806bc9881d48148af0c89ca9f698d45881e3cb706380d4b",
+      "scope": "read for metrics/prediction or extrinsic sensitivity",
+      "unchanged": true,
+      "status": "READ",
+      "read_scope": "only IMU and wheel arrays used in this experiment; other keys not re-analyzed"
+    },
+    {
+      "path": "/home/m3tron/catkin_ws/src/FAST_LIO/config/mid360.yaml",
+      "size": 1827,
+      "mtime_ns": 1786669452469140028,
+      "sha256": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+      "scope": "read for metrics/prediction or extrinsic sensitivity",
+      "unchanged": true,
+      "status": "READ",
+      "read_scope": "read for metrics/prediction or extrinsic sensitivity"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/offline_lio/102101/fast_lio/fast_lio.csv",
+      "size": 1641486,
+      "mtime_ns": 1787888009749743843,
+      "sha256": "6869266a2adde4d20638b9880ea4a71725d42820420f0630fef051f81e1ea572",
+      "scope": "referenced existing evidence; CSV numeric positions read, source only relevant functions read",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/offline_lio/103313/fast_lio/fast_lio.csv",
+      "size": 1729472,
+      "mtime_ns": 1787888092265417828,
+      "sha256": "7f006f832ac778054b0ba7457e4466c29d5a152164d7c2a36dd8d55dc92541e6",
+      "scope": "referenced existing evidence; CSV numeric positions read, source only relevant functions read",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Modular_Navigation/build/offline_lio/105713/fast_lio/fast_lio.csv",
+      "size": 955755,
+      "mtime_ns": 1787888144321184257,
+      "sha256": "6982ba0ae7b56025a21b1ff8c7637bbb8a237dc75592d96999c2247f92b5358a",
+      "scope": "referenced existing evidence; CSV numeric positions read, source only relevant functions read",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "size": 10256,
+      "mtime_ns": 1789456649991481339,
+      "sha256": "29b3aa30368e5c8db2e4b2d8527c70ab1e89ada5c20a4a398eff66e22ed41726",
+      "scope": "referenced existing evidence; CSV numeric positions read, source only relevant functions read",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/stair_evidence.py",
+      "size": 10322,
+      "mtime_ns": 1789457031928460117,
+      "sha256": "25f0f500db4f53965bdc112601f0231057ce3b84b5b13faba48802ab028fb7de",
+      "scope": "referenced existing evidence; CSV numeric positions read, source only relevant functions read",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/ros_entrypoint.py",
+      "size": 3953,
+      "mtime_ns": 1789108879245656424,
+      "sha256": "264999a1d38de282040230a0b244bbe77a2848eed18393e00d60b478b542abda",
+      "scope": "referenced existing evidence; CSV numeric positions read, source only relevant functions read",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/catkin_ws/src/FAST_LIO/src/laserMapping.cpp",
+      "size": 44027,
+      "mtime_ns": 1786675004425260502,
+      "sha256": "f71c59f0123553d00599bed0acd6d706a4510fd74a566ea5a23e4e98ff54f4e8",
+      "scope": "referenced existing evidence; CSV numeric positions read, source only relevant functions read",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/catkin_ws/src/FAST_LIO/src/IMU_Processing.hpp",
+      "size": 13442,
+      "mtime_ns": 1786673822573234856,
+      "sha256": "7f87c8261282a828f953a5872e4ecdd7ae18eca62938ac416174e0591f911f79",
+      "scope": "referenced existing evidence; CSV numeric positions read, source only relevant functions read",
+      "unchanged": true,
+      "status": "METADATA_ONLY",
+      "read_scope": "source inventory/hash or partial reference reading only; no claim of complete code review in this follow-up"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/tron1-control-center/sensor_integration/launch/fast_lio.launch",
+      "size": 1795,
+      "mtime_ns": 1786675448221270132,
+      "sha256": "fc933d8f6b1c4e4bcbff26856048358f10b50012bb9fcde9847b4160fec8c3c5",
+      "scope": "entire launch file read; YAML load followed by online extrinsic and gravity flags",
+      "status": "READ",
+      "unchanged": true,
+      "read_scope": "entire launch file read; YAML load followed by online extrinsic and gravity flags"
+    }
+  ],
+  "scope": "isolated offline comparison repair, not full repository audit or live supervisor certification",
+  "assumptions": [
+    "current YAML initial IMU-to-lidar rotation used; recording/current configuration equality confirmed by user; fixed extrinsic experiment is not online FAST-LIO estimation",
+    "gyro rad/s, uncalibrated zero bias, no point deskew",
+    "existing CSV timestamps define identical lidar frames across variants"
+  ],
+  "production_files_modified": false,
+  "ros_runtime_started": false,
+  "temporary_artifacts": [
+    {
+      "path": "/home/m3tron/.local/state/codex-desktop/tmp/matplotlib-pcubr419",
+      "purpose": "plot font cache",
+      "removed": true
+    },
+    {
+      "pattern": "/tmp/stair-repair-test-* or runtime temporary directory equivalent",
+      "purpose": "synthetic ROS bag time regression",
+      "removed_by": "TemporaryDirectory context manager"
+    },
+    {
+      "path": "stair-tracking-repair-20260921/comparison_trajectory.py.patch",
+      "purpose": "duplicate generated diff",
+      "removed": true
+    },
+    {
+      "path": "/tmp/tron1-configured-regression-mpl-20260921",
+      "purpose": "configured-regression plot font cache",
+      "removed": true
+    }
+  ],
+  "sessions": [
+    {
+      "id": 84940,
+      "exited": true
+    },
+    {
+      "id": 40112,
+      "exited": true
+    },
+    {
+      "id": 13026,
+      "exited": true
+    },
+    {
+      "id": 20652,
+      "exited": true
+    },
+    {
+      "id": 18292,
+      "exited": true
+    },
+    {
+      "id": 16475,
+      "exited": true
+    },
+    {
+      "id": 84260,
+      "exited": true
+    },
+    {
+      "id": 83544,
+      "exited": true
+    },
+    {
+      "id": 94122,
+      "exited": true,
+      "scope": "configured extrinsic follow-up"
+    },
+    {
+      "id": 8679,
+      "exited": true,
+      "scope": "configured extrinsic follow-up"
+    },
+    {
+      "id": 55742,
+      "exited": true,
+      "scope": "configured extrinsic follow-up"
+    },
+    {
+      "id": 17209,
+      "exited": true,
+      "scope": "configured extrinsic follow-up"
+    }
+  ],
+  "development_failure": "First replay hit scipy 1.10 read-only ndarray conversion; copy of registration result fixes it. No result CSV existed for failed run; selected-point cache retained as evidence.",
+  "source_coverage_note": "Not a new full repository audit. Historical tools baseline lists 24 files; this follow-up reads selected functions and preserves all 24 by hash. Original bag payload analysis limited to the explicit three windows.",
+  "completed_utc": "2026-09-20T17:32:20.678547+00:00",
+  "system_validation": "UNVERIFIED; Stair Supervisor normal operation not established",
+  "git_head_after": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+  "git_status_after": "",
+  "git_difference": false,
+  "input_inventory_count": 43,
+  "input_coverage_counts": {
+    "EXCLUDED": 4,
+    "METADATA_ONLY": 24,
+    "READ": 15
+  },
+  "coverage_scope": "Only these explicit follow-up inputs. Does not replace the original full repository coverage ledger or 15 E2E cases.",
+  "tests": {
+    "behavioral_tests_passed": 6,
+    "ablation_rejected_pose_nan_contract": "PASS",
+    "original_candidate_sensor_frame_stamps_exact_match": 1307,
+    "original_inputs_unchanged": true,
+    "html_local_links_and_tables": "PASS",
+    "html_browser_screenshot": "not performed; in-app browser automation js tool unavailable",
+    "plot_visual_review": "rotation-comparison.png and rotation-configured.png inspected",
+    "configured_regression_frames": 1307,
+    "configured_regression_accepted_updates_excluding_bootstrap": 1304,
+    "configured_105713_reused": "prior result matrix exactly equals current YAML, verified numerically"
+  },
+  "review": {
+    "shower": "fresh context reviewer read the compact user-facing result explanation, not full code/full report; all five clarification requests applied to REPORT.md",
+    "mandela": "gyro input is not ground truth; fitness/acceptance is internal; historical windows are regressions, not holdout; synthetic tests limited to known transformations",
+    "factchk": "claims checked against original CSV, numeric sensors and installed source; configuration history now user-confirmed; physical accuracy and online estimated states still UNVERIFIED",
+    "ssotize": "read-only cross-check with existing centering report and mission plan; no consolidation",
+    "re0": "report revised to state present result and limitations directly",
+    "detool": "skipped; this is an implementation-specific provenance report, with no portability claim"
+  },
+  "process_check": {
+    "checked_utc": "2026-09-20T17:32:20.678547+00:00",
+    "active_task_python_processes": []
+  },
+  "temporary_artifacts_removed": true,
+  "retained_evidence": "selected point cache, CSV, metrics, candidate source, original source snapshots and report are deliberate retained deliverables",
+  "configuration_confirmation": {
+    "received_utc": "2026-09-20T17:25:46.721357+00:00",
+    "user_statement": "기록 당시와 현재 설정이 같음",
+    "provenance": "user-provided configuration history, not a runtime parameter dump or physical calibration certificate",
+    "scope": "recording-time and current configuration are the same",
+    "implication": "use current YAML rotation in all three offline regressions; preserve distinction between configured initial extrinsics and online estimated state"
+  },
+  "configuration_followup_git_before": "",
+  "configuration_followup": {
+    "primary_metrics": "configured-metrics.json",
+    "main_plot": "rotation-configured.png",
+    "new_runs": [
+      "102101",
+      "103313"
+    ],
+    "reused_run": "105713 (same configured rotation, prior output retained)",
+    "no_live_ros": true,
+    "no_production_changes": true,
+    "tests_passed": 6,
+    "review": {
+      "scope": "fresh agent read the complete supplied follow-up explanation; not a code review or a full-report review",
+      "verdict": "minor clarity improvements applied",
+      "changes": [
+        "specified reused run and unchanged calculation conditions",
+        "clarified original CSV frame selection",
+        "specified initial LiDAR origin and axes for path differences",
+        "stated 499/466/339 actual geometric updates",
+        "configuration equivalence remains explicitly user-provided"
+      ]
+    }
+  }
+}

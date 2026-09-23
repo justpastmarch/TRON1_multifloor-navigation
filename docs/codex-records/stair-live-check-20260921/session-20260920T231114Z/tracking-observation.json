@@ -1,0 +1,109 @@
+{
+  "observed_utc": "2026-09-20T23:15:16.485154+00:00",
+  "window_sec": 20,
+  "status_messages": 200,
+  "odom_messages": 100,
+  "status_first": [
+    1789946095.9125805,
+    {
+      "epoch": 0,
+      "queue_length": 0,
+      "dropped_scans": 0,
+      "rejected_imu": 0,
+      "worker_error": "",
+      "backend": "process",
+      "mode": "observe",
+      "observe_only": true,
+      "sequence": 165,
+      "stamp": 1789946095.6305315,
+      "received_at": 16628.627255549,
+      "measured_at": 16628.49696670966,
+      "completed_at": 16628.709272845,
+      "last_geometry_at": 16628.49696670966,
+      "geometry_valid": true,
+      "state": "TRACKED",
+      "reason": "geometry accepted",
+      "fitness": 1.0,
+      "rmse": 0.06541559634930787,
+      "translation_innovation": 0.002545356279538539,
+      "rotation_innovation": 0.0031381170912125373,
+      "prediction_source": "gyro",
+      "compute_sec": 0.08096505100184004,
+      "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+      "geometry_age_sec": 0.2814172903417784,
+      "transport_delay_sec": 0.13028883934020996,
+      "completion_age_sec": 0.21230613534135045
+    }
+  ],
+  "status_last": [
+    1789946115.8122826,
+    {
+      "epoch": 0,
+      "queue_length": 0,
+      "dropped_scans": 0,
+      "rejected_imu": 0,
+      "worker_error": "",
+      "backend": "process",
+      "mode": "observe",
+      "observe_only": true,
+      "sequence": 264,
+      "stamp": 1789946115.4307547,
+      "received_at": 16648.420994434,
+      "measured_at": 16648.297187957407,
+      "completed_at": 16648.514419141,
+      "last_geometry_at": 16648.297187957407,
+      "geometry_valid": true,
+      "state": "TRACKED",
+      "reason": "geometry accepted",
+      "fitness": 1.0,
+      "rmse": 0.07105141443622318,
+      "translation_innovation": 0.002313366677184434,
+      "rotation_innovation": 0.00335694169095328,
+      "prediction_source": "gyro",
+      "compute_sec": 0.0920649149993551,
+      "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+      "geometry_age_sec": 0.38124265159422066,
+      "transport_delay_sec": 0.12380647659301758,
+      "completion_age_sec": 0.21723118359295768
+    }
+  ],
+  "pose_first": {
+    "receipt": 1789946095.9127638,
+    "stamp": 1789946095.6305315,
+    "frame": "stair_local_0",
+    "position": [
+      0.0052360296334723845,
+      -0.014377609889955352,
+      -0.00956280438964336
+    ],
+    "orientation": [
+      -0.017883704339088084,
+      0.02167004651994288,
+      0.0002190161055978653,
+      0.9996051891796486
+    ]
+  },
+  "pose_last": {
+    "receipt": 1789946115.7129204,
+    "stamp": 1789946115.4307547,
+    "frame": "stair_local_0",
+    "position": [
+      0.011688918465079632,
+      -0.02096323959264935,
+      -0.014067881874929942
+    ],
+    "orientation": [
+      -0.01813662600703815,
+      0.02118504619215639,
+      0.00014555571373709854,
+      0.99961104207009
+    ]
+  },
+  "odom_observed_hz": 4.999960456544367,
+  "command_publishers": {},
+  "runtime_parameters": {
+    "lidar_mode": "observe",
+    "lidar_observe_only": true
+  },
+  "observer_log_tail": ""
+}

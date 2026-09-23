@@ -1,0 +1,25 @@
+from pathlib import Path
+import json,os,subprocess,sys,tempfile
+HERE=Path(__file__).resolve().parent
+p=HERE/'candidate/src/stair_supervisor'
+source=HERE.parent/'stair-lidar-commissioning-20260921/offline-validation/config/stair_lidar.yaml'
+env=os.environ.copy();env['PYTHONPATH']=str(HERE/'python-overlay')+':/opt/ros/noetic/lib/python3/dist-packages'
+cmd=[sys.executable,str(p/'scripts/check_lidar_config.py')]
+results=[]
+with tempfile.TemporaryDirectory(prefix='stair-config-check-',dir=str(HERE)) as tmp:
+ root=Path(tmp)
+ def run(args,expected=0):
+  r=subprocess.run(cmd+args,env=env,text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+  results.append(dict(arguments=args,exit_code=r.returncode,expected_success=expected==0,output=r.stdout or r.stderr))
+  assert (r.returncode==0)==(expected==0),r.stderr
+  return r
+ good=run([str(source),'--snapshot-dir',str(root/'snapshot')]);status=json.loads(good.stdout)
+ (root/'status.json').write_text(json.dumps(status))
+ run([str(source),'--status-json',str(root/'status.json')])
+ status['config_sha256']='different';(root/'status.json').write_text(json.dumps(status))
+ run([str(source),'--status-json',str(root/'status.json')],1)
+ run([str(p/'config/stair_lidar.yaml')],1)
+ run([str(p/'config/stair_lidar.yaml'),'--mode','observe'])
+ assert (root/'snapshot/lidar-config.yaml').read_bytes()==source.read_bytes()
+(HERE/'session-tool-results.json').write_text(json.dumps(results,indent=2))
+print('5 configuration/snapshot checks passed; robot commands sent: 0')

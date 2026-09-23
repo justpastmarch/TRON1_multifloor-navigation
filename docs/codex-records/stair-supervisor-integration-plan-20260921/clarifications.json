@@ -1,0 +1,80 @@
+{
+  "revision_utc": "2026-09-20T20:16:49.649272+00:00",
+  "user_statement": "stair supervisor mission manager이나 move base, floor manager이랑 같은 곳에서 실행하는 거 아니야? 그리고 stair모드를 유지한 채 0 명령을 보내도 밀리거나 기울어지는 경우가 있어, 계단참, 계단 크기는 기존에 알려줬었는데",
+  "answers": {
+    "execution_host": "Existing control workstation; same launch as mission_manager/multifloor_manager/move_base. Mini PC owns sensor stack.",
+    "zero_command": "User reports sliding or tilting while stair mode remains enabled and zero commands are sent; accepted design condition, not independently reproduced.",
+    "geometry": "Existing 5F/RF commissioning record contains 1.23m width, 2.70m x 1.48m landing, 10+9+2 exit steps. Scope must not silently transfer to 3F/4F."
+  },
+  "changes": [
+    "Fixed deployment host to existing workstation",
+    "Recovered existing geometry with floor/direction provenance",
+    "Removed zero-hold candidate and unconditional fade-to-zero recovery",
+    "Added bounded longitudinal/landing correction proposal and explicit lower-level posture limitation",
+    "Explicitly kept transport watchdog; zero output not counted as safe support",
+    "M4 protected commissioning separates response identification from unattended control acceptance"
+  ],
+  "sources": [
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/run.sh",
+      "sha256": "70bf3634e5fc1e5c155c3439e7074d23ee0686e2055ce388bc08cc5417141784",
+      "status": "METADATA_ONLY",
+      "read_scope": "selected local/remote launch ranges"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/launch/system.launch",
+      "sha256": "5d44a98f4695b6090306575ab8fc541c0152aa9297b17c935b68baa8d8c4ecf0",
+      "status": "READ",
+      "read_scope": "full contents"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/multifloor_manager/launch/navigation.launch",
+      "sha256": "f14973f128533922a59d83b194e8ea250aef738c4f7e31f30c5092fb0406fc6b",
+      "status": "READ",
+      "read_scope": "full contents"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/evidence/5f-rf-autonomous-route-repetition/COMMISSIONING_STATUS.md",
+      "sha256": "54475c00e9ec82a2f1bbd8f395abc713bdcd8a77c11fbabb24a69098cd0dfb95",
+      "status": "READ",
+      "read_scope": "full contents"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/plans/tron1-stair-simulation.md",
+      "sha256": "32c68cd0823667908012cd3e96ec446038f9b2a14ffa2fa6707e5c32f8e7720e",
+      "status": "METADATA_ONLY",
+      "read_scope": "geometry reference at line 123"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_transport.py",
+      "sha256": "3fb0b7c10da6fd7072738fd639e616c6c1b6e607fef02773871931b81947bf8e",
+      "status": "METADATA_ONLY",
+      "read_scope": "208-282 including command watchdog and mode requests"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_protocol.py",
+      "sha256": "06a6e6ec6ec1d7d8498ff0a3c84b8226549381e8e2b088dc1dc889bd8570fd94",
+      "status": "READ",
+      "read_scope": "full contents"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/robot_conversion.py",
+      "sha256": "542d13d66b0d63a9afd89896618edd3019b7c1cf8330ccd3c771f776eae75fab",
+      "status": "READ",
+      "read_scope": "full contents"
+    },
+    {
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/src/stair_supervisor/supervisor.py",
+      "sha256": "29b3aa30368e5c8db2e4b2d8527c70ab1e89ada5c20a4a398eff66e22ed41726",
+      "status": "METADATA_ONLY",
+      "read_scope": "185-269 phase/finish/fault"
+    },
+    {
+      "path": "/opt/ros/noetic/lib/python3/dist-packages/roslaunch/launch.py",
+      "sha256": "d843c1bee15d8f79c384bb7bbbbdd461abe5440de7cb1cd6ad86b6a7989e5de6",
+      "status": "METADATA_ONLY",
+      "read_scope": "365-388 local node dispatch"
+    }
+  ],
+  "baseline_preserved": true
+}

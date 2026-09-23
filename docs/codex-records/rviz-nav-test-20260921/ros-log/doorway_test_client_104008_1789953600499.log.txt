@@ -1,0 +1,75 @@
+[rospy.client][INFO] 2026-09-21 10:20:00,526: init_node, name[/doorway_test_client_104008_1789953600499], pid[104008]
+[xmlrpc][INFO] 2026-09-21 10:20:00,526: XML-RPC server binding to 0.0.0.0:0
+[xmlrpc][INFO] 2026-09-21 10:20:00,527: Started XML-RPC server [http://192.168.1.26:45373/]
+[rospy.init][INFO] 2026-09-21 10:20:00,527: ROS Slave URI: [http://192.168.1.26:45373/]
+[rospy.impl.masterslave][INFO] 2026-09-21 10:20:00,527: _ready: http://192.168.1.26:45373/
+[rospy.registration][INFO] 2026-09-21 10:20:00,527: Registering with master node http://192.168.1.26:11311
+[xmlrpc][INFO] 2026-09-21 10:20:00,527: xml rpc node: starting XML-RPC server
+[rospy.init][INFO] 2026-09-21 10:20:00,627: registered with master
+[rospy.rosout][INFO] 2026-09-21 10:20:00,627: initializing /rosout core topic
+[rospy.rosout][INFO] 2026-09-21 10:20:00,630: connected to core topic /rosout
+[rospy.simtime][INFO] 2026-09-21 10:20:00,631: /use_sim_time is not set, will not subscribe to simulated time [/clock] topic
+[rospy.internal][INFO] 2026-09-21 10:20:00,635: topic[/mission/status] adding connection to [http://192.168.1.26:40189/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:00,644: topic impl's ref count is zero, deleting topic /mission/status...
+[rospy.internal][INFO] 2026-09-21 10:20:00,644: topic[/mission/status] removing connection to http://192.168.1.26:40189/
+[rospy.internal][INFO] 2026-09-21 10:20:00,647: topic[/move_base/status] adding connection to [http://192.168.1.26:45645/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:00,656: topic impl's ref count is zero, deleting topic /move_base/status...
+[rospy.internal][INFO] 2026-09-21 10:20:00,657: topic[/move_base/status] removing connection to http://192.168.1.26:45645/
+[rospy.internal][INFO] 2026-09-21 10:20:00,661: topic[/multifloor/floor_state] adding connection to [http://192.168.1.26:35023/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:00,670: topic impl's ref count is zero, deleting topic /multifloor/floor_state...
+[rospy.internal][INFO] 2026-09-21 10:20:00,670: topic[/multifloor/floor_state] removing connection to http://192.168.1.26:35023/
+[rospy.internal][INFO] 2026-09-21 10:20:00,673: topic[/stair_supervisor/state] adding connection to [http://192.168.1.26:44837/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:00,682: topic impl's ref count is zero, deleting topic /stair_supervisor/state...
+[rospy.internal][INFO] 2026-09-21 10:20:00,683: topic[/stair_supervisor/state] removing connection to http://192.168.1.26:44837/
+[rospy.internal][INFO] 2026-09-21 10:20:00,691: topic[/tron/wheel_odom_raw] adding connection to [http://192.168.1.56:45633/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:00,706: topic impl's ref count is zero, deleting topic /tron/wheel_odom_raw...
+[rospy.internal][INFO] 2026-09-21 10:20:00,706: topic[/tron/wheel_odom_raw] removing connection to http://192.168.1.56:45633/
+[rospy.internal][INFO] 2026-09-21 10:20:00,718: topic[/tf] adding connection to [http://192.168.1.26:39371/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:00,722: topic[/tf] adding connection to [http://192.168.1.56:45449/], count 1
+[rospy.internal][INFO] 2026-09-21 10:20:00,722: topic[/tf_static] adding connection to [http://192.168.1.56:43985/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:00,723: topic[/tf_static] adding connection to [http://192.168.1.56:41137/], count 1
+[rospy.internal][INFO] 2026-09-21 10:20:00,731: topic[/tf] adding connection to [http://192.168.1.56:45633/], count 2
+[rospy.internal][INFO] 2026-09-21 10:20:00,743: topic[/tf_static] adding connection to [http://192.168.1.56:41641/], count 2
+[rospy.internal][INFO] 2026-09-21 10:20:00,743: topic[/tf_static] adding connection to [http://192.168.1.56:45449/], count 2
+[rospy.internal][INFO] 2026-09-21 10:20:00,855: topic[/rosout] adding connection to [/rosout], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:02,558: topic[/move_base/goal] adding connection to [/record_1789953601012733417], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:04,771: topic[/move_base/result] adding connection to [http://192.168.1.26:41245/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:04,773: topic[/move_base/feedback] adding connection to [http://192.168.1.26:41245/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:04,776: topic[/move_base/status] adding connection to [http://192.168.1.26:41245/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:04,875: topic[/move_base/goal] adding connection to [/move_base], count 1
+[rospy.internal][INFO] 2026-09-21 10:20:04,875: topic[/move_base/cancel] adding connection to [/move_base], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:04,887: topic[/move_base/TrajectoryPlannerROS/parameter_updates] adding connection to [http://192.168.1.26:41245/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:04,887: topic[/move_base/TrajectoryPlannerROS/parameter_descriptions] adding connection to [http://192.168.1.26:41245/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:46,237: topic[/move_base/TrajectoryPlannerROS/parameter_descriptions] removing connection to http://192.168.1.26:41245/
+[rospy.internal][INFO] 2026-09-21 10:20:46,237: topic[/move_base/TrajectoryPlannerROS/parameter_updates] removing connection to http://192.168.1.26:41245/
+[rospy.internal][INFO] 2026-09-21 10:20:46,238: topic[/move_base/result] removing connection to http://192.168.1.26:41245/
+[rospy.internal][INFO] 2026-09-21 10:20:46,238: topic[/move_base/feedback] removing connection to http://192.168.1.26:41245/
+[rospy.internal][INFO] 2026-09-21 10:20:46,239: topic[/move_base/status] removing connection to http://192.168.1.26:41245/
+[rospy.internal][INFO] 2026-09-21 10:20:46,398: topic[/move_base/goal] removing connection to /move_base
+[rospy.internal][INFO] 2026-09-21 10:20:46,398: topic[/move_base/cancel] removing connection to /move_base
+[rospy.internal][INFO] 2026-09-21 10:20:47,399: topic[/move_base/goal] removing connection to /record_1789953601012733417
+[rospy.internal][INFO] 2026-09-21 10:20:48,937: topic[/move_base/TrajectoryPlannerROS/parameter_descriptions] adding connection to [http://192.168.1.26:42805/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:48,938: topic[/move_base/TrajectoryPlannerROS/parameter_updates] adding connection to [http://192.168.1.26:42805/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:49,875: topic[/move_base/result] adding connection to [http://192.168.1.26:42805/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:49,877: topic[/move_base/feedback] adding connection to [http://192.168.1.26:42805/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:49,882: topic[/move_base/status] adding connection to [http://192.168.1.26:42805/], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:49,983: topic[/move_base/goal] adding connection to [/move_base], count 0
+[rospy.internal][INFO] 2026-09-21 10:20:49,983: topic[/move_base/cancel] adding connection to [/move_base], count 0
+[rospy.core][INFO] 2026-09-21 10:20:49,988: signal_shutdown [atexit]
+[rospy.internal][INFO] 2026-09-21 10:20:49,991: topic[/rosout] removing connection to /rosout
+[rospy.internal][INFO] 2026-09-21 10:20:49,991: topic[/move_base/goal] removing connection to /move_base
+[rospy.internal][INFO] 2026-09-21 10:20:49,991: topic[/move_base/cancel] removing connection to /move_base
+[rospy.internal][INFO] 2026-09-21 10:20:49,992: topic[/tf] removing connection to http://192.168.1.26:39371/
+[rospy.internal][INFO] 2026-09-21 10:20:49,992: topic[/tf] removing connection to http://192.168.1.56:45449/
+[rospy.internal][INFO] 2026-09-21 10:20:49,992: topic[/tf] removing connection to http://192.168.1.56:45633/
+[rospy.internal][INFO] 2026-09-21 10:20:49,992: topic[/tf_static] removing connection to http://192.168.1.56:43985/
+[rospy.internal][INFO] 2026-09-21 10:20:49,993: topic[/tf_static] removing connection to http://192.168.1.56:41137/
+[rospy.internal][INFO] 2026-09-21 10:20:49,993: topic[/tf_static] removing connection to http://192.168.1.56:41641/
+[rospy.internal][INFO] 2026-09-21 10:20:49,993: topic[/tf_static] removing connection to http://192.168.1.56:45449/
+[rospy.internal][INFO] 2026-09-21 10:20:49,993: topic[/move_base/status] removing connection to http://192.168.1.26:42805/
+[rospy.internal][INFO] 2026-09-21 10:20:49,993: topic[/move_base/result] removing connection to http://192.168.1.26:42805/
+[rospy.internal][INFO] 2026-09-21 10:20:49,993: topic[/move_base/feedback] removing connection to http://192.168.1.26:42805/
+[rospy.internal][INFO] 2026-09-21 10:20:49,994: topic[/move_base/TrajectoryPlannerROS/parameter_descriptions] removing connection to http://192.168.1.26:42805/
+[rospy.internal][INFO] 2026-09-21 10:20:49,994: topic[/move_base/TrajectoryPlannerROS/parameter_descriptions] removing connection to http://192.168.1.26:42805/
+[rospy.internal][INFO] 2026-09-21 10:20:49,994: topic[/move_base/TrajectoryPlannerROS/parameter_updates] removing connection to http://192.168.1.26:42805/
+[rospy.impl.masterslave][INFO] 2026-09-21 10:20:49,994: atexit

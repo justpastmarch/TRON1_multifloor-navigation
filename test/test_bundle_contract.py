@@ -112,7 +112,7 @@ class BundleContractTest(unittest.TestCase):
         self.assertEqual(manager["Global Options"]["Fixed Frame"], "map")
         tool_classes = {tool["Class"] for tool in manager["Tools"]}
         self.assertNotIn("rviz/SetGoal", tool_classes)
-        self.assertNotIn("rviz/SetInitialPose", tool_classes)
+        self.assertIn("rviz/SetInitialPose", tool_classes)
         self.assertNotIn("/move_base_simple/goal", rviz)
 
     def test_generated_and_test_only_misleading_references_are_ignored(self) -> None:

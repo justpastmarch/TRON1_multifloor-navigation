@@ -1,0 +1,28 @@
+{
+  "scope": "component-only 1x recorded arrival + real worker + memory-only 40 Hz Supervisor NAV path",
+  "full_graph_test": false,
+  "robot_commands_sent": 0,
+  "bag": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_105713.bag",
+  "calibration_sha256": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+  "elapsed_sec": 74.16403664799873,
+  "processed_frames": 340,
+  "geometry_frames": 339,
+  "bootstrap_frames": 1,
+  "rejected_frames": 0,
+  "queue_max": 5,
+  "worker": {
+    "epoch": 0,
+    "queue_length": 0,
+    "dropped_scans": 0,
+    "rejected_imu": 0,
+    "worker_error": ""
+  },
+  "compute_p99_sec": 0.25808552789887473,
+  "completion_age_p99_sec": 4.257828041364774,
+  "command_count": 2967,
+  "command_interval_p99_sec": 0.12601249480103432,
+  "command_interval_max_sec": 0.14161700600016047,
+  "cpu_seconds": 55.39359,
+  "peak_rss_kib": 282544,
+  "component_timing_pass": false
+}

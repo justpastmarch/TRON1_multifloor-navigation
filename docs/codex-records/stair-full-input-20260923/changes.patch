@@ -1,0 +1,75 @@
+--- a/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml
++++ b/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml
+@@ -5,7 +5,8 @@
+ # Geometry follows the existing simulation rectangle convention; first flight
+ # runs 9*.28m to the landing. Verify the overlay at the physical entry before use.
+ # Explicit placement: body center x=-.45m,y=0, facing upstairs. Body is .45m square.
+-# min_flight_v .275 / robot.yaml linear_full_scale .55 = websocket .5.
++# Operator requested full forward input in both stair flights.
++# min_flight_v = max_v = .55 / robot.yaml full scale .55 = websocket 1.0.
+ # This is command normalization, NOT a measured speed or proof of stair torque.
+ # Slew and boundary filtering can temporarily command less; diagnostics expose it.
+ # Entry preview may be inspected for 120s in the same tracking epoch.
+@@ -142,7 +143,7 @@
+     speed_kp: 0.15
+     hold_kp: 0.35
+     hold_kd: 0.1
+-    max_v: 0.3
++    max_v: 0.55
+     max_w: 0.2
+     max_accel: 0.15
+     max_alpha: 0.3
+@@ -160,7 +161,7 @@
+     yaw_deadband: 0.017453292519943295
+     lateral_deadband: 0.02
+     speed_deadband: 0.015
+-    min_flight_v: 0.275
++    min_flight_v: 0.55
+   loss_response: zero_velocity
+   loss_response_evidence: Operator confirms RC can interrupt and maintain posture.
+     Zero velocity is NOT physical hold. No emergency-stop API.
+--- a/src/stair_supervisor/test/test_stair_readiness.py
++++ b/src/stair_supervisor/test/test_stair_readiness.py
+@@ -86,11 +86,41 @@
+         self.assertFalse(r['commissioned'])
+         self.assertAlmostEqual(r['flight_1'][1][2],9*.17)
+         self.assertAlmostEqual(r['flight_2'][1][2],19*.17)
+-        self.assertAlmostEqual(normalize_twist(r['limits']['min_flight_v'],0,profiles.robot.websocket_full_scale).x,.5)
++        self.assertAlmostEqual(normalize_twist(r['limits']['min_flight_v'],0,profiles.robot.websocket_full_scale).x,1.)
+         c.test_plan(profiles.profiles[0],Phase.FORWARD_SEGMENT_1,65.,True)
+         c.test_plan(profiles.profiles[0],Phase.EXIT_CONFIRM,255.,True)
+         self.assertTrue(inside_polygon(np.array(r['footprint'])+np.array(r['flight_1'][0][:2]),
+                                        r['entry_polygon'],.12))
++
++    def test_field_both_flights_reach_full_input_with_steering_and_slew(self):
++        root=Path(__file__).resolve().parents[1]/'config'
++        cfg=load_lidar_configuration(root/'stair_lidar_3f_4f_test.yaml','control',False)
++        r=cfg.document['routes'][0]; profiles=load_stair_configuration(root)
++        profile=next(p for p in profiles.profiles if p.id==r['id'])
++        for phase in (Phase.FORWARD_SEGMENT_1,Phase.FORWARD_SEGMENT_2):
++            with self.subTest(phase=phase):
++                w=Worker(); w.value=sample(x=-.45)
++                # Identity mount isolates command scaling, using the real route.
++                c=StairFeedback(w,np.eye(4),[r])
++                c.capture_entry(r['id'],se2(-.45,0.,0.),.1,'synthetic command test',100.)
++                c.arm(profile,100.,phase_test=True)
++                c.begin_phase(phase,100.)
++                y,z,yaw=(0.,.7,.1) if phase is Phase.FORWARD_SEGMENT_1 else (1.47,2.2,math.pi+.1)
++                commands=[]
++                for i in range(1,26):
++                    stamp=100.+i*.2
++                    w.value=sample(i+1,stamp,x=1.,y=y,z=z,yaw=yaw)
++                    result=c.evaluate(phase,stamp+.01)
++                    self.assertFalse(result.faulted,result.detail)
++                    commands.append(c.command())
++                self.assertLess(commands[0][0],r['limits']['min_flight_v'])
++                self.assertTrue(all(abs(b[0]-a[0])<=.15*.2+1e-8 for a,b in zip(commands,commands[1:])))
++                sent=normalize_twist(*commands[-1],profiles.robot.websocket_full_scale)
++                self.assertAlmostEqual(sent.x,1.)
++                self.assertNotEqual(sent.z,0.)
++                self.assertFalse(c.debug['boundary_adjusted'])
++                self.assertAlmostEqual(r['limits']['hold_v'],.06)
++                self.assertAlmostEqual(r['limits']['max_w'],.2)
+ 
+     def test_forward_floor_does_not_bypass_slew(self):
+         w,c=self.controller();c.route['limits'].update(max_v=.30,min_flight_v=.275)

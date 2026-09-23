@@ -1,0 +1,616 @@
+{
+  "status": "MINIMUM_CHANGE_PLAN_AWAITING_DEPENDENT_INPUTS",
+  "created_utc": "2026-09-18T07:38:40.482421+00:00",
+  "understood_as": "Revise and report a concrete minimum-change implementation plan for all confirmed navigation, floor/stair, HOLD, rooftop photo/email, door and approved-return requirements. Reuse existing node ownership and execution, defer unproven architecture upgrades, distinguish observations from proposed changes; no source or robot actions in this turn.",
+  "confirmed_requirements": [
+    "Initial floor default 3F, without overwriting actual confirmed floor on reconnect/restart",
+    "Floor selection declares the robot actual current floor, distinct from destination and map preview",
+    "Arbitrary physically reachable same-floor poses are not limited to named locations",
+    "3F-to-4F button navigates actual origin to stair entry, uses existing supervisor, confirms arrival and notifies UI",
+    "Maintain the designated arrival point with active displacement correction until the next accepted motion or stop command; no automatic return in new web workflow",
+    "Multi-location rooftop photography and automatic email",
+    "Explicitly approved return to original mission actual departure floor and pose, not configured HOME",
+    "Consider route-scoped automatic door request on 5F/RF route",
+    "Understand existing nodes and rationale; report unavoidable node/structural changes before implementation",
+    "No unrelated readiness/safety gate should block valid navigation",
+    "Preserve legacy contracts and provide correlated debugging and bounded recovery",
+    "Arbitrary-placement localization must address wrong-corner hypotheses in repetitive rectangular offices",
+    "Active position hold at a designated point; correct displacement beyond agreed threshold until the next command"
+  ],
+  "pending_decisions": [
+    {
+      "id": "door_contract",
+      "status": "asked",
+      "question": "Address/port/path, method/auth scheme, physical-open feedback, route location and return direction requirement"
+    },
+    {
+      "id": "web_target",
+      "status": "asked",
+      "question": "Existing web app path/URL or new app, local network versus external access"
+    },
+    {
+      "id": "photo_email_contract",
+      "status": "asked",
+      "question": "Predefined or map-selected photo stops/directions/count, email service and recipient policy"
+    },
+    {
+      "id": "physical_stair_history",
+      "status": "asked",
+      "question": "Existing 3F/4F and 5F/RF real ascent/descent success, sensors/tags/configuration"
+    },
+    {
+      "id": "localization_fallback",
+      "status": "asked",
+      "question": "If automatic pose acquisition fails, operator map pose/yaw input fallback"
+    },
+    {
+      "id": "hold_threshold_and_yaw",
+      "status": "asked",
+      "question": "Displacement threshold in cm and whether original yaw must be restored; may determine thresholds from physical data if no preferred value"
+    },
+    {
+      "id": "landmark_availability",
+      "status": "asked",
+      "question": "May unique tags be installed, or where do existing tags exist?"
+    },
+    {
+      "id": "physical_drift",
+      "status": "asked",
+      "question": "Approximate displacement/time, wheel rolling versus floor slipping, floor/posture conditions"
+    }
+  ],
+  "observed_code_facts": [
+    {
+      "fact": "Mission.action accepts named destination_id/type/return only; current admission rejects unknown identifiers",
+      "source": "src/mission_manager/action/Mission.action; mission_action_server.py:24"
+    },
+    {
+      "fact": "Current site maps exist for 3F/4F/5F/RF; RF can be displayed as 6F rooftop without renaming internal ID",
+      "source": "src/multifloor_manager/config/floors.yaml:5"
+    },
+    {
+      "fact": "BuildingPlanner uses named vertices and directed NAV/stair edges",
+      "source": "src/mission_manager/src/mission_manager/route_planner.py:133"
+    },
+    {
+      "fact": "Local tron1-control-center is a Qt application with direct robot control, not an identified web UI integration target",
+      "source": "/home/m3tron/Desktop/TRON1_Control/tron1-control-center/app.py:21"
+    },
+    {
+      "fact": "Nine selected planning-boundary source files still match completed audit hashes",
+      "source": "audit-tron1-20260918/coverage.json; read-only comparison in this turn"
+    },
+    {
+      "fact": "ROS message MD5 derives from fields; TCPROS rejects mismatch. Changing the existing action schema is not assumed wire compatible",
+      "source": "/opt/ros/noetic/lib/python3/dist-packages/genmsg/gentools.py:58; rospy/impl/tcpros_pubsub.py:336"
+    }
+  ],
+  "allowed_work": "Document source compatibility, common architecture, proposed milestones and acceptance tests. Keep user-dependent choices unresolved.",
+  "updated_utc": "2026-09-20T15:38:32.018485+00:00",
+  "resolved_decisions": [
+    {
+      "id": "floor_selection_semantics",
+      "decision": "actual physical floor declaration",
+      "evidence": "latest user message"
+    },
+    {
+      "id": "start_pose_semantics",
+      "decision": "actual current pose as departure; pose acquisition fallback not yet decided",
+      "evidence": "user: 3층의 어떤 지점에 있다가 진입점까지 nav"
+    },
+    {
+      "id": "photo_workflow",
+      "decision": "multi-location capture; point registration and photo details pending",
+      "evidence": "latest user message"
+    },
+    {
+      "id": "post_job_position",
+      "decision": "Maintain designated arrival point with active correction; explicit approved return to immutable original departure pose",
+      "evidence": "latest user message"
+    },
+    {
+      "id": "arrival_hold_semantics",
+      "decision": "Active position correction when displacement exceeds an agreed distance; continue until the next command. Yaw tolerance not yet specified.",
+      "evidence": "user latest message: robot moves with no command; must hold specified point beyond distance threshold"
+    }
+  ],
+  "node_architecture_decision": {
+    "status": "unresolved_report_before_implementation",
+    "preserve": [
+      "mission_manager control ownership",
+      "multifloor_manager map ownership",
+      "stair_supervisor sole robot transport"
+    ],
+    "alternatives": [
+      "reuse suitable existing web bridge after inspection",
+      "backend ROS client with explicit reporting of any added ROS node",
+      "bounded IPC adapter in existing mission process with explicit structural change report"
+    ],
+    "note": "No claim that web integration adds zero ROS nodes. Door inside stair phase may require a separately reported phase hook."
+  },
+  "planning_artifacts": [
+    "IMPLEMENTATION-PLAN-DRAFT.md",
+    "decisions.json",
+    "IMPLEMENTATION-SPEC-20260920.md"
+  ],
+  "runtime_actions_performed": [],
+  "quality_review": {
+    "status": "historical_review_before_amcl_hold_revision",
+    "sip": {
+      "applied": [
+        "shower",
+        "factchk",
+        "mandela",
+        "ssotize audit-only",
+        "re0"
+      ],
+      "skipped": {
+        "detool": "The plan deliberately targets this ROS repository; it makes no stack-neutral portability claim."
+      }
+    },
+    "factchk": {
+      "repository": "Cited node ownership, return HOME, named goal schema, sequential dispatch, stair phases and configuration/document drift verified against local sources.",
+      "upstream": "ROS message MD5 and handshake verified using installed genmsg and rospy source.",
+      "unverified": [
+        "physical stair performance and external firmware corrections",
+        "door request and physical-open semantics",
+        "active position holding",
+        "web target and email provider compatibility"
+      ]
+    },
+    "mandela": {
+      "components": {
+        "system": "existing and proposed ROS mission/floor/stair executors",
+        "scorer": "acceptance criteria P01-P15",
+        "designer": "this implementation plan",
+        "dataset": "production configuration, injected faults, and future independently observed site trials"
+      },
+      "leakage_to_prevent": [
+        {
+          "pattern": "Shared hallucination",
+          "risk": "Phase-fed test fixtures and self-reported arrival do not independently prove landing, position or open door.",
+          "fix": "Use physical observation/measurement and device state independent of the commanded phase in P03-P08."
+        },
+        {
+          "pattern": "Verifier = designer",
+          "risk": "Thresholds or normal-case definitions could be selected after viewing test outcomes.",
+          "fix": "Declare thresholds/normal conditions before field trials, preserve raw observations, and separate compatibility tests from hardware verdicts."
+        }
+      ],
+      "limitation": "Review checks proposed validation design; it does not establish physical truth or test success."
+    },
+    "consistency_audit": {
+      "scope": "current-floor semantics, departure-return, waiting, multi-photo, node changes; MD versus decisions JSON and historical audit",
+      "methods": [
+        "full document and decision record review",
+        "keyword/synonym sweep plus structured decision/scenario parsing"
+      ],
+      "result": "Answered choices resolved, remaining device contracts explicit; historical audit and proposed future tests distinguished. No consolidation of repository sources performed."
+    },
+    "artifact_checks": {
+      "local_links": 15,
+      "broken_links": 0,
+      "future_acceptance_scenarios": 15,
+      "source_implementation_or_runtime_tests_run": 0,
+      "final_clarity_fixes_verified": 3
+    },
+    "temporary_artifact": {
+      "path": "/home/m3tron/.local/state/codex-desktop/tmp/tron1-plan-cold-read-v17ifly8",
+      "purpose": "standalone blind document review",
+      "cleanup": "removed"
+    },
+    "cold_read": {
+      "agent": "mission_plan_cold_read",
+      "scope": "standalone complete copy; no neighboring sources",
+      "verdict": "stands alone for plan review, minor gaps",
+      "fixes_applied": [
+        "explicit admission release on photo failure and bounded failure finalization",
+        "web-only no-auto-return scope distinguished from legacy return_after_task",
+        "S/M severity legend added"
+      ],
+      "hardware_correctness_proven": false
+    }
+  },
+  "planning_integrity": {
+    "before": {
+      "head": "4d77a223ef6d0c898ebe9a44cc8a60a21904f2f0",
+      "status_sha256": "f2465b723382349456e97daf72a4c8add44c5b63570002f0fe809e8189250b2e",
+      "diff_sha256": "29797a2a8d1bd722c2d3906b72d43ab07c4526d3da31fffc7c3fdb9e9ba0a7e8",
+      "staged_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "files": {
+        "README.md": "23649a19d7d49ceab33ebdc30cee11610fe501f2170871ab109daf5bf7eb5d8d",
+        "docs/transition-policy-state-machine.md": "fa9a33fd1324add17ef8aa61dfa370715a4c5f4e160dda43946edec39138944a",
+        "src/mission_manager/action/Mission.action": "83157e5987e17a6e405c00890d4a25a297f7e180676b63aeeae8113371bc3ac8",
+        "src/mission_manager/launch/system.launch": "5d44a98f4695b6090306575ab8fc541c0152aa9297b17c935b68baa8d8c4ecf0",
+        "src/mission_manager/src/mission_manager/mission_action_server.py": "bc7fd4c9398da733d6b260812ac8cb9488c1467a2a3ad79b1d3cf0c16ba0a1f0",
+        "src/mission_manager/src/mission_manager/mission_orchestrator.py": "4ef064bac0a88f6292a62064032f5cf6a292493cc2aa941318384b3611a97a69",
+        "src/mission_manager/src/mission_manager/route_planner.py": "bd1e9ef6450c3321583248455443d0c173e9dd1d967b8ca42bad8e2ed2a1bfe3",
+        "src/mission_manager/src/mission_manager/ros_segments.py": "d9cfb814c60baf0e48c3da197ba8f5897b404e1287b8d73eb942ab28a7a69795",
+        "src/mission_manager/src/mission_manager/segment_types.py": "e5779e3a9dcb43ce636dc0d09a1565b854e18001bab8daf375d5df81a1a7aa43",
+        "src/stair_supervisor/src/stair_supervisor/supervisor.py": "29b3aa30368e5c8db2e4b2d8527c70ab1e89ada5c20a4a398eff66e22ed41726",
+        "src/stair_supervisor/src/stair_supervisor/stair_evidence.py": "25f0f500db4f53965bdc112601f0231057ce3b84b5b13faba48802ab028fb7de",
+        "src/multifloor_manager/config/transitions.yaml": "09b5622b86e58c449ce3f35db53bf4e04f3d32e999ab23d325704cbc961c9e5a"
+      }
+    },
+    "after": {
+      "head": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+      "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "staged_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "files": {
+        "README.md": "23649a19d7d49ceab33ebdc30cee11610fe501f2170871ab109daf5bf7eb5d8d",
+        "docs/transition-policy-state-machine.md": "fa9a33fd1324add17ef8aa61dfa370715a4c5f4e160dda43946edec39138944a",
+        "src/mission_manager/action/Mission.action": "83157e5987e17a6e405c00890d4a25a297f7e180676b63aeeae8113371bc3ac8",
+        "src/mission_manager/launch/system.launch": "5d44a98f4695b6090306575ab8fc541c0152aa9297b17c935b68baa8d8c4ecf0",
+        "src/mission_manager/src/mission_manager/mission_action_server.py": "bc7fd4c9398da733d6b260812ac8cb9488c1467a2a3ad79b1d3cf0c16ba0a1f0",
+        "src/mission_manager/src/mission_manager/mission_orchestrator.py": "4ef064bac0a88f6292a62064032f5cf6a292493cc2aa941318384b3611a97a69",
+        "src/mission_manager/src/mission_manager/route_planner.py": "bd1e9ef6450c3321583248455443d0c173e9dd1d967b8ca42bad8e2ed2a1bfe3",
+        "src/mission_manager/src/mission_manager/ros_segments.py": "d9cfb814c60baf0e48c3da197ba8f5897b404e1287b8d73eb942ab28a7a69795",
+        "src/mission_manager/src/mission_manager/segment_types.py": "e5779e3a9dcb43ce636dc0d09a1565b854e18001bab8daf375d5df81a1a7aa43",
+        "src/stair_supervisor/src/stair_supervisor/supervisor.py": "29b3aa30368e5c8db2e4b2d8527c70ab1e89ada5c20a4a398eff66e22ed41726",
+        "src/stair_supervisor/src/stair_supervisor/stair_evidence.py": "25f0f500db4f53965bdc112601f0231057ce3b84b5b13faba48802ab028fb7de",
+        "src/multifloor_manager/config/transitions.yaml": "09b5622b86e58c449ce3f35db53bf4e04f3d32e999ab23d325704cbc961c9e5a"
+      }
+    },
+    "head_unchanged": false,
+    "status_unchanged": false,
+    "diff_unchanged": false,
+    "staged_unchanged": true,
+    "selected_sources_unchanged": true,
+    "audit_source_recheck": {
+      "scope": "hash-bearing audited files under src/test/docs and top-level scripts/env/docs/build declaration",
+      "compared": 298,
+      "changed": [],
+      "missing": [],
+      "not_a_new_inventory_audit": true
+    },
+    "git_change_interpretation": "HEAD changed during read-only planning to eb24e08c9220f454080bd672bd8ce3ec0aeb7159; no target mutation or commit was issued by this task. 12 planning baseline hashes and 298 audited source/config/test/doc hashes remain identical. Current git status is clean. Rebaseline before implementation; not a new full inventory audit."
+  },
+  "planning_revisions": [
+    {
+      "id": "amcl_ambiguity_and_active_hold",
+      "understood_as": "Plan only: address user-reported wrong-corner AMCL at arbitrary placement, and automatic position correction beyond a displacement threshold until the next explicit command. Preserve sole transport ownership, avoid overbroad gates, and report structural changes before implementation. User attributes drift to center of gravity; mechanism unverified.",
+      "before": {
+        "observed_utc": "2026-09-18T08:06:22.776723+00:00",
+        "head": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+        "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "staged_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "files": {
+          "src/multifloor_manager/launch/navigation.launch": "f14973f128533922a59d83b194e8ea250aef738c4f7e31f30c5092fb0406fc6b",
+          "src/multifloor_manager/src/multifloor_manager/readiness.py": "7c59a2a96417d4fd1d00bcd331b469c3861314563032707357cf060bf95937c2",
+          "src/multifloor_manager/src/multifloor_manager/ros_node.py": "cc729336999eec0d51f777445c714d412d5713b4b7401afa969466d4f1b8a173",
+          "src/multifloor_manager/src/multifloor_manager/tag_evidence.py": "807865e03b2082defc3409ed4fccbf8345780aa32511d63e25bbe6b3b2706e84",
+          "src/multifloor_manager/config/apriltags.yaml": "133c65641e05c5b28e833c274410682153ab852c82f6a796a9a9f8d30b2b1b35",
+          "src/multifloor_manager/config/nav/base_local_planner_params.yaml": "40996021b119c48b36614e3b974224b8e585ea57722bbfde31fbd1861db306eb",
+          "src/stair_supervisor/src/stair_supervisor/supervisor.py": "29b3aa30368e5c8db2e4b2d8527c70ab1e89ada5c20a4a398eff66e22ed41726",
+          "src/stair_supervisor/src/stair_supervisor/robot_conversion.py": "542d13d66b0d63a9afd89896618edd3019b7c1cf8330ccd3c771f776eae75fab",
+          "src/mission_manager/src/mission_manager/navigation_executor.py": "fe6b5146317619e55091e43d785eade84a57d0f39093ca6be19cc2cbe28d9f77"
+        }
+      },
+      "user_reported_not_runtime_verified": [
+        "wrong-corner AMCL after arbitrary placement",
+        "uncommanded physical drift attributed by user to center of gravity"
+      ],
+      "key_observed_facts": [
+        {
+          "fact": "Initial covariance configured 0.01 per x/y/yaw with launch pose defaults, freshness/covariance readiness is not an independent physical pose check",
+          "source": "navigation.launch:25; readiness.py:124"
+        },
+        {
+          "fact": "Current tag parser uses IDs and floor transaction seeds stored landing pose",
+          "source": "tag_evidence.py:176; ros_node.py:246"
+        },
+        {
+          "fact": "Missing/stale NAV input results in zero command; active position hold is not present in that path",
+          "source": "supervisor.py:95"
+        },
+        {
+          "fact": "Repository planner xy tolerance is 0.25m, latch is true; current command conversion y=0",
+          "source": "base_local_planner_params.yaml:14; robot_conversion.py:33"
+        },
+        {
+          "fact": "Installed base_local_planner 1.17.3 dynamic schema lacks xy/yaw/latch tolerances; corresponding upstream initializes them once",
+          "source": "/opt/ros/noetic/lib/python3/dist-packages/base_local_planner/cfg/BaseLocalPlannerConfig.py; official navigation tag 1.17.3 trajectory_planner_ros.cpp"
+        }
+      ],
+      "sources": [
+        {
+          "title": "Noetic AMCL",
+          "url": "https://github.com/ros-planning/navigation/blob/noetic-devel/amcl/src/amcl_node.cpp"
+        },
+        {
+          "title": "Installed-version TrajectoryPlannerROS source",
+          "url": "https://github.com/ros-planning/navigation/blob/1.17.3/base_local_planner/src/trajectory_planner_ros.cpp"
+        },
+        {
+          "title": "move_base goal termination",
+          "url": "https://github.com/ros-planning/navigation/blob/noetic-devel/move_base/src/move_base.cpp"
+        },
+        {
+          "title": "Markov localization ambiguous hypotheses",
+          "url": "https://www.cs.cmu.edu/afs/cs/project/jair/pub/volume11/fox99a-html/node3.html"
+        }
+      ],
+      "planning_risks": [
+        {
+          "id": "L-01",
+          "safety": "S3",
+          "mobility": "M2",
+          "observed": "Current readiness and initialization evidence boundary",
+          "inferred": "Wrong confident pose may be accepted as physical truth",
+          "unverified": "Direct cause and reproduction of user reported wrong corner"
+        },
+        {
+          "id": "H-01",
+          "safety": "S3",
+          "mobility": "M2",
+          "observed": "Zero fallback and absence of position-hold path; 0.25m navigation tolerance",
+          "inferred": "Repeated goals may not correct small drift; map jumps can cause wrong recovery if naively tracked",
+          "unverified": "Drift mechanism, magnitude, local observability and physical hold performance"
+        }
+      ],
+      "decisions": {
+        "fixed_hold_target": true,
+        "r_on_r_off": "pending user preference and measured noise/dynamics",
+        "priority": "explicit stop and accepted user motion preempt low-priority hold; no hold during stair traversal",
+        "controller": "conditional on measured accuracy; existing path first, necessary plugin/owner internal module reported before implementation",
+        "runtime_xy_tolerance_switch": "rejected; not supported by current stock dynamic schema",
+        "landmarks": "existing camera/tag stack reused where feasible; survey/pose processing extension needs report; not mandatory for every NAV tick",
+        "local_hold_with_bad_global_pose": "only if independent local observations and controller contract are verified; current move_base path is not asserted to provide this"
+      },
+      "quality": {
+        "status": "reviewed",
+        "factchk": "Repository parameters and code, installed dynamic schema, Noetic sources and research verified; physical root causes/precision remain unverified.",
+        "mandela": "Physical truth independent of AMCL/TF/costmap and odometry is required for the named acceptance cases; same-scan match is not independent ground truth.",
+        "consistency": "Previous passive-wait ambiguity resolved, P01/P02/P04/P13/P15 updated, legacy no-auto-return scope retained.",
+        "cold_read": {
+          "agent": "localization_hold_plan_cold_read",
+          "full_document_read": true,
+          "lines_read": 325,
+          "verdict": "stands alone as a plan; no material internal contradictions found",
+          "physical_validation": false
+        },
+        "local_links_broken": 0,
+        "final_corrections": [
+          "xy_goal_tolerance citation points to line 14",
+          "current versus historical Git baseline distinguished"
+        ]
+      },
+      "plan_sha256": "6e0b335caf682dee49aca0d082a4a8e6dc817a26489315de85d0d666e75ffc6c",
+      "future_scenario_count": 15,
+      "temporary_artifact": {
+        "path": "/home/m3tron/.local/state/codex-desktop/tmp/tron1-localization-hold-review-wmdj83vm",
+        "purpose": "blind complete document copy",
+        "cleanup": "removed"
+      },
+      "after": {
+        "head": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+        "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "staged_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "files": {
+          "src/multifloor_manager/launch/navigation.launch": "f14973f128533922a59d83b194e8ea250aef738c4f7e31f30c5092fb0406fc6b",
+          "src/multifloor_manager/src/multifloor_manager/readiness.py": "7c59a2a96417d4fd1d00bcd331b469c3861314563032707357cf060bf95937c2",
+          "src/multifloor_manager/src/multifloor_manager/ros_node.py": "cc729336999eec0d51f777445c714d412d5713b4b7401afa969466d4f1b8a173",
+          "src/multifloor_manager/src/multifloor_manager/tag_evidence.py": "807865e03b2082defc3409ed4fccbf8345780aa32511d63e25bbe6b3b2706e84",
+          "src/multifloor_manager/config/apriltags.yaml": "133c65641e05c5b28e833c274410682153ab852c82f6a796a9a9f8d30b2b1b35",
+          "src/multifloor_manager/config/nav/base_local_planner_params.yaml": "40996021b119c48b36614e3b974224b8e585ea57722bbfde31fbd1861db306eb",
+          "src/stair_supervisor/src/stair_supervisor/supervisor.py": "29b3aa30368e5c8db2e4b2d8527c70ab1e89ada5c20a4a398eff66e22ed41726",
+          "src/stair_supervisor/src/stair_supervisor/robot_conversion.py": "542d13d66b0d63a9afd89896618edd3019b7c1cf8330ccd3c771f776eae75fab",
+          "src/mission_manager/src/mission_manager/navigation_executor.py": "fe6b5146317619e55091e43d785eade84a57d0f39093ca6be19cc2cbe28d9f77"
+        }
+      },
+      "integrity": {
+        "head": true,
+        "status_sha256": true,
+        "diff_sha256": true,
+        "staged_sha256": true,
+        "files": true
+      },
+      "finalized_utc": "2026-09-18T08:17:36.295114+00:00",
+      "runtime_actions_performed": [],
+      "robot_tests_run": 0,
+      "temporary_processes_started": []
+    },
+    {
+      "id": "implementation_contracts_20260920",
+      "status": "IMPLEMENTATION_PROPOSAL",
+      "understood_as": "Concrete implementation mechanics and compatibility boundaries for the existing nodes; planning and read-only source inspection, no robot or source implementation changes.",
+      "finalized_utc": "2026-09-20T14:59:23.576646+00:00",
+      "artifacts": {
+        "IMPLEMENTATION-SPEC-20260920.md": "b6d445cc5fb9c3e5b7aaba3487a356648b92e3f0ba8b7e5bbe0aa292ca611b2a",
+        "IMPLEMENTATION-PLAN-DRAFT.md": "0b3eafed8dbead89f9f278d628dc6ffd4ddce38c44f2f34bd56f0c3c2d386117"
+      },
+      "necessary_changes_reported": [
+        "singleton mission admission with versioned pose mission endpoint",
+        "supervisor-owned cross-node motion token protocol and internal HOLD controller",
+        "floor initialization transaction including partial-apply recovery",
+        "sensor bridge shadow estimator and explicit raw/control frame migration before CONTROL",
+        "persistent snapshots, photo manifests and email outbox",
+        "conditional producer-side stamped navigation commands for strict fencing; existing Twist cannot prove command origin"
+      ],
+      "source_provenance_correction": {
+        "fact": "Current scan conversion uses raw odometry for deskew; scan registration is not fully independent ground truth for raw odometry.",
+        "source": "tron1-control-center/sensor_integration/launch/wf_mapping.launch + src/mid360s_laserscan.py",
+        "reports_updated": [
+          "sensor-recording-analysis-20260918/REPORT.md",
+          "sensor-recording-analysis-20260918/METHODS.md",
+          "sensor-recording-analysis-20260918/quality-review.json",
+          "sensor-recording-analysis-20260918/report.html",
+          "sensor-recording-analysis-20260918/METHODS.html"
+        ],
+        "raw_analysis_rerun": false,
+        "hardware_drift_root_cause": "UNVERIFIED"
+      },
+      "quality": {
+        "cold_reader": "implementation_spec_cold_read",
+        "complete_copy_read": true,
+        "reread_after_repairs": true,
+        "contract_gaps_addressed": [
+          "cross-node authority and handoff/restart",
+          "raw/control frames and fixed physical HOLD target",
+          "map applied but pose failed/cancelled",
+          "durable request/snapshot/photo/mail state"
+        ],
+        "final_consistency_fix": "Only supervisor issues/revokes motion tokens; coordinator requests transitions.",
+        "markdown_links_checked": 48,
+        "broken_markdown_links": 0,
+        "html_links_checked": 118,
+        "broken_html_links": 0,
+        "future_scenarios": 15,
+        "future_scenarios_executed": 0,
+        "hardware_validation": false
+      },
+      "temporary_artifacts": [
+        {
+          "path": "/tmp/tron1-implementation-spec-cold-20260920.md",
+          "purpose": "blind review copy",
+          "cleanup": "removed"
+        }
+      ],
+      "generated_caches": [],
+      "temporary_processes_started": [],
+      "runtime_actions_performed": [],
+      "integrity": {
+        "repository": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation",
+        "head_after": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+        "head_matches_turn_baseline": true,
+        "clean_status_before_and_after": true,
+        "status_after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "unstaged_clean": true,
+        "staged_clean": true,
+        "not_a_new_full_audit": true
+      }
+    },
+    {
+      "id": "minimum_change_plan_20260921",
+      "status": "PLAN_REPORTED_NO_IMPLEMENTATION",
+      "understood_as": "Revise and report a concrete minimum-change implementation plan for all confirmed navigation, floor/stair, HOLD, rooftop photo/email, door and approved-return requirements. Reuse existing node ownership and execution, defer unproven architecture upgrades, distinguish observations from proposed changes; no source or robot actions in this turn.",
+      "started_utc": "2026-09-20T15:28:33.663783+00:00",
+      "before": {
+        "head": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+        "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "staged_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "runtime_actions_performed": [],
+      "finalized_utc": "2026-09-20T15:38:32.018485+00:00",
+      "after": {
+        "head": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+        "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "staged_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "integrity_unchanged": true,
+      "active_plan": "IMPLEMENTATION-PLAN-DRAFT.md",
+      "reference_only": "IMPLEMENTATION-SPEC-20260920.md",
+      "artifacts": {
+        "IMPLEMENTATION-PLAN-DRAFT.md": "1d151eb1599c631c19a85d4496b7abb4fa4cfb1d4e9207c4cefee6dcbe0afae0",
+        "IMPLEMENTATION-SPEC-20260920.md": "422c9ce0afe7312ceedf6ec01b0493c5c065eabfc23ceffec2fa7d5aa7f0cf82"
+      },
+      "quality": {
+        "sip_applied": [
+          "shower",
+          "factchk",
+          "mandela",
+          "ssotize audit-only",
+          "re0"
+        ],
+        "detool_skipped": "Repository-specific ROS implementation plan; no portability claim.",
+        "cold_read": {
+          "agent": "minimal_plan_cold_read",
+          "complete_lines_read": 184,
+          "verdict": "No clear contradiction; concrete gaps identified",
+          "fixes": [
+            "profile-specific operational checkpoint evidence remains UNVERIFIED; field video is test ground truth, not an invented automatic input",
+            "photo failure policy now explicit PARTIAL_FAILED, HOLD if available, later resume/return",
+            "external answers tied to dependent integration/acceptance; independent baseline and core preparation can proceed"
+          ],
+          "final_fixes_checked_by": "root",
+          "implementation_or_hardware_proven": false
+        },
+        "factchk": {
+          "observed": [
+            "current repository HEAD and clean status",
+            "named-goal admission and HOME route",
+            "floor action requires directed stair and ignores supplied epoch",
+            "single-sample alignment/adjacent-step stop evidence",
+            "current 0.25m xy tolerance",
+            "scan producer odometry dependency",
+            "genmsg installed message MD5 field inclusion"
+          ],
+          "inferred": [
+            "bounded changes may satisfy requirements without replacing nodes"
+          ],
+          "unverified": [
+            "physical hold precision and true drift",
+            "actual autonomous checkpoint support observation",
+            "Mini PC deployed source/config parity",
+            "web/door/email interfaces"
+          ]
+        },
+        "mandela": {
+          "system": "existing executor and proposed bounded patches",
+          "designer": "this implementation plan",
+          "scorer": "P01-P15 future acceptance criteria",
+          "dataset": "existing recordings, injected faults, future independent physical measurements",
+          "hits_and_fixes": [
+            {
+              "pattern": "Shared hallucination",
+              "fix": "AMCL/odom/deskewed scan and emitted phases do not mutually establish ground truth; use independently measured pose/landing/door/image facts."
+            },
+            {
+              "pattern": "Verifier = designer",
+              "fix": "Set thresholds and normal conditions before trials; preserve measurements, do not retroactively relax to PASS."
+            }
+          ],
+          "all_eight_patterns_considered": true,
+          "physical_tests_run": 0
+        },
+        "consistency": {
+          "methods": [
+            "term sweep in current plan, prior spec and decisions",
+            "full active-plan reading and structured 15-scenario/decision comparison"
+          ],
+          "active_scope": "current minimum-change plan",
+          "old_spec": "reference-only banner; unique contracts retained, blanket rollout deferred",
+          "historical_audit_modified": false,
+          "repository_source_consolidation": false
+        },
+        "local_links": 14,
+        "broken_links": 0,
+        "future_scenarios": 15,
+        "future_scenarios_executed": 0
+      },
+      "temporary_artifacts": [
+        {
+          "path": "/tmp/tron1-minimal-plan-review-hm4z579w.md",
+          "purpose": "blind complete document review copy",
+          "cleanup": "removed"
+        }
+      ],
+      "temporary_processes_started": [],
+      "generated_caches": []
+    }
+  ],
+  "active_plan": "IMPLEMENTATION-PLAN-DRAFT.md",
+  "active_planning_revision": "minimum_change_plan_20260921",
+  "current_scope_decisions": {
+    "core": "Existing three application nodes, one sequential executor and single robot transport retained.",
+    "admission": "Share existing admission/cancel within mission node; no new general coordinator.",
+    "new_inputs": "Narrow pose mission and floor initialization endpoints; limited map-change idle reservation only as needed for correct ownership.",
+    "hold": "Existing NavigationExecutor reuse first if measured precision/observability meet user requirement; owner-internal controller conditional.",
+    "persistence": "Per-job JSON and artifacts under existing root with one writer; no new database by default.",
+    "deferred": [
+      "general motion lease protocol",
+      "new localization estimator",
+      "raw/control odometry and TF migration",
+      "SQLite",
+      "generic device execution framework"
+    ],
+    "web": "Reuse verified existing bridge; additional ROS client/node not decided and requires concrete report.",
+    "whole_requirement_preserved": true
+  },
+  "quality_review_status": "See active planning revision; top-level quality_review and prior revisions are historical."
+}

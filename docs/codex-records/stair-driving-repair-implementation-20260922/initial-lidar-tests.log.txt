@@ -1,0 +1,91 @@
+EEEEE
+======================================================================
+ERROR: test_lidar_control (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_lidar_control
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/loader.py", line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.8/unittest/loader.py", line 377, in _get_module_from_name
+    __import__(name)
+  File "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/test/test_lidar_control.py", line 20, in <module>
+    from stair_supervisor.supervisor import StairSupervisor, StairGoal, ResultCode, SupervisorState
+  File "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/src/stair_supervisor/supervisor.py", line 10, in <module>
+    from .robot_transport import TransportFault
+  File "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/src/stair_supervisor/robot_transport.py", line 11, in <module>
+    from .robot_client import (
+  File "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/src/stair_supervisor/robot_client.py", line 10, in <module>
+    import websocket
+ModuleNotFoundError: No module named 'websocket'
+
+
+======================================================================
+ERROR: test_lidar_observe_ros (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_lidar_observe_ros
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/loader.py", line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.8/unittest/loader.py", line 377, in _get_module_from_name
+    __import__(name)
+  File "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/test/test_lidar_observe_ros.py", line 8, in <module>
+    from livox_ros_driver2.msg import CustomMsg, CustomPoint
+ModuleNotFoundError: No module named 'livox_ros_driver2'
+
+
+======================================================================
+ERROR: test_lidar_phase_test (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_lidar_phase_test
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/loader.py", line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.8/unittest/loader.py", line 377, in _get_module_from_name
+    __import__(name)
+  File "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/test/test_lidar_phase_test.py", line 4, in <module>
+    from test_lidar_control import Worker, route
+  File "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/test/test_lidar_control.py", line 20, in <module>
+    from stair_supervisor.supervisor import StairSupervisor, StairGoal, ResultCode, SupervisorState
+  File "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/src/stair_supervisor/supervisor.py", line 10, in <module>
+    from .robot_transport import TransportFault
+  File "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/src/stair_supervisor/robot_transport.py", line 11, in <module>
+    from .robot_client import (
+  File "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/src/stair_supervisor/robot_client.py", line 10, in <module>
+    import websocket
+ModuleNotFoundError: No module named 'websocket'
+
+
+======================================================================
+ERROR: test_lidar_process (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_lidar_process
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/loader.py", line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.8/unittest/loader.py", line 377, in _get_module_from_name
+    __import__(name)
+  File "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/test/test_lidar_process.py", line 12, in <module>
+    from livox_ros_driver2.msg import CustomMsg, CustomPoint
+ModuleNotFoundError: No module named 'livox_ros_driver2'
+
+
+======================================================================
+ERROR: test_lidar_ros_adapter (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_lidar_ros_adapter
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/unittest/loader.py", line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.8/unittest/loader.py", line 377, in _get_module_from_name
+    __import__(name)
+  File "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/test/test_lidar_ros_adapter.py", line 17, in <module>
+    from stair_supervisor import ros_lidar, ros_entrypoint
+  File "/home/m3tron/.codex/.chatgpt-projects/g-p-6aa37f17097c81919ca6c59ce41e856c/stair-driving-repair-implementation-20260922/candidate/src/stair_supervisor/src/stair_supervisor/ros_lidar.py", line 23, in <module>
+    from livox_ros_driver2.msg import CustomMsg
+ModuleNotFoundError: No module named 'livox_ros_driver2'
+
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.001s
+
+FAILED (errors=5)

@@ -150,6 +150,7 @@ class NavigationExecutor:
         self._terminal_status: int | None = None
         self._executing = False
         self._cancel_requested = False
+        self._active_request = None
 
     @classmethod
     def create_ros(cls, sources: RosNavigationSources) -> "NavigationExecutor":
@@ -176,18 +177,19 @@ class NavigationExecutor:
         with self._lifecycle_lock:
             return self._active_token is not None
 
-    def execute(self, request: NavigationRequest) -> NavigationResult:
+    def execute(self, request: NavigationRequest, cancellation_requested=lambda: False) -> NavigationResult:
         """Execute one named Location goal, with at most one terminal retry."""
         with self._lifecycle_lock:
             if self._active_token is not None or self._executing:
                 raise NavigationLifecycleError("another goal is active")
             self._executing = True
+            self._active_request = request
             self._cancel_requested = False
         try:
             for attempt in (1, 2):
                 self._require_ready(request)
                 goal = self._build_goal(request.location)
-                token = self._send_if_eligible(goal)
+                token = self._send_if_eligible(goal, cancellation_requested)
                 if token is None:
                     status = self._terminal_status if self._terminal_status is not None else GoalStatus.RECALLED
                     return NavigationResult(request.location.id, NavigationOutcome.CANCELLED, status, attempt)
@@ -205,6 +207,7 @@ class NavigationExecutor:
         finally:
             with self._lifecycle_lock:
                 self._executing = False
+                self._active_request = None
                 self._cancel_requested = False
 
     def cancel(self) -> None:
@@ -219,6 +222,14 @@ class NavigationExecutor:
     def request_cancel(self) -> None:
         """Request cancellation without competing with the execution thread's wait."""
         self._request_cancel()
+
+    def request_cancel_for(self, request: NavigationRequest) -> bool:
+        """Cancel only this invocation; a delayed idle-hold tick cannot stop a new mission."""
+        with self._lifecycle_lock:
+            if self._active_request is not request:
+                return False
+            self._request_cancel()
+            return True
 
     def _request_cancel(self) -> int | None:
         with self._lifecycle_lock:
@@ -268,9 +279,9 @@ class NavigationExecutor:
         goal.target_pose.pose.orientation.w = w / norm
         return goal
 
-    def _send_if_eligible(self, goal: MoveBaseGoal) -> int | None:
+    def _send_if_eligible(self, goal: MoveBaseGoal, cancellation_requested=lambda: False) -> int | None:
         with self._lifecycle_lock:
-            if self._cancel_requested:
+            if self._cancel_requested or cancellation_requested():
                 return None
             token = self._next_token
             self._next_token += 1

@@ -1,0 +1,33 @@
+{
+  "target": "105713 first-body/gravity frame",
+  "source": "102101 first-body/gravity frame",
+  "target_from_source": [
+    [
+      0.9993147382885382,
+      -0.029991348077533952,
+      0.021692691852369352,
+      -0.31040029188096613
+    ],
+    [
+      0.029859649151527584,
+      0.999533804636132,
+      0.006369830623052768,
+      -0.007187240183768415
+    ],
+    [
+      -0.021873618627408876,
+      -0.005717729454154344,
+      0.9997443935216801,
+      0.009671444381344214
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "fitness": 0.9964539007092199,
+  "inlier_rmse_m": 0.08532045222744504,
+  "interpretation": "offline full-map geometric consistency only; not independent position accuracy or a live entry localization result"
+}

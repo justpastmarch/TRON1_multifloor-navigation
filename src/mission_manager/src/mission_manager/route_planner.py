@@ -172,6 +172,22 @@ class BuildingPlanner:
         self._validate_segments(origin_id, destination_id, segments)
         return Route(origin_id, destination_id, tuple(segments))
 
+    def plan_from_current_pose(self, origin_id: str, destination_id: str,
+                               scan_profile_id: Union[str, None] = None) -> Route:
+        """The logical anchor identifies the floor/route, not physical arrival.
+
+        Re-localization or manually moving the robot must not turn a same-ID
+        mission into a no-op, or skip navigation to a stair entry.
+        """
+        route = self.plan(origin_id, destination_id, scan_profile_id)
+        if route.segments and route.segments[0].type is SegmentType.NAVIGATION:
+            return route
+        origin = self._locations[origin_id]
+        navigation = RouteSegment(SegmentType.NAVIGATION, origin.id, origin.id,
+                                  origin.floor_id, origin.floor_id, None, None,
+                                  None, None, origin.id)
+        return Route(origin_id, destination_id, (navigation,) + route.segments)
+
     def plan_return(self, confirmed_anchor: LogicalAnchor) -> Route:
         """Run a fresh BFS from confirmed progress to the configured home."""
         return self.plan(confirmed_anchor.location_id, self._home_location_id)

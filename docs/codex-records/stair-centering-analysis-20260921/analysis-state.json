@@ -1,0 +1,263 @@
+{
+  "status": "OFFLINE_ANALYSIS_COMPLETE",
+  "understood_as": "Design and run a minimum-change stair-relative position/centering estimator and shadow control on existing bags. Quantify observability, geometric consistency and differences from current odometry/fixed-command approach; do not infer actual closed-loop mobility or balance gains from observational replay. Read originals only; no ROS init/play/publish, robot commands or source edits.",
+  "created_utc": "2026-09-20T16:00:51.656320+00:00",
+  "inventory_count": 21,
+  "inventory": [
+    {
+      "index": 0,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/manual_captures/manual-5F-rooftop_route_1788917683773755895.bag",
+      "bytes": 105529960,
+      "mtime_ns": 1788917727923826822,
+      "status": "READ",
+      "lidar_count": 221,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 45,
+      "source_unchanged": true
+    },
+    {
+      "index": 1,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/manual_captures/manual-5F-rooftop_route_1788918199558502114.bag.active.invalid",
+      "bytes": 922588033,
+      "mtime_ns": 1788918415756544098,
+      "status": "READ",
+      "lidar_count": 1930,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 386,
+      "source_unchanged": true
+    },
+    {
+      "index": 2,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/manual_captures/manual-5F-rooftop_route_1788918551828137154.bag",
+      "bytes": 163403843,
+      "mtime_ns": 1788918606482436497,
+      "status": "READ",
+      "lidar_count": 348,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 70,
+      "source_unchanged": true
+    },
+    {
+      "index": 3,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/manual_captures/manual-5F-rooftop_route_1788920816079496577.bag.active.invalid",
+      "bytes": 1500070288,
+      "mtime_ns": 1788921400958431730,
+      "status": "READ",
+      "lidar_count": 2690,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 538,
+      "source_unchanged": true
+    },
+    {
+      "index": 4,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_FULL_20260916_210849.bag",
+      "bytes": 1047464539,
+      "mtime_ns": 1789560824504883764,
+      "status": "READ",
+      "lidar_count": 2892,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 579,
+      "source_unchanged": true
+    },
+    {
+      "index": 5,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_FULL_20260916_231643.bag",
+      "bytes": 287498694,
+      "mtime_ns": 1789568415779904301,
+      "status": "READ",
+      "lidar_count": 1341,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 269,
+      "source_unchanged": true
+    },
+    {
+      "index": 6,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_FULL_20260916_234018.bag",
+      "bytes": 1102331710,
+      "mtime_ns": 1789569925175795609,
+      "status": "READ",
+      "lidar_count": 3054,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 611,
+      "source_unchanged": true
+    },
+    {
+      "index": 7,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260821_155022.bag",
+      "bytes": 2157341453,
+      "mtime_ns": 1787295224787339809,
+      "status": "READ",
+      "lidar_count": 1432,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 287,
+      "source_unchanged": true
+    },
+    {
+      "index": 8,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260824_152128.bag",
+      "bytes": 91965707,
+      "mtime_ns": 1787552538051775791,
+      "status": "READ",
+      "lidar_count": 98,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 20,
+      "source_unchanged": true
+    },
+    {
+      "index": 9,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260824_152223.bag",
+      "bytes": 154793379,
+      "mtime_ns": 1787552559979488508,
+      "status": "READ",
+      "lidar_count": 141,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 29,
+      "source_unchanged": true
+    },
+    {
+      "index": 10,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260824_152248.bag",
+      "bytes": 2169929079,
+      "mtime_ns": 1787552749788994528,
+      "status": "READ",
+      "lidar_count": 1793,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 359,
+      "source_unchanged": true
+    },
+    {
+      "index": 11,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_102101.bag",
+      "bytes": 3563871958,
+      "mtime_ns": 1787793888018227885,
+      "status": "READ",
+      "lidar_count": 2249,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 450,
+      "source_unchanged": true
+    },
+    {
+      "index": 12,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_103200.bag",
+      "bytes": 1774155508,
+      "mtime_ns": 1787794390486650916,
+      "status": "READ",
+      "lidar_count": 690,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 138,
+      "source_unchanged": true
+    },
+    {
+      "index": 13,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_103313.bag",
+      "bytes": 4370811763,
+      "mtime_ns": 1787794667798558110,
+      "status": "READ",
+      "lidar_count": 2733,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 547,
+      "source_unchanged": true
+    },
+    {
+      "index": 14,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_105713.bag",
+      "bytes": 1507746956,
+      "mtime_ns": 1787797116939047023,
+      "status": "READ",
+      "lidar_count": 1818,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 364,
+      "source_unchanged": true
+    },
+    {
+      "index": 15,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_150034.bag",
+      "bytes": 1519550290,
+      "mtime_ns": 1787810658412186866,
+      "status": "READ",
+      "lidar_count": 1945,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 389,
+      "source_unchanged": true
+    },
+    {
+      "index": 16,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_20260827_154342.bag",
+      "bytes": 1747637963,
+      "mtime_ns": 1787813243884085018,
+      "status": "READ",
+      "lidar_count": 2198,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 440,
+      "source_unchanged": true
+    },
+    {
+      "index": 17,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/stair_3F_to_4F_UP_CLEAN_REPEAT_20260821_160211.bag",
+      "bytes": 2107960604,
+      "mtime_ns": 1787295877769317119,
+      "status": "READ",
+      "lidar_count": 1410,
+      "read_scope": "all raw lidar packet payloads decoded; geometry every fifth; RGB sampled every >=5s; prior numeric arrays reused",
+      "sampled_clouds": 282,
+      "source_unchanged": true
+    },
+    {
+      "index": 18,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/tag_calibration_20260827_134853.bag",
+      "bytes": 916786440,
+      "mtime_ns": 1787806322573160485,
+      "status": "READ",
+      "lidar_count": 0,
+      "read_scope": "sampled RGB payload and original topic index; prior numeric arrays reused; no raw lidar",
+      "sampled_clouds": 0,
+      "source_unchanged": true
+    },
+    {
+      "index": 19,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/yaw_calibration_020_030_040_20260821_134549.bag",
+      "bytes": 11373716,
+      "mtime_ns": 1787287617500474942,
+      "status": "METADATA_ONLY",
+      "lidar_count": 0,
+      "read_scope": "original topic index and prior numeric arrays; no raw lidar or RGB payload available",
+      "sampled_clouds": 0,
+      "source_unchanged": true
+    },
+    {
+      "index": 20,
+      "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/stair_captures/yaw_calibration_20260821_132716.bag",
+      "bytes": 162953638,
+      "mtime_ns": 1787287405312718568,
+      "status": "METADATA_ONLY",
+      "lidar_count": 0,
+      "read_scope": "original topic index and prior numeric arrays; no raw lidar or RGB payload available",
+      "sampled_clouds": 0,
+      "source_unchanged": true
+    }
+  ],
+  "development_bag_index": 7,
+  "evaluation_scope": "all existing 21 bag files; cloud geometry for 18 with raw lidar; no-lidar files classified explicitly",
+  "baseline": {
+    "head": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+    "status": ""
+  },
+  "artifacts": [
+    "ARTIFACTS.json"
+  ],
+  "temporary_artifacts": [
+    "CLEANUP.json"
+  ],
+  "runtime_actions": [],
+  "completed_utc": "2026-09-20T16:38:36.015983+00:00",
+  "coverage_counts": {
+    "READ": 19,
+    "METADATA_ONLY": 2
+  },
+  "robot_validation": "UNVERIFIED",
+  "audit_scope": "follow-up geometry experiment; does not replace the full repository audit or 15 E2E ledger",
+  "final_git": {
+    "head": "eb24e08c9220f454080bd672bd8ce3ec0aeb7159",
+    "status": ""
+  }
+}

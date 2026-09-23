@@ -1,0 +1,37 @@
+{
+  "observed_utc": "2026-09-18T05:06:46.010653+00:00",
+  "path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/.omo/run-continuation/ses_fe79dc3abffe0h8YOLMzr2MX0n.json",
+  "previous_metadata": {
+    "sessionID": "ses_fe79dc3abffe0h8YOLMzr2MX0n",
+    "updatedAt": "2026-09-18T04:13:54.322Z",
+    "sources": {
+      "background-task": {
+        "state": "idle",
+        "updatedAt": "2026-09-18T04:13:54.322Z"
+      },
+      "stop": {
+        "state": "stopped",
+        "reason": "continuation stopped",
+        "updatedAt": "2026-09-14T00:53:36.798Z"
+      }
+    }
+  },
+  "current_metadata": {
+    "sessionID": "ses_fe79dc3abffe0h8YOLMzr2MX0n",
+    "updatedAt": "2026-09-18T04:58:54.179Z",
+    "sources": {
+      "background-task": {
+        "state": "idle",
+        "updatedAt": "2026-09-18T04:58:54.179Z"
+      },
+      "stop": {
+        "state": "stopped",
+        "reason": "continuation stopped",
+        "updatedAt": "2026-09-14T00:53:36.798Z"
+      }
+    }
+  },
+  "mtime_ns": 1789707534172639492,
+  "sha256": "ce06235546e4a5b459f2a9fe1cef2db8bc8b9086724f846a332c9d9f2800f8f5",
+  "attribution": "UNVERIFIED; no audit writes to target"
+}

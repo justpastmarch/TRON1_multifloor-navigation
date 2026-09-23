@@ -1,0 +1,458 @@
+[
+  {
+    "end_kst": "2026-09-23T10:28:13.074317",
+    "phase": "FORWARD_SEGMENT_1",
+    "fault_pose_time_relative_sec": -0.0009706020355224609,
+    "fault_sensor_stamp": 1790126892.7029588,
+    "pose": [
+      1.8416150666704074,
+      -0.09043188532836653,
+      1.273763437344828
+    ],
+    "yaw_deg": -17.514897919409275,
+    "lateral_error_m": -0.09043188532836653,
+    "interval_sec": 0.2001025676727295,
+    "lidar_yaw_change_deg": -16.399470057461677,
+    "imu_integrated_yaw_change_deg": -10.724477109800466,
+    "wheel_orientation_yaw_change_deg": -12.19559233770866,
+    "lidar_minus_gyro_yaw_deg": -5.674992947661211,
+    "imu_samples": 40,
+    "imu_max_gap_sec": 0.005919933319091797,
+    "clearance_m": 0.24244261329322953,
+    "current_supported": true,
+    "raw_w": 0.19759476645960006,
+    "bounded_w": 0.19759476645960006,
+    "prior_w": 0.010508466803269311,
+    "proposed_w": 0.03485491100899953,
+    "proposed_w_exact": true,
+    "full_input_with_proposed_w_passes": false,
+    "full_input_without_angular_slew_passes": true,
+    "gyro_only_orientation_at_same_position_passes": true,
+    "grid": [
+      {
+        "v": 0.55,
+        "w": 0.03485491100899953,
+        "accepted": false
+      },
+      {
+        "v": 0.55,
+        "w": 0.19759476645960006,
+        "accepted": true
+      },
+      {
+        "v": 0.55,
+        "w": 0.2,
+        "accepted": true
+      },
+      {
+        "v": 0.55,
+        "w": -0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.4,
+        "w": 0.03485491100899953,
+        "accepted": true
+      },
+      {
+        "v": 0.4,
+        "w": 0.19759476645960006,
+        "accepted": true
+      },
+      {
+        "v": 0.4,
+        "w": 0.2,
+        "accepted": true
+      },
+      {
+        "v": 0.4,
+        "w": -0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.3,
+        "w": 0.03485491100899953,
+        "accepted": true
+      },
+      {
+        "v": 0.3,
+        "w": 0.19759476645960006,
+        "accepted": true
+      },
+      {
+        "v": 0.3,
+        "w": 0.2,
+        "accepted": true
+      },
+      {
+        "v": 0.3,
+        "w": -0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.2,
+        "w": 0.03485491100899953,
+        "accepted": true
+      },
+      {
+        "v": 0.2,
+        "w": 0.19759476645960006,
+        "accepted": true
+      },
+      {
+        "v": 0.2,
+        "w": 0.2,
+        "accepted": true
+      },
+      {
+        "v": 0.2,
+        "w": -0.2,
+        "accepted": true
+      },
+      {
+        "v": 0.1,
+        "w": 0.03485491100899953,
+        "accepted": true
+      },
+      {
+        "v": 0.1,
+        "w": 0.19759476645960006,
+        "accepted": true
+      },
+      {
+        "v": 0.1,
+        "w": 0.2,
+        "accepted": true
+      },
+      {
+        "v": 0.1,
+        "w": -0.2,
+        "accepted": true
+      },
+      {
+        "v": 0.05,
+        "w": 0.03485491100899953,
+        "accepted": true
+      },
+      {
+        "v": 0.05,
+        "w": 0.19759476645960006,
+        "accepted": true
+      },
+      {
+        "v": 0.05,
+        "w": 0.2,
+        "accepted": true
+      },
+      {
+        "v": 0.05,
+        "w": -0.2,
+        "accepted": true
+      }
+    ]
+  },
+  {
+    "end_kst": "2026-09-23T10:35:21.104719",
+    "phase": "FORWARD_SEGMENT_2",
+    "fault_pose_time_relative_sec": 0.06862115859985352,
+    "fault_sensor_stamp": 1790127320.7027378,
+    "pose": [
+      2.237411232784738,
+      1.204371973114459,
+      1.5128108151460824
+    ],
+    "yaw_deg": 165.38617673879125,
+    "lateral_error_m": 0.2656280268855411,
+    "interval_sec": 0.2000133991241455,
+    "lidar_yaw_change_deg": -13.283552881343494,
+    "imu_integrated_yaw_change_deg": -4.9787411392986565,
+    "wheel_orientation_yaw_change_deg": -6.039195723807305,
+    "lidar_minus_gyro_yaw_deg": -8.304811742044839,
+    "imu_samples": 40,
+    "imu_max_gap_sec": 0.005910396575927734,
+    "clearance_m": 0.07603606537616425,
+    "current_supported": false,
+    "raw_w": 0.05659381440567156,
+    "bounded_w": 0.05659381440567156,
+    "prior_w": -0.06564065796959334,
+    "proposed_w": -0.05064065796959334,
+    "proposed_w_exact": false,
+    "full_input_with_proposed_w_passes": false,
+    "full_input_without_angular_slew_passes": false,
+    "gyro_only_orientation_at_same_position_passes": false,
+    "grid": [
+      {
+        "v": 0.55,
+        "w": -0.05064065796959334,
+        "accepted": false
+      },
+      {
+        "v": 0.55,
+        "w": 0.05659381440567156,
+        "accepted": false
+      },
+      {
+        "v": 0.55,
+        "w": 0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.55,
+        "w": -0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.4,
+        "w": -0.05064065796959334,
+        "accepted": false
+      },
+      {
+        "v": 0.4,
+        "w": 0.05659381440567156,
+        "accepted": false
+      },
+      {
+        "v": 0.4,
+        "w": 0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.4,
+        "w": -0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.3,
+        "w": -0.05064065796959334,
+        "accepted": false
+      },
+      {
+        "v": 0.3,
+        "w": 0.05659381440567156,
+        "accepted": false
+      },
+      {
+        "v": 0.3,
+        "w": 0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.3,
+        "w": -0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.2,
+        "w": -0.05064065796959334,
+        "accepted": false
+      },
+      {
+        "v": 0.2,
+        "w": 0.05659381440567156,
+        "accepted": false
+      },
+      {
+        "v": 0.2,
+        "w": 0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.2,
+        "w": -0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.1,
+        "w": -0.05064065796959334,
+        "accepted": false
+      },
+      {
+        "v": 0.1,
+        "w": 0.05659381440567156,
+        "accepted": false
+      },
+      {
+        "v": 0.1,
+        "w": 0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.1,
+        "w": -0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.05,
+        "w": -0.05064065796959334,
+        "accepted": false
+      },
+      {
+        "v": 0.05,
+        "w": 0.05659381440567156,
+        "accepted": false
+      },
+      {
+        "v": 0.05,
+        "w": 0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.05,
+        "w": -0.2,
+        "accepted": false
+      }
+    ]
+  },
+  {
+    "end_kst": "2026-09-23T10:38:07.018419",
+    "phase": "FORWARD_SEGMENT_2",
+    "fault_pose_time_relative_sec": 0.053980112075805664,
+    "fault_sensor_stamp": 1790127486.703403,
+    "pose": [
+      0.4098207133806889,
+      1.636625860857371,
+      2.4734376665502427
+    ],
+    "yaw_deg": 165.80910919208583,
+    "lateral_error_m": -0.16662586085737074,
+    "interval_sec": 0.20076751708984375,
+    "lidar_yaw_change_deg": -7.3819102901271645,
+    "imu_integrated_yaw_change_deg": -14.208414282262188,
+    "wheel_orientation_yaw_change_deg": -12.941615915158895,
+    "lidar_minus_gyro_yaw_deg": 6.826503992135025,
+    "imu_samples": 41,
+    "imu_max_gap_sec": 0.0059359073638916016,
+    "clearance_m": 0.18043590417517952,
+    "current_supported": true,
+    "raw_w": 0.18945373682157396,
+    "bounded_w": 0.18945373682157396,
+    "prior_w": 0.034968538073244904,
+    "proposed_w": 0.0499685380732449,
+    "proposed_w_exact": false,
+    "full_input_with_proposed_w_passes": false,
+    "full_input_without_angular_slew_passes": false,
+    "gyro_only_orientation_at_same_position_passes": false,
+    "grid": [
+      {
+        "v": 0.55,
+        "w": 0.0499685380732449,
+        "accepted": false
+      },
+      {
+        "v": 0.55,
+        "w": 0.18945373682157396,
+        "accepted": false
+      },
+      {
+        "v": 0.55,
+        "w": 0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.55,
+        "w": -0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.4,
+        "w": 0.0499685380732449,
+        "accepted": false
+      },
+      {
+        "v": 0.4,
+        "w": 0.18945373682157396,
+        "accepted": true
+      },
+      {
+        "v": 0.4,
+        "w": 0.2,
+        "accepted": true
+      },
+      {
+        "v": 0.4,
+        "w": -0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.3,
+        "w": 0.0499685380732449,
+        "accepted": false
+      },
+      {
+        "v": 0.3,
+        "w": 0.18945373682157396,
+        "accepted": true
+      },
+      {
+        "v": 0.3,
+        "w": 0.2,
+        "accepted": true
+      },
+      {
+        "v": 0.3,
+        "w": -0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.2,
+        "w": 0.0499685380732449,
+        "accepted": true
+      },
+      {
+        "v": 0.2,
+        "w": 0.18945373682157396,
+        "accepted": true
+      },
+      {
+        "v": 0.2,
+        "w": 0.2,
+        "accepted": true
+      },
+      {
+        "v": 0.2,
+        "w": -0.2,
+        "accepted": false
+      },
+      {
+        "v": 0.1,
+        "w": 0.0499685380732449,
+        "accepted": true
+      },
+      {
+        "v": 0.1,
+        "w": 0.18945373682157396,
+        "accepted": true
+      },
+      {
+        "v": 0.1,
+        "w": 0.2,
+        "accepted": true
+      },
+      {
+        "v": 0.1,
+        "w": -0.2,
+        "accepted": true
+      },
+      {
+        "v": 0.05,
+        "w": 0.0499685380732449,
+        "accepted": true
+      },
+      {
+        "v": 0.05,
+        "w": 0.18945373682157396,
+        "accepted": true
+      },
+      {
+        "v": 0.05,
+        "w": 0.2,
+        "accepted": true
+      },
+      {
+        "v": 0.05,
+        "w": -0.2,
+        "accepted": true
+      }
+    ]
+  }
+]
