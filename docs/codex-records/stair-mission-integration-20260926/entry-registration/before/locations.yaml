@@ -1,0 +1,71 @@
+# Production site data remains disabled until every required pose is surveyed.
+# Location keys: id, floor_id, type, x, y, yaw.
+schema_version: 1
+configured: true
+locations:
+  - id: home_3f
+    floor_id: 3F
+    type: HOME
+    x: 2.599130
+    y: -1.983942
+    yaw: 1.455898
+  - id: stair_3f_up_entry
+    floor_id: 3F
+    type: STAIR_ENTRY
+    x: 10.054808
+    y: -6.652934
+    yaw: 1.395796
+  - id: stair_4f_from_3f
+    floor_id: 4F
+    type: LANDING
+    x: 8.621981
+    y: -4.168881
+    yaw: -1.311197
+  - id: stair_4f_to_5f
+    floor_id: 4F
+    type: STAIR_ENTRY
+    x: 9.972620
+    y: -3.892969
+    yaw: 1.870259
+  - id: stair_5f_from_4f
+    floor_id: 5F
+    type: LANDING
+    x: 8.230684
+    y: -4.731632
+    yaw: -1.822373
+  - id: stair_5f_to_rf
+    floor_id: 5F
+    type: STAIR_ENTRY
+    x: 9.433546
+    y: -6.008459
+    yaw: 1.323528
+  - id: stair_rf_landing
+    floor_id: RF
+    type: LANDING
+    x: 4.668932
+    y: -6.455249
+    yaw: 2.063171
+  - id: roof_loop_sw
+    floor_id: RF
+    type: SCAN
+    x: 0.476039
+    y: -8.048886
+    yaw: 2.093107
+  - id: roof_loop_nw
+    floor_id: RF
+    type: SCAN
+    x: -2.083093
+    y: -3.400745
+    yaw: 0.562131
+  - id: roof_loop_ne
+    floor_id: RF
+    type: SCAN
+    x: 5.900059
+    y: -3.046832
+    yaw: -1.067903
+  - id: roof_loop_se
+    floor_id: RF
+    type: SCAN
+    x: 4.106313
+    y: -5.347692
+    yaw: -1.053411

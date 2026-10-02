@@ -1,0 +1,35 @@
+{
+  "source_stamp": 1790729866.1693032,
+  "reference_stamp": 1790729508.8516517,
+  "independent_absolute_accuracy": false,
+  "matched": true,
+  "body_in_route": [
+    -0.3433541185567661,
+    -0.006777076547488731,
+    0.04421770338789993
+  ],
+  "yaw": -0.18841033594961754,
+  "candidates": [
+    {
+      "fitness": 0.9962732919254659,
+      "rmse": 0.1438885667176898,
+      "accepted": true,
+      "translation_innovation": 0.11042267720488878,
+      "rotation_innovation": 0.06542891905106167
+    },
+    {
+      "fitness": 0.9962732919254659,
+      "rmse": 0.1438885667184904,
+      "accepted": true,
+      "translation_innovation": 0.11042267721015343,
+      "rotation_innovation": 0.1995422544416628
+    },
+    {
+      "fitness": 0.9962732919254659,
+      "rmse": 0.1438885667176938,
+      "accepted": false,
+      "translation_innovation": 0.1104226772049141,
+      "rotation_innovation": 0.36912873170183064
+    }
+  ]
+}

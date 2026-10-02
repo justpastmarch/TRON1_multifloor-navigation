@@ -52,6 +52,18 @@ class ProcessTest(unittest.TestCase):
         self.assertEqual(self.worker.snapshot().epoch, 1)
         self.assertGreater(self.worker.snapshot().stamp, 200.)
 
+    def test_deskew_crosses_actual_process_boundary_with_preview(self):
+        self.worker.shutdown()
+        self.worker=ProcessTrackingWorker(TrackingSettings(frame_step=1,
+            gravity_half_window_s=.01, rotational_deskew=True), np.eye(3))
+        self.worker.start()
+        self.addCleanup(self.worker.shutdown)
+        self.feed(100.)
+        sample=self.worker.snapshot()
+        self.assertEqual(sample.deskew_state, 'rotation_to_scan_start')
+        self.assertIsNotNone(sample.display_points)
+        self.assertIsNotNone(sample.processing_started_at)
+
     def test_entry_timeout_terminates_native_owner_and_reacquires(self):
         self.feed(100.)
         old_process = self.worker._process

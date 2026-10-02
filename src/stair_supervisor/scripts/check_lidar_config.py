@@ -12,6 +12,7 @@ def main():
     parser.add_argument('config', type=Path)
     parser.add_argument('--mode', choices=('observe', 'control'), default='control')
     parser.add_argument('--snapshot-dir', type=Path)
+    parser.add_argument('--mission', action='store_true', help='Require a registered automatic entry for the 3F->4F mission')
     parser.add_argument('--status-json', type=Path, help='Compare a saved tracking_status JSON object')
     args = parser.parse_args()
     # Resolve this checkout first when invoked directly, before catkin rebuild.
@@ -37,11 +38,32 @@ def main():
                   numpy=numpy.__version__, scipy=scipy.__version__, open3d=open3d.__version__,
                   routes=[dict(id=r['id'], commissioned=r['commissioned'], phase_test_limits=r.get('phase_test_limits'))
                           for r in config.document['routes']], robot_commands_sent=0)
+    if args.mission:
+        route=control.routes.get('stair_3f_4f_up') if control is not None else None
+        blockers=[]
+        if route is None or not route['commissioned']:
+            blockers.append('3F->4F automatic mission entry has not been registered')
+        reference=None if route is None else route.get('entry_reference')
+        if reference is None:
+            blockers.append('missing surveyed entry point-cloud reference; phase-test preview is not an automatic mission reference')
+        else:
+            path=config.root/reference['path']
+            if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest()!=reference['sha256']:
+                blockers.append('entry point-cloud reference missing or fingerprint mismatch')
+            if reference.get('unique_geometry_verified') is not True:
+                blockers.append('entry reference has no operator geometry verification')
+        result['automatic_entry_configured']=not blockers
+        result['mission_blockers']=blockers
+        if blockers:
+            print(json.dumps(result,indent=2))
+            raise SystemExit(2)
     if args.status_json:
         status = json.loads(args.status_json.read_text())
         for key in ('mode', 'config_path', 'config_sha256'):
             if status.get(key) != result[key]:
                 raise ValueError('running configuration mismatch: ' + key)
+        if status.get('control_policy') != StairFeedback.policy_version:
+            raise ValueError('running control code differs; restart existing Supervisor')
         result['running_configuration_matches'] = True
     if args.snapshot_dir:
         args.snapshot_dir.mkdir(parents=True, exist_ok=True)

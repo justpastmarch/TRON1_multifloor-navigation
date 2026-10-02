@@ -190,6 +190,26 @@ class ImuRotation:
         ).as_matrix()
         return rotations[0].T @ rotations[1]
 
+    def deskew_to_start(self, points, offsets_s, stamp_s):
+        """Rotate each return into the scan-start frame; no translation model.
+
+        Require IMU coverage of the entire acquisition interval. Never turn
+        partial coverage into an apparently corrected cloud or change its stamp.
+        """
+        points = np.asarray(points, dtype=float)
+        offsets_s = np.asarray(offsets_s, dtype=float)
+        if points.ndim != 2 or points.shape[1] != 3 or offsets_s.shape != (len(points),):
+            raise ValueError('deskew needs XYZ and one offset per point')
+        if not np.isfinite(offsets_s).all() or np.any(offsets_s < 0):
+            raise ValueError('invalid point acquisition offsets')
+        self._support(stamp_s, stamp_s + float(offsets_s.max(initial=0.)))
+        if not len(points):
+            return points.copy()
+        reference = self.interpolator([stamp_s-self.times[0]]).as_matrix()[0]
+        rotations = self.interpolator(stamp_s-self.times[0]+offsets_s).as_matrix()
+        relative = np.einsum('ij,njk->nik', reference.T, rotations)
+        return np.einsum('nij,nj->ni', relative, points)
+
 
 def register_scan_to_map(
     source_xyz: FloatMatrix,

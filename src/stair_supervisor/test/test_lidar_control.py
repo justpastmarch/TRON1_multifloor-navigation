@@ -151,9 +151,14 @@ class FeedbackTest(unittest.TestCase):
                     report=self.update(i+1,100.+dt,**kwargs)
                     self.assertFalse(report.complete)
                     self.assertIn('settled', self.policy.debug['incomplete_conditions'])
-                # Target tolerances still pass: it is sustained motion that blocks.
-                self.assertTrue(self.policy.debug['completion_checks']['position'])
-                self.assertTrue(self.policy.debug['completion_checks']['yaw'])
+                # The measured pose is still within the later ALIGN tolerances;
+                # sustained motion alone must block VERIFY_ENTRY.
+                limits = self.policy.route['limits']
+                self.assertLessEqual(np.linalg.norm(self.policy.debug['pose'][:2]),
+                                     limits['position_off'])
+                self.assertLessEqual(abs(self.policy.debug['yaw']), limits['yaw_tolerance'])
+                self.assertTrue(self.policy.debug['completion_checks']['body_in_region'])
+                self.assertTrue(self.policy.debug['completion_checks']['height'])
 
     def test_entry_may_finish_during_small_bounded_motion_not_physical_stillness(self):
         for phase in (Phase.VERIFY_ENTRY, Phase.ALIGN):
@@ -312,7 +317,8 @@ class OwnershipTest(unittest.TestCase):
         class Control(ScriptedEvidence):
             phase=Phase.VERIFY_ENTRY
             route={'limits':{'handoff_sec':2.}}
-            def prepare(self,*args):pass
+            def prepare(self,*args,**kwargs):pass
+            def reset_command(self,now):pass
             def command(self):return (.1,0.)
             def loss_response(self,t):t.events.append(('commissioned_response',))
         control=Control();clock=FakeClock();transport=FakeTransport()

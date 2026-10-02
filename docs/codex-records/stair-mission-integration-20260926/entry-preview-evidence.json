@@ -1,0 +1,33 @@
+{
+  "route_id": "stair_3f_4f_up",
+  "epoch": 0,
+  "sensor_stamp": 1790397194.686699,
+  "profile_from_local": [
+    [
+      0.9894251607564263,
+      0.14504430792733666,
+      0.0,
+      -0.8152993745470056
+    ],
+    [
+      -0.14504430792733666,
+      0.9894251607564263,
+      0.0,
+      -0.1591061606426114
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.40471065156637526
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "uncertainty_m": 0.1,
+  "source": "operator-declared placement at route start; geometry overlay requires inspection; not automatic recognition"
+}

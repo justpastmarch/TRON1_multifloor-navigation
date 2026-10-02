@@ -1,0 +1,32 @@
+ M .omo/run-continuation/ses_fe79dc3abffe0h8YOLMzr2MX0n.json
+ M bundle_source_contract.py
+ M config.env
+ M src/mission_manager/CMakeLists.txt
+ M src/mission_manager/config/locations.yaml
+ M src/mission_manager/launch/system.launch
+ M src/mission_manager/src/mission_manager/navigation_hold.py
+ M src/multifloor_manager/CMakeLists.txt
+ M src/multifloor_manager/launch/navigation.launch
+ M src/multifloor_manager/src/multifloor_manager/ros_startup_localization.py
+ M src/stair_supervisor/CMakeLists.txt
+ M src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml
+ M src/stair_supervisor/scripts/check_lidar_config.py
+ M src/stair_supervisor/src/stair_supervisor/ros_lidar.py
+ M src/stair_supervisor/src/stair_supervisor/ros_node.py
+ M src/stair_supervisor/src/stair_supervisor/stair_feedback.py
+ M src/stair_supervisor/src/stair_supervisor/supervisor.py
+ M src/stair_supervisor/test/test_stair_readiness.py
+ M test/test_process_boundary_contract.py
+?? docs/codex-records/stair-control-repair-20260926/
+?? docs/codex-records/stair-mission-integration-20260926/
+?? docs/stair-control-repair-20260926.md
+?? docs/stair-mission-integration-20260926.md
+?? src/mission_manager/config/arrival_hold.yaml
+?? src/mission_manager/test/test_mission_precision.py
+?? src/multifloor_manager/test/test_idle_localization.py
+?? src/stair_supervisor/config/stair_3f_4f_entry.npy
+?? src/stair_supervisor/scripts/prepare_stair_mission.py
+?? src/stair_supervisor/test/test_field_control_repair.py
+?? src/stair_supervisor/test/test_mission_handoff.py
+?? src/stair_supervisor/test/test_prepare_stair_mission.py
+?? "tair control and preserve field-test records\""

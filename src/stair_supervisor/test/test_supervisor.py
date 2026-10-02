@@ -183,7 +183,7 @@ class StairSupervisorTest(unittest.TestCase):
 
         # Then: phases are ordered, NAV was discarded, and the old epoch is stale.
         self.assertEqual(result.code, ResultCode.OK)
-        self.assertEqual(list(dict.fromkeys(phases)), list(Phase))
+        self.assertEqual(list(dict.fromkeys(phases)), [p for p in Phase if p not in (Phase.ROOFTOP_TURN, Phase.FORWARD_SEGMENT_3)])
         self.assertEqual(supervisor.state, SupervisorState.NAV)
         self.assertEqual(supervisor.ownership_epoch, old_epoch + 1)
         stair_start = transport.events.index(("stair", True))

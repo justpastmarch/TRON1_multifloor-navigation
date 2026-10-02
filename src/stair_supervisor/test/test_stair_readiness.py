@@ -1,6 +1,7 @@
 """Boundary/entry regressions with synthetic geometry; no hardware commands."""
 from dataclasses import replace
 import importlib.util
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -83,7 +84,17 @@ class ReadinessTest(unittest.TestCase):
         cfg=load_lidar_configuration(root/'stair_lidar_3f_4f_test.yaml','control',False)
         r=cfg.document['routes'][0]; profiles=load_stair_configuration(root)
         c=StairFeedback(None,cfg.document['base_from_lidar'],[r])
-        self.assertFalse(r['commissioned'])
+        if r['commissioned']:
+            reference=r['entry_reference']
+            self.assertIs(reference['unique_geometry_verified'],True)
+            template=root/reference['path']
+            self.assertEqual(hashlib.sha256(template.read_bytes()).hexdigest(),reference['sha256'])
+            points=np.load(str(template),allow_pickle=False)
+            self.assertGreaterEqual(len(points),200)
+            self.assertEqual(points.shape[1],3)
+            self.assertTrue(np.isfinite(points).all())
+        else:
+            self.assertNotIn('entry_reference',r)
         self.assertAlmostEqual(r['flight_1'][1][2],9*.17)
         self.assertAlmostEqual(r['flight_2'][1][2],19*.17)
         self.assertAlmostEqual(normalize_twist(r['limits']['min_flight_v'],0,profiles.robot.websocket_full_scale).x,1.)

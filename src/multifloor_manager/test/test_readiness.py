@@ -52,7 +52,7 @@ class LocalizationReadinessTest(unittest.TestCase):
         state = observe_scan(state, Nanoseconds(int(POSE_AT) - 1), NOW, True)
         state = observe_scan(state, Nanoseconds(int(POSE_AT) + 1), stale_received, True)
         state = observe_scan(state, Nanoseconds(int(POSE_AT) + 2), NOW, False)
-        state = observe_odometry(state, Nanoseconds(int(POSE_AT) + 3), NOW, 0.02, 0.0)
+        state = observe_odometry(state, Nanoseconds(int(POSE_AT) + 3), NOW, 0.04, 0.0)
         for offset in (4, 5, 6):
             state = observe_pose(
                 state,
@@ -112,3 +112,18 @@ class LocalizationReadinessTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FieldIdleToleranceTest(unittest.TestCase):
+    def test_small_clock_skew_does_not_reject_fresh_data(self):
+        from multifloor_manager.readiness import _fresh
+        self.assertTrue(_fresh(1_003_000_000,1_000_000_000,500_000_000))
+        self.assertFalse(_fresh(1_011_000_000,1_000_000_000,500_000_000))
+        self.assertFalse(_fresh(400_000_000,1_000_000_000,500_000_000))
+    def test_idle_creep_is_distinct_from_active_motion(self):
+        from multifloor_manager.readiness import arm_localization, observe_odometry
+        s=arm_localization(1_000_000_000)
+        s=observe_odometry(s,1_100_000_000,1_103_000_000,.019,.008)
+        self.assertTrue(s.odom_stationary)
+        s=observe_odometry(s,1_200_000_000,1_203_000_000,.10,.008)
+        self.assertFalse(s.odom_stationary)

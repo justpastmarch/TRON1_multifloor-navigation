@@ -111,6 +111,8 @@ class MultifloorManagerNode:
         if startup_mode != "disabled":
             from multifloor_manager.ros_startup_localization import StartupLocalization
             self.startup = StartupLocalization(self, startup_mode)
+        from multifloor_manager.ros_floor_selection import FloorSelection
+        self.floor_selection = FloorSelection(self)
 
     def _feedback(self, phase: str, detail: str) -> None:
         self.server.publish_feedback(FloorTransitionFeedback(phase=phase, detail=detail))

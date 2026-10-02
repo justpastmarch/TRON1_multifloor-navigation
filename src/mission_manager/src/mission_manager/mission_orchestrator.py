@@ -38,15 +38,20 @@ class MissionOrchestrator:
         executor: SegmentExecutor,
         settings: MissionOrchestratorSettings,
         start_from_current_pose: bool = False,
+        floor_anchor_resolver=None,
     ) -> None:
         self._planner = planner
         self._executor = executor
         self._anchor = LogicalAnchor(settings.initial_location_id)
         self._inspect_profile_id = settings.inspect_profile_id
         self._start_from_current_pose = start_from_current_pose
+        self._floor_anchor_resolver = floor_anchor_resolver
+        self.photo = None
 
     @property
     def confirmed_location_id(self) -> str:
+        if self._floor_anchor_resolver is not None:
+            self._anchor = LogicalAnchor(self._floor_anchor_resolver(self._anchor.location_id))
         return self._anchor.location_id
 
     def cancel_active(self) -> None:
@@ -59,6 +64,11 @@ class MissionOrchestrator:
         cancellation_requested: Callable[[], bool],
     ) -> MissionRunResult:
         """Plan outbound once, execute it, then optionally plan a fresh return."""
+        self.confirmed_location_id  # synchronize only from confirmed floor state
+        if request.mission_type in (MissionType.PHOTO_TOUR, MissionType.RETURN_TO_START):
+            if self.photo is None:
+                return MissionRunResult(SegmentExecutionStatus.FAILED,2,'photo mission unavailable',request.mission_id,'')
+            return self.photo.run(self,request,feedback,cancellation_requested)
         if request.mission_type is MissionType.RECORD_ROUTE:
             outcome = RecordRouteRunner(
                 RecordRouteRuntime(self._planner, self._executor, self._inspect_profile_id)

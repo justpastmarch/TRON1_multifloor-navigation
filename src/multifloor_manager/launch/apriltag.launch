@@ -10,8 +10,11 @@
        receives no synchronised pair and crashes with zarray_size assertion. -->
   <node pkg="multifloor_manager" type="camera_info_stamp_relay.py"
         name="camera_info_stamp_relay" output="screen">
+    <param name="input_transport" value="compressed"/>
+    <remap from="~compressed_image" to="$(arg image_rect)/compressed"/>
     <remap from="~image" to="$(arg image_rect)"/>
     <remap from="~camera_info" to="$(arg camera_info)"/>
+    <remap from="~compressed_out" to="/apriltag_camera/image_raw/compressed"/>
     <remap from="~image_out" to="/apriltag_camera/image_raw"/>
     <remap from="~camera_info_out" to="/apriltag_camera/camera_info"/>
   </node>

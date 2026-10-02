@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .web_manual import WebManual
+
 from dataclasses import dataclass
 from enum import Enum
 import threading
@@ -56,7 +58,8 @@ class RobotTransport:
         self._client = DirectRobotClient(config.connection, connection_factory)
         self._state = TransportState.NEW
         self._fault: TransportFault | None = None
-        self._command_lock = threading.Lock()
+        self._command_lock = threading.RLock()
+        self._web_manual = WebManual()
         self._desired_twist = NormalizedTwist.zero()
         self._latest_twist = NormalizedTwist.zero()
         self._updated_at = float("-inf")
@@ -221,13 +224,45 @@ class RobotTransport:
             self._latest_twist = command
             self._updated_at = self._clock.monotonic()
 
+    def begin_web_manual(self):
+        self._require_ready()
+        with self._command_lock:
+            return self._web_manual.begin(self._clock.monotonic())
+
+    def update_web_manual(self, lease, sequence, forward, turn, remaining):
+        self._require_ready()
+        with self._command_lock:
+            now = self._clock.monotonic()
+            self._web_manual.update(lease, sequence, forward, turn, now, remaining)
+            self.send_current()
+
+    def end_web_manual(self, lease):
+        with self._command_lock:
+            self._web_manual.end(lease)
+            self._send_twist(NormalizedTwist.zero(), self._clock.monotonic())
+
+    def expire_web_manual(self):
+        with self._command_lock:
+            now = self._clock.monotonic()
+            if self._web_manual.lease is not None and not self._web_manual.ended and now >= self._web_manual.expires:
+                self._web_manual.end(self._web_manual.lease)
+                self._send_twist(NormalizedTwist.zero(), now)
+
+    def web_manual_active(self):
+        with self._command_lock:
+            return self._web_manual.selected(self._clock.monotonic()) is not None
+
+    def web_manual_status(self):
+        with self._command_lock:
+            return self._web_manual.snapshot(self._clock.monotonic())
+
     def send_current(self) -> None:
         """Emit one stream tick, replacing stale input with a complete zero."""
         self._raise_if_unavailable()
         if self._state is not TransportState.READY:
             raise TransportFault("robot transport is not ready for motion")
-        now = self._clock.monotonic()
         with self._command_lock:
+            now = self._clock.monotonic()
             age = now - self._updated_at
             desired_twist = self._desired_twist
             self._latest_twist = (
@@ -235,7 +270,10 @@ class RobotTransport:
                 if age > self._config.stream.watchdog_sec
                 else desired_twist
             )
-        self._send_twist(self._latest_twist, now)
+            manual = self._web_manual.selected(now)
+            if manual is not None:
+                self._latest_twist = manual
+            self._send_twist(self._latest_twist, now)
 
     def request_stair_mode(self, enabled: bool) -> None:
         """Use the documented wheel-foot stair request and verify its resulting mode."""

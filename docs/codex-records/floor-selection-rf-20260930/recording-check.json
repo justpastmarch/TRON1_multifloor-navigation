@@ -1,0 +1,40 @@
+{
+  "started": {
+    "state": "recording",
+    "path": "/mnt/ethan/tron-bags/live/ui-tests/ui_test_20260930_101109_9e27e744.bag",
+    "error": "",
+    "busy": true,
+    "log_path": "/mnt/ethan/tron-bags/live/ui-tests/ui_test_20260930_101109_9e27e744.log",
+    "camera_format": "RGB/IR JPEG + depth compressedDepth; raw camera duplicates excluded"
+  },
+  "finished": {
+    "state": "saved",
+    "path": "/mnt/ethan/tron-bags/live/ui-tests/ui_test_20260930_101109_9e27e744.bag",
+    "error": "",
+    "busy": false,
+    "log_path": "/mnt/ethan/tron-bags/live/ui-tests/ui_test_20260930_101109_9e27e744.log",
+    "camera_format": "RGB/IR JPEG + depth compressedDepth; raw camera duplicates excluded"
+  },
+  "metrics": {
+    "before": {
+      "count": 20,
+      "median": 0.2572740368777886,
+      "max": 0.3575400416739285
+    },
+    "recording": {
+      "count": 54,
+      "median": 0.35714687893050723,
+      "max": 0.4572827888187021
+    },
+    "after": {
+      "count": 23,
+      "median": 0.2580047392984852,
+      "max": 0.4572578168590553
+    }
+  },
+  "temporary_artifacts_removed": [
+    "/mnt/ethan/tron-bags/live/ui-tests/ui_test_20260930_101109_9e27e744.bag",
+    "/mnt/ethan/tron-bags/live/ui-tests/ui_test_20260930_101109_9e27e744.log"
+  ],
+  "bag_bytes": 220272353
+}

@@ -1,0 +1,26 @@
+{
+  "phases": [
+    "VERIFY_ENTRY",
+    "ALIGN",
+    "FORWARD_SEGMENT_1",
+    "LANDING",
+    "TURN_TO_NEXT_FLIGHT",
+    "FORWARD_SEGMENT_2",
+    "ROOFTOP_TURN",
+    "FORWARD_SEGMENT_3",
+    "EXIT_CONFIRM"
+  ],
+  "phase_budget_sec": 350.0,
+  "profile_timeout_sec": 380.0,
+  "right_turn_degrees": -90,
+  "upper_landing_m": [
+    1.35,
+    1.48
+  ],
+  "turn_sweep_samples": 91,
+  "turn_sweep_supported": true,
+  "margin_with_anchor_m": 0.12000000000000001,
+  "third_end_height_m": 3.5700000000000003,
+  "physical_success_proven": false,
+  "reference_commissioned": true
+}

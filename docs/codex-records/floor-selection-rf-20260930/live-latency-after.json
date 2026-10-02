@@ -1,0 +1,17 @@
+{
+  "geometry_age_sec": {
+    "median": 0.3258919837826397,
+    "max": 0.526183303038124
+  },
+  "transport_delay_sec": {
+    "median": 0.15999531745910645,
+    "max": 0.2967221736907959
+  },
+  "compute_sec": {
+    "median": 0.05494893150171265,
+    "max": 0.0913346330053173
+  },
+  "samples": 150,
+  "timestamp": 1790729429.5351808,
+  "geometry_valid": 150
+}

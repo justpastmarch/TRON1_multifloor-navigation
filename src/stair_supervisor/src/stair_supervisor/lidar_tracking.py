@@ -35,6 +35,8 @@ class TrackingSettings:
     queue_capacity: int = 8
     imu_wait_sec: float = 0.15
     registration: RegistrationConfig = RegistrationConfig(0.2, 0.8, 30, 0.35, 0.5, 0.35)
+    rotational_deskew: bool = False
+    control_geometry_points: bool = False
 
 
 @dataclass(frozen=True)
@@ -57,6 +59,11 @@ class TrackingSample:
     prediction_source: str = "none"
     compute_sec: float = 0.0
     calibration_hash: str = ""
+    processing_started_at: float | None = None
+    scan_span_sec: float = 0.
+    deskew_state: str = "disabled"
+    deskew_compute_sec: float = 0.
+    display_points: tuple | None = None
 
 
 def load_imu_rotation(path):
@@ -91,11 +98,14 @@ class TrackingEngine:
     def process(self, stamp, points, imu_rows, received_at, measured_at, now=time.monotonic):
         started = now()
         settings = self.settings
-        xyz = np.asarray(points, dtype=float).reshape(-1, 3)
+        incoming = np.asarray(points, dtype=float)
+        if incoming.ndim != 2 or incoming.shape[1] not in (3, 4):
+            raise ValueError('scan needs XYZ or XYZ with acquisition offset')
+        xyz = incoming[:, :3]
+        offsets = incoming[:, 3] if incoming.shape[1] == 4 else None
         distance = np.einsum("ij,ij->i", xyz, xyz)
-        xyz = xyz[np.isfinite(xyz).all(axis=1) & (distance >= 0.25) &
-                  (distance <= settings.max_range_m ** 2)]
-        scan = voxel_downsample_points(xyz, settings.registration.voxel_size_m)
+        offset_mask = np.isfinite(xyz).all(axis=1) & (distance >= .25) & (distance <= settings.max_range_m ** 2)
+        xyz = xyz[offset_mask]
         bootstrap = self.last_stamp is None
         prediction = self.pose.copy()
         imu_error = ""
@@ -104,6 +114,32 @@ class TrackingEngine:
             imu = ImuRotation(np.asarray(imu_rows, dtype=float), self.rotation, settings.imu_max_gap_s)
         except ValueError as error:
             imu_error = str(error)
+        deskew_state, deskew_sec, scan_span = 'disabled', 0., 0.
+        if offsets is not None and np.isfinite(offsets).all() and np.all(offsets >= 0):
+            scan_span = float(offsets.max(initial=0.))
+        if settings.rotational_deskew:
+            began = now()
+            try:
+                if imu is None or offsets is None:
+                    raise ValueError(imu_error or 'point acquisition offsets missing')
+                if not np.isfinite(offsets).all() or np.any(offsets < 0):
+                    raise ValueError('invalid point acquisition offsets')
+                scan_span = float(offsets.max(initial=0.))
+                imu._support(stamp, stamp + scan_span)
+                xyz = imu.deskew_to_start(xyz, offsets[offset_mask], stamp)
+                deskew_state = 'rotation_to_scan_start'
+            except ValueError as error:
+                self.sequence += 1
+                finished = now()
+                return TrackingSample(self.epoch, self.sequence, stamp, received_at, measured_at,
+                    finished, self.last_geometry_at,
+                    tuple(self.pose.flat) if self.last_stamp is not None else None,
+                    False, 'DEGRADED', 'deskew unavailable: '+str(error),
+                    compute_sec=finished-started, calibration_hash=self.calibration_hash,
+                    processing_started_at=started, scan_span_sec=scan_span,
+                    deskew_state='unavailable', deskew_compute_sec=finished-began)
+            deskew_sec = now()-began
+        scan = voxel_downsample_points(xyz, settings.registration.voxel_size_m)
         source = "none" if bootstrap else "gyro"
         if not bootstrap:
             try:
@@ -153,6 +189,10 @@ class TrackingEngine:
             "BOOTSTRAP" if accepted and bootstrap else "TRACKED" if accepted else "DEGRADED",
             reason, fitness, rmse, translation, rotation, source,
             finished - started, self.calibration_hash,
+            processing_started_at=started, scan_span_sec=scan_span,
+            deskew_state=deskew_state, deskew_compute_sec=deskew_sec,
+            display_points=(tuple(scan[::max(1, (len(scan)+4999)//5000)].flat)
+                            if accepted and (settings.rotational_deskew or settings.control_geometry_points) else None),
         )
 
 
@@ -306,7 +346,9 @@ class TrackingWorker:
                 epoch, stamp, points, received_at, measured_at = item
                 if engine is None or engine.epoch != epoch:
                     engine = self.engine_factory(self.settings, self.rotation, self.calibration_hash, epoch)
-                required = stamp + (self.settings.gravity_half_window_s if engine.last_stamp is None else 0)
+                acquisition_span = (float(np.max(points[:, 3], initial=0.))
+                                    if self.settings.rotational_deskew and points.shape[1] == 4 else 0.)
+                required = stamp + max(acquisition_span, self.settings.gravity_half_window_s if engine.last_stamp is None else 0)
                 wait_budget = self.settings.imu_wait_sec + (self.settings.gravity_half_window_s if engine.last_stamp is None else 0)
                 if (not self._imu or self._imu[-1][0] < required) and self.clock() - received_at < wait_budget:
                     self._condition.wait(0.01)

@@ -37,14 +37,6 @@ class Direction(str, Enum):
 
 @dataclass(frozen=True)
 class StairProfile:
-    __slots__ = (
-        "id", "direction", "enabled", "linear_speed", "angular_speed",
-        "alignment_yaw_rad", "flight_1_distance_m", "landing_dwell_sec",
-        "landing_turn_yaw_rad", "flight_2_distance_m", "exit_dwell_sec",
-        "distance_tolerance_m", "yaw_tolerance_rad", "sensor_freshness_sec",
-        "max_sample_gap_sec",
-        "max_odom_step_m", "max_yaw_step_rad", "timeout_sec",
-    )
     id: str
     direction: Direction
     enabled: bool
@@ -63,6 +55,9 @@ class StairProfile:
     max_odom_step_m: float
     max_yaw_step_rad: float
     timeout_sec: float
+    # Optional normalized forward inputs for two downhill flights. Empty keeps
+    # the legacy speed/distance-sign policy and all old constructors compatible.
+    downhill_forward_inputs: Tuple[float, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -191,7 +186,7 @@ def _load_profiles(root: Path) -> Tuple[StairProfile, ...]:
     for index, value in enumerate(raw_profiles):
         field = f"profiles[{index}]"
         item = _mapping(value, path, field)
-        _keys(item, expected, path, field)
+        _keys(item, expected | ({'downhill_forward_inputs'} & set(item)), path, field)
         identifier = _identifier(item["id"], path, field + ".id")
         if identifier in seen:
             raise _error(path, field + ".id", f"duplicate ID {identifier!r}")
@@ -202,6 +197,13 @@ def _load_profiles(root: Path) -> Tuple[StairProfile, ...]:
             raise _error(path, field + ".direction", "expected UP or DOWN") from None
         if type(item["enabled"]) is not bool:
             raise _error(path, field + ".enabled", "expected boolean")
+        inputs = item.get('downhill_forward_inputs', [])
+        if (not isinstance(inputs, list) or (inputs and (direction is not Direction.DOWN or len(inputs) != 2))
+                or any(type(v) not in (int, float) or not math.isfinite(v) or not 0 < v <= 1 for v in inputs)):
+            raise _error(path, field + '.downhill_forward_inputs', 'expected two positive normalized DOWN inputs <= 1')
+        if inputs and (_nonzero(item, 'flight_1_distance_m', path, field) <= 0 or
+                       _nonzero(item, 'flight_2_distance_m', path, field) <= 0):
+            raise _error(path, field + '.downhill_forward_inputs', 'forward descent requires positive distances')
         profile = StairProfile(
             identifier,
             direction,
@@ -221,6 +223,7 @@ def _load_profiles(root: Path) -> Tuple[StairProfile, ...]:
             _positive(item, "max_odom_step_m", path, field),
             _positive(item, "max_yaw_step_rad", path, field),
             _positive(item, "timeout_sec", path, field),
+            tuple(inputs),
         )
         if profile.max_sample_gap_sec > profile.sensor_freshness_sec:
             raise _error(path, field + ".max_sample_gap_sec", "must not exceed sensor_freshness_sec")
@@ -289,7 +292,11 @@ def load_lidar_configuration(path: Path, mode: str = "off", observe_only: bool =
     tracking = _mapping(document["tracking"], path, "tracking")
     keys = {"frame_step", "local_map_scans", "max_range_m", "imu_max_gap_s", "gravity_half_window_s",
             "imu_buffer_sec", "imu_capacity", "queue_capacity", "imu_wait_sec"}
-    _keys(tracking, keys, path, "tracking")
+    _keys({k: v for k, v in tracking.items() if k not in ('rotational_deskew', 'control_geometry_points')}, keys, path, "tracking")
+    if 'control_geometry_points' in tracking and type(tracking['control_geometry_points']) is not bool:
+        raise _error(path, 'tracking.control_geometry_points', 'expected boolean')
+    if "rotational_deskew" in tracking and type(tracking['rotational_deskew']) is not bool:
+        raise _error(path, 'tracking.rotational_deskew', 'expected boolean')
     for key in keys:
         _positive(tracking, key, path, "tracking")
     for key in ("frame_step", "local_map_scans", "imu_capacity", "queue_capacity"):
@@ -302,5 +309,13 @@ def load_lidar_configuration(path: Path, mode: str = "off", observe_only: bool =
     _list(document["routes"], path, "routes")
     if mode == "control" and not configured:
         raise _error(path, "configured", "LiDAR control requires commissioned geometry/response; observe remains available")
+    if any('reverse_of' in route and 'flight_1' not in route for route in document['routes']):
+        from .reverse_route import reverse_route
+        stair = load_stair_configuration(path.parent)
+        sources = {r['id']: r for r in document['routes'] if 'flight_1' in r}
+        profiles = {p.id: p for p in stair.profiles}
+        document['routes'] = [reverse_route(r, sources[r['reverse_of']], profiles[r['id']],
+            stair.robot.websocket_full_scale.linear_mps) if 'flight_1' not in r else r
+            for r in document['routes']]
     return LidarConfiguration(mode, observe_only, path.parent, document,
                               str(path.resolve()), hashlib.sha256(content).hexdigest())

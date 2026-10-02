@@ -1,0 +1,25 @@
+{
+  "source_config": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+  "source_config_sha256": "6c5e4c8ea2c672b4a11a867f28cfe47dd70a544ce243b0b5629750d1e0e8c9bb",
+  "source_locations": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/mission_manager/config/locations.yaml",
+  "source_locations_sha256": "692e4de1ed7a977b323b2d19c286bc8ffc7cca401cfe3961602b1e642777f491",
+  "candidate_hashes": {
+    "entry.npy": "507f594e1db74370bdd961f9d1671e498a0400a3840953150dbbef1bb7ad6469",
+    "lidar.yaml": "545cce7ac5005db7a47290c127013ef232919f50b1461842d07500f6a95a8e9d",
+    "locations.yaml": "d02ff946c9cc4626bb8921dba7adf777c042d17919352823ed794b7b4c5cbc5c"
+  },
+  "operator_assertions": [
+    "body center .45m before first riser, centered and facing upstairs",
+    "unique stair-entry geometry and route overlay checked; anchor error within existing .10m budget",
+    "3F scan/map pose visually checked"
+  ],
+  "evidence": "operator survey; fitness is not an independent position-error measurement",
+  "waiting_location": "stair_4f_from_3f",
+  "robot_commands_sent": 0,
+  "entry_match_tuning": {
+    "max_rmse_m": 0.18,
+    "previous_m": 0.06,
+    "basis": "8 independent subsequent raw scans processed identically to worker: RMSE 0.116-0.157 m at 0.2 m voxel; hypotheses converge, fitted body within 0.012 m of declared start; 0.15 m rejected 2/8. This is cloud residual, not an independent pose error bound.",
+    "unchanged": "anchor uncertainty 0.10 m, fitness 0.75, score gap 0.05, gravity checks, route supports, sensor age"
+  }
+}

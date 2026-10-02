@@ -99,7 +99,10 @@ class StairAdmissionBroker:
             expected.ownership_epoch,
         ):
             return StairEntryDecision(False, "stair admission context mismatch")
-        return active.recheck()
+        decision = active.recheck()
+        if self._clock() > active.expires_at:
+            return StairEntryDecision(False, "stair admission token expired during re-observation")
+        return decision
 
     def clear(self, token: str) -> None:
         with self._lock:

@@ -1,5 +1,7 @@
 # Mini PC ROS stack 전환 및 TRON1 전체 운용 가이드
 
+> 2026-09-30 센서 자동 시작 적용: 현재 시작·종료 방법은 [센서 부팅 서비스 안내](mini-pc-sensor-autostart-20260930.md)를 따른다. 아래 문서는 이전 수동 전환 절차를 포함한다. systemd 센서는 tmux/pkill 대신 `systemctl --user stop tron1-sensors.service`로 정지해야 한다. Astra로 전환하기 전에는 새 서비스를 `disable --now`하고 사용자 PC의 `run.sh`도 종료한다.
+
 ## 1. 목적과 소유권
 
 Mini PC에는 서로 동시에 실행하면 안 되는 두 ROS stack이 있다.
@@ -66,7 +68,7 @@ ssh "$SSH_TARGET" 'loginctl show-user "$USER" -p Linger'
 
 ## 3. 전원 재투입 후 매번 수행할 시작 절차
 
-`astra-web.service` 비활성화는 유지되지만, 현재 TRON1 stack은 자동 시작하지 않는다. Workstation과 Mini PC 전원을 다시 켠 뒤 아래 절차를 매번 실행한다.
+MiniPC 센서 서비스는 부팅 때 자동으로 시작해 workstation master를 기다린다. Workstation의 master와 임무/UI 스택은 여전히 `run.sh`로 실행한다. 최신 절차는 위 센서 부팅 서비스 안내를 따른다.
 
 ### 3.1 실차 안전 준비
 
@@ -294,7 +296,7 @@ rostopic echo -n 1 /stair_supervisor/state
 
 `./run.sh`를 실행한 terminal에서 `Ctrl+C`를 한 번 누른다. Workstation의 top-level launch와 Robot WebSocket tunnel은 종료된다.
 
-Mini PC의 `wf_mapping` sensor stack은 다음 실행에서 재사용하기 위해 남는다. Mini PC 전원을 끄면 종료되며, 다음 `./run.sh`가 다시 시작한다.
+MiniPC 센서는 systemd가 관리한다. Workstation master가 종료되면 센서 launch를 정리하고 다시 대기하며, 다음 master 실행 때 재연결한다. 아래 tmux 종료 명령은 서비스가 없는 이전 설치에만 해당한다.
 
 Mini PC sensor stack까지 명시적으로 종료하려면 다음을 실행한다.
 
@@ -364,4 +366,4 @@ ssh "$SSH_TARGET" \
 
 ### 재부팅 후 아무 stack도 시작되지 않음
 
-정상이다. `astra-web.service`는 의도적으로 비활성화돼 있으며 현재 TRON1 stack은 workstation의 `./run.sh`로 매번 시작한다.
+`tron1-sensors.service`의 상태와 로그를 확인한다. master 대기는 정상이며 workstation에서 `./run.sh`를 실행하면 된다. 자세한 구분은 센서 부팅 서비스 안내를 참조한다.

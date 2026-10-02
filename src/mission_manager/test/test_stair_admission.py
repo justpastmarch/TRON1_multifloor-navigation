@@ -51,6 +51,17 @@ class StairAdmissionBrokerTest(unittest.TestCase):
                 # Then: the grant is rejected without becoming reusable.
                 self.assertFalse(result.accepted)
 
+    def test_expiry_during_bounded_recheck_cannot_admit(self):
+        now=[10.]
+        broker=StairAdmissionBroker(clock=lambda:now[0], lifetime_sec=1.)
+        def recheck():
+            now[0]=11.1
+            return StairEntryDecision(True,'new observation')
+        token=broker.issue(StairAdmissionContext('up',1,0),recheck)
+        result=broker.validate(StairAdmissionRequest(token,'up',1,0))
+        self.assertFalse(result.accepted)
+        self.assertIn('during re-observation',result.reason)
+
 
 if __name__ == "__main__":
     unittest.main()

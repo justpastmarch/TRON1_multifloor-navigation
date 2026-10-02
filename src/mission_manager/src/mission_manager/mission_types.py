@@ -15,6 +15,8 @@ from mission_manager.route_planner import RouteSegment
 class MissionType(str, Enum):
     NAVIGATE = "navigate"
     INSPECT = "inspect"
+    PHOTO_TOUR = "photo_tour"
+    RETURN_TO_START = "return_to_start"
     RECORD_ROUTE = "record_route"
 
 

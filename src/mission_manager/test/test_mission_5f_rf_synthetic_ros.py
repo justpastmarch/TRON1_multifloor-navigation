@@ -92,7 +92,7 @@ class Mission5fRfSyntheticRosTest(unittest.TestCase):
         self._set_scenario(case.scenario)
         state, result, _feedback = self._run()
         self.assertEqual(state, GoalStatus.ABORTED)
-        self.assertEqual(result.result_code, case.result_code)
+        self.assertEqual(result.result_code, case.result_code, str(result))
         self.assertIn(case.reason, result.reason)
         self._restore_home()
 
@@ -115,7 +115,7 @@ class Mission5fRfSyntheticRosTest(unittest.TestCase):
             ("NAVIGATION", "home_5f"),
         )
         actual = tuple((item.segment_type, item.target_id) for item in feedback)
-        self.assertEqual(state, GoalStatus.SUCCEEDED)
+        self.assertEqual(state, GoalStatus.SUCCEEDED, str(result))
         self.assertEqual(result.result_code, MissionResult.OK)
         self.assertTrue(result.artifact_path.endswith(".bag"))
         self.assertEqual(actual, expected)

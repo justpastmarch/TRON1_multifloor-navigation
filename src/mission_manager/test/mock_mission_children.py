@@ -53,6 +53,7 @@ class MockMissionChildren:
         self._amcl_pub = rospy.Publisher(
             "/amcl_pose", PoseWithCovarianceStamped, queue_size=1, latch=True
         )
+        self._nomotion = rospy.Service("/request_nomotion_update", Empty, self._refresh_pose)
         self._clear = rospy.Service("/move_base/clear_costmaps", Empty, self._clear_costmaps)
         self._nav = actionlib.SimpleActionServer(
             "/move_base", MoveBaseAction, execute_cb=self._execute_nav, auto_start=False
@@ -177,8 +178,14 @@ class MockMissionChildren:
                 ownership_epoch=1,
             )
         )
-        self._odom_pub.publish(Odometry())
+        odom = Odometry()
+        odom.header.stamp = rospy.Time.now()
+        self._odom_pub.publish(odom)
         self._publish_amcl_pose()
+
+    def _refresh_pose(self, _request):
+        self._publish_amcl_pose()
+        return EmptyResponse()
 
     def _publish_amcl_pose(self) -> None:
         location = self._locations.get(self._current_location_id)

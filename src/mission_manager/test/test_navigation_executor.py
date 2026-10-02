@@ -71,7 +71,8 @@ class NavigationExecutorTest(unittest.TestCase):
         self.assertEqual((goal.header.frame_id, goal.header.stamp), ("map", Time(123, 456)))
         self.assertAlmostEqual(goal.pose.orientation.z ** 2 + goal.pose.orientation.w ** 2, 1.0)
 
-    def test_ros_factory_uses_only_move_base_action_and_clear_service(self) -> None:
+    @mock.patch("mission_manager.navigation_executor.rospy.get_param", side_effect=lambda name, default: default)
+    def test_ros_factory_uses_only_move_base_action_and_clear_service(self, _params) -> None:
         # Given: patched ROS factories and no initialized production node.
         client = FakeActionClient((GoalStatus.SUCCEEDED,))
         sources = RosNavigationSources(lambda: self.floor_state, lambda: self.supervisor_state, self.barrier)
@@ -121,6 +122,29 @@ class NavigationExecutorTest(unittest.TestCase):
         # Then: NAVIGATION_FAILED leaves no active goal or third attempt.
         self.assertEqual((result.outcome, result.status), (NavigationOutcome.NAVIGATION_FAILED, GoalStatus.ABORTED))
         self.assertEqual((result.attempts, len(client.goals), self.costmaps.calls, executor.has_active_goal), (2, 2, 1, False))
+
+    def test_progress_failure_does_not_blindly_clear_and_retry(self) -> None:
+        executor, client = self.executor((GoalStatus.ABORTED,))
+        client.failure_reason = 'NAV_NO_PROGRESS'
+        result = executor.execute(self.request())
+        self.assertEqual(result.outcome, NavigationOutcome.NAVIGATION_FAILED)
+        self.assertEqual((result.attempts, self.costmaps.calls), (1, 0))
+        self.assertEqual(executor.failure_reason, 'NAV_NO_PROGRESS')
+
+    def test_late_terminal_after_wait_error_releases_only_old_goal(self) -> None:
+        executor, client = self.executor((GoalStatus.SUCCEEDED,))
+        def fail_wait():
+            raise RuntimeError('cancel acknowledgement timeout')
+        client.on_wait = fail_wait
+        with self.assertRaises(RuntimeError):
+            executor.execute(self.request())
+        self.assertTrue(executor.has_active_goal)
+        old_callback = client.done_callback
+        old_callback(GoalStatus.PREEMPTED, None)
+        self.assertFalse(executor.has_active_goal)
+        self.assertEqual(executor.execute(self.request()).outcome, NavigationOutcome.SUCCEEDED)
+        old_callback(GoalStatus.ABORTED, None)
+        self.assertFalse(executor.has_active_goal)
 
     def test_lost_goal_permits_only_the_same_single_retry(self) -> None:
         # Given: actionlib reports LOST before a successful retry.
@@ -275,3 +299,19 @@ class NavigationExecutorTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class EntryOutcomeTest(NavigationExecutorTest):
+    def test_entry_region_requires_explicit_request(self):
+        executor, client = self.executor((GoalStatus.PREEMPTED,))
+        client.entry_region_reached = True
+        result = executor.execute(self.request())
+        self.assertEqual(result.outcome, NavigationOutcome.CANCELLED)
+
+    def test_entry_region_success_preserves_real_move_base_status(self):
+        from dataclasses import replace
+        executor, client = self.executor((GoalStatus.PREEMPTED,))
+        client.entry_region_reached = True
+        result = executor.execute(replace(self.request(), entry_approach=True))
+        self.assertEqual(result.outcome, NavigationOutcome.SUCCEEDED)
+        self.assertEqual(result.status, GoalStatus.PREEMPTED)

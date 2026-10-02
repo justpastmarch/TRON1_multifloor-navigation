@@ -71,3 +71,7 @@ edges:
     from: roof_loop_se
     to: stair_rf_landing
     type: NAV
+  - id: stair_5f_entry_to_landing
+    from: stair_5f_to_rf
+    to: stair_5f_from_4f
+    type: NAV

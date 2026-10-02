@@ -32,6 +32,7 @@
   <arg name="stair_lidar_observe_only" default="true"/>
   <arg name="stair_lidar_config" default="$(find stair_supervisor)/config/stair_lidar.yaml"/>
   <arg name="arrival_hold_enabled" default="false"/>
+  <arg name="console_port" default="0"/>
   <arg name="arrival_hold_settings" default=""/>
 
   <!-- /scan is published by the mini PC sensor stack (mid360s_laserscan).
@@ -43,6 +44,7 @@
     <arg name="tag_topic" value="$(arg tag_topic)"/>
   </include>
   <include file="$(find multifloor_manager)/launch/navigation.launch">
+    <arg name="precise_arrival" value="$(arg arrival_hold_enabled)"/>
     <arg name="managed_localization" value="$(eval arg('startup_localization') != 'disabled')"/>
     <arg name="map_yaml" value="$(arg map_yaml)"/>
     <arg name="nav_params_dir" value="$(arg nav_params_dir)"/>
@@ -83,7 +85,14 @@
   </node>
   <node pkg="mission_manager" type="mission_manager_node.py"
         name="mission_manager" output="screen">
+    <param name="tag_topic" value="$(arg tag_topic)"/>
+    <!-- Entry point-cloud matching precedes token consumption; admission still
+         rechecks current pose/floor/ownership when it consumes the token. -->
+    <!-- 3s fit + 1s fresh LiDAR + 4s bounded re-observation + 2s scheduling budget. -->
+    <param name="stair_admission_lifetime_sec" value="10.0"/>
+    <param name="stair_lidar_handoff" value="$(eval arg('stair_lidar_mode') == 'control' and arg('stair_lidar_observe_only') == False)"/>
     <param name="arrival_hold_enabled" value="$(arg arrival_hold_enabled)"/>
+    <param name="console_port" value="$(arg console_port)"/>
     <rosparam command="load" ns="arrival_hold" file="$(arg arrival_hold_settings)" if="$(arg arrival_hold_enabled)"/>
     <param name="config_profile" value="$(arg config_profile)"/>
     <param name="allow_test_fixture" value="$(arg allow_test_fixture)"/>

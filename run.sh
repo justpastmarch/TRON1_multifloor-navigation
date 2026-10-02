@@ -33,16 +33,26 @@ if [[ "${1:-}" == "--replay-joy" ]]; then
     exec "${ROOT}/replay_joy_preview.sh" "${@:2}"
 fi
 
+# ROS/catkin setup hooks read optional variables before defining them.
+# Keep strict checks in our code, but permit unset variables inside setup hooks.
+source_ros_setup() {
+    local setup_status=0
+    set +u
+    source "$1" || setup_status=$?
+    set -u
+    return "$setup_status"
+}
+
 if [[ "${1:-}" == "--record-manual" ]]; then
     if [[ ! -r /opt/ros/noetic/setup.bash ]]; then
         printf 'ROS Noetic is not installed: /opt/ros/noetic/setup.bash\n' >&2
         exit 1
     fi
     # shellcheck disable=SC1091
-    source /opt/ros/noetic/setup.bash
+    source_ros_setup /opt/ros/noetic/setup.bash
     if [[ -r "${ROOT}/devel/setup.bash" ]]; then
         # shellcheck disable=SC1091
-        source "${ROOT}/devel/setup.bash"
+        source_ros_setup "${ROOT}/devel/setup.bash"
     fi
     if [[ "$SENSOR_JOY_RECEIVER_AUTOSTART" == "1" ]]; then
         receiver_status="$(ssh -o BatchMode=yes -o ConnectTimeout=5 \
@@ -84,13 +94,13 @@ source_workspace() {
         return 1
     fi
     # shellcheck disable=SC1091
-    source /opt/ros/noetic/setup.bash
+    source_ros_setup /opt/ros/noetic/setup.bash
     if [[ ! -r "${ROOT}/devel/setup.bash" ]]; then
         printf 'Workspace is not built; run catkin_make in %s\n' "$ROOT" >&2
         return 1
     fi
     # shellcheck disable=SC1091
-    source "${ROOT}/devel/setup.bash"
+    source_ros_setup "${ROOT}/devel/setup.bash"
 }
 
 local_check() {
@@ -250,9 +260,22 @@ if ! kill -0 "$master_pid" 2>/dev/null || ! timeout 3s rostopic list >/dev/null 
 fi
 printf '[START] workstation ROS master: %s\n' "$ROS_MASTER_URI"
 
+# A boot-managed sensor launch has one owner. Do not replace it with tmux.
+if ssh -o BatchMode=yes -o ConnectTimeout=5 "$SSH_TARGET" \
+    'systemctl --user cat tron1-sensors.service >/dev/null 2>&1'; then
+    ssh -o BatchMode=yes -o ConnectTimeout=5 "$SSH_TARGET" \
+        'systemctl --user start tron1-sensors.service'
+    SENSOR_STACK_ACTION='systemd managed (starting or already running)'
+else
 SENSOR_STACK_ACTION="$(ssh -o BatchMode=yes -o ConnectTimeout=5 "$SSH_TARGET" \
      "mapping_status=; sensor_ready=1; source /opt/ros/noetic/setup.bash && source ${MINI_PC_WORKSPACE}/devel/setup.bash && export ROS_MASTER_URI=http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT} && export ROS_IP=${MINI_PC_ROS_IP} && unset ROS_HOSTNAME || sensor_ready=0; if [ \"\$sensor_ready\" = 1 ]; then for topic in /livox/lidar /tron/wheel_odom_raw /scan ${CAMERA_IMAGE_TOPIC} ${CAMERA_INFO_TOPIC}; do timeout 5s rostopic echo -n 1 \"\$topic\" >/dev/null 2>&1 || { sensor_ready=0; break; }; done; fi; if [ \"\$sensor_ready\" = 1 ]; then mapping_status=reused; else tmux kill-session -t wf_mapping 2>/dev/null || true; pkill -INT -f '^/usr/bin/python3 /opt/ros/noetic/bin/roslaunch sensor_integration wf_mapping.launch$' 2>/dev/null || true; sleep 5; pkill -TERM -f '^/usr/bin/python3 /opt/ros/noetic/bin/roslaunch sensor_integration wf_mapping.launch$' 2>/dev/null || true; tmux new-session -d -s wf_mapping 'source /opt/ros/noetic/setup.bash; source ${MINI_PC_WORKSPACE}/devel/setup.bash; export ROS_MASTER_URI=http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT}; export ROS_IP=${MINI_PC_ROS_IP}; export D435F_SERIAL=${D435F_SERIAL}; unset ROS_HOSTNAME; exec roslaunch sensor_integration wf_mapping.launch' || exit 1; mapping_status='restart requested'; fi; printf 'mapping=%s' \"\$mapping_status\"")"
+fi
 printf '[SSH] mini PC sensor stack: %s\n' "$SENSOR_STACK_ACTION"
+
+if [[ "${SENSOR_JOY_RECEIVER_AUTOSTART:-0}" == "1" ]]; then
+    bash "$ROOT/sensor_joy_session.sh" || printf '%s\n' \
+        '[WARN] SensorJoy is not publishing; restore it before recording a field test.' >&2
+fi
 
 if pgrep -f '[a]priltag_ros_continuous_node' >/dev/null 2>&1 || \
    timeout 3s rosnode list 2>/dev/null | awk '$1 == "/apriltag_ros_continuous_node" {found=1} END {exit !found}'; then
@@ -279,7 +302,7 @@ fi
 if [ -n "${ARRIVAL_HOLD_SETTINGS:-}" ]; then
     lidar_launch_args+=("arrival_hold_enabled:=true" "arrival_hold_settings:=$ARRIVAL_HOLD_SETTINGS")
 fi
-if [[ "${STAIR_RECORD:-0}" == "1" ]]; then
+if [[ "${STAIR_RECORD:-0}" == "1" && "${MISSION_CONSOLE_PORT:-0}" == "0" ]]; then
     : "${STAIR_LIDAR_CONFIG:?STAIR_RECORD needs an explicit LiDAR config}"
     : "${STAIR_PYTHON:?STAIR_RECORD needs the LiDAR Python interpreter}"
     "$STAIR_PYTHON" "$ROOT/src/stair_supervisor/scripts/check_lidar_config.py" \
@@ -293,7 +316,9 @@ if [[ "${STAIR_RECORD:-0}" == "1" ]]; then
     stair_record_pid="$LAST_PID"
     printf '[BAG] automatic stair recording: %s\n' "$LOG_DIR"
 fi
-start_component system roslaunch mission_manager system.launch "${lidar_launch_args[@]}" \
+# Resolve the selected floor through the existing site configuration.
+initial_map_yaml="$(python3 -c 'import pathlib,sys,yaml; root=pathlib.Path(sys.argv[1]); rows=yaml.safe_load((root/"floors.yaml").read_text())["floors"]; print(root/next(x["map_yaml"] for x in rows if x["id"]==sys.argv[2]))' "$ROOT/src/multifloor_manager/config" "$INITIAL_FLOOR")"
+start_component system roslaunch mission_manager system.launch "map_yaml:=$initial_map_yaml" "${lidar_launch_args[@]}" "console_port:=${MISSION_CONSOLE_PORT:-0}" \
     startup_localization:="${STARTUP_LOCALIZATION:-auto}" \
     stair_lidar_mode:="${STAIR_LIDAR_MODE:-off}" \
     stair_lidar_observe_only:="${STAIR_LIDAR_OBSERVE_ONLY:-true}" \
@@ -416,13 +441,15 @@ while true; do
     sleep 1
 done
 wait_for_value /stair_supervisor/state/state 1
-for topic in /scan /tron/wheel_odom_raw /tf "$TAG_DETECTIONS_TOPIC"; do
+for topic in /scan /tron/wheel_odom_raw /tf; do
     wait_for_stream "$topic"
 done
 wait_for_fresh_message /scan sensor_msgs/LaserScan
 wait_for_fresh_message /tron/wheel_odom_raw nav_msgs/Odometry
 wait_for_fresh_message /tf tf2_msgs/TFMessage
-wait_for_fresh_message "$TAG_DETECTIONS_TOPIC" apriltag_ros/AprilTagDetectionArray
+# Tag input is required by floor-arrival verification, not flat NAV startup.
+# The detector already respawns; its outage must not tear down mission/UI.
+printf '%s\n' '[INFO] AprilTag input is monitored separately; floor arrival still requires valid tag evidence.'
 for topic in /map/info /move_base/global_costmap/costmap/info /move_base/local_costmap/costmap/info; do
     timeout 25s rostopic echo -n 1 "$topic" >/dev/null
 done
@@ -440,7 +467,7 @@ fi
 printf '%s\n' \
     '[READY] Mission, floor-transition, and stair action servers are ready.' \
     '[READY] FloorState=READY and SupervisorState=NAV.' \
-    '[READY] Fresh scan, odometry, TF, and AprilTag input verified.' \
+    '[READY] Fresh scan, odometry and TF verified. AprilTag readiness is shown in the UI.' \
     '[READY] Normal missions use /mission; explicit stair trials use stair_entry_test.py.' \
     '[READY] Stop with Ctrl+C. The mini-PC sensor stack remains running.' \
     "[LOG] ${LOG_DIR}"

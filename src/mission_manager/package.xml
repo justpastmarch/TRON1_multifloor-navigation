@@ -37,6 +37,8 @@
   <exec_depend>nav_msgs</exec_depend>
   <exec_depend>python3-yaml</exec_depend>
   <exec_depend>rosbag</exec_depend>
+  <exec_depend>roslib</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
   <exec_depend>rospkg</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>stair_supervisor</exec_depend>
@@ -53,4 +55,5 @@
   <test_depend>tf2_msgs</test_depend>
 
   <export/>
+  <exec_depend>apriltag_ros</exec_depend>
 </package>

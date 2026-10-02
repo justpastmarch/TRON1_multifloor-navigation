@@ -1,0 +1,81 @@
+{
+  "floor": {
+    "floor_id": "5F",
+    "map_generation": 0,
+    "state": 2,
+    "detail": "manual localization ready"
+  },
+  "supervisor": {
+    "state": 1,
+    "connected": true,
+    "detail": "navigation owns commands",
+    "ownership_epoch": 0
+  },
+  "localization": {
+    "state": "READY",
+    "reason": "localization ready",
+    "floor": "5F",
+    "request_id": 1,
+    "source": "manual",
+    "x": 9.135324913688676,
+    "y": -6.490377168744627,
+    "yaw": 1.4220558748410288,
+    "hit_fraction": 0.8333333333333334,
+    "score": 0.7579872628382882
+  },
+  "tracking": {
+    "epoch": 0,
+    "queue_length": 0,
+    "dropped_scans": 0,
+    "rejected_imu": 0,
+    "worker_error": "",
+    "backend": "process",
+    "mode": "control",
+    "observe_only": false,
+    "phase_test_protocol": "bound-ticket-v1",
+    "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+    "config_sha256": "1d74b41274039b3bf066db85d514b5eb88dd298ac0f9b5004ddfe59e558a34d8",
+    "routes": [
+      {
+        "id": "stair_3f_4f_up",
+        "commissioned": true
+      },
+      {
+        "id": "stair_5f_rf_up",
+        "commissioned": true
+      }
+    ],
+    "sequence": 357,
+    "stamp": 1790731644.370347,
+    "received_at": 336705.759151663,
+    "measured_at": 336705.64487930696,
+    "completed_at": 336705.821319249,
+    "last_geometry_at": 336705.64487930696,
+    "geometry_valid": true,
+    "state": "TRACKED",
+    "reason": "geometry accepted",
+    "fitness": 1.0,
+    "rmse": 0.07655257492767864,
+    "translation_innovation": 0.012235704144946995,
+    "rotation_innovation": 0.07853719956086083,
+    "prediction_source": "gyro",
+    "compute_sec": 0.06064560200320557,
+    "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+    "processing_started_at": 336705.760673647,
+    "scan_span_sec": 0.099404184,
+    "deskew_state": "disabled",
+    "deskew_compute_sec": 0.0,
+    "geometry_age_sec": 0.25009575206786394,
+    "transport_delay_sec": 0.1142723560333252,
+    "completion_age_sec": 0.1764399420353584,
+    "input_age_after_scan_end_sec": 0.014868172033325189,
+    "scan_span_known": true,
+    "callback_to_processing_sec": 0.0015219839988276362,
+    "processing_to_completion_sec": 0.06064560200320557,
+    "completion_to_publish_sec": 0.07365796802332625,
+    "timestamp_reference": "scan_start",
+    "control_policy": "2026-09-28-continuity-v12"
+  },
+  "observed_at": 1790731644.7065809,
+  "motion_goals_sent": 0
+}

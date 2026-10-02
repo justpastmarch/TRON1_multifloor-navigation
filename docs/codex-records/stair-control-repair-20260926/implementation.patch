@@ -1,0 +1,724 @@
+--- a/src/stair_supervisor/test/test_field_control_repair.py
++++ b/src/stair_supervisor/test/test_field_control_repair.py
+@@ -0,0 +1,189 @@
++"""Offline behavioral regressions. No ROS master or robot connection."""
++from dataclasses import replace
++import math
++import unittest
++from unittest.mock import patch
++from unittest.mock import Mock
++from types import SimpleNamespace
++import json
++import numpy as np
++
++from test_lidar_control import Worker, route, sample, box
++from test_supervisor import make_configuration, FakeTransport
++from stair_supervisor.stair_feedback import StairFeedback, RouteAnchor, se2
++from stair_supervisor import stair_feedback
++from stair_supervisor.stair_evidence import Phase
++
++
++class FieldControlRepairTest(unittest.TestCase):
++    def policy(self, r=None):
++        w=Worker(); c=StairFeedback(w,np.eye(4),[r or route()],lidar_from_imu=np.eye(3))
++        c.capture_entry('test_up',np.eye(4),.01,'synthetic fixture',100.)
++        c.arm(replace(make_configuration().profiles[0],timeout_sec=300.),100.)
++        c.begin_phase(Phase.FORWARD_SEGMENT_1,100.)
++        return w,c
++
++    def test_gyro_uses_received_past_samples_and_preserves_geometry_stamp(self):
++        w,c=self.policy(); w.value=sample(2,100.2,x=.1)
++        times=np.arange(100.19,100.601,.01)
++        for t in times: c.push_imu((t,0.,0.,1.,0.,0.,9.81))
++        c.evaluate(c.phase,100.4)
++        d=c.diagnostic_snapshot()
++        self.assertAlmostEqual(d['control_yaw'],max(t for t in times if t<=100.4)-100.2,places=6)
++        self.assertEqual(d['control_heading']['geometry_stamp'],100.2)
++        self.assertAlmostEqual(d['control_heading']['geometry_age_sec'],.2)
++        self.assertLess(c.command()[1],0)
++
++    def test_gyro_gap_and_epoch_cannot_create_fake_heading(self):
++        for mode in ('gap','epoch'):
++            w,c=self.policy(); w.value=sample(2,100.2,x=.1)
++            c.push_imu((100.19,0.,0.,5.,0.,0.,9.81))
++            c.push_imu((100.4,0.,0.,5.,0.,0.,9.81))
++            if mode=='epoch':c._imu_epoch=3
++            c.evaluate(c.phase,100.41)
++            self.assertEqual(c.debug['control_heading']['source'],'geometry')
++
++    def test_degraded_scan_cannot_accelerate_or_complete_but_new_gyro_can_steer(self):
++        w,c=self.policy();w.value=sample(2,100.05,x=.1)
++        c.evaluate(c.phase,100.06);v=c.command()[0]
++        for t in np.arange(100.04,100.501,.01):c.push_imu((t,0.,0.,.5,0.,0.,9.81))
++        report=c.evaluate(c.phase,100.5)
++        self.assertFalse(report.complete);self.assertFalse(report.faulted)
++        self.assertEqual(c.debug['tracking_state'],'DEGRADED')
++        self.assertLessEqual(c.command()[0],v)
++        self.assertLess(c.command()[1],0)
++        self.assertTrue(c.evaluate(c.phase,100.8).faulted)
++
++    def test_degraded_landing_cannot_restore_old_high_flight_command(self):
++        w,c=self.policy();c._last_command=(.3,0.);c._last_command_at=100.2
++        c.begin_phase(Phase.LANDING,100.2)
++        w.value=sample(2,100.2,x=2.,z=1.)
++        result=c.evaluate(c.phase,100.6)
++        self.assertFalse(result.faulted);self.assertFalse(result.complete)
++        self.assertLessEqual(abs(c.command()[0]),c.route['limits']['hold_v'])
++
++    def test_full_forward_has_multiple_reachable_steering_candidates(self):
++        w,c=self.policy();c._last_command=(.12,0.);c._last_command_at=100.
++        w.value=sample(2,100.2,x=.2,y=.1,yaw=.1)
++        c.evaluate(c.phase,100.21)
++        ds=c.debug['candidates']
++        self.assertGreater(len({x['command'][1] for x in ds}),1)
++        self.assertTrue(all(abs(x['command'][1]) <= .42+1e-8 for x in ds))
++        self.assertGreater(c.command()[0],0.)
++        self.assertLess(c.command()[1],0.)
++
++    def test_no_margin_recovery_outside_anchor_uncertainty(self):
++        r=route();r['flight_1_polygon']=box(-1,-.3,3,.3);r['entry_polygon']=box(-1,-.3,0,.3)
++        w,c=self.policy(r);w.value=sample(2,100.2,x=1,y=.195)
++        result=c.evaluate(c.phase,100.21)
++        self.assertTrue(result.faulted)
++        self.assertEqual(c.debug['tracking_state'],'CORRIDOR_LIMIT')
++
++    def test_extra_margin_can_be_recovered_only_with_inward_supported_path(self):
++        w,c=self.policy();c._last_command=(.1,0.);c._last_command_at=100.
++        # Synthetic narrow strip: 15 mm actual clearance; 10 mm anchor bound;
++        # normal margin 20 mm. Heading points away from the nearest boundary.
++        pos=np.array([0.,.085]);yaw=-.2
++        body=np.array(box(-.1,-.1,.1,.1))+pos
++        command=c._flight_command(pos,yaw,yaw,body,.1,0.,.7,[box(-1,-.2,1,.2)],.02,
++                                  100.3,np.array([1.,0.]),np.zeros(2),True)
++        self.assertIsNotNone(command)
++        c._last_command=(.1,.8);c._last_command_at=100.29
++        command=c._flight_command(pos,.8,.8,body,.1,.8,.7,[box(-1,-.2,1,.2)],.02,
++                                  100.3,np.array([1.,0.]),np.zeros(2),True)
++        self.assertIsNone(command)
++
++    def test_second_flight_starts_with_landing_alignment_at_hold_speed(self):
++        w,c=self.policy();c.begin_phase(Phase.FORWARD_SEGMENT_2,100.)
++        w.value=sample(2,100.2,x=2.3,y=.8,z=1,yaw=math.pi)
++        result=c.evaluate(c.phase,100.21)
++        self.assertFalse(result.faulted)
++        self.assertTrue(c.debug['second_flight_alignment'])
++        self.assertLessEqual(abs(c.command()[0]),c.route['limits']['hold_v'])
++        self.assertFalse(result.complete)
++        w.value=sample(3,100.4,x=2,y=1,z=1,yaw=math.pi)
++        c.evaluate(c.phase,100.41)
++        self.assertFalse(c.debug['second_flight_alignment'])
++
++    def test_first_fault_survives_loss_and_rviz_command_is_zero_after_successful_send(self):
++        w,c=self.policy();c._last_command=(.12,.2)
++        w.value=sample(2,100.2,x=10)
++        c.evaluate(c.phase,100.21)
++        first=c.diagnostic_snapshot()['first_fault']
++        c.loss_response(FakeTransport())
++        c.evaluate(c.phase,100.3)
++        self.assertEqual(c.diagnostic_snapshot()['first_fault'],first)
++        self.assertEqual(c.diagnostic_snapshot()['command'],[0.,0.])
++        self.assertEqual(first['command_before_fault'],[.12,.2])
++        c.record_sent_twist({'x':0.,'y':0.,'z':0.},100.3)
++        self.assertEqual(c.diagnostic_snapshot()['last_sent_twist']['normalized_xyz'],[0.,0.,0.])
++
++    def test_failed_zero_send_does_not_claim_successful_neutralization(self):
++        w,c=self.policy();c._last_command=(.12,.2)
++        t=FakeTransport()
++        def fail():raise OSError('synthetic failed send')
++        t.send_current=fail
++        with self.assertRaises(OSError):c.loss_response(t)
++        self.assertEqual(c.command(),(.12,.2))
++
++    def test_ros_observer_records_exact_normalized_successful_send(self):
++        from stair_supervisor.ros_node import RosStairSupervisorNode
++        _,c=self.policy()
++        node=RosStairSupervisorNode.__new__(RosStairSupervisorNode)
++        node._lidar=SimpleNamespace(control=c)
++        node._clock=SimpleNamespace(monotonic=lambda:100.5)
++        node._websocket_tx_publisher=Mock()
++        frame=json.dumps({'title':'request_twist','data':{'x':1.,'y':0.,'z':.05}})
++        node._publish_websocket_tx(frame)
++        self.assertEqual(node._websocket_tx_publisher.publish.call_args[0][0].data,frame)
++        sent=c.diagnostic_snapshot()['last_sent_twist']
++        self.assertEqual(sent['normalized_xyz'],[1.,0.,.05])
++        self.assertEqual(sent['sent_at'],100.5)
++
++    def test_new_flat_phase_does_not_stall_between_hold_thresholds(self):
++        w,c=self.policy();c.begin_phase(Phase.ALIGN,100.)
++        w.value=sample(2,100.2,x=-.06)
++        result=c.evaluate(c.phase,100.21)
++        self.assertFalse(result.faulted)
++        self.assertFalse(result.complete)
++        self.assertGreater(c.command()[0],0.)
++
++    def test_template_cannot_accept_an_upside_down_gravity_axis(self):
++        from stair_supervisor import ros_lidar
++        reference=dict(yaw_candidates=[0.],min_fitness=.5,max_rmse_m=.1,score_gap=.1,
++                       validated_anchor_error_m=.01,sha256='synthetic')
++        result=SimpleNamespace(accepted=True,fitness=1.,inlier_rmse_m=.01,
++                               transform=np.diag([1.,-1.,-1.,1.]))
++        args=(np.zeros((3,3)),sample(),route(),np.zeros((3,3)),reference,np.eye(4),None)
++        with patch.object(ros_lidar,'register_scan_to_map',return_value=result):
++            with self.assertRaisesRegex(ValueError,'missing or ambiguous'):ros_lidar.fit_entry_template(*args)
++            result.transform=np.eye(4)
++            self.assertEqual(ros_lidar.fit_entry_template(*args).epoch,0)
++
++    def test_enclosing_hull_fast_path_matches_per_body_checks_on_notches_and_seams(self):
++        rng=np.random.RandomState(260926)
++        polygons=[box(-1,-1,0,1),box(0,-1,1,.3),box(.5,.3,1,1)]
++        for _ in range(100):
++            position=rng.uniform(-.6,.6,2);yaw=rng.uniform(-math.pi,math.pi)
++            support=np.array(box(-.12,-.12,.12,.12))+position
++            args=(position,yaw,support,rng.uniform(-.3,.3),rng.uniform(-.8,.8),.9,polygons,.03)
++            actual=StairFeedback._swept_support(*args)
++            with patch.object(stair_feedback,'ConvexHull',side_effect=stair_feedback.QhullError('force original fallback')):
++                expected=StairFeedback._swept_support(*args)
++            self.assertEqual(actual,expected)
++
++    def test_second_entry_alignment_converges_in_synthetic_motion_model(self):
++        w,c=self.policy();c.begin_phase(Phase.FORWARD_SEGMENT_2,100.)
++        x,y,yaw=2.3,.8,math.pi
++        for i in range(440):
++            stamp=100.+(i+1)*.1
++            w.value=sample(i+2,stamp,x=x,y=y,z=1.,yaw=yaw)
++            result=c.evaluate(c.phase,stamp+.01)
++            self.assertFalse(result.faulted,result.detail)
++            if not c.debug['second_flight_alignment']:break
++            v,angular=c.command();x+=v*math.cos(yaw)*.1;y+=v*math.sin(yaw)*.1;yaw+=angular*.1
++        self.assertFalse(c.debug['second_flight_alignment'])
++        self.assertLessEqual(math.hypot(x-2.,y-1.),c.route['limits']['position_off'])
++
++
++if __name__=='__main__':unittest.main()
+--- a/src/stair_supervisor/src/stair_supervisor/ros_lidar.py
++++ b/src/stair_supervisor/src/stair_supervisor/ros_lidar.py
+@@ -68,7 +68,7 @@
+         fitted=transform(result.transform)
+         yaw=math.atan2(fitted[1,0],fitted[0,0])
+         # Entry registration cannot silently rotate gravity away from +Z.
+-        if abs(fitted[2,0])>.03 or abs(fitted[2,1])>.03:
++        if abs(fitted[2,0])>.03 or abs(fitted[2,1])>.03 or fitted[2,2] <= 0.:
+             continue
+         planar=se2(fitted[0,3],fitted[1,3],yaw);planar[2,3]=fitted[2,3]
+         score=result.fitness-result.inlier_rmse_m
+@@ -102,7 +102,8 @@
+         self.worker = ProcessTrackingWorker(TrackingSettings(**document["tracking"]), rotation, checksum, clock.monotonic)
+         self.control = None
+         if document["base_from_lidar"] is not None:
+-            self.control = StairFeedback(self.worker, document["base_from_lidar"], document["routes"])
++            self.control = StairFeedback(self.worker, document["base_from_lidar"], document["routes"],
++                lidar_from_imu=rotation, imu_max_gap=self.worker.settings.imu_max_gap_s)
+         if configuration.mode == "control" and self.control is None:
+             raise ValueError("control needs surveyed base_from_lidar")
+         self._published = None
+@@ -178,7 +179,10 @@
+ 
+     def _imu(self, message):
+         w, a = message.angular_velocity, message.linear_acceleration
+-        self.worker.push_imu((message.header.stamp.to_sec(), w.x, w.y, w.z, a.x, a.y, a.z))
++        row = (message.header.stamp.to_sec(), w.x, w.y, w.z, a.x, a.y, a.z)
++        self.worker.push_imu(row)
++        if self.control is not None:
++            self.control.push_imu(row)
+ 
+     def _scan(self, message):
+         header = getattr(message, "_connection_header", None)
+@@ -289,6 +293,8 @@
+                 self.odom.publish(message)
+                 self._publish_cloud(sample)
+                 self._published = key
++        if self.control is not None:
++            diagnostic['control_policy'] = self.control.policy_version
+         self.status.publish(String(data=json.dumps(json_finite(diagnostic), allow_nan=False)))
+         if self.control is not None:
+             if self._observing:
+@@ -369,14 +375,19 @@
+             text.scale.z, text.color.a = .16, 1.
+             text.color.r, text.color.g = (0., 1.) if fresh else (1., 0.)
+             debug = {} if preview else control.diagnostic_snapshot()
+-            text.text = "%s | %s | epoch %d\nage=%.2fs margin=%.3fm clearance=%s\nv/w=%s\nwaiting=%s" % (
++            sent = debug.get('last_sent_twist')
++            fault = debug.get('first_fault')
++            text.text = "%s | %s | epoch %d\nage=%.2fs margin=%.3fm clearance=%s\nrequested v/w=%s\nlast TX xyz=%s\nwaiting=%s\nfirst fault=%s" % (
+                 "ENTRY PREVIEW / NO TEST COMMAND" if preview else phase.value,
+                 debug.get("tracking_state", sample.state), sample.epoch,
+                 self.clock.monotonic()-sample.measured_at,
+                 route['limits']['margin_m']+anchor.uncertainty_m,
+                 str(debug.get('clearance_m')),
+                 str([round(v,3) for v in debug.get('command', [0.,0.])]),
+-                ','.join(debug.get('incomplete_conditions', [])))
++                'unknown' if sent is None else '%s (%.2fs ago)' % (
++                    [round(v,3) for v in sent['normalized_xyz']],self.clock.monotonic()-sent['sent_at']),
++                'second-flight entry alignment' if debug.get('second_flight_alignment') else ','.join(debug.get('incomplete_conditions', [])),
++                'none' if fault is None else fault['reason'])
+             text.lifetime = rospy.Duration(.5)
+             array.markers.append(text)
+         self.markers.publish(array)
+--- a/src/stair_supervisor/src/stair_supervisor/ros_node.py
++++ b/src/stair_supervisor/src/stair_supervisor/ros_node.py
+@@ -3,6 +3,7 @@
+ from __future__ import annotations
+ 
+ from dataclasses import dataclass
++import json
+ import math
+ import time
+ import uuid
+@@ -165,6 +166,11 @@
+ 
+     def _publish_websocket_tx(self, frame: str) -> None:
+         self._websocket_tx_publisher.publish(String(data=frame))
++        lidar = getattr(self, '_lidar', None)
++        if lidar is not None and lidar.control is not None:
++            envelope = json.loads(frame)
++            if envelope.get('title') == 'request_twist':
++                lidar.control.record_sent_twist(envelope['data'], self._clock.monotonic())
+ 
+     def _stream_timer(self, _event: rospy.timer.TimerEvent) -> None:
+         self.stream_once()
+--- a/src/stair_supervisor/src/stair_supervisor/stair_feedback.py
++++ b/src/stair_supervisor/src/stair_supervisor/stair_feedback.py
+@@ -6,12 +6,15 @@
+ from __future__ import annotations
+ 
+ from collections import deque
++from copy import deepcopy
+ from dataclasses import dataclass
+ from functools import lru_cache
+ import math
+ import threading
+ 
+ import numpy as np
++from scipy.spatial.transform import Rotation
++from scipy.spatial import ConvexHull, QhullError
+ 
+ from .configuration import Direction
+ from .stair_evidence import EvidenceReport, Phase
+@@ -253,7 +256,9 @@
+ class StairFeedback:
+     """Implements PhaseEvidence plus motion policy for the existing Supervisor."""
+ 
+-    def __init__(self, worker, base_from_lidar, routes):
++    policy_version = '2026-09-26-candidate-control-v1'
++
++    def __init__(self, worker, base_from_lidar, routes, *, lidar_from_imu=None, imu_max_gap=.03):
+         self.worker = worker
+         self.base_from_lidar = transform(base_from_lidar)
+         self.routes = {r["id"]: self._validate_route(r) for r in routes}
+@@ -272,6 +277,17 @@
+         self._interrupted = False
+         self.test_status = None
+         self._clearance_key = None
++        self._imu_lock = threading.Lock()
++        self._imu = deque(maxlen=4096)
++        self._imu_epoch = getattr(worker, 'epoch', 0)
++        self._lidar_from_imu = None if lidar_from_imu is None else np.asarray(lidar_from_imu, dtype=float)
++        self._imu_max_gap = imu_max_gap
++        self._tx_lock = threading.Lock()
++        self._last_sent = None
++        self._first_fault = None
++        self._last_geometry_sample = None
++        self._entry_alignment_pending = None
++        self._candidate_debug = []
+ 
+     @staticmethod
+     def _validate_route(route):
+@@ -395,11 +411,15 @@
+             self._last_command = (0., 0.)
+             self._last_command_at = started_at
+             self.turn_index = 0
+-            self._holding = False
++            self._holding = None
+             self._phase_sequence = 0
+             self._flight_seen = [False, False]
+             self.test_status = None
+             self._clearance_key = None
++            self._first_fault = None
++            self._last_geometry_sample = None
++            self._entry_alignment_pending = None
++            self._candidate_debug = []
+             self.anchors.pop(profile.id, None)  # a later goal needs new entry evidence
+ 
+     def reset_command(self, now):
+@@ -428,7 +448,64 @@
+             self._history.clear()
+             sample = self.worker.snapshot()
+             self._phase_sequence = sample.sequence if sample else 0
+-            self._holding = False
++            self._holding = None
++            self._entry_alignment_pending = None
++
++    def push_imu(self, row):
++        """Mirror the existing IMU stream; no estimator reset or new ROS topic."""
++        row = tuple(float(v) for v in row)
++        if len(row) != 7 or not all(map(math.isfinite, row)):
++            return
++        epoch = self.worker.epoch
++        with self._imu_lock:
++            if epoch != self._imu_epoch:
++                self._imu.clear()
++                self._imu_epoch = epoch
++            if self._imu and row[0] <= self._imu[-1][0]:
++                return
++            self._imu.append(row)
++
++    def record_sent_twist(self, normalized, now):
++        """Called only after the transport's WebSocket send succeeds."""
++        with self._tx_lock:
++            self._last_sent = dict(normalized_xyz=[float(normalized[k]) for k in ('x','y','z')],
++                                   sent_at=now, evidence='websocket_send_returned')
++
++    def _control_heading(self, sample, pose, now):
++        """Short causal gyro rotation, retaining the original geometry timestamp.
++
++        No accelerometer translation, future samples or extrapolation past the
++        latest received gyro. Missing coverage falls back to measured heading.
++        """
++        yaw = math.atan2(pose[1, 0], pose[0, 0])
++        detail = dict(source='geometry', geometry_stamp=sample.stamp,
++                      geometry_age_sec=now-sample.measured_at, gyro_advanced_sec=0.)
++        with self._imu_lock:
++            rows = np.asarray([r for r in self._imu if sample.stamp-self._imu_max_gap <= r[0]
++                               <= sample.stamp + max(0., now-sample.measured_at)])
++            epoch = self._imu_epoch
++        if self._lidar_from_imu is None or epoch != sample.epoch or len(rows) < 2:
++            return yaw, detail
++        start = sample.stamp
++        i = np.searchsorted(rows[:, 0], start, side='right')-1
++        if i < 0 or rows[-1, 0] <= start:
++            return yaw, detail
++        rows = rows[i:]
++        if np.max(np.diff(rows[:, 0])) > self._imu_max_gap:
++            detail['reason'] = 'gyro gap; measured heading retained'
++            return yaw, detail
++        times = np.r_[start, rows[rows[:, 0] > start, 0]]
++        gyro = np.column_stack([np.interp(times, rows[:, 0], rows[:, k]) for k in (1,2,3)])
++        rotation = np.eye(3)
++        for a, b, dt in zip(gyro, gyro[1:], np.diff(times)):
++            rotation = rotation @ Rotation.from_rotvec(self._lidar_from_imu @ ((a+b)*.5) * dt).as_matrix()
++        # Transform body -> lidar -> gyro-updated lidar -> body. Tilt is retained.
++        body_rotation = pose[:3,:3] @ self.base_from_lidar[:3,:3] @ rotation @ self.base_from_lidar[:3,:3].T
++        heading = math.atan2(body_rotation[1,0], body_rotation[0,0])
++        detail.update(source='causal_gyro', gyro_advanced_sec=float(times[-1]-start),
++                      gyro_remaining_age_sec=float(sample.stamp + now-sample.measured_at-times[-1]),
++                      yaw_delta=wrap(heading-yaw))
++        return heading, detail
+ 
+     def _observe(self, sample):
+         pose = np.linalg.inv(transform(self.anchor.local_from_profile)) @ transform(sample.transform) @ np.linalg.inv(self.base_from_lidar)
+@@ -476,7 +553,21 @@
+ 
+     def evaluate(self, phase, now, *, command_required=False, neutral_only=False):
+         with self._lock:
++            report = self._evaluate(phase, now, command_required=command_required, neutral_only=neutral_only)
++            if report.faulted and self._first_fault is None:
++                sample = self.worker.snapshot()
++                self._first_fault = deepcopy(dict(self.debug, reason=report.detail, phase=phase.value,
++                    at=now, sample_stamp=None if sample is None else sample.stamp,
++                    sample_sequence=None if sample is None else sample.sequence,
++                    command_before_fault=list(self._last_command), candidates=self._candidate_debug,
++                    observation=self._observation_debug))
++            return report
++
++    def _evaluate(self, phase, now, *, command_required=False, neutral_only=False):
++        with self._lock:
+             sample = self.worker.snapshot()
++            self._candidate_debug = []
++            self._observation_debug = {}
+             limits = self.route["limits"]
+             if not self._interrupted and now - self.started_at > self.profile.timeout_sec:
+                 self.debug = dict(tracking_state="TIMEOUT", loss_response=True)
+@@ -493,10 +584,20 @@
+                 # Once a physical loss response is selected, automatic restart
+                 # needs re-arming its mode and is intentionally not implicit.
+                 return EvidenceReport(phase, False, True, "tracking expired/reset; commissioned loss response required", 0, 0, age)
+-            if age > limits["warn_sec"] or not sample.geometry_valid:
+-                self.debug = dict(tracking_state="DEGRADED", loss_response=False, age=age)
+-                return EvidenceReport(phase, False, False, "bounded tracking delay; phase progress suspended", 0, 0, age)
++            degraded = age > limits['warn_sec'] or not sample.geometry_valid
++            if sample.geometry_valid:
++                self._last_geometry_sample = sample
++            elif self._last_geometry_sample is not None:
++                sample = self._last_geometry_sample
++            else:
++                self.debug = dict(tracking_state='DEGRADED', loss_response=False, age=age)
++                return EvidenceReport(phase, False, False, 'waiting for usable geometry', 0, 0, age)
+             pose, yaw, pitch, roll, velocity, angular, support = self._observe(sample)
++            control_yaw, heading_detail = self._control_heading(sample, pose, now)
++            self._observation_debug = dict(pose=pose[:3,3].tolist(), yaw=yaw, pitch=pitch, roll=roll,
++                geometry_stamp=sample.stamp, geometry_sequence=sample.sequence,
++                geometry_measured_at=sample.measured_at, control_yaw=control_yaw,
++                heading=heading_detail, measured_velocity=velocity.tolist(), measured_yaw_rate=angular)
+             self._recovering_at = None
+             pos = pose[:3, 3]
+             margin = limits["margin_m"] + self.anchor.uncertainty_m
+@@ -505,6 +606,7 @@
+             complete = False
+             settling = None
+             v, w, ey, epsi, progress = 0., 0., 0., 0., 0.
++            alignment = False
+             if abs(roll) > limits["max_roll"] or abs(pitch) > limits["max_pitch"]:
+                 self.debug = dict(tracking_state="ATTITUDE_LIMIT", loss_response=True, roll=roll, pitch=pitch)
+                 return EvidenceReport(phase, False, True, "commissioned attitude envelope exceeded", 0, 0, age)
+@@ -517,7 +619,7 @@
+                 target, target_yaw = end, math.atan2(direction[1], direction[0])
+                 progress = float((pos[:2] - start[:2]) @ direction)
+                 ey = float(direction[0] * (pos[1] - start[1]) - direction[1] * (pos[0] - start[0]))
+-                epsi = wrap(yaw - math.atan2(direction[1], direction[0]))
++                epsi = wrap(control_yaw - math.atan2(direction[1], direction[0]))
+                 actual_v = float(velocity[:2] @ direction)
+                 nominal = min(self.profile.linear_speed, limits["max_v"])
+                 v = np.clip(nominal + limits["speed_kp"] * deadband(nominal - actual_v, limits["speed_deadband"]), 0, limits["max_v"])
+@@ -527,12 +629,43 @@
+                 # input units. Slew and geometric feasibility still take priority.
+                 v = max(v, limits.get("min_flight_v", 0.))
+                 w = -limits["yaw_kp"] * deadband(epsi, limits["yaw_deadband"]) - limits["lateral_kp"] * deadband(ey, limits["lateral_deadband"])
++                # Preview measured sideways motion without rewriting pose or
++                # treating normalized input as a measured physical velocity.
++                lateral_rate = float(direction[0]*velocity[1]-direction[1]*velocity[0])
++                preview_ey = ey + lateral_rate*min(age, limits['warn_sec'])
++                w = -limits['yaw_kp']*deadband(epsi, limits['yaw_deadband']) - limits['lateral_kp']*deadband(preview_ey, limits['lateral_deadband'])
++                if idx == 1:
++                    if self._entry_alignment_pending is None:
++                        self._entry_alignment_pending = landing and (abs(ey) > limits['position_off'] or abs(epsi) > limits['yaw_tolerance'])
++                    if self._entry_alignment_pending:
++                        waypoint = self.route['turn_path'][-1]
++                        delta = np.asarray(waypoint[:2])-pos[:2]
++                        aligned = np.linalg.norm(delta) <= limits['position_off'] and abs(epsi) <= limits['yaw_tolerance']
++                        if aligned and not degraded:
++                            self._entry_alignment_pending = False
++                        else:
++                            alignment = True
++                            heading = np.array([math.cos(control_yaw), math.sin(control_yaw)])
++                            along = float(delta @ heading)
++                            distance = float(np.linalg.norm(delta))
++                            if distance > limits['position_off']:
++                                bearing = math.atan2(delta[1],delta[0])
++                                approach = wrap(bearing-control_yaw-(math.pi if along < 0 else 0.))
++                                v = float(np.clip(limits['hold_kp']*along-limits['hold_kd']*(velocity[:2]@heading), -limits['hold_v'], limits['hold_v']))
++                                w = limits['yaw_kp']*deadband(approach,limits['yaw_deadband'])
++                            else:
++                                v = 0.
++                                w = -limits['yaw_kp']*deadband(epsi,limits['yaw_deadband'])
++                            target = np.array([*waypoint[:2], pos[2]])
+                 if pos[2] - start[2] >= (end[2] - start[2]) * .5:
+                     self._flight_seen[idx] = True
+                 checks = dict(progress=progress >= length, ascent_seen=self._flight_seen[idx],
+                               height=abs(pos[2] - end[2]) <= limits["height_tolerance"],
+                               body_in_next_region=landing if idx == 0 else exit_clear)
+                 complete = all(checks.values())
++                if alignment:
++                    complete = False
++                    checks['second_flight_aligned'] = False
+             else:
+                 if phase in (Phase.VERIFY_ENTRY, Phase.ALIGN):
+                     target = np.asarray(self.route["flight_1"])[0]
+@@ -548,6 +681,8 @@
+                     target_yaw, supported = math.atan2(vector[1], vector[0]), exit_clear
+                 delta = target[:2] - pos[:2]
+                 distance = float(np.linalg.norm(delta))
++                if self._holding is None:
++                    self._holding = distance > limits['position_off']
+                 if distance >= limits["position_on"]:
+                     self._holding = True
+                 elif distance <= limits["position_off"]:
+@@ -581,12 +716,14 @@
+                     complete = complete and all(self._flight_seen)
+                     checks.update(flight_1_seen=self._flight_seen[0], flight_2_seen=self._flight_seen[1])
+             checks["new_phase_observation"] = sample.sequence > self._phase_sequence
+-            if sample.sequence <= self._phase_sequence:
++            if sample.sequence <= self._phase_sequence or degraded:
+                 complete = False
+             names, polygons = self.support_regions(phase)
++            if alignment:
++                names, polygons = ('landing_polygon',), [self.route['landing_polygon']]
+             raw_supported = inside_support_union(support, polygons)
+             current_supported = inside_support_union(support, polygons, margin)
+-            key = (sample.epoch, sample.sequence, phase)
++            key = (sample.epoch, sample.sequence, phase, names)
+             if key != self._clearance_key:
+                 self._clearance_key = key
+                 self._clearance_lower = support_clearance(support, polygons) if raw_supported else None
+@@ -597,7 +734,10 @@
+                             height_error_m=abs(float(pos[2] - target[2])), completion_checks=checks,
+                             settling=settling,
+                             incomplete_conditions=[k for k, value in checks.items() if not value])
+-            if not current_supported:
++            # The surveyed anchor uncertainty remains hard. Only the extra
++            # reserve margin may be recovered, with an inward checked path.
++            recovery = not current_supported and inside_support_union(support, polygons, self.anchor.uncertainty_m)
++            if not current_supported and not recovery:
+                 self.debug = dict(tracking_state="CORRIDOR_LIMIT", loss_response=True, **geometry)
+                 return EvidenceReport(phase, False, True, "body/clearance exceeds connected support", 0, 0, age)
+             # A completed phase emits no command in the Supervisor loop. Do not
+@@ -607,10 +747,31 @@
+                 v, w = 0., 0.
+             elif not transition:
+                 v, w = self._limit_command(float(v), float(w), now)
++                if degraded:
++                    # A late scan cannot authorize acceleration. With no newer
++                    # gyro either, recheck the prior command instead of inventing
++                    # additional steering from an unchanged observation.
++                    v = math.copysign(min(abs(v), abs(self._last_command[0])), v)
++                    if heading_detail['source'] == 'geometry':
++                        v, w = self._last_command
++                if alignment or phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT, Phase.EXIT_CONFIRM):
++                    v = float(np.clip(v, -limits['hold_v'], limits['hold_v']))
+             horizon = limits["expire_sec"]
+             proposed = (v, w)
+             adjusted = False
+-            if not transition and not self._swept_support(pos[:2], yaw, support, v, w, horizon, polygons, margin):
++            flight = (phase in (Phase.FORWARD_SEGMENT_1, Phase.FORWARD_SEGMENT_2) and not alignment
++                      and not (degraded and heading_detail['source'] == 'geometry'))
++            if not transition and not neutral_only and flight:
++                selected = self._flight_command(pos[:2], yaw, control_yaw, support, v, w,
++                    horizon, polygons, margin, now, direction, start[:2], recovery)
++                if selected is None:
++                    self.debug = dict(tracking_state='SUPPORT_LIMIT', loss_response=True, pose=pos.tolist(),
++                        yaw=yaw, control_heading=heading_detail, proposed_command=[v,w],
++                        prediction_horizon_sec=horizon, **geometry)
++                    return EvidenceReport(phase, False, True, 'no bounded correction within connected support', 0, 0, age)
++                v, w = selected
++                adjusted = recovery or any(row['accepted'] is False for row in self._candidate_debug)
++            elif not transition and (recovery or not self._swept_support(pos[:2], yaw, support, v, w, horizon, polygons, margin)):
+                 alternative = None if neutral_only else self._supported_command(
+                     pos[:2], yaw, support, v, w, horizon, polygons, margin, now)
+                 if alternative is None:
+@@ -621,7 +782,7 @@
+                 adjusted = True
+             if not transition:
+                 self._last_command, self._last_command_at = (v, w), now
+-            self.debug = dict(tracking_state="TRACKED", loss_response=False, age=age, epoch=sample.epoch,
++            self.debug = dict(tracking_state="DEGRADED" if degraded else "TRACKED", loss_response=False, age=age, epoch=sample.epoch,
+                               sequence=sample.sequence, phase=phase.value, pose=pos.tolist(), yaw=yaw,
+                               roll=roll, pitch=pitch, velocity=velocity.tolist(), angular_velocity=angular,
+                               ey=ey, epsi=epsi, command=[v, w], landing_supported=landing,
+@@ -631,7 +792,12 @@
+                               boundary_adjusted=adjusted, proposed_command=list(proposed),
+                               below_flight_command_floor=(phase in (Phase.FORWARD_SEGMENT_1, Phase.FORWARD_SEGMENT_2)
+                                   and not transition and v < limits.get("min_flight_v", 0.)),
+-                              prediction_horizon_sec=horizon, neutral_only=neutral_only, **geometry)
++                              prediction_horizon_sec=horizon, neutral_only=neutral_only,
++                              control_heading=heading_detail, control_yaw=control_yaw,
++                              policy_adjusted=(v,w) != proposed,
++                              second_flight_alignment=alignment, margin_recovery=recovery,
++                              prediction_model='configured_command_scale; stair response unverified',
++                              candidates=self._candidate_debug, **geometry)
+             return EvidenceReport(phase, complete, False, "LiDAR geometry/feedback: " + phase.value, progress, 0, age)
+ 
+     @staticmethod
+@@ -655,10 +821,94 @@
+         # sampled full bodies together before the more expensive union seams.
+         if any(inside_polygon(swept.reshape(-1,2),p,margin+interpolation_bound) for p in polygons):
+             return True
+-        for projected in swept:
++        # Most rejected forward candidates fail at the far end. Checking it
++        # first avoids traversing sixteen valid bodies before the same rejection.
++        if not inside_support_union(swept[-1],polygons,margin+interpolation_bound):
++            return False
++        # Safe fast path: if the enclosing hull fits the actual union, every
++        # sampled body fits too. Never accept the union's hull (which fills gaps).
++        # A non-fitting enclosure falls back to the original per-body checks.
++        flat=swept.reshape(-1,2)
++        try:
++            enclosure=flat[ConvexHull(flat).vertices]
++            if inside_support_union(enclosure,polygons,margin+interpolation_bound):
++                return True
++        except QhullError:
++            pass
++        for projected in swept[:-1]:
+             if not inside_support_union(projected,polygons,margin+interpolation_bound):
+                 return False
+         return True
++
++    def _flight_command(self, position, yaw, control_yaw, support, v, w, horizon,
++                        polygons, margin, now, direction, start, recovery):
++        """Search reachable steering at full requested input before deceleration.
++
++        The command-scale unicycle is retained as a compatibility model until
++        stair response is measured. No bag-derived average silently replaces a
++        physical bound. Scores choose among geometrically admitted candidates;
++        they are not an assertion of physical recovery.
++        """
++        limits = self.route['limits']
++        low_v = max(0., self._limit_command(0., w, now)[0])
++        low_w = self._limit_command(v, -limits['max_w'], now)[1]
++        high_w = self._limit_command(v, limits['max_w'], now)[1]
++        speeds = sorted(set((v, (v+low_v)*.5, low_v)), reverse=True)
++        steering = sorted(set((w, low_w, high_w, (low_w+high_w)*.5,
++                              float(np.clip(0., low_w, high_w)))))
++        delta = wrap(control_yaw-yaw)
++        c, s = math.cos(delta), math.sin(delta)
++        control_support = (support-position) @ np.array([[c,s],[-s,c]]) + position
++        frames = [(yaw, support)]
++        if abs(delta) > 1e-9:
++            frames.append((control_yaw, control_support))
++        for cv in speeds:
++            ranked = []
++            for cw in steering:
++                if abs(cv)+abs(cw) < 1e-9:
++                    continue
++                center=self._project_center(position,control_yaw,cv,cw,horizon)
++                ey=direction[0]*(center[1]-start[1])-direction[1]*(center[0]-start[0])
++                angle=wrap(control_yaw+cw*horizon-math.atan2(direction[1],direction[0]))
++                # An inward capture heading avoids stranding an offset body
++                # parallel to the centerline. Score is not a safety predicate.
++                capture=wrap(angle+(limits['lateral_kp']/limits['yaw_kp'])*ey)
++                score=limits['yaw_kp']*capture*capture+limits['lateral_kp']*ey*ey
++                row=dict(command=[cv,cw],accepted=None,score=score,
++                         required_margin_m=self.anchor.uncertainty_m if recovery else margin,recovery=recovery)
++                self._candidate_debug.append(row)
++                ranked.append((score,abs(cw-w),cw,row))
++            for _,__,cw,row in sorted(ranked,key=lambda r:r[:3]):
++                required = self.anchor.uncertainty_m if recovery else margin
++                passes = all(self._swept_support(position, angle, body, cv, cw, horizon, polygons, required)
++                             for angle, body in frames)
++                reason = 'support_envelope' if not passes else 'supported'
++                if passes and recovery:
++                    # No further depletion of measured clearance, and recovery
++                    # must actually reach the normal margin by the horizon.
++                    for angle, body in frames:
++                        values=[]
++                        for t in np.linspace(0., horizon, 17):
++                            a=cw*t; co,si=math.cos(a),math.sin(a)
++                            center=self._project_center(position, angle, cv, cw, t)
++                            fp=(body-position)@np.array([[co,si],[-si,co]])+center
++                            values.append(support_clearance(fp,polygons))
++                        if any(x is None for x in values) or min(values)<values[0]-1e-9 or values[-1]<margin:
++                            passes=False
++                            reason='reserve_not_recovered_monotonically'
++                            break
++                row['accepted']=passes
++                row['reason']=reason
++                if passes:
++                    return cv,cw
++        return None
++
++    @staticmethod
++    def _project_center(position, yaw, v, w, duration):
++        if abs(w)<1e-8:
++            return position+v*duration*np.array([math.cos(yaw),math.sin(yaw)])
++        return position+(v/w)*np.array([math.sin(yaw+w*duration)-math.sin(yaw),
++                                       math.cos(yaw)-math.cos(yaw+w*duration)])
+ 
+     def _supported_command(self, position, yaw, support, v, w, horizon, polygons, margin, now):
+         """Try less translation with the same bounded steering before failing.
+@@ -697,7 +947,11 @@
+ 
+     def diagnostic_snapshot(self):
+         with self._lock:
+-            result = dict(self.debug, phase=self.phase.value, command=list(self._last_command))
++            result = dict(self.debug, phase=self.phase.value, command=list(self._last_command),
++                          control_policy=self.policy_version)
++            with self._tx_lock:
++                result['last_sent_twist'] = deepcopy(self._last_sent)
++            result['first_fault'] = deepcopy(self._first_fault)
+             if self.test_status is not None:
+                 result["phase_test"] = dict(self.test_status)
+             if self.anchor is not None and self.profile is not None:
+@@ -715,3 +969,5 @@
+         self.interrupt()
+         transport.update_twist(0., 0.)
+         transport.send_current()
++        with self._lock:
++            self._last_command = (0., 0.)

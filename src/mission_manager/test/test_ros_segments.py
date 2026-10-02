@@ -125,6 +125,40 @@ class FakeScanRecorder:
 
 
 class RosSegmentIdentifierTest(unittest.TestCase):
+    def test_cancelled_dispatch_sends_no_child_goal(self):
+        state=FakeState();clients=[FakeActionClient(SimpleNamespace()),FakeActionClient(SimpleNamespace())]
+        with mock.patch('mission_manager.ros_segments.actionlib.SimpleActionClient',side_effect=clients), mock.patch('mission_manager.ros_segments.rospy.get_param',side_effect=lambda n,d:d):
+            executor=RosSegmentExecutor(resources(state))
+            segment=RouteSegment(SegmentType.STAIR,'home','landing','3F','4F','edge','stair_a','cautious_up',None,'home')
+            result=executor.execute(segment,SegmentContext('cancelled',lambda:True))
+            self.assertEqual(result.status.value,'CANCELLED')
+            self.assertEqual(clients[0].goals,[])
+
+    def test_cancel_during_entry_wait_does_not_dispatch_stair(self):
+        state=FakeState();cancelled=[False]
+        def wait(*args):
+            cancelled[0]=True
+            return StairEntryDecision(True,'aligned')
+        state.wait_for_stair_entry=wait
+        clients=[FakeActionClient(SimpleNamespace()),FakeActionClient(SimpleNamespace())]
+        with mock.patch('mission_manager.ros_segments.actionlib.SimpleActionClient',side_effect=clients), mock.patch('mission_manager.ros_segments.rospy.get_param',side_effect=lambda n,d:d):
+            executor=RosSegmentExecutor(resources(state))
+            segment=RouteSegment(SegmentType.STAIR,'home','landing','3F','4F','edge','stair_a','cautious_up',None,'home')
+            result=executor.execute(segment,SegmentContext('cancelled',lambda:cancelled[0]))
+            self.assertEqual(result.status.value,'CANCELLED')
+            self.assertEqual(clients[0].goals,[])
+
+    def test_navigation_receives_live_cancellation_predicate(self):
+        state=FakeState();clients=[FakeActionClient(SimpleNamespace()),FakeActionClient(SimpleNamespace())]
+        with mock.patch('mission_manager.ros_segments.actionlib.SimpleActionClient',side_effect=clients), mock.patch('mission_manager.ros_segments.rospy.get_param',side_effect=lambda n,d:d):
+            executor=RosSegmentExecutor(resources(state));executor._navigation=mock.Mock()
+            from mission_manager.navigation_executor import NavigationOutcome
+            executor._navigation.execute.return_value=SimpleNamespace(outcome=NavigationOutcome.CANCELLED)
+            segment=RouteSegment(SegmentType.NAVIGATION,'home','home','3F','3F','edge',None,None,None,'home')
+            context=SegmentContext('nav',lambda:False)
+            executor.execute(segment,context)
+            self.assertIs(executor._navigation.execute.call_args.kwargs['cancellation_requested'],context.cancellation_requested)
+
     def test_route_recording_resolves_profile_and_mission_identity(self) -> None:
         # Given: one configured route profile and an in-process recorder adapter.
         state = FakeState()

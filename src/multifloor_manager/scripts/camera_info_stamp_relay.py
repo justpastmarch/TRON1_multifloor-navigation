@@ -10,16 +10,40 @@ image stamp so AprilTag always sees a valid pair.
 from __future__ import annotations
 
 import rospy
-from sensor_msgs.msg import CameraInfo, Image
+from sensor_msgs.msg import CameraInfo, Image, CompressedImage
+from cv_bridge import CvBridge
 
 
 class CameraInfoStampRelay:
     def __init__(self) -> None:
         self._info: CameraInfo | None = None
+        self._pub_compressed = rospy.Publisher("~compressed_out", CompressedImage, queue_size=1)
         self._pub_image = rospy.Publisher("~image_out", Image, queue_size=2)
         self._pub_info = rospy.Publisher("~camera_info_out", CameraInfo, queue_size=2)
-        rospy.Subscriber("~image", Image, self._image_cb, queue_size=2)
+        self._bridge = CvBridge()
+        transport = rospy.get_param("~input_transport", "raw")
+        if transport == "compressed":
+            rospy.Subscriber("~compressed_image", CompressedImage, self._compressed_cb,
+                             queue_size=1, buff_size=2*1024*1024)
+        elif transport == "raw":
+            rospy.Subscriber("~image", Image, self._image_cb, queue_size=1,
+                             buff_size=8*1024*1024)
+        else:
+            raise ValueError("unsupported camera input transport: " + transport)
         rospy.Subscriber("~camera_info", CameraInfo, self._info_cb, queue_size=2)
+
+    def _compressed_cb(self, msg: CompressedImage) -> None:
+        # Share the original bytes locally; do not re-encode or change timestamps.
+        self._pub_compressed.publish(msg)
+        if self._pub_image.get_num_connections() == 0:
+            return
+        try:
+            image = self._bridge.cv2_to_imgmsg(
+                self._bridge.compressed_imgmsg_to_cv2(msg, desired_encoding="bgr8"), encoding="bgr8")
+            image.header = msg.header
+            self._image_cb(image)
+        except Exception as error:
+            rospy.logwarn_throttle(5., "camera compressed decode failed: %s", error)
 
     def _info_cb(self, msg: CameraInfo) -> None:
         self._info = msg

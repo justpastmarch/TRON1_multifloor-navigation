@@ -1,0 +1,6 @@
+# Uses existing NAV destinations; no duplicate coordinates.
+locations: [roof_loop_sw, roof_loop_nw, roof_loop_ne, roof_loop_se]
+image_topic: /apriltag_camera/image_raw/compressed
+arrival_radius_m: 0.35
+arrival_yaw_rad: 0.5235987755982988
+frame_timeout_sec: 5.0

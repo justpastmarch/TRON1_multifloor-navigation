@@ -15,6 +15,7 @@ from pathlib import Path
 
 import numpy as np
 from scipy.spatial.transform import Rotation
+from scipy.spatial import cKDTree
 import rospy
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Imu, PointCloud2
@@ -28,7 +29,7 @@ from livox_ros_driver2.msg import CustomMsg
 from .lidar_tracking import TrackingSettings, load_imu_rotation
 from .lidar_process import ProcessTrackingWorker, raw_header_stamp, points_from_raw_livox
 from .stair_feedback import StairFeedback, RouteAnchor, match_entry_landmarks, transform, se2, wrap
-from .lidar_tracking_core import register_scan_to_map
+from .lidar_tracking_core import register_scan_to_map, voxel_downsample_points
 from .configuration import load_stair_configuration
 from .stair_evidence import Phase
 
@@ -49,40 +50,123 @@ def json_finite(value):
     return value
 
 
-def fit_entry_template(local_cloud, sample, route, target, reference, base_from_lidar, registration, deadline=math.inf):
+from .entry_registration import entry_level, refine_upright
+
+
+def fit_entry_template(local_cloud, sample, route, target, reference, base_from_lidar, registration, deadline=math.inf, imu_context=None):
     start,end=np.asarray(route['flight_1'])
     initial_yaw=math.atan2(end[1]-start[1],end[0]-start[0])
     expected_base=se2(start[0],start[1],initial_yaw);expected_base[2,3]=start[2]
-    initial=expected_base@base_from_lidar@np.linalg.inv(transform(sample.transform))
+    local_lidar = transform(sample.transform)
+    origin = np.eye(4); origin[:3,3] = local_lidar[:3,3]
+    # The tracking origin may be metres away after flat-floor NAV. Register
+    # around the current sensor, so rotation is not mistaken for a large step.
+    centered_cloud = local_cloud - origin[:3,3]
+    initial=expected_base@base_from_lidar@np.linalg.inv(local_lidar)@origin
+    # Score the transform we actually install, not the unconstrained 6-DoF fit.
+    source_voxels = voxel_downsample_points(centered_cloud, registration.voxel_size_m)
+    target_voxels = voxel_downsample_points(target, registration.voxel_size_m)
+    if not len(source_voxels) or not len(target_voxels):
+        raise ValueError("entry point-cloud match missing or ambiguous")
+    target_tree = cKDTree(target_voxels)
     candidates=[]
+    diagnostics=[]
+    level=np.eye(4)
+    gravity_valid=False
+    if imu_context is not None:
+        try:
+            level=entry_level(sample,imu_context)
+            gravity_valid=True
+        except ValueError as error:
+            # Original admission remains available; never fabricate gravity.
+            diagnostics.append(str(error))
+    leveled_source=source_voxels@level[:3,:3].T
     for delta in reference['yaw_candidates']:
         if time.monotonic() >= deadline:
             raise ValueError("entry registration time budget expired")
         pivot=expected_base[:2,3]
         hypothesis=se2(*pivot,float(delta))@se2(*(-pivot),0)@initial
-        result=register_scan_to_map(local_cloud,target,hypothesis,registration)
+        result=register_scan_to_map(centered_cloud,target,hypothesis,registration)
         if time.monotonic() >= deadline:
             raise ValueError("entry registration time budget expired")
+        label = 'yaw=%.1fdeg fit=%.3f rmse=%.3fm' % (math.degrees(delta), result.fitness, result.inlier_rmse_m)
         if not result.accepted or result.fitness<reference['min_fitness'] or result.inlier_rmse_m>reference['max_rmse_m']:
+            diagnostics.append(label + ' rejected: registration/fit threshold')
             continue
         fitted=transform(result.transform)
-        yaw=math.atan2(fitted[1,0],fitted[0,0])
-        # Entry registration cannot silently rotate gravity away from +Z.
-        if abs(fitted[2,0])>.03 or abs(fitted[2,1])>.03:
+        leveled_fit=fitted@np.linalg.inv(level)
+        if gravity_valid and leveled_fit[2,2]<math.cos(math.radians(5.)):
+            diagnostics.append(label+' rejected: IMU/geometric gravity disagreement')
+            continue
+        yaw=math.atan2(leveled_fit[1,0],leveled_fit[0,0])
+        # Gravity remains +Z. Small solver tilt is not itself a rejection.
+        if leveled_fit[2,2] <= 0.:
+            diagnostics.append(label + " rejected: inverted gravity")
             continue
         planar=se2(fitted[0,3],fitted[1,3],yaw);planar[2,3]=fitted[2,3]
-        score=result.fitness-result.inlier_rmse_m
-        distinct=all(np.linalg.norm(planar[:3,3]-p[:3,3])>.03 or abs(wrap(yaw-math.atan2(p[1,0],p[0,0])))>.03 for _,p in candidates)
-        if distinct:candidates.append((score,planar))
+        if gravity_valid:
+            planar=refine_upright(leveled_source,target_voxels,planar,registration,deadline)
+        planar=planar@level
+        correction=np.linalg.inv(hypothesis)@planar
+        rotation=math.acos(float(np.clip((np.trace(correction[:3,:3])-1)/2,-1,1)))
+        if (np.linalg.norm(correction[:3,3])>registration.max_translation_step_m or
+                rotation>registration.max_rotation_step_rad):
+            diagnostics.append(label+' rejected: installed transform innovation')
+            continue
+        projected = source_voxels @ planar[:3,:3].T + planar[:3,3]
+        distances = target_tree.query(projected)[0]
+        inliers = distances < registration.correspondence_distance_m
+        fitness = float(inliers.mean())
+        rmse = float(np.sqrt(np.mean(distances[inliers]**2))) if inliers.any() else math.inf
+        if time.monotonic() >= deadline:
+            raise ValueError("entry registration time budget expired")
+        if fitness < reference['min_fitness'] or rmse > reference['max_rmse_m']:
+            diagnostics.append(label + ' rejected: planar fit=%.3f rmse=%.3fm' % (fitness, rmse))
+            continue
+        score=fitness-rmse
+        candidates.append((score,planar))
     candidates.sort(key=lambda x:x[0],reverse=True)
-    if not candidates or (len(candidates)>1 and candidates[0][0]-candidates[1][0]<reference['score_gap']):
-        raise ValueError("entry point-cloud match missing or ambiguous")
+    distinct=[]
+    for score, planar in candidates:
+        yaw=math.atan2(planar[1,0],planar[0,0])
+        if all(np.linalg.norm(planar[:3,3]-p[:3,3])>.03 or
+               abs(wrap(yaw-math.atan2(p[1,0],p[0,0])))>.03 for _,p in distinct):
+            distinct.append((score,planar))
+    candidates=distinct
+    if not candidates:
+        raise ValueError("entry point-cloud match missing or ambiguous: no acceptable fit "
+                         "(max_rmse=%.3fm); %s" % (reference['max_rmse_m'], '; '.join(diagnostics)))
+    if len(candidates)>1 and candidates[0][0]-candidates[1][0]<reference['score_gap']:
+        raise ValueError("entry point-cloud match missing or ambiguous: distinct pose score gap %.4f < %.4f" %
+                         (candidates[0][0]-candidates[1][0], reference['score_gap']))
     # Independent entry/mount error bound, NOT GICP fit residual.
     uncertainty=reference['validated_anchor_error_m']
     if uncertainty>route['limits']['anchor_uncertainty_m']:
         raise ValueError("entry uncertainty exceeds route budget")
     return RouteAnchor(sample.epoch,sample.sequence,sample.measured_at,
-        tuple(np.linalg.inv(candidates[0][1]).flat),uncertainty,'surveyed cloud '+reference['sha256'])
+        tuple((origin@np.linalg.inv(candidates[0][1])).flat),uncertainty,'surveyed cloud '+reference['sha256'])
+
+
+def wait_for_entry_observation(worker, anchor, warn_sec, clock=time.monotonic,
+                               sleep=time.sleep, timeout_sec=1.0):
+    """Registration occupies the tracking worker; await a newer real sample.
+
+    Never renew a measurement timestamp or reuse a sample across resets.
+    This bounded wait sends no commands and leaves tracking free to catch up.
+    """
+    deadline = clock() + timeout_sec
+    while True:
+        sample = worker.snapshot()
+        now = clock()
+        if worker.epoch != anchor.epoch:
+            raise ValueError("entry epoch changed while awaiting fresh observation")
+        if now >= deadline:
+            raise ValueError("entry fresh observation unavailable after registration (%.1fs wait)" % timeout_sec)
+        if (sample is not None and sample.epoch == anchor.epoch and
+                sample.sequence > anchor.sequence and sample.geometry_valid and
+                0 <= now - sample.measured_at <= max(0., warn_sec - .1)):
+            return sample
+        sleep(min(.02, deadline - now))
 
 
 class RosLidarInterface:
@@ -102,7 +186,8 @@ class RosLidarInterface:
         self.worker = ProcessTrackingWorker(TrackingSettings(**document["tracking"]), rotation, checksum, clock.monotonic)
         self.control = None
         if document["base_from_lidar"] is not None:
-            self.control = StairFeedback(self.worker, document["base_from_lidar"], document["routes"])
+            self.control = StairFeedback(self.worker, document["base_from_lidar"], document["routes"],
+                lidar_from_imu=rotation, imu_max_gap=self.worker.settings.imu_max_gap_s)
         if configuration.mode == "control" and self.control is None:
             raise ValueError("control needs surveyed base_from_lidar")
         self._published = None
@@ -123,6 +208,8 @@ class RosLidarInterface:
         if self.control is None or route_id not in self.control.routes:
             raise ValueError("no LiDAR route for requested profile")
         route=self.control.routes[route_id]
+        if route.get('direction')=='DOWN' and 'entry_map' in route:
+            return self._ensure_map_entry(route_id,route)
         reference=route.get("entry_reference")
         if reference is None:
             return  # first commissioning may supply the explicit capture service
@@ -140,7 +227,9 @@ class RosLidarInterface:
         target=np.load(str(path),allow_pickle=False)
         if target.ndim!=2 or target.shape[1]!=3 or len(target)<3 or not np.isfinite(target).all():
             raise ValueError("entry template must be a finite surveyed Nx3 array")
+        imu_context=self.control.entry_imu_context() if hasattr(self.control,'entry_imu_context') else None
         operation = partial(fit_entry_template, route=route, target=target, reference=reference,
+                            imu_context=imu_context,
                             base_from_lidar=self.control.base_from_lidar,
                             registration=self.worker.settings.registration,
                             deadline=self.clock.monotonic()+reference['timeout_sec'])
@@ -152,7 +241,46 @@ class RosLidarInterface:
             raise ValueError("entry registration exceeded its time budget")
         except CancelledError:
             raise ValueError("entry registration invalidated by reset/shutdown")
+        wait_for_entry_observation(self.worker, anchor, route['limits']['warn_sec'],
+                                   clock=self.clock.monotonic)
         self.control.install_anchor(route_id,anchor)
+
+    def _ensure_map_entry(self, route_id, route):
+        import rospkg,yaml
+        from geometry_msgs.msg import PoseWithCovarianceStamped
+        from multifloor_manager.msg import FloorState
+        from std_srvs.srv import Empty
+        from .map_entry import map_entry_anchor
+        reference=route['entry_map']
+        path=Path(rospkg.RosPack().get_path(reference['package']))/reference['locations']
+        document=yaml.safe_load(path.read_text())
+        location=next((x for x in document['locations'] if x['id']==reference['location_id']),None)
+        if location is None:raise ValueError('RF map stair endpoint is missing')
+        records=[]
+        subscription=rospy.Subscriber('/amcl_pose',PoseWithCovarianceStamped,records.append,queue_size=1)
+        try:
+            # Existing service is bounded; no navigation or robot command.
+            from multifloor_manager.ros_services import BoundedServiceCaller, ServiceCallError
+            BoundedServiceCaller(2.).call('/request_nomotion_update',rospy.ServiceProxy('/request_nomotion_update',Empty))
+            deadline=self.clock.monotonic()+2.
+            while not records and self.clock.monotonic()<deadline:time.sleep(.02)
+            if not records:raise ValueError('RF entry has no refreshed AMCL pose')
+            floor=rospy.wait_for_message('/multifloor/floor_state',FloorState,timeout=2.)
+            if floor.state!=FloorState.READY:raise ValueError('RF floor is not ready')
+            message=records[-1];q=message.pose.pose.orientation;p=message.pose.pose.position
+            if (message.header.frame_id.lstrip('/')!='map' or not all(math.isfinite(v) for v in (q.x,q.y,q.z,q.w))
+                    or abs(q.x*q.x+q.y*q.y+q.z*q.z+q.w*q.w-1.)>.01):
+                raise ValueError('RF entry pose frame/orientation invalid')
+            yaw=math.atan2(2*(q.w*q.z+q.x*q.y),1-2*(q.y*q.y+q.z*q.z))
+            sample=self.worker.snapshot()
+            if sample is None:raise ValueError('RF entry has no LiDAR observation')
+            anchor=map_entry_anchor(route,location,(p.x,p.y,yaw),
+                [message.pose.covariance[i] for i in (0,7,35)],sample,self.control.base_from_lidar,
+                floor.floor_id,self.clock.monotonic(),rospy.Time.now().to_sec(),message.header.stamp.to_sec())
+            self.control.install_anchor(route_id,anchor)
+        except (rospy.ROSException,StopIteration,ServiceCallError) as error:
+            raise ValueError('RF map entry observation failed: '+str(error)) from error
+        finally:subscription.unregister()
 
     def _start_observation(self, _request):
         """Replay measured phases and proposed commands without a transport."""
@@ -178,7 +306,10 @@ class RosLidarInterface:
 
     def _imu(self, message):
         w, a = message.angular_velocity, message.linear_acceleration
-        self.worker.push_imu((message.header.stamp.to_sec(), w.x, w.y, w.z, a.x, a.y, a.z))
+        row = (message.header.stamp.to_sec(), w.x, w.y, w.z, a.x, a.y, a.z)
+        self.worker.push_imu(row)
+        if self.control is not None:
+            self.control.push_imu(row)
 
     def _scan(self, message):
         header = getattr(message, "_connection_header", None)
@@ -214,7 +345,8 @@ class RosLidarInterface:
         if buffer is None:
             return  # Never attach the newest cloud to an older pose.
         try:
-            points = points_from_raw_livox(buffer)
+            points = (np.asarray(sample.display_points).reshape(-1, 3)
+                      if sample.display_points is not None else points_from_raw_livox(buffer))
         except (ValueError, TypeError, struct.error):
             return  # An optional display failure must not interrupt diagnostics.
         distance = np.linalg.norm(points, axis=1)
@@ -269,9 +401,17 @@ class RosLidarInterface:
         if sample is not None:
             diagnostic.update(asdict(sample))
             diagnostic.pop("transform", None)
+            diagnostic.pop("display_points", None)
             diagnostic["geometry_age_sec"] = None if sample.last_geometry_at is None else self.clock.monotonic() - sample.last_geometry_at
             diagnostic["transport_delay_sec"] = sample.received_at - sample.measured_at
             diagnostic["completion_age_sec"] = sample.completed_at - sample.measured_at
+            diagnostic['input_age_after_scan_end_sec'] = sample.received_at-sample.measured_at-sample.scan_span_sec
+            diagnostic['scan_span_known'] = sample.scan_span_sec > 0.
+            if sample.processing_started_at is not None:
+                diagnostic['callback_to_processing_sec'] = sample.processing_started_at-sample.received_at
+                diagnostic['processing_to_completion_sec'] = sample.completed_at-sample.processing_started_at
+                diagnostic['completion_to_publish_sec'] = self.clock.monotonic()-sample.completed_at
+            diagnostic['timestamp_reference'] = 'scan_start'
             key = (sample.epoch, sample.sequence)
             if sample.geometry_valid and key != self._published and sample.epoch == self.worker.epoch:
                 matrix = transform(sample.transform)
@@ -289,6 +429,8 @@ class RosLidarInterface:
                 self.odom.publish(message)
                 self._publish_cloud(sample)
                 self._published = key
+        if self.control is not None:
+            diagnostic['control_policy'] = self.control.policy_version
         self.status.publish(String(data=json.dumps(json_finite(diagnostic), allow_nan=False)))
         if self.control is not None:
             if self._observing:
@@ -297,7 +439,7 @@ class RosLidarInterface:
                 if report.faulted:
                     self._observing = False
                 elif report.complete:
-                    phases = list(Phase)
+                    phases = self.control.traversal_phases(self.control.profile)
                     index = phases.index(phase) + 1
                     if index == len(phases):
                         self._observing = False
@@ -369,14 +511,19 @@ class RosLidarInterface:
             text.scale.z, text.color.a = .16, 1.
             text.color.r, text.color.g = (0., 1.) if fresh else (1., 0.)
             debug = {} if preview else control.diagnostic_snapshot()
-            text.text = "%s | %s | epoch %d\nage=%.2fs margin=%.3fm clearance=%s\nv/w=%s\nwaiting=%s" % (
+            sent = debug.get('last_sent_twist')
+            fault = debug.get('first_fault')
+            text.text = "%s | %s | epoch %d\nage=%.2fs margin=%.3fm clearance=%s\nrequested v/w=%s\nlast TX xyz=%s\nwaiting=%s\nfirst fault=%s" % (
                 "ENTRY PREVIEW / NO TEST COMMAND" if preview else phase.value,
                 debug.get("tracking_state", sample.state), sample.epoch,
                 self.clock.monotonic()-sample.measured_at,
                 route['limits']['margin_m']+anchor.uncertainty_m,
                 str(debug.get('clearance_m')),
                 str([round(v,3) for v in debug.get('command', [0.,0.])]),
-                ','.join(debug.get('incomplete_conditions', [])))
+                'unknown' if sent is None else '%s (%.2fs ago)' % (
+                    [round(v,3) for v in sent['normalized_xyz']],self.clock.monotonic()-sent['sent_at']),
+                'second-flight entry alignment' if debug.get('second_flight_alignment') else ','.join(debug.get('incomplete_conditions', [])),
+                'none' if fault is None else fault['reason'])
             text.lifetime = rospy.Duration(.5)
             array.markers.append(text)
         self.markers.publish(array)

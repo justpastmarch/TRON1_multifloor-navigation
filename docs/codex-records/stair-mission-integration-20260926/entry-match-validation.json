@@ -1,0 +1,92 @@
+[
+  {
+    "trial": 0,
+    "points": 4799,
+    "ok": false,
+    "error": "entry point-cloud match missing or ambiguous",
+    "elapsed": 0.03693921700005376,
+    "hypotheses": [
+      {
+        "fitness": 0.9954421148587056,
+        "rmse": 0.1142847786009654,
+        "accepted": true,
+        "translation": 0.006733748895677883,
+        "rotation": 0.18665685463220175
+      },
+      {
+        "fitness": 0.9954421148587056,
+        "rmse": 0.11428557974285385,
+        "accepted": true,
+        "translation": 0.006622072575260376,
+        "rotation": 0.055628429866694314
+      },
+      {
+        "fitness": 0.9954421148587056,
+        "rmse": 0.11428558019713504,
+        "accepted": true,
+        "translation": 0.006622070530645642,
+        "rotation": 0.17961477387951422
+      }
+    ]
+  },
+  {
+    "trial": 1,
+    "points": 4778,
+    "ok": false,
+    "error": "entry point-cloud match missing or ambiguous",
+    "elapsed": 0.03589929999998276,
+    "hypotheses": [
+      {
+        "fitness": 0.996299722479186,
+        "rmse": 0.09675196010054128,
+        "accepted": true,
+        "translation": 0.005495384980327833,
+        "rotation": 0.18577706858022608
+      },
+      {
+        "fitness": 0.996299722479186,
+        "rmse": 0.0967685900251264,
+        "accepted": true,
+        "translation": 0.005263851177974006,
+        "rotation": 0.0536876688936232
+      },
+      {
+        "fitness": 0.996299722479186,
+        "rmse": 0.09675293300055843,
+        "accepted": true,
+        "translation": 0.005528294311955146,
+        "rotation": 0.17912793691558715
+      }
+    ]
+  },
+  {
+    "trial": 2,
+    "points": 4801,
+    "ok": false,
+    "error": "entry point-cloud match missing or ambiguous",
+    "elapsed": 0.037140317000194045,
+    "hypotheses": [
+      {
+        "fitness": 0.994413407821229,
+        "rmse": 0.1200260896955903,
+        "accepted": true,
+        "translation": 0.01030660121121497,
+        "rotation": 0.1855792628765036
+      },
+      {
+        "fitness": 0.994413407821229,
+        "rmse": 0.12002608922118486,
+        "accepted": true,
+        "translation": 0.010306591659967303,
+        "rotation": 0.04940820163564962
+      },
+      {
+        "fitness": 0.994413407821229,
+        "rmse": 0.12002608032402082,
+        "accepted": true,
+        "translation": 0.010306457607567092,
+        "rotation": 0.17707023866643265
+      }
+    ]
+  }
+]

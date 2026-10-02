@@ -49,6 +49,7 @@ catkin_install_python(
   scripts/profile_lidar_stream.py
   scripts/calibrate_yaw_rate.py
   scripts/check_lidar_config.py
+  scripts/prepare_stair_mission.py
   scripts/stair_entry_test.py
   scripts/stair_supervisor_node.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -63,15 +64,24 @@ install(FILES requirements-lidar.txt DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINAT
 install(PROGRAMS scripts/stair_python.sh DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 if(CATKIN_ENABLE_TESTING)
+  catkin_add_nosetests(test/test_rooftop_extension.py)
+  catkin_add_nosetests(test/test_entry_planar_score.py)
+  catkin_add_nosetests(test/test_entry_wait.py)
+  catkin_add_nosetests(test/test_entry_mobility.py)
+  catkin_add_nosetests(test/test_ascent_continuity.py)
   find_package(rostest REQUIRED)
   option(STAIR_LIDAR_TESTS "Run optional numerical LiDAR tests in configured Python runtime" OFF)
   if(STAIR_LIDAR_TESTS)
     catkin_add_nosetests(test/test_lidar_control.py)
     catkin_add_nosetests(test/test_lidar_ros_adapter.py)
+    catkin_add_nosetests(test/test_entry_gravity.py)
     catkin_add_nosetests(test/test_lidar_process.py)
+    catkin_add_nosetests(test/test_operator_phase.py)
     catkin_add_nosetests(test/test_lidar_phase_test.py)
     catkin_add_nosetests(test/test_stair_repair.py)
     catkin_add_nosetests(test/test_stair_readiness.py)
+    catkin_add_nosetests(test/test_mission_handoff.py)
+    catkin_add_nosetests(test/test_prepare_stair_mission.py)
   endif()
   catkin_add_nosetests(test/test_fixture_discovery.py)
   catkin_add_nosetests(test/test_configuration_transition.py)

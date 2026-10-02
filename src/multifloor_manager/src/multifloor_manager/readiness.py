@@ -39,8 +39,8 @@ DEFAULT_READINESS_POLICY: Final = ReadinessPolicy(
     0.05,
     0.10,
     3,
-    0.01,
-    0.02,
+    0.03,
+    0.04,
 )
 
 
@@ -117,8 +117,12 @@ def arm_localization(armed_at_ns: Nanoseconds) -> LocalizationState:
     return LocalizationState(armed_at_ns, 0, None, None, None, None, False, None, None, False)
 
 
+# Measured inter-host skew is a few milliseconds; never tolerate a scan-period
+# of future data. This does not increase the 0.5-second stale-data budget.
+CLOCK_SKEW_TOLERANCE_NS = 10_000_000
+
 def _fresh(stamp_ns: Optional[Nanoseconds], now_ns: Nanoseconds, max_age_ns: Nanoseconds) -> bool:
-    return stamp_ns is not None and 0 <= int(now_ns) - int(stamp_ns) <= int(max_age_ns)
+    return stamp_ns is not None and -CLOCK_SKEW_TOLERANCE_NS <= int(now_ns) - int(stamp_ns) <= int(max_age_ns)
 
 
 def observe_pose(

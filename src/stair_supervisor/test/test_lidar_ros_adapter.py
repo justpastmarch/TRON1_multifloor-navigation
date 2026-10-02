@@ -176,7 +176,7 @@ class AdapterTest(unittest.TestCase):
                 validated_anchor_error_m=.02, timeout_sec=1., unique_geometry_verified=True)
             adapter.control.routes["test_up"]["entry_reference"] = reference
             adapter.configuration = SimpleNamespace(root=root)
-            adapter.worker.settings = SimpleNamespace(registration=None)
+            adapter.worker.settings = SimpleNamespace(registration=ros_lidar.TrackingSettings().registration)
             def entry_job(operation):
                 future = Future()
                 try:
@@ -186,7 +186,9 @@ class AdapterTest(unittest.TestCase):
                 return future
             adapter.worker.entry_job = entry_job
             result = SimpleNamespace(accepted=True, fitness=.9, inlier_rmse_m=.01, transform=np.eye(4))
-            with patch.object(ros_lidar, "register_scan_to_map", return_value=result):
+            with patch.object(ros_lidar, "register_scan_to_map", return_value=result), \
+                    patch.object(ros_lidar, "wait_for_entry_observation"), \
+                    patch.object(ros_lidar, "voxel_downsample_points", return_value=np.ones((3, 3))):
                 adapter.ensure_entry("test_up")
                 self.assertEqual(adapter.control.anchors["test_up"].uncertainty_m, .02)
                 reference["validated_anchor_error_m"] = .2

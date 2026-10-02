@@ -174,3 +174,43 @@ def evaluate_stair_entry(check: StairEntryCheck) -> StairEntryDecision:
     if abs(evidence.linear_speed_mps) > check.policy.max_linear_speed or abs(evidence.angular_speed_radps) > check.policy.max_angular_speed:
         return _reject("robot is not stationary at the stair entry")
     return StairEntryDecision(True, "fresh aligned stair-entry evidence")
+
+
+# Coarse map admission only. The supervisor independently verifies the actual
+# surveyed stair and whole-body support from fresh LiDAR before taking ownership.
+LIDAR_ENTRY_POLICY = StairEntryPolicy(.50, math.radians(30), 1.0, .10, .10, .15, 1, .06, .12)
+
+
+def entry_motion_window(samples, now, window=.30):
+    """Time-weighted absolute movement; reversals cannot cancel each other.
+
+    Rows are (measurement monotonic time, linear speed, angular speed). A short
+    impulse may pass the travel budget; sustained motion, large impulses,
+    gaps and repeated/nonmonotonic observations cannot manufacture a stop.
+    """
+    # Receipt latency must not shorten the measured-motion interval. Keep the
+    # newest sample age check independent; never extrapolate missing motion.
+    samples = list(samples)
+    if len(samples) < 2:
+        return None
+    end = samples[-1][0]
+    if not math.isfinite(now) or not math.isfinite(end) or not 0 <= now-end <= .15:
+        return None
+    recent = [s for s in samples if s[0] >= end-window-.10]
+    if len(recent) < 2 or not all(math.isfinite(v) for s in recent for v in s):
+        return None
+    start = end-window
+    if recent[0][0] > start+.05:
+        return None
+    distance = angle = duration = 0.
+    for a, b in zip(recent, recent[1:]):
+        dt = b[0]-a[0]
+        if not 0 < dt <= .15 or max(abs(a[1]),abs(b[1])) > .12 or max(abs(a[2]),abs(b[2])) > .70:
+            return None
+        span = max(0., b[0]-max(start,a[0]))
+        distance += span*(abs(a[1])+abs(b[1]))*.5
+        angle += span*(abs(a[2])+abs(b[2]))*.5
+        duration += span
+    if duration < .25 or abs(recent[-1][1])>.08 or abs(recent[-1][2])>.20:
+        return None
+    return distance/duration, angle/duration

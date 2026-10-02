@@ -53,9 +53,10 @@ class HandoffBarrier(Protocol):
 
 @dataclass(frozen=True)
 class NavigationRequest:
-    __slots__ = ("location", "expected_generation")
     location: Location
     expected_generation: int
+    entry_approach: bool = False
+    arrival_region: tuple[float,float] | None = None
 
 
 @unique
@@ -156,6 +157,12 @@ class NavigationExecutor:
     def create_ros(cls, sources: RosNavigationSources) -> "NavigationExecutor":
         """Create ROS adapters without initializing a node or sending a goal."""
         client = actionlib.SimpleActionClient(MOVE_BASE_ACTION, MoveBaseAction)
+        from mission_manager.ros_navigation_progress import ProgressAwareClient
+        # Preserve the proven NAV approach region. The coarser map gate after
+        # stopping delegates precise first-step admission to surveyed LiDAR.
+        client = ProgressAwareClient(client, entry_region=(
+            float(rospy.get_param("~stair_entry_xy_tolerance", 0.25)),
+            float(rospy.get_param("~stair_entry_yaw_tolerance", 0.2))))
         clear_costmaps = rospy.ServiceProxy(CLEAR_COSTMAPS_SERVICE, Empty)
 
         def clear() -> None:
@@ -173,6 +180,10 @@ class NavigationExecutor:
         )
 
     @property
+    def failure_reason(self) -> str:
+        return getattr(self._runtime.action_client, "failure_reason", "")
+
+    @property
     def has_active_goal(self) -> bool:
         with self._lifecycle_lock:
             return self._active_token is not None
@@ -188,6 +199,12 @@ class NavigationExecutor:
         try:
             for attempt in (1, 2):
                 self._require_ready(request)
+                configure_region = getattr(self._runtime.action_client, "set_entry_approach", None)
+                if configure_region is not None:
+                    configure_region(request.entry_approach or request.arrival_region is not None)
+                custom_region = getattr(self._runtime.action_client, 'set_arrival_region', None)
+                if custom_region is not None:
+                    custom_region(request.arrival_region)
                 goal = self._build_goal(request.location)
                 token = self._send_if_eligible(goal, cancellation_requested)
                 if token is None:
@@ -196,8 +213,17 @@ class NavigationExecutor:
                 status = self._await_terminal(token)
                 if status == GoalStatus.SUCCEEDED:
                     return NavigationResult(request.location.id, NavigationOutcome.SUCCEEDED, status, attempt)
+                if ((request.entry_approach or request.arrival_region is not None) and not self._cancel_requested
+                        and not cancellation_requested()
+                        and status in _CANCELLED_STATES
+                        and getattr(self._runtime.action_client, "entry_region_reached", False)):
+                    return NavigationResult(request.location.id, NavigationOutcome.SUCCEEDED, status, attempt)
                 if status in _CANCELLED_STATES or self._cancel_requested:
                     return NavigationResult(request.location.id, NavigationOutcome.CANCELLED, status, attempt)
+                if self.failure_reason:
+                    # A blind clear-and-retry cannot fix absent feedback or
+                    # command/response mismatch. Preserve the specific reason.
+                    return NavigationResult(request.location.id, NavigationOutcome.NAVIGATION_FAILED, status, attempt)
                 if status not in _RETRYABLE_STATES or attempt == 2:
                     return NavigationResult(request.location.id, NavigationOutcome.NAVIGATION_FAILED, status, attempt)
                 self._runtime.clear_costmaps()
@@ -207,6 +233,8 @@ class NavigationExecutor:
         finally:
             with self._lifecycle_lock:
                 self._executing = False
+                if self._active_token is not None and self._terminal_token == self._active_token:
+                    self._active_token = None
                 self._active_request = None
                 self._cancel_requested = False
 
@@ -294,6 +322,10 @@ class NavigationExecutor:
                     if self._active_token == token:
                         self._terminal_token = token
                         self._terminal_status = status
+                        if not self._executing:
+                            # A late cancellation acknowledgement releases a
+                            # previously timed-out invocation, not a new goal.
+                            self._active_token = None
 
             self._runtime.action_client.send_goal(goal, completed)
             return token

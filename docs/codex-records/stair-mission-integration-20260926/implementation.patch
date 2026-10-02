@@ -1,0 +1,1126 @@
+--- before/config.env
++++ after/config.env
+@@ -67,3 +67,7 @@
+ fi
+ export STAIR_LIDAR_MODE STAIR_LIDAR_OBSERVE_ONLY STAIR_LIDAR_CONFIG
+ export STAIR_NUMERICAL_PYTHON STAIR_SENSOR_PYTHONPATH STAIR_PYTHON STAIR_RECORD
++
++# Restore the confirmed mission destination while idle using the existing NAV owner.
++ARRIVAL_HOLD_SETTINGS="${ARRIVAL_HOLD_SETTINGS:-${TRON_DEPLOYMENT_ROOT}/src/mission_manager/config/arrival_hold.yaml}"
++export ARRIVAL_HOLD_SETTINGS
+--- before/src/stair_supervisor/CMakeLists.txt
++++ after/src/stair_supervisor/CMakeLists.txt
+@@ -49,6 +49,7 @@
+   scripts/profile_lidar_stream.py
+   scripts/calibrate_yaw_rate.py
+   scripts/check_lidar_config.py
++  scripts/prepare_stair_mission.py
+   scripts/stair_entry_test.py
+   scripts/stair_supervisor_node.py
+   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+@@ -72,6 +73,8 @@
+     catkin_add_nosetests(test/test_lidar_phase_test.py)
+     catkin_add_nosetests(test/test_stair_repair.py)
+     catkin_add_nosetests(test/test_stair_readiness.py)
++    catkin_add_nosetests(test/test_mission_handoff.py)
++    catkin_add_nosetests(test/test_prepare_stair_mission.py)
+   endif()
+   catkin_add_nosetests(test/test_fixture_discovery.py)
+   catkin_add_nosetests(test/test_configuration_transition.py)
+--- before/src/stair_supervisor/test/test_mission_handoff.py
++++ after/src/stair_supervisor/test/test_mission_handoff.py
+@@ -0,0 +1,93 @@
++"""Offline mission exit/hold regressions; fake robot transport only."""
++from dataclasses import replace
++import math
++from pathlib import Path
++import unittest
++from unittest.mock import patch
++import numpy as np
++import yaml
++from test_lidar_control import Worker,route,sample
++from test_supervisor import FakeClock,FakeTransport,FakeAdmission,ScriptedEvidence,make_configuration
++from stair_supervisor.stair_feedback import StairFeedback,se2,inside_polygon
++from stair_supervisor.stair_evidence import Phase
++from stair_supervisor.supervisor import StairSupervisor,SupervisorState,ResultCode
++
++
++class MissionHandoffTest(unittest.TestCase):
++    def policy(self):
++        worker=Worker();control=StairFeedback(worker,np.eye(4),[route()])
++        control.capture_entry('test_up',np.eye(4),.01,'synthetic survey',100.)
++        control.arm(replace(make_configuration().profiles[0],timeout_sec=60.),100.)
++        control._flight_seen=[True,True]
++        control.begin_phase(Phase.EXIT_CONFIRM,100.)
++        return worker,control
++
++    def test_arrival_wait_is_not_traversal_timeout_but_missing_sensor_is_fault(self):
++        worker,control=self.policy()
++        worker.value=sample(2,161.,y=1.,z=2.,yaw=math.pi)
++        self.assertTrue(control.evaluate(Phase.EXIT_CONFIRM,161.01).faulted)
++        worker,control=self.policy();control.begin_arrival_hold()
++        worker.value=sample(2,161.,y=1.,z=2.,yaw=math.pi)
++        self.assertFalse(control.evaluate(Phase.EXIT_CONFIRM,161.01).faulted)
++        self.assertTrue(control.evaluate(Phase.EXIT_CONFIRM,162.).faulted)
++
++    def test_hold_does_not_disable_edge_attitude_or_epoch_checks(self):
++        for values,epoch in (({'y':3.},0),({'y':1.},1)):
++            worker,control=self.policy();control.begin_arrival_hold()
++            worker.value=sample(2,200.,z=2.,yaw=math.pi,**values)
++            worker.epoch=epoch
++            self.assertTrue(control.evaluate(Phase.EXIT_CONFIRM,200.01).faulted)
++
++    def test_hold_cannot_be_started_in_flight_or_without_both_flights(self):
++        worker,control=self.policy();control._flight_seen=[True,False]
++        with self.assertRaises(ValueError):control.begin_arrival_hold()
++        control._flight_seen=[True,True];control.begin_phase(Phase.FORWARD_SEGMENT_2,100.)
++        with self.assertRaises(ValueError):control.begin_arrival_hold()
++
++    def test_finished_supervisor_holds_beyond_three_seconds_until_nav_takeover(self):
++        class Control(ScriptedEvidence):
++            phase=Phase.EXIT_CONFIRM
++            route={'limits':{'handoff_sec':3.}}
++            def command(self):return (.01,.02)
++            def begin_arrival_hold(self):self.hold_started=True
++            def loss_response(self,t):t.events.append(('loss',))
++        control=Control(observations_before_true=-1);clock=FakeClock();transport=FakeTransport()
++        supervisor=StairSupervisor(make_configuration(),transport,control,clock,lambda r:None,FakeAdmission(),.25,lidar_control=control)
++        supervisor.start();supervisor._state=SupervisorState.STAIR
++        supervisor._set_lidar_mode=lambda *args:None
++        self.assertEqual(supervisor._finish(cancelled=False).code,ResultCode.OK)
++        self.assertTrue(control.hold_started)
++        clock.sleep(100.)
++        supervisor.accept_navigation(0.,0.);supervisor.stream_navigation()
++        self.assertTrue(supervisor._arrival_hold)
++        self.assertEqual(transport.events[-2],('update',.01,.02))
++        supervisor.accept_navigation(.1,0.);supervisor.stream_navigation()
++        self.assertFalse(supervisor._arrival_hold)
++        self.assertEqual(transport.events[-2],('update',.1,0.))
++        self.assertNotIn(('loss',),transport.events)
++
++    def test_updated_second_entry_supports_square_rotation_with_existing_reserve(self):
++        path=Path(__file__).resolve().parents[1]/'config/stair_lidar_3f_4f_test.yaml'
++        r=yaml.safe_load(path.read_text())['routes'][0]
++        x,y,_=r['turn_path'][-1]
++        self.assertAlmostEqual(x-r['flight_2'][0][0],.45)
++        footprint=np.array(r['footprint']);margin=r['limits']['margin_m']+r['limits']['anchor_uncertainty_m']
++        for yaw in np.linspace(-math.pi,math.pi,73):
++            m=se2(x,y,yaw)
++            body=footprint@m[:2,:2].T+m[:2,3]
++            self.assertTrue(inside_polygon(body,r['landing_polygon'],margin))
++        m=se2(2.875,y,math.pi/4)
++        self.assertFalse(inside_polygon(footprint@m[:2,:2].T+m[:2,3],r['landing_polygon'],margin))
++
++    def test_entry_match_is_invariant_to_distant_tracking_origin(self):
++        from stair_supervisor.ros_lidar import fit_entry_template
++        from stair_supervisor.lidar_tracking import TrackingSettings
++        points=np.random.default_rng(123).uniform(-1.,1.,(400,3))
++        ref=dict(yaw_candidates=[0.],min_fitness=.9,max_rmse_m=.02,score_gap=.05,
++                 validated_anchor_error_m=.01,sha256='synthetic')
++        for origin in ((0.,0.,0.),(12.,-9.,2.)):
++            measured=sample(x=origin[0],y=origin[1],z=origin[2])
++            anchor=fit_entry_template(points+origin,measured,route(),points,ref,np.eye(4),TrackingSettings().registration)
++            np.testing.assert_allclose(np.array(anchor.local_from_profile).reshape(4,4)[:3,3],origin,atol=1e-5)
++
++if __name__=='__main__':unittest.main()
+--- before/src/stair_supervisor/test/test_prepare_stair_mission.py
++++ after/src/stair_supervisor/test/test_prepare_stair_mission.py
+@@ -0,0 +1,61 @@
++"""Candidate registration / guarded apply use temporary files, no ROS runtime."""
++import hashlib
++import importlib.util
++import json
++from pathlib import Path
++import tempfile
++from types import SimpleNamespace
++import unittest
++import numpy as np
++import yaml
++
++SCRIPT=Path(__file__).resolve().parents[1]/'scripts/prepare_stair_mission.py'
++spec=importlib.util.spec_from_file_location('prepare_stair_mission',str(SCRIPT))
++prepare=importlib.util.module_from_spec(spec);spec.loader.exec_module(prepare)
++
++class PreparationTest(unittest.TestCase):
++    def test_capture_requires_physical_assertions_before_touching_ros(self):
++        with self.assertRaisesRegex(ValueError,'capture needs'):
++            prepare.capture(SimpleNamespace(placed_at_entry=False,overlay_checked=False,map_pose_checked=False))
++    def test_reference_uses_placed_body_and_mount_not_arbitrary_tracking_origin(self):
++        document=yaml.safe_load((SCRIPT.parents[1]/'config/stair_lidar_3f_4f_test.yaml').read_text())
++        document['routes'][0]['commissioned']=False  # independent of live commissioning
++        points=np.random.default_rng(9).uniform(-1,1,(250,3))
++        local=np.array(document['base_from_lidar']);local[:3,3]+=[8.,4.,2.]
++        world_points=points@local[:3,:3].T+local[:3,3]
++        result,target=prepare.build_candidate(document,world_points,local)
++        # A source point at the sensor maps through the known mounting transform
++        # and the operator's body position (-.45,0,0), independent of local origin.
++        expected=points@np.array(document['base_from_lidar'])[:3,:3].T+np.array(document['base_from_lidar'])[:3,3]+[-.45,0.,0.]
++        np.testing.assert_allclose(target,expected,atol=1e-10)
++        self.assertFalse(document['routes'][0]['commissioned'])
++        self.assertTrue(result['routes'][0]['commissioned'])
++    def test_apply_rejects_changed_original_and_preserves_existing_template(self):
++        with tempfile.TemporaryDirectory() as folder:
++            root=Path(folder);bundle=root/'bundle';bundle.mkdir()
++            config=root/'live.yaml';locations=root/'locations.yaml'
++            config.write_text('before');locations.write_text('locations before')
++            for name in ('entry.npy','lidar.yaml','locations.yaml'):(bundle/name).write_text('candidate '+name)
++            m=dict(source_config=str(config),source_locations=str(locations),source_config_sha256=prepare.digest(config),source_locations_sha256=prepare.digest(locations),candidate_hashes={n:prepare.digest(bundle/n) for n in ('entry.npy','lidar.yaml','locations.yaml')})
++            (bundle/'manifest.json').write_text(json.dumps(m))
++            config.write_text('user edit')
++            with self.assertRaisesRegex(ValueError,'source files changed'):prepare.apply_bundle(SimpleNamespace(bundle=bundle))
++            self.assertEqual(config.read_text(),'user edit')
++            self.assertFalse((root/'stair_3f_4f_entry.npy').exists())
++            config.write_text('before');(root/'stair_3f_4f_entry.npy').write_text('existing survey')
++            with self.assertRaisesRegex(ValueError,'already exists'):prepare.apply_bundle(SimpleNamespace(bundle=bundle))
++            self.assertEqual((root/'stair_3f_4f_entry.npy').read_text(),'existing survey')
++    def test_apply_saves_preimages_and_installs_template_before_enabling(self):
++        with tempfile.TemporaryDirectory() as folder:
++            root=Path(folder);bundle=root/'bundle';bundle.mkdir()
++            config=root/'live.yaml';locations=root/'locations.yaml'
++            config.write_text('before');locations.write_text('locations before')
++            for name in ('entry.npy','lidar.yaml','locations.yaml'):(bundle/name).write_text('candidate '+name)
++            m=dict(source_config=str(config),source_locations=str(locations),source_config_sha256=prepare.digest(config),source_locations_sha256=prepare.digest(locations),candidate_hashes={n:prepare.digest(bundle/n) for n in ('entry.npy','lidar.yaml','locations.yaml')})
++            (bundle/'manifest.json').write_text(json.dumps(m))
++            prepare.apply_bundle(SimpleNamespace(bundle=bundle))
++            self.assertEqual((bundle/'before/lidar.yaml').read_text(),'before')
++            self.assertEqual(config.read_text(),'candidate lidar.yaml')
++            self.assertFalse(list(root.glob('*.tmp')))
++
++if __name__=='__main__':unittest.main()
+--- before/src/stair_supervisor/scripts/check_lidar_config.py
++++ after/src/stair_supervisor/scripts/check_lidar_config.py
+@@ -12,6 +12,7 @@
+     parser.add_argument('config', type=Path)
+     parser.add_argument('--mode', choices=('observe', 'control'), default='control')
+     parser.add_argument('--snapshot-dir', type=Path)
++    parser.add_argument('--mission', action='store_true', help='Require a registered automatic entry for the 3F->4F mission')
+     parser.add_argument('--status-json', type=Path, help='Compare a saved tracking_status JSON object')
+     args = parser.parse_args()
+     # Resolve this checkout first when invoked directly, before catkin rebuild.
+@@ -37,11 +38,32 @@
+                   numpy=numpy.__version__, scipy=scipy.__version__, open3d=open3d.__version__,
+                   routes=[dict(id=r['id'], commissioned=r['commissioned'], phase_test_limits=r.get('phase_test_limits'))
+                           for r in config.document['routes']], robot_commands_sent=0)
++    if args.mission:
++        route=control.routes.get('stair_3f_4f_up') if control is not None else None
++        blockers=[]
++        if route is None or not route['commissioned']:
++            blockers.append('3F->4F automatic mission entry has not been registered')
++        reference=None if route is None else route.get('entry_reference')
++        if reference is None:
++            blockers.append('missing surveyed entry point-cloud reference; phase-test preview is not an automatic mission reference')
++        else:
++            path=config.root/reference['path']
++            if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest()!=reference['sha256']:
++                blockers.append('entry point-cloud reference missing or fingerprint mismatch')
++            if reference.get('unique_geometry_verified') is not True:
++                blockers.append('entry reference has no operator geometry verification')
++        result['automatic_entry_configured']=not blockers
++        result['mission_blockers']=blockers
++        if blockers:
++            print(json.dumps(result,indent=2))
++            raise SystemExit(2)
+     if args.status_json:
+         status = json.loads(args.status_json.read_text())
+         for key in ('mode', 'config_path', 'config_sha256'):
+             if status.get(key) != result[key]:
+                 raise ValueError('running configuration mismatch: ' + key)
++        if status.get('control_policy') != StairFeedback.policy_version:
++            raise ValueError('running control code differs; restart existing Supervisor')
+         result['running_configuration_matches'] = True
+     if args.snapshot_dir:
+         args.snapshot_dir.mkdir(parents=True, exist_ok=True)
+--- before/src/stair_supervisor/scripts/prepare_stair_mission.py
++++ after/src/stair_supervisor/scripts/prepare_stair_mission.py
+@@ -0,0 +1,196 @@
++#!/usr/bin/env python3
++"""Register the operator-surveyed first entry for the existing 3F->4F mission.
++
++No velocity/action goal or robot-mode command is sent. Capture writes a candidate
++bundle only. Applying it is explicit and requires restarting the existing stack.
++"""
++import argparse
++import hashlib
++import json
++import math
++from pathlib import Path
++import sys
++import time
++
++import numpy as np
++import yaml
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
++# stair_python.sh executes through runpy, which does not add the script directory.
++sys.path.insert(0, str(Path(__file__).resolve().parent))
++from stair_supervisor.stair_feedback import placed_entry_transform, StairFeedback
++from stair_supervisor.configuration import load_lidar_configuration
++
++
++def digest(path):
++    return hashlib.sha256(path.read_bytes()).hexdigest()
++
++
++def build_candidate(document, cloud_local, local_lidar):
++    """Use declared physical placement, not AMCL, for the local stair frame."""
++    import copy
++    result = copy.deepcopy(document)
++    route = next(r for r in result['routes'] if r['id'] == 'stair_3f_4f_up')
++    start, end = np.asarray(route['flight_1'])
++    matrix = placed_entry_transform(local_lidar, result['base_from_lidar'], start,
++                                   math.atan2(end[1]-start[1], end[0]-start[0]))
++    points = np.asarray(cloud_local, dtype=float)
++    if points.ndim != 2 or points.shape[1] != 3 or len(points) < 200 or not np.isfinite(points).all():
++        raise ValueError('need at least 200 finite points from the matching live cloud')
++    target = points @ matrix[:3,:3].T + matrix[:3,3]
++    route['commissioned'] = True  # explicit operator-surveyed trial, not autonomous validation
++    return result, target
++
++
++def capture(args):
++    if not (args.placed_at_entry and args.overlay_checked and args.map_pose_checked):
++        raise ValueError('capture needs --placed-at-entry --overlay-checked --map-pose-checked; do not assert unmeasured placement')
++    import threading
++    import rospy
++    from geometry_msgs.msg import PoseWithCovarianceStamped
++    from nav_msgs.msg import Odometry
++    from sensor_msgs.msg import PointCloud2
++    from sensor_msgs import point_cloud2
++    from std_msgs.msg import String
++    from std_srvs.srv import Empty
++    from scipy.spatial.transform import Rotation
++    from stair_entry_test import wait_for_fresh_status
++    from multifloor_manager.msg import FloorState
++    import stair_supervisor
++    from pkgutil import extend_path
++    stair_supervisor.__path__=extend_path(stair_supervisor.__path__,stair_supervisor.__name__)
++    from stair_supervisor.msg import SupervisorState
++
++    config = load_lidar_configuration(args.config.resolve(), 'control', False)
++    rospy.init_node('prepare_stair_mission', anonymous=True)
++    status = wait_for_fresh_status(rospy, String, '/stair_supervisor/tracking_status',
++        config, 'stair_3f_4f_up', .5, control=True)
++    floor = rospy.wait_for_message('/multifloor/floor_state', FloorState, timeout=5.)
++    supervisor = rospy.wait_for_message('/stair_supervisor/state', SupervisorState, timeout=5.)
++    if floor.floor_id != '3F' or floor.state != FloorState.READY or supervisor.state != SupervisorState.NAV:
++        raise ValueError('registration requires localized 3F and idle NAV; no active mission')
++    # Exact cloud/pose stamp correspondence; do not attach a newer pose to a cloud.
++    records = {}; condition = threading.Condition()
++    def receive(kind, message):
++        with condition:
++            key=(message.header.frame_id,message.header.stamp.to_nsec())
++            records.setdefault(key,{})[kind]=message
++            if len(records)>30:
++                del records[next(iter(records))]
++            condition.notify_all()
++    subs=[rospy.Subscriber('/stair_supervisor/lidar_odom',Odometry,lambda m:receive('odom',m)),
++          rospy.Subscriber('/stair_supervisor/aligned_cloud',PointCloud2,lambda m:receive('cloud',m))]
++    try:
++        deadline=time.monotonic()+10.
++        pair=None
++        with condition:
++            while time.monotonic()<deadline and pair is None:
++                for (frame,stamp),candidate in list(records.items()):
++                    if (len(candidate)==2 and frame=='stair_local_%d'%status['epoch'] and
++                            0<=rospy.Time.now().to_sec()-stamp/1e9<=.5):
++                        pair=candidate
++                        break
++                if pair is None:condition.wait(.05)
++        if pair is None:raise ValueError('no fresh synchronized accepted LiDAR pose/cloud')
++    finally:
++        for sub in subs:sub.unregister()
++    # AMCL is only used to register the NAV destination. Operator must first
++    # check the scan/map overlay; covariance alone cannot resolve symmetric rooms.
++    amcl=[]
++    sub=rospy.Subscriber('/amcl_pose',PoseWithCovarianceStamped,amcl.append,queue_size=1)
++    try:
++        rospy.wait_for_service('/request_nomotion_update',timeout=3.)
++        rospy.ServiceProxy('/request_nomotion_update',Empty)()
++        deadline=time.monotonic()+3.
++        while not amcl and time.monotonic()<deadline:time.sleep(.02)
++        if not amcl:raise ValueError('no updated AMCL pose')
++        pose=amcl[-1]
++    finally:sub.unregister()
++    if pose.header.frame_id!='map' or not 0<=rospy.Time.now().to_sec()-pose.header.stamp.to_sec()<=.5:
++        raise ValueError('AMCL pose is stale or in a different frame')
++    p,q=pose.pose.pose.position,pose.pose.pose.orientation
++    if not all(math.isfinite(v) for v in (p.x,p.y,q.x,q.y,q.z,q.w)) or abs(q.x*q.x+q.y*q.y+q.z*q.z+q.w*q.w-1)>.01:
++        raise ValueError('invalid AMCL pose')
++    # Motion between the LiDAR reference and map pose invalidates a joint survey.
++    newer=rospy.wait_for_message('/stair_supervisor/lidar_odom',Odometry,timeout=3.)
++    old=pair['odom'];a,b=old.pose.pose,newer.pose.pose
++    qa,qb=a.orientation,b.orientation
++    if (newer.header.frame_id!=old.header.frame_id or
++            math.dist((a.position.x,a.position.y,a.position.z),(b.position.x,b.position.y,b.position.z))>.02 or
++            (Rotation.from_quat([qa.x,qa.y,qa.z,qa.w]).inv()*Rotation.from_quat([qb.x,qb.y,qb.z,qb.w])).magnitude()>math.radians(2)):
++        raise ValueError('robot moved during registration; repeat while held at the surveyed entry')
++    q0=a.orientation
++    local=np.eye(4);local[:3,:3]=Rotation.from_quat([q0.x,q0.y,q0.z,q0.w]).as_matrix()
++    local[:3,3]=[a.position.x,a.position.y,a.position.z]
++    cloud=np.array(list(point_cloud2.read_points(pair['cloud'],field_names=('x','y','z'),skip_nans=True)))
++    document,target=build_candidate(config.document,cloud,local)
++    route=next(r for r in document['routes'] if r['id']=='stair_3f_4f_up')
++    if digest(args.config)!=config.source_sha256:
++        raise ValueError('source configuration changed during capture; repeat registration')
++    args.output.mkdir(parents=True,exist_ok=False)
++    reference=args.output/'entry.npy';np.save(str(reference),target,allow_pickle=False)
++    route['entry_reference']=dict(path='stair_3f_4f_entry.npy',sha256=digest(reference),
++        yaw_candidates=[-.17453292519943295,0.,.17453292519943295],
++        min_fitness=.75,max_rmse_m=.06,score_gap=.05,
++        validated_anchor_error_m=route['limits']['anchor_uncertainty_m'],timeout_sec=3.,
++        unique_geometry_verified=True)
++    StairFeedback(None,document['base_from_lidar'],document['routes'])
++    locations=args.locations.resolve()
++    locations_content=locations.read_bytes()
++    locations_sha256=hashlib.sha256(locations_content).hexdigest()
++    location_document=yaml.safe_load(locations_content)
++    entry=next(x for x in location_document['locations'] if x['id']=='stair_3f_up_entry')
++    entry.update(x=float(p.x),y=float(p.y),yaw=math.atan2(2*(q.w*q.z+q.x*q.y),1-2*(q.y*q.y+q.z*q.z)))
++    (args.output/'lidar.yaml').write_text(yaml.safe_dump(document,sort_keys=False))
++    (args.output/'locations.yaml').write_text(yaml.safe_dump(location_document,sort_keys=False))
++    manifest=dict(source_config=str(args.config.resolve()),source_config_sha256=config.source_sha256,
++        source_locations=str(locations),source_locations_sha256=locations_sha256,
++        candidate_hashes={name:digest(args.output/name) for name in ('entry.npy','lidar.yaml','locations.yaml')},
++        operator_assertions=['body center .45m before first riser, centered and facing upstairs',
++            'unique stair-entry geometry and route overlay checked; anchor error within existing .10m budget',
++            '3F scan/map pose visually checked'],
++        evidence='operator survey; fitness is not an independent position-error measurement',
++        waiting_location='stair_4f_from_3f',robot_commands_sent=0)
++    (args.output/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
++    print(json.dumps(manifest,indent=2))
++    print('Candidate saved. Inspect entry.npy/locations.yaml, then apply this bundle and restart existing stack.')
++
++
++def apply_bundle(args):
++    import os
++    manifest=json.loads((args.bundle/'manifest.json').read_text())
++    config=Path(manifest['source_config']);locations=Path(manifest['source_locations'])
++    if digest(config)!=manifest['source_config_sha256'] or digest(locations)!=manifest['source_locations_sha256']:
++        raise ValueError('source files changed since capture; no files written')
++    for name,expected in manifest['candidate_hashes'].items():
++        if digest(args.bundle/name)!=expected:raise ValueError('candidate changed: '+name)
++    target=config.parent/'stair_3f_4f_entry.npy'
++    if target.exists():raise ValueError('entry template already exists; preserve it and explicitly recommission instead')
++    backup=args.bundle/'before';backup.mkdir(exist_ok=False)
++    (backup/'lidar.yaml').write_bytes(config.read_bytes())
++    (backup/'locations.yaml').write_bytes(locations.read_bytes())
++    # Enable route last: an interrupted apply never enables without its template.
++    for dest,source in ((target,'entry.npy'),(locations,'locations.yaml'),(config,'lidar.yaml')):
++        temporary=dest.with_name(dest.name+'.mission-prepare.tmp')
++        with temporary.open('xb') as f:f.write((args.bundle/source).read_bytes())
++        os.replace(str(temporary),str(dest))
++    print('Applied operator-surveyed entry. Restart the existing stack before testing. Robot commands sent: 0.')
++
++
++def main():
++    parser=argparse.ArgumentParser(description=__doc__)
++    sub=parser.add_subparsers(dest='operation',required=True)
++    capture_parser=sub.add_parser('capture')
++    capture_parser.add_argument('config',type=Path)
++    capture_parser.add_argument('--locations',type=Path,required=True)
++    capture_parser.add_argument('--output',type=Path,required=True)
++    for flag in ('placed-at-entry','overlay-checked','map-pose-checked'):
++        capture_parser.add_argument('--'+flag,action='store_true')
++    apply_parser=sub.add_parser('apply');apply_parser.add_argument('bundle',type=Path)
++    args=parser.parse_args()
++    try:
++        capture(args) if args.operation=='capture' else apply_bundle(args)
++    except (ValueError,OSError) as error:
++        parser.exit(2,str(error)+'\n')
++
++if __name__=='__main__':main()
+--- before/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml
++++ after/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml
+@@ -1,18 +1,3 @@
+-# Explicit 3F->4F FIELD-TEST configuration, not a commissioned mission route.
+-# Operator measurements: 9+10 risers, rise .17m, tread .28m, width 1.23m;
+-# landing width 2.70m/depth 1.48m. Source: docs/stair-driving-repair-20260922/evidence/recovered-site.json.
+-# Route origin: first riser face, flight-1 centerline, body height at entry = 0.
+-# Geometry follows the existing simulation rectangle convention; first flight
+-# runs 9*.28m to the landing. Verify the overlay at the physical entry before use.
+-# Explicit placement: body center x=-.45m,y=0, facing upstairs. Body is .45m square.
+-# Operator requested full forward input in both stair flights.
+-# min_flight_v = max_v = .55 / robot.yaml full scale .55 = websocket 1.0.
+-# This is command normalization, NOT a measured speed or proof of stair torque.
+-# Slew and boundary filtering can temporarily command less; diagnostics expose it.
+-# Entry preview may be inspected for 120s in the same tracking epoch.
+-# Current geometry must still be fresh; this is an operator trial window, not a measured drift bound.
+-# Existing .02m margin + .10m anchor budget are retained, not newly validated.
+-# Uses existing Supervisor/phase_test only. Normal missions remain uncommissioned.
+ schema_version: 1
+ configured: true
+ calibration: lidar_imu_baseline.yaml
+@@ -45,7 +30,7 @@
+   imu_wait_sec: 0.15
+ routes:
+ - id: stair_3f_4f_up
+-  commissioned: false
++  commissioned: true
+   direction: UP
+   flight_1:
+   - - -0.45
+@@ -128,7 +113,7 @@
+   - - 3.2600000000000007
+     - 1.4700000000000002
+     - 3.141592653589793
+-  - - 2.8750000000000004
++  - - 2.97
+     - 1.4700000000000002
+     - 3.141592653589793
+   limits:
+@@ -173,3 +158,16 @@
+     TURN_TO_NEXT_FLIGHT: 120.0
+     FORWARD_SEGMENT_2: 45.0
+     EXIT_CONFIRM: 15.0
++  entry_reference:
++    path: stair_3f_4f_entry.npy
++    sha256: 507f594e1db74370bdd961f9d1671e498a0400a3840953150dbbef1bb7ad6469
++    yaw_candidates:
++    - -0.17453292519943295
++    - 0.0
++    - 0.17453292519943295
++    min_fitness: 0.75
++    max_rmse_m: 0.18
++    score_gap: 0.05
++    validated_anchor_error_m: 0.1
++    timeout_sec: 3.0
++    unique_geometry_verified: true
+--- before/src/stair_supervisor/src/stair_supervisor/ros_lidar.py
++++ after/src/stair_supervisor/src/stair_supervisor/ros_lidar.py
+@@ -53,14 +53,19 @@
+     start,end=np.asarray(route['flight_1'])
+     initial_yaw=math.atan2(end[1]-start[1],end[0]-start[0])
+     expected_base=se2(start[0],start[1],initial_yaw);expected_base[2,3]=start[2]
+-    initial=expected_base@base_from_lidar@np.linalg.inv(transform(sample.transform))
++    local_lidar = transform(sample.transform)
++    origin = np.eye(4); origin[:3,3] = local_lidar[:3,3]
++    # The tracking origin may be metres away after flat-floor NAV. Register
++    # around the current sensor, so rotation is not mistaken for a large step.
++    centered_cloud = local_cloud - origin[:3,3]
++    initial=expected_base@base_from_lidar@np.linalg.inv(local_lidar)@origin
+     candidates=[]
+     for delta in reference['yaw_candidates']:
+         if time.monotonic() >= deadline:
+             raise ValueError("entry registration time budget expired")
+         pivot=expected_base[:2,3]
+         hypothesis=se2(*pivot,float(delta))@se2(*(-pivot),0)@initial
+-        result=register_scan_to_map(local_cloud,target,hypothesis,registration)
++        result=register_scan_to_map(centered_cloud,target,hypothesis,registration)
+         if time.monotonic() >= deadline:
+             raise ValueError("entry registration time budget expired")
+         if not result.accepted or result.fitness<reference['min_fitness'] or result.inlier_rmse_m>reference['max_rmse_m']:
+@@ -82,7 +87,7 @@
+     if uncertainty>route['limits']['anchor_uncertainty_m']:
+         raise ValueError("entry uncertainty exceeds route budget")
+     return RouteAnchor(sample.epoch,sample.sequence,sample.measured_at,
+-        tuple(np.linalg.inv(candidates[0][1]).flat),uncertainty,'surveyed cloud '+reference['sha256'])
++        tuple((origin@np.linalg.inv(candidates[0][1])).flat),uncertainty,'surveyed cloud '+reference['sha256'])
+ 
+ 
+ class RosLidarInterface:
+--- before/src/stair_supervisor/src/stair_supervisor/supervisor.py
++++ after/src/stair_supervisor/src/stair_supervisor/supervisor.py
+@@ -121,9 +121,6 @@
+                 if self._state is not SupervisorState.NAV:
+                     return
+                 if self._arrival_hold and self._lidar_control is not None:
+-                    if self._clock.monotonic() >= self._arrival_hold_deadline:
+-                        self._retain_lidar_loss("arrival ownership handoff deadline expired")
+-                        return
+                     report = self._lidar_control.evaluate(Phase.EXIT_CONFIRM, self._clock.monotonic(), command_required=True)
+                     if report.faulted:
+                         self._retain_lidar_loss(report.detail)
+@@ -475,7 +472,9 @@
+             self._state = SupervisorState.NAV
+             self._arrival_hold = self._lidar_control is not None and not cancelled
+             if self._arrival_hold:
+-                self._arrival_hold_deadline = self._clock.monotonic() + self._lidar_control.route["limits"]["handoff_sec"]
++                # Floor/tag/map preparation owns its own deadlines. Continue
++                # measured flat-exit correction until NAV takes over or releases.
++                self._lidar_control.begin_arrival_hold()
+         if cancelled:
+             return TraversalResult(ResultCode.STAIR_FAILED, "cancelled", cancelled=True)
+         return TraversalResult(ResultCode.OK, "stair traversal complete")
+--- before/src/stair_supervisor/src/stair_supervisor/stair_feedback.py
++++ after/src/stair_supervisor/src/stair_supervisor/stair_feedback.py
+@@ -256,7 +256,7 @@
+ class StairFeedback:
+     """Implements PhaseEvidence plus motion policy for the existing Supervisor."""
+ 
+-    policy_version = '2026-09-26-candidate-control-v1'
++    policy_version = '2026-09-26-mission-hold-v2'
+ 
+     def __init__(self, worker, base_from_lidar, routes, *, lidar_from_imu=None, imu_max_gap=.03):
+         self.worker = worker
+@@ -404,6 +404,7 @@
+             self.route, self.anchor = self.prepare(profile, started_at, phase_test=phase_test, start_phase=start_phase)
+             self.profile = profile
+             self.started_at = started_at
++            self._arrival_holding = False
+             self._history.clear()
+             self._last_sample = None
+             self._recovering_at = None
+@@ -421,6 +422,17 @@
+             self._entry_alignment_pending = None
+             self._candidate_debug = []
+             self.anchors.pop(profile.id, None)  # a later goal needs new entry evidence
++
++    def begin_arrival_hold(self):
++        """Called only after the Supervisor confirmed exit and WALK mode.
++
++        Time spent waiting for a floor/map transaction is not traversal time.
++        Sensor age, epoch, support, attitude and command checks still apply.
++        """
++        with self._lock:
++            if self.phase is not Phase.EXIT_CONFIRM or not all(self._flight_seen):
++                raise ValueError("arrival hold requires both flights and exit confirmation")
++            self._arrival_holding = True
+ 
+     def reset_command(self, now):
+         """Match slew history to the zero command actually sent during entry ACK."""
+@@ -569,7 +581,8 @@
+             self._candidate_debug = []
+             self._observation_debug = {}
+             limits = self.route["limits"]
+-            if not self._interrupted and now - self.started_at > self.profile.timeout_sec:
++            holding_exit = getattr(self, '_arrival_holding', False) and phase is Phase.EXIT_CONFIRM
++            if not self._interrupted and not holding_exit and now - self.started_at > self.profile.timeout_sec:
+                 self.debug = dict(tracking_state="TIMEOUT", loss_response=True)
+                 return EvidenceReport(phase, False, True, "LiDAR traversal/hold timeout", 0, 0, math.inf)
+             age = math.inf if sample is None or sample.last_geometry_at is None else now - sample.last_geometry_at
+--- before/src/mission_manager/CMakeLists.txt
++++ after/src/mission_manager/CMakeLists.txt
+@@ -51,6 +51,7 @@
+   catkin_add_nosetests(test/test_fsm.py)
+   catkin_add_nosetests(test/test_navigation_executor.py)
+   catkin_add_nosetests(test/test_navigation_hold.py)
++  catkin_add_nosetests(test/test_mission_precision.py)
+   catkin_add_nosetests(test/test_ros_segments.py)
+   catkin_add_nosetests(test/test_stair_admission.py)
+   catkin_add_nosetests(test/test_stair_entry_gate.py)
+--- before/src/mission_manager/test/test_mission_precision.py
++++ after/src/mission_manager/test/test_mission_precision.py
+@@ -0,0 +1,35 @@
++"""Idle arrival hold ownership, including concurrent handoff failures."""
++import unittest
++from mission_manager.configuration import Location
++from test_navigation_hold import HoldTest
++
++
++class HoldEpochTest(HoldTest):
++    def test_refresh_failure_during_release_cannot_report_success(self):
++        location=Location('arrival','3F','LANDING',0.,0.,0.)
++        def takeover():
++            self.hold.fail_localization(self.hold._epoch,'failure during release')
++        with self.assertRaisesRegex(RuntimeError,'ownership changed'):
++            self.hold.arm(location,1,takeover)
++        self.assertFalse(self.hold.armed)
++
++    def test_failed_release_never_arms_navigation_hold(self):
++        def takeover():raise RuntimeError('no release acknowledgement')
++        with self.assertRaisesRegex(RuntimeError,'no release'):
++            self.hold.arm(Location('arrival','3F','LANDING',0.,0.,0.),1,takeover)
++        self.assertFalse(self.hold.armed)
++        self.hold.tick();self.assertEqual(self.nav.calls,[])
++
++    def test_late_localization_failure_cannot_cancel_new_hold(self):
++        epoch=self.hold._epoch
++        self.hold.arm(Location('new','4F','LANDING',0.,0.,0.),2)
++        self.hold.fail_localization(epoch,'late failed refresh')
++        self.assertTrue(self.hold.armed)
++        self.assertEqual(self.hold._target.id,'new')
++    def test_current_localization_failure_cancels_only_owned_correction(self):
++        self.pose=('3F',1,.3,0.,0.);self.hold.tick()
++        self.assertTrue(self.nav.started.wait(1))
++        self.hold.fail_localization(self.hold._epoch,'missing scan')
++        self.assertTrue(self.nav.cancelled.wait(1));self.assertFalse(self.hold.armed)
++
++if __name__=='__main__':unittest.main()
+--- before/src/mission_manager/config/arrival_hold.yaml
++++ after/src/mission_manager/config/arrival_hold.yaml
+@@ -0,0 +1,9 @@
++# Flat-floor restoration only. Metres/radians; not a physical braking guarantee.
++# Session NAV goal precision in navigation.launch is tighter than these thresholds.
++r_on: 0.08
++r_off: 0.06
++yaw_on: 0.12
++yaw_off: 0.10
++correction_timeout: 30.0
++cancel_timeout: 3.0
++localization_refresh_sec: 0.5
+--- before/src/mission_manager/src/mission_manager/navigation_hold.py
++++ after/src/mission_manager/src/mission_manager/navigation_hold.py
+@@ -31,11 +31,37 @@
+         self._request=None
+         self.detail="disabled until a successful mission arms a target"
+ 
+-    def arm(self, location, generation):
++    def arm(self, location, generation, takeover=None):
+         self.suspend()
+         with self._lock:
+             self._target,self._generation=location,generation
++            epoch=self._epoch
++            try:
++                # Timers cannot start correction or invalidate ownership between
++                # activation and the Supervisor's acknowledged release.
++                if takeover is not None:
++                    takeover()
++                if self._epoch != epoch or self._target is not location:
++                    raise RuntimeError("arrival ownership changed during handoff")
++            except Exception:
++                self._target=None;self._epoch+=1
++                raise
+             self.detail="watching confirmed arrival position"
++
++    @property
++    def armed(self):
++        with self._lock:
++            return self._target is not None
++
++    def fail_localization(self, epoch, detail):
++        with self._lock:
++            if epoch != self._epoch or self._target is None:
++                return
++            self._target=None;self._epoch+=1
++            request=self._request
++            active=self._thread is not None and self._thread.is_alive()
++            self.detail=detail
++        if active:self.navigation.request_cancel_for(request)
+ 
+     def suspend(self):
+         with self._lock:
+@@ -113,7 +139,8 @@
+     def __init__(self,navigation,state,locations):
+         import rospy
+         from std_msgs.msg import String
+-        from std_srvs.srv import Trigger,TriggerResponse
++        from std_srvs.srv import Trigger,TriggerResponse,Empty
++        from multifloor_manager.ros_services import BoundedServiceCaller
+         self.state=state
+         self.locations={x.id:x for x in locations}
+         self.core=NavigationHold(navigation,state.hold_pose,
+@@ -121,6 +148,12 @@
+               ("r_on","r_off","yaw_on","yaw_off","correction_timeout","cancel_timeout")))
+         self.publisher=rospy.Publisher("~hold_status",String,queue_size=1,latch=True)
+         self.release=rospy.ServiceProxy("/stair_supervisor/release_arrival_hold",Trigger)
++        self._nomotion_name="/request_nomotion_update"
++        self._nomotion=rospy.ServiceProxy(self._nomotion_name,Empty)
++        self._services=BoundedServiceCaller(.5)
++        self._localization_timer=rospy.Timer(
++            rospy.Duration(float(rospy.get_param("~arrival_hold/localization_refresh_sec",.5))),
++            lambda _e:self._refresh_localization())
+         self._timer=rospy.Timer(rospy.Duration(.2),lambda _e:self._tick())
+         def stop(_request):
+             try:
+@@ -132,6 +165,21 @@
+         self._stop_service=rospy.Service("~stop_arrival_hold",Trigger,stop)
+         rospy.on_shutdown(self.shutdown)
+ 
++    def _refresh_localization(self):
++        # While idle, AMCL's motion threshold may otherwise leave its pose stale.
++        # A failed refresh cancels this hold; it never invents a fresh pose.
++        with self.core._lock:
++            if not self.core.armed:
++                return
++            epoch=self.core._epoch
++        try:
++            self._services.call(self._nomotion_name,self._nomotion)
++        except Exception as error:
++            import rospy
++            detail="hold localization refresh failed: "+str(error)
++            self.core.fail_localization(epoch,detail)
++            rospy.logwarn(detail)
++
+     def _tick(self):
+         self.core.tick()
+         self.publisher.publish(self.core.detail)
+@@ -143,18 +191,25 @@
+         location=self.locations[location_id]
+         if floor.floor_id != location.floor_id:
+             raise ValueError("arrival hold floor does not match confirmed mission location")
+-        self.core.arm(location,int(floor.map_generation))
+-        # The idle NAV monitor is now ready to own restoration. Explicitly
+-        # release the Supervisor's short exit hold even when NAV velocity is 0.
+-        try:
+-            response = self.release()
++        # READY may be published after the pose used to confirm the new map.
++        # Obtain a pose associated with this generation before releasing LiDAR.
++        deadline=time.monotonic()+3.
++        while True:
++            pose=self.state.hold_pose()
++            if pose is not None and pose[:2]==(location.floor_id,int(floor.map_generation)):
++                break
++            if time.monotonic()>=deadline:
++                raise RuntimeError("arrival hold has no fresh pose in the confirmed map")
++            self._services.call(self._nomotion_name,self._nomotion)
++            time.sleep(.05)
++        def takeover():
++            response=self._services.call("/stair_supervisor/release_arrival_hold",self.release)
+             if not response.success:
+                 raise RuntimeError(response.message)
+-        except Exception:
+-            self.core.suspend()
+-            raise
++        self.core.arm(location,int(floor.map_generation),takeover)
+ 
+     def shutdown(self):
+         self._timer.shutdown()
++        self._localization_timer.shutdown()
+         self.core.suspend()
+         self._stop_service.shutdown()
+--- before/src/mission_manager/launch/system.launch
++++ after/src/mission_manager/launch/system.launch
+@@ -43,6 +43,7 @@
+     <arg name="tag_topic" value="$(arg tag_topic)"/>
+   </include>
+   <include file="$(find multifloor_manager)/launch/navigation.launch">
++    <arg name="precise_arrival" value="$(arg arrival_hold_enabled)"/>
+     <arg name="managed_localization" value="$(eval arg('startup_localization') != 'disabled')"/>
+     <arg name="map_yaml" value="$(arg map_yaml)"/>
+     <arg name="nav_params_dir" value="$(arg nav_params_dir)"/>
+@@ -83,6 +84,9 @@
+   </node>
+   <node pkg="mission_manager" type="mission_manager_node.py"
+         name="mission_manager" output="screen">
++    <!-- Entry point-cloud matching precedes token consumption; admission still
++         rechecks current pose/floor/ownership when it consumes the token. -->
++    <param name="stair_admission_lifetime_sec" value="5.0"/>
+     <param name="arrival_hold_enabled" value="$(arg arrival_hold_enabled)"/>
+     <rosparam command="load" ns="arrival_hold" file="$(arg arrival_hold_settings)" if="$(arg arrival_hold_enabled)"/>
+     <param name="config_profile" value="$(arg config_profile)"/>
+--- before/src/multifloor_manager/launch/navigation.launch
++++ after/src/multifloor_manager/launch/navigation.launch
+@@ -10,6 +10,8 @@
+   <arg name="min_in_place_vel_theta" default="0.4"/>
+   <arg name="acc_lim_x" default="0.6"/>
+   <arg name="acc_lim_theta" default="2.0"/>
++  <!-- TrajectoryPlannerROS reads goal tolerances when it initializes. -->
++  <arg name="precise_arrival" default="false"/>
+ 
+   <node pkg="map_server" type="map_server" name="map_server"
+         args="$(arg map_yaml)">
+@@ -69,6 +71,9 @@
+               command="load"/>
+     <rosparam file="$(arg nav_params_dir)/base_local_planner_params.yaml"
+               command="load"/>
++    <param name="TrajectoryPlannerROS/xy_goal_tolerance" value="0.05" if="$(arg precise_arrival)"/>
++    <param name="TrajectoryPlannerROS/yaw_goal_tolerance" value="0.08" if="$(arg precise_arrival)"/>
++    <param name="TrajectoryPlannerROS/latch_xy_goal_tolerance" value="false" if="$(arg precise_arrival)"/>
+     <param name="TrajectoryPlannerROS/max_vel_x" value="$(arg max_vel_x)"/>
+     <param name="TrajectoryPlannerROS/max_vel_theta" value="$(arg max_vel_theta)"/>
+     <param name="TrajectoryPlannerROS/min_vel_theta" value="-$(arg max_vel_theta)"/>
+--- before/bundle_source_contract.py
++++ after/bundle_source_contract.py
+@@ -21,6 +21,7 @@
+ # Existing one-shot operator client; it must never enter a launch graph.
+ OPERATOR_CLIENT_INITIALIZERS = frozenset({
+     ("src/stair_supervisor/scripts/stair_entry_test.py", "stair_entry_test_client"),
++    ("src/stair_supervisor/scripts/prepare_stair_mission.py", "prepare_stair_mission"),
+ })
+ TEXT_SUFFIXES = frozenset({".env", ".sh", ".py", ".launch", ".yaml", ".rviz", ".xml"})
+ ACTION_CONTRACTS = {
+--- before/test/test_process_boundary_contract.py
++++ after/test/test_process_boundary_contract.py
+@@ -70,6 +70,21 @@
+             with self.assertRaisesRegex(SystemExit, "must not be auto-launched"):
+                 validate_node_entrypoints(root)
+ 
++    def test_registration_client_is_allowed_only_as_an_explicit_operator_tool(self):
++        from bundle_source_contract import EXPECTED_NODE_INITIALIZERS
++        with tempfile.TemporaryDirectory() as directory:
++            root=Path(directory)
++            for relative,name in EXPECTED_NODE_INITIALIZERS | {
++                ("src/stair_supervisor/scripts/prepare_stair_mission.py","prepare_stair_mission")
++            }:
++                p=root/relative;p.parent.mkdir(parents=True,exist_ok=True)
++                p.write_text(f'import rospy\nrospy.init_node("{name}")\n')
++            validate_node_entrypoints(root)
++            launch=root/"src/stair_supervisor/operator.launch"
++            launch.write_text('<launch><node pkg="stair_supervisor" type="prepare_stair_mission.py" name="unexpected"/></launch>')
++            with self.assertRaisesRegex(SystemExit,"must not be auto-launched"):
++                validate_node_entrypoints(root)
++
+     def test_archived_document_paths_do_not_relax_runtime_paths(self):
+         with tempfile.TemporaryDirectory() as directory:
+             root = Path(directory)
+--- before/src/multifloor_manager/src/multifloor_manager/ros_startup_localization.py
++++ after/src/multifloor_manager/src/multifloor_manager/ros_startup_localization.py
+@@ -48,6 +48,11 @@
+         self.node, self.runtime = node, node.runtime
+         self.lock = threading.RLock()
+         self.wake = threading.Event()
++        self.idle_refresh_sec=float(rospy.get_param('~idle_localization_refresh_sec',1.0))
++        if not math.isfinite(self.idle_refresh_sec) or self.idle_refresh_sec <= 0:
++            raise ValueError('idle localization refresh must be finite and positive')
++        self._idle_last_attempt=-math.inf
++        self._idle_scan_stamp=None
+         self.generation = 0
+         self.request = ('auto', None) if mode == 'auto' else None
+         self.latest_map = self.scan = self.pose = self.odom = None
+@@ -153,6 +158,28 @@
+         points = np.column_stack((ranges[valid]*np.cos(angles[valid]), ranges[valid]*np.sin(angles[valid])))
+         return points @ rotation.T + [t.x,t.y]
+ 
++    def refresh_idle(self):
++        # Keep a confirmed flat-floor pose current. No global search, pose reset,
++        # velocity command, or new localization gate is introduced here.
++        with self.lock:
++            scan=self.scan
++            if (self.request is not None or self.runtime.state != FloorState.READY
++                    or self.supervisor is None or self.supervisor.state != SupervisorState.NAV
++                    or self.busy() or not self.fresh(scan)):
++                return
++            stamp=scan.header.stamp.to_nsec()
++            now=time.monotonic()
++            if now-self._idle_last_attempt < self.idle_refresh_sec or stamp == self._idle_scan_stamp:
++                return
++            self._idle_last_attempt=now
++            self._idle_scan_stamp=stamp
++        try:
++            self.node.services.call(self.node.nomotion_name,self.node.nomotion_update)
++        except Exception as error:
++            # A transient refresh error alone must not cancel an otherwise valid
++            # mission or falsely report a map change. Retry on a later scan.
++            rospy.logwarn_throttle(5.,'idle AMCL refresh failed: %s',error)
++
+     def run(self):
+         while not rospy.is_shutdown():
+             self.wake.wait(.2)
+@@ -160,7 +187,10 @@
+             with self.lock:
+                 request, generation = self.request, self.generation
+                 grid, scan, odom = self.latest_map, self.scan, self.odom
+-            if request is None or grid is None or not self.fresh(scan) or not self.stationary():
++            if request is None:
++                self.refresh_idle()
++                continue
++            if grid is None or not self.fresh(scan) or not self.stationary():
+                 continue
+             if self.runtime.map_state.current_fingerprint is None or self.busy():
+                 continue
+--- before/src/multifloor_manager/CMakeLists.txt
++++ after/src/multifloor_manager/CMakeLists.txt
+@@ -67,6 +67,7 @@
+   catkin_add_nosetests(test/test_ros_services.py)
+   catkin_add_nosetests(test/test_readiness.py)
+   catkin_add_nosetests(test/test_startup_matching.py)
++  catkin_add_nosetests(test/test_idle_localization.py)
+   catkin_add_nosetests(test/test_transitions.py)
+   catkin_add_nosetests(test/test_policy_final_gate.py)
+   set(_multifloor_python_executable "${PYTHON_EXECUTABLE}")
+--- before/src/multifloor_manager/test/test_idle_localization.py
++++ after/src/multifloor_manager/test/test_idle_localization.py
+@@ -0,0 +1,44 @@
++"""Idle AMCL refresh uses the existing bounded service, never resets pose."""
++import math,threading,unittest
++from types import SimpleNamespace
++from unittest.mock import Mock,patch
++from multifloor_manager.ros_startup_localization import StartupLocalization,FloorState,SupervisorState
++
++class IdleLocalizationTest(unittest.TestCase):
++    def fixture(self):
++        s=StartupLocalization.__new__(StartupLocalization)
++        s.lock=threading.RLock();s.request=None;s.runtime=SimpleNamespace(state=FloorState.READY)
++        s.supervisor=SimpleNamespace(state=SupervisorState.NAV)
++        s.scan=SimpleNamespace(header=SimpleNamespace(stamp=SimpleNamespace(to_nsec=lambda:1)))
++        s.idle_refresh_sec=1.;s._idle_last_attempt=-math.inf;s._idle_scan_stamp=None
++        s.busy=Mock(return_value=False);s.fresh=Mock(return_value=True)
++        s.node=SimpleNamespace(services=SimpleNamespace(call=Mock()),nomotion_name='/request_nomotion_update',nomotion_update=Mock())
++        return s
++    def test_refresh_is_bounded_and_requires_new_scan(self):
++        s=self.fixture()
++        with patch('multifloor_manager.ros_startup_localization.time.monotonic',return_value=10):
++            s.refresh_idle();s.refresh_idle()
++        self.assertEqual(s.node.services.call.call_count,1)
++        s.scan.header.stamp.to_nsec=lambda:2
++        with patch('multifloor_manager.ros_startup_localization.time.monotonic',return_value=10.5):s.refresh_idle()
++        self.assertEqual(s.node.services.call.call_count,1)
++        with patch('multifloor_manager.ros_startup_localization.time.monotonic',return_value=11):s.refresh_idle()
++        self.assertEqual(s.node.services.call.call_count,2)
++    def test_refresh_skips_unlocalized_stair_action_and_stale_scan(self):
++        for reason in ('unknown','stairs','busy','stale','request'):
++            s=self.fixture()
++            if reason=='unknown':s.runtime.state=FloorState.UNKNOWN
++            if reason=='stairs':s.supervisor.state=SupervisorState.STAIR
++            if reason=='busy':s.busy.return_value=True
++            if reason=='stale':s.fresh.return_value=False
++            if reason=='request':s.request=('auto',None)
++            s.refresh_idle();s.node.services.call.assert_not_called()
++    def test_failure_keeps_ready_and_retries_later(self):
++        s=self.fixture();s.node.services.call.side_effect=RuntimeError('timeout')
++        with patch('multifloor_manager.ros_startup_localization.rospy.logwarn_throttle'):
++            s.refresh_idle()
++        self.assertEqual(s.runtime.state,FloorState.READY)
++        s.node.services.call.side_effect=None;s._idle_last_attempt-=2;s.scan.header.stamp.to_nsec=lambda:2
++        s.refresh_idle();self.assertEqual(s.node.services.call.call_count,2)
++
++if __name__=='__main__':unittest.main()
+--- before/src/mission_manager/config/locations.yaml
++++ after/src/mission_manager/config/locations.yaml
+@@ -1,71 +1,69 @@
+-# Production site data remains disabled until every required pose is surveyed.
+-# Location keys: id, floor_id, type, x, y, yaw.
+ schema_version: 1
+ configured: true
+ locations:
+-  - id: home_3f
+-    floor_id: 3F
+-    type: HOME
+-    x: 2.599130
+-    y: -1.983942
+-    yaw: 1.455898
+-  - id: stair_3f_up_entry
+-    floor_id: 3F
+-    type: STAIR_ENTRY
+-    x: 10.054808
+-    y: -6.652934
+-    yaw: 1.395796
+-  - id: stair_4f_from_3f
+-    floor_id: 4F
+-    type: LANDING
+-    x: 8.621981
+-    y: -4.168881
+-    yaw: -1.311197
+-  - id: stair_4f_to_5f
+-    floor_id: 4F
+-    type: STAIR_ENTRY
+-    x: 9.972620
+-    y: -3.892969
+-    yaw: 1.870259
+-  - id: stair_5f_from_4f
+-    floor_id: 5F
+-    type: LANDING
+-    x: 8.230684
+-    y: -4.731632
+-    yaw: -1.822373
+-  - id: stair_5f_to_rf
+-    floor_id: 5F
+-    type: STAIR_ENTRY
+-    x: 9.433546
+-    y: -6.008459
+-    yaw: 1.323528
+-  - id: stair_rf_landing
+-    floor_id: RF
+-    type: LANDING
+-    x: 4.668932
+-    y: -6.455249
+-    yaw: 2.063171
+-  - id: roof_loop_sw
+-    floor_id: RF
+-    type: SCAN
+-    x: 0.476039
+-    y: -8.048886
+-    yaw: 2.093107
+-  - id: roof_loop_nw
+-    floor_id: RF
+-    type: SCAN
+-    x: -2.083093
+-    y: -3.400745
+-    yaw: 0.562131
+-  - id: roof_loop_ne
+-    floor_id: RF
+-    type: SCAN
+-    x: 5.900059
+-    y: -3.046832
+-    yaw: -1.067903
+-  - id: roof_loop_se
+-    floor_id: RF
+-    type: SCAN
+-    x: 4.106313
+-    y: -5.347692
+-    yaw: -1.053411
++- id: home_3f
++  floor_id: 3F
++  type: HOME
++  x: 2.59913
++  y: -1.983942
++  yaw: 1.455898
++- id: stair_3f_up_entry
++  floor_id: 3F
++  type: STAIR_ENTRY
++  x: 9.727567325144804
++  y: -6.617138729073327
++  yaw: 1.4931517440237807
++- id: stair_4f_from_3f
++  floor_id: 4F
++  type: LANDING
++  x: 8.621981
++  y: -4.168881
++  yaw: -1.311197
++- id: stair_4f_to_5f
++  floor_id: 4F
++  type: STAIR_ENTRY
++  x: 9.97262
++  y: -3.892969
++  yaw: 1.870259
++- id: stair_5f_from_4f
++  floor_id: 5F
++  type: LANDING
++  x: 8.230684
++  y: -4.731632
++  yaw: -1.822373
++- id: stair_5f_to_rf
++  floor_id: 5F
++  type: STAIR_ENTRY
++  x: 9.433546
++  y: -6.008459
++  yaw: 1.323528
++- id: stair_rf_landing
++  floor_id: RF
++  type: LANDING
++  x: 4.668932
++  y: -6.455249
++  yaw: 2.063171
++- id: roof_loop_sw
++  floor_id: RF
++  type: SCAN
++  x: 0.476039
++  y: -8.048886
++  yaw: 2.093107
++- id: roof_loop_nw
++  floor_id: RF
++  type: SCAN
++  x: -2.083093
++  y: -3.400745
++  yaw: 0.562131
++- id: roof_loop_ne
++  floor_id: RF
++  type: SCAN
++  x: 5.900059
++  y: -3.046832
++  yaw: -1.067903
++- id: roof_loop_se
++  floor_id: RF
++  type: SCAN
++  x: 4.106313
++  y: -5.347692
++  yaw: -1.053411
+--- before/src/stair_supervisor/test/test_stair_readiness.py
++++ after/src/stair_supervisor/test/test_stair_readiness.py
+@@ -1,6 +1,7 @@
+ """Boundary/entry regressions with synthetic geometry; no hardware commands."""
+ from dataclasses import replace
+ import importlib.util
++import hashlib
+ import json
+ import math
+ from pathlib import Path
+@@ -83,7 +84,17 @@
+         cfg=load_lidar_configuration(root/'stair_lidar_3f_4f_test.yaml','control',False)
+         r=cfg.document['routes'][0]; profiles=load_stair_configuration(root)
+         c=StairFeedback(None,cfg.document['base_from_lidar'],[r])
+-        self.assertFalse(r['commissioned'])
++        if r['commissioned']:
++            reference=r['entry_reference']
++            self.assertIs(reference['unique_geometry_verified'],True)
++            template=root/reference['path']
++            self.assertEqual(hashlib.sha256(template.read_bytes()).hexdigest(),reference['sha256'])
++            points=np.load(str(template),allow_pickle=False)
++            self.assertGreaterEqual(len(points),200)
++            self.assertEqual(points.shape[1],3)
++            self.assertTrue(np.isfinite(points).all())
++        else:
++            self.assertNotIn('entry_reference',r)
+         self.assertAlmostEqual(r['flight_1'][1][2],9*.17)
+         self.assertAlmostEqual(r['flight_2'][1][2],19*.17)
+         self.assertAlmostEqual(normalize_twist(r['limits']['min_flight_v'],0,profiles.robot.websocket_full_scale).x,1.)

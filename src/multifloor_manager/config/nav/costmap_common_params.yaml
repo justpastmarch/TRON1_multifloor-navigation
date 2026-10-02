@@ -1,4 +1,7 @@
 robot_base_frame: base_Link
-robot_radius: 0.28
+# Operator confirmed the complete top-view envelope fits this radius (2026-09-29).
+robot_radius: 0.225
+# Clear any polygon retained from earlier doorway trials; use robot_radius.
+footprint: "[]"
 footprint_padding: 0.02
 rolling_window: false

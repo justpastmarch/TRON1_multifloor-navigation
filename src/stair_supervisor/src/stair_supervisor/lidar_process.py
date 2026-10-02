@@ -23,7 +23,7 @@ def raw_header_stamp(buffer):
     return seconds + nanos * 1e-9
 
 
-def points_from_raw_livox(buffer):
+def points_from_raw_livox(buffer, *, with_offsets=False):
     """Exact float32 XYZ values from the installed 19-byte CustomPoint layout.
 
     This avoids constructing thousands of Python message objects. No filtering,
@@ -38,7 +38,11 @@ def points_from_raw_livox(buffer):
     dtype = np.dtype({"names": ["x", "y", "z"], "formats": ["<f4"] * 3,
                       "offsets": [4, 8, 12], "itemsize": 19})
     points = np.frombuffer(buffer, dtype=dtype, count=array_size, offset=offset)
-    return np.column_stack((points["x"], points["y"], points["z"])).astype(float)
+    xyz = np.column_stack((points["x"], points["y"], points["z"])).astype(float)
+    if with_offsets:
+        times = np.ndarray((array_size,), dtype='<u4', buffer=buffer, offset=offset, strides=(19,))
+        return np.column_stack((xyz, times.astype(float)*1e-9))
+    return xyz
 
 
 def _latest(queue_, value):
@@ -110,7 +114,8 @@ def _process_main(settings, rotation, checksum, scans, imus, commands, states, r
             try:
                 epoch, stamp, buffer, received, measured = scans.get(timeout=.003)
                 if align_epoch(epoch):
-                    worker.push_scan(stamp, points_from_raw_livox(buffer), received, measured)
+                    worker.push_scan(stamp, points_from_raw_livox(buffer,
+                        with_offsets=True), received, measured)
             except queue.Empty:
                 pass
             now = time.monotonic()

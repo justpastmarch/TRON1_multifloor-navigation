@@ -1,0 +1,18 @@
+{
+  "launch_parameters": [
+    {
+      "/move_base/TrajectoryPlannerROS/xy_goal_tolerance": 0.25,
+      "/move_base/TrajectoryPlannerROS/yaw_goal_tolerance": 0.2,
+      "/move_base/TrajectoryPlannerROS/latch_xy_goal_tolerance": true,
+      "/mission_manager/arrival_hold_enabled": false
+    },
+    {
+      "/move_base/TrajectoryPlannerROS/xy_goal_tolerance": 0.05,
+      "/move_base/TrajectoryPlannerROS/yaw_goal_tolerance": 0.08,
+      "/move_base/TrajectoryPlannerROS/latch_xy_goal_tolerance": false,
+      "/mission_manager/arrival_hold_enabled": true
+    }
+  ],
+  "runtime_goal_tolerance_supported": false,
+  "robot_commands_sent": 0
+}

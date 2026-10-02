@@ -1,0 +1,142 @@
+[
+  {
+    "recorded_stop": "2026-09-23T10:28:13.074317",
+    "policy": "before",
+    "phase": "FORWARD_SEGMENT_1",
+    "first_fault": {
+      "offset_sec": 13.300050735473633,
+      "relative_to_recorded_result_sec": 0.010980606079101562,
+      "reason": "no bounded correction within connected support"
+    },
+    "ticks": 532,
+    "duration_sec": 13.300050735473633,
+    "max_control_compute_ms": 120.09863101411611,
+    "median_control_compute_ms": 1.4557840186171234,
+    "p95_control_compute_ms": 26.65236241882667,
+    "alignment_ticks": 0,
+    "gyro_ticks": 0,
+    "note": "Fixed historical sensor path, synthetic 40 Hz ticks; changed commands do not change recorded motion. Not a completion probability."
+  },
+  {
+    "recorded_stop": "2026-09-23T10:28:13.074317",
+    "policy": "after",
+    "phase": "FORWARD_SEGMENT_1",
+    "first_fault": null,
+    "ticks": 535,
+    "duration_sec": 13.375051021575928,
+    "max_control_compute_ms": 21.17937902221456,
+    "median_control_compute_ms": 6.854097999166697,
+    "p95_control_compute_ms": 17.950067005585876,
+    "alignment_ticks": 0,
+    "gyro_ticks": 535,
+    "note": "Fixed historical sensor path, synthetic 40 Hz ticks; changed commands do not change recorded motion. Not a completion probability."
+  },
+  {
+    "recorded_stop": "2026-09-23T10:35:21.104719",
+    "policy": "before",
+    "phase": "FORWARD_SEGMENT_2",
+    "first_fault": {
+      "offset_sec": 6.9250264167785645,
+      "relative_to_recorded_result_sec": 0.09332942962646484,
+      "reason": "body/clearance exceeds connected support"
+    },
+    "ticks": 277,
+    "duration_sec": 6.9250264167785645,
+    "max_control_compute_ms": 42.9822489968501,
+    "median_control_compute_ms": 8.755596005357802,
+    "p95_control_compute_ms": 17.031825799494978,
+    "alignment_ticks": 0,
+    "gyro_ticks": 0,
+    "note": "Fixed historical sensor path, synthetic 40 Hz ticks; changed commands do not change recorded motion. Not a completion probability."
+  },
+  {
+    "recorded_stop": "2026-09-23T10:35:21.104719",
+    "policy": "after",
+    "phase": "FORWARD_SEGMENT_2",
+    "first_fault": {
+      "offset_sec": 2.925011157989502,
+      "relative_to_recorded_result_sec": -3.9066858291625977,
+      "reason": "no bounded correction within connected support"
+    },
+    "ticks": 117,
+    "duration_sec": 2.925011157989502,
+    "max_control_compute_ms": 4.009230004157871,
+    "median_control_compute_ms": 2.3054220364429057,
+    "p95_control_compute_ms": 3.6463187658227976,
+    "alignment_ticks": 116,
+    "gyro_ticks": 116,
+    "note": "Fixed historical sensor path, synthetic 40 Hz ticks; changed commands do not change recorded motion. Not a completion probability."
+  },
+  {
+    "recorded_stop": "2026-09-23T10:35:21.104719",
+    "policy": "after_without_alignment_for_comparison_only",
+    "phase": "FORWARD_SEGMENT_2",
+    "first_fault": {
+      "offset_sec": 6.55002498626709,
+      "relative_to_recorded_result_sec": -0.28167200088500977,
+      "reason": "no bounded correction within connected support"
+    },
+    "ticks": 262,
+    "duration_sec": 6.55002498626709,
+    "max_control_compute_ms": 51.26597604248673,
+    "median_control_compute_ms": 8.540982496924698,
+    "p95_control_compute_ms": 18.204630009131506,
+    "alignment_ticks": 0,
+    "gyro_ticks": 262,
+    "note": "Fixed historical sensor path, synthetic 40 Hz ticks; changed commands do not change recorded motion. Not a completion probability."
+  },
+  {
+    "recorded_stop": "2026-09-23T10:38:07.018419",
+    "policy": "before",
+    "phase": "FORWARD_SEGMENT_2",
+    "first_fault": {
+      "offset_sec": 12.000045776367188,
+      "relative_to_recorded_result_sec": 0.055001020431518555,
+      "reason": "no bounded correction within connected support"
+    },
+    "ticks": 480,
+    "duration_sec": 12.000045776367188,
+    "max_control_compute_ms": 30.565496999770403,
+    "median_control_compute_ms": 1.2612170248758048,
+    "p95_control_compute_ms": 25.32152323401533,
+    "alignment_ticks": 0,
+    "gyro_ticks": 0,
+    "note": "Fixed historical sensor path, synthetic 40 Hz ticks; changed commands do not change recorded motion. Not a completion probability."
+  },
+  {
+    "recorded_stop": "2026-09-23T10:38:07.018419",
+    "policy": "after",
+    "phase": "FORWARD_SEGMENT_2",
+    "first_fault": {
+      "offset_sec": 1.1000041961669922,
+      "relative_to_recorded_result_sec": -10.845040559768677,
+      "reason": "no bounded correction within connected support"
+    },
+    "ticks": 44,
+    "duration_sec": 1.1000041961669922,
+    "max_control_compute_ms": 3.0363029800355434,
+    "median_control_compute_ms": 2.006232476560399,
+    "p95_control_compute_ms": 2.2365888813510537,
+    "alignment_ticks": 43,
+    "gyro_ticks": 43,
+    "note": "Fixed historical sensor path, synthetic 40 Hz ticks; changed commands do not change recorded motion. Not a completion probability."
+  },
+  {
+    "recorded_stop": "2026-09-23T10:38:07.018419",
+    "policy": "after_without_alignment_for_comparison_only",
+    "phase": "FORWARD_SEGMENT_2",
+    "first_fault": {
+      "offset_sec": 11.625044345855713,
+      "relative_to_recorded_result_sec": -0.32000041007995605,
+      "reason": "no bounded correction within connected support"
+    },
+    "ticks": 465,
+    "duration_sec": 11.625044345855713,
+    "max_control_compute_ms": 34.26114498870447,
+    "median_control_compute_ms": 5.04937901860103,
+    "p95_control_compute_ms": 12.200223782565441,
+    "alignment_ticks": 0,
+    "gyro_ticks": 465,
+    "note": "Fixed historical sensor path, synthetic 40 Hz ticks; changed commands do not change recorded motion. Not a completion probability."
+  }
+]

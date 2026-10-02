@@ -43,6 +43,7 @@ class StairSupervisor:
         nav_freshness_sec: float,
         turn_linear_mps: float = 0.0,
         lidar_control=None,
+        operator_recovery_enabled=False,
     ) -> None:
         self._configuration = configuration
         self._profiles = {profile.id: profile for profile in configuration.profiles}
@@ -54,7 +55,11 @@ class StairSupervisor:
         self._nav_freshness_sec = nav_freshness_sec
         self._turn_linear_mps = turn_linear_mps
         self._lidar_control = lidar_control
+        self._operator_recovery_enabled = operator_recovery_enabled
         self._arrival_hold = False
+        self._landing_test_hold = False
+        self._manual_received_at = None
+        self._manual_active = False
         self._retained_loss = False
         self._state = SupervisorState.DISARMED
         self._ownership_epoch = 0
@@ -64,6 +69,31 @@ class StairSupervisor:
         self._closed = False
         self._shutdown_requested = threading.Event()
         self._traversal_thread_id = None
+        self._operator_run = None
+        self._operator_request = None
+        self._operator_applying = False
+        self._operator_result = {}
+
+    def operator_status(self):
+        with self._state_lock:
+            return dict(self._operator_run or {}, pending=self._operator_request is not None or self._operator_applying, result=dict(self._operator_result))
+
+    def request_operator_phase(self, request):
+        with self._state_lock:
+            run = self._operator_run
+            if not run or not run.get('active') or self._state is not SupervisorState.STAIR:
+                raise ValueError('실행 중인 계단 임무가 없습니다.')
+            if (request.get('run_id') != run['run_id'] or request.get('revision') != run['revision']
+                    or request.get('confirmed') is not True):
+                raise ValueError('단계가 변경되었습니다. 현재 상태를 확인하고 다시 선택하세요.')
+            phase = request.get('phase')
+            if phase not in run['phases']:
+                raise ValueError('현재 경로에 없는 단계입니다.')
+            if self._operator_request is not None or self._operator_applying:
+                raise ValueError('이전 단계 전이를 처리 중입니다.')
+            self._operator_request = dict(phase=phase, run_id=run['run_id'], revision=run['revision'], request_id=request.get('request_id',''))
+            self._operator_result = dict(request_id=request.get('request_id',''),phase=phase,state='ACCEPTED')
+            return dict(accepted=True, phase=phase, run_id=run['run_id'])
 
     @property
     def state(self) -> SupervisorState:
@@ -114,6 +144,20 @@ class StairSupervisor:
             with self._state_lock:
                 if self._shutdown_requested.is_set():
                     return
+                if self._landing_test_hold:
+                    now = self._clock.monotonic()
+                    if self._manual_active or self._manual_received_at is None or not 0 <= now-self._manual_received_at <= .5:
+                        self._retain_lidar_loss('landing hold released: manual input or joystick feedback stale')
+                        self._zero_barrier()
+                        return
+                    report = self._lidar_control.evaluate(Phase.LANDING, now, command_required=True)
+                    if report.faulted:
+                        self._retain_lidar_loss(report.detail)
+                        self._zero_barrier()
+                        return
+                    self._transport.update_twist(*self._lidar_control.command())
+                    self._transport.send_current()
+                    return
                 if self._retained_loss:
                     self._lidar_control.evaluate(self._lidar_control.phase, self._clock.monotonic())
                     self._zero_barrier()  # command neutralization, not physical hold evidence
@@ -121,9 +165,6 @@ class StairSupervisor:
                 if self._state is not SupervisorState.NAV:
                     return
                 if self._arrival_hold and self._lidar_control is not None:
-                    if self._clock.monotonic() >= self._arrival_hold_deadline:
-                        self._retain_lidar_loss("arrival ownership handoff deadline expired")
-                        return
                     report = self._lidar_control.evaluate(Phase.EXIT_CONFIRM, self._clock.monotonic(), command_required=True)
                     if report.faulted:
                         self._retain_lidar_loss(report.detail)
@@ -191,7 +232,7 @@ class StairSupervisor:
                     "stair profile is disabled",
                 )
             with self._state_lock:
-                test_resume = phase_test is not None and self._state is SupervisorState.STAIR and self._retained_loss
+                test_resume = phase_test is not None and self._state is SupervisorState.STAIR and (self._retained_loss or self._landing_test_hold)
                 if self._state is not SupervisorState.NAV and not test_resume:
                     return TraversalResult(ResultCode.BUSY, "supervisor is not ready for traversal/test")
                 admitted_state = self._state
@@ -213,7 +254,7 @@ class StairSupervisor:
                         phases, budgets = self._lidar_control.test_plan(profile, test_phase, duration, from_entry)
                         self._lidar_control.prepare(profile, self._clock.monotonic(), phase_test=True, start_phase=phases[0])
                     else:
-                        self._lidar_control.prepare(profile, self._clock.monotonic())
+                        self._lidar_control.prepare(profile, self._clock.monotonic(), start_phase=Phase.VERIFY_ENTRY)
                 except ValueError as error:
                     return TraversalResult(ResultCode.ENTRY_REJECTED, str(error))
             with self._state_lock:
@@ -222,11 +263,19 @@ class StairSupervisor:
                 self._state = SupervisorState.STAIR
                 self._latest_nav = None
                 self._retained_loss = False
+                self._landing_test_hold = False
             if phase_test is not None:
                 return self._execute_phase_test(profile, phases, budgets, duration, cancellation_requested,
                                                 admitted_state=admitted_state, retained_loss=test_resume)
             return self._execute_profile(profile, cancellation_requested)
         finally:
+            with self._state_lock:
+                if self._operator_run is not None:
+                    self._operator_run['active'] = False
+                if self._operator_request is not None or (self._operator_applying and self._operator_result.get('state') == 'ACCEPTED'):
+                    self._operator_result.update(state='REJECTED',reason='임무가 종료되어 전이를 적용하지 않았습니다.')
+                self._operator_request = None
+                self._operator_applying = False
             self._traversal_thread_id = None
             self._traversal_lock.release()
 
@@ -284,6 +333,24 @@ class StairSupervisor:
                         self._transport.send_current()
                         self._clock.sleep(self._transport.stream_period_sec)
                 control.test_status.update(state="TARGET_REACHED")
+                if phases[-1] is Phase.LANDING:
+                    with self._state_lock:
+                        now = self._clock.monotonic()
+                        if (not cancellation_requested() and not self._shutdown_requested.is_set()
+                                and not self._manual_active and self._manual_received_at is not None
+                                and 0 <= now-self._manual_received_at <= .5):
+                            self._zero_barrier()
+                            try:
+                                control.begin_landing_hold(now)
+                            except ValueError as error:
+                                reason = 'landing reached, hold unavailable: '+str(error)
+                            else:
+                                self._landing_test_hold = True
+                                control.test_status.update(state='LANDING_HOLD')
+                                return TraversalResult(ResultCode.STAIR_FAILED,
+                                    'phase test target reached; landing position hold active; not stair arrival', cancelled=True)
+                        else:
+                            reason = 'landing reached; no hold: manual input, stale joystick feedback or cancellation'
             except _LidarTransitionFailed as error:
                 reason = str(error)
                 control.test_status.update(state="STOPPED", reason=reason)
@@ -319,12 +386,69 @@ class StairSupervisor:
                 self._zero_barrier()
                 self._transport.request_stair_mode(True)
             else:
-                self._set_lidar_mode(True, cancellation_requested)
-            for phase in Phase:
+                self._set_lidar_mode(True, cancellation_requested, None, True)
+            phases = (self._lidar_control.traversal_phases(profile) if self._lidar_control is not None
+                      else tuple(p for p in Phase if p not in (Phase.ROOFTOP_TURN, Phase.FORWARD_SEGMENT_3)))
+            import uuid
+            with self._state_lock:
+                self._operator_result = {}
+                self._operator_applying = False
+                self._operator_run = dict(run_id=uuid.uuid4().hex, route_id=profile.id, active=True,
+                                          phase=phases[0].value, phases=[p.value for p in phases], revision=0,
+                                          last_operator_phase=None, error='', waiting=False, stop_reason='')
+            phase_index = 0
+            while phase_index < len(phases):
+                phase = phases[phase_index]
                 self._evidence.begin_phase(phase, self._clock.monotonic())
+                with self._state_lock:
+                    self._operator_run.update(phase=phase.value, revision=self._operator_run['revision']+1)
+                    self._operator_applying = False
                 while True:
+                    with self._state_lock:
+                        operator_request, self._operator_request = self._operator_request, None
+                        self._operator_applying = operator_request is not None
+                        if operator_request is not None and operator_request['revision'] != self._operator_run['revision']:
+                            self._operator_run['error'] = '요청 후 단계가 변경되어 전이를 적용하지 않았습니다.'
+                            self._operator_result.update(state='REJECTED',reason=self._operator_run['error'])
+                            operator_request = None
+                            self._operator_applying = False
+                    if operator_request is not None and cancellation_requested():
+                        with self._state_lock:
+                            self._operator_result = dict(request_id=operator_request['request_id'],state='REJECTED',reason='정지 요청으로 전이를 적용하지 않았습니다.')
+                            self._operator_applying = False
+                        operator_request = None
+                    if operator_request is not None:
+                        target = Phase(operator_request['phase'])
+                        try:
+                            if self._lidar_control is None:
+                                raise ValueError('LiDAR 제어가 없는 임무는 단계 전이를 지원하지 않습니다.')
+                            waiting = self._operator_run.get('waiting', False)
+                            with self._state_lock:
+                                self._lidar_control.operator_phase(target, self._clock.monotonic())
+                                self._retained_loss = False
+                                self._zero_barrier()
+                            if waiting:
+                                self._set_lidar_mode(True, cancellation_requested, target, True)
+                            phase_index = phases.index(target)-1
+                            with self._state_lock:
+                                self._operator_run.update(last_operator_phase=target.value, error='', waiting=False)
+                                self._operator_result = dict(request_id=operator_request['request_id'],phase=target.value,state='APPLIED',reason='사용자 지정 단계 적용')
+                            break
+                        except (ValueError, _LidarTransitionFailed) as error:
+                            if self._operator_run.get('waiting'):
+                                self._retain_lidar_loss(str(error))
+                            with self._state_lock:
+                                self._operator_run['error'] = str(error)
+                                self._operator_result = dict(request_id=operator_request['request_id'],state='REJECTED',reason=str(error))
+                                self._operator_applying = False
                     if self._shutdown_requested.is_set():
                         return TraversalResult(ResultCode.STAIR_FAILED, "supervisor shutdown", cancelled=True)
+                    if self._operator_run.get('waiting'):
+                        if cancellation_requested():
+                            self._retain_lidar_loss('operator cancelled recovery wait')
+                            return TraversalResult(ResultCode.STAIR_FAILED, 'operator cancelled recovery wait', cancelled=True)
+                        self._clock.sleep(self._transport.stream_period_sec)
+                        continue
                     report = self._evidence.evaluate(phase, self._clock.monotonic())
                     self._feedback(report)
                     cancel_pending = cancel_pending or cancellation_requested()
@@ -335,6 +459,14 @@ class StairSupervisor:
                         return self._finish(cancelled=True)
                     if report.faulted:
                         if self._lidar_control is not None:
+                            if self._operator_recovery_enabled:
+                                self._retain_lidar_loss(report.detail)
+                                with self._state_lock:
+                                    self._operator_run.update(waiting=True, stop_reason=report.detail,
+                                                              revision=self._operator_run['revision']+1)
+                                continue
+                            if self._try_entry_nav_recovery():
+                                return TraversalResult(ResultCode.ENTRY_REJECTED, report.detail + "; flat entry restored to NAV; retry available")
                             self._retain_lidar_loss(report.detail)
                             return TraversalResult(ResultCode.STAIR_FAILED, report.detail)
                         self._zero_barrier()
@@ -349,11 +481,16 @@ class StairSupervisor:
                     self._transport.update_twist(linear, angular)
                     self._transport.send_current()
                     self._clock.sleep(self._transport.stream_period_sec)
+                phase_index += 1
+            with self._state_lock:
+                self._operator_run['active'] = False
             return self._finish(cancelled=False, cancellation_requested=cancellation_requested)
         except _LidarTransitionFailed as error:
             if self._shutdown_requested.is_set():
                 return TraversalResult(ResultCode.STAIR_FAILED, "supervisor shutdown", cancelled=True)
             try:
+                if self._try_entry_nav_recovery():
+                    return TraversalResult(ResultCode.ENTRY_REJECTED, str(error) + "; flat entry restored to NAV; retry available", cancelled=cancellation_requested())
                 self._retain_lidar_loss(str(error))
             except TransportFault as transport_error:
                 self._latch_fault()
@@ -426,6 +563,12 @@ class StairSupervisor:
         first_linear = math.copysign(linear, profile.flight_1_distance_m)
         landing_angular = math.copysign(angular, profile.landing_turn_yaw_rad)
         second_linear = math.copysign(linear, profile.flight_2_distance_m)
+        if profile.downhill_forward_inputs:
+            # Convert normalized targets into the transport's internal scale;
+            # normalize_twist divides by that same scale before sending.
+            # These are input intensities, not measured downhill m/s.
+            full_scale = self._configuration.robot.websocket_full_scale.linear_mps
+            first_linear, second_linear = (value * full_scale for value in profile.downhill_forward_inputs)
         commands = {
             Phase.VERIFY_ENTRY: (0.0, 0.0),
             Phase.ALIGN: (0.0, 0.0),
@@ -448,6 +591,8 @@ class StairSupervisor:
             self._set_lidar_mode(False, cancellation_requested)
         if self._lidar_control is not None and not cancelled:
             started = self._clock.monotonic()
+            limits = self._lidar_control.route['limits']
+            settle_budget = limits.get('exit_settle_sec', limits['handoff_sec'])
             self._lidar_control.begin_phase(Phase.EXIT_CONFIRM, started)
             while True:
                 if self._shutdown_requested.is_set():
@@ -456,7 +601,7 @@ class StairSupervisor:
                 report = self._lidar_control.evaluate(Phase.EXIT_CONFIRM, now, command_required=True)
                 self._feedback(report)
                 cancel = cancellation_requested()
-                if report.faulted or cancel or now - started > self._lidar_control.route["limits"]["handoff_sec"]:
+                if report.faulted or cancel or now - started > settle_budget:
                     self._retain_lidar_loss("arrival handoff not established")
                     return TraversalResult(ResultCode.STAIR_FAILED, "arrival handoff not established", cancelled=cancel)
                 self._transport.update_twist(*self._lidar_control.command())
@@ -475,10 +620,49 @@ class StairSupervisor:
             self._state = SupervisorState.NAV
             self._arrival_hold = self._lidar_control is not None and not cancelled
             if self._arrival_hold:
-                self._arrival_hold_deadline = self._clock.monotonic() + self._lidar_control.route["limits"]["handoff_sec"]
+                # Floor/tag/map preparation owns its own deadlines. Continue
+                # measured flat-exit correction until NAV takes over or releases.
+                self._lidar_control.begin_arrival_hold()
         if cancelled:
             return TraversalResult(ResultCode.STAIR_FAILED, "cancelled", cancelled=True)
         return TraversalResult(ResultCode.OK, "stair traversal complete")
+
+    def _try_entry_nav_recovery(self):
+        """Restore NAV only before ascent, with repeated flat-pose/RC checks."""
+        control = self._lidar_control
+        check = getattr(control, 'can_return_from_entry', None)
+        if check is None:
+            return False
+        started = self._clock.monotonic()
+        def eligible():
+            now = self._clock.monotonic()
+            return (not self._shutdown_requested.is_set() and not self._manual_active and
+                    self._manual_received_at is not None and
+                    0 <= now-self._manual_received_at <= .5 and check(now))
+        with self._state_lock:
+            if not eligible():
+                return False
+        def progress():
+            with self._state_lock:
+                if not eligible() or self._clock.monotonic()-started >= control.route['limits']['handoff_sec']:
+                    raise _LidarTransitionFailed('flat-entry recovery no longer confirmed')
+                self._zero_barrier()
+        try:
+            progress()
+            self._transport.request_stair_mode_with_feedback(False, progress)
+            with self._state_lock:
+                if not eligible():
+                    return False
+                self._zero_barrier()
+                self._latest_nav = None
+                self._ownership_epoch += 1
+                self._retained_loss = False
+                self._arrival_hold = self._landing_test_hold = False
+                self._state = SupervisorState.NAV
+                control.interrupt()
+                return True
+        except _LidarTransitionFailed:
+            return False
 
     def _retain_lidar_loss(self, reason: str) -> None:
         """Execute the commissioned response without assuming zero/WALK holds.
@@ -491,14 +675,28 @@ class StairSupervisor:
             self._state = SupervisorState.STAIR
             self._latest_nav = None
             self._arrival_hold = False
+            self._landing_test_hold = False
             if not self._retained_loss:
                 self._lidar_control.loss_response(self._transport)
                 self._transport.update_twist(0., 0.)
                 self._retained_loss = True
 
+    def accept_manual_input(self, active: bool) -> None:
+        """Only relinquish the landing test hold; never auto-resume after RC."""
+        with self._state_lock:
+            self._manual_received_at = self._clock.monotonic()
+            self._manual_active = bool(active)
+            if active and self._landing_test_hold:
+                self._retain_lidar_loss('landing hold released by operator')
+                self._zero_barrier()
+
     def release_arrival_hold(self) -> bool:
         """Explicit stop/new mission may disable the temporary flat-exit hold."""
         with self._state_lock:
+            if self._landing_test_hold:
+                self._retain_lidar_loss('landing hold explicitly released')
+                self._zero_barrier()
+                return True
             if self._state is not SupervisorState.NAV:
                 return False
             if not self._arrival_hold:

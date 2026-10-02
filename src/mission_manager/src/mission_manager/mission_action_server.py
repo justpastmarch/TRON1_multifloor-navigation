@@ -121,6 +121,9 @@ class MissionActionServer:
         self._orchestrator.cancel_active()
 
     def _execute(self, handle: ServerGoalHandle, request: MissionRunRequest) -> None:
+        photo=getattr(self._orchestrator,'photo',None)
+        photo_request=photo is not None and request.mission_type in (MissionType.PHOTO_TOUR,MissionType.RETURN_TO_START)
+        finalizing_photo=False
         try:
             if self._arrival_hold is not None:
                 self._arrival_hold.suspend()
@@ -135,8 +138,24 @@ class MissionActionServer:
                 outcome.mission_id,
                 outcome.artifact_path,
             )
+            if photo_request and outcome.status is SegmentExecutionStatus.SUCCESS:
+                finalizing_photo=True
+                if self._arrival_hold is None:raise RuntimeError('photo mission arrival hold is not configured')
+                if self._cancel_requested.is_set():raise RuntimeError('cancelled before arrival hold handoff')
             if self._arrival_hold is not None and outcome.status is SegmentExecutionStatus.SUCCESS:
-                self._arrival_hold.arm(self._orchestrator.confirmed_location_id)
+                photo = getattr(self._orchestrator,'photo',None)
+                location = (getattr(photo.executor,'return_hold_location',None)
+                            if photo is not None and request.mission_type is MissionType.RETURN_TO_START else None)
+                if location is None:
+                    self._arrival_hold.arm(self._orchestrator.confirmed_location_id)
+                else:
+                    self._arrival_hold.arm(self._orchestrator.confirmed_location_id,location_override=location)
+            if finalizing_photo:
+                if self._cancel_requested.is_set():
+                    self._arrival_hold.suspend()
+                    raise RuntimeError('cancelled during arrival hold handoff')
+                photo.complete_hold(request.mission_type is MissionType.RETURN_TO_START)
+                result.reason=photo.snapshot()['detail']
             self._release(handle)
             if outcome.status is SegmentExecutionStatus.SUCCESS:
                 handle.set_succeeded(result, "mission complete")
@@ -145,6 +164,9 @@ class MissionActionServer:
             else:
                 handle.set_aborted(result, outcome.reason)
         except Exception as error:  # noqa: BROAD_EXCEPT_OK - ROS action boundary must terminate coherently.
+            if finalizing_photo:
+                try:photo.complete_hold(request.mission_type is MissionType.RETURN_TO_START,error)
+                except OSError:pass
             rospy.logerr("mission execution boundary failed: %s", error)
             self._release(handle)
             handle.set_aborted(

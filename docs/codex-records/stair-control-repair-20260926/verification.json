@@ -1,0 +1,63 @@
+{
+  "at": "2026-09-26T11:51:11.822932+09:00",
+  "installed_files_match": {
+    "src/stair_supervisor/src/stair_supervisor/stair_feedback.py": true,
+    "src/stair_supervisor/src/stair_supervisor/ros_lidar.py": true,
+    "src/stair_supervisor/src/stair_supervisor/ros_node.py": true,
+    "src/stair_supervisor/test/test_field_control_repair.py": true,
+    "docs/stair-control-repair-20260926.md": true,
+    "docs/codex-records/stair-control-repair-20260926/replay-comparison.json": true,
+    "docs/codex-records/stair-control-repair-20260926/tests.log": true,
+    "docs/codex-records/stair-control-repair-20260926/implementation.patch": true
+  },
+  "preexisting_user_files_preserved": {
+    ".omo/run-continuation/ses_fe79dc3abffe0h8YOLMzr2MX0n.json": true,
+    "tair control and preserve field-test records\"": true
+  },
+  "non_target_package_files_unchanged": true,
+  "bag_size_mtime_unchanged": true,
+  "head_unchanged": true,
+  "installed_tests": {
+    "count": 149,
+    "passed": true,
+    "log": "installed-tests.log"
+  },
+  "config_check": {
+    "command": "./stair_control_session.sh check",
+    "exit_code": 0,
+    "configured": true,
+    "commissioned": false,
+    "robot_commands_sent": 0
+  },
+  "runtime_restarted": false,
+  "robot_goals_sent": 0,
+  "new_ros_nodes": 0,
+  "removed_temporary_artifacts": [
+    "/home/m3tron/.local/state/codex-desktop/tmp/stair-control-cold-read-rkr8jiht"
+  ],
+  "temporary_source_bytecode_created": false,
+  "preserved_artifacts": [
+    "tested package snapshot",
+    "original source backups",
+    "replay traces and comparison",
+    "test logs",
+    "reviewable patch",
+    "deployment and verification records"
+  ],
+  "independent_review": {
+    "scope": "three production source files, detached full-file read",
+    "findings": [
+      "initial hold hysteresis dead zone",
+      "inverted Z accepted by entry template"
+    ],
+    "resolved_with_regressions": true,
+    "physical_motion_model_unverified": true
+  },
+  "skills": {
+    "readchk": "Existing node internals only; offline checks and repository update; no robot drive",
+    "mandela": "Fixed-path replay is not a rollout or completion probability; physical response remains unverified",
+    "ssotize": "Source/config and derived report compared; no global documentation consolidation",
+    "re0": "Report states implemented behavior and limits; no historical report overwritten"
+  },
+  "git_status_after": " M .omo/run-continuation/ses_fe79dc3abffe0h8YOLMzr2MX0n.json\n M src/stair_supervisor/src/stair_supervisor/ros_lidar.py\n M src/stair_supervisor/src/stair_supervisor/ros_node.py\n M src/stair_supervisor/src/stair_supervisor/stair_feedback.py\n?? docs/codex-records/stair-control-repair-20260926/deployment.json\n?? docs/codex-records/stair-control-repair-20260926/implementation.patch\n?? docs/codex-records/stair-control-repair-20260926/replay-comparison.json\n?? docs/codex-records/stair-control-repair-20260926/tests.log\n?? docs/stair-control-repair-20260926.md\n?? src/stair_supervisor/test/test_field_control_repair.py\n?? \"tair control and preserve field-test records\\\"\"\n"
+}

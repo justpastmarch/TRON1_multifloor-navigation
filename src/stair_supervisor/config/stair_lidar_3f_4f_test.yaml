@@ -1,18 +1,4 @@
-# Explicit 3F->4F FIELD-TEST configuration, not a commissioned mission route.
-# Operator measurements: 9+10 risers, rise .17m, tread .28m, width 1.23m;
-# landing width 2.70m/depth 1.48m. Source: docs/stair-driving-repair-20260922/evidence/recovered-site.json.
-# Route origin: first riser face, flight-1 centerline, body height at entry = 0.
-# Geometry follows the existing simulation rectangle convention; first flight
-# runs 9*.28m to the landing. Verify the overlay at the physical entry before use.
-# Explicit placement: body center x=-.45m,y=0, facing upstairs. Body is .45m square.
-# Operator requested full forward input in both stair flights.
-# min_flight_v = max_v = .55 / robot.yaml full scale .55 = websocket 1.0.
-# This is command normalization, NOT a measured speed or proof of stair torque.
-# Slew and boundary filtering can temporarily command less; diagnostics expose it.
-# Entry preview may be inspected for 120s in the same tracking epoch.
-# Current geometry must still be fresh; this is an operator trial window, not a measured drift bound.
-# Existing .02m margin + .10m anchor budget are retained, not newly validated.
-# Uses existing Supervisor/phase_test only. Normal missions remain uncommissioned.
+# Operator-approved 5F->RF field trial; physical traversal remains unverified.
 schema_version: 1
 configured: true
 calibration: lidar_imu_baseline.yaml
@@ -34,6 +20,7 @@ base_from_lidar:
   - 0.0
   - 1.0
 tracking:
+  control_geometry_points: true
   frame_step: 2
   local_map_scans: 15
   max_range_m: 20.0
@@ -45,7 +32,22 @@ tracking:
   imu_wait_sec: 0.15
 routes:
 - id: stair_3f_4f_up
-  commissioned: false
+  commissioned: true
+  flight_command_policy: observed_feedback
+  # UP destination height is a lower bound; entry/held-surface bands are separate.
+  ascent_height_policy: minimum
+  motion_prediction:
+    mode: shadow
+    commissioned: false
+    source: "Unverified comparison hypothesis; nominal gain bounds, not a BAG speed upper bound"
+    forward_gain: [0.0, 1.0]
+    yaw_gain: [0.0, 1.0]
+    response_sec: 0.6
+    position_error_m: 0.02
+    velocity_error_mps: 0.05
+    yaw_error_rad: 0.02
+    yaw_rate_error_radps: 0.05
+    max_age_sec: 0.5
   direction: UP
   flight_1:
   - - -0.45
@@ -128,17 +130,46 @@ routes:
   - - 3.2600000000000007
     - 1.4700000000000002
     - 3.141592653589793
-  - - 2.8750000000000004
+  - - 2.97
     - 1.4700000000000002
     - 3.141592653589793
   limits:
     warn_sec: 0.5
     expire_sec: 0.9
-    recover_sec: 2.0
+    flight_prediction_sec: 0.6
+    flight_recheck_sec: 2.0
+    # Bounded field-trial recovery; not a claim of physical position hold.
+    flight_recovery_w: 0.06
+    flight_lateral_preview_sec: 0.3
+    flight_stable_sec: 0.6
+    flight_recovery_window_sec: 10.0
+    flight_recovery_window_budget_sec: 4.0
+    flight_recovery_progress_m: 0.05
+    flight_resume_corridor_yaw: 0.17453292519943295
+    flight_end_advance_m: 0.28
+    flight_end_advance_sec: 45.0
+    flight_end_flat_tolerance_m: 0.04
+    flight_end_height_gap_m: 0.22
+    # First-step contact is an internal seam; ALIGN does not return to -45cm.
+    # Entry heading capture only: measured body/height and ascent path checks still apply.
+    # 20 degrees is a field-test tuning value, not a measured physical limit.
+    entry_corridor_yaw: 0.3490658503988659
+    flight_restart_v: 0.55
+    flight_input_recover_sec: 4.0
+    recover_sec: 4.0
     anchor_max_age_sec: 120.0
     anchor_uncertainty_m: 0.1
     margin_m: 0.02
     yaw_kp: 0.6
+    flight_yaw_kp: 1.0
+    # Steering only: smooth step-impact heading over 0.25s; support stays raw.
+    flight_heading_filter_sec: 0.25
+    flight_centering_lookahead_m: 0.6
+    flight_yaw_kd: 0.06
+    flight_damping_max_w: 0.05
+    flight_gyro_rate_max_age: 0.12
+    flight_capture_angle: 0.17453292519943295
+    flight_neutral_alpha: 0.9
     lateral_kp: 0.35
     speed_kp: 0.15
     hold_kp: 0.35
@@ -158,6 +189,7 @@ routes:
     max_roll: 0.3490658503988659
     max_pitch: 0.7853981633974483
     handoff_sec: 3.0
+    exit_settle_sec: 15.0
     yaw_deadband: 0.017453292519943295
     lateral_deadband: 0.02
     speed_deadband: 0.015
@@ -173,3 +205,257 @@ routes:
     TURN_TO_NEXT_FLIGHT: 120.0
     FORWARD_SEGMENT_2: 45.0
     EXIT_CONFIRM: 15.0
+  entry_reference:
+    path: stair_3f_4f_entry.npy
+    sha256: 507f594e1db74370bdd961f9d1671e498a0400a3840953150dbbef1bb7ad6469
+    yaw_candidates:
+    - -0.17453292519943295
+    - 0.0
+    - 0.17453292519943295
+    min_fitness: 0.75
+    max_rmse_m: 0.18
+    score_gap: 0.05
+    validated_anchor_error_m: 0.1
+    timeout_sec: 3.0
+    unique_geometry_verified: true
+- id: stair_5f_rf_up
+  commissioned: true
+  exit_arrival_policy: supported_region
+  # 2026-10-02 BAG end-wall ~3.45m, operator-confirmed landing depth 1.48m.
+  # Conservative working boundary; physical turn clearance still needs a trial.
+  landing_turn_policy: supported_region
+  flight_command_policy: observed_feedback
+  # UP destination height is a lower bound; entry/held-surface bands are separate.
+  ascent_height_policy: minimum
+  motion_prediction:
+    mode: shadow
+    commissioned: false
+    source: "Unverified comparison hypothesis; nominal gain bounds, not a BAG speed upper bound"
+    forward_gain: [0.0, 1.0]
+    yaw_gain: [0.0, 1.0]
+    response_sec: 0.6
+    position_error_m: 0.02
+    velocity_error_mps: 0.05
+    yaw_error_rad: 0.02
+    yaw_rate_error_radps: 0.05
+    max_age_sec: 0.5
+  direction: UP
+  flight_1:
+  - - -0.45
+    - 0
+    - 0
+  - - 2.325
+    - 0
+    - 1.7000000000000002
+  flight_2:
+  - - 1.9700000000000002
+    - 1.47
+    - 1.7000000000000002
+  - - -0.07500000000000018
+    - 1.47
+    - 3.2300000000000004
+  # Operator measured: first riser to rear wall is 1.5m (2026-09-30).
+  entry_polygon:
+  - - -1.5
+    - -0.615
+  - - 0.12000000000000001
+    - -0.615
+  - - 0.12000000000000001
+    - 0.615
+  - - -1.5
+    - 0.615
+  flight_1_polygon:
+  - - 0
+    - -0.615
+  - - 1.9700000000000002
+    - -0.615
+  - - 1.9700000000000002
+    - 0.615
+  - - 0
+    - 0.615
+  landing_polygon:
+  - - 1.9700000000000002
+    - -0.615
+  - - 3.45
+    - -0.615
+  - - 3.45
+    - 2.085
+  - - 1.9700000000000002
+    - 2.085
+  flight_2_polygon:
+  - - 0.2799999999999998
+    - 0.855
+  - - 1.9700000000000002
+    - 0.855
+  - - 1.9700000000000002
+    - 2.085
+  - - 0.2799999999999998
+    - 2.085
+  exit_polygon:
+  - - -1.0750000000000002
+    - 2.705
+  - - 0.1549999999999998
+    - 2.705
+  - - 0.1549999999999998
+    - 3.705
+  - - -1.0750000000000002
+    - 3.705
+  footprint:
+  - - -0.225
+    - -0.225
+  - - 0.225
+    - -0.225
+  - - 0.225
+    - 0.225
+  - - -0.225
+    - 0.225
+  turn_path:
+  - - 2.71
+    - 0
+    - 0
+  - - 2.71
+    - 0
+    - 1.5707963267948966
+  - - 2.71
+    - 1.47
+    - 1.5707963267948966
+  - - 2.71
+    - 1.47
+    - 3.141592653589793
+  - - 2.4200000000000004
+    - 1.47
+    - 3.141592653589793
+  limits:
+    warn_sec: 0.5
+    expire_sec: 0.9
+    flight_prediction_sec: 0.6
+    flight_recheck_sec: 2.0
+    # Bounded field-trial recovery; not a claim of physical position hold.
+    flight_recovery_w: 0.06
+    flight_lateral_preview_sec: 0.3
+    flight_stable_sec: 0.6
+    flight_recovery_window_sec: 10.0
+    flight_recovery_window_budget_sec: 4.0
+    flight_recovery_progress_m: 0.05
+    flight_resume_corridor_yaw: 0.17453292519943295
+    flight_end_advance_m: 0.28
+    flight_end_advance_sec: 45.0
+    flight_end_flat_tolerance_m: 0.04
+    flight_end_height_gap_m: 0.22
+    # First-step contact is an internal seam; ALIGN does not return to -45cm.
+    # Entry heading capture only: measured body/height and ascent path checks still apply.
+    # 20 degrees is a field-test tuning value, not a measured physical limit.
+    entry_corridor_yaw: 0.3490658503988659
+    flight_restart_v: 0.55
+    flight_input_recover_sec: 4.0
+    recover_sec: 4.0
+    anchor_max_age_sec: 120.0
+    anchor_uncertainty_m: 0.1
+    margin_m: 0.02
+    yaw_kp: 0.6
+    flight_yaw_kp: 1.0
+    # Steering only: smooth step-impact heading over 0.25s; support stays raw.
+    flight_heading_filter_sec: 0.25
+    flight_centering_lookahead_m: 0.6
+    flight_yaw_kd: 0.06
+    flight_damping_max_w: 0.05
+    flight_gyro_rate_max_age: 0.12
+    flight_capture_angle: 0.17453292519943295
+    flight_neutral_alpha: 0.9
+    lateral_kp: 0.35
+    speed_kp: 0.15
+    hold_kp: 0.35
+    hold_kd: 0.1
+    max_v: 0.55
+    max_w: 0.2
+    max_accel: 0.15
+    max_alpha: 0.3
+    hold_v: 0.06
+    position_on: 0.1
+    position_off: 0.05
+    yaw_tolerance: 0.08726646259971647
+    stationary_v: 0.03
+    stationary_w: 0.04
+    settle_sec: 0.6
+    height_tolerance: 0.15
+    max_roll: 0.3490658503988659
+    max_pitch: 0.7853981633974483
+    handoff_sec: 3.0
+    exit_settle_sec: 15.0
+    yaw_deadband: 0.017453292519943295
+    lateral_deadband: 0.02
+    speed_deadband: 0.015
+    min_flight_v: 0.55
+  loss_response: zero_velocity
+  loss_response_evidence: Operator confirms RC can interrupt and maintain posture.
+    Zero velocity is NOT physical hold. No emergency-stop API.
+  phase_test_limits:
+    VERIFY_ENTRY: 5.0
+    ALIGN: 15.0
+    FORWARD_SEGMENT_1: 45.0
+    LANDING: 10.0
+    TURN_TO_NEXT_FLIGHT: 120.0
+    FORWARD_SEGMENT_2: 45.0
+    ROOFTOP_TURN: 75.0
+    FORWARD_SEGMENT_3: 20.0
+    EXIT_CONFIRM: 15.0
+  roof_landing_polygon:
+  - - -1.2000000000000002
+    - 0.7949999999999999
+  - - 0.2799999999999998
+    - 0.7949999999999999
+  - - 0.2799999999999998
+    - 2.145
+  - - -1.2000000000000002
+    - 2.145
+  roof_turn_path:
+  - - -0.4600000000000002
+    - 1.47
+    - 3.141592653589793
+  - - -0.4600000000000002
+    - 1.47
+    - 1.5707963267948966
+  - - -0.4600000000000002
+    - 1.695
+    - 1.5707963267948966
+  flight_3:
+  - - -0.4600000000000002
+    - 1.695
+    - 3.2300000000000004
+  - - -0.4600000000000002
+    - 3.06
+    - 3.5700000000000003
+  flight_3_polygon:
+  - - -1.0750000000000002
+    - 2.145
+  - - 0.1549999999999998
+    - 2.145
+  - - 0.1549999999999998
+    - 2.705
+  - - -1.0750000000000002
+    - 2.705
+  entry_reference:
+    path: stair_5f_rf_up_entry.npy
+    sha256: 59523e8c92a6edfd233a85a2846fcc6ae4668c6cbfc91169f2abd396c85223ce
+    yaw_candidates:
+    - -0.17453292519943295
+    - 0.0
+    - 0.17453292519943295
+    min_fitness: 0.75
+    # Field trial: raw-cloud replay residuals reached 0.205m; not pose accuracy.
+    max_rmse_m: 0.22
+    score_gap: 0.05
+    validated_anchor_error_m: 0.1
+    timeout_sec: 3.0
+    unique_geometry_verified: true
+
+# Same surveyed geometry, reverse traversal, forward-facing descent.
+- id: stair_5f_rf_down
+  reverse_of: stair_5f_rf_up
+  commissioned: true
+  short_descent_input: 0.09
+  entry_map:
+    package: mission_manager
+    locations: config/locations.yaml
+    location_id: stair_rf_landing
+    floor_id: RF

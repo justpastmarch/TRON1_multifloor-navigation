@@ -1,0 +1,49 @@
+{
+  "at": "2026-09-26T11:49:14.766112+09:00",
+  "files": [
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/stair_feedback.py",
+      "before_sha256": "b9e6c897858ba2f237e4aef22b086ac97daa84c5505438b5105c28ad210f24c9",
+      "after_sha256": "6e637a16727457f4d90dc622401fbab302feb4bfc0327f7fed84949401e55195"
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/ros_lidar.py",
+      "before_sha256": "ca479bca748670767dcf462617c21a543afa36a4a925fcc67528b09cbeb6e7e3",
+      "after_sha256": "c1dd9c75798f1644057d20882549c4328e098faaa80e440c2b35abd63fcf5be0"
+    },
+    {
+      "path": "src/stair_supervisor/src/stair_supervisor/ros_node.py",
+      "before_sha256": "4109dcbae7c7ee0a9036cd3c9a190cb01b9bc6e163b32ecebd21a3afa4d21910",
+      "after_sha256": "5dad80a890b4e43a1f351e988e8e2d19f3d5274c3e9f8e6da1516376270d33e5"
+    },
+    {
+      "path": "src/stair_supervisor/test/test_field_control_repair.py",
+      "before_sha256": null,
+      "after_sha256": "874d125df814842d40bdb2c37666d08b35b0e9426283b8ea4316353c7bb5265a"
+    },
+    {
+      "path": "docs/stair-control-repair-20260926.md",
+      "before_sha256": null,
+      "after_sha256": "03a728ab33117e261b76d3216eb2d23f9b577432d6d9e2ead064392b0a8b4818"
+    },
+    {
+      "path": "docs/codex-records/stair-control-repair-20260926/replay-comparison.json",
+      "before_sha256": null,
+      "after_sha256": "df3f1d07905d3c6c43b359bd3feffeab003c36f4ed91ae33c95ac5413ff804f7"
+    },
+    {
+      "path": "docs/codex-records/stair-control-repair-20260926/tests.log",
+      "before_sha256": null,
+      "after_sha256": "f1498f1e084f70f7530957d8de16222a87dd1e2e7866789106a5fc0a5844e498"
+    },
+    {
+      "path": "docs/codex-records/stair-control-repair-20260926/implementation.patch",
+      "before_sha256": null,
+      "after_sha256": "a7a1c3af52aa084e436d781329e67024c99ebe47c7d3c7ee545195b2538548e4"
+    }
+  ],
+  "runtime_restarted": false,
+  "robot_commands_sent": 0,
+  "baseline_head": "12b0692176561e781ce21f9ea4f5542babe7b451",
+  "git_status_after": " M .omo/run-continuation/ses_fe79dc3abffe0h8YOLMzr2MX0n.json\n M src/stair_supervisor/src/stair_supervisor/ros_lidar.py\n M src/stair_supervisor/src/stair_supervisor/ros_node.py\n M src/stair_supervisor/src/stair_supervisor/stair_feedback.py\n?? docs/codex-records/stair-control-repair-20260926/implementation.patch\n?? docs/codex-records/stair-control-repair-20260926/replay-comparison.json\n?? docs/codex-records/stair-control-repair-20260926/tests.log\n?? docs/stair-control-repair-20260926.md\n?? src/stair_supervisor/test/test_field_control_repair.py\n?? \"tair control and preserve field-test records\\\"\"\n"
+}

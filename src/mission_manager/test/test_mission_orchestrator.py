@@ -110,6 +110,21 @@ class MissionOrchestratorTest(unittest.TestCase):
         configuration = load_site_configuration(fixture)
         self.planner = BuildingPlanner(configuration, "home_3f")
 
+    def test_relocation_changes_planning_floor_before_start(self) -> None:
+        segments = ScriptedSegments()
+        orchestrator = MissionOrchestrator(
+            self.planner, segments,
+            MissionOrchestratorSettings("home_3f", "roof_scan_profile"),
+            floor_anchor_resolver=lambda old: "stair_a_landing_4f" if old == "home_3f" else old,
+        )
+        result = orchestrator.run(
+            MissionRunRequest("relocated", "roof_scan", MissionType.NAVIGATE, False),
+            lambda _feedback: None, lambda: False,
+        )
+        self.assertEqual(result.result_code, 0)
+        self.assertNotIn("stair_a_entry_3f", [s.target_id for s in segments.executed])
+        self.assertEqual(segments.executed[0].source_floor, "4F")
+
     def test_fresh_return_is_planned_from_confirmed_scan_anchor(self) -> None:
         # Given: an inspect mission over an asymmetric graph.
         segments = ScriptedSegments()

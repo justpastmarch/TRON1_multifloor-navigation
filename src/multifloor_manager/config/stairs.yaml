@@ -39,7 +39,7 @@ stairs:
     endpoints:
       5F:
         entry_location_id: stair_5f_to_rf
-        target_landing: {x: 9.433546, y: -6.008459, orientation: {x: 0.0, y: 0.0, z: 0.61450944, w: 0.78890946}}
+        target_landing: {x: 9.433546, y: -6.008459, orientation: {x: 0.0, y: 0.0, z: 0.78890946, w: -0.61450944}}
         covariance: [0.25, 0, 0, 0, 0, 0, 0, 0.25, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.01, 0, 0, 0, 0, 0, 0, 0.16]
         expected_tag_ids: [501]
       RF:

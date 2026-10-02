@@ -1,0 +1,45 @@
+{
+  "destination_id": "stair_rf_landing",
+  "origin_id": "stair_5f_to_rf",
+  "segments": [
+    {
+      "confirmed_location_id": "stair_5f_to_rf",
+      "edge_id": null,
+      "profile_id": null,
+      "scan_profile_id": null,
+      "source_floor": "5F",
+      "source_id": "stair_5f_to_rf",
+      "stair_id": null,
+      "target_floor": "5F",
+      "target_id": "stair_5f_to_rf",
+      "type": "NAVIGATION"
+    },
+    {
+      "confirmed_location_id": "stair_5f_to_rf",
+      "edge_id": "stair_5f_rf_up",
+      "profile_id": "stair_5f_rf_up",
+      "scan_profile_id": null,
+      "source_floor": "5F",
+      "source_id": "stair_5f_to_rf",
+      "stair_id": "stair_5f_rf",
+      "target_floor": "RF",
+      "target_id": "stair_rf_landing",
+      "type": "STAIR"
+    },
+    {
+      "confirmed_location_id": "stair_rf_landing",
+      "edge_id": "stair_5f_rf_up",
+      "profile_id": null,
+      "scan_profile_id": null,
+      "source_floor": "5F",
+      "source_id": "stair_5f_to_rf",
+      "stair_id": "stair_5f_rf",
+      "target_floor": "RF",
+      "target_id": "stair_rf_landing",
+      "type": "FLOOR_TRANSITION"
+    }
+  ],
+  "blockers": [],
+  "can_start": true,
+  "kind": "navigate"
+}

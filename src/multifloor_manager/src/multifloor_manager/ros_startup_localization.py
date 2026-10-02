@@ -18,7 +18,7 @@ from stair_supervisor.msg import SupervisorState
 from multifloor_manager.msg import FloorState
 from multifloor_manager.map_evidence import fingerprint_occupancy_grid, Nanoseconds
 from multifloor_manager.startup_matching import ScanMatcher
-from multifloor_manager.readiness import DEFAULT_READINESS_POLICY
+from multifloor_manager.readiness import DEFAULT_READINESS_POLICY, CLOCK_SKEW_TOLERANCE_NS
 
 
 def yaw(q):
@@ -48,6 +48,11 @@ class StartupLocalization:
         self.node, self.runtime = node, node.runtime
         self.lock = threading.RLock()
         self.wake = threading.Event()
+        self.idle_refresh_sec=float(rospy.get_param('~idle_localization_refresh_sec',1.0))
+        if not math.isfinite(self.idle_refresh_sec) or self.idle_refresh_sec <= 0:
+            raise ValueError('idle localization refresh must be finite and positive')
+        self._idle_last_attempt=-math.inf
+        self._idle_scan_stamp=None
         self.generation = 0
         self.request = ('auto', None) if mode == 'auto' else None
         self.latest_map = self.scan = self.pose = self.odom = None
@@ -131,7 +136,7 @@ class StartupLocalization:
 
     def fresh(self, message):
         age = int(DEFAULT_READINESS_POLICY.max_age_ns)/1e9
-        return message is not None and 0 <= (rospy.Time.now()-message.header.stamp).to_sec() <= age
+        return message is not None and -CLOCK_SKEW_TOLERANCE_NS/1e9 <= (rospy.Time.now()-message.header.stamp).to_sec() <= age
 
     def stationary(self):
         if not self.fresh(self.odom):
@@ -153,6 +158,28 @@ class StartupLocalization:
         points = np.column_stack((ranges[valid]*np.cos(angles[valid]), ranges[valid]*np.sin(angles[valid])))
         return points @ rotation.T + [t.x,t.y]
 
+    def refresh_idle(self):
+        # Keep a confirmed flat-floor pose current. No global search, pose reset,
+        # velocity command, or new localization gate is introduced here.
+        with self.lock:
+            scan=self.scan
+            if (self.request is not None or self.runtime.state != FloorState.READY
+                    or self.supervisor is None or self.supervisor.state != SupervisorState.NAV
+                    or self.busy() or not self.fresh(scan)):
+                return
+            stamp=scan.header.stamp.to_nsec()
+            now=time.monotonic()
+            if now-self._idle_last_attempt < self.idle_refresh_sec or stamp == self._idle_scan_stamp:
+                return
+            self._idle_last_attempt=now
+            self._idle_scan_stamp=stamp
+        try:
+            self.node.services.call(self.node.nomotion_name,self.node.nomotion_update)
+        except Exception as error:
+            # A transient refresh error alone must not cancel an otherwise valid
+            # mission or falsely report a map change. Retry on a later scan.
+            rospy.logwarn_throttle(5.,'idle AMCL refresh failed: %s',error)
+
     def run(self):
         while not rospy.is_shutdown():
             self.wake.wait(.2)
@@ -160,7 +187,10 @@ class StartupLocalization:
             with self.lock:
                 request, generation = self.request, self.generation
                 grid, scan, odom = self.latest_map, self.scan, self.odom
-            if request is None or grid is None or not self.fresh(scan) or not self.stationary():
+            if request is None:
+                self.refresh_idle()
+                continue
+            if grid is None or not self.fresh(scan) or not self.stationary():
                 continue
             if self.runtime.map_state.current_fingerprint is None or self.busy():
                 continue

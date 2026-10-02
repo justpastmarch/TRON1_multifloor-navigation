@@ -27,6 +27,8 @@ add_message_files(
   FloorState.msg
 )
 
+add_service_files(FILES SelectFloor.srv)
+
 generate_messages(
   DEPENDENCIES
   actionlib_msgs
@@ -56,6 +58,7 @@ install(
 )
 
 if(CATKIN_ENABLE_TESTING)
+  catkin_add_nosetests(test/test_floor_selection.py)
   find_package(rostest REQUIRED)
   get_filename_component(TRON1_WORKSPACE_ROOT "${CMAKE_SOURCE_DIR}" DIRECTORY)
   catkin_add_nosetests(test/test_fixture_discovery.py)
@@ -67,6 +70,7 @@ if(CATKIN_ENABLE_TESTING)
   catkin_add_nosetests(test/test_ros_services.py)
   catkin_add_nosetests(test/test_readiness.py)
   catkin_add_nosetests(test/test_startup_matching.py)
+  catkin_add_nosetests(test/test_idle_localization.py)
   catkin_add_nosetests(test/test_transitions.py)
   catkin_add_nosetests(test/test_policy_final_gate.py)
   set(_multifloor_python_executable "${PYTHON_EXECUTABLE}")

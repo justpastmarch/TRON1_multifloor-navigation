@@ -1,0 +1,9 @@
+# Flat-floor restoration only. Metres/radians; not a physical braking guarantee.
+# Session NAV goal precision in navigation.launch is tighter than these thresholds.
+r_on: 0.08
+r_off: 0.06
+yaw_on: 0.12
+yaw_off: 0.10
+correction_timeout: 30.0
+cancel_timeout: 3.0
+localization_refresh_sec: 0.5

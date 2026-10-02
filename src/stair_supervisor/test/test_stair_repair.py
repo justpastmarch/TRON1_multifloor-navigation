@@ -157,7 +157,7 @@ class ConnectedExecutionTest(unittest.TestCase):
     def test_connected_test_runs_ordered_prefix_and_never_returns_arrival_success(self):
         s,c,t,clock,a=self.system()
         result=self.run_test(s,Phase.EXIT_CONFIRM,1.,True)
-        self.assertEqual(c.phases[1:],list(Phase))
+        self.assertEqual(c.phases[1:],[p for p in Phase if p not in (Phase.ROOFTOP_TURN, Phase.FORWARD_SEGMENT_3)])
         self.assertEqual(c.test_status['state'],'TARGET_REACHED')
         self.assertNotEqual(result.code,ResultCode.OK);self.assertTrue(result.cancelled)
         self.assertEqual(s.state,SupervisorState.STAIR);self.assertEqual(a.calls,[])

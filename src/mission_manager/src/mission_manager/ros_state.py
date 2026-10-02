@@ -6,6 +6,7 @@ from dataclasses import dataclass
 import threading
 import time
 import math
+from collections import deque
 
 from geometry_msgs.msg import PoseWithCovarianceStamped
 from nav_msgs.msg import Odometry
@@ -20,7 +21,7 @@ from mission_manager.stair_entry_gate import (
     StairEntryFence,
     StairEntryPolicy,
     StairEntryPose,
-    evaluate_stair_entry,
+    evaluate_stair_entry, entry_motion_window,
 )
 
 
@@ -45,6 +46,9 @@ class RosStateMonitor:
         self._stationary_speed = stationary_speed
         self._barrier_timeout = barrier_timeout
         self._entry_policy = entry_policy
+        self._lidar_handoff = bool(rospy.get_param("~stair_lidar_handoff", False))
+        self._entry_motion = deque(maxlen=256)
+        self._entry_motion_stamp = None
         self._lock = threading.RLock()
         self._condition = threading.Condition(self._lock)
         self._floor: FloorState | None = None
@@ -107,6 +111,16 @@ class RosStateMonitor:
         with self._condition:
             self._odom = message
             self._odom_received = time.monotonic()
+            if self._lidar_handoff:
+                stamp = message.header.stamp.to_sec()
+                age = rospy.Time.now().to_sec()-stamp
+                if (self._entry_motion_stamp is not None and stamp <= self._entry_motion_stamp
+                        or not 0 <= age <= .30):
+                    self._entry_motion.clear()
+                else:
+                    self._entry_motion.append((self._odom_received-age, message.twist.twist.linear.x,
+                                               message.twist.twist.angular.z))
+                self._entry_motion_stamp = stamp
             self._condition.notify_all()
 
     def _accept_pose(self, message: PoseWithCovarianceStamped) -> None:
@@ -211,6 +225,9 @@ class RosStateMonitor:
                     and abs(odom.twist.twist.linear.x) <= self._stationary_speed
                     and abs(odom.twist.twist.angular.z) <= self._stationary_speed
                 )
+                if self._lidar_handoff:
+                    motion = entry_motion_window(self._entry_motion, now)
+                    stationary = fresh and motion is not None and motion[0] <= self._entry_policy.max_linear_speed and motion[1] <= self._entry_policy.max_angular_speed
             if owns_nav and stationary:
                 return True
             rospy.sleep(0.02)
@@ -246,6 +263,10 @@ class RosStateMonitor:
                 orientation = pose.pose.pose.orientation
                 position = pose.pose.pose.position
                 covariance = pose.pose.covariance
+                motion = (entry_motion_window(self._entry_motion, time.monotonic())
+                          if self._lidar_handoff else (odom.twist.twist.linear.x, odom.twist.twist.angular.z))
+                if motion is None:
+                    return StairEntryDecision(False, "waiting for fresh bounded entry motion")
                 evidence = StairEntryEvidence(
                     pose.header.frame_id,
                     floor_key[0],
@@ -263,8 +284,8 @@ class RosStateMonitor:
                     covariance[7],
                     covariance[35],
                     self._odom_received,
-                    odom.twist.twist.linear.x,
-                    odom.twist.twist.angular.z,
+                    motion[0],
+                    motion[1],
                 )
         return evaluate_stair_entry(
             StairEntryCheck(
@@ -285,11 +306,30 @@ class RosStateMonitor:
         """Wait boundedly for post-fence entry evidence and return the final reason."""
         deadline = time.monotonic() + self._barrier_timeout
         decision = self.stair_entry_decision(fence, expected)
-        with self._condition:
-            while not decision.accepted and not rospy.is_shutdown():
-                remaining = deadline - time.monotonic()
-                if remaining <= 0.0:
-                    return decision
-                self._condition.wait(min(remaining, 0.02))
-                decision = self.stair_entry_decision(fence, expected)
+        # The mission is still active, so the idle AMCL refresher is paused.
+        # Request fresh scans explicitly while stopped instead of waiting for
+        # motion-triggered AMCL samples that may never arrive at this boundary.
+        from std_srvs.srv import Empty
+        from multifloor_manager.ros_services import BoundedServiceCaller, ServiceCallError
+        name = rospy.get_param("~nomotion_service", "/request_nomotion_update")
+        refresh = rospy.ServiceProxy(name, Empty)
+        caller = BoundedServiceCaller(0.2)
+        next_refresh = 0.0
+        while not decision.accepted and not rospy.is_shutdown():
+            remaining = deadline - time.monotonic()
+            if remaining <= 0.0:
+                return decision
+            if time.monotonic() >= next_refresh and remaining >= 0.4:
+                try:
+                    caller.call(name, refresh)
+                except ServiceCallError as error:
+                    rospy.logwarn("Stair entry localization refresh failed: %s", error)
+                    # A transient refresh RPC must not turn a recoverable
+                    # observation gap into a terminal mission failure. The
+                    # same bounded deadline and fresh-evidence checks remain.
+                    pass
+                next_refresh = time.monotonic() + 0.2
+            with self._condition:
+                self._condition.wait(min(max(0, deadline-time.monotonic()), 0.02))
+            decision = self.stair_entry_decision(fence, expected)
         return decision

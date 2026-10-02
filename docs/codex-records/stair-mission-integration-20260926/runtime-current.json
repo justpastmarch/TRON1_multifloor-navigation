@@ -1,0 +1,86 @@
+{
+  "observed_at": "2026-09-26 13:42:11 +0900",
+  "rospy_log": null,
+  "command_goals_sent": 0,
+  "/map": {
+    "width": 475,
+    "height": 661,
+    "resolution": 0.05000000074505806
+  },
+  "/amcl_pose": "header: \n  seq: 1\n  stamp: \n    secs: 1790397699\n    nsecs:  30327320\n  frame_id: \"map\"\npose: \n  pose: \n    position: \n      x: 0.1207919281397175\n      y: -0.5238696957289137\n      z: 0.0\n    orientation: \n      x: 0.0\n      y: 0.0\n      z: 0.010359006344274273\n      w: 0.9999463440542994\n  covariance: [0.26881410093423147, 0.006445100276782759, 0.0, 0.0, 0.0, 0.0, 0.006445100276782759, 0.4102516124290582, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.38982616670632436]",
+  "/stair_supervisor/state": "header: \n  seq: 144\n  stamp: \n    secs: 1790397731\n    nsecs: 457625150\n  frame_id: ''\nstate: 1\nconnected: True\ndetail: \"navigation owns commands\"\nownership_epoch: 0",
+  "/multifloor/floor_state": "header: \n  seq: 181\n  stamp: \n    secs: 1790397731\n    nsecs: 368304967\n  frame_id: ''\nfloor_id: \"3F\"\nmap_generation: 0\nstate: 0\ndetail: \"initial map observed; waiting for localization\"",
+  "/tag_detections": {
+    "age_sec": 0.1087491512298584,
+    "ids": []
+  },
+  "/stair_supervisor/control_debug": {
+    "phase": "VERIFY_ENTRY",
+    "control_policy": "2026-09-26-mission-hold-v2",
+    "pending_entries": []
+  },
+  "/stair_supervisor/tracking_status": {
+    "epoch": 0,
+    "queue_length": 0,
+    "dropped_scans": 0,
+    "rejected_imu": 0,
+    "worker_error": "",
+    "backend": "process",
+    "mode": "control",
+    "observe_only": false,
+    "phase_test_protocol": "bound-ticket-v1",
+    "config_path": "/home/m3tron/Desktop/TRON1_Control/TRON1_RViz_Navigation/src/stair_supervisor/config/stair_lidar_3f_4f_test.yaml",
+    "config_sha256": "545cce7ac5005db7a47290c127013ef232919f50b1461842d07500f6a95a8e9d",
+    "routes": [
+      {
+        "id": "stair_3f_4f_up",
+        "commissioned": true
+      }
+    ],
+    "sequence": 352,
+    "stamp": 1790397731.2824652,
+    "received_at": 2792.684595843,
+    "measured_at": 2792.5569966036505,
+    "completed_at": 2792.749628825,
+    "last_geometry_at": 2792.5569966036505,
+    "geometry_valid": true,
+    "state": "TRACKED",
+    "reason": "geometry accepted",
+    "fitness": 1.0,
+    "rmse": 0.06501716068952536,
+    "translation_innovation": 0.003362435378979903,
+    "rotation_innovation": 0.004003738041871906,
+    "prediction_source": "gyro",
+    "compute_sec": 0.06424587599985898,
+    "calibration_hash": "d3166bd2547aa5fdca388d68b4c5213d6454be8f9350ae1981731eb48f9c9ddc",
+    "geometry_age_sec": 0.3197895493494798,
+    "transport_delay_sec": 0.12759923934936523,
+    "completion_age_sec": 0.19263222134941316,
+    "control_policy": "2026-09-26-mission-hold-v2"
+  },
+  "/scan": {
+    "age_sec": 0.04972219467163086,
+    "frame": "base_Link",
+    "ranges": 360
+  },
+  "settings": {
+    "/mission_manager/arrival_hold_enabled": true,
+    "/mission_manager/arrival_hold": {
+      "r_on": 0.08,
+      "r_off": 0.06,
+      "yaw_on": 0.12,
+      "yaw_off": 0.1,
+      "correction_timeout": 30.0,
+      "cancel_timeout": 3.0,
+      "localization_refresh_sec": 0.5
+    },
+    "/move_base/TrajectoryPlannerROS/xy_goal_tolerance": 0.05,
+    "/move_base/TrajectoryPlannerROS/yaw_goal_tolerance": 0.08
+  },
+  "scan_map": {
+    "points": 359,
+    "within_10cm_fraction": 0.14206128133704735,
+    "median_distance_m": 0.6301428425462753,
+    "note": "overlay consistency only; not independent ground truth or unique localization proof"
+  }
+}

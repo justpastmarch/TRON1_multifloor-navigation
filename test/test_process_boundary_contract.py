@@ -70,6 +70,21 @@ class ProcessBoundaryContractTest(unittest.TestCase):
             with self.assertRaisesRegex(SystemExit, "must not be auto-launched"):
                 validate_node_entrypoints(root)
 
+    def test_registration_client_is_allowed_only_as_an_explicit_operator_tool(self):
+        from bundle_source_contract import EXPECTED_NODE_INITIALIZERS
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            for relative,name in EXPECTED_NODE_INITIALIZERS | {
+                ("src/stair_supervisor/scripts/prepare_stair_mission.py","prepare_stair_mission")
+            }:
+                p=root/relative;p.parent.mkdir(parents=True,exist_ok=True)
+                p.write_text(f'import rospy\nrospy.init_node("{name}")\n')
+            validate_node_entrypoints(root)
+            launch=root/"src/stair_supervisor/operator.launch"
+            launch.write_text('<launch><node pkg="stair_supervisor" type="prepare_stair_mission.py" name="unexpected"/></launch>')
+            with self.assertRaisesRegex(SystemExit,"must not be auto-launched"):
+                validate_node_entrypoints(root)
+
     def test_archived_document_paths_do_not_relax_runtime_paths(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

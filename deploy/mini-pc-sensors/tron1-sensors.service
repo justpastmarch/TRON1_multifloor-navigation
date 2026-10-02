@@ -1,0 +1,16 @@
+[Unit]
+Description=TRON1 sensors (wait for workstation ROS master)
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+EnvironmentFile=%h/.config/tron1-sensors.env
+ExecStart=/bin/bash %h/.local/lib/tron1-sensors/start.sh
+Restart=always
+RestartSec=5
+KillMode=control-group
+KillSignal=SIGINT
+TimeoutStopSec=40
+
+[Install]
+WantedBy=default.target
