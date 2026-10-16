@@ -214,7 +214,10 @@ class TransitionManager:
         age = now_sec - observation.observed_at_sec
         if age < 0:
             return False, "future"
-        if age > self._policy.freshness_sec:
+        # The accepted target-floor tag is an event scoped to this transition
+        # epoch. Map/AMCL/costmap still require fresh observations, but a
+        # slow map switch cannot erase the already verified tag vote.
+        if condition.name != "T_FLOOR_CONFIRMED" and age > self._policy.freshness_sec:
             return False, "stale"
         if not observation.value:
             return False, "false"

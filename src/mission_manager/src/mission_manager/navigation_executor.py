@@ -46,11 +46,6 @@ class MoveBaseClient(Protocol):
         ...
 
 
-class HandoffBarrier(Protocol):
-    def stop_and_confirm_stationary(self) -> bool:
-        ...
-
-
 @dataclass(frozen=True)
 class NavigationRequest:
     location: Location
@@ -105,38 +100,26 @@ class NavigationLifecycleError(Exception):
 
 
 @dataclass(frozen=True)
-class HandoffSafetyError(Exception):
-    __slots__ = ("detail",)
-    detail: str
-
-    def __str__(self) -> str:
-        return f"navigation-to-stair handoff rejected: {self.detail}"
-
-
-@dataclass(frozen=True)
 class NavigationRuntime:
     __slots__ = (
         "action_client",
         "clear_costmaps",
         "floor_state",
         "supervisor_state",
-        "handoff_barrier",
         "now",
     )
     action_client: MoveBaseClient
     clear_costmaps: Callable[[], None]
     floor_state: Callable[[], FloorState]
     supervisor_state: Callable[[], SupervisorState]
-    handoff_barrier: HandoffBarrier
     now: Callable[[], Time]
 
 
 @dataclass(frozen=True)
 class RosNavigationSources:
-    __slots__ = ("floor_state", "supervisor_state", "handoff_barrier")
+    __slots__ = ("floor_state", "supervisor_state")
     floor_state: Callable[[], FloorState]
     supervisor_state: Callable[[], SupervisorState]
-    handoff_barrier: HandoffBarrier
 
 
 class NavigationExecutor:
@@ -158,11 +141,20 @@ class NavigationExecutor:
         """Create ROS adapters without initializing a node or sending a goal."""
         client = actionlib.SimpleActionClient(MOVE_BASE_ACTION, MoveBaseAction)
         from mission_manager.ros_navigation_progress import ProgressAwareClient
-        # Preserve the proven NAV approach region. The coarser map gate after
-        # stopping delegates precise first-step admission to surveyed LiDAR.
-        client = ProgressAwareClient(client, entry_region=(
-            float(rospy.get_param("~stair_entry_xy_tolerance", 0.25)),
-            float(rospy.get_param("~stair_entry_yaw_tolerance", 0.2))))
+        # A NAV goal is accepted in a small, named arrival region. For stair
+        # targets the LiDAR entry check remains the precise admission gate.
+        arrival_region = (
+            float(rospy.get_param('~nav_arrival_radius_m', 0.35)),
+            float(rospy.get_param('~nav_arrival_yaw_tolerance_rad', math.radians(30.0))),
+        )
+        policy = {
+            'timeout': float(rospy.get_param('~nav_no_progress_timeout_sec', 20.0)),
+            'feedback_timeout': float(rospy.get_param('~nav_feedback_stale_timeout_sec', 10.0)),
+        }
+        client = ProgressAwareClient(client, entry_region=arrival_region, policy=policy,
+            arrival_dwell_sec=float(rospy.get_param('~nav_arrival_dwell_sec', 0.5)))
+        from mission_manager.ros_navigation_progress import configure_floor_speed
+        client.configure_floor_speed = configure_floor_speed
         clear_costmaps = rospy.ServiceProxy(CLEAR_COSTMAPS_SERVICE, Empty)
 
         def clear() -> None:
@@ -174,10 +166,23 @@ class NavigationExecutor:
                 clear,
                 sources.floor_state,
                 sources.supervisor_state,
-                sources.handoff_barrier,
                 rospy.Time.now,
             )
         )
+
+    def _reconcile_terminal_goal(self) -> None:
+        """Release a timed-out token only after its tracked goal is terminal."""
+        if self._active_token is None or self._executing:
+            return
+        try:
+            status = self._runtime.action_client.get_state()
+        except Exception:
+            return  # Unknown status must never authorize an overlapping goal.
+        if status in (GoalStatus.SUCCEEDED, GoalStatus.ABORTED,
+                      GoalStatus.PREEMPTED, GoalStatus.RECALLED, GoalStatus.REJECTED):
+            self._terminal_token = self._active_token
+            self._terminal_status = status
+            self._active_token = None
 
     @property
     def failure_reason(self) -> str:
@@ -191,20 +196,27 @@ class NavigationExecutor:
     def execute(self, request: NavigationRequest, cancellation_requested=lambda: False) -> NavigationResult:
         """Execute one named Location goal, with at most one terminal retry."""
         with self._lifecycle_lock:
+            self._reconcile_terminal_goal()
             if self._active_token is not None or self._executing:
-                raise NavigationLifecycleError("another goal is active")
+                raise NavigationLifecycleError("another goal is active; terminal state not confirmed")
             self._executing = True
             self._active_request = request
             self._cancel_requested = False
         try:
             for attempt in (1, 2):
                 self._require_ready(request)
+                region = request.arrival_region
+                if region is None:
+                    region = getattr(self._runtime.action_client, 'default_entry_region', None)
                 configure_region = getattr(self._runtime.action_client, "set_entry_approach", None)
                 if configure_region is not None:
-                    configure_region(request.entry_approach or request.arrival_region is not None)
+                    configure_region(request.entry_approach or region is not None)
                 custom_region = getattr(self._runtime.action_client, 'set_arrival_region', None)
                 if custom_region is not None:
-                    custom_region(request.arrival_region)
+                    custom_region(region)
+                configure_speed = getattr(self._runtime.action_client, 'configure_floor_speed', None)
+                if configure_speed is not None:
+                    configure_speed(request.location.floor_id)
                 goal = self._build_goal(request.location)
                 token = self._send_if_eligible(goal, cancellation_requested)
                 if token is None:
@@ -213,19 +225,33 @@ class NavigationExecutor:
                 status = self._await_terminal(token)
                 if status == GoalStatus.SUCCEEDED:
                     return NavigationResult(request.location.id, NavigationOutcome.SUCCEEDED, status, attempt)
-                if ((request.entry_approach or request.arrival_region is not None) and not self._cancel_requested
+                if ((request.entry_approach or region is not None) and not self._cancel_requested
                         and not cancellation_requested()
                         and status in _CANCELLED_STATES
                         and getattr(self._runtime.action_client, "entry_region_reached", False)):
                     return NavigationResult(request.location.id, NavigationOutcome.SUCCEEDED, status, attempt)
                 if status in _CANCELLED_STATES or self._cancel_requested:
                     return NavigationResult(request.location.id, NavigationOutcome.CANCELLED, status, attempt)
-                if self.failure_reason:
-                    # A blind clear-and-retry cannot fix absent feedback or
-                    # command/response mismatch. Preserve the specific reason.
+                wait_ready = getattr(self._runtime.action_client, 'wait_for_navigation_ready', None)
+                retryable_stall = (self.failure_reason == 'NAV_NO_PROGRESS' or
+                                   self.failure_reason == 'NAV_FEEDBACK_STALE' and wait_ready is not None)
+                if self.failure_reason and not retryable_stall:
+                    # Stale feedback cannot justify issuing a fresh goal from
+                    # the last known pose. Preserve that reason for the UI.
                     return NavigationResult(request.location.id, NavigationOutcome.NAVIGATION_FAILED, status, attempt)
                 if status not in _RETRYABLE_STATES or attempt == 2:
                     return NavigationResult(request.location.id, NavigationOutcome.NAVIGATION_FAILED, status, attempt)
+                # This is the existing single recovery path: after the old
+                # action is terminal, refresh costmaps and replan the same goal.
+                if wait_ready is not None and not wait_ready(
+                        lambda: self._cancel_requested or cancellation_requested()):
+                    outcome = (NavigationOutcome.CANCELLED if self._cancel_requested or cancellation_requested()
+                               else NavigationOutcome.NAVIGATION_FAILED)
+                    return NavigationResult(request.location.id, outcome, status, attempt)
+                if wait_ready is not None:
+                    if self._cancel_requested or cancellation_requested():
+                        return NavigationResult(request.location.id, NavigationOutcome.CANCELLED, status, attempt)
+                    self._require_ready(request)
                 self._runtime.clear_costmaps()
                 if self._cancel_requested:
                     return NavigationResult(request.location.id, NavigationOutcome.CANCELLED, status, attempt)
@@ -263,6 +289,7 @@ class NavigationExecutor:
         with self._lifecycle_lock:
             if self._executing:
                 self._cancel_requested = True
+            self._reconcile_terminal_goal()
             token = self._active_token
             if token is None:
                 return None
@@ -270,10 +297,8 @@ class NavigationExecutor:
             return token
 
     def prepare_for_stair(self) -> None:
-        """Establish a cancel/terminal/zero/stationary ownership barrier."""
+        """Finish any tracked move_base goal before the fresh entry handoff."""
         self.cancel()
-        if not self._runtime.handoff_barrier.stop_and_confirm_stationary():
-            raise HandoffSafetyError("zero command lacks stationary evidence")
 
     def _require_ready(self, request: NavigationRequest) -> None:
         floor = self._runtime.floor_state()

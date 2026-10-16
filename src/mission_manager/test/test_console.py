@@ -6,6 +6,7 @@ class Backend:
     def __init__(self):self.calls=[]
     def snapshot(self):return {'mode':'preview','active':False}
     def map_snapshot(self):return {'revision':'test-map','width':2}
+    def set_initial_pose(self,data):self.calls.append(('initialpose',data));return {'submitted':True}
     def operator_phase(self,data):self.calls.append(('phase',data));return {'accepted':True}
     def plan(self,data):return {'can_start':False,'blockers':['not commissioned']}
     def start(self,data):self.calls.append(data);return {'submitted':True}
@@ -27,6 +28,16 @@ class TestConsole(unittest.TestCase):
         self.assertEqual(self.request('/')[0],200)
         self.assertEqual(self.request('/api/state')[0],200)
         self.assertEqual(self.backend.calls,[])
+        self.assertEqual(self.request('/')[1].count(b'/api/localization/pose_estimate'),1)
+        self.assertIn(b'id="mapCanvas"',self.request('/')[1])
+    def test_map_pose_estimate_requires_authenticated_explicit_post(self):
+        data={'floor_id':'3F','map_revision':'rev','x':1.0,'y':2.0,'yaw':0.5}
+        self.assertEqual(self.request('/api/localization/pose_estimate',data)[0],403)
+        self.assertEqual(self.backend.calls,[])
+        code,body=self.request('/api/localization/pose_estimate',data,**{'X-TRON-Token':self.server.token})
+        self.assertEqual(code,200);self.assertTrue(json.loads(body)['submitted'])
+        self.assertEqual(self.backend.calls,[('initialpose',data)])
+
     def test_operator_phase_requires_authenticated_explicit_post(self):
         data={'run_id':'run','revision':1,'phase':'LANDING','confirmed':True}
         self.assertEqual(self.request('/api/operator_phase',data)[0],403)

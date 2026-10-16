@@ -21,7 +21,7 @@ class DoorHTTPTest(unittest.TestCase):
         self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup)
         path=Path(self.tmp.name)/'index.html';path.write_text('<html>UI</html>')
         self.backend=Backend();self.sent=[]
-        self.server=ConsoleServer(self.backend,path,0,door_factory=lambda read:ConsoleDoor(read,sender=lambda:self.sent.append('door') or 200,threaded=False))
+        self.server=ConsoleServer(self.backend,path,0,door_factory=lambda read:ConsoleDoor(read,sender=lambda device,seconds:self.sent.append((device,seconds)) or 'ack',threaded=False))
         self.addCleanup(self.server.close);self.base='http://127.0.0.1:%d'%self.server.http.server_port
     def request(self,path,data=None,headers=None):
         req=urllib.request.Request(self.base+path,data=None if data is None else json.dumps(data).encode(),headers=headers or {})
@@ -37,11 +37,14 @@ class DoorHTTPTest(unittest.TestCase):
             self.assertEqual(self.request(path,{})[0],403)
             self.assertEqual(self.request(path,{},dict(Origin='http://other.example',**{'X-TRON-Token':self.server.token}))[0],403)
         self.assertFalse(self.server.door.active);self.assertEqual(self.sent,[])
-    def test_return_button_starts_door_repeat_without_mission_or_robot_command(self):
+    def test_return_button_sends_one_rf_hold_without_mission_or_robot_command(self):
         headers={'X-TRON-Token':self.server.token}
         self.assertEqual(self.request('/api/door/return',{},headers)[0],200)
-        self.server.door.tick();self.assertEqual(self.sent,['door']);self.assertEqual(self.backend.calls,[])
+        for _ in range(100):
+            if not self.server.door.snapshot()['one_shot']['busy']:break
+            import time;time.sleep(.01)
+        self.server.door.tick();self.assertEqual(self.sent,[('RF',60)]);self.assertEqual(self.backend.calls,[])
         self.assertEqual(self.request('/api/door/stop',{},headers)[0],200)
-        self.assertFalse(self.server.door.active)
+        self.assertTrue(self.server.door.snapshot()['active'])
 
 if __name__=='__main__':unittest.main()

@@ -63,6 +63,9 @@ class FakeState:
         self._floor = FloorState(floor_id="3F", map_generation=4, state=FloorState.READY)
         self.waited_for_floor = None
         self.entry_decision = StairEntryDecision(True, "aligned")
+        self.current_entry_decision = StairEntryDecision(True, "aligned")
+        self.entry_wait_calls = 0
+        self.entry_snapshot_calls = 0
 
     def health(self) -> SimpleNamespace:
         return SimpleNamespace(healthy=True, reason="")
@@ -78,10 +81,12 @@ class FakeState:
         return StairEntryFence("3F", 4, 10.0, 20.0, 1)
 
     def wait_for_stair_entry(self, _fence, _expected) -> StairEntryDecision:
+        self.entry_wait_calls += 1
         return self.entry_decision
 
     def stair_entry_decision(self, _fence, _expected) -> StairEntryDecision:
-        return StairEntryDecision(True, "aligned")
+        self.entry_snapshot_calls += 1
+        return self.current_entry_decision
 
     def supervisor_state(self) -> SimpleNamespace:
         return SimpleNamespace(ownership_epoch=3)
@@ -90,15 +95,17 @@ class FakeState:
 class FakeAdmission:
     def __init__(self) -> None:
         self.cleared = []
+        self.recheck = None
 
-    def issue(self, _context, _recheck) -> str:
+    def issue(self, _context, recheck) -> str:
+        self.recheck = recheck
         return "test-token"
 
     def clear(self, token: str) -> None:
         self.cleared.append(token)
 
 
-def resources(state: FakeState, scan_profiles=(), scan_recorder=None) -> RosSegmentResources:
+def resources(state: FakeState, scan_profiles=(), scan_recorder=None, stair_admission=None) -> RosSegmentResources:
     return RosSegmentResources(
         navigation=FakeNavigation(),
         state=state,
@@ -110,7 +117,7 @@ def resources(state: FakeState, scan_profiles=(), scan_recorder=None) -> RosSegm
             0.02, 0.02, 0.20, 0.15, 0.40, 0.30, 60.0,
         ),),
         scan_recorder=scan_recorder,
-        stair_admission=FakeAdmission(),
+        stair_admission=stair_admission or FakeAdmission(),
     )
 
 
@@ -125,6 +132,32 @@ class FakeScanRecorder:
 
 
 class RosSegmentIdentifierTest(unittest.TestCase):
+    def test_resume_stair_skips_entry_handoff_but_keeps_same_profile(self):
+        state=FakeState();clients=[FakeActionClient(SimpleNamespace(result_code=StairTraversalResult.OK)),FakeActionClient(SimpleNamespace())]
+        admission=FakeAdmission()
+        with mock.patch('mission_manager.ros_segments.actionlib.SimpleActionClient',side_effect=clients), mock.patch('mission_manager.ros_segments.rospy.get_param',side_effect=lambda n,d:d):
+            executor=RosSegmentExecutor(resources(state,stair_admission=admission))
+            executor._navigation.prepare_for_stair=mock.Mock(side_effect=AssertionError('entry NAV must be skipped'))
+            segment=RouteSegment(SegmentType.STAIR,'home','landing','3F','4F','edge','stair_a','cautious_up',None,'home')
+            result=executor.execute(segment,SegmentContext('resume',lambda:False,'retained',6,'FORWARD_SEGMENT_2'))
+            self.assertEqual(result.status.value,'SUCCESS')
+            self.assertEqual(state.entry_wait_calls,0)
+            self.assertEqual(state.entry_snapshot_calls,0)
+            self.assertIsNone(admission.recheck)
+            goal=clients[0].goals[0]
+            self.assertEqual((goal.stair_id,goal.resume_run_id,goal.resume_revision,goal.resume_phase),
+                             ('cautious_up','retained',6,'FORWARD_SEGMENT_2'))
+
+    def test_resume_stair_rejects_wrong_actual_floor_before_motion(self):
+        state=FakeState();clients=[FakeActionClient(SimpleNamespace()),FakeActionClient(SimpleNamespace())]
+        with mock.patch('mission_manager.ros_segments.actionlib.SimpleActionClient',side_effect=clients), mock.patch('mission_manager.ros_segments.rospy.get_param',side_effect=lambda n,d:d):
+            executor=RosSegmentExecutor(resources(state))
+            segment=RouteSegment(SegmentType.STAIR,'entry_5f','roof','5F','RF','edge','roof_stair','cautious_up',None,'entry_5f')
+            result=executor.execute(segment,SegmentContext('resume',lambda:False,'retained',6,'FORWARD_SEGMENT_2'))
+            self.assertEqual(result.status.value,'FAILED')
+            self.assertIn('actual floor differs',result.reason)
+            self.assertEqual(clients[0].goals,[])
+
     def test_cancelled_dispatch_sends_no_child_goal(self):
         state=FakeState();clients=[FakeActionClient(SimpleNamespace()),FakeActionClient(SimpleNamespace())]
         with mock.patch('mission_manager.ros_segments.actionlib.SimpleActionClient',side_effect=clients), mock.patch('mission_manager.ros_segments.rospy.get_param',side_effect=lambda n,d:d):
@@ -195,6 +228,7 @@ class RosSegmentIdentifierTest(unittest.TestCase):
     def test_stair_and_floor_adapters_use_their_receiver_keys(self) -> None:
         # Given: a route whose physical stair ID and selected profile ID differ.
         state = FakeState()
+        admission = FakeAdmission()
         stair_client = FakeActionClient(
             SimpleNamespace(result_code=StairTraversalResult.OK, reason="")
         )
@@ -238,7 +272,7 @@ class RosSegmentIdentifierTest(unittest.TestCase):
             "mission_manager.ros_segments.rospy.get_param",
             side_effect=lambda name, default: default,
         ):
-            executor = RosSegmentExecutor(resources(state))
+            executor = RosSegmentExecutor(resources(state, stair_admission=admission))
             # When: both operational child adapters execute their route segments.
             context = SegmentContext("mission-1", lambda: False)
             self.assertEqual(executor.execute(segment, context).status.value, "SUCCESS")
@@ -248,6 +282,12 @@ class RosSegmentIdentifierTest(unittest.TestCase):
         self.assertEqual(stair_client.goals[0].stair_id, "cautious_up")
         self.assertEqual(stair_client.goals[0].admission_token, "test-token")
         self.assertEqual(floor_client.goals[0].transition_id, "stair_a")
+        self.assertEqual(state.entry_wait_calls, 1)
+        self.assertIsNotNone(admission.recheck)
+        state.current_entry_decision = StairEntryDecision(False, "entry evidence changed before ownership transfer")
+        self.assertFalse(admission.recheck().accepted)
+        self.assertEqual(state.entry_snapshot_calls, 1)
+        self.assertEqual(state.entry_wait_calls, 1)
 
     def test_stair_entry_mismatch_sends_no_child_goal(self) -> None:
         # Given: stationary handoff succeeds but fresh AMCL rejects the canonical entry pose.

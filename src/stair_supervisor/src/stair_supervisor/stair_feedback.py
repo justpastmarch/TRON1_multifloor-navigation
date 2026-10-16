@@ -9,7 +9,6 @@ from collections import deque
 from copy import deepcopy
 from dataclasses import dataclass
 from functools import lru_cache
-from concurrent.futures import Future
 import math
 import threading
 
@@ -17,7 +16,6 @@ import numpy as np
 from scipy.spatial.transform import Rotation
 from scipy.spatial import ConvexHull, QhullError
 
-from .motion_prediction import MotionState, response_envelope, validate_model
 from .configuration import Direction
 from .stair_evidence import EvidenceReport, Phase
 
@@ -206,6 +204,22 @@ def inside_support_union(points, polygons, margin=0.0):
     return _clearance_inside(np.asarray(points), boundary) >= margin-1e-10
 
 
+def effective_support_margin(route, anchor_uncertainty_m, landing=False, region=None):
+    """Return the commissioned footprint-to-edge margin for this route.
+
+    Entry-registration uncertainty remains available as separate provenance.
+    Routes with an explicit support margin do not add that matching budget a
+    second time to every stair edge; legacy/synthetic routes retain their
+    previous margin plus measured-anchor behavior.
+    """
+    limits = route['limits']
+    if region in ('entry', 'exit') and region+'_support_margin_m' in limits:
+        return float(limits[region+'_support_margin_m'])
+    if landing and 'landing_support_margin_m' in limits:
+        return float(limits['landing_support_margin_m'])
+    return float(limits.get('support_margin_m', limits['margin_m'] + anchor_uncertainty_m))
+
+
 @dataclass(frozen=True)
 class RouteAnchor:
     epoch: int
@@ -258,7 +272,7 @@ def match_entry_landmarks(observed_xy, profile_candidates, max_residual, ambigui
 class StairFeedback:
     """Implements PhaseEvidence plus motion policy for the existing Supervisor."""
 
-    policy_version = '2026-10-02-photo-return-v24'
+    policy_version = '2026-10-16-roof-entry-heading-v33'
 
     def __init__(self, worker, base_from_lidar, routes, *, lidar_from_imu=None, imu_max_gap=.03):
         self.worker = worker
@@ -278,6 +292,7 @@ class StairFeedback:
         self._flight_end_conflict = False
         self._input_gap = None
         self._input_gap_used = 0.
+        self._pose_jump_at = None
         self._recovering_at = None
         self._interrupted = False
         self.test_status = None
@@ -293,8 +308,6 @@ class StairFeedback:
         self._last_geometry_sample = None
         self._entry_alignment_pending = None
         self._entry_verified = False
-        self._flight_recheck = None
-        self._flight_recheck_used = 0.
         self._candidate_debug = []
         self._reset_continuity()
 
@@ -303,6 +316,7 @@ class StairFeedback:
         keys = {"id", "commissioned", "direction", "flight_1", "flight_2", "landing_polygon",
                 "exit_polygon", "entry_polygon", "flight_1_polygon", "flight_2_polygon", "footprint",
                 "turn_path", "limits", "loss_response", "loss_response_evidence"}
+        # motion_prediction remains accepted for one config migration period, but is ignored.
         optional = {"entry_reference", "phase_test_limits", "roof_turn_path", "roof_landing_polygon", "flight_3", "flight_3_polygon", "motion_prediction", "flight_command_policy", "ascent_height_policy", "landing_turn_policy", "roof_turn_policy", "reverse_of", "entry_map", "flight_input_v", "exit_arrival_policy"}
         if not keys <= set(route) or set(route) - keys - optional:
             raise ValueError("LiDAR route keys must be " + str(sorted(keys)))
@@ -336,13 +350,9 @@ class StairFeedback:
         for key in ('roof_turn_policy', 'exit_arrival_policy'):
             if route.get(key, 'waypoints') not in ('waypoints', 'supported_region'):
                 raise ValueError('invalid '+key)
-        policy = route.get('flight_command_policy', 'prediction_gated')
-        if policy not in ('prediction_gated', 'observed_feedback'):
-            raise ValueError('invalid flight_command_policy')
-        if 'motion_prediction' in route:
-            validate_model(route['motion_prediction'])
-            if policy == 'observed_feedback' and route['motion_prediction']['mode'] == 'control':
-                raise ValueError('observed_feedback requires diagnostic-only motion prediction')
+        policy = route.get('flight_command_policy', 'observed_feedback')
+        if policy != 'observed_feedback':
+            raise ValueError('only observed_feedback flight control is supported')
         roof = roof_keys <= set(route)
         if roof:
             points = np.asarray(route['roof_turn_path'], dtype=float)
@@ -367,12 +377,16 @@ class StairFeedback:
                 "yaw_tolerance", "stationary_v", "stationary_w", "settle_sec", "height_tolerance",
                 "max_roll", "max_pitch", "handoff_sec", "yaw_deadband", "lateral_deadband", "speed_deadband"}
         limits = route["limits"]
-        optional_limits = {"min_flight_v", "flight_prediction_sec", "flight_recheck_sec", "flight_restart_v", "flight_input_recover_sec",
+        # Legacy prediction/recheck limits are accepted during migration, but ignored by observed_feedback.
+        optional_limits = {"support_margin_m", "landing_support_margin_m", "entry_support_margin_m", "exit_support_margin_m", "min_flight_v", "flight_prediction_sec", "flight_recheck_sec", "flight_restart_v", "flight_input_recover_sec",
                            "flight_heading_filter_sec", "flight_yaw_kd", "flight_damping_max_w", "flight_capture_angle", "flight_yaw_kp", "flight_centering_lookahead_m",
                            "flight_neutral_alpha", "flight_gyro_rate_max_age", "flight_recovery_w", "flight_lateral_preview_sec", "entry_corridor_yaw", "exit_settle_sec", "flight_stable_sec",
                            "flight_recovery_window_sec", "flight_recovery_window_budget_sec",
                            "flight_recovery_progress_m", "flight_resume_corridor_yaw",
-                           "flight_end_advance_m", "flight_end_advance_sec", "flight_end_flat_tolerance_m", "flight_end_height_gap_m"}
+                           "flight_input_reobserve_sec", "flat_reobserve_sec", "landing_max_v",
+                           "pose_jump_xy_m", "pose_jump_z_m", "pose_jump_reobserve_sec",
+                           "flight_end_advance_m", "flight_end_advance_sec", "flight_end_flat_tolerance_m", "flight_end_height_gap_m",
+                           "turn_margin_recovery_m", "flight_margin_recovery_m", "rotation_space_margin_m", "roof_pivot_radius_m"}
         if not keys <= set(limits) or set(limits) - keys - optional_limits or any(type(v) not in (int, float) or not math.isfinite(v) or v <= 0 for v in limits.values()):
             raise ValueError("route limits require finite positive commissioning values: " + str(sorted(keys)))
         if limits.get("entry_corridor_yaw", .1) >= math.pi/2:
@@ -390,19 +404,23 @@ class StairFeedback:
                 limits.get('flight_capture_angle', 1.) >= math.pi/2 or
                 limits.get('flight_neutral_alpha', limits['max_alpha']) < limits['max_alpha']):
             raise ValueError('invalid flight steering bounds')
-        if 'flight_recovery_w' in limits and (not limits.get('flight_restart_v') or
-                not limits.get('flight_recheck_sec') or limits['flight_recovery_w'] > limits['max_w']):
-            raise ValueError('flight_recovery_w requires bounded restart/recheck and steering')
         if 'flight_input_recover_sec' in limits and (limits['flight_input_recover_sec'] > limits['recover_sec'] or 'flight_restart_v' not in limits):
             raise ValueError('flight_input_recover_sec requires flight_restart_v and must not exceed recover_sec')
+        jump_limits = {'pose_jump_xy_m', 'pose_jump_z_m', 'pose_jump_reobserve_sec'}
+        if jump_limits & set(limits) and not jump_limits <= set(limits):
+            raise ValueError('correlated pose-jump check requires all three limits')
+        if limits.get('flat_reobserve_sec', limits['expire_sec']) < limits['expire_sec']:
+            raise ValueError('flat_reobserve_sec must cover sensor expiration')
+        if 'flight_input_reobserve_sec' in limits and 'flight_input_recover_sec' not in limits:
+            raise ValueError('flight_input_reobserve_sec requires flight_input_recover_sec')
+        if not (0. < limits.get('landing_max_v', limits['hold_v'])):
+            raise ValueError('landing_max_v must be positive')
         if limits.get("min_flight_v", 0.) > limits["max_v"]:
             raise ValueError("min_flight_v must not exceed max_v")
-        if limits.get('flight_recheck_sec', 0.) > limits['recover_sec']:
-            raise ValueError('flight_recheck_sec must not exceed recover_sec')
-        if 'flight_restart_v' in limits and (not limits.get('flight_recheck_sec') or
-                limits['flight_restart_v'] > limits['max_v'] or
+        # Legacy recheck parameters are ignored. Restart input is independently bounded.
+        if 'flight_restart_v' in limits and (limits['flight_restart_v'] > limits['max_v'] or
                 limits['flight_restart_v'] < limits.get('min_flight_v', 0.)):
-            raise ValueError('flight_restart_v requires recheck and must lie between min_flight_v and max_v')
+            raise ValueError('flight_restart_v must lie between min_flight_v and max_v')
         flight_preview = limits.get("flight_prediction_sec", limits["expire_sec"])
         if (type(flight_preview) not in (int, float) or not math.isfinite(flight_preview) or
                 not limits["warn_sec"] <= flight_preview <= limits["expire_sec"]):
@@ -416,11 +434,20 @@ class StairFeedback:
         continuity = {'flight_stable_sec', 'flight_recovery_window_sec', 'flight_recovery_window_budget_sec', 'flight_recovery_progress_m'}
         if continuity & set(limits) and (not continuity <= set(limits) or
                 limits['flight_recovery_window_sec'] <= limits['flight_stable_sec'] or
-                limits['flight_recovery_window_budget_sec'] >= limits['flight_recovery_window_sec'] or
-                limits['flight_recovery_window_budget_sec'] < limits.get('flight_recheck_sec', 0.)):
+                limits['flight_recovery_window_budget_sec'] >= limits['flight_recovery_window_sec']):
             raise ValueError('flight continuity requires bounded stability, rolling budget and progress')
         if limits.get('flight_resume_corridor_yaw', .1) >= math.pi/2:
             raise ValueError('flight resume corridor must face the next flight')
+        for key in ('landing_support_margin_m', 'entry_support_margin_m', 'exit_support_margin_m'):
+            if (key in limits and not limits['margin_m'] <= limits[key] <=
+                    effective_support_margin(route, limits['anchor_uncertainty_m'])):
+                raise ValueError(key+' must lie within route support margins')
+        if (limits.get('turn_margin_recovery_m', 0.) >
+                limits.get('support_margin_m', limits['margin_m'] + limits['anchor_uncertainty_m']) - limits['margin_m']):
+            raise ValueError('turn recovery cannot cross the route minimum support margin')
+        if (limits.get('flight_margin_recovery_m', 0.) >
+                limits.get('support_margin_m', limits['margin_m'] + limits['anchor_uncertainty_m']) - limits['margin_m']):
+            raise ValueError('flight recovery cannot cross the route minimum support margin')
         end_geometry = {'flight_end_advance_m', 'flight_end_advance_sec', 'flight_end_flat_tolerance_m', 'flight_end_height_gap_m'}
         if end_geometry & set(limits) and not end_geometry <= set(limits):
             raise ValueError('flight end continuation requires distance, duration and flat evidence')
@@ -502,7 +529,8 @@ class StairFeedback:
                 roof_start = start_phase in (Phase.ROOFTOP_TURN, Phase.FORWARD_SEGMENT_3)
                 region = route["entry_polygon"] if entry else route["roof_landing_polygon"] if roof_start else route["landing_polygon"]
                 height = route["flight_2"][1][2] if roof_start else route["flight_1"][0 if entry else 1][2]
-                margin = route["limits"]["margin_m"] + anchor.uncertainty_m
+                margin = effective_support_margin(route, anchor.uncertainty_m,
+                    landing=not entry, region='entry' if entry else None)
                 supported = (self.entry_supported(route, pose, support, margin) if entry
                              else inside_polygon(support, region, margin))
                 if (not supported or
@@ -523,6 +551,7 @@ class StairFeedback:
             self._flight_end_conflict = False
             self._input_gap = None
             self._input_gap_used = 0.
+            self._pose_jump_at = None
             self._history.clear()
             self._last_sample = None
             self._recovering_at = None
@@ -540,8 +569,6 @@ class StairFeedback:
             self._last_geometry_sample = None
             self._entry_alignment_pending = None
             self._entry_verified = False
-            self._flight_recheck = None
-            self._flight_recheck_used = 0.
             self._candidate_debug = []
             self._reset_continuity()
             self.anchors.pop(profile.id, None)  # a later goal needs new entry evidence
@@ -568,7 +595,7 @@ class StairFeedback:
                         and np.linalg.norm(velocity[:2]) <= limits['stationary_v']
                         and abs(angular) <= limits['stationary_w']
                         and inside_polygon(support, self.route['entry_polygon'],
-                                       limits['margin_m'] + self.anchor.uncertainty_m)
+                                       effective_support_margin(self.route, self.anchor.uncertainty_m, region='entry'))
                         and support[:, 0].max() < -self.anchor.uncertainty_m
                         and abs(pose[2, 3] - start[2]) <= min(.05, limits['height_tolerance'])
                         and abs(roll) <= min(math.radians(10), limits['max_roll'])
@@ -612,7 +639,7 @@ class StairFeedback:
                     or not 0 <= now-sample.last_geometry_at <= limits['warn_sec']):
                 raise ValueError('landing hold requires fresh same-epoch landing geometry')
             pose, yaw, pitch, roll, _, _, support = self._observe(sample)
-            if (not inside_polygon(support, self.route['landing_polygon'], limits['margin_m']+self.anchor.uncertainty_m)
+            if (not inside_polygon(support, self.route['landing_polygon'], effective_support_margin(self.route, self.anchor.uncertainty_m, landing=True))
                     or not self._ascent_height_reached(pose[2,3], self.route['flight_1'][1][2])
                     or abs(roll) > limits['max_roll'] or abs(pitch) > limits['max_pitch']):
                 raise ValueError('landing hold requires supported landing height and attitude')
@@ -624,6 +651,39 @@ class StairFeedback:
         """Match slew history to the zero command actually sent during entry ACK."""
         with self._lock:
             self._last_command, self._last_command_at = (0., 0.), now
+
+    def _landing_margin_context(self, phase, position):
+        """Use landing clearance through the adjoining flight handoff.
+
+        Membership uses the measured body center. Full-body support and
+        completion height are checked separately. Entry/exit overrides are
+        selected by _support_margin_context. Legacy routes keep their policy.
+        """
+        if 'landing_support_margin_m' not in self.route['limits']:
+            return False
+        if phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN):
+            return True
+        names = {
+            Phase.FORWARD_SEGMENT_1: ('landing_polygon',),
+            Phase.FORWARD_SEGMENT_2: ('landing_polygon', 'roof_landing_polygon'),
+            Phase.FORWARD_SEGMENT_3: ('roof_landing_polygon',),
+        }.get(phase, ())
+        return any(inside_polygon([position[:2]], self.route[name])
+                   for name in names if name in self.route)
+
+    def _support_margin_context(self, phase, position=None):
+        for region, fixed, flight in (
+                ('entry', (Phase.VERIFY_ENTRY, Phase.ALIGN), Phase.FORWARD_SEGMENT_1),
+                ('exit', (Phase.EXIT_CONFIRM,), Phase.FORWARD_SEGMENT_3
+                 if 'flight_3' in self.route else Phase.FORWARD_SEGMENT_2)):
+            if region+'_support_margin_m' in self.route['limits'] and (
+                    phase in fixed or (phase is flight and position is not None and
+                    inside_polygon([position[:2]], self.route[region+'_polygon']))):
+                return region
+        if ((position is not None and self._landing_margin_context(phase, position)) or
+                (position is None and phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN))):
+            return 'landing'
+        return 'route'
 
     def support_regions(self, phase):
         roof = 'flight_3' in self.route
@@ -674,6 +734,45 @@ class StairFeedback:
             self._arrival_holding = False
             self.begin_phase(phase, now)
 
+    def continue_phase(self, now):
+        """Resume the current live phase without resetting its turn substep."""
+        with self._lock:
+            if self.profile is None or self.route is None or self.anchor is None:
+                raise ValueError('현재 계단 경로를 이어갈 수 없습니다.')
+            phase = self.phase
+            if phase not in self.traversal_phases(self.profile):
+                raise ValueError('현재 경로에 없는 단계입니다.')
+            sample = self.worker.snapshot()
+            diagnostics = self.worker.diagnostics()
+            if (sample is None or not sample.geometry_valid or sample.last_geometry_at is None
+                    or sample.epoch != self.anchor.epoch or self.worker.epoch != self.anchor.epoch
+                    or diagnostics.get('worker_error')
+                    or not 0 <= now-sample.last_geometry_at <= self.route['limits']['warn_sec']):
+                raise ValueError('같은 좌표 기준의 최신 LiDAR 관측이 필요합니다.')
+            fault_sequence = None if self._first_fault is None else self._first_fault.get('sample_sequence')
+            if fault_sequence is not None and sample.sequence <= fault_sequence:
+                raise ValueError('중단 이후의 새 LiDAR 관측이 필요합니다.')
+
+            # Keep phase, completed flights, turn index, captured pivot and the
+            # remaining calibrated path. Rebuild only temporal input state.
+            self.started_at = now
+            self._interrupted = False
+            self._recovering_at = None
+            self._input_gap = None
+            self._input_gap_used = 0.
+            self._pose_jump_at = None
+            self._recovery_events.clear()
+            self._stable_progress = None
+            self._history.clear()
+            self._last_sample = None
+            self._phase_sequence = sample.sequence
+            self._turn_sequence = sample.sequence
+            self._last_command = (0., 0.)
+            self._last_command_at = now
+            self._first_fault = None
+            self._candidate_debug = []
+            self._observation_debug = {}
+
     def begin_phase(self, phase, now):
         with self._lock:
             self.phase = phase
@@ -691,8 +790,7 @@ class StairFeedback:
             self._flight_end_conflict = False
             self._input_gap = None
             self._input_gap_used = 0.
-            self._flight_recheck = None
-            self._flight_recheck_used = 0.
+            self._pose_jump_at = None
             self._history.clear()
             self._last_sample = None
             self._reset_continuity()
@@ -700,6 +798,7 @@ class StairFeedback:
             self._phase_sequence = sample.sequence if sample else 0
             self._turn_sequence = self._phase_sequence
             self._holding = None
+            self._rotation_drift_recovery = False
             self._entry_alignment_pending = None
 
     def entry_imu_context(self):
@@ -905,11 +1004,18 @@ class StairFeedback:
             self._candidate_debug = []
             self._observation_debug = {}
             limits = self.route["limits"]
-            observed_feedback = self.route.get('flight_command_policy') == 'observed_feedback'
+            observed_feedback = True
             landing_hold = getattr(self, '_landing_hold_target', None) is not None and phase is Phase.LANDING
             holding_exit = (getattr(self, '_arrival_holding', False) and phase is Phase.EXIT_CONFIRM) or landing_hold
             if not self._interrupted and not holding_exit and now - self.started_at > self.profile.timeout_sec:
-                self.debug = dict(tracking_state="TIMEOUT", loss_response=True)
+                previous = self.debug if self.debug.get("phase") == phase.value else {}
+                self.debug = dict(tracking_state="TIMEOUT", loss_response=True,
+                    phase=phase.value, last_tracking_state=previous.get("tracking_state"),
+                    last_incomplete_conditions=previous.get("incomplete_conditions", []),
+                    last_completion_checks=previous.get("completion_checks", {}),
+                    last_pose=previous.get("pose"), last_target=previous.get("target"),
+                    last_turn_index=previous.get("turn_index"),
+                    last_landing_turn=previous.get("landing_turn"))
                 return EvidenceReport(phase, False, True, "LiDAR traversal/hold timeout", 0, 0, math.inf)
             age = math.inf if sample is None or sample.last_geometry_at is None else now - sample.last_geometry_at
             reset = self.worker.epoch != self.anchor.epoch or sample is not None and sample.epoch != self.anchor.epoch
@@ -926,26 +1032,106 @@ class StairFeedback:
                 and not self._entry_alignment_pending
                 and limits.get('flight_input_recover_sec', 0.) > 0)
             if input_eligible and self._input_gap is None and expired and self._last_command[0] > 0:
-                self._input_gap = dict(at=now, sequence=sample.sequence)
+                # Age starts at the last measured geometry, not at expiry.
+                # During a long blind interval, never repeat the full ascent
+                # request past the last surveyed flight end by dead reckoning.
+                index = {Phase.FORWARD_SEGMENT_1: 1, Phase.FORWARD_SEGMENT_2: 2,
+                         Phase.FORWARD_SEGMENT_3: 3}[phase]
+                start, end = np.asarray(self.route['flight_%d' % index], dtype=float)
+                axis = end[:2]-start[:2]
+                length = float(np.linalg.norm(axis))
+                axis /= length
+                if self._last_sample is not None:
+                    previous = self._last_sample[1][:2,3]
+                elif sample.geometry_valid:
+                    previous = (np.linalg.inv(transform(self.anchor.local_from_profile)) @
+                                transform(sample.transform) @
+                                np.linalg.inv(self.base_from_lidar))[:2,3]
+                else:
+                    previous = None
+                remaining = (max(0., length-float((previous-start[:2]) @ axis))
+                             if previous is not None else 0.)
+                observed_bound = max((abs(float(h[3][:2] @ axis))
+                    for h in self._history if sample.stamp-h[0] <= limits['settle_sec']), default=0.)
+                speed_bound = max(limits['max_v'], observed_bound)
+                motion_age = (remaining+limits['position_on'])/speed_bound
+                self._input_gap = dict(at=now, sequence=sample.sequence,
+                    motion_age_sec=motion_age, remaining_m=remaining,
+                    speed_bound_mps=speed_bound)
             if input_eligible and self._input_gap is not None:
-                elapsed = self._input_gap_used + max(0., now-self._input_gap['at'])
-                exhausted = (elapsed >= limits['flight_input_recover_sec'] or
-                             self._rolling_recovery(now, self._input_gap['at']) >= limits.get('flight_recovery_window_budget_sec', math.inf))
+                gap_elapsed = max(0., now-self._input_gap['at'])
+                elapsed = self._input_gap_used + gap_elapsed
+                window_used = self._rolling_recovery(now, self._input_gap['at'])
+                window_budget = limits.get('flight_recovery_window_budget_sec', math.inf)
+                # A single uninterrupted registration gap has its own cap. Short
+                # gaps across a loaded ascent use the separate rolling budget.
+                exhausted = (gap_elapsed >= limits['flight_input_recover_sec'] or
+                             window_used >= window_budget)
                 fresh = (sample.geometry_valid and age <= limits['warn_sec']
                          and sample.sequence > self._input_gap['sequence'])
-                if exhausted or not fresh:
+                reobserve_limit = (limits['flight_input_recover_sec']
+                                   + limits.get('flight_input_reobserve_sec', 0.))
+                blind_end = age >= self._input_gap.get('motion_age_sec', math.inf)
+                if (exhausted or blind_end) and not fresh:
+                    # Exhaustion ends command repetition, not the current
+                    # phase. A fresh same-epoch observation may still restore it.
                     self._last_command, self._last_command_at = (0., 0.), now
-                    self.debug = dict(tracking_state='RECOVERING', loss_response=exhausted,
-                        age=age, input_recovery=True, input_recovery_elapsed_sec=elapsed,
+                    waiting = (gap_elapsed < reobserve_limit
+                               and limits.get('flight_input_reobserve_sec', 0.) > 0.)
+                    self.debug = dict(tracking_state='INPUT_REOBSERVING' if waiting else 'RECOVERING',
+                        loss_response=not waiting, age=age, input_recovery=True,
+                        input_recovery_elapsed_sec=elapsed, input_recovery_gap_sec=gap_elapsed,
                         input_recovery_budget_sec=limits['flight_input_recover_sec'],
+                        input_recovery_window_used_sec=window_used,
+                        input_recovery_window_budget_sec=window_budget,
+                        blind_end_reached=blind_end,
+                        blind_motion_age_sec=self._input_gap.get('motion_age_sec'),
+                        blind_remaining_at_last_scan_m=self._input_gap.get('remaining_m'),
+                        blind_speed_bound_mps=self._input_gap.get('speed_bound_mps'),
+                        command=[0., 0.], physical_hold_verified=False)
+                    return EvidenceReport(phase, False, not waiting,
+                        'waiting for fresh flight observation' if waiting else
+                        'input recovery budget exhausted', 0, 0, age)
+                if exhausted and gap_elapsed >= reobserve_limit:
+                    self._last_command, self._last_command_at = (0., 0.), now
+                    self.debug = dict(tracking_state='RECOVERING', loss_response=True,
+                        age=age, input_recovery=True, command=[0., 0.],
                         physical_hold_verified=False)
-                    return EvidenceReport(phase, False, exhausted,
-                        'input recovery budget exhausted' if exhausted else
-                        'input delayed: zero command; waiting for fresh geometry', 0, 0, age)
+                    return EvidenceReport(phase, False, True,
+                        'input recovery budget exhausted', 0, 0, age)
+                if not fresh:
+                    # A tread impact can delay registration while the robot is
+                    # still loading its wheels. Within the existing bounded,
+                    # same-epoch recovery window, repeat only the last accepted
+                    # flight command; do not infer motion or increase steering.
+                    self._last_command_at = now
+                    self.debug = dict(tracking_state='INPUT_DELAY_CONTINUING', loss_response=False,
+                        age=age, input_recovery=True, input_recovery_elapsed_sec=elapsed,
+                        input_recovery_gap_sec=gap_elapsed,
+                        input_recovery_budget_sec=limits['flight_input_recover_sec'],
+                        input_recovery_window_used_sec=window_used,
+                        input_recovery_window_budget_sec=window_budget,
+                        command=list(self._last_command), physical_hold_verified=False)
+                    return EvidenceReport(phase, False, False,
+                        'input delayed: retaining last bounded flight command', 0, 0, age)
                 self._recovery_events.append((self._input_gap['at'], now))
                 self._input_gap_used = elapsed
                 self._input_gap = None
                 input_resume = True  # all geometry/attitude/path checks below still apply
+            flat_reobserve = (phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT,
+                Phase.ROOFTOP_TURN, Phase.EXIT_CONFIRM) and expired and not reset
+                and not self._interrupted and sample is not None and sample.geometry_valid
+                and not self.worker.diagnostics()['worker_error']
+                and limits.get('flat_reobserve_sec', 0.) > age >= limits['expire_sec'])
+            if flat_reobserve:
+                # A stale flat pose cannot authorize movement or completion.
+                # Preserve the phase for a new same-epoch observation.
+                self._last_command, self._last_command_at = (0., 0.), now
+                self.debug = dict(tracking_state='FLAT_REOBSERVING',
+                                  loss_response=False, age=age, command=[0., 0.],
+                                  physical_hold_verified=False)
+                return EvidenceReport(phase, False, False,
+                    'waiting for fresh flat observation', 0, 0, age)
             if reset or expired or self._interrupted:
                 self._recovering_at = now if self._recovering_at is None else self._recovering_at
                 overdue = now - self._recovering_at >= limits["recover_sec"]
@@ -963,26 +1149,55 @@ class StairFeedback:
             else:
                 self.debug = dict(tracking_state='DEGRADED', loss_response=False, age=age)
                 return EvidenceReport(phase, False, False, 'waiting for usable geometry', 0, 0, age)
+            prior = self._last_sample
             pose, yaw, pitch, roll, velocity, angular, support = self._observe(sample)
+            if (self.route['direction'] == 'UP' and 'pose_jump_xy_m' in limits and prior is not None
+                    and sample.sequence > prior[0].sequence
+                    and 0 < sample.stamp-prior[0].stamp <= limits['warn_sec']
+                    and np.linalg.norm(pose[:2,3]-prior[1][:2,3]) > limits['pose_jump_xy_m']
+                    and abs(float(pose[2,3]-prior[1][2,3])) > limits['pose_jump_z_m']):
+                self._pose_jump_at = now if self._pose_jump_at is None else self._pose_jump_at
+            if self._pose_jump_at is not None:
+                # XY and Z teleport together in one scan: progress, height and
+                # next-region support are then correlated, not three witnesses.
+                # Await independent localization repair instead of claiming a
+                # cleared riser from the same untrusted transform.
+                self._last_command, self._last_command_at = (0., 0.), now
+                overdue = now-self._pose_jump_at >= limits['pose_jump_reobserve_sec']
+                self.debug = dict(tracking_state='POSE_JUMP_CONFLICT',
+                    loss_response=overdue, phase=phase.value,
+                    pose=pose[:3,3].tolist(), age=age,
+                    xy_jump_m=None if prior is None else float(np.linalg.norm(pose[:2,3]-prior[1][:2,3])),
+                    z_jump_m=None if prior is None else float(abs(pose[2,3]-prior[1][2,3])),
+                    command=[0., 0.], physical_hold_verified=False)
+                return EvidenceReport(phase, False, overdue,
+                    'correlated stair pose jump requires independent confirmation'
+                    if overdue else 'reobserving correlated stair pose jump',
+                    0, 0, age)
             control_yaw, heading_detail = self._control_heading(sample, pose, now)
             self._observation_debug = dict(pose=pose[:3,3].tolist(), yaw=yaw, pitch=pitch, roll=roll,
                 geometry_stamp=sample.stamp, geometry_sequence=sample.sequence,
                 geometry_measured_at=sample.measured_at, control_yaw=control_yaw,
                 heading=heading_detail, measured_velocity=velocity.tolist(), measured_yaw_rate=angular)
             self._recovering_at = None
-            self._prediction_context = (sample, pose, velocity, angular, control_yaw, heading_detail, now)
             pos = pose[:3, 3]
             if landing_hold and abs(float(pos[2]-self._landing_hold_target[0][2])) > limits['height_tolerance']:
                 self.debug = dict(tracking_state='LANDING_HOLD_HEIGHT', loss_response=True,
                                   landing_position_hold=True, command=[0.,0.])
                 return EvidenceReport(phase, False, True, 'landing hold height changed from captured surface', 0.,0.,age)
-            margin = limits["margin_m"] + self.anchor.uncertainty_m
-            landing = inside_polygon(support, self.route["landing_polygon"], margin)
-            exit_clear = inside_polygon(support, self.route["exit_polygon"], margin)
+            margin_context = self._support_margin_context(phase, pos)
+            landing_context = margin_context == 'landing'
+            margin = effective_support_margin(self.route, self.anchor.uncertainty_m,
+                landing=landing_context, region=margin_context)
+            landing_margin = effective_support_margin(self.route, self.anchor.uncertainty_m, landing=True)
+            landing = inside_polygon(support, self.route["landing_polygon"], landing_margin)
+            exit_clear = inside_polygon(support, self.route["exit_polygon"],
+                effective_support_margin(self.route, self.anchor.uncertainty_m, region='exit'))
             complete = False
             settling = None
             v, w, ey, epsi, progress = 0., 0., 0., 0., 0.
             alignment = False
+            rotation_waypoint = False
             flight_end_conflict = False
             steering_detail = {}
             flight_heading_detail = {}
@@ -1003,10 +1218,8 @@ class StairFeedback:
                 epsi = wrap(steering_yaw - math.atan2(direction[1], direction[0]))
                 actual_v = float(velocity[:2] @ direction)
                 nominal = min(self.profile.linear_speed, limits["max_v"])
-                # A nominal input is not a measured target velocity in a response
-                # model. Retain the legacy speed loop only for legacy routes.
-                v = (nominal if self.route.get('motion_prediction', {}).get('mode') == 'control' else
-                     np.clip(nominal + limits["speed_kp"] * deadband(nominal - actual_v, limits["speed_deadband"]), 0, limits["max_v"]))
+                # Use measured path velocity as feedback for the existing speed correction.
+                v = np.clip(nominal + limits["speed_kp"] * deadband(nominal - actual_v, limits["speed_deadband"]), 0, limits["max_v"])
                 # Smooth slowdown proportional to error, never a normal-noise stop gate.
                 v /= 1 + abs(epsi) + abs(ey)
                 # Operator's useful forward-command floor, in the transport's
@@ -1031,7 +1244,7 @@ class StairFeedback:
                 steering_detail.update(lateral_rate=lateral_rate, preview_ey=preview_ey, extra_preview_m=extra)
                 if idx > 0:
                     if self._entry_alignment_pending is None:
-                        flat_start = landing if idx == 1 else inside_polygon(support, self.route['roof_landing_polygon'], margin)
+                        flat_start = landing if idx == 1 else inside_polygon(support, self.route['roof_landing_polygon'], landing_margin)
                         self._entry_alignment_pending = flat_start and (abs(ey) > limits['position_off'] or abs(epsi) > limits['yaw_tolerance'])
                     if self._entry_alignment_pending:
                         waypoint = self.route['turn_path' if idx == 1 else 'roof_turn_path'][-1]
@@ -1059,7 +1272,7 @@ class StairFeedback:
                 checks = dict(progress=progress >= length, ascent_seen=self._flight_seen[idx],
                               height=self._ascent_height_reached(pos[2], end[2]),
                               body_in_next_region=(landing if idx == 0 else
-                                  inside_polygon(support, self.route['roof_landing_polygon'], margin)
+                                  inside_polygon(support, self.route['roof_landing_polygon'], landing_margin)
                                   if idx == 1 and 'flight_3' in self.route else exit_clear))
                 complete = all(checks.values())
                 # Reaching the surveyed horizontal end does not prove that the
@@ -1119,6 +1332,7 @@ class StairFeedback:
                     supported = landing
                 region_turn = self._region_turn()
                 rotation_waypoint = region_turn and self._landing_rotation_waypoint()
+                rotation_drift_recovery = False
                 evaluated_turn_index = self.turn_index
                 if rotation_waypoint:
                     # Rotation has an orientation target, not a historical XY
@@ -1147,7 +1361,9 @@ class StairFeedback:
                 if self._holding or landing_hold:
                     # A small bounded unicycle arc, with reverse only on surveyed
                     # support. Each proposed step is checked below against edges.
-                    v = np.clip(limits["hold_kp"] * along - limits["hold_kd"] * (velocity[:2] @ heading), -limits["hold_v"], limits["hold_v"])
+                    flat_transit = phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN) and not landing_hold
+                    speed_cap = min(limits.get('landing_max_v', limits['hold_v']), limits['max_v']) if flat_transit else limits['hold_v']
+                    v = np.clip(limits["hold_kp"] * along - limits["hold_kd"] * (velocity[:2] @ heading), -speed_cap, speed_cap)
                     lateral = heading[0] * delta[1] - heading[1] * delta[0]
                     w = -limits["yaw_kp"] * deadband(epsi, limits["yaw_deadband"]) + limits["lateral_kp"] * deadband(lateral, limits["lateral_deadband"]) * (1 if v >= 0 else -1)
                 else:
@@ -1165,11 +1381,84 @@ class StairFeedback:
                     # the normal observed support and command checks still run.
                     position_limit = (limits['position_on'] if self.turn_index < len(self._landing_path())-1
                                       else limits['position_off'])
-                    if distance <= position_limit:
+                    if distance <= position_limit and self._landing_turn_debug.get('rotation_disk_supported', False):
                         self._holding = False
                         v = 0.
                         w = -limits['yaw_kp']*deadband(epsi, limits['yaw_deadband'])
-                at_target = supported and distance <= position_limit and abs(epsi) <= limits["yaw_tolerance"]
+                if (region_turn and not rotation_waypoint
+                        and (self.turn_index == 2 or (phase is Phase.ROOFTOP_TURN and self.turn_index == 0))
+                        and (distance > position_limit or not self._landing_turn_debug.get('rotation_disk_supported', False))
+                        and not degraded and not neutral_only):
+                    # Steer toward the supported pivot, rather than holding the
+                    # old cross-landing heading while lateral error remains.
+                    # A nearby point is not a reason to neutralize an inward
+                    # correction when the next rotation still cannot fit.
+                    bearing = math.atan2(delta[1], delta[0])
+                    travel_sign = 1. if along >= 0. else -1.
+                    bearing_error = wrap(bearing-yaw+(math.pi if travel_sign < 0 else 0.))
+                    w = limits['yaw_kp'] * bearing_error
+                    v = travel_sign * min(limits.get('landing_max_v', limits['hold_v']),
+                        limits['hold_kp'] * distance) * max(0., math.cos(bearing_error))
+                    if not self._landing_turn_debug.get('rotation_disk_supported', False):
+                        v = travel_sign * max(abs(v), min(limits.get('landing_max_v', limits['hold_v']),2*limits['hold_v']))
+                    polygon = np.asarray(self._turn_polygon())
+                    edges = np.roll(polygon,-1,axis=0)-polygon
+                    normals = np.column_stack((-edges[:,1],edges[:,0])) / np.linalg.norm(edges,axis=1)[:,None]
+                    radius = max(np.linalg.norm(self.route['footprint'],axis=1))
+                    clearances = np.sum(normals*(pos[:2]-polygon),axis=1)
+                    near_edge = clearances < radius+margin+limits['position_on']
+                    if np.any(near_edge & ((normals @ heading)*v < -1e-9)):
+                        v = 0.  # turn inward before translating toward an edge
+                    self._landing_turn_debug['inward_guidance'] = True
+                if (region_turn and not rotation_waypoint and not degraded and not neutral_only
+                        and not self._landing_turn_debug.get('rotation_disk_supported', False)
+                        and distance > limits['position_on'] and abs(v) < limits['hold_v'] / 2):
+                    # A unicycle can become stationary when along-target error
+                    # vanishes but lateral error remains. A short same-heading
+                    # forward/reverse arc can move onto the surveyed pivot.
+                    travel = self._turn_direction()
+                    lateral_axis = np.array([-travel[1], travel[0]])
+                    lateral_error = float(delta @ lateral_axis)
+                    lateral_heading = float(heading @ lateral_axis)
+                    if (abs(lateral_error) > limits['position_on']
+                            and abs(lateral_heading) > .1):
+                        v = math.copysign(limits['hold_v'], lateral_error*lateral_heading)
+                        w = 0.
+                if region_turn and rotation_waypoint and not degraded and not neutral_only:
+                    # Rotation is normally in place. Only observed retreat
+                    # toward the rear landing edge warrants a small inward
+                    # translation; the full-body sweep below still applies.
+                    travel = self._turn_direction()
+                    retreat = -float(velocity[:2] @ travel)
+                    heading_inward = float(np.array([math.cos(yaw), math.sin(yaw)]) @ travel)
+                    flat_clearance = support_clearance(support, [self._turn_polygon()])
+                    if (flat_clearance is not None and flat_clearance < limits['position_on']
+                            and retreat > limits['stationary_v'] / 2
+                            and heading_inward > .5):
+                        self._rotation_drift_recovery = True
+                    elif (flat_clearance is None or flat_clearance > limits['position_on'] + .03
+                          or heading_inward <= .5):
+                        self._rotation_drift_recovery = False
+                    if self._rotation_drift_recovery:
+                        v = limits['hold_v']
+                        rotation_drift_recovery = True
+                    radius = max(np.linalg.norm(self.route['footprint'],axis=1))
+                    if not inside_polygon([pos[:2]], self._turn_polygon(), radius+margin):
+                        # Pivot admission has its own small reserve; if the
+                        # actual turning body needs more room, move inward
+                        # during the turn instead of waiting for a sweep fault.
+                        boundary = np.asarray(self._turn_polygon())
+                        edges = np.roll(boundary,-1,axis=0)-boundary
+                        normals = np.column_stack((-edges[:,1],edges[:,0])) / np.linalg.norm(edges,axis=1)[:,None]
+                        gaps = np.sum(normals*(pos[:2]-boundary),axis=1)
+                        inward = normals[int(np.argmin(gaps))]
+                        projection = float(heading @ inward)
+                        if abs(projection) > 1e-6:
+                            v = math.copysign(min(limits.get('landing_max_v',limits['hold_v']),2*limits['hold_v']),projection)
+                            rotation_drift_recovery = True
+                            self._landing_turn_debug['inward_rotation'] = True
+                turn_yaw_tolerance = (limits.get('flight_resume_corridor_yaw', limits['yaw_tolerance'])
+                                      if region_turn else limits['yaw_tolerance'])
                 settled = self._settled(sample, average_rate=phase in (Phase.VERIFY_ENTRY, Phase.ALIGN))
                 settling = dict(self._settling_detail)
                 if phase is Phase.VERIFY_ENTRY:
@@ -1198,7 +1487,7 @@ class StairFeedback:
                                   entry_verified=True)
                 else:
                     checks = dict(body_in_region=supported, position=distance <= position_limit,
-                                  yaw=abs(epsi) <= limits["yaw_tolerance"])
+                                  yaw=abs(epsi) <= turn_yaw_tolerance)
                     if rotation_waypoint:
                         checks.pop('position')
                     if not region_turn:
@@ -1256,7 +1545,8 @@ class StairFeedback:
             if landing_hold:
                 names, polygons = ('landing_polygon',), [self.route['landing_polygon']]
             if alignment:
-                names, polygons = ('landing_polygon',), [self.route['landing_polygon']]
+                name = 'roof_landing_polygon' if phase is Phase.FORWARD_SEGMENT_3 else 'landing_polygon'
+                names, polygons = (name,), [self.route[name]]
             raw_supported = inside_support_union(support, polygons)
             current_supported = inside_support_union(support, polygons, margin)
             key = (sample.epoch, sample.sequence, phase, names)
@@ -1265,6 +1555,8 @@ class StairFeedback:
                 self._clearance_lower = support_clearance(support, polygons) if raw_supported else None
             geometry = dict(support_regions=list(names), footprint_supported=raw_supported,
                             current_supported=current_supported, margin_m=limits["margin_m"],
+                            support_margin_m=margin,
+                            support_margin_context=margin_context,
                             anchor_uncertainty_m=self.anchor.uncertainty_m, effective_margin_m=margin,
                             clearance_m=self._clearance_lower,
                             height_error_m=abs(float(pos[2] - target[2])),
@@ -1274,9 +1566,38 @@ class StairFeedback:
                             completion_checks=checks,
                             settling=settling,
                             incomplete_conditions=[k for k, value in checks.items() if not value])
-            # The surveyed anchor uncertainty remains hard. Only the extra
-            # reserve margin may be recovered, with an inward checked path.
-            recovery = not current_supported and inside_support_union(support, polygons, self.anchor.uncertainty_m)
+            # An ascent can temporarily cross the comfort margin as the body
+            # rocks at a riser. Require the full footprint on surveyed support,
+            # a smaller route minimum, and bounded steering toward the flight
+            # centerline. A stationary rotation sweep is not the trajectory of
+            # the robot while the stair firmware also drives it forward.
+            recovery_floor = margin if margin_context != 'route' else min(self.anchor.uncertainty_m, margin)
+            turn_margin_recovery = bool(
+                rotation_waypoint and margin_context == 'route' and raw_supported and not current_supported
+                and not degraded and not neutral_only
+                and limits.get('turn_margin_recovery_m', 0.) > 0.)
+            if turn_margin_recovery:
+                recovery_floor = max(limits['margin_m'],
+                    margin - limits['turn_margin_recovery_m'])
+            flight_margin_recovery = bool(
+                phase in (Phase.FORWARD_SEGMENT_1, Phase.FORWARD_SEGMENT_2, Phase.FORWARD_SEGMENT_3)
+                and self.route['direction'] == 'UP' and margin_context == 'route' and not alignment and not flight_end_conflict
+                and raw_supported and not current_supported and not degraded and not neutral_only
+                and limits.get('flight_margin_recovery_m', 0.) > 0.)
+            if flight_margin_recovery:
+                recovery_floor = max(limits['margin_m'],
+                    margin - limits['flight_margin_recovery_m'])
+                bounded_w = self._limit_command(0., float(w), now)[1]
+                flight_margin_recovery = bool(
+                    inside_support_union(support, polygons, recovery_floor)
+                    and ey * bounded_w < -1e-6)
+                if not flight_margin_recovery:
+                    recovery_floor = margin
+            recovery = not current_supported and inside_support_union(support, polygons, recovery_floor)
+            geometry["recovery_command_margin_m"] = float(
+                recovery_floor if recovery else margin)
+            geometry["turn_margin_recovery"] = bool(turn_margin_recovery and recovery)
+            geometry["flight_margin_recovery"] = bool(flight_margin_recovery and recovery)
             if not current_supported and not recovery:
                 self.debug = dict(tracking_state="CORRIDOR_LIMIT", loss_response=True, **geometry)
                 return EvidenceReport(phase, False, True, "body/clearance exceeds connected support", 0, 0, age)
@@ -1294,10 +1615,13 @@ class StairFeedback:
                     v = math.copysign(min(abs(v), abs(self._last_command[0])), v)
                     if heading_detail['source'] == 'geometry':
                         v, w = self._last_command
-                if phase in (Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN) and rotation_waypoint:
+                if phase in (Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN) and rotation_waypoint and not rotation_drift_recovery:
                     v = 0.
                 if alignment or phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN, Phase.EXIT_CONFIRM):
-                    v = float(np.clip(v, -limits['hold_v'], limits['hold_v']))
+                    speed_cap = (limits.get('landing_max_v', limits['hold_v'])
+                        if phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN) and not landing_hold
+                        else limits['hold_v'])
+                    v = float(np.clip(v, -min(speed_cap,limits['max_v']), min(speed_cap,limits['max_v'])))
             # Sensor expiry is a data-freshness deadline, not the flight
             # lookahead. Every control cycle rechecks the observed full body.
             on_flight = (phase in (Phase.FORWARD_SEGMENT_1, Phase.FORWARD_SEGMENT_2, Phase.FORWARD_SEGMENT_3)
@@ -1307,79 +1631,13 @@ class StairFeedback:
             proposed = (v, w)
             adjusted = False
             restart = False
-            flight = on_flight and not (degraded and heading_detail['source'] == 'geometry')
-            if not transition and on_flight and not observed_feedback and self._flight_recheck is not None and not flight:
-                return self._recheck_flight(phase, sample, now, age, pos, yaw, control_yaw,
-                                           support, polygons, margin, horizon, geometry, proposed)
-            if not transition and on_flight and observed_feedback:
-                # Restore the configured useful stair input only after fresh
-                # same-epoch geometry and all observed support checks passed.
-                # Keep angular slew from _limit_command; never jump steering.
+            if not transition and on_flight:
+                # The commissioned route consumes the measured feedback command directly.
+                # A fresh observation after eligible input loss restores the configured input.
                 if input_resume and not neutral_only and not degraded:
                     v = self.route['flight_input_v'][idx] if 'flight_input_v' in self.route else limits['flight_restart_v']
                     proposed = (v, w)
                     restart = True
-                # Position and body orientation come from one LiDAR observation.
-                # The uncommissioned command-scale future model is diagnostic;
-                # it cannot replace this observed support gate with a terminal
-                # prediction fault. Freshness, attitude, observed body support,
-                # completion checks and command/slew limits still run above.
-                self._flight_recheck = None
-            elif not transition and not neutral_only and flight:
-                pending = self._flight_recheck
-                if pending is not None and (degraded or sample.sequence <= pending['sequence'] or
-                        self._flight_recheck_used + now - pending['at'] >= limits.get('flight_recheck_sec', 0.) or
-                        self._rolling_recovery(now, pending['at']) >= limits.get('flight_recovery_window_budget_sec', math.inf)):
-                    return self._recheck_flight(phase, sample, now, age, pos, yaw, control_yaw,
-                                               support, polygons, margin, horizon, geometry, proposed)
-                restart = (pending is not None or input_resume) and 'flight_restart_v' in limits
-                if restart:
-                    # Only a newer, fresh observation reaches this branch.
-                    # Validate the exact useful input, not a low-speed path
-                    # followed by an unchecked output jump. Steering still
-                    # obeys the ordinary magnitude and slew limits.
-                    v = self.route['flight_input_v'][idx] if 'flight_input_v' in self.route else limits['flight_restart_v']
-                    proposed = (v, w)
-                selected = self._flight_command(pos[:2], yaw, control_yaw, support, v, w,
-                    horizon, polygons, margin, now, direction, start[:2], recovery,
-                    restart=restart)
-                if selected is None:
-                    if limits.get('flight_recheck_sec', 0.) > 0.:
-                        correction = None
-                        if (pending is not None and not degraded and 'flight_recovery_w' in limits):
-                            correction = self._flight_recovery(pos[:2], yaw, control_yaw, support,
-                                polygons, margin, horizon, now, steering_target_w, target_yaw)
-                        report = self._recheck_flight(phase, sample, now, age, pos, yaw, control_yaw,
-                                                   support, polygons, margin, horizon, geometry, proposed)
-                        # Explicit commissioning opt-in only: ability to turn
-                        # on stair treads cannot be inferred from an offline bag.
-                        if (not report.faulted and pending is not None and not degraded
-                                and 'flight_recovery_w' in limits):
-                            if correction is not None:
-                                self._last_command, self._last_command_at = correction, now
-                                self._flight_recheck['sequence'] = sample.sequence
-                                self._flight_recheck['correction'] = correction
-                                self._flight_recheck['correction_target_w'] = float(np.clip(steering_target_w, -limits['flight_recovery_w'], limits['flight_recovery_w']))
-                                self.debug.update(command=list(correction), recovery_steering=True,
-                                                  physical_hold_verified=False)
-                                return EvidenceReport(phase, False, False,
-                                    'bounded commissioned steering recovery; arrival unconfirmed', 0, 0, age)
-                        return report
-                    self.debug = dict(tracking_state='SUPPORT_LIMIT', loss_response=True, pose=pos.tolist(),
-                        yaw=yaw, control_heading=heading_detail, proposed_command=[v,w],
-                        prediction_horizon_sec=horizon, **geometry)
-                    return EvidenceReport(phase, False, True, 'no bounded correction within connected support', 0, 0, age)
-                v, w = selected
-                if pending is not None:
-                    self._recovery_events.append((pending['at'], now))
-                    self._flight_recheck_used += max(0., now - pending['at'])
-                    self._flight_recheck = None
-                adjusted = recovery or any(row['accepted'] is False for row in self._candidate_debug)
-            elif (not transition and on_flight and not neutral_only
-                  and self.route.get('motion_prediction', {}).get('mode') == 'control'):
-                if self._response_supported(support,yaw,control_yaw,v,w,horizon,polygons,margin)[0] is not True:
-                    return self._recheck_flight(phase,sample,now,age,pos,yaw,control_yaw,
-                                               support,polygons,margin,horizon,geometry,proposed)
             elif not transition and (recovery or not self._swept_support(pos[:2], yaw, support, v, w, horizon, polygons, margin)):
                 entry_reserve = (phase is Phase.ALIGN and corridor_entry and recovery
                                  and not degraded and not neutral_only
@@ -1387,22 +1645,31 @@ class StairFeedback:
                 alternative = (self._entry_reserve_command(pos[:2], yaw, support, w,
                     horizon, polygons, margin, now) if entry_reserve else
                     None if neutral_only or flight_end_conflict else self._supported_command(
-                    pos[:2], yaw, support, v, w, horizon, polygons, margin, now))
+                    pos[:2], yaw, support, v, w, horizon, polygons,
+                    recovery_floor if recovery else margin, now))
                 if alternative is None:
                     self.debug = dict(tracking_state="SUPPORT_LIMIT", loss_response=True,
                                       proposed_command=[v, w], prediction_horizon_sec=horizon, **geometry)
                     return EvidenceReport(phase, False, True, "no bounded correction within connected support", 0, 0, age)
                 v, w = alternative
                 adjusted = True
+            if turn_margin_recovery and recovery and not transition:
+                if (abs(v) > 1e-6 or abs(w) < 1e-6 or
+                        not self._turn_recovery_improves_clearance(
+                            pos[:2], support, w, horizon, polygons)):
+                    self.debug = dict(tracking_state="SUPPORT_LIMIT", loss_response=True,
+                                      proposed_command=list(proposed), **geometry)
+                    return EvidenceReport(phase, False, True,
+                        "no inward rotation within connected support", 0, 0, age)
             if not transition:
-                if on_flight and not degraded and v > 0. and not recovery and self._flight_recheck is None and not input_resume and not restart:
+                if on_flight and not degraded and v > 0. and not recovery and not input_resume and not restart:
                     self._credit_stable_progress(sample, pos, direction, now)
                 else:
                     self._stable_progress = None
                 self._last_command, self._last_command_at = (v, w), now
             elif phase is Phase.VERIFY_ENTRY:
                 self._entry_verified = True
-            prediction = self._prediction_diagnostic(pos[:2], yaw, control_yaw, support, v, w, horizon, polygons, margin)
+            prediction = dict(state='disabled', affects_commands=False)
             self.debug = dict(tracking_state="DEGRADED" if degraded else "TRACKED", loss_response=False, age=age, epoch=sample.epoch,
                               sequence=sample.sequence, phase=phase.value, pose=pos.tolist(), yaw=yaw,
                               roll=roll, pitch=pitch, velocity=velocity.tolist(), angular_velocity=angular,
@@ -1415,7 +1682,7 @@ class StairFeedback:
                                   and not transition and v < limits.get("min_flight_v", 0.)),
                               prediction_horizon_sec=horizon, neutral_only=neutral_only,
                               flight_restart=restart,
-                              flight_command_policy=self.route.get('flight_command_policy', 'prediction_gated'),
+                              flight_command_policy=self.route.get('flight_command_policy', 'observed_feedback'),
                               support_timestamp=sample.stamp,
                               support_orientation_source='lidar_observation',
                               gyro_heading_affects_flight_steering=flight_heading_detail.get('gyro_used', False),
@@ -1428,7 +1695,7 @@ class StairFeedback:
                               policy_adjusted=(v,w) != proposed,
                               second_flight_alignment=alignment, margin_recovery=recovery,
                               landing_position_hold=landing_hold,
-                              prediction_model=('lagged_measured_motion_envelope' if self.route.get('motion_prediction', {}).get('mode') == 'control' else 'configured_command_scale; stair response unverified'),
+                              prediction_model='disabled; measured feedback controls ascent',
                               motion_prediction=prediction,
                               recovery_window_used_sec=self._rolling_recovery(now),
                               end_geometry=getattr(self, '_end_geometry_debug', {}),
@@ -1443,99 +1710,20 @@ class StairFeedback:
                       if flight_end_conflict else "LiDAR geometry/feedback: " + phase.value)
             return EvidenceReport(phase, complete, False, detail, progress, 0, age)
 
-    def _recheck_flight(self, phase, sample, now, age, pos, yaw, control_yaw,
-                        support, polygons, margin, horizon, geometry, proposed):
-        """Bounded zero-command re-observation, never a claim of physical hold.
 
-        Only prediction failures qualify. Expiry, attitude, interruption and
-        observed support gates run before this method on every evaluation.
-        Gyro-only rotation of an older center is diagnostic, not an observed
-        current footprint. Prediction-gated legacy routes may still compare
-        both hypotheses when evaluating future commands.
-        """
-        delta = wrap(control_yaw - yaw)
-        c, s = math.cos(delta), math.sin(delta)
-        rotated = (support - pos[:2]) @ np.array([[c, s], [-s, c]]) + pos[:2]
-        # A commissioned recovery may consume only the extra reserve; it must
-        # still preserve the surveyed anchor uncertainty for both headings.
-        required = self.anchor.uncertainty_m if self.route['limits'].get('flight_recovery_w') else margin
-        supported = inside_support_union(support, polygons, required)
-        gyro_supported = inside_support_union(rotated, polygons, required)
-        if self._flight_recheck is None:
-            self._flight_recheck = dict(at=now, sequence=sample.sequence)
-        elapsed = self._flight_recheck_used + max(0., now - self._flight_recheck['at'])
-        budget = self.route['limits'].get('flight_recheck_sec', 0.)
-        fault = (not supported or elapsed >= budget or
-                 self._rolling_recovery(now, self._flight_recheck['at']) >= self.route['limits'].get('flight_recovery_window_budget_sec', math.inf))
-        reason = ('prediction recheck lost supported footprint' if not supported else
-                  'prediction recheck budget exhausted' if fault else
-                  'prediction recheck: zero command, awaiting fresh feasible geometry')
-        continued = None
-        if (not fault and sample.geometry_valid and age <= self.route['limits']['warn_sec']
-                and self._flight_recheck.get('correction') is not None):
-            vector = np.diff(np.asarray(self.route[{Phase.FORWARD_SEGMENT_1:'flight_1', Phase.FORWARD_SEGMENT_2:'flight_2', Phase.FORWARD_SEGMENT_3:'flight_3'}[phase]]), axis=0)[0]
-            continued = self._flight_recovery(pos[:2], yaw, control_yaw, support, polygons,
-                margin, horizon, now, self._flight_recheck.get('correction_target_w', self._flight_recheck['correction'][1]), math.atan2(vector[1], vector[0]))
-        if not fault:
-            # The same zero input was already the loss response. Automatic
-            # resumption now requires a newer fresh sample and a checked path.
-            self._last_command, self._last_command_at = continued or (0., 0.), now
-            if continued is None:
-                self._flight_recheck.pop('correction', None)
-        self.debug = dict(tracking_state='SUPPORT_LIMIT' if fault else 'PREDICTION_RECHECK',
-                          loss_response=fault, phase=phase.value, pose=pos.tolist(),
-                          yaw=yaw, control_yaw=control_yaw, age=age,
-                          command=list(continued or (0., 0.)), proposed_command=list(proposed),
-                          recovery_steering=continued is not None,
-                          prediction_horizon_sec=horizon, phase_complete=False,
-                          recheck_elapsed_sec=elapsed, recheck_budget_sec=budget,
-                          recheck_requires_sequence_after=self._flight_recheck['sequence'],
-                          gyro_footprint_supported=gyro_supported, observed_footprint_supported=supported,
-                          support_orientation_source='lidar_observation', physical_hold_verified=False,
-                          motion_prediction=(deepcopy(self._response_debug) if self.route.get('motion_prediction', {}).get('mode') == 'control' else dict(state='not_evaluated_during_recheck',affects_commands=False)),
-                          recheck_required_margin_m=required,
-                          candidates=self._candidate_debug, **geometry)
-        if continued is not None:
-            reason = 'bounded commissioned steering recovery; arrival unconfirmed'
-        return EvidenceReport(phase, False, fault, reason, 0., 0., age)
 
-    def _flight_recovery(self, position, yaw, control_yaw, support, polygons,
-                         margin, horizon, now, requested_w, target_yaw):
-        limits = self.route['limits']
-        cap = limits['flight_recovery_w']
-        cw = self._limit_command(0., float(np.clip(requested_w, -cap, cap)), now)[1]
-        # Starting a correction must improve the heading, never merely wiggle.
-        capture_yaw = target_yaw
-        if 'flight_recovery_progress_m' in limits:
-            idx = {Phase.FORWARD_SEGMENT_1:1, Phase.FORWARD_SEGMENT_2:2, Phase.FORWARD_SEGMENT_3:3}[self.phase]
-            start = np.asarray(self.route['flight_%d'%idx][0][:2])
-            direction = np.array([math.cos(target_yaw), math.sin(target_yaw)])
-            ey = direction[0]*(position[1]-start[1])-direction[1]*(position[0]-start[0])
-            capture_yaw -= float(np.clip((limits['lateral_kp']/limits['yaw_kp'])*ey,
-                                        -limits.get('flight_capture_angle', limits['yaw_tolerance']),
-                                        limits.get('flight_capture_angle', limits['yaw_tolerance'])))
-        before = abs(wrap(control_yaw-capture_yaw))
-        if abs(cw) < 1e-6 or abs(cw) > cap or abs(wrap(control_yaw+cw*horizon-capture_yaw)) >= before:
-            return None
-        delta = wrap(control_yaw-yaw)
-        c, s = math.cos(delta), math.sin(delta)
-        rotated = (support-position) @ np.array([[c,s],[-s,c]]) + position
-        required = self.anchor.uncertainty_m
-        if self.route.get('motion_prediction', {}).get('mode') == 'control':
-            accepted, _ = self._response_supported(support,yaw,control_yaw,0.,cw,horizon,polygons,required)
-            if accepted is not True:
-                return None
-        for angle, body in ((yaw, support), (control_yaw, rotated)):
-            if not self._swept_support(position, angle, body, 0., cw, horizon, polygons, required):
-                return None
-            values = []
-            for t in np.linspace(0., horizon, 17):
-                co, si = math.cos(cw*t), math.sin(cw*t)
-                fp = (body-position) @ np.array([[co,si],[-si,co]]) + position
-                values.append(support_clearance(fp, polygons))
-            if any(v is None for v in values) or min(values) < min(values[0], margin)-1e-9:
-                return None
-        return 0., cw
+    @staticmethod
+    def _turn_recovery_improves_clearance(position, support, w, horizon, polygons):
+        before = support_clearance(support, polygons)
+        if before is None:
+            return False
+        theta = w * horizon
+        c, s = math.cos(theta), math.sin(theta)
+        relative = support-position
+        end = np.column_stack((c*relative[:,0]-s*relative[:,1],
+                               s*relative[:,0]+c*relative[:,1]))+position
+        after = support_clearance(end, polygons)
+        return after is not None and after >= before-1e-6
 
     @staticmethod
     def _swept_support(position, yaw, support, v, w, horizon, polygon, margin):
@@ -1587,81 +1775,11 @@ class StairFeedback:
                 return False
         return True
 
-    def _flight_command(self, position, yaw, control_yaw, support, v, w, horizon,
-                        polygons, margin, now, direction, start, recovery, *, restart=False):
-        """Search reachable steering at full requested input before deceleration.
-
-        The command-scale unicycle is retained as a compatibility model until
-        stair response is measured. No bag-derived average silently replaces a
-        physical bound. Scores choose among geometrically admitted candidates;
-        they are not an assertion of physical recovery.
-        """
-        limits = self.route['limits']
-        low_v = max(0., self._limit_command(0., w, now)[0])
-        low_w = self._limit_command(v, -limits['max_w'], now)[1]
-        high_w = self._limit_command(v, limits['max_w'], now)[1]
-        speeds = [v] if restart else sorted(set((v, (v+low_v)*.5, low_v)), reverse=True)
-        steering = sorted(set((w, low_w, high_w, (low_w+high_w)*.5,
-                              float(np.clip(0., low_w, high_w)))))
-        delta = wrap(control_yaw-yaw)
-        c, s = math.cos(delta), math.sin(delta)
-        control_support = (support-position) @ np.array([[c,s],[-s,c]]) + position
-        frames = [(yaw, support)]
-        if abs(delta) > 1e-9:
-            frames.append((control_yaw, control_support))
-        for cv in speeds:
-            ranked = []
-            for cw in steering:
-                if abs(cv)+abs(cw) < 1e-9:
-                    continue
-                center=self._project_center(position,control_yaw,cv,cw,horizon)
-                ey=direction[0]*(center[1]-start[1])-direction[1]*(center[0]-start[0])
-                angle=wrap(control_yaw+cw*horizon-math.atan2(direction[1],direction[0]))
-                # An inward capture heading avoids stranding an offset body
-                # parallel to the centerline. Score is not a safety predicate.
-                capture=wrap(angle+(limits['lateral_kp']/limits['yaw_kp'])*ey)
-                score=limits['yaw_kp']*capture*capture+limits['lateral_kp']*ey*ey
-                row=dict(command=[cv,cw],accepted=None,score=score,
-                         required_margin_m=self.anchor.uncertainty_m if recovery else margin,recovery=recovery)
-                self._candidate_debug.append(row)
-                # Prefer the bounded proportional request when it is feasible.
-                # Endpoint score alone amplifies tiny errors into maximal
-                # steering each cycle, especially before a stair impact.
-                ranked.append((abs(cw-w),score,cw,row))
-            for _,__,cw,row in sorted(ranked,key=lambda r:r[:3]):
-                required = self.anchor.uncertainty_m if recovery else margin
-                passes = self._candidate_supported(position, yaw, control_yaw, support, cv, cw, horizon, polygons, required, frames)
-                reason = ('response_model_unavailable' if self.route.get('motion_prediction', {}).get('mode') == 'control' and self._response_debug.get('state') == 'unavailable' else 'support_envelope') if not passes else 'supported'
-                if passes and recovery:
-                    # No further depletion of measured clearance, and recovery
-                    # must actually reach the normal margin by the horizon.
-                    for angle, body in frames:
-                        values=[]
-                        for t in np.linspace(0., horizon, 17):
-                            a=cw*t; co,si=math.cos(a),math.sin(a)
-                            center=self._project_center(position, angle, cv, cw, t)
-                            fp=(body-position)@np.array([[co,si],[-si,co]])+center
-                            values.append(support_clearance(fp,polygons))
-                        if any(x is None for x in values) or ((min(values)<required-1e-9 or values[-1]<values[0]-1e-9) if 'flight_recovery_progress_m' in limits else (min(values)<values[0]-1e-9 or values[-1]<margin)):
-                            passes=False
-                            reason='reserve_not_recovered_monotonically'
-                            break
-                row['accepted']=passes
-                row['reason']=reason
-                if passes:
-                    return cv,cw
-        return None
 
     def _reset_continuity(self):
         self._stable_progress = None
         self._flight_heading_state = None
         self._recovery_events = deque()
-        self._prediction_context = None
-        self._response_debug = dict(state='unavailable',reason='no candidate checked in current phase')
-        self._prediction_cache = None
-        self._prediction_generation = getattr(self, "_prediction_generation", 0)+1
-        if not hasattr(self, "_prediction_pending"):
-            self._prediction_pending = None
         self._end_plane_votes = deque(maxlen=8)
         self._end_advance = None
         self._end_geometry_debug = {}
@@ -1701,7 +1819,7 @@ class StairFeedback:
                      count=value['count']+1)
         if (value['count'] >= 3 and sample.measured_at-value['at'] >= limits['flight_stable_sec']
                 and float((pos[:2]-value['position']) @ direction) >= limits['flight_recovery_progress_m']):
-            self._flight_recheck_used = self._input_gap_used = 0.
+            self._input_gap_used = 0.
 
     def _landing_path(self):
         if self.phase is Phase.ROOFTOP_TURN:
@@ -1739,7 +1857,28 @@ class StairFeedback:
         old = np.asarray(path[index+1][:2])
         next_pivot = old + float((position-old) @ direction)*direction
         radius = float(np.max(np.linalg.norm(np.asarray(self.route['footprint']), axis=1)))
-        if not inside_polygon([next_pivot], self._turn_polygon(), radius+margin):
+        rotation_margin = self.route['limits'].get('rotation_space_margin_m', margin)
+        # Do not rebase the next pivot a few millimetres from the sweep boundary.
+        # Keep the cross-landing coordinate; clamp only flight-depth to an inset
+        # interval with room for the existing position tolerance and body margin.
+        polygon = np.asarray(self._turn_polygon(), dtype=float)
+        edges = np.roll(polygon,-1,axis=0)-polygon
+        normals = np.column_stack((-edges[:,1],edges[:,0])) / np.linalg.norm(edges,axis=1)[:,None]
+        desired = float((next_pivot-old) @ direction)
+        for reserve in (self.route['limits']['position_on'], 0.):
+            low, high = -math.inf, math.inf
+            inset = radius+max(rotation_margin,margin)+reserve
+            for normal,vertex in zip(normals,polygon):
+                slope = float(normal @ direction)
+                deficit = inset-float(normal @ (old-vertex))
+                if abs(slope) < 1e-9:
+                    if deficit > 1e-9: low,high=1.,0.;break
+                elif slope > 0: low=max(low,deficit/slope)
+                else: high=min(high,deficit/slope)
+            if low <= high:
+                next_pivot = old+float(np.clip(desired,low,high))*direction
+                break
+        if not inside_polygon([next_pivot], self._turn_polygon(), radius+rotation_margin):
             self._landing_turn_debug['next_leg_rebased'] = False
             return
         path[index+1][:2] = path[index+2][:2] = next_pivot.tolist()
@@ -1756,9 +1895,11 @@ class StairFeedback:
             return
         path = self._landing_path()
         radius = float(np.max(np.linalg.norm(np.asarray(self.route['footprint']), axis=1)))
-        clear = inside_polygon([pose[:2,3]], self._turn_polygon(), radius+margin)
+        rotation_margin = self.route['limits'].get('rotation_space_margin_m', margin)
+        clear = inside_polygon([pose[:2,3]], self._turn_polygon(), radius+rotation_margin)
         self._landing_turn_debug = dict(rotation_disk_supported=clear,
-            rotation_radius_m=radius, margin_m=margin,
+            rotation_radius_m=radius, margin_m=rotation_margin,
+            body_support_margin_m=margin,
             pivot_captured=getattr(self, '_landing_turn_captured', False))
         index = self.turn_index
         if index+1 >= len(path) or degraded or not clear:
@@ -1766,8 +1907,27 @@ class StairFeedback:
         if (not np.allclose(path[index][:2], path[index+1][:2])
                 or abs(wrap(path[index+1][2]-path[index][2])) < .1):
             return
-        if index > 0 and np.linalg.norm(pose[:2,3]-path[index][:2]) > self.route['limits']['position_on']:
-            return
+        if index > 0:
+            # Turn once aligned with the next flight's usable width, not only
+            # at one XY point. The full pivot disk still has to fit the landing.
+            flight = np.asarray(self.route['flight_2' if self.phase is Phase.TURN_TO_NEXT_FLIGHT else 'flight_3'])
+            forward = flight[1,:2]-flight[0,:2];forward/=np.linalg.norm(forward)
+            side = np.array([-forward[1],forward[0]])
+            polygon = np.asarray(self.route['flight_2_polygon' if self.phase is Phase.TURN_TO_NEXT_FLIGHT else 'flight_3_polygon'])
+            footprint = np.asarray(self.route['footprint'])
+            body = pose[:2,3]+footprint[:,0,None]*forward+footprint[:,1,None]*side
+            width, projected = polygon @ side, body @ side
+            if projected.min() < width.min()+margin or projected.max() > width.max()-margin:
+                return
+        if self.phase is Phase.ROOFTOP_TURN and index == 0:
+            # Reach the middle neighborhood before an in-place roof turn.
+            # This is a capture region, not an exact XY settling requirement.
+            center = np.asarray(self.route['roof_turn_path'][0][:2])
+            radius = self.route['limits'].get('roof_pivot_radius_m', .35)
+            distance = float(np.linalg.norm(pose[:2,3]-center))
+            self._landing_turn_debug.update(center_distance_m=distance, center_radius_m=radius)
+            if distance > radius:
+                return
         pivot = pose[:2,3].copy()
         direction = self._turn_direction()
         offset = float((pivot-np.asarray(path[0][:2])) @ direction)*direction
@@ -1794,146 +1954,36 @@ class StairFeedback:
         lateral = np.array([-direction[1],direction[0]])
         width = first_polygon @ lateral
         body_width = support @ lateral
-        return bool(body_width.min() >= width.min()+margin and body_width.max() <= width.max()-margin
+        # At the roof's short final flight, a high-biased Z estimate must not
+        # immobilize an otherwise supported turn/entry. UP entry height is a
+        # lower bound; full ascent still needs progress, height, and exit support.
+        height_ok = (float(pose[2,3]-start[2]) >= -limits['height_tolerance']
+                     if idx in (1, 2) and self.route['direction'] == 'UP' else
+                     abs(float(pose[2,3]-start[2])) <= limits['height_tolerance'])
+        heading_into_flight = True
+        if idx == 2 and self.route['direction'] == 'UP':
+            # Test current heading at the first riser, not a future actuator model.
+            # A supported body can still be aimed out of the narrow final flight.
+            heading = pose[:2,0]
+            advance = float(heading @ direction)
+            distance = max(0., first_edge-along)
+            shift = heading * (distance / advance) if advance > .1 else np.zeros(2)
+            crossing_width = (support+shift) @ lateral
+            heading_into_flight = bool(advance > .1 and crossing_width.min() >= width.min()+margin
+                                       and crossing_width.max() <= width.max()-margin)
+            if hasattr(self, '_landing_turn_debug'):
+                self._landing_turn_debug['heading_into_final_flight'] = heading_into_flight
+        return bool(heading_into_flight
+            and body_width.min() >= width.min()+margin and body_width.max() <= width.max()-margin
             and inside_support_union(support,regions,margin)
             and along <= first_edge+margin
-            and abs(float(pose[2,3]-start[2])) <= limits['height_tolerance']
+            and height_ok
             and abs(epsi) <= limits['flight_resume_corridor_yaw'])
 
-    def _motion_state(self):
-        context = self._prediction_context
-        if context is None:
-            return None
-        sample,pose,velocity,angular,control_yaw,detail,now = context
-        history = [h for h in self._history if sample.stamp-.6 <= h[0] <= sample.stamp]
-        if len(history) < 3 or history[-1][0]-history[0][0] < .3:
-            return None
-        rates = np.asarray([h[3][:2] for h in history[1:]])
-        trend = np.median(rates,axis=0)
-        spread = float(np.max(np.linalg.norm(rates-trend,axis=1)))
-        return MotionState(pose[:2,3].copy(),control_yaw,trend,
-            detail.get('yaw_rate',angular),now-sample.measured_at,
-            abs(wrap(control_yaw-math.atan2(pose[1,0],pose[0,0]))),spread)
 
-    def _response_supported(self, support, yaw, control_yaw, v, w, horizon, polygons, margin):
-        state = self._motion_state()
-        if state is None:
-            result,detail=None,dict(state='unavailable',reason='need three distinct motion observations')
-        else:
-            result,detail=self._check_response_state(state,self.route['motion_prediction'],support,
-                                                     yaw,control_yaw,v,w,horizon,polygons,margin)
-        self._response_debug=dict(detail,command=[v,w],horizon_sec=horizon,
-                                  affects_commands=True)
-        return result,self._response_debug
 
-    @staticmethod
-    def _check_response_state(state,model,support,yaw,control_yaw,v,w,horizon,polygons,margin,check_support=True):
-        try:
-            envelope = response_envelope(state,(v,w),horizon,model)
-        except ValueError as error:
-            return None,dict(state='unavailable',reason=str(error))
-        if not check_support:
-            end=envelope['centers'][:,-1]
-            return None,dict(state='evaluated',mode=model['mode'],commissioned=model['commissioned'],
-                source=model['source'],accepted=None,geometry_admission_checked=False,
-                predicted_end_min=end.min(axis=0).tolist(),predicted_end_max=end.max(axis=0).tolist(),
-                endpoint_position_error_m=float(envelope['position_error'][-1]),
-                measured_position=state.position.tolist(),propagated_position=envelope['propagated_position'].tolist(),
-                measured_velocity=state.velocity.tolist(),geometry_age_sec=state.age,physical_hold_verified=False)
-        relative = support-state.position
-        delta = wrap(control_yaw-yaw)
-        co,si = math.cos(delta),math.sin(delta)
-        relative = relative @ np.array([[co,si],[-si,co]])
-        radius = float(np.max(np.linalg.norm(relative,axis=1)))
-        angles=envelope['angles']-control_yaw
-        co,si=np.cos(angles)[...,None],np.sin(angles)[...,None]
-        bodies=np.stack((co*relative[:,0]-si*relative[:,1],
-                         si*relative[:,0]+co*relative[:,1]),axis=-1)+envelope['centers'][...,None,:]
-        error=envelope['position_error']+2*radius*np.sin(np.minimum(math.pi,envelope['yaw_error'])/2.)
-        interpolation=(np.linalg.norm(np.diff(envelope['centers'],axis=1),axis=2)
-                       +radius*np.abs(np.diff(envelope['angles'],axis=1)))/2.
-        # The last sample also needs the preceding interval's interpolation bound.
-        errors=error[None,:]+np.maximum(np.pad(interpolation,((0,0),(0,1))),
-                                       np.pad(interpolation,((0,0),(1,0))))
-        minimum=math.inf
-        allowed=False
-        if inside_support_union(support,polygons,margin):
-            # Vectorized one-region path avoids hundreds of Python geometry
-            # calls for the common straight flight; union seams still checked.
-            for polygon in polygons:
-                polygon=np.asarray(polygon);edges=np.roll(polygon,-1,axis=0)-polygon
-                distance=bodies[...,None,:]-polygon
-                clearance=(edges[:,0]*distance[...,1]-edges[:,1]*distance[...,0])/np.linalg.norm(edges,axis=1)
-                lower=np.min(clearance,axis=(-1,-2))-errors
-                if np.all(lower>=margin):
-                    allowed=True;minimum=float(lower.min());break
-            if not allowed:
-                minimum=math.inf;allowed=True
-                for path,errs in zip(bodies,errors):
-                    for body,err in zip(path,errs):
-                        clearance=support_clearance(body,polygons)
-                        lower=-math.inf if clearance is None else clearance-float(err)
-                        minimum=min(minimum,lower)
-                        if lower<margin:
-                            allowed=False;break
-                    if not allowed:break
-        return allowed,dict(state='evaluated',mode=model['mode'],commissioned=model['commissioned'],
-            source=model['source'],accepted=allowed,min_clearance_lower_m=None if not math.isfinite(minimum) else minimum,
-            measured_position=state.position.tolist(),propagated_position=envelope['propagated_position'].tolist(),
-            measured_velocity=state.velocity.tolist(),velocity_spread_mps=state.velocity_spread,
-            geometry_age_sec=state.age,physical_hold_verified=False,
-            limitation='conditional sampled response envelope; physical coverage unverified')
 
-    def _candidate_supported(self, position,yaw,control_yaw,support,v,w,horizon,polygons,margin,frames):
-        model=self.route.get('motion_prediction')
-        if model and model['mode']=='control':
-            result,detail=self._response_supported(support,yaw,control_yaw,v,w,horizon,polygons,margin)
-            return result is True
-        return all(self._swept_support(position,angle,body,v,w,horizon,polygons,margin)
-                   for angle,body in frames)
 
-    def _prediction_diagnostic(self,position,yaw,control_yaw,support,v,w,horizon,polygons,margin):
-        model=self.route.get('motion_prediction')
-        if model is None or self.phase not in (Phase.FORWARD_SEGMENT_1,Phase.FORWARD_SEGMENT_2,Phase.FORWARD_SEGMENT_3):
-            return dict(state='disabled')
-        if model['mode']=='control':
-            return dict(getattr(self,'_response_debug',dict(state='unavailable')),
-                        purpose='last evaluated candidate; emitted command is outer command')
-        # A single daemon job receives immutable copies. Shadow work never
-        # holds the command lock or queues an unbounded backlog of scans.
-        pending=self._prediction_pending
-        if pending is not None and pending[1].done():
-            try:
-                key,detail=pending[1].result()
-                if key[0]==self._prediction_generation:
-                    self._prediction_cache=(key,detail)
-            except Exception as error:
-                self._prediction_cache=((self._prediction_generation,None,None),
-                    dict(state='unavailable',reason=str(error),affects_commands=False))
-            self._prediction_pending=None
-        sample=self._prediction_context[0]
-        key=(self._prediction_generation,sample.epoch,sample.sequence)
-        if self._prediction_pending is None and (self._prediction_cache is None or self._prediction_cache[0]!=key):
-            state=self._motion_state()
-            if state is None:
-                return dict(state='unavailable',reason='need three distinct motion observations',affects_commands=False)
-            future=Future()
-            args=(state,deepcopy(model),support.copy(),yaw,control_yaw,v,w,horizon,
-                  [np.array(p,dtype=float).copy() for p in polygons],margin)
-            def compute():
-                try:
-                    _,detail=StairFeedback._check_response_state(*args,check_support=False)
-                    detail.update(command=[v,w],horizon_sec=horizon,affects_commands=False,
-                        comparison_epoch=sample.epoch,comparison_sequence=sample.sequence,
-                        comparison_measured_at=sample.measured_at,
-                        purpose='observation-time hypothetical comparison; not current command admission')
-                    future.set_result((key,detail))
-                except Exception as error:
-                    future.set_exception(error)
-            self._prediction_pending=(key,future)
-            threading.Thread(target=compute,name='stair-prediction-shadow',daemon=True).start()
-        return (dict(self._prediction_cache[1],pending=self._prediction_pending is not None)
-                if self._prediction_cache is not None else dict(state='pending',affects_commands=False))
 
     def _end_geometry_continuation(self,idx,sample,pose,pitch,roll,now,degraded):
         limits=self.route['limits']
@@ -1978,22 +2028,18 @@ class StairFeedback:
             max_travel_m=limits['flight_end_advance_m'],max_seconds=limits['flight_end_advance_sec'])
         return active
 
-    @staticmethod
-    def _project_center(position, yaw, v, w, duration):
-        if abs(w)<1e-8:
-            return position+v*duration*np.array([math.cos(yaw),math.sin(yaw)])
-        return position+(v/w)*np.array([math.sin(yaw+w*duration)-math.sin(yaw),
-                                       math.cos(yaw)-math.cos(yaw+w*duration)])
 
     def _entry_reserve_command(self, position, yaw, support, w, horizon, polygons, margin, now):
-        """Restore only the extra entry reserve with the existing heading turn.
+        """Restore only a legacy route's extra entry reserve with its heading turn.
 
         No forward/reverse input or opposite steering is invented. The swept
-        body must keep the anchor uncertainty and improve clearance without
-        first reducing it. This geometric check is not physical drift holding.
+        body stays above the smaller of anchor uncertainty and configured
+        support margin, and improves clearance without first reducing it.
+        Explicit commissioned margins remain hard boundaries. This check is
+        geometric; it is not physical drift holding.
         """
         current = support_clearance(support, polygons)
-        hard = self.anchor.uncertainty_m
+        hard = min(self.anchor.uncertainty_m, margin)
         if current is None or current < hard or current >= margin:
             return None
         for scale in (1., .5, .25):
@@ -2014,36 +2060,55 @@ class StairFeedback:
         return None
 
     def _supported_command(self, position, yaw, support, v, w, horizon, polygons, margin, now):
-        """Try less translation with the same bounded steering before failing.
+        """Find a smaller same-direction command whose full-body sweep fits.
 
-        Every candidate respects the existing acceleration window, full body,
-        unchanged margin and prediction horizon. No reverse or new turn is
-        invented by this filter; a future observation recalculates the policy.
-        At most four additional sweeps. Zero/zero is not claimed as progress.
+        A flat landing may brake below hold_v immediately: the flat speed cap
+        already overrides flight deceleration slew. Reduction does not grant
+        faster acceleration or reverse steering. Zero/zero is not progress.
         """
+        if self._swept_support(position, yaw, support, v, w, horizon, polygons, margin):
+            return v, w
         seen = {(v, w)}
-        for scale in (.75, .5, .25, 0.):
-            candidate = self._limit_command(v * scale, w, now)
-            if candidate in seen or max(abs(x) for x in candidate) < 1e-9:
-                continue
-            seen.add(candidate)
-            if self._swept_support(position, yaw, support, *candidate, horizon, polygons, margin):
-                return candidate
+        flat = self.phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT,
+                              Phase.ROOFTOP_TURN, Phase.EXIT_CONFIRM)
+        angular_scales = (1., .85, .7, .5, .25) if flat else (1.,)
+        for v_scale in (.75, .5, .25, 0.):
+            for w_scale in angular_scales:
+                limited = self._limit_command(v * v_scale, w * w_scale, now)
+                candidate = ((math.copysign(min(abs(limited[0]), abs(v * v_scale)), v)
+                              if flat else limited[0]),
+                             (math.copysign(min(abs(limited[1]), abs(w * w_scale)), w)
+                              if flat else limited[1]))
+                if candidate in seen or max(abs(x) for x in candidate) < 1e-9:
+                    continue
+                seen.add(candidate)
+                if self._swept_support(position, yaw, support, *candidate, horizon, polygons, margin):
+                    return candidate
         return None
 
     def _limit_command(self, v, w, now):
         limits = self.route["limits"]
         dt = max(0., min(now - self._last_command_at, limits["warn_sec"]))
         old_v, old_w = self._last_command
-        linear = float(np.clip(v, max(-limits["max_v"], old_v - limits["max_accel"] * dt), min(limits["max_v"], old_v + limits["max_accel"] * dt)))
+        immediate_ascent = (self.phase in (Phase.FORWARD_SEGMENT_1, Phase.FORWARD_SEGMENT_2, Phase.FORWARD_SEGMENT_3)
+                            and self.route.get("direction") == "UP" and v > old_v and v > 0.)
+        if immediate_ascent:
+            # Stair firmware needs the commissioned full forward input to load
+            # the wheels at a riser and pitch the body. Keep angular slew and
+            # all non-ascent linear limits unchanged.
+            linear = float(np.clip(v, 0., limits["max_v"]))
+        else:
+            linear = float(np.clip(v, max(-limits["max_v"], old_v - limits["max_accel"] * dt), min(limits["max_v"], old_v + limits["max_accel"] * dt)))
         if self.phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN, Phase.EXIT_CONFIRM):
             # Flat-region command cap takes precedence over deceleration slew:
             # never carry the previous flight's high input onto the landing.
             # This limits requested input; it does not prove physical braking.
-            linear = float(np.clip(linear, -limits["hold_v"], limits["hold_v"]))
-        if (self._region_turn() and
-                self._landing_rotation_waypoint()):
-            linear = 0.
+            cap = (limits.get('landing_max_v', limits['hold_v'])
+                if self.phase is not Phase.EXIT_CONFIRM else limits['hold_v'])
+            linear = float(np.clip(linear, -min(cap,limits['max_v']), min(cap,limits['max_v'])))
+        # Rotation is normally commanded at zero translation by _evaluate.
+        # A measured rear-edge backslide may instead request a small inward
+        # flat correction, subject to the same swept-support test.
         desired = float(np.clip(w, -limits['max_w'], limits['max_w']))
         alpha = limits['max_alpha']
         on_flight = (self.phase in (Phase.FORWARD_SEGMENT_1, Phase.FORWARD_SEGMENT_2, Phase.FORWARD_SEGMENT_3)
@@ -2072,8 +2137,7 @@ class StairFeedback:
             result = dict(self.debug, phase=self.phase.value, command=list(self._last_command),
                           operator_completed_flights=sorted(getattr(self,"_operator_completed_flights",set())),
                           control_policy=self.policy_version,
-                          prediction_recheck_active=self._flight_recheck is not None,
-                          prediction_recheck_used_sec=self._flight_recheck_used)
+                          prediction_recheck_active=False, prediction_recheck_used_sec=0.)
             with self._tx_lock:
                 result['last_sent_twist'] = deepcopy(self._last_sent)
             result['first_fault'] = deepcopy(self._first_fault)
@@ -2084,6 +2148,11 @@ class StairFeedback:
                               run_id="%s:%d:%d" % (self.profile.id, self.anchor.epoch, self.anchor.sequence),
                               anchor_epoch=self.anchor.epoch, anchor_sequence=self.anchor.sequence,
                               anchor_source=self.anchor.source, anchor_uncertainty_m=self.anchor.uncertainty_m)
+                context = self._support_margin_context(self.phase)
+                fallback = effective_support_margin(self.route, self.anchor.uncertainty_m,
+                    landing=context == 'landing', region=context)
+                result.setdefault('support_margin_m', fallback)
+                result.setdefault('effective_margin_m', fallback)
             return result
 
     def interrupt(self):

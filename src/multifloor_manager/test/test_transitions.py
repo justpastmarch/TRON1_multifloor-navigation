@@ -106,6 +106,31 @@ class TransitionManagerTest(unittest.TestCase):
         self.assertEqual(stale_evidence.conditions[0][2], "stale")
         self.assertEqual(future_evidence.conditions[0][2], "future")
 
+    def test_floor_tag_vote_is_epoch_latched_while_pose_and_costmap_stay_fresh(self) -> None:
+        policy = TransitionPolicy(
+            id="floor_transition_ready", enabled=True,
+            conditions=tuple(TransitionCondition(name, True, True) for name in
+                ("T_FLOOR_CONFIRMED", "T_LOCALIZED", "T_COSTMAP_READY")),
+            optional_count=0, freshness_sec=1.0, dwell_sec=0.0, timeout_sec=20.0)
+        manager = TransitionManager(policy)
+        manager.begin(5.0, 4)
+        tag = PredicateObservation(True, 4.0, 4)
+        fresh = PredicateObservation(True, 10.0, 4)
+        result, evidence = manager.evaluate(dict(T_FLOOR_CONFIRMED=tag,
+            T_LOCALIZED=fresh, T_COSTMAP_READY=fresh), 10.0, 4)
+        self.assertTrue(result)
+        self.assertEqual(evidence.conditions[0], ("T_FLOOR_CONFIRMED", True, "true"))
+        stale = PredicateObservation(True, 8.0, 4)
+        result, evidence = manager.evaluate(dict(T_FLOOR_CONFIRMED=tag,
+            T_LOCALIZED=stale, T_COSTMAP_READY=fresh), 10.1, 4)
+        self.assertFalse(result)
+        self.assertEqual(evidence.conditions[1], ("T_LOCALIZED", False, "stale"))
+        wrong_epoch = PredicateObservation(True, 4.0, 3)
+        result, evidence = manager.evaluate(dict(T_FLOOR_CONFIRMED=wrong_epoch,
+            T_LOCALIZED=fresh, T_COSTMAP_READY=fresh), 10.2, 4)
+        self.assertFalse(result)
+        self.assertEqual(evidence.conditions[0][2], "wrong_epoch")
+
     def test_missing_false_and_wrong_epoch_reset_dwell(self) -> None:
         # Given: nearly complete continuous truth.
         manager = TransitionManager(self.policy())

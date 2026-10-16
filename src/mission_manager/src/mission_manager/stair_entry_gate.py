@@ -5,6 +5,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 import math
 
+# The MiniPC timestamps wheel odometry; the workstation evaluates admission.
+# 2026-10-14 bags show up to 5.4 ms negative receipt age. Preserve measurement
+# intervals while allowing only 20 ms clock skew, never arbitrary future data.
+ENTRY_CLOCK_SKEW_SEC = .02
+
 
 @dataclass(frozen=True)
 class StairEntryPolicy:
@@ -135,7 +140,8 @@ def evaluate_stair_entry(check: StairEntryCheck) -> StairEntryDecision:
     pose_age = check.ros_now_sec - evidence.pose_stamp_sec
     receipt_age = check.monotonic_now - evidence.pose_received_monotonic
     odom_age = check.monotonic_now - evidence.odom_received_monotonic
-    if not all(0.0 <= age <= check.policy.freshness_sec for age in (pose_age, receipt_age, odom_age)):
+    if (not -ENTRY_CLOCK_SKEW_SEC <= pose_age <= check.policy.freshness_sec
+            or not all(0.0 <= age <= check.policy.freshness_sec for age in (receipt_age, odom_age))):
         return _reject("entry evidence is stale or future-dated")
     numeric = (
         evidence.x_m,
@@ -194,7 +200,7 @@ def entry_motion_window(samples, now, window=.30):
     if len(samples) < 2:
         return None
     end = samples[-1][0]
-    if not math.isfinite(now) or not math.isfinite(end) or not 0 <= now-end <= .15:
+    if not math.isfinite(now) or not math.isfinite(end) or not -ENTRY_CLOCK_SKEW_SEC <= now-end <= .15:
         return None
     recent = [s for s in samples if s[0] >= end-window-.10]
     if len(recent) < 2 or not all(math.isfinite(v) for s in recent for v in s):

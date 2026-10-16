@@ -110,6 +110,57 @@ class LocalizationReadinessTest(unittest.TestCase):
         self.assertFalse(evidence.ready)
 
 
+    def test_measured_scan_clock_skew_is_tolerated_without_loosening_stale_limit(self) -> None:
+        # Given: a scan delivered now with the measured MiniPC timestamp lead.
+        from multifloor_manager.readiness import SCAN_CLOCK_SKEW_TOLERANCE_NS
+
+        state = arm_localization(POSE_AT)
+        within_skew = Nanoseconds(int(NOW) + 20_000_000)
+        outside_skew = Nanoseconds(int(NOW) + SCAN_CLOCK_SKEW_TOLERANCE_NS + 1)
+
+        # When: both stamps are checked against the same receive time.
+        accepted = observe_scan(state, within_skew, NOW, True)
+        rejected = observe_scan(state, outside_skew, NOW, True)
+
+        # Then: small future skew passes, but data older than the normal age cap does not.
+        self.assertTrue(localization_ready(accepted, NOW, DEFAULT_READINESS_POLICY).fresh_scan)
+        self.assertFalse(localization_ready(rejected, NOW, DEFAULT_READINESS_POLICY).fresh_scan)
+        stale_state = observe_scan(
+            state,
+            Nanoseconds(int(NOW) - int(DEFAULT_READINESS_POLICY.max_age_ns) - 1),
+            NOW,
+            True,
+        )
+        self.assertFalse(localization_ready(stale_state, NOW, DEFAULT_READINESS_POLICY).fresh_scan)
+
+    def test_manual_pose_does_not_require_scan_time_tf_but_auto_still_does(self) -> None:
+        # Given: post-pose AMCL samples, fresh scan/odometry, but unavailable scan-time TF.
+        state = arm_localization(POSE_AT)
+        stamp = Nanoseconds(int(POSE_AT) + 100_000_000)
+        state = observe_scan(state, stamp, NOW, False)
+        state = observe_odometry(state, stamp, NOW, 0.0, 0.0)
+        for offset in (200_000_000, 300_000_000, 400_000_000):
+            state = observe_pose(
+                state,
+                Nanoseconds(int(POSE_AT) + offset),
+                NOW,
+                GOOD_COVARIANCE,
+            )
+
+        # When: automatic and operator-confirmed readiness use their own evidence.
+        auto = localization_ready(state, NOW, DEFAULT_READINESS_POLICY)
+        manual = localization_ready(
+            state, NOW, DEFAULT_READINESS_POLICY, require_scan_tf=False
+        )
+
+        # Then: manual confirmation can proceed if runtime TF is separately available;
+        # the pure policy does not disguise the missing scan-time transform.
+        self.assertFalse(auto.ready)
+        self.assertFalse(auto.scan_tf)
+        self.assertTrue(manual.ready)
+        self.assertFalse(manual.scan_tf)
+
+
 if __name__ == "__main__":
     unittest.main()
 

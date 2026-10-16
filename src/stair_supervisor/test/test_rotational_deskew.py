@@ -42,10 +42,11 @@ class DeskewTest(unittest.TestCase):
 
     def test_configuration_accepts_only_a_boolean_deskew_switch(self):
         import yaml
-        from stair_supervisor.configuration import load_lidar_configuration, StairConfigurationError
+        from stair_supervisor.configuration import load_lidar_configuration, load_stair_configuration, StairConfigurationError
         source=Path(__file__).resolve().parents[1]/'config/stair_lidar_3f_4f_test.yaml'
         document=yaml.safe_load(source.read_text())
-        with tempfile.TemporaryDirectory() as directory:
+        profiles=load_stair_configuration(source.parent)
+        with tempfile.TemporaryDirectory() as directory, patch('stair_supervisor.configuration.load_stair_configuration', return_value=profiles):
             path=Path(directory)/'config.yaml'
             for value in (True, False):
                 document['tracking']['rotational_deskew']=value;path.write_text(yaml.safe_dump(document))

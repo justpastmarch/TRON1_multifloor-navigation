@@ -164,6 +164,23 @@ class AdapterTest(unittest.TestCase):
         body = next(m for m in adapter.markers.publish.call_args[0][0].markers if m.ns == "body")
         self.assertEqual((body.color.r, body.color.g), (1., 0.))
 
+    def test_marker_displays_actual_landing_margin_instead_of_route_default(self):
+        adapter = self.interface()
+        adapter.control.routes['test_up']['limits'].update(
+            support_margin_m=.06, landing_support_margin_m=.03)
+        adapter.control.capture_entry('test_up', np.eye(4), .01, 'offline fixture', 100.)
+        from test_supervisor import make_configuration
+        from stair_supervisor.stair_evidence import Phase
+        adapter.control.arm(make_configuration().profiles[0], 100.)
+        adapter.control.begin_phase(Phase.LANDING, 100.)
+        adapter.worker.value = sample(2, 100.2, x=2., z=1.)
+        adapter.clock.monotonic = lambda: 100.21
+        adapter.control.evaluate(Phase.LANDING, 100.21, neutral_only=True)
+        adapter._publish_geometry(adapter.worker.value)
+        text = next(m.text for m in adapter.markers.publish.call_args[0][0].markers
+                    if m.ns == 'supervisor_phase')
+        self.assertIn('margin=0.030m', text)
+
     def test_auto_entry_requires_matching_template_and_independent_error_budget(self):
         adapter = self.interface()
         adapter.clock = SimpleNamespace(monotonic=time.monotonic)

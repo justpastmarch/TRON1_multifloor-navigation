@@ -1,4 +1,4 @@
-"""Thread-safe ROS state snapshots and the navigation-to-stair stop barrier."""
+"""Thread-safe ROS state snapshots and bounded stair-entry evidence."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ from mission_manager.stair_entry_gate import (
     StairEntryFence,
     StairEntryPolicy,
     StairEntryPose,
-    evaluate_stair_entry, entry_motion_window,
+    evaluate_stair_entry, entry_motion_window, ENTRY_CLOCK_SKEW_SEC,
 )
 
 
@@ -38,13 +38,11 @@ class RosStateMonitor:
     def __init__(
         self,
         freshness_sec: float,
-        stationary_speed: float,
-        barrier_timeout: float,
+        entry_wait_timeout: float,
         entry_policy: StairEntryPolicy,
     ) -> None:
         self._freshness_sec = freshness_sec
-        self._stationary_speed = stationary_speed
-        self._barrier_timeout = barrier_timeout
+        self._entry_wait_timeout = entry_wait_timeout
         self._entry_policy = entry_policy
         self._lidar_handoff = bool(rospy.get_param("~stair_lidar_handoff", False))
         self._entry_motion = deque(maxlen=256)
@@ -115,7 +113,7 @@ class RosStateMonitor:
                 stamp = message.header.stamp.to_sec()
                 age = rospy.Time.now().to_sec()-stamp
                 if (self._entry_motion_stamp is not None and stamp <= self._entry_motion_stamp
-                        or not 0 <= age <= .30):
+                        or not -ENTRY_CLOCK_SKEW_SEC <= age <= .30):
                     self._entry_motion.clear()
                 else:
                     self._entry_motion.append((self._odom_received-age, message.twist.twist.linear.x,
@@ -207,32 +205,6 @@ class RosStateMonitor:
                 return StateHealth(False, "stair supervisor communication is unavailable")
             return StateHealth(True, "")
 
-    def stop_and_confirm_stationary(self) -> bool:
-        deadline = time.monotonic() + self._barrier_timeout
-        while not rospy.is_shutdown() and time.monotonic() < deadline:
-            now = time.monotonic()
-            with self._lock:
-                odom = self._odom
-                supervisor = self._supervisor
-                fresh = odom is not None and now - self._odom_received <= self._freshness_sec
-                owns_nav = (
-                    supervisor is not None
-                    and supervisor.connected
-                    and supervisor.state == SupervisorState.NAV
-                )
-                stationary = (
-                    fresh
-                    and abs(odom.twist.twist.linear.x) <= self._stationary_speed
-                    and abs(odom.twist.twist.angular.z) <= self._stationary_speed
-                )
-                if self._lidar_handoff:
-                    motion = entry_motion_window(self._entry_motion, now)
-                    stationary = fresh and motion is not None and motion[0] <= self._entry_policy.max_linear_speed and motion[1] <= self._entry_policy.max_angular_speed
-            if owns_nav and stationary:
-                return True
-            rospy.sleep(0.02)
-        return False
-
     def begin_stair_entry(self) -> StairEntryFence:
         """Fence out localization evidence produced before the handoff starts."""
         with self._lock:
@@ -304,7 +276,7 @@ class RosStateMonitor:
         expected: StairEntryPose,
     ) -> StairEntryDecision:
         """Wait boundedly for post-fence entry evidence and return the final reason."""
-        deadline = time.monotonic() + self._barrier_timeout
+        deadline = time.monotonic() + self._entry_wait_timeout
         decision = self.stair_entry_decision(fence, expected)
         # The mission is still active, so the idle AMCL refresher is paused.
         # Request fresh scans explicitly while stopped instead of waiting for

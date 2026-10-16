@@ -68,13 +68,3 @@ class FakeCostmaps:
         self.calls += 1
         if self.on_clear is not None:
             self.on_clear()
-
-
-class FakeHandoffBarrier:
-    def __init__(self, stationary: bool = True) -> None:
-        self.stationary = stationary
-        self.calls = 0
-
-    def stop_and_confirm_stationary(self) -> bool:
-        self.calls += 1
-        return self.stationary

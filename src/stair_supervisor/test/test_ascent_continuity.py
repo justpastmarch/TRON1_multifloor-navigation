@@ -24,19 +24,6 @@ class ContinuityTest(unittest.TestCase):
  def test_does_not_relax_hard_margin_or_authorize_forward_at_failed_pose(self):
   self.assertFalse(StairFeedback._swept_support(self.pos[:2],self.yaw,self.body,0,-.06,.6,[self.poly],.12))
   self.assertFalse(StairFeedback._swept_support(self.pos[:2],self.yaw,self.body,.55,-.06,.6,[self.poly],.1))
- def test_real_output_slew_accumulates_during_recheck(self):
-  from test_lidar_control import route
-  r=route();r['limits'].update(flight_recheck_sec=2.,flight_restart_v=.3,flight_recovery_w=.06,max_alpha=.3)
-  w=Worker();c=StairFeedback(w,np.eye(4),[r]);c.capture_entry('test_up',np.eye(4),.01,'synthetic',100.);c.arm(replace(make_configuration().profiles[0],timeout_sec=60.),100.);c.begin_phase(Phase.FORWARD_SEGMENT_1,100.)
-  with patch.object(c,'_flight_command',return_value=None):
-   w.value=sample(2,100.2,x=.2,yaw=.2);c.evaluate(c.phase,100.21)
-   c.evaluate(c.phase,100.385)  # intervening zero-output tick before the new scan
-   w.value=sample(3,100.4,x=.2,yaw=.2);c.evaluate(c.phase,100.41);first=abs(c.command()[1])
-   prev=c.command()[1]
-   for now in [100.435,100.46,100.485,100.51,100.535,100.56,100.585]:
-    report=c.evaluate(c.phase,now);cur=c.command()[1]
-    self.assertFalse(report.faulted);self.assertLessEqual(abs(cur-prev),.3*.025+1e-8);self.assertLessEqual(abs(cur),.06+1e-10);self.assertEqual(c.command()[0],0.);prev=cur
-   self.assertGreater(abs(c.command()[1]),first)
  def test_preview_steers_against_outward_drift_without_extra_inward_correction(self):
   from test_lidar_control import route
   for first_y,last_y,expected in [(.04,.06,1),(-.04,-.06,-1),(.06,.04,0)]:

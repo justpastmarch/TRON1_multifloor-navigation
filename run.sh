@@ -28,6 +28,12 @@ if [[ ! -r "$CONFIG_FILE" ]]; then
 fi
 # shellcheck disable=SC1090
 source "$CONFIG_FILE"
+STAIR_EXECUTION_HOST="${STAIR_EXECUTION_HOST:-minipc}"
+case "$STAIR_EXECUTION_HOST" in
+    minipc|workstation) ;;
+    *) printf "Invalid STAIR_EXECUTION_HOST: %s\n" "$STAIR_EXECUTION_HOST" >&2; exit 2 ;;
+esac
+export STAIR_EXECUTION_HOST
 
 if [[ "${1:-}" == "--replay-joy" ]]; then
     exec "${ROOT}/replay_joy_preview.sh" "${@:2}"
@@ -79,7 +85,7 @@ require_configuration() {
     local name
     for name in MINI_PC_HOST MINI_PC_USER MINI_PC_WORKSPACE ROS_MASTER_PORT \
         ROS_MASTER_HOST MINI_PC_ROS_IP D435F_SERIAL ROBOT_HOST ROBOT_WS_PORT LOCAL_WS_PORT ACCID POINTCLOUD_TOPIC \
-        CAMERA_IMAGE_TOPIC CAMERA_INFO_TOPIC TAG_DETECTIONS_TOPIC INITIAL_FLOOR \
+        CAMERA_IMAGE_TOPIC CAMERA_INFO_TOPIC INITIAL_FLOOR \
         HOME_LOCATION_ID INITIAL_LOCATION_ID INSPECT_PROFILE_ID SCAN_OUTPUT_BASE; do
         if [[ -z "${!name:-}" ]]; then
             printf 'Missing deployment value in config.env: %s\n' "$name" >&2
@@ -112,7 +118,7 @@ local_check() {
     done
     local package_name
     for package_name in mission_manager multifloor_manager stair_supervisor rviz \
-        map_server amcl move_base pointcloud_to_laserscan apriltag_ros; do
+        map_server amcl move_base pointcloud_to_laserscan; do
         rospack find "$package_name" >/dev/null
     done
     python3 -c 'import rospy, websocket, yaml'
@@ -139,19 +145,35 @@ production_check() {
     printf '[CHECK] production site profile: OK\n'
 }
 
+remote_ssh_check() {
+    local target="$1" stage="$2" command="$3" attempt
+    for attempt in 1 2 3; do
+        if ssh -o BatchMode=yes -o ConnectTimeout=5 "$target" "$command"; then
+            return 0
+        fi
+        if (( attempt < 3 )); then
+            printf '[SSH] %s failed (attempt %d/3); retrying...\n' "$stage" "$attempt" >&2
+            sleep 1
+        fi
+    done
+    printf '[ERROR] Mini PC check failed: %s (%s)\n' "$stage" "$target" >&2
+    return 1
+}
+
 remote_check() {
     local target="${MINI_PC_USER}@${MINI_PC_HOST}"
-    local remote_epoch local_epoch delta
+    local remote_epoch local_epoch delta clock_status
     printf '[SSH] connecting to mini PC: %s\n' "$target"
-    ssh -o BatchMode=yes -o ConnectTimeout=5 "$target" \
+    remote_ssh_check "$target" 'ROS files and tmux' \
         "test -r /opt/ros/noetic/setup.bash && test -r '${MINI_PC_WORKSPACE}/devel/setup.bash' && test -r '${MINI_PC_WORKSPACE}/src/sensor_integration/launch/wf_mapping.launch' && command -v tmux >/dev/null"
-    ssh -o BatchMode=yes -o ConnectTimeout=5 "$target" \
+    remote_ssh_check "$target" 'sensor launch files' \
         "source /opt/ros/noetic/setup.bash && source '${MINI_PC_WORKSPACE}/devel/setup.bash' && export ROS_MASTER_URI=http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT} && export ROS_IP=${MINI_PC_ROS_IP} && export D435F_SERIAL=${D435F_SERIAL} && unset ROS_HOSTNAME && roslaunch --files sensor_integration wf_mapping.launch >/dev/null && roslaunch --files sensor_integration d435f.launch >/dev/null"
-    if [[ "$(ssh -o BatchMode=yes "$target" 'timedatectl show -p NTPSynchronized --value')" != "yes" ]]; then
+    clock_status="$(remote_ssh_check "$target" 'clock sync query' 'timedatectl show -p NTPSynchronized --value')"
+    if [[ "$clock_status" != "yes" ]]; then
         printf 'Mini PC clock is not NTP-synchronized.\n' >&2
         return 1
     fi
-    remote_epoch="$(ssh -o BatchMode=yes "$target" 'date +%s')"
+    remote_epoch="$(remote_ssh_check "$target" 'clock reading' 'date +%s')"
     local_epoch="$(date +%s)"
     delta=$((local_epoch - remote_epoch))
     (( delta < 0 )) && delta=$((-delta))
@@ -159,7 +181,9 @@ remote_check() {
         printf 'Clock difference is too large: %ss\n' "$delta" >&2
         return 1
     fi
-    ssh -o BatchMode=yes "$target" "ping -c 1 -W 2 '${ROBOT_HOST}' >/dev/null"
+    # A single ICMP packet may be lost while the robot is booting. Validate
+    # the MiniPC route here; live command connectivity is handled by the stack.
+    remote_ssh_check "$target" 'robot network route' "ip route get '${ROBOT_HOST}' >/dev/null"
     printf '[CHECK] mini PC, clock, SSH, and robot route: OK\n'
 }
 
@@ -183,6 +207,8 @@ production_check
 remote_check
 
 SSH_TARGET="${MINI_PC_USER}@${MINI_PC_HOST}"
+TRON_REMOTE_RECORD_TOOL="${ROOT}/remote_stair_record.sh"
+export TRON_REMOTE_RECORD_TOOL
 ROS_MASTER_URI="http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT}"
 ROS_IP="$(ip -4 route get "$MINI_PC_HOST" | awk '{for (i=1; i<=NF; i++) if ($i=="src") {print $(i+1); exit}}')"
 if [[ -z "$ROS_IP" ]]; then
@@ -208,6 +234,9 @@ mkdir -p "$LOG_DIR"
 pids=()
 LAST_PID=""
 stair_record_pid=""
+remote_stair_started=0
+remote_raw_started=0
+remote_raw_name=""
 
 start_component() {
     local name="$1"
@@ -221,6 +250,11 @@ start_component() {
 cleanup() {
     trap - INT TERM EXIT
     local pid
+    if [[ "$remote_stair_started" == "1" ]]; then
+        ssh -o BatchMode=yes -o ConnectTimeout=5 "$SSH_TARGET" \
+            'systemctl --user stop tron1-stair-supervisor.service' || \
+            printf '[WARN] Could not stop MiniPC Stair Supervisor; check its systemd unit.\n' >&2
+    fi
     printf '\n[STOP] local mission system\n'
     for pid in "${pids[@]:-}"; do
         kill -INT "$pid" 2>/dev/null || true
@@ -242,6 +276,19 @@ cleanup() {
             kill -TERM "$stair_record_pid" 2>/dev/null || true
         fi
         wait "$stair_record_pid" 2>/dev/null || true
+    fi
+    if [[ "$remote_raw_started" == "1" ]]; then
+        raw_destination="/mnt/ethan/tron-bags/live/cli-tests/${remote_raw_name}.bag"
+        mountpoint -q /mnt/ethan || raw_destination="$LOG_DIR/stair_raw.bag"
+        bash "$TRON_REMOTE_RECORD_TOOL" stop "$remote_raw_name" "$raw_destination" || \
+            printf '[WARN] MiniPC raw BAG remains on MiniPC; inspect the recorder unit.\n' >&2
+    fi
+    if [[ "$STAIR_EXECUTION_HOST" == "minipc" ]]; then
+        # A UI process can exit before its asynchronous BAG copy finishes.
+        # Stop only our raw-recorder units; finalized BAGs remain recoverable.
+        ssh -o BatchMode=yes -o ConnectTimeout=5 "$SSH_TARGET" \
+            'systemctl --user list-units --type=service --state=running --plain --no-legend "tron1-rawbag-*" | awk "{print \$1}" | xargs -r systemctl --user stop' || \
+            printf '[WARN] Could not stop a MiniPC raw BAG recorder; inspect tron1-rawbag units.\n' >&2
     fi
 }
 trap cleanup EXIT
@@ -277,23 +324,34 @@ if [[ "${SENSOR_JOY_RECEIVER_AUTOSTART:-0}" == "1" ]]; then
         '[WARN] SensorJoy is not publishing; restore it before recording a field test.' >&2
 fi
 
-if pgrep -f '[a]priltag_ros_continuous_node' >/dev/null 2>&1 || \
-   timeout 3s rosnode list 2>/dev/null | awk '$1 == "/apriltag_ros_continuous_node" {found=1} END {exit !found}'; then
-    printf '%s\n' \
-        'AprilTag detector is already running.' \
-        'Stop the existing detector launch first; system.launch owns exactly one detector.' >&2
-    exit 1
+if [[ "$STAIR_EXECUTION_HOST" == "workstation" ]]; then
+    start_component robot_tunnel ssh -N -o BatchMode=yes -o ExitOnForwardFailure=yes \
+        -L "127.0.0.1:${LOCAL_WS_PORT}:${ROBOT_HOST}:${ROBOT_WS_PORT}" "$SSH_TARGET"
+    tunnel_pid="$LAST_PID"
+    sleep 2
+    if ! kill -0 "$tunnel_pid" 2>/dev/null; then
+        printf 'Robot WebSocket SSH tunnel failed.\n' >&2
+        exit 1
+    fi
+    printf '[SSH] robot WebSocket tunnel: OK\n'
+else
+    bash "$ROOT/deploy_remote_stair.sh"
+    if ssh -o BatchMode=yes "$SSH_TARGET" \
+        'systemctl --user is-active --quiet tron1-stair-supervisor.service'; then
+        printf 'MiniPC Stair Supervisor is already active; refusing a second command owner.\n' >&2
+        exit 1
+    fi
+    ssh -o BatchMode=yes "$SSH_TARGET" \
+        "systemctl --user reset-failed tron1-stair-supervisor.service >/dev/null 2>&1 || true; systemd-run --user --collect --unit=tron1-stair-supervisor --property=KillSignal=SIGINT --property=TimeoutStopSec=15s /home/${MINI_PC_USER}/.local/share/tron1-stair-supervisor/start.sh"
+    remote_stair_started=1
+    sleep 2
+    if ! ssh -o BatchMode=yes -o ConnectTimeout=5 "$SSH_TARGET" \
+        'systemctl --user is-active --quiet tron1-stair-supervisor.service'; then
+        printf 'MiniPC Stair Supervisor exited during startup; inspect journalctl --user -u tron1-stair-supervisor.\n' >&2
+        exit 1
+    fi
+    printf '[START] MiniPC Stair Supervisor (single command owner)\n'
 fi
-
-start_component robot_tunnel ssh -N -o BatchMode=yes -o ExitOnForwardFailure=yes \
-    -L "127.0.0.1:${LOCAL_WS_PORT}:${ROBOT_HOST}:${ROBOT_WS_PORT}" "$SSH_TARGET"
-tunnel_pid="$LAST_PID"
-sleep 2
-if ! kill -0 "$tunnel_pid" 2>/dev/null; then
-    printf 'Robot WebSocket SSH tunnel failed.\n' >&2
-    exit 1
-fi
-printf '[SSH] robot WebSocket tunnel: OK\n'
 
 lidar_launch_args=()
 if [ -n "${STAIR_LIDAR_CONFIG:-}" ]; then
@@ -307,12 +365,19 @@ if [[ "${STAIR_RECORD:-0}" == "1" && "${MISSION_CONSOLE_PORT:-0}" == "0" ]]; the
     : "${STAIR_PYTHON:?STAIR_RECORD needs the LiDAR Python interpreter}"
     "$STAIR_PYTHON" "$ROOT/src/stair_supervisor/scripts/check_lidar_config.py" \
         "$STAIR_LIDAR_CONFIG" --mode "${STAIR_LIDAR_MODE:-control}" --snapshot-dir "$LOG_DIR"
-    start_component stair_bag rosbag record --split --size=1024 -O "$LOG_DIR/stair" \
-        /livox/lidar /livox/imu /tron/wheel_odom_raw /tron/sensor_joy /scan /tf /tf_static \
-        /navigation/cmd_vel /stair_supervisor/websocket_tx /stair_supervisor/state \
-        /stair_supervisor/tracking_status /stair_supervisor/control_debug /stair_supervisor/geometry_markers \
-        /stair_supervisor/lidar_odom /stair_traversal/goal /stair_traversal/cancel \
-        /stair_traversal/feedback /stair_traversal/result /mission/status /multifloor/floor_state
+    stair_bag_topics=(/tron/wheel_odom_raw /tron/sensor_joy /scan /tf /tf_static
+        /navigation/cmd_vel /stair_supervisor/websocket_tx /stair_supervisor/state
+        /stair_supervisor/tracking_status /stair_supervisor/control_debug /stair_supervisor/geometry_markers
+        /stair_supervisor/lidar_odom /stair_traversal/goal /stair_traversal/cancel
+        /stair_traversal/feedback /stair_traversal/result /mission/status /multifloor/floor_state)
+    if [[ "$STAIR_EXECUTION_HOST" == "minipc" ]]; then
+        remote_raw_name="stair_raw_$(date +%Y%m%d_%H%M%S)"
+        bash "$TRON_REMOTE_RECORD_TOOL" start "$remote_raw_name"
+        remote_raw_started=1
+    else
+        stair_bag_topics+=(/livox/lidar /livox/imu)
+    fi
+    start_component stair_bag rosbag record --split --size=1024 -O "$LOG_DIR/stair" "${stair_bag_topics[@]}"
     stair_record_pid="$LAST_PID"
     printf '[BAG] automatic stair recording: %s\n' "$LOG_DIR"
 fi
@@ -322,9 +387,9 @@ start_component system roslaunch mission_manager system.launch "map_yaml:=$initi
     startup_localization:="${STARTUP_LOCALIZATION:-auto}" \
     stair_lidar_mode:="${STAIR_LIDAR_MODE:-off}" \
     stair_lidar_observe_only:="${STAIR_LIDAR_OBSERVE_ONLY:-true}" \
-    stair_python:="${STAIR_PYTHON:-}" \
+    stair_python:="${STAIR_PYTHON:-}" stair_on_local:="$( [[ "$STAIR_EXECUTION_HOST" == "workstation" ]] && echo true || echo false )" \
     cloud_in:="$POINTCLOUD_TOPIC" image_rect:="$CAMERA_IMAGE_TOPIC" \
-    camera_info:="$CAMERA_INFO_TOPIC" tag_topic:="$TAG_DETECTIONS_TOPIC" \
+    camera_info:="$CAMERA_INFO_TOPIC" \
     initial_floor:="$INITIAL_FLOOR" home_location_id:="$HOME_LOCATION_ID" \
     initial_location_id:="$INITIAL_LOCATION_ID" inspect_profile_id:="$INSPECT_PROFILE_ID" \
     scan_output_base:="$SCAN_OUTPUT_BASE" accid:="$ACCID" \
@@ -428,6 +493,17 @@ for topic in /mission/status /multifloor/floor_transition/status /stair_traversa
     wait_for_action_server "$topic"
 done
 python3 "${ROOT}/verify_action_servers.py"
+if [[ "$STAIR_EXECUTION_HOST" == "minipc" ]]; then
+    python3 - "$MINI_PC_ROS_IP" <<'PYOWNER'
+import sys
+from urllib.parse import urlsplit
+import rosgraph
+uri = rosgraph.Master('/stair_owner_check').lookupNode('/stair_supervisor')
+if urlsplit(uri).hostname != sys.argv[1]:
+    raise SystemExit('Stair Supervisor is not owned by the MiniPC: ' + uri)
+print('[CHECK] Stair command owner on MiniPC:', uri)
+PYOWNER
+fi
 printf '%s\n' '[LOCALIZATION] Finding the current pose. Use RViz 2D Pose Estimate to set position and direction.'
 while true; do
     kill -0 "$system_pid" 2>/dev/null || { printf 'System launch exited.\n' >&2; exit 1; }
@@ -447,9 +523,6 @@ done
 wait_for_fresh_message /scan sensor_msgs/LaserScan
 wait_for_fresh_message /tron/wheel_odom_raw nav_msgs/Odometry
 wait_for_fresh_message /tf tf2_msgs/TFMessage
-# Tag input is required by floor-arrival verification, not flat NAV startup.
-# The detector already respawns; its outage must not tear down mission/UI.
-printf '%s\n' '[INFO] AprilTag input is monitored separately; floor arrival still requires valid tag evidence.'
 for topic in /map/info /move_base/global_costmap/costmap/info /move_base/local_costmap/costmap/info; do
     timeout 25s rostopic echo -n 1 "$topic" >/dev/null
 done
@@ -467,7 +540,7 @@ fi
 printf '%s\n' \
     '[READY] Mission, floor-transition, and stair action servers are ready.' \
     '[READY] FloorState=READY and SupervisorState=NAV.' \
-    '[READY] Fresh scan, odometry and TF verified. AprilTag readiness is shown in the UI.' \
+    '[READY] Fresh scan, odometry and TF verified. Floor transition uses the matched stair result.' \
     '[READY] Normal missions use /mission; explicit stair trials use stair_entry_test.py.' \
     '[READY] Stop with Ctrl+C. The mini-PC sensor stack remains running.' \
     "[LOG] ${LOG_DIR}"

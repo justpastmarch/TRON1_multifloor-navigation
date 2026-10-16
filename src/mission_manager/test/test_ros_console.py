@@ -1,4 +1,5 @@
-import unittest,threading,time,json
+import unittest,threading,time,json,math
+import rospy
 from collections import deque
 from types import SimpleNamespace as NS
 from unittest.mock import Mock, patch
@@ -19,7 +20,7 @@ class TestAdapter(unittest.TestCase):
  def test_bind_failure_cleans_subscriptions(self):
   with patch('mission_manager.ros_console.actionlib.SimpleActionClient'), patch('mission_manager.ros_console.rospy.Subscriber') as sub, patch('mission_manager.ros_console.ConsoleServer',side_effect=OSError('port busy')):
    with self.assertRaises(OSError):RosConsole(Mock(),Mock(),NS(locations=[]),'/mission','unused',8765)
-   self.assertEqual(sub.return_value.unregister.call_count,11)  # original eight + manual status + localization
+   self.assertEqual(sub.return_value.unregister.call_count,10)  # tag subscription removed from the console
  def make(self, stairs=False):
   c=RosConsole.__new__(RosConsole);c.lock=threading.RLock();c.active=False;c.result=None;c.progress={};c.events=deque(maxlen=80)
   c.recorder=Mock();c.recorder.snapshot.return_value={'busy':False,'state':'idle'}
@@ -32,6 +33,74 @@ class TestAdapter(unittest.TestCase):
   c.telemetry={'floor':(time.monotonic(),{'state':FloorState.READY,'floor_id':'3F'})}
   c.client=Mock();c.client.wait_for_server.return_value=True
   return c
+ def test_ui_pose_estimate_publishes_map_frame_pose_without_starting_motion(self):
+  c=self.make();c.initialpose_publisher=Mock();c.initialpose_publisher.get_num_connections.return_value=1
+  c.map_view.image.return_value={'revision':'map-rev','frame':'map','width':20,'height':20,'resolution':.05,'origin':[0.,0.,0.]}
+  data={'floor_id':'3F','map_revision':'map-rev','x':1.25,'y':2.5,'yaw':.6}
+  with patch('mission_manager.ros_console.rospy.get_param',return_value='/static_map'), \
+       patch('mission_manager.ros_console.rospy.wait_for_service'), \
+       patch('mission_manager.ros_console.rospy.ServiceProxy',return_value=Mock(return_value=NS(map=object()))), \
+       patch('mission_manager.ros_console.rospy.Time.now',return_value=rospy.Time(123)), \
+       patch('mission_manager.ros_console.encode_map',return_value={'revision':'map-rev'}), \
+       patch('mission_manager.ros_console.contains_world_point',return_value=True):
+   result=c.set_initial_pose(data)
+  self.assertTrue(result['submitted']);self.assertEqual(result['previous_request_id'],-1)
+  pose=c.initialpose_publisher.publish.call_args.args[0]
+  self.assertEqual(pose.header.frame_id,'map')
+  self.assertAlmostEqual(pose.pose.pose.position.x,1.25);self.assertAlmostEqual(pose.pose.pose.position.y,2.5)
+  self.assertAlmostEqual(pose.pose.pose.orientation.z,math.sin(.3))
+  c.client.send_goal.assert_not_called()
+
+ def test_cancelled_mission_releases_pose_estimate_control_gate(self):
+  c=self.make();c.active=True
+  c.cancel({})
+  self.assertTrue(c.stop_requested)
+  c.done(2,None)
+  self.assertFalse(c.stop_requested)
+  self.assertEqual(c._manual_pose_context('3F'),('3F',None))
+
+ def test_stop_without_active_mission_does_not_latch_control_gate(self):
+  c=self.make();c.recorder.snapshot.return_value={'busy':True,'state':'recording'}
+  c.cancel({})
+  self.assertFalse(c.stop_requested)
+  self.assertEqual(c._manual_pose_context('3F'),('3F',None))
+
+ def test_ui_pose_estimate_rejects_old_map_and_stair_control(self):
+  c=self.make();c.initialpose_publisher=Mock();c.initialpose_publisher.get_num_connections.return_value=1
+  c.map_view.image.return_value={'revision':'new-map','frame':'map','width':20,'height':20,'resolution':.05,'origin':[0.,0.,0.]}
+  data={'floor_id':'3F','map_revision':'old-map','x':.5,'y':.5,'yaw':0.}
+  with self.assertRaisesRegex(ValueError,'지도가 바뀌었습니다'):
+   c.set_initial_pose(data)
+  c.initialpose_publisher.publish.assert_not_called()
+  c.telemetry['supervisor']=(time.monotonic(),{'state':2})
+  data['map_revision']='new-map'
+  with self.assertRaisesRegex(ValueError,'계단 모드'):
+   c.set_initial_pose(data)
+  c.initialpose_publisher.publish.assert_not_called()
+
+ def test_terminal_stair_resume_binds_retained_5f_rf_route(self):
+  from mission_manager.route_planner import RouteSegment
+  from mission_manager.segment_types import SegmentType
+  from stair_supervisor.supervisor import SupervisorState
+  c=self.make();c.telemetry['floor']=(time.monotonic(),{'state':FloorState.READY,'floor_id':'5F'})
+  c.telemetry['supervisor']=(time.monotonic(),{'state':SupervisorState.STAIR,'connected':True})
+  c.telemetry['operator_phase']=(time.monotonic(),dict(active=False,resume_available=True,pending=False,
+    route_id='stair_5f_rf_up',run_id='roof-run',revision=9,phase='FORWARD_SEGMENT_2',
+    phases=['FORWARD_SEGMENT_2','ROOFTOP_TURN','FORWARD_SEGMENT_3','EXIT_CONFIRM']))
+  stair=RouteSegment(SegmentType.STAIR,'stair_5f_to_rf','stair_rf_landing','5F','RF','edge','stair_5f_rf','stair_5f_rf_up',None,'stair_5f_to_rf')
+  floor=RouteSegment(SegmentType.FLOOR_TRANSITION,'stair_5f_to_rf','stair_rf_landing','5F','RF','edge','stair_5f_rf',None,None,'stair_rf_landing')
+  c.planner=NS(stair_segments_for_profile=lambda profile:(stair,floor))
+  request=dict(kind='stair_resume',resume_route_id='stair_5f_rf_up',resume_run_id='roof-run',
+               resume_revision=9,resume_phase='FORWARD_SEGMENT_2',record=False)
+  self.assertTrue(c.start(request)['submitted'])
+  goal=c.client.send_goal.call_args.args[0]
+  self.assertEqual((goal.mission_type,goal.destination_id,goal.resume_route_id,goal.resume_phase),
+                   ('resume_stair','stair_rf_landing','stair_5f_rf_up','FORWARD_SEGMENT_2'))
+  c.client.send_goal.reset_mock();c.active=False;c.starting=False
+  with self.assertRaisesRegex(ValueError,'경로 또는 단계'):
+   c.start(dict(request,resume_route_id='stair_3f_4f_up'))
+  c.client.send_goal.assert_not_called()
+
  def test_unconfirmed_floor_does_not_plan_from_old_anchor(self):
   c=self.make(True);c.planner=Mock()
   c.telemetry['floor']=(time.monotonic(),{'state':FloorState.UNKNOWN,'floor_id':'5F'})
@@ -58,6 +127,20 @@ class TestAdapter(unittest.TestCase):
  def test_commissioned_stair_plan(self):
   c=self.make(True);c.telemetry['tracking']=(time.monotonic(),{'mode':'control','routes':[{'id':'stair_3f_4f_up','commissioned':True}]})
   self.assertTrue(c.plan({'destination':'target'})['can_start'])
+ def test_photo_retry_validates_return_to_saved_origin(self):
+  c=self.make();c.locations.append({'id':'roof_loop_se','floor':'RF'})
+  c.orchestrator=NS(confirmed_location_id='stair_5f_to_rf',photo=Mock())
+  c.orchestrator.photo.snapshot.return_value={'origin':{'id':'stair_5f_from_4f'},'stage':'FAILED'}
+  c.orchestrator.photo.plan.return_value={'origin_id':'stair_5f_to_rf','destination_id':'roof_loop_nw','segments':[]}
+  route=NS(segments=[NS(source_floor='5F',profile_id=None)],to_bytes=lambda:b'{"segments":[]}')
+  back=NS(segments=[])
+  c.planner=Mock();c.planner.plan_from_current_pose.side_effect=[route,back]
+  c.telemetry['floor']=(time.monotonic(),{'state':FloorState.READY,'floor_id':'5F'})
+  result=c.plan({'destination':'roof_loop_se','kind':'photo_return'})
+  self.assertTrue(result['can_start'])
+  self.assertEqual(c.planner.plan_from_current_pose.call_args_list[1].args,
+                   ('roof_loop_nw','stair_5f_from_4f'))
+
  def test_photo_never_silently_becomes_bag_or_navigation(self):
   c=self.make()
   with self.assertRaises(ValueError):c.start({'destination':'target','kind':'photo_return'})
@@ -69,8 +152,31 @@ class TestAdapter(unittest.TestCase):
   self.assertEqual(c.client.send_goal.call_count,1)
  def test_cancel_only_own_active_goal(self):
   c=self.make()
-  with self.assertRaises(ValueError):c.cancel({})
+  self.assertTrue(c.cancel({})['cancel_requested'])
+  c.client.cancel_goal.assert_not_called();self.assertFalse(c.stop_requested)
   c.active=True;c.cancel({});c.client.cancel_goal.assert_called_once();c.client.cancel_all_goals.assert_not_called()
+ def test_repeated_stop_after_failed_mission_needs_no_recording_or_stair_run(self):
+  c=self.make();c.active=True;c.done(4,None)
+  c.telemetry['supervisor']=(time.monotonic(),dict(state=2,connected=True))
+  for _ in range(3):self.assertTrue(c.cancel({})['cancel_requested'])
+  self.assertFalse(c.active);self.assertFalse(c.stop_requested)
+  c.client.cancel_goal.assert_not_called();c.client.cancel_all_goals.assert_not_called()
+  self.assertEqual(c.telemetry['supervisor'][1]['state'],2)
+ def test_recorder_stop_error_does_not_lose_terminal_result_or_latch_stop_flag(self):
+  c=self.make();c.active=True;c.stop_requested=True
+  c.recorder.stop.side_effect=OSError('recording disk unavailable')
+  c.done(4,None)
+  self.assertFalse(c.active);self.assertFalse(c.stop_requested)
+  self.assertEqual(c.result['action_status'],4)
+  self.assertTrue(any(e['kind']=='recording_error' for e in c.events))
+ def test_new_plain_mission_does_not_wait_for_previous_bag_save(self):
+  c=self.make();c.recorder.snapshot.return_value=dict(state='stopping',busy=True)
+  self.assertTrue(c.start(dict(destination='target',record=False))['submitted'])
+  c.recorder.start.assert_not_called();c.client.send_goal.assert_called_once()
+ def test_new_recording_still_waits_for_previous_recorder_to_finish(self):
+  c=self.make();c.recorder.snapshot.return_value=dict(state='stopping',busy=True)
+  with self.assertRaises(ValueError):c.start(dict(destination='target',record=True))
+  c.client.send_goal.assert_not_called();c.recorder.start.assert_not_called()
  def test_stop_can_cancel_idle_arrival_hold_without_new_mission(self):
   c=self.make();hold=Mock();hold.core.armed=True;c.orchestrator.arrival_hold=hold
   c.cancel({});hold.suspend.assert_called_once();c.recorder.stop.assert_called_once();c.client.send_goal.assert_not_called()
@@ -135,22 +241,27 @@ class TestAdapter(unittest.TestCase):
   with self.assertRaises(ValueError):c.start({'destination':'target','record':True})
   c.client.send_goal.assert_not_called()
  def test_control_recovery_requires_confirmation_and_idle_fresh_state(self):
-  for change in ('confirmation','active','starting','external','stale','disconnected','recovering'):
+  for change in ('confirmation','relocation','active','starting','external','stale','disconnected','recovering','stale_phase','wrong_run'):
    c=self.make();c.telemetry['mission_status']=(time.monotonic(),{'active':False});c.telemetry['supervisor']=(time.monotonic(),{'state':2,'connected':True})
-   data={'confirmed_flat_ground':True}
+   c.telemetry['operator_phase']=(time.monotonic(),{'active':False,'run_id':'landing-run','phase':'TURN_TO_NEXT_FLIGHT','resume_available':True})
+   data={'confirmed_flat_ground':True,'confirmed_physical_relocation':'평지 이동 완료','confirmed_run_id':'landing-run'}
    if change=='confirmation':data={}
+   elif change=='relocation':data.pop('confirmed_physical_relocation')
    elif change in ('active','starting','recovering'):setattr(c,change,True)
    elif change=='external':c.telemetry['mission_status']=(time.monotonic(),{'active':True})
    elif change=='stale':c.telemetry['supervisor']=(time.monotonic()-4,{'state':2,'connected':True})
+   elif change=='stale_phase':c.telemetry['operator_phase']=(time.monotonic()-4,c.telemetry['operator_phase'][1])
+   elif change=='wrong_run':data['confirmed_run_id']='previous-run'
    else:c.telemetry['supervisor']=(time.monotonic(),{'state':2,'connected':False})
    with patch('rospy.set_param') as param:
     with self.assertRaises(ValueError):c.recover_control(data)
     param.assert_not_called()
  def test_control_recovery_preserves_recording_result_and_awaits_real_nav(self):
   c=self.make();c.telemetry['mission_status']=(time.monotonic(),{'active':False});c.telemetry['supervisor']=(time.monotonic(),{'state':2,'connected':True})
+  c.telemetry['operator_phase']=(time.monotonic(),{'active':False,'run_id':'landing-run','phase':'TURN_TO_NEXT_FLIGHT','resume_available':True})
   c.result={'reason':'old failure'};c.recorder.snapshot.return_value={'state':'recording','busy':True}
   with patch('rospy.set_param') as param,patch('rospy.wait_for_service'),patch('rospy.ServiceProxy',return_value=Mock(return_value=NS(success=True))) as proxy:
-   self.assertTrue(c.recover_control({'confirmed_flat_ground':True})['accepted'])
+   self.assertTrue(c.recover_control({'confirmed_flat_ground':True,'confirmed_physical_relocation':'평지 이동 완료','confirmed_run_id':'landing-run'})['accepted'])
    self.assertEqual([x.args[1] for x in param.call_args_list],[True,False]);proxy.return_value.assert_called_once()
   c.recorder.stop.assert_not_called();c.client.send_goal.assert_not_called()
   self.assertEqual(c.result,{'reason':'old failure'});self.assertFalse(c.recovering)
@@ -159,8 +270,9 @@ class TestAdapter(unittest.TestCase):
   c.start({'destination':'target','record':True});c.client.send_goal.assert_called_once();c.recorder.start.assert_not_called()
  def test_control_recovery_rejection_clears_confirmation(self):
   c=self.make();c.telemetry['mission_status']=(time.monotonic(),{'active':False});c.telemetry['supervisor']=(time.monotonic(),{'state':2,'connected':True})
+  c.telemetry['operator_phase']=(time.monotonic(),{'active':False,'run_id':'landing-run','phase':'TURN_TO_NEXT_FLIGHT','resume_available':True})
   with patch('rospy.set_param') as param,patch('rospy.wait_for_service'),patch('rospy.ServiceProxy',return_value=Mock(return_value=NS(success=False,message='no retained loss'))):
-   with self.assertRaises(ValueError):c.recover_control({'confirmed_flat_ground':True})
+   with self.assertRaises(ValueError):c.recover_control({'confirmed_flat_ground':True,'confirmed_physical_relocation':'평지 이동 완료','confirmed_run_id':'landing-run'})
    self.assertFalse(param.call_args.args[1]);self.assertFalse(c.recovering)
  def test_start_during_recovery_rejected_before_recording(self):
   c=self.make();c.recovering=True
@@ -173,16 +285,17 @@ class TestAdapter(unittest.TestCase):
 
  def test_late_recovery_keeps_start_and_floor_selection_serialized(self):
   c=self.make();c.floor_selecting=False;c.telemetry['mission_status']=(time.monotonic(),{'active':False});c.telemetry['supervisor']=(time.monotonic(),{'state':2,'connected':True})
+  c.telemetry['operator_phase']=(time.monotonic(),{'active':False,'run_id':'landing-run','phase':'TURN_TO_NEXT_FLIGHT','resume_available':True})
   release=threading.Event();entered=threading.Event()
   def delayed():
    entered.set();release.wait(8);return NS(success=True)
   with patch('rospy.set_param'),patch('rospy.wait_for_service'),patch('rospy.ServiceProxy',return_value=delayed):
    try:
-    result=c.recover_control({'confirmed_flat_ground':True})
+    result=c.recover_control({'confirmed_flat_ground':True,'confirmed_physical_relocation':'평지 이동 완료','confirmed_run_id':'landing-run'})
     self.assertTrue(entered.is_set());self.assertTrue(result['pending']);self.assertTrue(c.recovering)
     with self.assertRaises(ValueError):c.start({'destination':'target'})
     with self.assertRaises(ValueError):c.select_floor({'floor_id':'4F'})
-    with self.assertRaises(ValueError):c.recover_control({'confirmed_flat_ground':True})
+    with self.assertRaises(ValueError):c.recover_control({'confirmed_flat_ground':True,'confirmed_physical_relocation':'평지 이동 완료','confirmed_run_id':'landing-run'})
    finally:
     release.set()
     deadline=time.monotonic()+2
@@ -204,6 +317,23 @@ class OperatorPhaseAdapterTest(TestAdapter):
   c.operator_publisher.publish.side_effect=sent
   self.assertTrue(c.operator_phase(data)['accepted'])
   c.client.send_goal.assert_not_called();c.client.cancel_goal.assert_not_called();c.recorder.stop.assert_not_called()
+ def test_continue_requires_capability_and_waiting_then_forwards_kind(self):
+  c=self.make();self.setup_operator(c)
+  data=dict(kind='continue',run_id='run',revision=3,phase='TURN_TO_NEXT_FLIGHT',confirmed=True)
+  status=dict(active=True,waiting=False,continue_supported=True,run_id='run',revision=3,phase='TURN_TO_NEXT_FLIGHT',phases=['TURN_TO_NEXT_FLIGHT'])
+  c.telemetry['operator_phase']=(time.monotonic(),status)
+  with self.assertRaisesRegex(ValueError,'중단 대기'):
+   c.operator_phase(data)
+  self.assertFalse(c.operator_pending)
+  status['waiting']=True;status['continue_supported']=False
+  with self.assertRaisesRegex(ValueError,'지원하지 않거나'):
+   c.operator_phase(data)
+  status['continue_supported']=True
+  def sent(message):
+   request=json.loads(message.data);self.assertEqual(request['kind'],'continue')
+   c.observe('operator_phase',dict(status,result=dict(request_id=request['request_id'],state='ACCEPTED',kind='continue')))
+  c.operator_publisher.publish.side_effect=sent
+  self.assertTrue(c.operator_phase(data)['accepted'])
  def test_stale_operator_run_cannot_submit(self):
   c=self.make();self.setup_operator(c);c.telemetry['operator_phase']=(time.monotonic()-2,dict(active=True))
   with self.assertRaises(ValueError):c.operator_phase({})

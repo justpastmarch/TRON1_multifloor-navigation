@@ -110,6 +110,27 @@ class MissionOrchestratorTest(unittest.TestCase):
         configuration = load_site_configuration(fixture)
         self.planner = BuildingPlanner(configuration, "home_3f")
 
+    def test_resume_stair_uses_only_matching_edge_and_floor_transition(self) -> None:
+        segments = ScriptedSegments()
+        host = MissionOrchestrator(self.planner, segments,
+            MissionOrchestratorSettings('home_3f','roof_scan_profile'),
+            floor_anchor_resolver=lambda old:'stair_b_entry_4f' if old == 'home_3f' else old)
+        outcome=host.run(MissionRunRequest('resume','roof_landing',MissionType.RESUME_STAIR,False,
+                         'standard_up','retained-run',4,'FORWARD_SEGMENT_2'),lambda _p:None,lambda:False)
+        self.assertEqual(outcome.status,SegmentExecutionStatus.SUCCESS)
+        self.assertEqual([s.type for s in segments.executed],[SegmentType.STAIR,SegmentType.FLOOR_TRANSITION])
+        self.assertEqual(segments.executed[0].profile_id,'standard_up')
+        self.assertEqual(host.confirmed_location_id,'roof_landing')
+    def test_resume_stair_never_falls_back_to_initial_lower_floor(self) -> None:
+        segments = ScriptedSegments()
+        host = MissionOrchestrator(self.planner, segments,
+            MissionOrchestratorSettings('home_3f','roof_scan_profile'))
+        outcome=host.run(MissionRunRequest('resume','roof_landing',MissionType.RESUME_STAIR,False,
+                         'standard_up','retained-run',4,'FORWARD_SEGMENT_2'),lambda _p:None,lambda:False)
+        self.assertEqual(outcome.status,SegmentExecutionStatus.SUCCESS)
+        self.assertEqual([seg.source_floor for seg in segments.executed],['4F','4F'])
+        self.assertEqual(segments.executed[0].profile_id,'standard_up')
+
     def test_relocation_changes_planning_floor_before_start(self) -> None:
         segments = ScriptedSegments()
         orchestrator = MissionOrchestrator(
@@ -124,6 +145,28 @@ class MissionOrchestratorTest(unittest.TestCase):
         self.assertEqual(result.result_code, 0)
         self.assertNotIn("stair_a_entry_3f", [s.target_id for s in segments.executed])
         self.assertEqual(segments.executed[0].source_floor, "4F")
+
+    def test_ui_reads_during_floor_transition_do_not_mutate_route_anchor(self) -> None:
+        segments=ScriptedSegments()
+        switched=[]
+        host=MissionOrchestrator(self.planner,segments,
+            MissionOrchestratorSettings('home_3f','roof_scan_profile'),
+            floor_anchor_resolver=lambda old:switched[-1] if switched else old)
+        original=segments.execute
+        def execute(segment,context):
+            result=original(segment,context)
+            if segment.type is SegmentType.FLOOR_TRANSITION:
+                switched.append(segment.target_id)
+                before=host._anchor
+                for _ in range(3):
+                    self.assertEqual(host.confirmed_location_id,segment.target_id)
+                self.assertEqual(host._anchor,before)
+            return result
+        segments.execute=execute
+        result=host.run(MissionRunRequest('ui-poll','stair_a_landing_4f',MissionType.NAVIGATE,False),
+                        lambda _:None,lambda:False)
+        self.assertEqual(result.result_code,0)
+        self.assertEqual(host._anchor.location_id,'stair_a_landing_4f')
 
     def test_fresh_return_is_planned_from_confirmed_scan_anchor(self) -> None:
         # Given: an inspect mission over an asymmetric graph.

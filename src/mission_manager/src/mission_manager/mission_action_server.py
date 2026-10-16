@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import re
+import math
 import threading
 import uuid
 
@@ -36,12 +37,29 @@ def admit_goal(goal: MissionGoal, destinations: frozenset[str]) -> GoalAdmission
     """Parse an untrusted ROS goal before any child action can be touched."""
     if _IDENTIFIER.fullmatch(goal.destination_id) is None:
         return GoalAdmission(False, None, "destination_id is malformed")
-    if goal.destination_id not in destinations:
-        return GoalAdmission(False, None, "destination_id is unknown")
     try:
         mission_type = MissionType(goal.mission_type)
     except ValueError:
         return GoalAdmission(False, None, "mission_type is unknown")
+    point = (getattr(goal, 'point_floor', ''), getattr(goal, 'point_map_generation', 0),
+             getattr(goal, 'point_x', 0.), getattr(goal, 'point_y', 0.), getattr(goal, 'point_yaw', 0.))
+    if mission_type is MissionType.NAVIGATE_POINT:
+        if (goal.destination_id != 'ui_point' or not _IDENTIFIER.fullmatch(point[0])
+                or type(point[1]) is not int or point[1] < 0
+                or not all(type(v) in (int, float) and math.isfinite(v) for v in point[2:])
+                or goal.return_after_task):
+            return GoalAdmission(False, None, 'invalid map-point goal')
+    elif any(point):
+        return GoalAdmission(False, None, 'point fields require navigate_point mission')
+    elif goal.destination_id not in destinations:
+        return GoalAdmission(False, None, "destination_id is unknown")
+    fields = (getattr(goal, 'resume_route_id', ''), getattr(goal, 'resume_run_id', ''),
+              getattr(goal, 'resume_revision', 0), getattr(goal, 'resume_phase', ''))
+    if mission_type is MissionType.RESUME_STAIR:
+        if not fields[0] or not fields[1] or type(fields[2]) is not int or fields[2] < 0 or not fields[3] or goal.return_after_task:
+            return GoalAdmission(False, None, 'stair resume checkpoint is incomplete')
+    elif any(fields):
+        return GoalAdmission(False, None, 'resume fields require resume_stair mission')
     return GoalAdmission(True, mission_type, "")
 
 
@@ -104,6 +122,13 @@ class MissionActionServer:
                 goal.destination_id,
                 admission.mission_type,
                 bool(goal.return_after_task),
+                getattr(goal, 'resume_route_id', ''),
+                getattr(goal, 'resume_run_id', ''),
+                getattr(goal, 'resume_revision', 0),
+                getattr(goal, 'resume_phase', ''),
+                getattr(goal, 'point_floor', ''),
+                getattr(goal, 'point_map_generation', 0),
+                getattr(goal, 'point_x', 0.), getattr(goal, 'point_y', 0.), getattr(goal, 'point_yaw', 0.),
             )
         worker = threading.Thread(
             target=self._execute,
@@ -122,7 +147,7 @@ class MissionActionServer:
 
     def _execute(self, handle: ServerGoalHandle, request: MissionRunRequest) -> None:
         photo=getattr(self._orchestrator,'photo',None)
-        photo_request=photo is not None and request.mission_type in (MissionType.PHOTO_TOUR,MissionType.RETURN_TO_START)
+        photo_request=photo is not None and request.mission_type in (MissionType.PHOTO_TOUR,MissionType.ROOFTOP_TOUR,MissionType.RETURN_TO_START)
         finalizing_photo=False
         try:
             if self._arrival_hold is not None:
@@ -146,6 +171,8 @@ class MissionActionServer:
                 photo = getattr(self._orchestrator,'photo',None)
                 location = (getattr(photo.executor,'return_hold_location',None)
                             if photo is not None and request.mission_type is MissionType.RETURN_TO_START else None)
+                if request.mission_type is MissionType.NAVIGATE_POINT:
+                    location = request.point_location()
                 if location is None:
                     self._arrival_hold.arm(self._orchestrator.confirmed_location_id)
                 else:

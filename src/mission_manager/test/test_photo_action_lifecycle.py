@@ -41,7 +41,15 @@ class PhotoActionLifecycle(unittest.TestCase):
   self.server._arrival_hold.arm.side_effect=RuntimeError('hold failed')
   h=self.execute(MissionType.PHOTO_TOUR);h.set_aborted.assert_called_once()
   self.assertEqual(self.photo.snapshot()['stage'],'FAILED');self.photo.preflight(True)
+  self.assertEqual(self.photo.snapshot()['photo_outcome'],'COMPLETE')
   self.assertFalse(any(e[2]=='stair_5f_rf_down' for e in self.executor.events))
+ def test_photo_capture_miss_keeps_navigation_success_and_reports_partial(self):
+  self.executor.fail_photo_keys={'roof_loop_sw'}
+  h=self.execute(MissionType.PHOTO_TOUR);h.set_succeeded.assert_called_once();h.set_aborted.assert_not_called()
+  result=h.set_succeeded.call_args.args[0]
+  self.assertIn('촬영 일부 누락',result.reason)
+  self.assertEqual(self.photo.snapshot()['photo_outcome'],'PARTIAL')
+  self.assertEqual(self.host.confirmed_location_id,'roof_loop_se')
  def test_restart_between_nav_arrival_and_hold_is_interrupted(self):
   self.execute(MissionType.PHOTO_TOUR);self.photo.save(stage='RETURN_ARRIVED')
   restored=PhotoMission(self.settings,self.temp.name,self.executor)

@@ -39,7 +39,7 @@ class LaunchContractTest(unittest.TestCase):
         environment = dict(
             line.split("=", 1)
             for line in (ROOT / "config.env").read_text(encoding="utf-8").splitlines()
-            if line and not line.startswith("#")
+            if line and not line.startswith("#") and "=" in line
         )
 
         # When: effective runtime values and the planner's conservative fallback are compared.

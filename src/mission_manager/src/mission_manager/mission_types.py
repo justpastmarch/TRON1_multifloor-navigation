@@ -14,10 +14,13 @@ from mission_manager.route_planner import RouteSegment
 @unique
 class MissionType(str, Enum):
     NAVIGATE = "navigate"
+    NAVIGATE_POINT = "navigate_point"
     INSPECT = "inspect"
     PHOTO_TOUR = "photo_tour"
+    ROOFTOP_TOUR = "rooftop_tour"
     RETURN_TO_START = "return_to_start"
     RECORD_ROUTE = "record_route"
+    RESUME_STAIR = "resume_stair"
 
 
 @unique
@@ -61,9 +64,11 @@ class SegmentExecution:
 
 @dataclass(frozen=True)
 class SegmentContext:
-    __slots__ = ("mission_id", "cancellation_requested")
     mission_id: str
     cancellation_requested: Callable[[], bool]
+    resume_run_id: str = ""
+    resume_revision: int = 0
+    resume_phase: str = ""
 
 
 @dataclass(frozen=True)
@@ -87,11 +92,24 @@ class SegmentExecutor(Protocol):
 
 @dataclass(frozen=True)
 class MissionRunRequest:
-    __slots__ = ("mission_id", "destination_id", "mission_type", "return_after_task")
     mission_id: str
     destination_id: str
     mission_type: MissionType
     return_after_task: bool
+    resume_route_id: str = ""
+    resume_run_id: str = ""
+    resume_revision: int = 0
+    resume_phase: str = ""
+    point_floor: str = ""
+    point_map_generation: int = 0
+    point_x: float = 0.
+    point_y: float = 0.
+    point_yaw: float = 0.
+
+    def point_location(self):
+        from mission_manager.configuration import Location
+        return Location('ui_point', self.point_floor, 'WAYPOINT',
+                        self.point_x, self.point_y, self.point_yaw)
 
 
 @dataclass(frozen=True)

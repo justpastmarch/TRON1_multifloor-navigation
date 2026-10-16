@@ -82,12 +82,14 @@ class MissionHandoffTest(unittest.TestCase):
         self.assertEqual(transport.events[-2],('update',.1,0.))
         self.assertNotIn(('loss',),transport.events)
 
-    def test_updated_second_entry_supports_square_rotation_with_existing_reserve(self):
+    def test_updated_second_entry_supports_square_rotation_with_six_cm_margin(self):
+        from stair_supervisor.stair_feedback import effective_support_margin
         path=Path(__file__).resolve().parents[1]/'config/stair_lidar_3f_4f_test.yaml'
         r=yaml.safe_load(path.read_text())['routes'][0]
         x,y,_=r['turn_path'][-1]
         self.assertAlmostEqual(x-r['flight_2'][0][0],.45)
-        footprint=np.array(r['footprint']);margin=r['limits']['margin_m']+r['limits']['anchor_uncertainty_m']
+        footprint=np.array(r['footprint']);margin=effective_support_margin(r,r['limits']['anchor_uncertainty_m'])
+        self.assertAlmostEqual(margin,.06)
         for yaw in np.linspace(-math.pi,math.pi,73):
             m=se2(x,y,yaw)
             body=footprint@m[:2,:2].T+m[:2,3]

@@ -45,6 +45,24 @@ def encode_map(message):
     return meta
 
 
+def contains_world_point(meta, x, y):
+    """Check map-frame XY against the rotated OccupancyGrid extent."""
+    try:
+        width, height = int(meta['width']), int(meta['height'])
+        resolution = float(meta['resolution'])
+        ox, oy, angle = (float(v) for v in meta['origin'])
+        x, y = float(x), float(y)
+    except (KeyError, TypeError, ValueError):
+        return False
+    if (width <= 0 or height <= 0 or not math.isfinite(resolution) or resolution <= 0
+            or not all(math.isfinite(v) for v in (ox, oy, angle, x, y))):
+        return False
+    dx, dy = x-ox, y-oy
+    local_x = math.cos(angle)*dx + math.sin(angle)*dy
+    local_y = -math.sin(angle)*dx + math.cos(angle)*dy
+    return 0.0 <= local_x < width*resolution and 0.0 <= local_y < height*resolution
+
+
 class ConsoleMap:
     def __init__(self):
         self.lock=threading.RLock()

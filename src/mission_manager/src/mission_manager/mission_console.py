@@ -66,6 +66,10 @@ class ConsoleServer:
                         raise ValueError('request must be an object')
                     if self.path == '/api/operator_phase':
                         return self.reply(200, owner.backend.operator_phase(data))
+                    if self.path == '/api/localization/pose_estimate':
+                        return self.reply(200, owner.backend.set_initial_pose(data))
+                    if self.path == '/api/relocate_flat':
+                        return self.reply(200, owner.backend.relocate_flat(data))
                     if self.path == '/api/door/open_once':
                         return self.reply(200, owner.door.manual_open(data))
                     if self.path == '/api/photo/roof_start':

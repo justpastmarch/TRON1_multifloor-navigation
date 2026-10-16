@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- The existing Supervisor is launched on the sensor PC; the ROS master, NAV,
+       mission and UI remain on the workstation. Never launch a second owner. -->
+  <arg name="accid"/>
+  <arg name="websocket_url"/>
+  <arg name="lidar_mode" default="control"/>
+  <arg name="lidar_observe_only" default="false"/>
+  <node pkg="stair_supervisor" type="stair_supervisor_node.py"
+        name="stair_supervisor" output="screen"
+        launch-prefix="$(find stair_supervisor)/scripts/stair_python.sh">
+    <env name="OMP_NUM_THREADS" value="2"/>
+    <env name="OPENBLAS_NUM_THREADS" value="1"/>
+    <param name="config_dir" value="$(find stair_supervisor)/config"/>
+    <param name="accid" value="$(arg accid)"/>
+    <param name="websocket_url" value="$(arg websocket_url)"/>
+    <param name="lidar_mode" value="$(arg lidar_mode)"/>
+    <param name="lidar_observe_only" value="$(arg lidar_observe_only)"/>
+    <param name="lidar_config" value="$(find stair_supervisor)/config/stair_lidar_3f_4f_test.yaml"/>
+  </node>
+</launch>

@@ -26,7 +26,9 @@ OPERATOR_CLIENT_INITIALIZERS = frozenset({
 TEXT_SUFFIXES = frozenset({".env", ".sh", ".py", ".launch", ".yaml", ".rviz", ".xml"})
 ACTION_CONTRACTS = {
     "src/mission_manager/action/Mission.action": (
-        "string destination_id", "string mission_type", "bool return_after_task", "---",
+        "string destination_id", "string mission_type", "bool return_after_task",
+        "string resume_route_id", "string resume_run_id", "uint32 resume_revision", "string resume_phase",
+        "string point_floor", "uint64 point_map_generation", "float64 point_x", "float64 point_y", "float64 point_yaw", "---",
         "uint8 OK=0", "uint8 BUSY=1", "uint8 INVALID_GOAL=2", "uint8 CAPABILITY_DISABLED=3",
         "uint8 NAVIGATION_FAILED=4", "uint8 STAIR_FAILED=5", "uint8 LOCALIZATION_FAILED=6",
         "uint8 SCAN_FAILED=7", "uint8 COMMUNICATION_LOST=8", "uint8 MISSION_ABORT=9",
@@ -42,7 +44,8 @@ ACTION_CONTRACTS = {
     ),
     "src/stair_supervisor/action/StairTraversal.action": (
         "string stair_id", "uint8 UP=1", "uint8 DOWN=2", "uint8 direction",
-        "string admission_token", "---", "uint8 OK=0",
+        "string admission_token", "string resume_run_id", "uint32 resume_revision",
+        "string resume_phase", "---", "uint8 OK=0",
         "uint8 BUSY=1", "uint8 INVALID_GOAL=2", "uint8 CAPABILITY_DISABLED=3",
         "uint8 ENTRY_REJECTED=4", "uint8 STAIR_FAILED=5", "uint8 COMMUNICATION_LOST=8",
         "uint8 result_code", "string reason", "uint64 ownership_epoch", "---",

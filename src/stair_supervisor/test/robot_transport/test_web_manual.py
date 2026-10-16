@@ -22,14 +22,24 @@ class ManualTest(unittest.TestCase):
             m=WebManual();lease=m.begin(0)
             with self.assertRaises(ValueError):m.update(lease,0,value,0,.1,.3)
 
-    def test_manual_priority_preserves_automatic_buffer_and_single_connection(self):
+    def test_manual_and_automatic_commands_are_sent_in_order_on_one_connection(self):
         c=FakeClock();s=FakeWebSocket(successful_mode_handler);t,f=make_transport(s,c);t.start()
         t.update_twist(.1,.2)
         lease=t.begin_web_manual()
+        before_first_input=len(s.sent)
         t.send_current()
+        self.assertEqual(len(s.sent),before_first_input+1)
+        self.assertEqual(s.sent[-1]['data'],dict(x=.2,y=0.,z=.1))
         t.update_web_manual(lease,1,.8,-.2,.35)
         t.send_current()
-        self.assertEqual([v['data'] for v in s.sent[-3:]], [dict(x=0.,y=0.,z=0.),dict(x=.8,y=0.,z=-.2),dict(x=.8,y=0.,z=-.2)])
+        self.assertEqual(
+            [v['data'] for v in s.sent[-4:]],
+            [
+                dict(x=.2,y=0.,z=.1),
+                dict(x=.8,y=0.,z=-.2),
+                dict(x=.2,y=0.,z=.1), dict(x=.8,y=0.,z=-.2),
+            ],
+        )
         t.end_web_manual(lease)
         self.assertEqual(s.sent[-1]['data'],dict(x=0.,y=0.,z=0.))
         t.update_twist(.1,0);t.send_current();self.assertEqual(s.sent[-1]['data']['x'],.2)
@@ -52,7 +62,10 @@ class ManualTest(unittest.TestCase):
         for seq in range(1,61):
             t.update_web_manual(lease,seq,1.,-.4,.35)
             t.update_twist(0.,0.);t.send_current();t.send_current()
-            self.assertTrue(all(v['data']==dict(x=1.,y=0.,z=-.4) for v in s.sent[-3:]))
+            self.assertEqual(
+                [v['data'] for v in s.sent[-4:]],
+                [dict(x=0.,y=0.,z=0.),dict(x=1.,y=0.,z=-.4)] * 2,
+            )
         t.end_web_manual(lease);t.send_current()
         self.assertEqual(s.sent[-1]['data'],dict(x=0.,y=0.,z=0.));t.close()
 
@@ -73,11 +86,16 @@ class ManualTest(unittest.TestCase):
         c=FakeClock();s=FakeWebSocket(successful_mode_handler);t,_=make_transport(s,c);t.start()
         node=RosStairSupervisorNode.__new__(RosStairSupervisorNode)
         node._web_transport=t;node._supervisor=Mock()
+        node._supervisor.stream_navigation.side_effect = lambda: (t.update_twist(.1, 0.), t.send_current())
         lease=t.begin_web_manual();t.update_web_manual(lease,1,1,0,.35)
         before=len(s.sent)
         for _ in range(3):node.stream_once()
-        self.assertEqual(len(s.sent),before+3)
-        self.assertTrue(all(v['data']['x']==1 for v in s.sent[-3:]))
-        self.assertEqual(node._supervisor.mock_calls,[])
+        self.assertEqual(len(s.sent),before+6)
+        self.assertEqual(
+            [v['data'] for v in s.sent[-6:]],
+            [dict(x=.2,y=0.,z=0.),dict(x=1.,y=0.,z=0.)] * 3,
+        )
+        self.assertEqual(node._supervisor.stream_navigation.call_count,3)
         t.end_web_manual(lease);node.stream_once()
-        node._supervisor.stream_navigation.assert_called_once_with();t.close()
+        self.assertEqual(s.sent[-1]['data'],dict(x=.2,y=0.,z=0.))
+        self.assertEqual(node._supervisor.stream_navigation.call_count,4);t.close()

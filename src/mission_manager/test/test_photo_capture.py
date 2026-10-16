@@ -9,7 +9,7 @@ from mission_manager.mission_types import SegmentExecutionStatus
 class CaptureTest(unittest.TestCase):
  def setUp(self):
   self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup)
-  with patch('rospy.Subscriber'),patch('rospy.on_shutdown'):
+  with patch('rospy.Subscriber'),patch('rospy.Publisher'),patch('rospy.on_shutdown'):
    self.camera=PhotoCapture('/fake/image/compressed',.2)
   self.now=100.
   self.clock=patch('rospy.Time.now',side_effect=lambda:rospy.Time.from_sec(self.now));self.clock.start();self.addCleanup(self.clock.stop)
@@ -37,4 +37,9 @@ class CaptureTest(unittest.TestCase):
   self.assertEqual(list(Path(self.tmp.name).iterdir()),[])
  def test_cancel_writes_nothing(self):
   r=self.capture(self.frame(),lambda:True);self.assertEqual(r.status,SegmentExecutionStatus.CANCELLED)
+ def test_recording_shares_same_compressed_frame_and_source_stamp(self):
+  frame=self.frame()
+  self.camera.receive(frame)
+  self.camera.recording.publish.assert_called_once_with(frame)
+  self.assertIs(self.camera.latest[0],frame)
   self.assertEqual(list(Path(self.tmp.name).iterdir()),[])

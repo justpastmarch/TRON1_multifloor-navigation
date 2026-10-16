@@ -28,7 +28,7 @@ from livox_ros_driver2.msg import CustomMsg
 
 from .lidar_tracking import TrackingSettings, load_imu_rotation
 from .lidar_process import ProcessTrackingWorker, raw_header_stamp, points_from_raw_livox
-from .stair_feedback import StairFeedback, RouteAnchor, match_entry_landmarks, transform, se2, wrap
+from .stair_feedback import StairFeedback, RouteAnchor, effective_support_margin, match_entry_landmarks, transform, se2, wrap
 from .lidar_tracking_core import register_scan_to_map, voxel_downsample_points
 from .configuration import load_stair_configuration
 from .stair_evidence import Phase
@@ -517,7 +517,7 @@ class RosLidarInterface:
                 "ENTRY PREVIEW / NO TEST COMMAND" if preview else phase.value,
                 debug.get("tracking_state", sample.state), sample.epoch,
                 self.clock.monotonic()-sample.measured_at,
-                route['limits']['margin_m']+anchor.uncertainty_m,
+                debug.get('effective_margin_m', effective_support_margin(route, anchor.uncertainty_m)),
                 str(debug.get('clearance_m')),
                 str([round(v,3) for v in debug.get('command', [0.,0.])]),
                 'unknown' if sent is None else '%s (%.2fs ago)' % (

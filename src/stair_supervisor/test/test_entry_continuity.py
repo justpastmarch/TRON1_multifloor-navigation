@@ -73,17 +73,14 @@ class EntryContinuity(unittest.TestCase):
         pose[:3,:3]=Rotation.from_euler('xyz',[.0023158058,-.1037660276,.3227044911]).as_matrix()
         return replace(s,transform=tuple(pose.flat))
 
-    def test_recorded_reserve_pose_verifies_then_aligns_inward(self):
+    def test_recorded_reserve_pose_verifies_without_extra_turn_when_supported(self):
         w,c=self.armed();w.value=self.reserve_pose(4,100.3)
         r=c.evaluate(c.phase,100.31);self.assertTrue(r.complete,c.debug)
-        self.assertFalse(c.debug['current_supported'])
+        self.assertTrue(c.debug['current_supported'])
         c.begin_phase(Phase.ALIGN,100.32);w.value=self.reserve_pose(5,100.4)
         r=c.evaluate(c.phase,100.41)
-        self.assertFalse(r.complete,c.debug);self.assertFalse(r.faulted,c.debug)
-        self.assertEqual(c.command()[0],0.)
-        self.assertLess(c.command()[1],0.)
-        self.assertLessEqual(abs(c.command()[1]),c.route['limits']['max_w'])
-        self.assertLessEqual(abs(c.command()[1]),c.route['limits']['max_alpha']*.41)
+        self.assertTrue(r.complete,c.debug);self.assertFalse(r.faulted,c.debug)
+        self.assertEqual(c.command(),(0.,0.))
 
     def test_reserve_turn_cannot_reduce_clearance(self):
         w,c=self.armed();w.value=self.reserve_pose(4,100.3)

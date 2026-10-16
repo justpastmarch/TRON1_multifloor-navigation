@@ -55,7 +55,7 @@ def validate_launch(root: Path) -> None:
         fail(f"unexpected navigation nodes: {sorted(navigation_nodes)}")
     system = parse_xml(root / "src/mission_manager/launch/system.launch", root)
     includes = {include.get("file") for include in system.findall("include")}
-    expected_includes = {f"$(find multifloor_manager)/launch/{name}" for name in ("navigation.launch", "apriltag.launch")}
+    expected_includes = {"$(find multifloor_manager)/launch/navigation.launch"}
     if includes != expected_includes:
         fail(f"system launch include mismatch: {sorted(includes)}")
     direct_nodes = {(node.get("pkg"), node.get("type"), node.get("name")) for node in system.findall("node")}

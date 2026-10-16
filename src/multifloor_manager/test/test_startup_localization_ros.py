@@ -97,12 +97,16 @@ class StartupTest(unittest.TestCase):
     def test_auto_manual_busy_and_retry(self):
         self.wait_for(lambda:self.status.get('state')=='READY')
         self.assertEqual(self.status['source'],'auto')
+        self.assertTrue(self.status['scan_match_required'])
+        self.assertTrue(self.status['scan_match_verified'])
         self.assertLess(math.hypot(self.status['x']-4.,self.status['y']+4.),.20)
         self.assertEqual(self.floor.state,FloorState.READY)
         # User input replaces the pose while idle, at a new arbitrary position.
         prior=len(self.poses);self.set_scan((2.599130,-1.983942,1.455898))
         self.manual((2.599130,-1.983942,1.455898))
         self.wait_for(lambda:len(self.poses)>prior and self.status.get('state')=='READY' and self.status.get('source')=='manual')
+        self.assertFalse(self.status['scan_match_required'])
+        self.assertFalse(self.status['scan_match_verified'])
         self.assertLess(math.hypot(self.status['x']-2.599130,self.status['y']+1.983942),.2)
         # A late automatic result must not overwrite the user; active mission rejects reset.
         self.action_active=True;time.sleep(.3);prior=len(self.poses)

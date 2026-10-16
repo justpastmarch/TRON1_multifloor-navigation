@@ -79,7 +79,6 @@ def create_mission_action_server() -> MissionActionServer:
         DEFAULT_READINESS_POLICY.max_linear_speed, DEFAULT_READINESS_POLICY.max_angular_speed)
     state = RosStateMonitor(
         float(rospy.get_param("~state_freshness_sec", 2.0)),
-        float(rospy.get_param("~stationary_speed_threshold", 0.02)),
         float(rospy.get_param("~handoff_timeout", 4.0 if lidar_handoff else 2.0)),
         StairEntryPolicy(
             float(rospy.get_param("~stair_entry_xy_tolerance", entry_defaults.xy_tolerance_m)),
@@ -92,7 +91,7 @@ def create_mission_action_server() -> MissionActionServer:
     )
 
     navigation = NavigationExecutor.create_ros(
-        RosNavigationSources(state.floor_state, state.supervisor_state, state)
+        RosNavigationSources(state.floor_state, state.supervisor_state)
     )
     segment_executor = RosSegmentExecutor(
         RosSegmentResources(
@@ -139,7 +138,6 @@ def create_mission_action_server() -> MissionActionServer:
         required={'locations','image_topic','arrival_radius_m','arrival_yaw_rad','frame_timeout_sec'}
         locations={loc.id:loc for loc in configuration.locations}
         if (set(photo)!=required or not isinstance(photo['locations'],list) or not photo['locations']
-                or len(set(photo['locations']))!=len(photo['locations'])
                 or any(key not in locations or locations[key].floor_id!='RF' for key in photo['locations'])
                 or any(type(photo[k]) not in (int,float) or not math.isfinite(photo[k]) or photo[k]<=0
                        for k in ('arrival_radius_m','arrival_yaw_rad','frame_timeout_sec'))):
@@ -176,8 +174,7 @@ def create_mission_action_server() -> MissionActionServer:
         try:
             from mission_manager.ros_console import RosConsole
             html = Path(rospkg.RosPack().get_path("mission_manager")) / "config" / "mission_console.html"
-            server.console = RosConsole(planner, orchestrator, configuration, settings.action_name, html, console_port,
-                                        tag_topic=rospy.get_param("~tag_topic", "/tag_detections"))
+            server.console = RosConsole(planner, orchestrator, configuration, settings.action_name, html, console_port)
         except Exception as error:
             # An optional display failure must not take down mission execution.
             rospy.logerr("Mission console unavailable; mission server remains active: %s", error)

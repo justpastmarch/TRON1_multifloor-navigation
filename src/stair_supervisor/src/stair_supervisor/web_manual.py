@@ -42,7 +42,7 @@ class WebManual:
         self.lease=None;self.ended=True;self.expires=0.;self.command=NormalizedTwist.zero()
 
     def selected(self,now):
-        if self.lease is None or self.ended or now>=self.expires:return None
+        if self.lease is None or self.ended or self.sequence<0 or now>=self.expires:return None
         return self.command
 
     def snapshot(self,now):

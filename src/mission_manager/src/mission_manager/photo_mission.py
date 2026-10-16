@@ -33,7 +33,10 @@ class PhotoMission:
             if value.get('version')!=1:raise ValueError('unknown photo session version')
             self.session=value
             if value.get('stage') in ('OUTBOUND','RETURNING','PHOTO_ARRIVED','RETURN_ARRIVED'):
-                self.session.update(stage='INTERRUPTED',detail='실행 중 재시작됨 · 자동 재개하지 않음')
+                stage=value.get('stage')
+                missed=value.get('missed_photos',[])
+                outcome=('PARTIAL' if missed else 'INCOMPLETE') if stage=='OUTBOUND' else ('PARTIAL' if missed else 'COMPLETE')
+                self.session.update(stage='INTERRUPTED',photo_outcome=outcome,detail='실행 중 재시작됨 · 자동 재개하지 않음')
 
     def mail_settings(self, recipient):
         from .mail_outbox import address
@@ -88,18 +91,52 @@ class PhotoMission:
                 if saved else '촬영 실패: '+str(error)))
         with self.lock:self.manual_capture.update(result,busy=False)
 
-    def _queue_photo_mail(self, location, path):
+    def _queue_photo_mail(self, location, path, visit_index=None):
         # SMTP is handled by the worker; even local queue failures never fail motion.
         recipient=self.session.get('mail_recipient','')
         if not recipient:return
         try:
             if self.mail is None:raise ValueError('mail worker unavailable')
-            self.mail.enqueue(self.session['mission_id'],location,path,recipient)
+            mail_id=self.session['mission_id']
+            if visit_index is not None and location in self.settings['locations'][:visit_index]:
+                mail_id+=':visit:'+str(visit_index)
+            self.mail.enqueue(mail_id,location,path,recipient)
         except Exception as error:
             self.mail_error=type(error).__name__+' · 메일 대기열 저장 실패. 사진은 저장됐고 주행은 계속합니다.'
 
+    def _remaining_visits(self, session):
+        # A location may occur twice; completion belongs to a route occurrence.
+        photos=[item for item in session.get('photos',[]) if isinstance(item,dict)]
+        indexed={item['visit_index'] for item in photos if 'visit_index' in item}
+        legacy=[item.get('location') for item in photos if 'visit_index' not in item]
+        remaining=[]
+        for index,location in enumerate(self.settings['locations']):
+            if index in indexed:continue
+            if location in legacy:
+                legacy.remove(location)
+                continue
+            remaining.append((index,location))
+        return remaining
+
+    def _remaining_locations(self, session):
+        return [location for _,location in self._remaining_visits(session)]
+
+    def _route_matches(self, session):
+        route=session.get('route_locations')
+        if route is not None:return route == list(self.settings['locations'])
+        return len(set(self.settings['locations'])) == len(self.settings['locations'])
+
+    def _retry_available(self, session):
+        return bool(session.get('origin') and self._route_matches(session) and
+                    session.get('stage') in ('FAILED','CANCELLED','INTERRUPTED') and
+                    not session.get('return_started',False) and
+                    self._remaining_locations(session))
+
     def snapshot(self):
-        with self.lock:return deepcopy(self.session)
+        with self.lock:
+            state=deepcopy(self.session)
+            if state:state['retry_available']=self._retry_available(state)
+            return state
 
     def save(self, **updates):
         with self.lock:
@@ -110,7 +147,7 @@ class PhotoMission:
                 json.dump(self.session,stream,ensure_ascii=False,indent=2);stream.flush();os.fsync(stream.fileno())
             temporary.replace(path)
 
-    def preflight(self, returning=False):
+    def preflight(self, returning=False, rooftop_only=False):
         session=self.snapshot()
         if returning:
             if session.get('stage') not in ('WAITING_RETURN','INTERRUPTED','FAILED','CANCELLED') or not session.get('origin'):
@@ -118,19 +155,28 @@ class PhotoMission:
             identity=getattr(self.executor,'photo_map_identity',None)
             if identity is not None and session.get('origin_map_sha256')!=identity(session['origin']['floor_id']):
                 raise ValueError('저장된 출발 좌표의 지도가 변경되었습니다. 출발 위치를 다시 확인해야 합니다.')
-        elif session.get('origin') and session.get('stage')!='COMPLETE':
-            raise ValueError('기존 촬영 임무의 복귀가 남아 있습니다. 복귀 승인으로 출발점에 돌아오세요.')
+        elif not rooftop_only and self._route_matches(session) and session.get('origin') and session.get('stage')!='COMPLETE':
+            if not self._retry_available(session):
+                raise ValueError('기존 촬영 임무의 복귀가 남아 있습니다. 복귀 승인으로 출발점에 돌아오세요.')
+            identity=getattr(self.executor,'photo_map_identity',None)
+            if identity is not None and session.get('origin_map_sha256')!=identity(session['origin']['floor_id']):
+                raise ValueError('저장된 출발 좌표의 지도가 변경되었습니다. 출발 위치를 다시 확인해야 합니다.')
         readiness=getattr(self.executor,'photo_preflight',None)
         if readiness is not None:readiness(returning=returning)
 
-    def plan(self, planner, anchor, returning=False):
-        self.preflight(returning)
+    def plan(self, planner, anchor, returning=False, rooftop_only=False):
+        self.preflight(returning, rooftop_only)
+        if rooftop_only and planner._locations[anchor].floor_id != 'RF':
+            raise ValueError('옥상 순회는 RF 지도와 현재 위치 확인 후 시작합니다.')
         origin_id=anchor
-        origin=self.snapshot().get('origin')
-        targets=([origin['id']] if planner._locations[anchor].floor_id!=origin['floor_id'] else []) if returning else list(self.settings['locations'])
+        session=self.snapshot()
+        origin=session.get('origin')
+        targets=([origin['id']] if planner._locations[anchor].floor_id!=origin['floor_id'] else []) if returning else (self._remaining_locations(session) if self._retry_available(session) else list(self.settings['locations']))
         segments=[]
         for target in targets:
             route=planner.plan_from_current_pose(anchor,target)
+            if rooftop_only and any(s.source_floor != 'RF' or s.target_floor != 'RF' for s in route.segments):
+                raise ValueError('옥상 순회에 다른 층 경로를 포함할 수 없습니다.')
             segments.extend(json.loads(route.to_bytes())['segments']);anchor=target
             if not returning:segments.append(dict(type='PHOTO',target_id=target,source_floor='RF',profile_id=None))
         if returning:segments.append(dict(type='RETURN_POSE',target_id=origin['id'],source_floor=origin['floor_id'],profile_id=None))
@@ -138,22 +184,40 @@ class PhotoMission:
 
     def run(self, host, request, feedback, cancelled):
         returning=request.mission_type is MissionType.RETURN_TO_START
+        rooftop_only=request.mission_type is MissionType.ROOFTOP_TOUR
         started=False
         try:
-            self.preflight(returning)
+            self.preflight(returning, rooftop_only)
+            if rooftop_only and host._planner._locations[host.confirmed_location_id].floor_id != 'RF':
+                raise ValueError('옥상 순회는 RF 지도와 현재 위치 확인 후 시작합니다.')
             if cancelled():
                 return MissionRunResult(SegmentExecutionStatus.CANCELLED,9,"cancelled before photo dispatch",request.mission_id,"")
+            if rooftop_only:
+                self.executor.prepare_rooftop_navigation()
+                if cancelled():
+                    return self._cancel(request)
             if not returning:
-                origin=self.executor.photo_origin(host.confirmed_location_id)
-                started=True
-                self.session=dict(version=1,mission_id=request.mission_id,origin=asdict(origin),photos=[],stage='OUTBOUND',mail_recipient=self.mail_recipient)
-                identity=getattr(self.executor,'photo_map_identity',None)
-                self.save(origin_map_sha256=identity(origin.floor_id) if identity is not None else None,detail='촬영 순회 시작')
+                if self._retry_available(self.snapshot()):
+                    started=True
+                    self.save(stage='OUTBOUND',return_started=False,
+                              photo_outcome='PARTIAL' if self.session.get('missed_photos') else 'IN_PROGRESS',
+                              detail='현재 위치에서 남은 촬영 지점 재시도')
+                else:
+                    origin=self.executor.photo_origin(host.confirmed_location_id)
+                    if self.session:
+                        archive=self.output/self.session['mission_id']/'session.json'
+                        archive.parent.mkdir(parents=True,exist_ok=True)
+                        archive.write_text(json.dumps(self.session,ensure_ascii=False,indent=2))
+                    started=True
+                    self.session=dict(version=1,mission_id=request.mission_id,origin=asdict(origin),route_locations=list(self.settings['locations']),photos=[],missed_photos=[],photo_outcome='IN_PROGRESS',stage='OUTBOUND',mail_recipient=self.mail_recipient,return_started=False)
+                    identity=getattr(self.executor,'photo_map_identity',None)
+                    self.save(origin_map_sha256=identity(origin.floor_id) if identity is not None else None,detail='촬영 순회 시작')
             else:
                 started=True
-                self.save(stage='RETURNING',detail='사용자 승인으로 출발점 복귀 시작')
-            targets=([self.session['origin']['id']] if host._planner._locations[host.confirmed_location_id].floor_id!=self.session['origin']['floor_id'] else []) if returning else self.settings['locations']
-            for index,target in enumerate(targets):
+                self.save(stage='RETURNING',return_started=True,detail='사용자 승인으로 출발점 복귀 시작')
+            targets=([self.session['origin']['id']] if host._planner._locations[host.confirmed_location_id].floor_id!=self.session['origin']['floor_id'] else []) if returning else self._remaining_locations(self.session)
+            visits=list(enumerate(targets)) if returning else self._remaining_visits(self.session)
+            for index,target in visits:
                 if cancelled():return self._cancel(request)
                 # Reuse the canonical route executor, ownership and floor transitions.
                 nav=replace(request,destination_id=target,mission_type=MissionType.NAVIGATE,return_after_task=False)
@@ -163,12 +227,33 @@ class PhotoMission:
                     return outcome
                 if not returning:
                     feedback(MissionProgress(request.mission_id,'RUNNING','RF','PHOTO',index,len(targets),target,'saving a fresh RGB frame'))
-                    capture=self.executor.capture_photo(target,self.output/self.session['mission_id'],cancelled)
-                    if capture.status is not SegmentExecutionStatus.SUCCESS:
-                        self.save(stage='CANCELLED' if cancelled() else 'FAILED',detail=capture.reason)
-                        return MissionRunResult(capture.status,capture.result_code,capture.reason,request.mission_id,str(self.output/self.session['mission_id']))
-                    self.save(photos=self.session['photos']+[dict(location=target,path=capture.artifact_path)],detail='사진 저장: '+target)
-                    self._queue_photo_mail(target,capture.artifact_path)
+                    try:
+                        capture=self.executor.capture_photo(target,self.output/self.session['mission_id'],cancelled)
+                    except Exception as error:
+                        capture=None
+                        capture_error='{}: {}'.format(type(error).__name__,error)
+                    else:
+                        capture_error=''
+                    if capture is not None and capture.status is SegmentExecutionStatus.CANCELLED:
+                        return self._cancel(request)
+                    if cancelled():
+                        return self._cancel(request)
+                    if capture is None or capture.status is not SegmentExecutionStatus.SUCCESS:
+                        reason=capture_error or (capture.reason if capture is not None else '사진 촬영 실패')
+                        missed=[item for item in self.session.get('missed_photos',[])
+                                if item.get('visit_index', -1)!=index]
+                        missed.append(dict(location=target,visit_index=index,reason=reason,
+                                           result_code=int(capture.result_code) if capture is not None else 7))
+                        self.save(missed_photos=missed,photo_outcome='PARTIAL',
+                                  detail='촬영 누락: {} · 다음 지점으로 이동'.format(target))
+                        continue
+                    missed=[item for item in self.session.get('missed_photos',[])
+                            if item.get('visit_index', -1)!=index]
+                    self.save(photos=self.session['photos']+[dict(location=target,visit_index=index,path=capture.artifact_path)],
+                              missed_photos=missed,
+                              photo_outcome='PARTIAL' if missed else 'IN_PROGRESS',
+                              detail='사진 저장: '+target)
+                    self._queue_photo_mail(target,capture.artifact_path,visit_index=index)
             if returning:
                 origin=Location(**self.session['origin'])
                 capture=self.executor.return_photo_origin(origin,cancelled)
@@ -187,12 +272,31 @@ class PhotoMission:
             return MissionRunResult(SegmentExecutionStatus.CANCELLED if cancelled() else SegmentExecutionStatus.FAILED,9 if cancelled() else 7,str(error),request.mission_id,'')
 
     def complete_hold(self, returning, error=None):
-        if error is not None:
-            self.save(stage='FAILED',detail='위치 유지 인계 실패: '+str(error))
+        photos=self.session.get('photos',[])
+        missed=self.session.get('missed_photos',[])
+        total=len(photos)+len(missed)
+        outcome='PARTIAL' if missed else 'COMPLETE'
+        if missed:
+            points=', '.join(item.get('location','?') for item in missed)
+            summary='촬영 일부 누락 ({}/{}개 성공): {}'.format(len(photos),total,points)
         else:
-            self.save(stage='COMPLETE' if returning else 'WAITING_RETURN',
-                      detail='출발 위치 복귀 완료' if returning else '촬영 완료 · 위치 유지 · 복귀 승인 대기')
+            summary='촬영 완료 ({}/{}개)'.format(len(photos),total)
+        if error is not None:
+            detail='위치 유지 인계 실패: {} · {}'.format(error,summary)
+            self.save(stage='FAILED',photo_outcome=outcome,detail=detail)
+            return
+        detail=('출발 위치 복귀 완료 · '+summary if returning else
+                summary+' · 위치 유지 · 복귀 승인 대기')
+        self.save(stage='COMPLETE' if returning else 'WAITING_RETURN',
+                  photo_outcome=outcome,detail=detail)
 
     def _cancel(self,request):
-        self.save(stage='CANCELLED',detail='사용자가 촬영/복귀를 중단했습니다.')
+        missed=self.session.get('missed_photos',[])
+        outcome=self.session.get('photo_outcome','INCOMPLETE')
+        if request.mission_type in (MissionType.PHOTO_TOUR, MissionType.ROOFTOP_TOUR):
+            outcome='PARTIAL' if missed else 'INCOMPLETE'
+        detail='사용자가 촬영/복귀를 중단했습니다.'
+        if missed:
+            detail+=' · 촬영 일부 누락: '+', '.join(item.get('location','?') for item in missed)
+        self.save(stage='CANCELLED',photo_outcome=outcome,detail=detail)
         return MissionRunResult(SegmentExecutionStatus.CANCELLED,9,self.session['detail'],request.mission_id,'')

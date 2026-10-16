@@ -28,7 +28,6 @@ from mission_manager.mission_orchestrator import (
 )
 from mission_manager.recording_session import RecordingSession
 from mission_manager.navigation_executor import (
-    HandoffSafetyError,
     InvalidNavigationGoalError,
     NavigationExecutor,
     NavigationLifecycleError,
@@ -127,20 +126,45 @@ class RosSegmentExecutor(SegmentExecutor):
 
     def _navigation_segment(self, segment: RouteSegment, context: SegmentContext) -> SegmentExecution:
         floor = self._state.floor_state()
+        location = self._locations[segment.target_id]
+        return self._navigate_location(location, int(floor.map_generation), context.cancellation_requested,
+                                       entry=location.type in ('STAIR_ENTRY', 'LANDING'))
+
+    def prepare_rooftop_navigation(self):
+        from std_srvs.srv import Trigger
+        name = '/stair_supervisor/prepare_rooftop_navigation'
+        from multifloor_manager.ros_services import BoundedServiceCaller
+        result = BoundedServiceCaller(5.0).call(name, rospy.ServiceProxy(name, Trigger))
+        if not result.success:
+            raise ValueError('옥상 WALK 전환 실패: '+result.message)
+
+    def navigate_point(self, request, cancelled):
+        health = self._state.health()
+        if not health.healthy:
+            return SegmentExecution.abort(health.reason, 'state health gate')
+        with self._active_lock:
+            self._active_type = SegmentType.NAVIGATION
+        try:
+            return self._navigate_location(request.point_location(), request.point_map_generation, cancelled)
+        finally:
+            with self._active_lock:
+                self._active_type = None
+
+    def _navigate_location(self, location, generation, cancelled, entry=False):
         try:
             result = self._navigation.execute(
-                NavigationRequest(self._locations[segment.target_id], int(floor.map_generation),
-                                  entry_approach=self._locations[segment.target_id].type in ("STAIR_ENTRY", "LANDING"),
+                NavigationRequest(location, generation,
+                                  entry_approach=entry,
                                   arrival_region=(self.photo_settings['arrival_radius_m'],self.photo_settings['arrival_yaw_rad'])
-                                  if self.photo_settings and self._locations[segment.target_id].type=='SCAN' else None),
-                cancellation_requested=context.cancellation_requested,
+                                  if self.photo_settings and location.id in self.photo_settings['locations'] else None),
+                cancellation_requested=cancelled,
             )
         except (NavigationReadinessError, InvalidNavigationGoalError) as error:
             return SegmentExecution.failed(4, str(error), "navigation boundary rejection")
         except NavigationLifecycleError as error:
             return SegmentExecution.abort(str(error), "move_base communication/correlation failure")
         if result.outcome is NavigationOutcome.SUCCEEDED:
-            evidence = "NAV accepted; move_base status={} attempts={} entry_region={}".format(
+            evidence = "NAV arrival accepted; move_base status={} attempts={} region_stop={}".format(
                 result.status, result.attempts, result.status in (GoalStatus.PREEMPTED, GoalStatus.RECALLED))
             return SegmentExecution.success(evidence=evidence)
         if result.outcome is NavigationOutcome.CANCELLED:
@@ -150,51 +174,50 @@ class RosSegmentExecutor(SegmentExecutor):
         return SegmentExecution.failed(4, getattr(self._navigation, "failure_reason", "") or "move_base navigation failed", "attempts={}".format(result.attempts))
 
     def _stair_segment(self, segment: RouteSegment, context: SegmentContext) -> SegmentExecution:
-        expected_location = self._locations[segment.source_id]
-        expected_pose = StairEntryPose(
-            expected_location.x,
-            expected_location.y,
-            expected_location.yaw,
-        )
-        try:
-            self._navigation.prepare_for_stair()
-        except (NavigationLifecycleError, HandoffSafetyError) as error:
-            return SegmentExecution.abort(str(error), "stair handoff barrier")
-        fence = self._state.begin_stair_entry()
-        entry = self._state.wait_for_stair_entry(fence, expected_pose)
-        if context.cancellation_requested():
-            return SegmentExecution.cancelled('mission cancelled during stair entry handoff')
-        if not entry.accepted:
-            return SegmentExecution.failed(4, entry.reason, "stair entry pose rejection")
+        resumed = bool(context.resume_run_id)
+        if resumed and self._state.floor_state().floor_id != segment.source_floor:
+            return SegmentExecution.failed(4, "actual floor differs from retained stair route", "stair resume floor mismatch")
+        token = ""
+        if not resumed:
+            expected_location = self._locations[segment.source_id]
+            expected_pose = StairEntryPose(expected_location.x, expected_location.y, expected_location.yaw)
+            try:
+                self._navigation.prepare_for_stair()
+            except NavigationLifecycleError as error:
+                return SegmentExecution.abort(str(error), "stair handoff goal completion")
         if not self._stair.wait_for_server(rospy.Duration(rospy.get_param("~child_wait_timeout", 5.0))):
             return SegmentExecution.abort("stair action server unavailable", "communication timeout")
+        if not resumed:
+            fence = self._state.begin_stair_entry()
+            entry = self._state.wait_for_stair_entry(fence, expected_pose)
+            if context.cancellation_requested():
+                return SegmentExecution.cancelled('mission cancelled during stair entry handoff')
+            if not entry.accepted:
+                return SegmentExecution.failed(4, entry.reason, "stair entry pose rejection")
         profile = self._stair_profiles[segment.profile_id]
         direction = StairTraversalGoal.UP if profile.direction is Direction.UP else StairTraversalGoal.DOWN
-        token = self._stair_admission.issue(
-            StairAdmissionContext(
-                profile.id,
-                direction,
-                int(self._state.supervisor_state().ownership_epoch),
-            ),
-            lambda: self._state.wait_for_stair_entry(fence, expected_pose),
-        )
+        if not resumed:
+            token = self._stair_admission.issue(
+                StairAdmissionContext(profile.id, direction,
+                                      int(self._state.supervisor_state().ownership_epoch)),
+                lambda: self._state.stair_entry_decision(fence, expected_pose),
+            )
         try:
             with self._active_lock:
                 if context.cancellation_requested():
                     return SegmentExecution.cancelled('mission cancelled before stair goal')
-                self._stair.send_goal(
-                    StairTraversalGoal(
-                        stair_id=profile.id,
-                        direction=direction,
-                        admission_token=token,
-                    )
-                )
+                self._stair.send_goal(StairTraversalGoal(
+                    stair_id=profile.id, direction=direction, admission_token=token,
+                    resume_run_id=context.resume_run_id, resume_revision=context.resume_revision,
+                    resume_phase=context.resume_phase,
+                ))
             if not self._stair.wait_for_result():
                 return SegmentExecution.abort("stair action wait ended without result", "communication loss")
             status = self._stair.get_state()
             result: StairTraversalResult | None = self._stair.get_result()
         finally:
-            self._stair_admission.clear(token)
+            if token:
+                self._stair_admission.clear(token)
         if status in (GoalStatus.PREEMPTED, GoalStatus.RECALLED):
             return SegmentExecution.cancelled("stair traversal cancelled at safe checkpoint")
         if result is None or status == GoalStatus.LOST:
@@ -270,8 +293,8 @@ class RosSegmentExecutor(SegmentExecutor):
     def photo_preflight(self, returning=False):
         if getattr(self,'photo_arrival_hold',None) is None:
             raise ValueError('촬영/복귀 위치 유지가 설정되지 않았습니다.')
-        if not returning and (self.photo_camera is None or not self.photo_camera.readiness()):
-            raise ValueError('최신 RGB 카메라 입력이 없습니다. 센서 연결 후 다시 시작하세요.')
+        # Camera failure is recorded per photo point by PhotoMission; it
+        # cannot block navigation and stair departure from the current floor.
 
     def photo_origin(self, location_id):
         from std_srvs.srv import Empty

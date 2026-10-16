@@ -22,6 +22,12 @@ def reverse_route(spec, source, profile, scale):
         r['flight_%d_polygon'%i]=deepcopy(source['flight_%d_polygon'%j])
     r['entry_polygon']=deepcopy(source['exit_polygon'])
     r['exit_polygon']=deepcopy(source['entry_polygon'])
+    # Clearance belongs to the physical region, not its traversal direction.
+    for destination, origin in (('entry', 'exit'), ('exit', 'entry')):
+        key=destination+'_support_margin_m';source_key=origin+'_support_margin_m'
+        r['limits'].pop(key,None)
+        if source_key in source['limits']:
+            r['limits'][key]=source['limits'][source_key]
     r['landing_polygon']=deepcopy(source['roof_landing_polygon'])
     r['roof_landing_polygon']=deepcopy(source['landing_polygon'])
     wrap=lambda x:math.atan2(math.sin(x),math.cos(x))

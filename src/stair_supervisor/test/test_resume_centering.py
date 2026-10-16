@@ -17,23 +17,27 @@ class ResumeCentering(unittest.TestCase):
         return w,c
 
     def gap(self,w,c):
+        previous=c.command()
         r=c.evaluate(c.phase,101.11)
-        self.assertFalse(r.faulted);self.assertEqual(c.command(),(0.,0.))
+        self.assertFalse(r.faulted);self.assertEqual(c.command(),previous)
+        self.assertEqual(c.debug['tracking_state'],'INPUT_DELAY_CONTINUING')
 
     def test_fresh_resume_restores_useful_forward_but_slews_steering(self):
         w,c=self.armed();self.gap(w,c)
         c.evaluate(c.phase,102.29)
+        previous_w=c.command()[1]
         w.value=sample(3,102.3,x=.5,y=.1,z=.3,yaw=.1)
         r=c.evaluate(c.phase,102.31)
         self.assertFalse(r.faulted,c.debug)
         self.assertEqual(c.command()[0],.55)
         self.assertTrue(c.debug['flight_restart']);self.assertTrue(c.debug['input_recovery_resumed'])
-        self.assertLessEqual(abs(c.command()[1]),.3*.02+1e-8)
+        self.assertLessEqual(abs(c.command()[1]-previous_w),.3*.5+1e-8)
 
     def test_recorded_two_second_delay_can_recover_before_four_seconds(self):
         w,c=self.armed();self.gap(w,c)
+        previous=c.command()
         r=c.evaluate(c.phase,103.31)
-        self.assertFalse(r.faulted);self.assertEqual(c.command(),(0.,0.))
+        self.assertFalse(r.faulted);self.assertEqual(c.command(),previous)
         w.value=sample(3,103.4,x=.5,z=.3)
         self.assertFalse(c.evaluate(c.phase,103.41).faulted)
         self.assertEqual(c.command()[0],.55)
@@ -41,7 +45,12 @@ class ResumeCentering(unittest.TestCase):
     def test_expired_input_still_exhausts_and_never_blindly_drives(self):
         w,c=self.armed();self.gap(w,c)
         r=c.evaluate(c.phase,105.12)
-        self.assertTrue(r.faulted);self.assertEqual(c.command(),(0.,0.))
+        self.assertFalse(r.faulted)
+        self.assertEqual(c.command(),(0.,0.))
+        self.assertEqual(c.debug['tracking_state'], 'INPUT_REOBSERVING')
+        r=c.evaluate(c.phase,107.12)
+        self.assertTrue(r.faulted)
+        self.assertEqual(c.command(),(0.,0.))
 
     def test_neutral_invalid_epoch_boundary_and_attitude_cannot_use_restart(self):
         for mode in ('neutral','epoch','boundary','attitude'):
@@ -57,13 +66,13 @@ class ResumeCentering(unittest.TestCase):
                 if mode=='neutral':self.assertEqual(c.command(),(0.,0.));self.assertFalse(c.debug['flight_restart'])
                 else:self.assertTrue(r.faulted,c.debug)
 
-    def test_normal_start_and_landing_keep_existing_slew_and_caps(self):
+    def test_upward_stair_start_is_full_input_and_landing_keeps_flat_cap(self):
         w,c=self.armed();c._last_command=(0.,0.);c._last_command_at=100.2
         w.value=sample(3,100.3,x=.4,z=.2)
         c.evaluate(c.phase,100.31)
-        self.assertLessEqual(c.command()[0],.15*.11+1e-8)
+        self.assertEqual(c.command()[0],.55)
         c.phase=Phase.LANDING;c._last_command=(.55,0.);c._last_command_at=100.3
-        self.assertLessEqual(c._limit_command(.55,.5,100.4)[0],.06)
+        self.assertLessEqual(c._limit_command(.55,.5,100.4)[0],.195)
 
     def test_left_and_right_centering_are_symmetric_and_bounded(self):
         _,c=self.armed()

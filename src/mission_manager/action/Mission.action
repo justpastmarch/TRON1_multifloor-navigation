@@ -1,6 +1,16 @@
 string destination_id
 string mission_type
 bool return_after_task
+string resume_route_id
+string resume_run_id
+uint32 resume_revision
+string resume_phase
+# Optional map-point goal. Used only by navigate_point; named missions leave these empty.
+string point_floor
+uint64 point_map_generation
+float64 point_x
+float64 point_y
+float64 point_yaw
 ---
 uint8 OK=0
 uint8 BUSY=1

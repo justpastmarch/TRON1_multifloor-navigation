@@ -75,3 +75,11 @@ edges:
     from: stair_5f_to_rf
     to: stair_5f_from_4f
     type: NAV
+  - id: roof_loop_west_return
+    from: roof_loop_nw
+    to: roof_loop_sw
+    type: NAV
+  - id: roof_loop_south
+    from: roof_loop_sw
+    to: roof_loop_se
+    type: NAV

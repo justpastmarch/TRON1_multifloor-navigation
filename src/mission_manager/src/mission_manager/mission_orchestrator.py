@@ -22,9 +22,11 @@ from mission_manager.record_route_runner import (
     RecordRouteRunner,
     RecordRouteRuntime,
 )
+from mission_manager.segment_types import SegmentType
 from mission_manager.route_planner import (
     BuildingPlanner,
     LogicalAnchor,
+    Route,
     RoutePlanningError,
 )
 
@@ -51,7 +53,9 @@ class MissionOrchestrator:
     @property
     def confirmed_location_id(self) -> str:
         if self._floor_anchor_resolver is not None:
-            self._anchor = LogicalAnchor(self._floor_anchor_resolver(self._anchor.location_id))
+            # UI polling may run while a floor segment is completing. Resolving
+            # a display/planning floor must not rewrite that segment's source.
+            return self._floor_anchor_resolver(self._anchor.location_id)
         return self._anchor.location_id
 
     def cancel_active(self) -> None:
@@ -64,8 +68,17 @@ class MissionOrchestrator:
         cancellation_requested: Callable[[], bool],
     ) -> MissionRunResult:
         """Plan outbound once, execute it, then optionally plan a fresh return."""
-        self.confirmed_location_id  # synchronize only from confirmed floor state
-        if request.mission_type in (MissionType.PHOTO_TOUR, MissionType.RETURN_TO_START):
+        self._anchor = LogicalAnchor(self.confirmed_location_id)
+        if request.mission_type is MissionType.NAVIGATE_POINT:
+            if cancellation_requested():
+                return MissionRunResult(SegmentExecutionStatus.CANCELLED, 9, 'mission cancelled', request.mission_id, '')
+            feedback(MissionProgress(request.mission_id, 'RUNNING', request.point_floor,
+                                     'NAVIGATION', 0, 1, 'ui_point', 'map-point dispatch'))
+            result = self._executor.navigate_point(request, cancellation_requested)
+            # A temporary coordinate never mutates the named route graph or photo session.
+            return MissionRunResult(result.status, result.result_code, result.reason,
+                                    request.mission_id, result.artifact_path)
+        if request.mission_type in (MissionType.PHOTO_TOUR, MissionType.ROOFTOP_TOUR, MissionType.RETURN_TO_START):
             if self.photo is None:
                 return MissionRunResult(SegmentExecutionStatus.FAILED,2,'photo mission unavailable',request.mission_id,'')
             return self.photo.run(self,request,feedback,cancellation_requested)
@@ -80,12 +93,21 @@ class MissionOrchestrator:
             return outcome.result
         fsm = MissionFSM().dispatch(MissionEvent.GOAL_RECEIVED)
         try:
-            plan = self._planner.plan_from_current_pose if self._start_from_current_pose else self._planner.plan
-            route = plan(
-                self._anchor.location_id,
-                request.destination_id,
-                self._inspect_profile_id if request.mission_type is MissionType.INSPECT else None,
-            )
+            if request.mission_type is MissionType.RESUME_STAIR:
+                stair, transition = self._planner.stair_segments_for_profile(request.resume_route_id)
+                if request.destination_id != stair.target_id:
+                    raise RoutePlanningError(self._anchor.location_id, request.destination_id,
+                                             'stair checkpoint destination differs from retained route')
+                # The old mission anchor may be its startup default after a manager restart.
+                # The child executor checks the live floor before any resumed motion.
+                route = Route(stair.source_id, stair.target_id, (stair, transition))
+            else:
+                plan = self._planner.plan_from_current_pose if self._start_from_current_pose else self._planner.plan
+                route = plan(
+                    self._anchor.location_id,
+                    request.destination_id,
+                    self._inspect_profile_id if request.mission_type is MissionType.INSPECT else None,
+                )
         except RoutePlanningError as error:
             fsm.dispatch(MissionEvent.PLAN_FAILED)
             return MissionRunResult(
@@ -103,7 +125,8 @@ class MissionOrchestrator:
         pending = list(route.segments)
         total_count = len(pending)
         return_planned = False
-        context = SegmentContext(request.mission_id, cancellation_requested)
+        context = SegmentContext(request.mission_id, cancellation_requested,
+                                 request.resume_run_id, request.resume_revision, request.resume_phase)
         while pending:
             segment = pending.pop(0)
             if cancellation_requested():
@@ -145,6 +168,8 @@ class MissionOrchestrator:
                 )
                 continue
             if execution.status is SegmentExecutionStatus.SUCCESS:
+                if request.mission_type is MissionType.RESUME_STAIR and segment.type is SegmentType.STAIR:
+                    self._anchor = LogicalAnchor(segment.source_id)
                 self._anchor = self._anchor.after_segment(segment, succeeded=True)
                 artifact_path = execution.artifact_path or artifact_path
                 completed_count += 1

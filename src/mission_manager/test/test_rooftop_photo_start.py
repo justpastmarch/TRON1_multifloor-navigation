@@ -27,8 +27,8 @@ class RoofTests(TestAdapter):
  def test_route_with_stairs_rejected(self):
   c=self.roof();c.orchestrator.photo.plan.return_value['segments'].append(dict(type='STAIR',source_floor='RF'))
   self.assertFalse(c.plan(dict(destination='target',kind='rooftop_photo'))['can_start'])
- def test_reuses_photo_tour_goal(self):
-  c=self.roof();r=c.start_rooftop_photos({});self.assertTrue(r['submitted']);goal=c.client.send_goal.call_args[0][0];self.assertEqual(goal.mission_type,'photo_tour');self.assertEqual(goal.destination_id,'target');self.assertFalse(goal.return_after_task)
+ def test_uses_rooftop_only_goal_on_existing_mission_action(self):
+  c=self.roof();r=c.start_rooftop_photos({});self.assertTrue(r['submitted']);goal=c.client.send_goal.call_args[0][0];self.assertEqual(goal.mission_type,'rooftop_tour');self.assertEqual(goal.destination_id,'target');self.assertFalse(goal.return_after_task)
  def test_record_button_uses_existing_recorder(self):
   c=self.roof();c.start_rooftop_photos(dict(record=True));c.recorder.start.assert_called_once()
 

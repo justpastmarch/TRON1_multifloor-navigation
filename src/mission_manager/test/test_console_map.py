@@ -4,7 +4,7 @@ from nav_msgs.msg import OccupancyGrid,Path
 from geometry_msgs.msg import PoseStamped
 from multifloor_manager.msg import FloorState
 from move_base_msgs.msg import MoveBaseActionResult
-from mission_manager.console_map import ConsoleMap,encode_map
+from mission_manager.console_map import ConsoleMap,encode_map,contains_world_point
 
 
 def grid():
@@ -34,6 +34,13 @@ class MapTest(unittest.TestCase):
     def test_map_change_clears_old_paths(self):
         v=self.view();v.on_map(grid());v.paths['global']=('old',None)
         m=grid();m.info.origin.position.x=2;v.on_map(m);self.assertEqual(v.paths,{})
+    def test_rotated_map_extent_accepts_inside_and_rejects_outside_pose(self):
+        m=grid();m.info.origin.position.x=2.;m.info.origin.position.y=3.
+        m.info.origin.orientation.z=math.sin(math.pi/4);m.info.origin.orientation.w=math.cos(math.pi/4)
+        meta=encode_map(m)
+        self.assertTrue(contains_world_point(meta,1.975,3.025))
+        self.assertFalse(contains_world_point(meta,1.85,3.0))
+
     def test_rotation_and_translation(self):
         p=PoseStamped().pose.position;p.x=1;p.y=0
         out=ConsoleMap.point(p,(2,3,math.pi/2))

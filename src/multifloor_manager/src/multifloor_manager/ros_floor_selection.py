@@ -23,8 +23,12 @@ class FloorSelection:
         generation = None
         try:
             with node._active_lock, startup.lock:
-                if node._active or startup.busy() or not startup.stationary():
-                    return SelectFloorResponse(False, 'finish the mission and stop before selecting the actual floor')
+                if node._active:
+                    return SelectFloorResponse(False, '층 전환 또는 지도 변경이 진행 중입니다. 완료 후 다시 요청하세요.')
+                if startup.busy():
+                    return SelectFloorResponse(False, '실행 중인 임무·계단 제어 또는 최신 제어 상태를 확인하세요. 지도는 아직 변경하지 않았습니다.')
+                # Explicit floor selection changes map/evidence only. Wheel drift
+                # must not block it; localization still validates a usable pose.
                 node._active = True
                 claimed = True
                 startup.generation += 1

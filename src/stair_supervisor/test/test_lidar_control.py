@@ -27,7 +27,7 @@ def box(x0, y0, x1, y1):
 
 def route():
     """SYNTHETIC METRIC FIXTURE. Never a production stair or physical tuning."""
-    return dict(id="test_up", commissioned=True, direction="UP",
+    return dict(id="test_up", commissioned=True, direction="UP", flight_command_policy="observed_feedback",
         flight_1=[[0,0,0],[2,0,1]], flight_2=[[2,1,1],[0,1,2]],
         entry_polygon=box(-1,-1,1,1), flight_1_polygon=box(-1,-1,3,1),
         flight_2_polygon=box(-1,0,3,2), landing_polygon=box(1.5,-1,3,2),
@@ -317,6 +317,7 @@ class OwnershipTest(unittest.TestCase):
         class Control(ScriptedEvidence):
             phase=Phase.VERIFY_ENTRY
             route={'limits':{'handoff_sec':2.}}
+            def traversal_phases(self,profile):return tuple(Phase)
             def prepare(self,*args,**kwargs):pass
             def reset_command(self,now):pass
             def command(self):return (.1,0.)

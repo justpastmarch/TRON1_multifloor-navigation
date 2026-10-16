@@ -49,7 +49,9 @@ class MinimumHeight(unittest.TestCase):
         self.assertFalse(c.debug['completion_checks']['height'])
 
     def test_high_estimate_does_not_replace_progress_or_body_support(self):
-        for x,y,yaw in [(2.5,0,0),(3.17,0,math.pi/4)]:
+        # Second pose passes progress/height but leaves only 2.9 cm at the
+        # external landing edge, below the commissioned 3 cm minimum.
+        for x,y,yaw in [(2.5,0,0),(3.3,-.615+.225+.029,0)]:
             w,c=self.production();w.value=sample(2,100.2,x=x,y=y,z=1.95,yaw=yaw)
             result=c.evaluate(c.phase,100.21)
             self.assertFalse(result.complete,c.debug)

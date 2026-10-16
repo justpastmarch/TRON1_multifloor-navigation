@@ -61,7 +61,6 @@ class RobotTransport:
         self._command_lock = threading.RLock()
         self._web_manual = WebManual()
         self._desired_twist = NormalizedTwist.zero()
-        self._latest_twist = NormalizedTwist.zero()
         self._updated_at = float("-inf")
         self._outage = OutageBudget(config.stream)
 
@@ -209,7 +208,6 @@ class RobotTransport:
         self._request_success(RequestTitle.WALK_MODE, {}, RobotStatus.WALK)
         with self._command_lock:
             self._desired_twist = NormalizedTwist.zero()
-            self._latest_twist = NormalizedTwist.zero()
             self._updated_at = self._clock.monotonic()
         self._state = TransportState.READY
 
@@ -221,7 +219,6 @@ class RobotTransport:
         command = normalize_twist(linear_mps, angular_radps, self._calibration)
         with self._command_lock:
             self._desired_twist = command
-            self._latest_twist = command
             self._updated_at = self._clock.monotonic()
 
     def begin_web_manual(self):
@@ -234,7 +231,9 @@ class RobotTransport:
         with self._command_lock:
             now = self._clock.monotonic()
             self._web_manual.update(lease, sequence, forward, turn, now, remaining)
-            self.send_current()
+            manual = self._web_manual.selected(now)
+            if manual is not None:
+                self._send_twist(manual, now)
 
     def end_web_manual(self, lease):
         with self._command_lock:
@@ -248,16 +247,12 @@ class RobotTransport:
                 self._web_manual.end(self._web_manual.lease)
                 self._send_twist(NormalizedTwist.zero(), now)
 
-    def web_manual_active(self):
-        with self._command_lock:
-            return self._web_manual.selected(self._clock.monotonic()) is not None
-
     def web_manual_status(self):
         with self._command_lock:
             return self._web_manual.snapshot(self._clock.monotonic())
 
     def send_current(self) -> None:
-        """Emit one stream tick, replacing stale input with a complete zero."""
+        """Send the fresh automatic tick, then any active manual command."""
         self._raise_if_unavailable()
         if self._state is not TransportState.READY:
             raise TransportFault("robot transport is not ready for motion")
@@ -265,15 +260,25 @@ class RobotTransport:
             now = self._clock.monotonic()
             age = now - self._updated_at
             desired_twist = self._desired_twist
-            self._latest_twist = (
+            automatic = (
                 NormalizedTwist.zero()
                 if age > self._config.stream.watchdog_sec
                 else desired_twist
             )
             manual = self._web_manual.selected(now)
+            self._send_twist(automatic, now)
             if manual is not None:
-                self._latest_twist = manual
-            self._send_twist(self._latest_twist, now)
+                self._send_twist(manual, now)
+
+    def send_walk_mode(self) -> None:
+        """Send WALK once; missing robot ACK must not block a flat tour."""
+        self._require_ready()
+        with self._command_lock:
+            receipt = self._send_request(RequestTitle.WALK_MODE, {})
+            if receipt is None:
+                raise TransportFault("WALK request could not be sent")
+            # Do not leave an unconsumed response reservation or wait for status.
+            self._client.cancel_response(receipt)
 
     def request_stair_mode(self, enabled: bool) -> None:
         """Use the documented wheel-foot stair request and verify its resulting mode."""

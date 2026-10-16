@@ -61,6 +61,10 @@ class MockTransport:
     def send_current(self) -> None:
         self._record(("send",))
 
+    def expire_web_manual(self) -> bool:
+        # No web-manual lease is created by this action-boundary fixture.
+        return False
+
     def observe_sent_frames(self, observer) -> None:
         self._sent_observer = observer
 
@@ -190,7 +194,12 @@ class StairSupervisorNodeBoundaryTest(unittest.TestCase):
             f"{result.reason}; feedback={feedback}; details={feedback_details[-8:]}",
         )
         self.assertEqual(result.result_code, StairTraversalResult.OK)
-        self.assertEqual(list(dict.fromkeys(feedback)), [phase.value for phase in Phase])
+        # This fixture has two flights. The enum also includes optional roof
+        # phases, which must not be reported by this route.
+        expected_phases = [
+            'VERIFY_ENTRY', 'ALIGN', 'FORWARD_SEGMENT_1', 'LANDING',
+            'TURN_TO_NEXT_FLIGHT', 'FORWARD_SEGMENT_2', 'EXIT_CONFIRM']
+        self.assertEqual(list(dict.fromkeys(feedback)), expected_phases)
         events = self.transport.snapshot()
         start = events.index(("stair", True))
         end = events.index(("stair", False))
@@ -225,7 +234,7 @@ class StairSupervisorNodeBoundaryTest(unittest.TestCase):
             f"DOWN result: {down_result.reason}; code={down_result.result_code}; feedback={down_feedback}",
         )
         self.assertEqual(down_result.result_code, StairTraversalResult.OK)
-        self.assertEqual(list(dict.fromkeys(down_feedback)), [phase.value for phase in Phase])
+        self.assertEqual(list(dict.fromkeys(down_feedback)), expected_phases)
 
         # Given/When: a disabled profile is requested.
         before_disabled = len(self.transport.snapshot())

@@ -237,13 +237,14 @@ class RosEvidenceRuntime(RosEvidenceCallbacks):
             self.publish_floor(state, detail, floor_id)
             self.condition.notify_all()
 
-    def localization_evidence(self):
+    def localization_evidence(self, require_scan_tf: bool = True):
         if self.localization is None:
             return None
         evidence = localization_ready(
             self.localization,
             Nanoseconds(rospy.Time.now().to_nsec()),
             DEFAULT_READINESS_POLICY,
+            require_scan_tf=require_scan_tf,
         )
         self._publish_predicates(evidence.predicates())
         return evidence

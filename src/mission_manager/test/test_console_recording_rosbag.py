@@ -24,12 +24,14 @@ class RecorderIntegrationTest(unittest.TestCase):
             env = dict(os.environ, ROS_MASTER_URI='http://127.0.0.1:%d' % port,
                        ROS_IP='127.0.0.1', ROS_HOME=directory)
             env.pop('ROS_HOSTNAME', None)
-            os.environ.update(ROS_MASTER_URI=env['ROS_MASTER_URI'], ROS_IP='127.0.0.1')
+            os.environ.update(ROS_MASTER_URI=env['ROS_MASTER_URI'], ROS_IP='127.0.0.1',ROS_HOME=directory)
             os.environ.pop('ROS_HOSTNAME', None)
             master = recorder = None
             import rospy
             import rosbag
             from std_msgs.msg import String
+            from sensor_msgs.msg import CompressedImage
+            from mission_manager.photo_capture import PhotoCapture
             try:
                 master = subprocess.Popen(['roscore', '-p', str(port)], env=env,
                                           stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
@@ -45,15 +47,20 @@ class RecorderIntegrationTest(unittest.TestCase):
                 else:
                     self.fail('isolated master did not start')
                 rospy.init_node('record_filter_fixture', disable_signals=True)
-                keep = ['/camera1/color/image_raw/compressed', '/livox/lidar', '/livox/imu',
+                keep = ['/mission_manager/rgb/compressed', '/livox/lidar', '/livox/imu',
                         '/tron/sensor_joy', '/stair_supervisor/control_debug', '/tag_detections']
                 omit = ['/camera1/depth/image_rect_raw/compressedDepth',
                         '/camera1/depth/image_rect_raw/compressed',
                         '/camera1/infra1/image_rect_raw/compressed',
                         '/camera1/infra2/image_rect_raw/compressed',
                         '/camera1/aligned_depth_to_color/image_raw/compressedDepth',
-                        '/camera1/color/image_raw', '/apriltag_camera/image_raw']
-                pubs = [rospy.Publisher(topic, String, queue_size=1) for topic in keep+omit]
+                        '/camera1/color/image_raw', '/camera1/color/image_raw/compressed',
+                        '/apriltag_camera/image_raw', '/apriltag_camera/image_raw/compressed']
+                upstream='/camera1/color/image_raw/compressed'
+                camera=PhotoCapture(upstream,.5)
+                rgb=rospy.Publisher(upstream,CompressedImage,queue_size=1)
+                pubs = [rospy.Publisher(topic, String, queue_size=1) for topic in keep+omit
+                        if topic not in ('/mission_manager/rgb/compressed',upstream)]
                 path = str(Path(directory)/'test.bag')
                 recorder = subprocess.Popen(['/opt/ros/noetic/lib/rosbag/record', '--all', '--exclude', CAMERA_DUPLICATES,
                                               '-O', path], env=env, stdout=subprocess.PIPE,
@@ -62,6 +69,9 @@ class RecorderIntegrationTest(unittest.TestCase):
                 while time.monotonic()<until:
                     for pub in pubs:
                         pub.publish(String(data='filter transport fixture'))
+                    frame=CompressedImage();frame.header.stamp=rospy.Time.now()
+                    frame.format='jpeg';frame.data=b'compressed relay fixture'
+                    rgb.publish(frame)
                     time.sleep(.05)
                 recorder.send_signal(signal.SIGINT)
                 log, _ = recorder.communicate(timeout=10)
@@ -74,6 +84,10 @@ class RecorderIntegrationTest(unittest.TestCase):
                         self.assertGreater(topics[topic].message_count, 0)
                     for topic in omit:
                         self.assertNotIn(topic, topics)
+                    self.assertEqual(topics['/mission_manager/rgb/compressed'].msg_type,'sensor_msgs/CompressedImage')
+                    _,recorded,_=next(bag.read_messages(topics=['/mission_manager/rgb/compressed']))
+                    self.assertEqual(recorded.data,b'compressed relay fixture')
+                    self.assertGreater(recorded.header.stamp.to_sec(),0.)
             finally:
                 rospy.signal_shutdown('fixture complete')
                 for process in (recorder, master):

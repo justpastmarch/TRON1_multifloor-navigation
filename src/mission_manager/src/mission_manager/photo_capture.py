@@ -10,13 +10,18 @@ class PhotoCapture:
         from sensor_msgs.msg import CompressedImage
         self.condition=threading.Condition();self.latest=None;self.sequence=0
         self.timeout=timeout
+        # Share the existing Wi-Fi subscription with local recording. The old
+        # apriltag relay is absent when tag localization is disabled.
+        self.recording=rospy.Publisher('/mission_manager/rgb/compressed',CompressedImage,queue_size=1)
         self.subscriber=rospy.Subscriber(topic,CompressedImage,self.receive,queue_size=1)
         rospy.on_shutdown(self.subscriber.unregister)
+        rospy.on_shutdown(self.recording.unregister)
 
     def receive(self,message):
         with self.condition:
             self.sequence+=1;self.latest=(message,time.monotonic(),self.sequence)
             self.condition.notify_all()
+        self.recording.publish(message)
 
     def readiness(self):
         import rospy

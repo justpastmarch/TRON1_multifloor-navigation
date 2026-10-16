@@ -1,4 +1,5 @@
-# Production transition evidence is intentionally disabled until tuned on site.
+# T_FLOOR_CONFIRMED is supplied by a matched, single-use stair action success in production;
+# the configured map, localization and costmap observations remain required.
 # Keys: id, enabled, conditions, optional_count, freshness_sec, dwell_sec, timeout_sec.
 # FUTURE NON-SAFETY EXAMPLE ONLY; keep commented until a pure producer, registry entry, and tests exist.
 # Must be safe when false; never place commands, URLs, IPs, or payloads here.

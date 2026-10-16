@@ -29,8 +29,9 @@ def map_entry_anchor(route, location, map_pose, covariance, sample, base_from_li
     # to the nominal entry or label a manually assumed position as observed.
     body_yaw=math.atan2(body[1,0],body[0,0])
     local_from_profile=np.linalg.inv(placed_entry_transform(sample.transform,base_from_lidar,body[:3,3],body_yaw))
-    # Covariance is not an error guarantee. Carry a two-sigma XY/yaw
-    # allowance into the existing support test instead of relabeling it 10 cm.
+    # Covariance is not an error guarantee. Preserve a two-sigma XY/yaw
+    # uncertainty on the anchor for diagnostics; the route's footprint-edge
+    # margin is commissioned independently in support_margin_m.
     radius=max(math.hypot(*xy) for xy in route['footprint'])
     uncertainty=max(route['limits']['anchor_uncertainty_m'],
                     2*math.sqrt(max(covariance[:2]))+2*radius*math.sin(min(math.pi,2*math.sqrt(covariance[2]))/2))

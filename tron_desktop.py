@@ -2,6 +2,7 @@
 """Desktop entry for the existing stack; never submits a mission."""
 import fcntl
 import json
+import math
 import os
 from pathlib import Path
 import signal
@@ -14,13 +15,42 @@ ROOT = Path(__file__).resolve().parent
 URL = 'http://127.0.0.1:8765'
 
 
-def console_running():
+def console_state():
     try:
         with urllib.request.urlopen(URL + '/api/state', timeout=1) as response:
             state = json.load(response)
-        return state.get('mode') == 'live' and isinstance(state.get('locations'), list)
+        if (isinstance(state, dict) and state.get('mode') == 'live'
+                and isinstance(state.get('locations'), list)):
+            return state
     except (OSError, ValueError):
+        pass
+    return None
+
+
+def console_running():
+    return console_state() is not None
+
+
+def reuse_console():
+    state = console_state()
+    if state is None:
         return False
+    open_console()
+    telemetry = state.get('telemetry')
+    telemetry = telemetry if isinstance(telemetry, dict) else {}
+    supervisor = telemetry.get('supervisor')
+    supervisor = supervisor if isinstance(supervisor, dict) else {}
+    age = supervisor.get('age_sec')
+    recent = (isinstance(age, (int, float)) and not isinstance(age, bool)
+              and math.isfinite(age) and 0 <= age <= 5)
+    value = supervisor.get('value')
+    connected = isinstance(value, dict) and value.get('connected') is True
+    if not recent or not connected:
+        pause('제어 화면은 열렸지만 로봇 제어 연결은 아직 확인되지 않았습니다.\n'
+              '스택을 시작 중이면 먼저 열린 실행 창의 진행 상태를 확인하세요.\n'
+              '이전 실행이 남아 있다면 로봇을 평지에 놓은 뒤, 기존 실행 창에서 Ctrl+C로 종료하고 아이콘을 다시 누르세요.\n'
+              '실행 중인 임무를 이 아이콘이 임의로 종료하거나 재시작하지는 않습니다.')
+    return True
 
 
 def open_console():
@@ -38,8 +68,7 @@ def pause(message):
 
 
 def main():
-    if console_running():
-        open_console()
+    if reuse_console():
         return 0
     state_dir = Path.home() / '.local/state/tron1'
     state_dir.mkdir(parents=True, exist_ok=True)
@@ -56,8 +85,7 @@ def main():
             pause('시작이 아직 완료되지 않았습니다. 먼저 열린 TRON 실행 창을 확인하세요.')
             return 1
         # Another caller may have completed startup while we acquired the lock.
-        if console_running():
-            open_console()
+        if reuse_console():
             return 0
         env = dict(os.environ, MISSION_CONSOLE_PORT='8765', STAIR_RECORD='0')
         log_path = state_dir / ('startup-' + time.strftime('%Y%m%d-%H%M%S') + '.log')

@@ -11,9 +11,12 @@ from mission_manager.navigation_progress import NavigationProgress
 
 
 class ProgressAwareClient:
-    def __init__(self, client, clock=time.monotonic, policy=None, entry_region=(0.25, 0.2)):
+    def __init__(self, client, clock=time.monotonic, policy=None, entry_region=(0.25, 0.2), arrival_dwell_sec=0.5):
+        if not math.isfinite(arrival_dwell_sec) or arrival_dwell_sec <= 0:
+            raise ValueError('arrival dwell must be positive and finite')
         self.entry_region = entry_region
         self.default_entry_region = entry_region
+        self.arrival_dwell_sec = arrival_dwell_sec
         self.entry_approach = False
         self.entry_region_reached = False
         self.entry_since = None
@@ -25,6 +28,7 @@ class ProgressAwareClient:
         self.generation = 0
         self.terminal = None
         self.failure_reason = ''
+        self.warning_reason = ''
         self.user_cancel = False
         self.cancel_at = None
         self.finished = threading.Event()
@@ -47,7 +51,7 @@ class ProgressAwareClient:
             self.generation += 1
             generation = self.generation
             self.guard = NavigationProgress((p.position.x, p.position.y, yaw), self.clock(), **self.policy)
-            self.terminal, self.failure_reason, self.user_cancel = None, '', False
+            self.terminal, self.failure_reason, self.warning_reason, self.user_cancel = None, '', '', False
             self.cancel_at = None
             self.feedback_stamp = None
             self.entry_region_reached = False
@@ -102,21 +106,32 @@ class ProgressAwareClient:
         while not self.finished.wait(0.2):
             cancel = False
             with self.lock:
-                if self.terminal is None and not self.user_cancel and not self.failure_reason and not self.entry_region_reached:
+                warning = ''
+                if self.terminal is None and not self.user_cancel and not self.entry_region_reached:
                     now = self.clock()
                     if (self.entry_approach and self.entry_since is not None
-                            and now-self.entry_since >= 0.5 and self.entry_latest is not None
+                            and now-self.entry_since >= self.arrival_dwell_sec and self.entry_latest is not None
                             and now-self.entry_latest <= 0.5):
                         self.entry_region_reached = True
                         cancel = True
                     else:
-                        self.failure_reason = self.guard.failure(now)
-                        cancel = bool(self.failure_reason)
+                        warning = self.guard.failure(now)
+                        self.warning_reason = warning
+                        if warning in ('NAV_NO_PROGRESS', 'NAV_FEEDBACK_STALE'):
+                            # End a goal whose controller result is missing or
+                            # whose feedback can no longer justify continued
+                            # motion. NavigationExecutor permits one bounded
+                            # retry only for fresh-feedback no-progress.
+                            self.failure_reason = warning
+                            cancel = True
                     if cancel:
                         self.cancel_at = self.clock()
                 expired = self.terminal is None and self.cancel_at is not None and self.clock()-self.cancel_at >= 5.0
+            if warning:
+                rospy.logwarn_throttle(5.0, 'Navigation progress: %s', warning)
             if cancel:
-                rospy.logwarn('Navigation stop: %s', 'STAIR_ENTRY_REGION_REACHED; awaiting terminal acknowledgement' if self.entry_region_reached else self.failure_reason)
+                reason = 'ARRIVAL_REGION_REACHED' if self.entry_region_reached else self.failure_reason
+                rospy.logwarn('Navigation stop: %s; awaiting terminal acknowledgement', reason)
                 self.client.cancel_goal()
             if expired:
                 from mission_manager.navigation_executor import NavigationLifecycleError
@@ -124,6 +139,26 @@ class ProgressAwareClient:
             if rospy.is_shutdown():
                 return False
         return True
+
+    def wait_for_navigation_ready(self, cancelled):
+        """Wait for fresh TF after terminal failure, without sending a goal."""
+        import tf2_ros
+        from .navigation_recovery import wait_for_recovery
+        if not hasattr(self, '_recovery_buffer'):
+            self._recovery_buffer = tf2_ros.Buffer()
+            self._recovery_listener = tf2_ros.TransformListener(self._recovery_buffer)
+        def fresh():
+            try:
+                transform = self._recovery_buffer.lookup_transform('map', 'base_Link', rospy.Time(0))
+                age = (rospy.Time.now()-transform.header.stamp).to_sec()
+                return 0 <= age <= 0.5
+            except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
+                return False
+        rospy.logwarn('NAV waiting for fresh map/base TF before the single retry')
+        ok = wait_for_recovery(fresh, lambda: cancelled() or rospy.is_shutdown())
+        if not ok and not cancelled():
+            self.failure_reason = 'NAV_TF_RECOVERY_TIMEOUT'
+        return ok
 
     def get_state(self):
         with self.lock:
@@ -136,3 +171,24 @@ class ProgressAwareClient:
             if self.cancel_at is None:
                 self.cancel_at = self.clock()
         self.client.cancel_goal()
+
+
+def configure_floor_speed(floor_id):
+    """Use the original linear limit outside RF; never compound the scale."""
+    from dynamic_reconfigure.msg import DoubleParameter
+    from dynamic_reconfigure.srv import Reconfigure, ReconfigureRequest
+    from multifloor_manager.ros_services import BoundedServiceCaller
+    base = float(rospy.get_param('~nav_default_max_vel_x', 0.30))
+    scale = float(rospy.get_param('~nav_rooftop_speed_scale', 0.70)) if floor_id == 'RF' else 1.0
+    limit = base*scale
+    if not math.isfinite(limit) or limit <= 0:
+        raise ValueError('NAV linear speed must be positive and finite')
+    name = '/move_base/TrajectoryPlannerROS/set_parameters'
+    request = ReconfigureRequest()
+    request.config.doubles = [DoubleParameter(name='max_vel_x', value=limit)]
+    # Only change max_vel_x; steering and stair commands have their own limits.
+    try:
+        BoundedServiceCaller(2.0).call(name, rospy.ServiceProxy(name, Reconfigure), request)
+    except Exception as error:
+        from mission_manager.navigation_executor import NavigationLifecycleError
+        raise NavigationLifecycleError('NAV speed configuration failed: '+str(error)) from error

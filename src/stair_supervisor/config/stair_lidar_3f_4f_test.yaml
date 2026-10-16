@@ -36,18 +36,6 @@ routes:
   flight_command_policy: observed_feedback
   # UP destination height is a lower bound; entry/held-surface bands are separate.
   ascent_height_policy: minimum
-  motion_prediction:
-    mode: shadow
-    commissioned: false
-    source: "Unverified comparison hypothesis; nominal gain bounds, not a BAG speed upper bound"
-    forward_gain: [0.0, 1.0]
-    yaw_gain: [0.0, 1.0]
-    response_sec: 0.6
-    position_error_m: 0.02
-    velocity_error_mps: 0.05
-    yaw_error_rad: 0.02
-    yaw_rate_error_radps: 0.05
-    max_age_sec: 0.5
   direction: UP
   flight_1:
   - - -0.45
@@ -137,15 +125,15 @@ routes:
     warn_sec: 0.5
     expire_sec: 0.9
     flight_prediction_sec: 0.6
-    flight_recheck_sec: 2.0
-    # Bounded field-trial recovery; not a claim of physical position hold.
-    flight_recovery_w: 0.06
     flight_lateral_preview_sec: 0.3
     flight_stable_sec: 0.6
+    # Retain the 4 s cap for one dropout; allow 8 s for repeated short gaps in 10 s.
     flight_recovery_window_sec: 10.0
-    flight_recovery_window_budget_sec: 4.0
+    flight_recovery_window_budget_sec: 8.0
     flight_recovery_progress_m: 0.05
-    flight_resume_corridor_yaw: 0.17453292519943295
+    # A square 45 cm base sweeps a 31.8 cm radius through a quarter-turn; retain
+    # that support check while accepting up to 20 degrees of heading error.
+    flight_resume_corridor_yaw: 0.3490658503988659
     flight_end_advance_m: 0.28
     flight_end_advance_sec: 45.0
     flight_end_flat_tolerance_m: 0.04
@@ -156,10 +144,24 @@ routes:
     entry_corridor_yaw: 0.3490658503988659
     flight_restart_v: 0.55
     flight_input_recover_sec: 4.0
+    flight_input_reobserve_sec: 2.0
+    flat_reobserve_sec: 2.0
+    pose_jump_xy_m: 0.30
+    pose_jump_z_m: 0.25
+    pose_jump_reobserve_sec: 2.0
     recover_sec: 4.0
     anchor_max_age_sec: 120.0
+    # Entry registration budget; support-edge clearance is configured separately below.
     anchor_uncertainty_m: 0.1
     margin_m: 0.02
+    support_margin_m: 0.06
+    # Landing arrival, turn, hold and adjoining flight handoff: 3 cm minimum.
+    landing_support_margin_m: 0.03
+    # Additional pivot-disk clearance only; body/arrival support remains 3 cm.
+    rotation_space_margin_m: 0.01
+    # On ascent, measured 3-6 cm clearance can continue only with bounded
+    # steering toward the flight centerline and the whole body still supported.
+    flight_margin_recovery_m: 0.03
     yaw_kp: 0.6
     flight_yaw_kp: 1.0
     # Steering only: smooth step-impact heading over 0.25s; support stays raw.
@@ -179,6 +181,7 @@ routes:
     max_accel: 0.15
     max_alpha: 0.3
     hold_v: 0.06
+    landing_max_v: 0.195
     position_on: 0.1
     position_off: 0.05
     yaw_tolerance: 0.08726646259971647
@@ -224,21 +227,10 @@ routes:
   # 2026-10-02 BAG end-wall ~3.45m, operator-confirmed landing depth 1.48m.
   # Conservative working boundary; physical turn clearance still needs a trial.
   landing_turn_policy: supported_region
+  roof_turn_policy: supported_region
   flight_command_policy: observed_feedback
   # UP destination height is a lower bound; entry/held-surface bands are separate.
   ascent_height_policy: minimum
-  motion_prediction:
-    mode: shadow
-    commissioned: false
-    source: "Unverified comparison hypothesis; nominal gain bounds, not a BAG speed upper bound"
-    forward_gain: [0.0, 1.0]
-    yaw_gain: [0.0, 1.0]
-    response_sec: 0.6
-    position_error_m: 0.02
-    velocity_error_mps: 0.05
-    yaw_error_rad: 0.02
-    yaw_rate_error_radps: 0.05
-    max_age_sec: 0.5
   direction: UP
   flight_1:
   - - -0.45
@@ -329,15 +321,15 @@ routes:
     warn_sec: 0.5
     expire_sec: 0.9
     flight_prediction_sec: 0.6
-    flight_recheck_sec: 2.0
-    # Bounded field-trial recovery; not a claim of physical position hold.
-    flight_recovery_w: 0.06
     flight_lateral_preview_sec: 0.3
     flight_stable_sec: 0.6
+    # Retain the 4 s cap for one dropout; allow 8 s for repeated short gaps in 10 s.
     flight_recovery_window_sec: 10.0
-    flight_recovery_window_budget_sec: 4.0
+    flight_recovery_window_budget_sec: 8.0
     flight_recovery_progress_m: 0.05
-    flight_resume_corridor_yaw: 0.17453292519943295
+    # A square 45 cm base sweeps a 31.8 cm radius through a quarter-turn; retain
+    # that support check while accepting up to 20 degrees of heading error.
+    flight_resume_corridor_yaw: 0.3490658503988659
     flight_end_advance_m: 0.28
     flight_end_advance_sec: 45.0
     flight_end_flat_tolerance_m: 0.04
@@ -348,10 +340,24 @@ routes:
     entry_corridor_yaw: 0.3490658503988659
     flight_restart_v: 0.55
     flight_input_recover_sec: 4.0
+    flight_input_reobserve_sec: 2.0
+    flat_reobserve_sec: 2.0
+    pose_jump_xy_m: 0.30
+    pose_jump_z_m: 0.25
+    pose_jump_reobserve_sec: 2.0
     recover_sec: 4.0
     anchor_max_age_sec: 120.0
+    # Entry registration budget; support-edge clearance is configured separately below.
     anchor_uncertainty_m: 0.1
     margin_m: 0.02
+    support_margin_m: 0.06
+    landing_support_margin_m: 0.03
+    # Applies to both landing and rooftop turns; inherited by reverse traversal.
+    rotation_space_margin_m: 0.01
+    roof_pivot_radius_m: 0.35
+    # RF arrival/hold; reverse traversal uses this same region as its entry.
+    exit_support_margin_m: 0.03
+    flight_margin_recovery_m: 0.03
     yaw_kp: 0.6
     flight_yaw_kp: 1.0
     # Steering only: smooth step-impact heading over 0.25s; support stays raw.
@@ -371,6 +377,7 @@ routes:
     max_accel: 0.15
     max_alpha: 0.3
     hold_v: 0.06
+    landing_max_v: 0.195
     position_on: 0.1
     position_off: 0.05
     yaw_tolerance: 0.08726646259971647

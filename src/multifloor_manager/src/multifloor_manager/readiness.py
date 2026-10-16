@@ -117,12 +117,21 @@ def arm_localization(armed_at_ns: Nanoseconds) -> LocalizationState:
     return LocalizationState(armed_at_ns, 0, None, None, None, None, False, None, None, False)
 
 
-# Measured inter-host skew is a few milliseconds; never tolerate a scan-period
-# of future data. This does not increase the 0.5-second stale-data budget.
+# Pose and odometry publishers use the workstation clock. The live MiniPC scan
+# publisher was measured up to 17 ms ahead of workstation receive time, so scans
+# get a small bounded future-skew allowance. This does not increase the 0.5 s
+# stale-data budget.
 CLOCK_SKEW_TOLERANCE_NS = 10_000_000
+SCAN_CLOCK_SKEW_TOLERANCE_NS = 25_000_000
 
-def _fresh(stamp_ns: Optional[Nanoseconds], now_ns: Nanoseconds, max_age_ns: Nanoseconds) -> bool:
-    return stamp_ns is not None and -CLOCK_SKEW_TOLERANCE_NS <= int(now_ns) - int(stamp_ns) <= int(max_age_ns)
+def _fresh(
+    stamp_ns: Optional[Nanoseconds],
+    now_ns: Nanoseconds,
+    max_age_ns: Nanoseconds,
+    future_tolerance_ns: int = CLOCK_SKEW_TOLERANCE_NS,
+) -> bool:
+    return (stamp_ns is not None
+            and -int(future_tolerance_ns) <= int(now_ns) - int(stamp_ns) <= int(max_age_ns))
 
 
 def observe_pose(
@@ -165,7 +174,12 @@ def observe_scan(
     """Retain only a fresh post-arm scan and its same-stamp TF result."""
     accepted = (
         int(stamp_ns) > int(state.armed_at_ns)
-        and _fresh(stamp_ns, received_at_ns, DEFAULT_READINESS_POLICY.max_age_ns)
+        and _fresh(
+            stamp_ns,
+            received_at_ns,
+            DEFAULT_READINESS_POLICY.max_age_ns,
+            SCAN_CLOCK_SKEW_TOLERANCE_NS,
+        )
         and (state.scan_stamp_ns is None or int(stamp_ns) > int(state.scan_stamp_ns))
     )
     return LocalizationState(
@@ -219,12 +233,15 @@ def localization_ready(
     state: LocalizationState,
     now_ns: Nanoseconds,
     policy: ReadinessPolicy,
+    require_scan_tf: bool = True,
 ) -> LocalizationEvidence:
     """Evaluate the complete AMCL, sensor, motion, TF, and timeout conjunction."""
     within_timeout = 0 <= int(now_ns) - int(state.armed_at_ns) <= int(policy.timeout_ns)
     pose_samples = state.pose_count >= policy.required_pose_samples
     fresh_pose = _fresh(state.pose_stamp_ns, now_ns, policy.max_age_ns)
-    fresh_scan = _fresh(state.scan_stamp_ns, now_ns, policy.max_age_ns)
+    fresh_scan = _fresh(
+        state.scan_stamp_ns, now_ns, policy.max_age_ns, SCAN_CLOCK_SKEW_TOLERANCE_NS
+    )
     fresh_odom = _fresh(state.odom_stamp_ns, now_ns, policy.max_age_ns)
     ready = all(
         (
@@ -232,7 +249,7 @@ def localization_ready(
             pose_samples,
             fresh_pose,
             fresh_scan,
-            state.scan_tf_valid,
+            state.scan_tf_valid or not require_scan_tf,
             state.odom_stationary,
             fresh_odom,
         )

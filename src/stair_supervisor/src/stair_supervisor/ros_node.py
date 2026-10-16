@@ -128,6 +128,7 @@ class RosStairSupervisorNode:
         self._action.start()
         self._state_timer = rospy.Timer(rospy.Duration(0.5), self._publish_heartbeat)
         self._release_service = rospy.Service("~release_arrival_hold", Trigger, self._release_hold)
+        self._roof_nav_service = rospy.Service("~prepare_rooftop_navigation", Trigger, self._prepare_rooftop_navigation)
         self._handoff_service = rospy.Service("~acknowledge_physical_handoff", Trigger, self._acknowledge_handoff)
         self._manual_publisher = rospy.Publisher("~web_manual_status", String, queue_size=1, latch=True)
         self._manual_subscriber = rospy.Subscriber("~web_manual", String, self._accept_web_manual, queue_size=1, tcp_nodelay=True)
@@ -206,6 +207,13 @@ class RosStairSupervisorNode:
         except TransportFault:
             self._supervisor._latch_fault()
 
+    def _prepare_rooftop_navigation(self, _request):
+        try:
+            ok = self._supervisor.prepare_rooftop_navigation()
+            return TriggerResponse(success=ok, message="WALK requested" if ok else "NAV ownership required")
+        except TransportFault as error:
+            return TriggerResponse(success=False, message=str(error))
+
     def _acknowledge_handoff(self, _request):
         # One-shot explicit operator attestation; never automatic on sensor recovery.
         if not rospy.get_param("~operator_confirmed_supported_handoff", False):
@@ -226,6 +234,16 @@ class RosStairSupervisorNode:
         return self._clock.monotonic() - wall_age
 
     def _accept_odometry(self, message: Odometry) -> None:
+        resume_fields = (getattr(message, "resume_run_id", ""), getattr(message, "resume_revision", 0),
+                         getattr(message, "resume_phase", ""))
+        if any(resume_fields) and (not isinstance(resume_fields[0], str) or not resume_fields[0]
+                                   or type(resume_fields[1]) is not int or resume_fields[1] < 0
+                                   or not isinstance(resume_fields[2], str) or not resume_fields[2]
+                                   or phase_test is not None):
+            self._action.set_aborted(StairTraversalResult(
+                result_code=StairTraversalResult.INVALID_GOAL,
+                reason="incomplete or conflicting stair resume checkpoint"))
+            return
         if self._lidar is not None and self._lidar.configuration.mode == "control":
             return  # wheel odometry remains available on its own diagnostic topic
         orientation = message.pose.pose.orientation
@@ -254,10 +272,10 @@ class RosStairSupervisorNode:
     def stream_once(self) -> None:
         try:
             self._web_transport.expire_web_manual()
-            if self._web_transport.web_manual_active():
-                self._web_transport.send_current()
-            else:
-                self._supervisor.stream_navigation()
+            # The supervisor keeps producing its automatic command while a
+            # web joystick lease is active. RobotTransport serializes both
+            # requests on the existing socket and command lock.
+            self._supervisor.stream_navigation()
         except TransportFault as error:
             self._timer.shutdown()
             self._publish_state(str(error))
@@ -329,17 +347,22 @@ class RosStairSupervisorNode:
             return
         if self._lidar is not None and self._lidar.configuration.mode == "control":
             try:
+                resume = (dict(run_id=getattr(message, "resume_run_id", ""), revision=getattr(message, "resume_revision", 0),
+                               phase=getattr(message, "resume_phase", "")) if getattr(message, "resume_run_id", "") else None)
                 test_resume = phase_test is not None and self._supervisor.state is SupervisorState.STAIR
-                if self._supervisor.state is not SupervisorState.NAV and not test_resume:
+                if self._supervisor.state is not SupervisorState.NAV and not test_resume and resume is None:
                     raise ValueError("supervisor is not in NAV")
                 # Explicit phase tests use the fresh, operator-previewed anchor.
                 # Automatic missions still require the surveyed cloud match.
-                if phase_test is None:
+                if phase_test is None and resume is None:
                     self._lidar.ensure_entry(message.stair_id)
             except (ValueError, KeyError, OSError) as error:
                 self._action.set_aborted(StairTraversalResult(result_code=StairTraversalResult.ENTRY_REJECTED, reason=str(error)))
                 return
-        arguments = {} if phase_test is None else {"phase_test": phase_test}
+        resume = (dict(run_id=getattr(message, "resume_run_id", ""), revision=getattr(message, "resume_revision", 0),
+                       phase=getattr(message, "resume_phase", "")) if getattr(message, "resume_run_id", "") else None)
+        arguments = ({"phase_test": phase_test} if phase_test is not None else
+                     {"resume": resume} if resume is not None else {})
         outcome = self._supervisor.traverse(
             StairGoal(message.stair_id, direction, message.admission_token),
             self._action.is_preempt_requested,

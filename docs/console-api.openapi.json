@@ -1,0 +1,3483 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "TRON Console HTTP API",
+    "version": "2026-10-16",
+    "description": "Repository-defined existing API. Unversioned wire protocol; document version only. See console-api.md for state/side-effect and freshness rules. POST JSON object size 1..16384 bytes. Exact same-origin localhost Host required. No automatic retries/idempotency keys."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8765"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "consolePage",
+        "summary": "Serve HTML loaded at server startup.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "HTML",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/state": {
+      "get": {
+        "operationId": "getState",
+        "summary": "Read state and current POST token; no motion command.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/State"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/map": {
+      "get": {
+        "operationId": "getMap",
+        "summary": "Read map image. Missing map uses HTTP 200 with error.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MapImage"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/plan": {
+      "post": {
+        "operationId": "planMission",
+        "summary": "Plan only; can_start=false may use HTTP 200.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plan"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PlanRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/StairResumeRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PointRequest"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/start": {
+      "post": {
+        "operationId": "startMission",
+        "summary": "Explicit mission start; record=true prepares/reuses recording first. Timeout does not cancel.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StartResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/StartRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/StairResumeRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PointRequest"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/photo/roof_start": {
+      "post": {
+        "operationId": "startRoofTour",
+        "summary": "RF-only independent patrol or remaining-photo retry. Sends rooftop_tour goal; preserves incomplete outbound origin.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StartResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/return": {
+      "post": {
+        "operationId": "returnToOrigin",
+        "summary": "Explicit approval to return to the stored photo-session origin.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StartResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cancel": {
+      "post": {
+        "operationId": "cancelMission",
+        "summary": "Cancel this console goal, end manual input, suspend hold and finalize recording.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancelResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Empty"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/select_floor": {
+      "post": {
+        "operationId": "selectActualFloor",
+        "summary": "Select physical floor/map after stopping hold; no active mission/recording.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Accepted"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FloorRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/localization/pose_estimate": {
+      "post": {
+        "operationId": "setInitialPose",
+        "summary": "Validate floor/map revision and publish initial pose; then observe localization result.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PoseResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PoseRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/recover_control": {
+      "post": {
+        "operationId": "recoverFlatControl",
+        "summary": "For STAIR, require explicit physical relocation to flat ground, fresh operator phase and matching run id; pending worker can outlive HTTP response.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Accepted"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecoverRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/operator_phase": {
+      "post": {
+        "operationId": "setStairPhase",
+        "summary": "Existing fresh active run only. continue needs waiting and continue_supported. No auto retry.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhaseResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PhaseRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manual/begin": {
+      "post": {
+        "operationId": "beginManual",
+        "summary": "Begin expiring lease; automatic mission remains active.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManualBeginResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Empty"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manual/update": {
+      "post": {
+        "operationId": "updateManual",
+        "summary": "Increasing sequence and current lease; packet and lease age must be below 0.35 seconds.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Accepted"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManualUpdate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/manual/end": {
+      "post": {
+        "operationId": "endManual",
+        "summary": "End lease; automatic command stream continues.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Accepted"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManualEnd"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/mail/settings": {
+      "post": {
+        "operationId": "setRecipient",
+        "summary": "Persist recipient for future photo sessions; empty disables tour emails.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MailSettingsResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipientRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/photo/capture_mail": {
+      "post": {
+        "operationId": "captureCurrentPhoto",
+        "summary": "Nonempty recipient; async fresh RGB capture and mail queue, no mission cancellation.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptureResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecipientRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/mail/retry": {
+      "post": {
+        "operationId": "retryMail",
+        "summary": "FAILED/UNKNOWN only; UNKNOWN requires confirm_unknown=true.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueuedResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RetryRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/door/open_once": {
+      "post": {
+        "operationId": "openDoorOnce",
+        "summary": "Async one-shot F5 30-second / RF 60-second MQTT hold for selected F5 or RF door; observe door_control.one_shot ACK.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Accepted"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DoorOpenRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/door/return": {
+      "post": {
+        "operationId": "holdReturnDoor",
+        "summary": "Compatibility alias: fresh RF floor required; one RF door hold request, no motion.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Note"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Empty"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/door/stop": {
+      "post": {
+        "operationId": "stopDoorRepeats",
+        "summary": "Compatibility no-op: an accepted device hold cannot be canceled by the UI.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Note"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Empty"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/relocate_flat": {
+      "post": {
+        "operationId": "prepareManualFlatRelocation",
+        "summary": "Cancel own previous mission, request NAV then physical floor map. Background preparation; no motion dispatch.",
+        "responses": {
+          "403": {
+            "description": "Untrusted host/origin/token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid payload or state conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unhandled server-side failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Processed; check operation state. Not a physical outcome confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Accepted"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RelocateRequest"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ConsoleToken": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-TRON-Token",
+        "description": "Obtain from GET /api/state; rotated on server restart."
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "error"
+        ]
+      },
+      "Empty": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "DoorOpenRequest": {
+        "type": "object",
+        "properties": {
+          "device": {
+            "type": "string",
+            "enum": [
+              "F5",
+              "RF"
+            ]
+          }
+        },
+        "required": [
+          "device"
+        ],
+        "additionalProperties": false
+      },
+      "Note": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "Accepted": {
+        "type": "object",
+        "properties": {
+          "accepted": {
+            "type": "boolean"
+          },
+          "pending": {
+            "type": "boolean"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "StartResult": {
+        "type": "object",
+        "properties": {
+          "submitted": {
+            "type": "boolean"
+          },
+          "cancelled": {
+            "type": "boolean"
+          },
+          "destination": {
+            "type": "string"
+          },
+          "recording": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "submitted"
+        ]
+      },
+      "CancelResult": {
+        "type": "object",
+        "properties": {
+          "cancel_requested": {
+            "type": "boolean"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "cancel_requested"
+        ]
+      },
+      "Location": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "floor": {
+            "type": "string"
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "yaw": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "id",
+          "floor",
+          "x",
+          "y",
+          "yaw"
+        ]
+      },
+      "Segment": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "NAVIGATION",
+              "STAIR",
+              "FLOOR_TRANSITION",
+              "SCAN",
+              "PHOTO",
+              "RETURN_POSE"
+            ]
+          },
+          "target_id": {
+            "type": "string"
+          },
+          "source_floor": {
+            "type": "string"
+          },
+          "profile_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_id": {
+            "type": "string"
+          },
+          "target_floor": {
+            "type": "string"
+          },
+          "edge_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "stair_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "scan_profile_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "confirmed_location_id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "type",
+          "target_id",
+          "source_floor",
+          "profile_id"
+        ]
+      },
+      "Plan": {
+        "type": "object",
+        "properties": {
+          "origin_id": {
+            "type": "string"
+          },
+          "destination_id": {
+            "type": "string"
+          },
+          "segments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Segment"
+            }
+          },
+          "kind": {
+            "type": "string"
+          },
+          "blockers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "can_start": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "segments",
+          "kind",
+          "blockers",
+          "can_start"
+        ]
+      },
+      "PlanRequest": {
+        "type": "object",
+        "properties": {
+          "destination": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "navigate",
+              "photo_return",
+              "rooftop_photo",
+              "return_to_start"
+            ],
+            "default": "navigate"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "destination"
+        ]
+      },
+      "StartRequest": {
+        "type": "object",
+        "properties": {
+          "destination": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "navigate",
+              "photo_return",
+              "rooftop_photo",
+              "return_to_start"
+            ],
+            "default": "navigate"
+          },
+          "record": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "destination"
+        ]
+      },
+      "RecordRequest": {
+        "type": "object",
+        "properties": {
+          "record": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "additionalProperties": true
+      },
+      "FloorRequest": {
+        "type": "object",
+        "properties": {
+          "floor_id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "floor_id"
+        ]
+      },
+      "PoseRequest": {
+        "type": "object",
+        "properties": {
+          "floor_id": {
+            "type": "string"
+          },
+          "map_revision": {
+            "type": "string"
+          },
+          "x": {
+            "type": "number",
+            "description": "map frame metres"
+          },
+          "y": {
+            "type": "number",
+            "description": "map frame metres"
+          },
+          "yaw": {
+            "type": "number",
+            "description": "radians"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "floor_id",
+          "map_revision",
+          "x",
+          "y",
+          "yaw"
+        ]
+      },
+      "PoseResult": {
+        "type": "object",
+        "properties": {
+          "submitted": {
+            "type": "boolean"
+          },
+          "previous_request_id": {
+            "type": "integer"
+          },
+          "previous_status": {
+            "type": "object",
+            "properties": {
+              "request_id": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "state": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "source": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "reason": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": true
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "submitted",
+          "previous_request_id",
+          "previous_status",
+          "note"
+        ]
+      },
+      "RecoverRequest": {
+        "type": "object",
+        "properties": {
+          "confirmed_flat_ground": {
+            "const": true
+          },
+          "confirmed_physical_relocation": {
+            "type": "string",
+            "const": "평지 이동 완료",
+            "description": "Required when supervisor state is STAIR; operator typed confirmation after physically moving to flat ground."
+          },
+          "confirmed_run_id": {
+            "type": "string",
+            "description": "Required for a retained stair run; must match fresh operator_phase.run_id."
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "confirmed_flat_ground"
+        ]
+      },
+      "PhaseRequest": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "set_phase",
+              "continue"
+            ],
+            "default": "set_phase"
+          },
+          "run_id": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "confirmed": {
+            "const": true
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "run_id",
+          "revision",
+          "phase",
+          "confirmed"
+        ]
+      },
+      "PhaseResult": {
+        "type": "object",
+        "properties": {
+          "accepted": {
+            "type": "boolean"
+          },
+          "request_id": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "ACCEPTED",
+              "APPLIED",
+              "REJECTED"
+            ]
+          },
+          "phase": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "ManualBeginResult": {
+        "type": "object",
+        "properties": {
+          "lease": {
+            "type": "string"
+          },
+          "server_time": {
+            "type": "number"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "lease",
+          "server_time",
+          "note"
+        ]
+      },
+      "ManualUpdate": {
+        "type": "object",
+        "properties": {
+          "lease": {
+            "type": "string"
+          },
+          "sequence": {
+            "type": "integer"
+          },
+          "forward": {
+            "type": "number",
+            "minimum": -1,
+            "maximum": 1
+          },
+          "turn": {
+            "type": "number",
+            "minimum": -1,
+            "maximum": 1
+          },
+          "issued_at": {
+            "type": "number",
+            "description": "Server Unix seconds, age in [0, 0.35)."
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "lease",
+          "sequence",
+          "forward",
+          "turn",
+          "issued_at"
+        ]
+      },
+      "ManualEnd": {
+        "type": "object",
+        "properties": {
+          "lease": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "lease"
+        ]
+      },
+      "RecipientRequest": {
+        "type": "object",
+        "properties": {
+          "recipient": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "recipient"
+        ]
+      },
+      "MailSettingsResult": {
+        "type": "object",
+        "properties": {
+          "saved": {
+            "type": "boolean"
+          },
+          "recipient": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "saved",
+          "recipient",
+          "note"
+        ]
+      },
+      "CaptureResult": {
+        "type": "object",
+        "properties": {
+          "accepted": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "recipient": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "accepted",
+          "id",
+          "recipient"
+        ]
+      },
+      "RetryRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "confirm_unknown": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "id"
+        ]
+      },
+      "QueuedResult": {
+        "type": "object",
+        "properties": {
+          "queued": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "queued"
+        ]
+      },
+      "MapMetadata": {
+        "type": "object",
+        "properties": {
+          "revision": {
+            "type": "string"
+          },
+          "width": {
+            "type": "integer"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "resolution": {
+            "type": "number"
+          },
+          "origin": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "frame": {
+            "const": "map"
+          },
+          "bounds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 4,
+            "maxItems": 4
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "revision",
+          "width",
+          "height",
+          "resolution",
+          "origin",
+          "frame",
+          "bounds"
+        ]
+      },
+      "MapImage": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MapMetadata"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "description": "data:image/png;base64,..."
+                  }
+                },
+                "additionalProperties": true,
+                "required": [
+                  "image"
+                ]
+              }
+            ]
+          },
+          {
+            "$ref": "#/components/schemas/Error"
+          }
+        ]
+      },
+      "Navigation": {
+        "type": "object",
+        "properties": {
+          "map": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MapMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "global_path": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "local_path": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "robot": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "goal": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 2,
+                "maxItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "floor_ready": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "map",
+          "global_path",
+          "local_path",
+          "robot",
+          "goal",
+          "notes",
+          "floor_ready"
+        ]
+      },
+      "TelemetryEntry": {
+        "type": "object",
+        "properties": {
+          "age_sec": {
+            "type": "number"
+          },
+          "value": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "age_sec",
+          "value"
+        ]
+      },
+      "Recording": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "idle",
+              "starting",
+              "recording",
+              "stopping",
+              "saved",
+              "error"
+            ]
+          },
+          "path": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "busy": {
+            "type": "boolean"
+          },
+          "log_path": {
+            "type": "string"
+          },
+          "camera_format": {
+            "type": "string"
+          },
+          "excluded_topics_regex": {
+            "type": "string"
+          },
+          "raw_bag_path": {
+            "type": "string"
+          },
+          "raw_copies": {
+            "type": "array",
+            "description": "Remote raw LiDAR/IMU transfer continues after local BAG busy becomes false.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "sealing",
+                    "copying",
+                    "saved",
+                    "error"
+                  ]
+                },
+                "error": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "state",
+                "error"
+              ]
+            }
+          },
+          "raw_capture_unverified": {
+            "type": "boolean",
+            "description": "A failed remote seal blocks starting another raw recording until the old capture is checked."
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "state",
+          "path",
+          "error",
+          "busy",
+          "raw_bag_path",
+          "raw_copies",
+          "raw_capture_unverified"
+        ]
+      },
+      "ManualState": {
+        "type": "object",
+        "properties": {
+          "available": {
+            "type": "boolean"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "policy": {
+            "const": "manual_priority_keep_mission"
+          },
+          "timeout_sec": {
+            "const": 0.35
+          }
+        },
+        "additionalProperties": true
+      },
+      "Progress": {
+        "type": "object",
+        "properties": {
+          "mission_id": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "current_floor": {
+            "type": "string"
+          },
+          "segment_type": {
+            "type": "string"
+          },
+          "segment_index": {
+            "type": "integer"
+          },
+          "segment_count": {
+            "type": "integer"
+          },
+          "target_id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "MissionResult": {
+        "type": "object",
+        "properties": {
+          "result_code": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9
+          },
+          "reason": {
+            "type": "string"
+          },
+          "mission_id": {
+            "type": "string"
+          },
+          "artifact_path": {
+            "type": "string"
+          },
+          "action_status": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": true
+      },
+      "PhotoSession": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer"
+          },
+          "mission_id": {
+            "type": "string"
+          },
+          "origin": {
+            "$ref": "#/components/schemas/Origin"
+          },
+          "origin_map_sha256": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string",
+            "enum": [
+              "OUTBOUND",
+              "PHOTO_ARRIVED",
+              "WAITING_RETURN",
+              "RETURNING",
+              "RETURN_ARRIVED",
+              "COMPLETE",
+              "FAILED",
+              "CANCELLED",
+              "INTERRUPTED"
+            ]
+          },
+          "mail_recipient": {
+            "type": "string"
+          },
+          "photos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "missed_photos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "photo_outcome": {
+            "type": "string"
+          },
+          "return_started": {
+            "type": "boolean",
+            "description": "Stored flag distinguishing a return attempt from an outbound retry."
+          },
+          "retry_available": {
+            "type": "boolean",
+            "description": "Computed state hint: incomplete outbound session can be retried using existing start endpoint. Readiness is checked again at start."
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "MailJob": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "mission_id": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "recipient": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "QUEUED",
+              "SENDING",
+              "SENT",
+              "FAILED",
+              "UNKNOWN"
+            ]
+          },
+          "attempts": {
+            "type": "integer"
+          },
+          "error": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "number"
+          },
+          "finished_at": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "id",
+          "mission_id",
+          "location",
+          "recipient",
+          "state",
+          "attempts",
+          "error",
+          "created_at"
+        ]
+      },
+      "Mail": {
+        "type": "object",
+        "properties": {
+          "configured": {
+            "type": "boolean"
+          },
+          "sender": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "worker_error": {
+            "type": "string"
+          },
+          "jobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MailJob"
+            }
+          },
+          "recipient": {
+            "type": "string"
+          },
+          "session_recipient": {
+            "type": "string"
+          },
+          "enqueue_error": {
+            "type": "string"
+          },
+          "manual_capture": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "busy": {
+                "type": "boolean"
+              },
+              "recipient": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "job_id": {
+                "type": "string"
+              },
+              "detail": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      },
+      "Door": {
+        "type": "object",
+        "properties": {
+          "active": {
+            "type": "boolean"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "",
+              "up",
+              "return"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "attempts": {
+            "type": "integer"
+          },
+          "run_id": {
+            "type": "string"
+          },
+          "server_owned": {
+            "type": "boolean"
+          },
+          "last_device": {
+            "type": "string"
+          },
+          "last_hold_sec": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "error": {
+            "type": "string"
+          },
+          "worker_error": {
+            "type": "string"
+          },
+          "last_command_id": {
+            "type": "string"
+          },
+          "hold_remaining_sec": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "physical_door_verified": {
+            "const": false
+          },
+          "one_shot": {
+            "type": "object",
+            "properties": {
+              "busy": {
+                "type": "boolean"
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "IDLE",
+                  "SENDING",
+                  "ACCEPTED",
+                  "UNKNOWN"
+                ]
+              },
+              "device": {
+                "type": "string",
+                "enum": [
+                  "F5",
+                  "RF"
+                ]
+              },
+              "command_id": {
+                "type": "string"
+              },
+              "detail": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      },
+      "FloorTelemetry": {
+        "type": "object",
+        "properties": {
+          "floor_id": {
+            "type": "string"
+          },
+          "map_generation": {
+            "type": "integer"
+          },
+          "state": {
+            "type": "integer",
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "description": "UNKNOWN, TRANSITIONING, READY, FAULT"
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "SupervisorTelemetry": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "integer",
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "description": "DISARMED, NAV, STAIR, FAULT"
+          },
+          "connected": {
+            "type": "boolean"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "ownership_epoch": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": true
+      },
+      "LocalizationTelemetry": {
+        "type": "object",
+        "properties": {
+          "request_id": {
+            "type": "integer"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "SEARCHING",
+              "NEEDS_POSE",
+              "VERIFYING",
+              "INPUT_REJECTED",
+              "AMBIGUOUS",
+              "READY"
+            ]
+          },
+          "floor": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "manual"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "yaw": {
+            "type": "number"
+          },
+          "scan_match_required": {
+            "type": "boolean"
+          },
+          "scan_match_verified": {
+            "type": "boolean"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "hit_fraction": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": true
+      },
+      "OperatorPhaseTelemetry": {
+        "type": "object",
+        "properties": {
+          "active": {
+            "type": "boolean"
+          },
+          "run_id": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "phases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "waiting": {
+            "type": "boolean"
+          },
+          "continue_supported": {
+            "type": "boolean"
+          },
+          "pending": {
+            "type": "boolean"
+          },
+          "stop_reason": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "last_operator_phase": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "result": {
+            "$ref": "#/components/schemas/PhaseResult"
+          }
+        },
+        "additionalProperties": true
+      },
+      "TrackingTelemetry": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "disabled",
+              "observe",
+              "control"
+            ]
+          },
+          "geometry_age_sec": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "transport_delay_sec": {
+            "type": "number"
+          },
+          "completion_age_sec": {
+            "type": "number"
+          },
+          "callback_to_processing_sec": {
+            "type": "number"
+          },
+          "processing_to_completion_sec": {
+            "type": "number"
+          },
+          "completion_to_publish_sec": {
+            "type": "number"
+          },
+          "timestamp_reference": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "routes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "commissioned": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": true
+            }
+          }
+        },
+        "additionalProperties": true
+      },
+      "Origin": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "floor_id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "yaw": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": true
+      },
+      "Telemetry": {
+        "type": "object",
+        "properties": {
+          "floor": {
+            "type": "object",
+            "properties": {
+              "age_sec": {
+                "type": "number"
+              },
+              "value": {
+                "$ref": "#/components/schemas/FloorTelemetry"
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "age_sec",
+              "value"
+            ]
+          },
+          "supervisor": {
+            "type": "object",
+            "properties": {
+              "age_sec": {
+                "type": "number"
+              },
+              "value": {
+                "$ref": "#/components/schemas/SupervisorTelemetry"
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "age_sec",
+              "value"
+            ]
+          },
+          "localization": {
+            "type": "object",
+            "properties": {
+              "age_sec": {
+                "type": "number"
+              },
+              "value": {
+                "$ref": "#/components/schemas/LocalizationTelemetry"
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "age_sec",
+              "value"
+            ]
+          },
+          "operator_phase": {
+            "type": "object",
+            "properties": {
+              "age_sec": {
+                "type": "number"
+              },
+              "value": {
+                "$ref": "#/components/schemas/OperatorPhaseTelemetry"
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "age_sec",
+              "value"
+            ]
+          },
+          "tracking": {
+            "type": "object",
+            "properties": {
+              "age_sec": {
+                "type": "number"
+              },
+              "value": {
+                "$ref": "#/components/schemas/TrackingTelemetry"
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "age_sec",
+              "value"
+            ]
+          },
+          "mission_feedback": {
+            "type": "object",
+            "properties": {
+              "age_sec": {
+                "type": "number"
+              },
+              "value": {
+                "$ref": "#/components/schemas/Progress"
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "age_sec",
+              "value"
+            ]
+          },
+          "mission_result": {
+            "type": "object",
+            "properties": {
+              "age_sec": {
+                "type": "number"
+              },
+              "value": {
+                "$ref": "#/components/schemas/MissionResult"
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "age_sec",
+              "value"
+            ]
+          }
+        },
+        "additionalProperties": {
+          "$ref": "#/components/schemas/TelemetryEntry"
+        }
+      },
+      "State": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "live",
+              "preview"
+            ]
+          },
+          "locations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Location"
+            }
+          },
+          "anchor": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "observed_active": {
+            "type": "boolean"
+          },
+          "starting": {
+            "type": "boolean"
+          },
+          "recovering": {
+            "type": "boolean"
+          },
+          "floor_selecting": {
+            "type": "boolean"
+          },
+          "progress": {
+            "$ref": "#/components/schemas/Progress"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MissionResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "telemetry": {
+            "$ref": "#/components/schemas/Telemetry"
+          },
+          "navigation": {
+            "$ref": "#/components/schemas/Navigation"
+          },
+          "recording": {
+            "$ref": "#/components/schemas/Recording"
+          },
+          "manual": {
+            "$ref": "#/components/schemas/ManualState"
+          },
+          "hold": {
+            "type": "object",
+            "properties": {
+              "armed": {
+                "type": "boolean"
+              },
+              "detail": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          },
+          "photo": {
+            "$ref": "#/components/schemas/PhotoSession"
+          },
+          "mail": {
+            "$ref": "#/components/schemas/Mail"
+          },
+          "capabilities": {
+            "type": "object",
+            "properties": {
+              "navigate": {
+                "type": "boolean"
+              },
+              "photo_return": {
+                "type": "boolean"
+              },
+              "photo_return_reason": {
+                "type": "string"
+              },
+              "navigate_point": {
+                "type": "boolean"
+              },
+              "rooftop_only": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": true
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "time": {
+                  "type": "number"
+                },
+                "kind": {
+                  "type": "string"
+                },
+                "detail": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true,
+              "required": [
+                "time",
+                "kind",
+                "detail"
+              ]
+            }
+          },
+          "door_control": {
+            "$ref": "#/components/schemas/Door"
+          },
+          "door": {
+            "type": "string"
+          },
+          "relocating": {
+            "type": "boolean"
+          },
+          "relocation": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "state": {
+                "type": "string",
+                "enum": [
+                  "PREPARING",
+                  "DONE",
+                  "FAILED"
+                ]
+              },
+              "floor_id": {
+                "type": "string"
+              },
+              "detail": {
+                "type": "string"
+              },
+              "nav_ready": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "token",
+          "mode",
+          "active",
+          "locations",
+          "telemetry"
+        ]
+      },
+      "StairResumeRequest": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "stair_resume"
+            ]
+          },
+          "resume_route_id": {
+            "type": "string"
+          },
+          "resume_run_id": {
+            "type": "string"
+          },
+          "resume_revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "resume_phase": {
+            "type": "string"
+          },
+          "destination": {
+            "type": "string",
+            "description": "Optional; if present must equal retained stair landing ID"
+          },
+          "record": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "kind",
+          "resume_route_id",
+          "resume_run_id",
+          "resume_revision",
+          "resume_phase"
+        ],
+        "additionalProperties": true
+      },
+      "PointRequest": {
+        "type": "object",
+        "required": [
+          "kind",
+          "floor_id",
+          "map_revision",
+          "x",
+          "y",
+          "yaw"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "navigate_point"
+            ]
+          },
+          "floor_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "map_revision": {
+            "type": "string",
+            "minLength": 1
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "yaw": {
+            "type": "number"
+          },
+          "record": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "RelocateRequest": {
+        "type": "object",
+        "required": [
+          "floor_id",
+          "confirmed_flat_ground"
+        ],
+        "properties": {
+          "floor_id": {
+            "type": "string"
+          },
+          "confirmed_flat_ground": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  }
+}

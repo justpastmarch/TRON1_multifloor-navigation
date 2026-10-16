@@ -1,6 +1,7 @@
 # Uses existing NAV destinations; no duplicate coordinates.
-locations: [roof_loop_sw, roof_loop_nw, roof_loop_ne, roof_loop_se]
-image_topic: /apriltag_camera/image_raw/compressed
-arrival_radius_m: 0.35
-arrival_yaw_rad: 0.5235987755982988
+locations: [roof_loop_sw, roof_loop_nw, roof_loop_sw, roof_loop_se, stair_rf_landing]
+image_topic: /camera1/color/image_raw/compressed
+arrival_radius_m: 0.80
+# Accept a heading error up to 50 degrees at each photo stop.
+arrival_yaw_rad: 0.8726646259971648
 frame_timeout_sec: 5.0

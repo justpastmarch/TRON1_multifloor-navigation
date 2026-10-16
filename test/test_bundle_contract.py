@@ -40,7 +40,7 @@ class BundleContractTest(unittest.TestCase):
             )
 
             # When/Then: the launch contract rejects ambiguous scan ownership.
-            with self.assertRaisesRegex(SystemExit, "one /scan publisher"):
+            with self.assertRaisesRegex(SystemExit, "local /scan publisher declarations must be empty"):
                 validate_launch(workspace)
 
     def test_fourth_top_level_node_is_rejected(self) -> None:

@@ -85,13 +85,33 @@ class AdapterTest(unittest.TestCase):
         m.base_position.pose.orientation.w = 1
         self.raw.feedback(m)
 
-    def test_watchdog_cancel_is_failure_not_operator_cancel(self):
-        self.now = 11
-        with patch('rospy.is_shutdown', return_value=False), patch('rospy.logwarn'), patch.object(self.client.finished, 'wait', side_effect=lambda _:self.client.terminal is not None):
+    def test_no_progress_watchdog_cancels_and_reports_retryable_stall(self):
+        self.feedback(stamp=1)
+        waits = 0
+        def tick(_):
+            nonlocal waits
+            if waits == 0:
+                self.now = 21
+                self.feedback(stamp=21)
+                waits += 1
+                return False
+            return True
+        with patch('rospy.is_shutdown', return_value=False), patch('rospy.logwarn_throttle') as warning, patch('rospy.logwarn'), patch.object(self.client.finished, 'wait', side_effect=tick):
             self.assertTrue(self.client.wait_for_result())
         self.assertEqual(self.raw.cancelled, 1)
         self.assertEqual(self.results, [GoalStatus.ABORTED])
         self.assertEqual(self.client.get_state(), GoalStatus.ABORTED)
+        self.assertEqual(self.client.failure_reason, 'NAV_NO_PROGRESS')
+        self.assertEqual(self.client.warning_reason, 'NAV_NO_PROGRESS')
+        warning.assert_called_once()
+
+    def test_stale_feedback_cancels_without_retryable_classification(self):
+        self.feedback(stamp=1)
+        self.now = 11
+        with patch('rospy.is_shutdown', return_value=False), patch('rospy.logwarn_throttle'), patch('rospy.logwarn'), patch.object(self.client.finished, 'wait', side_effect=[False, True]):
+            self.assertTrue(self.client.wait_for_result())
+        self.assertEqual(self.raw.cancelled, 1)
+        self.assertEqual(self.results, [GoalStatus.ABORTED])
         self.assertEqual(self.client.failure_reason, 'NAV_FEEDBACK_STALE')
 
     def test_user_cancel_remains_cancel(self):
@@ -122,10 +142,11 @@ class AdapterTest(unittest.TestCase):
     def test_missing_cancel_ack_has_bounded_wait(self):
         from mission_manager.navigation_executor import NavigationLifecycleError
         self.raw.cancel_goal = lambda: None
+        self.client.cancel_goal()
         def tick(_):
             self.now += 1
             return False
-        with patch('rospy.is_shutdown', return_value=False), patch('rospy.logwarn'), patch.object(self.client.finished, 'wait', side_effect=tick):
+        with patch('rospy.is_shutdown', return_value=False), patch('rospy.logwarn'), patch('rospy.logwarn_throttle'), patch.object(self.client.finished, 'wait', side_effect=tick):
             with self.assertRaises(NavigationLifecycleError):
                 self.client.wait_for_result()
         self.assertLessEqual(self.now, 16)
@@ -189,3 +210,24 @@ class EntryRegionTest(AdapterTest):
         self.client.send_goal(self.goal,lambda *_:None)
         self.assertFalse(self.client.entry_region_reached)
         self.assertIsNone(self.client.entry_since)
+
+    def test_arrival_dwell_is_configurable_and_still_requires_fresh_feedback(self):
+        self.client = ProgressAwareClient(self.raw, clock=lambda:self.now,
+                                          entry_region=(0.35, math.radians(30)),
+                                          arrival_dwell_sec=0.8)
+        self.prepare_entry()
+        self.sample(x=0.30, yaw=math.radians(25), stamp=1)
+        ticks=0
+        def wait_step(_):
+            nonlocal ticks
+            if ticks < 2:
+                ticks += 1
+                self.now = 0.7 if ticks == 1 else 0.9
+                self.sample(x=0.30, yaw=math.radians(25), stamp=1+ticks)
+                return False
+            return True
+        with patch('rospy.is_shutdown', return_value=False), patch('rospy.logwarn'), patch.object(self.client.finished,'wait',side_effect=wait_step):
+            self.client.wait_for_result()
+        self.assertEqual(self.raw.cancelled, 1)
+        self.assertTrue(self.client.entry_region_reached)
+        self.assertEqual(self.results,[GoalStatus.PREEMPTED])

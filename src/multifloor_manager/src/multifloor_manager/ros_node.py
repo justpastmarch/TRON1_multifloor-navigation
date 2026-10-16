@@ -30,6 +30,8 @@ from multifloor_manager.msg import (
 )
 from multifloor_manager.ros_runtime import EpochToken, RosEvidenceRuntime
 from multifloor_manager.ros_services import BoundedServiceCaller, ServiceCallError
+from multifloor_manager.stair_completion import StairCompletionCache
+from stair_supervisor.msg import StairTraversalActionGoal, StairTraversalActionResult
 from multifloor_manager.tag_evidence import FloorId, FloorTagSet, TagId
 from multifloor_manager.transitions import PredicateObservation
 
@@ -88,17 +90,34 @@ class MultifloorManagerNode:
         self.service_timeout = float(rospy.get_param("~service_timeout", 5.0))
         self.services = BoundedServiceCaller(self.service_timeout)
         self.tag_timeout = float(rospy.get_param("~tag_timeout", 10.0))
+        self.floor_confirmation_source = rospy.get_param("~floor_confirmation_source", "stair_result")
+        if self.floor_confirmation_source not in ("stair_result", "tag"):
+            raise ValueError("invalid floor_confirmation_source")
+        self.stair_result_timeout = float(rospy.get_param("~stair_result_timeout", 10.0))
+        self._stair_result_lock = threading.Lock()
+        self.stair_completions = StairCompletionCache()
         self.transaction_timeout = float(rospy.get_param("~transaction_timeout", 30.0))
         self._active_lock = threading.Lock()
         self._active = False
-        self.subscribers = (
+        subscribers = [
             rospy.Subscriber(rospy.get_param("~map_topic", "/map"), OccupancyGrid, self.runtime.map_callback, queue_size=2),
-            rospy.Subscriber(rospy.get_param("~tag_topic", "/tag_detections"), AprilTagDetectionArray, self.runtime.tag_callback, queue_size=10),
             rospy.Subscriber(rospy.get_param("~amcl_pose_topic", "/amcl_pose"), PoseWithCovarianceStamped, self.runtime.pose_callback, queue_size=10),
             rospy.Subscriber(rospy.get_param("~scan_topic", "/scan"), LaserScan, self.runtime.scan_callback, queue_size=10),
             rospy.Subscriber(rospy.get_param("~odom_topic", "/tron/wheel_odom_raw"), Odometry, self.runtime.odom_callback, queue_size=10),
             rospy.Subscriber(rospy.get_param("~global_costmap_topic", "/move_base/global_costmap/costmap"), OccupancyGrid, self.runtime.costmap_callback, queue_size=2),
-        )
+        ]
+        if self.floor_confirmation_source == "tag":
+            subscribers.append(rospy.Subscriber(
+                rospy.get_param("~tag_topic", "/tag_detections"), AprilTagDetectionArray,
+                self.runtime.tag_callback, queue_size=10))
+        else:
+            subscribers.extend((
+                rospy.Subscriber("/stair_traversal/goal", StairTraversalActionGoal,
+                                 self._stair_goal_callback, queue_size=10),
+                rospy.Subscriber("/stair_traversal/result", StairTraversalActionResult,
+                                 self._stair_result_callback, queue_size=10),
+            ))
+        self.subscribers = tuple(subscribers)
         self.server = actionlib.SimpleActionServer(
             rospy.get_param("~action_name", "/multifloor/floor_transition"),
             FloorTransitionAction,
@@ -113,6 +132,20 @@ class MultifloorManagerNode:
             self.startup = StartupLocalization(self, startup_mode)
         from multifloor_manager.ros_floor_selection import FloorSelection
         self.floor_selection = FloorSelection(self)
+
+    def _stair_goal_callback(self, message: StairTraversalActionGoal) -> None:
+        with self._stair_result_lock:
+            self.stair_completions.note_goal(message.goal_id.id, message.goal.stair_id)
+        with self.runtime.condition:
+            self.runtime.condition.notify_all()
+
+    def _stair_result_callback(self, message: StairTraversalActionResult) -> None:
+        with self._stair_result_lock:
+            self.stair_completions.note_result(
+                message.status.goal_id.id, message.status.status,
+                message.result.result_code, message.result.ownership_epoch)
+        with self.runtime.condition:
+            self.runtime.condition.notify_all()
 
     def _feedback(self, phase: str, detail: str) -> None:
         self.server.publish_feedback(FloorTransitionFeedback(phase=phase, detail=detail))
@@ -221,15 +254,28 @@ class MultifloorManagerNode:
             self.server.set_aborted(self._result(FloorTransitionResult.INVALID_GOAL, "goal is not the current directed stair"))
             return
         target = self.identities[target_floor]
-        self._feedback("ARM_TARGET", "arming tag and target map evidence")
+        self._feedback("ARM_TARGET", "checking stair completion before map change")
         token = self.runtime.arm_transition(target_floor, target_endpoint.expected_tag_ids, target)
-        ok, reason = self._wait(
-            lambda: self.runtime.tag_accepted or self.runtime.wrong_floor_tag,
-            time.monotonic() + self.tag_timeout,
-        )
-        if not ok or self.runtime.wrong_floor_tag:
-            self._fail("wrong floor tag vote" if self.runtime.wrong_floor_tag else reason, self.server.is_preempt_requested())
-            return
+        if self.floor_confirmation_source == "tag":
+            ok, reason = self._wait(
+                lambda: self.runtime.tag_accepted or self.runtime.wrong_floor_tag,
+                time.monotonic() + self.tag_timeout,
+            )
+            if not ok or self.runtime.wrong_floor_tag:
+                self._fail("wrong floor tag vote" if self.runtime.wrong_floor_tag else reason, self.server.is_preempt_requested())
+                return
+        else:
+            expected_profile = stair.up_profile_id if target_floor == stair.to_floor else stair.down_profile_id
+            completion = {"epoch": None}
+            def matched_success():
+                with self._stair_result_lock:
+                    completion["epoch"] = self.stair_completions.consume(expected_profile)
+                return completion["epoch"] is not None
+            ok, reason = self._wait(matched_success, time.monotonic() + self.stair_result_timeout)
+            if not ok:
+                self._fail("matching recent stair success missing: " + reason, self.server.is_preempt_requested())
+                return
+            self._feedback("ARM_TARGET", "matched {} success epoch {}".format(expected_profile, completion["epoch"]))
         self.runtime.record_policy_observation(
             token,
             "T_FLOOR_CONFIRMED",

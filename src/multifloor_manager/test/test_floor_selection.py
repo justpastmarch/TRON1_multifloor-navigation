@@ -25,7 +25,7 @@ class TestFloorSelection(unittest.TestCase):
   self.assertEqual(n.startup.request,('auto',None));self.assertTrue(n.startup.wake.is_set())
   self.assertTrue(all(c.args[0]==FloorState.UNKNOWN for c in n.runtime.publish_floor.call_args_list))
  def test_busy_or_unknown_floor_never_changes_map(self):
-  for reason in ('unknown','active','moving','busy'):
+  for reason in ('unknown','active','busy'):
    s,n=self.fixture();target='5F'
    if reason=='unknown':target='2F'
    if reason=='active':n._active=True
@@ -33,6 +33,15 @@ class TestFloorSelection(unittest.TestCase):
    if reason=='busy':n.startup.busy.return_value=True
    self.assertFalse(s.select(N(floor_id=target)).accepted)
    n.services.call.assert_not_called()
+ def test_wheel_drift_does_not_block_explicit_map_selection(self):
+  s,n=self.fixture();n.startup.stationary.return_value=False
+  with patch('multifloor_manager.ros_floor_selection.fingerprint_occupancy_grid',return_value=N(identity=lambda:'identity5')):
+   result=s.select(N(floor_id='5F'))
+  self.assertTrue(result.accepted,result.reason)
+  n.startup.stationary.assert_not_called()
+  self.assertEqual(n.runtime.initial_floor,'5F')
+  self.assertTrue(all(c.args[0]==FloorState.UNKNOWN for c in n.runtime.publish_floor.call_args_list))
+
  def test_prepare_exception_releases_busy_flag(self):
   s,n=self.fixture();n.identities={}
   self.assertFalse(s.select(N(floor_id='5F')).accepted)

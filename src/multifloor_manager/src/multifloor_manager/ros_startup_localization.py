@@ -18,7 +18,11 @@ from stair_supervisor.msg import SupervisorState
 from multifloor_manager.msg import FloorState
 from multifloor_manager.map_evidence import fingerprint_occupancy_grid, Nanoseconds
 from multifloor_manager.startup_matching import ScanMatcher
-from multifloor_manager.readiness import DEFAULT_READINESS_POLICY, CLOCK_SKEW_TOLERANCE_NS
+from multifloor_manager.readiness import (
+    DEFAULT_READINESS_POLICY,
+    CLOCK_SKEW_TOLERANCE_NS,
+    SCAN_CLOCK_SKEW_TOLERANCE_NS,
+)
 
 
 def yaw(q):
@@ -134,9 +138,41 @@ class StartupLocalization:
     def current(self, generation):
         return generation == self.generation and not rospy.is_shutdown()
 
-    def fresh(self, message):
+    def fresh(self, message, future_tolerance_ns=CLOCK_SKEW_TOLERANCE_NS):
         age = int(DEFAULT_READINESS_POLICY.max_age_ns)/1e9
-        return message is not None and -CLOCK_SKEW_TOLERANCE_NS/1e9 <= (rospy.Time.now()-message.header.stamp).to_sec() <= age
+        return (message is not None
+                and -future_tolerance_ns/1e9 <= (rospy.Time.now()-message.header.stamp).to_sec() <= age)
+
+    def fresh_scan(self, message):
+        return self.fresh(message, SCAN_CLOCK_SKEW_TOLERANCE_NS)
+
+    def map_to_base_tf_available(self):
+        try:
+            return self.node.tf_buffer.can_transform(
+                'map', 'base_Link', rospy.Time(0), rospy.Duration(.05))
+        except Exception:
+            return False
+
+    def readiness_gaps(self, mode):
+        evidence = self.runtime.localization_evidence(require_scan_tf=(mode == 'auto'))
+        if evidence is None:
+            return ['fresh localization samples']
+        gaps = []
+        if not evidence.pose_samples:
+            gaps.append('post-pose AMCL samples')
+        if not evidence.fresh_pose:
+            gaps.append('fresh AMCL pose')
+        if not evidence.fresh_scan:
+            gaps.append('fresh scan')
+        if mode == 'auto' and not evidence.scan_tf:
+            gaps.append('scan-time TF')
+        if not evidence.fresh_odom:
+            gaps.append('fresh wheel odometry')
+        if not evidence.stationary_odom:
+            gaps.append('stationary wheel odometry')
+        if mode == 'manual' and not self.map_to_base_tf_available():
+            gaps.append('current map-to-base TF')
+        return gaps
 
     def stationary(self):
         if not self.fresh(self.odom):
@@ -165,7 +201,7 @@ class StartupLocalization:
             scan=self.scan
             if (self.request is not None or self.runtime.state != FloorState.READY
                     or self.supervisor is None or self.supervisor.state != SupervisorState.NAV
-                    or self.busy() or not self.fresh(scan)):
+                    or self.busy() or not self.fresh_scan(scan)):
                 return
             stamp=scan.header.stamp.to_nsec()
             now=time.monotonic()
@@ -190,7 +226,7 @@ class StartupLocalization:
             if request is None:
                 self.refresh_idle()
                 continue
-            if grid is None or not self.fresh(scan) or not self.stationary():
+            if grid is None or not self.fresh_scan(scan) or not self.stationary():
                 continue
             if self.runtime.map_state.current_fingerprint is None or self.busy():
                 continue
@@ -207,6 +243,13 @@ class StartupLocalization:
             except Exception as error:
                 if self.current(generation):
                     self.publish('NEEDS_POSE', str(error))
+                    with self.runtime.condition:
+                        if self.runtime.state == FloorState.UNKNOWN:
+                            self.runtime.publish_floor(
+                                FloorState.UNKNOWN,
+                                str(error),
+                                self.runtime.current_floor or self.runtime.initial_floor,
+                            )
                     rospy.logwarn('startup localization: %s', error)
 
     def localize(self, generation, request, grid, scan, odom):
@@ -214,10 +257,12 @@ class StartupLocalization:
         if identity != self.runtime.map_state.current_fingerprint.identity():
             raise ValueError('observed map does not match selected floor')
         origin = grid.info.origin
-        matcher = ScanMatcher(np.array(grid.data).reshape(grid.info.height,grid.info.width), grid.info.resolution,
-                              (origin.position.x,origin.position.y,yaw(origin.orientation)),
-                              **rospy.get_param('~startup_matching', {}))
         mode, pose = request
+        matcher = None
+        if mode == 'auto':
+            matcher = ScanMatcher(np.array(grid.data).reshape(grid.info.height,grid.info.width), grid.info.resolution,
+                                  (origin.position.x,origin.position.y,yaw(origin.orientation)),
+                                  **rospy.get_param('~startup_matching', {}))
         if mode == 'auto':
             self.publish('SEARCHING', 'comparing scan with selected floor')
             match = matcher.search(self.scan_points(scan), lambda: not self.current(generation))
@@ -249,7 +294,11 @@ class StartupLocalization:
             self.runtime.publish_floor(FloorState.UNKNOWN, 'checking '+mode+' localization',
                                        self.runtime.current_floor or self.runtime.initial_floor)
             self.node.initialpose_publisher.publish(pose)
-            self.publish('VERIFYING', 'waiting for fresh AMCL pose, scan agreement, and TF', source=mode)
+            wait_reason = ('waiting for fresh AMCL pose, recent scan, and current map-to-base TF'
+                           if mode == 'manual'
+                           else 'waiting for fresh AMCL pose, scan agreement, and TF')
+            self.publish('VERIFYING', wait_reason, source=mode,
+                         scan_match_required=(mode == 'auto'))
         deadline = time.monotonic()+self.node.transaction_timeout
         marker = pose.header.stamp.to_nsec()
         while self.current(generation) and time.monotonic() < deadline:
@@ -269,27 +318,40 @@ class StartupLocalization:
                 self.wake.wait(.05)
                 self.wake.clear()
             with self.lock, self.runtime.condition:
-                evidence = self.runtime.localization_evidence()
+                evidence = self.runtime.localization_evidence(require_scan_tf=(mode == 'auto'))
                 current_pose, current_scan = self.pose, self.scan
                 if not self.current(generation):
                     return
-                if evidence is None or not evidence.ready or not self.fresh(current_pose) or not self.fresh(current_scan):
+                if (evidence is None or not evidence.ready or not self.fresh(current_pose)
+                        or not self.fresh_scan(current_scan)):
+                    continue
+                if mode == 'manual' and not self.map_to_base_tf_available():
                     continue
                 p, q = current_pose.pose.pose.position, current_pose.pose.pose.orientation
-                scores, hit = matcher.score([(p.x,p.y,yaw(q))], matcher.points(self.scan_points(current_scan)))
-                if hit[0] < matcher.min_hit or scores[0] < matcher.min_hit:
-                    raise ValueError('pose and scan do not match map; adjust position/direction')
+                scan_score = scan_hit = None
+                if mode == 'auto':
+                    scores, hit = matcher.score(
+                        [(p.x,p.y,yaw(q))], matcher.points(self.scan_points(current_scan)))
+                    if hit[0] < matcher.min_hit or scores[0] < matcher.min_hit:
+                        raise ValueError('pose and scan do not match map; adjust position/direction')
+                    scan_score, scan_hit = float(scores[0]), float(hit[0])
             # No map change: clear obsolete costmap data once, then release READY.
             self.node.services.call(self.node.clear_costmaps_name, self.node.clear_costmaps)
             with self.lock, self.runtime.condition:
                 if not self.current(generation) or self.busy():
                     return
-                evidence = self.runtime.localization_evidence()
+                evidence = self.runtime.localization_evidence(require_scan_tf=(mode == 'auto'))
                 if evidence is None or not evidence.ready:
+                    continue
+                if mode == 'manual' and not self.map_to_base_tf_available():
                     continue
                 self.runtime.finish_transition(FloorState.READY, mode+' localization ready', self.runtime.current_floor)
                 self.publish('READY', 'localization ready', source=mode, x=p.x, y=p.y, yaw=yaw(q),
-                             hit_fraction=float(hit[0]), score=float(scores[0]))
+                             scan_match_required=(mode == 'auto'),
+                             scan_match_verified=(mode == 'auto'),
+                             hit_fraction=scan_hit, score=scan_score)
             return
         if self.current(generation):
-            raise ValueError('localization timeout; manual pose or retry remains available')
+            gaps = self.readiness_gaps(mode)
+            detail = ', '.join(gaps) if gaps else 'localization did not converge'
+            raise ValueError('localization timeout; still waiting for {}'.format(detail))

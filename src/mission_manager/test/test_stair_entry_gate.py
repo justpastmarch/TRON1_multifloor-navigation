@@ -111,7 +111,7 @@ class EntryRefreshTest(unittest.TestCase):
         from mission_manager.ros_state import RosStateMonitor
         from mission_manager.stair_entry_gate import StairEntryDecision
         state = RosStateMonitor.__new__(RosStateMonitor)
-        state._barrier_timeout = 2.0
+        state._entry_wait_timeout = 2.0
         state._condition = threading.Condition()
         state.stair_entry_decision = Mock(side_effect=[StairEntryDecision(False, 'need samples'), StairEntryDecision(True, '')])
         with patch('rospy.get_param', return_value='/request_nomotion_update'), patch('rospy.ServiceProxy'), patch('rospy.is_shutdown', return_value=False), patch('multifloor_manager.ros_services.BoundedServiceCaller') as caller:
@@ -125,7 +125,7 @@ class EntryRefreshTest(unittest.TestCase):
         from mission_manager.stair_entry_gate import StairEntryDecision
         from multifloor_manager.ros_services import ServiceCallError
         state = RosStateMonitor.__new__(RosStateMonitor)
-        state._barrier_timeout = 2.0
+        state._entry_wait_timeout = 2.0
         state._condition = threading.Condition()
         state.stair_entry_decision = Mock(return_value=StairEntryDecision(False, 'need samples'))
         with patch('rospy.get_param', return_value='/request_nomotion_update'), patch('rospy.ServiceProxy'), patch('rospy.is_shutdown', return_value=False), patch('rospy.logwarn'), patch('multifloor_manager.ros_services.BoundedServiceCaller') as caller:
@@ -187,7 +187,7 @@ class MeasurementWindowRegressionTest(unittest.TestCase):
     def test_frozen_or_future_samples_still_fail(self):
         from mission_manager.stair_entry_gate import entry_motion_window
         rows=[(100.+i*.01,0.,0.) for i in range(61)]
-        for now in (100.751,101.,100.59,float('nan')):
+        for now in (100.751,101.,100.579,float('nan')):
             self.assertIsNone(entry_motion_window(rows,now))
     def test_delay_does_not_hide_sustained_motion_or_reversal(self):
         from mission_manager.stair_entry_gate import entry_motion_window,LIDAR_ENTRY_POLICY

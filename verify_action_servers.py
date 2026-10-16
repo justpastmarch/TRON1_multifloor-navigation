@@ -27,8 +27,12 @@ def main() -> int:
             actionlib.SimpleActionClient("/stair_traversal", StairTraversalAction),
         ),
     )
+    # The stair action runs on the MiniPC. During a cold sensor-stack start its
+    # feedback TCP connection can arrive after the other four action channels.
+    # A missing server still fails startup; allow that connection to finish.
     for name, client in clients:
-        if not client.wait_for_server(rospy.Duration(15.0)):
+        timeout_sec = 45.0 if name == "/stair_traversal" else 15.0
+        if not client.wait_for_server(rospy.Duration(timeout_sec)):
             rospy.logerr("action server connection failed: %s", name)
             return 1
         print("[CHECK] actionlib connection: {}".format(name), flush=True)

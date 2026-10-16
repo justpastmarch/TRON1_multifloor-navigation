@@ -35,20 +35,18 @@ class SystemOperatorContractTest(unittest.TestCase):
             },
         )
 
-    def test_system_launch_includes_standard_navigation_and_perception(self) -> None:
+    def test_system_launch_includes_navigation_only(self) -> None:
         # Given: the single operator-facing ROS launch description.
         launch = ElementTree.parse(SYSTEM_LAUNCH).getroot()
 
         # When: included launch files are inspected.
         includes = {include.get("file") for include in launch.findall("include")}
 
-        # Then: navigation, scan conversion, and AprilTag detection are composed.
+        # Then: navigation is the only local include; the mini PC owns /scan and stair results confirm floors.
         self.assertEqual(
             includes,
             {
                 "$(find multifloor_manager)/launch/navigation.launch",
-                "$(find multifloor_manager)/launch/pointcloud_to_laserscan.launch",
-                "$(find multifloor_manager)/launch/apriltag.launch",
             },
         )
 
@@ -83,9 +81,7 @@ class SystemOperatorContractTest(unittest.TestCase):
             "wait_for_fresh_message /scan sensor_msgs/LaserScan",
             "wait_for_fresh_message /tron/wheel_odom_raw nav_msgs/Odometry",
             "wait_for_fresh_message /tf tf2_msgs/TFMessage",
-            'wait_for_fresh_message "$TAG_DETECTIONS_TOPIC" apriltag_ros/AprilTagDetectionArray',
             "/tf",
-            "TAG_DETECTIONS_TOPIC",
             "rostopic info /scan",
         ):
             with self.subTest(token=token):

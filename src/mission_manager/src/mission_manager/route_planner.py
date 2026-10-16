@@ -188,6 +188,14 @@ class BuildingPlanner:
                                   None, None, origin.id)
         return Route(origin_id, destination_id, (navigation,) + route.segments)
 
+    def stair_segments_for_profile(self, profile_id: str) -> Tuple[RouteSegment, RouteSegment]:
+        """Resolve the exact configured stair edge; never infer a lower floor."""
+        matches = [self._expand_edge(edge) for edges in self._adjacency.values() for edge in edges
+                   if edge.type is not EdgeType.NAV and self._profile_for(edge, self._stairs[edge.stair_id]).id == profile_id]
+        if len(matches) != 1:
+            raise RoutePlanningError(profile_id, profile_id, "stair profile has no unique configured edge")
+        return matches[0]
+
     def plan_return(self, confirmed_anchor: LogicalAnchor) -> Route:
         """Run a fresh BFS from confirmed progress to the configured home."""
         return self.plan(confirmed_anchor.location_id, self._home_location_id)

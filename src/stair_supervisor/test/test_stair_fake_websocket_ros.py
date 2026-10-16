@@ -95,7 +95,10 @@ class StairFakeWebSocketRosTest(unittest.TestCase):
         # Then: all phases, structured evidence, mode state, and socket TX are observable.
         self.assertEqual(client.get_state(), GoalStatus.SUCCEEDED, result.reason)
         self.assertEqual(result.result_code, StairTraversalResult.OK)
-        self.assertEqual(list(dict.fromkeys(item.phase for item in feedback)), [phase.value for phase in Phase])
+        # The synthetic fixture is a two-flight stair, not a rooftop route.
+        self.assertEqual(list(dict.fromkeys(item.phase for item in feedback)), [
+            'VERIFY_ENTRY', 'ALIGN', 'FORWARD_SEGMENT_1', 'LANDING',
+            'TURN_TO_NEXT_FLIGHT', 'FORWARD_SEGMENT_2', 'EXIT_CONFIRM'])
         self.assertTrue(all("progress=" in item.detail and "freshness=" in item.detail for item in feedback))
         self.assertIn(SupervisorState.STAIR, [item.state for item in states])
         self.assertEqual(node.state, SupervisorState.NAV)

@@ -64,6 +64,9 @@ class FakeTransport:
     def send_current(self) -> None:
         self.events.append(("send",))
 
+    def send_walk_mode(self) -> None:
+        self.events.append(("walk_send",))
+
     def request_stair_mode(self, enabled: bool) -> None:
         self.events.append(("stair", enabled))
         if self.fail_on_stair:
@@ -167,6 +170,23 @@ class StairSupervisorTest(unittest.TestCase):
             turn_linear_mps=turn_linear_mps,
         )
         return supervisor, transport, clock, phases
+
+    def test_rooftop_prepare_reasserts_walk_once_before_navigation(self):
+        supervisor, transport, _, _ = self.make_supervisor()
+        supervisor.start()
+        transport.events.clear()
+        self.assertTrue(supervisor.prepare_rooftop_navigation())
+        self.assertEqual(transport.events[0], ('walk_send',))
+        self.assertEqual(transport.events.count(('walk_send',)), 1)
+        self.assertEqual(supervisor.state, SupervisorState.NAV)
+
+    def test_rooftop_prepare_does_not_interrupt_traversal(self):
+        supervisor, transport, _, _ = self.make_supervisor()
+        supervisor.start()
+        transport.events.clear()
+        with supervisor._traversal_lock:
+            self.assertFalse(supervisor.prepare_rooftop_navigation())
+        self.assertEqual(transport.events, [])
 
     def test_traversal_owns_commands_and_advances_epoch(self) -> None:
         # Given: a ready supervisor with a fresh navigation command.

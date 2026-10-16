@@ -37,7 +37,7 @@ class DownRouteTest(unittest.TestCase):
  def test_downhill_height_is_upper_bound_not_upward_lower_bound(self):
   self.assertFalse(self.c._ascent_height_reached(2.,1.7));self.assertTrue(self.c._ascent_height_reached(1.7,1.7));self.assertTrue(self.c._ascent_height_reached(1.6,1.7))
  def test_middle_landing_rotation_uses_region_policy(self):
-  self.step(Phase.ROOFTOP_TURN,2.5,1.47,1.7,0.)
+  self.step(Phase.ROOFTOP_TURN,2.71,1.47,1.7,0.)
   self.assertEqual(self.c.turn_index,1)
   self.step(Phase.ROOFTOP_TURN,2.6,1.2,1.7,-math.pi/2)
   self.assertEqual(self.c.turn_index,2);self.assertEqual(self.c.command()[0],0.)
@@ -54,9 +54,9 @@ class DownRouteTest(unittest.TestCase):
  def test_stationary_rotation_disk_near_margin_has_exact_support_proof(self):
   from stair_supervisor.stair_feedback import se2
   body=np.column_stack((self.route['footprint'],np.zeros(4),np.ones(4)))
-  for x,expected in [(2.40956,True),(2.407,False)]:
+  for x,expected in [(2.35,True),(2.34,False)]:
    pose=se2(x,1.47,.68);support=(pose@body.T).T[:,:2]
-   self.assertEqual(self.c._swept_support(pose[:2,3],.68,support,0.,.2,.9,[self.route['roof_landing_polygon']],.12),expected)
+   self.assertEqual(self.c._swept_support(pose[:2,3],.68,support,0.,.2,.9,[self.route['roof_landing_polygon']],.06),expected)
  def test_map_entry_preserves_measured_roll_pitch(self):
   from scipy.spatial.transform import Rotation
   local=np.eye(4);local[:3,:3]=Rotation.from_euler('ZYX',[.2,.1,-.08]).as_matrix()
@@ -65,11 +65,14 @@ class DownRouteTest(unittest.TestCase):
   body=np.linalg.inv(np.asarray(anchor.local_from_profile).reshape(4,4))@local
   angles=Rotation.from_matrix(body[:3,:3]).as_euler('ZYX')
   self.assertAlmostEqual(angles[1],.1);self.assertAlmostEqual(angles[2],-.08)
- def test_map_covariance_is_carried_into_support_margin(self):
+ def test_map_covariance_is_recorded_but_support_margin_stays_six_cm(self):
+  from stair_supervisor.stair_feedback import effective_support_margin
   loc=dict(x=4.,y=5.,yaw=-1.,floor_id='RF');m=sample(2,100.)
   good=map_entry_anchor(self.route,loc,(4.,5.,-1.),[.001]*3,m,np.eye(4),'RF',100.1,100.1,100.)
   poor=map_entry_anchor(self.route,loc,(4.,5.,-1.),[.25]*3,m,np.eye(4),'RF',100.1,100.1,100.)
   self.assertGreater(poor.uncertainty_m,good.uncertainty_m);self.assertGreater(poor.uncertainty_m,1.)
+  self.assertAlmostEqual(effective_support_margin(self.route,good.uncertainty_m),.06)
+  self.assertAlmostEqual(effective_support_margin(self.route,poor.uncertainty_m),.06)
   for covariance in ([float('nan'),0,0],[-1,0,0],[0,0,.3]):
    with self.assertRaises(ValueError):map_entry_anchor(self.route,loc,(4.,5.,-1.),covariance,m,np.eye(4),'RF',100.1,100.1,100.)
  def test_map_anchor_preserves_offset_and_rejects_stale_wrong_floor(self):

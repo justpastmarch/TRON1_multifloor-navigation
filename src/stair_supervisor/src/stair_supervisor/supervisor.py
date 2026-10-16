@@ -76,7 +76,12 @@ class StairSupervisor:
 
     def operator_status(self):
         with self._state_lock:
-            return dict(self._operator_run or {}, pending=self._operator_request is not None or self._operator_applying, result=dict(self._operator_result))
+            result = dict(self._operator_run or {}, pending=self._operator_request is not None or self._operator_applying, result=dict(self._operator_result))
+            result['continue_supported'] = self._lidar_control is not None and self._operator_recovery_enabled
+            result['resume_available'] = bool(self._operator_run and not self._operator_run.get('active')
+                and self._state is SupervisorState.STAIR and self._retained_loss
+                and self._lidar_control is not None)
+            return result
 
     def request_operator_phase(self, request):
         with self._state_lock:
@@ -87,13 +92,18 @@ class StairSupervisor:
                     or request.get('confirmed') is not True):
                 raise ValueError('단계가 변경되었습니다. 현재 상태를 확인하고 다시 선택하세요.')
             phase = request.get('phase')
+            kind = request.get('kind', 'set_phase')
+            if kind not in ('set_phase', 'continue'):
+                raise ValueError('지원하지 않는 단계 요청입니다.')
             if phase not in run['phases']:
                 raise ValueError('현재 경로에 없는 단계입니다.')
+            if kind == 'continue' and (not run.get('waiting') or phase != run.get('phase')):
+                raise ValueError('같은 단계 이어가기는 중단 대기 중인 현재 단계에서만 가능합니다.')
             if self._operator_request is not None or self._operator_applying:
                 raise ValueError('이전 단계 전이를 처리 중입니다.')
-            self._operator_request = dict(phase=phase, run_id=run['run_id'], revision=run['revision'], request_id=request.get('request_id',''))
-            self._operator_result = dict(request_id=request.get('request_id',''),phase=phase,state='ACCEPTED')
-            return dict(accepted=True, phase=phase, run_id=run['run_id'])
+            self._operator_request = dict(kind=kind, phase=phase, run_id=run['run_id'], revision=run['revision'], request_id=request.get('request_id',''))
+            self._operator_result = dict(request_id=request.get('request_id',''),phase=phase,kind=kind,state='ACCEPTED')
+            return dict(accepted=True, phase=phase, kind=kind, run_id=run['run_id'])
 
     @property
     def state(self) -> SupervisorState:
@@ -191,9 +201,19 @@ class StairSupervisor:
         cancellation_requested: Callable[[], bool],
         *,
         phase_test=None,
+        resume=None,
     ) -> TraversalResult:
         """Execute a normal route, one phase, or an entry-to-phase test prefix."""
         from_entry = False
+        if resume is not None:
+            try:
+                if phase_test is not None or not isinstance(resume, dict) or set(resume) != {'run_id', 'revision', 'phase'}:
+                    raise ValueError('invalid stair resume request')
+                resume_phase = Phase(resume['phase'])
+                if type(resume['revision']) is not int or not isinstance(resume['run_id'], str):
+                    raise ValueError('invalid stair resume checkpoint')
+            except (ValueError, TypeError, KeyError) as error:
+                return TraversalResult(ResultCode.INVALID_GOAL, str(error))
         if phase_test is not None:
             try:
                 required = {"route_id", "phase", "max_duration_sec", "operator_confirmed"}
@@ -233,11 +253,18 @@ class StairSupervisor:
                 )
             with self._state_lock:
                 test_resume = phase_test is not None and self._state is SupervisorState.STAIR and (self._retained_loss or self._landing_test_hold)
-                if self._state is not SupervisorState.NAV and not test_resume:
+                run = self._operator_run
+                action_resume = (resume is not None and self._state is SupervisorState.STAIR and self._retained_loss
+                    and run is not None and not run.get('active') and run.get('route_id') == goal.stair_id
+                    and run.get('run_id') == resume['run_id'] and run.get('revision') == resume['revision']
+                    and resume_phase.value in run.get('phases', ()))
+                if resume is not None and not action_resume:
+                    return TraversalResult(ResultCode.ENTRY_REJECTED, 'stair route or checkpoint changed; refresh the current run')
+                if self._state is not SupervisorState.NAV and not test_resume and not action_resume:
                     return TraversalResult(ResultCode.BUSY, "supervisor is not ready for traversal/test")
                 admitted_state = self._state
                 ownership_epoch = self._ownership_epoch
-            if phase_test is None:
+            if phase_test is None and resume is None:
                 admission = self._admission.validate(goal, ownership_epoch)
                 if not admission.accepted:
                     code = (
@@ -253,8 +280,12 @@ class StairSupervisor:
                     if phase_test is not None:
                         phases, budgets = self._lidar_control.test_plan(profile, test_phase, duration, from_entry)
                         self._lidar_control.prepare(profile, self._clock.monotonic(), phase_test=True, start_phase=phases[0])
-                    else:
+                    elif resume is None:
                         self._lidar_control.prepare(profile, self._clock.monotonic(), start_phase=Phase.VERIFY_ENTRY)
+                    elif resume_phase.value == run['phase']:
+                        self._lidar_control.continue_phase(self._clock.monotonic())
+                    else:
+                        self._lidar_control.operator_phase(resume_phase, self._clock.monotonic())
                 except ValueError as error:
                     return TraversalResult(ResultCode.ENTRY_REJECTED, str(error))
             with self._state_lock:
@@ -265,9 +296,13 @@ class StairSupervisor:
                 self._retained_loss = False
                 self._landing_test_hold = False
             if phase_test is not None:
+                # A phase test rearms the controller and invalidates any old
+                # full-mission turn pivot/checkpoint; never offer that stale run.
+                with self._state_lock:
+                    self._operator_run = None
                 return self._execute_phase_test(profile, phases, budgets, duration, cancellation_requested,
                                                 admitted_state=admitted_state, retained_loss=test_resume)
-            return self._execute_profile(profile, cancellation_requested)
+            return self._execute_profile(profile, cancellation_requested, resume_phase=resume_phase if resume is not None else None)
         finally:
             with self._state_lock:
                 if self._operator_run is not None:
@@ -368,10 +403,12 @@ class StairSupervisor:
         self,
         profile: StairProfile,
         cancellation_requested: Callable[[], bool],
+        *, resume_phase=None,
     ) -> TraversalResult:
         started_at = self._clock.monotonic()
         try:
-            self._evidence.arm(profile, started_at)
+            if resume_phase is None:
+                self._evidence.arm(profile, started_at)
         except ValueError as error:
             with self._state_lock:
                 self._state = SupervisorState.NAV
@@ -381,25 +418,29 @@ class StairSupervisor:
         with self._state_lock:
             self._arrival_hold = False
         cancel_pending = False
+        phases = (self._lidar_control.traversal_phases(profile) if self._lidar_control is not None
+                  else tuple(p for p in Phase if p not in (Phase.ROOFTOP_TURN, Phase.FORWARD_SEGMENT_3)))
+        import uuid
+        with self._state_lock:
+            self._operator_result = {}
+            self._operator_applying = False
+            self._operator_run = dict(run_id=uuid.uuid4().hex, route_id=profile.id, active=True,
+                                      phase=(resume_phase or phases[0]).value, phases=[p.value for p in phases], revision=0,
+                                      last_operator_phase=None, error='', waiting=False, stop_reason='')
         try:
             if self._lidar_control is None:
                 self._zero_barrier()
                 self._transport.request_stair_mode(True)
             else:
-                self._set_lidar_mode(True, cancellation_requested, None, True)
-            phases = (self._lidar_control.traversal_phases(profile) if self._lidar_control is not None
-                      else tuple(p for p in Phase if p not in (Phase.ROOFTOP_TURN, Phase.FORWARD_SEGMENT_3)))
-            import uuid
-            with self._state_lock:
-                self._operator_result = {}
-                self._operator_applying = False
-                self._operator_run = dict(run_id=uuid.uuid4().hex, route_id=profile.id, active=True,
-                                          phase=phases[0].value, phases=[p.value for p in phases], revision=0,
-                                          last_operator_phase=None, error='', waiting=False, stop_reason='')
-            phase_index = 0
+                self._set_lidar_mode(True, cancellation_requested, resume_phase, True, preserve_phase=resume_phase is not None)
+            phase_index = phases.index(resume_phase) if resume_phase is not None else 0
+            first_resumed_phase = resume_phase is not None
             while phase_index < len(phases):
                 phase = phases[phase_index]
-                self._evidence.begin_phase(phase, self._clock.monotonic())
+                if first_resumed_phase:
+                    first_resumed_phase = False  # preserve turn pivot/substep on same-phase resume
+                else:
+                    self._evidence.begin_phase(phase, self._clock.monotonic())
                 with self._state_lock:
                     self._operator_run.update(phase=phase.value, revision=self._operator_run['revision']+1)
                     self._operator_applying = False
@@ -419,21 +460,37 @@ class StairSupervisor:
                         operator_request = None
                     if operator_request is not None:
                         target = Phase(operator_request['phase'])
+                        kind = operator_request.get('kind', 'set_phase')
                         try:
                             if self._lidar_control is None:
                                 raise ValueError('LiDAR 제어가 없는 임무는 단계 전이를 지원하지 않습니다.')
                             waiting = self._operator_run.get('waiting', False)
-                            with self._state_lock:
-                                self._lidar_control.operator_phase(target, self._clock.monotonic())
-                                self._retained_loss = False
-                                self._zero_barrier()
-                            if waiting:
-                                self._set_lidar_mode(True, cancellation_requested, target, True)
-                            phase_index = phases.index(target)-1
-                            with self._state_lock:
-                                self._operator_run.update(last_operator_phase=target.value, error='', waiting=False)
-                                self._operator_result = dict(request_id=operator_request['request_id'],phase=target.value,state='APPLIED',reason='사용자 지정 단계 적용')
-                            break
+                            if kind == 'continue':
+                                if not waiting or target is not phase:
+                                    raise ValueError('같은 단계 이어가기는 중단 대기 중인 현재 단계에서만 가능합니다.')
+                                with self._state_lock:
+                                    self._lidar_control.continue_phase(self._clock.monotonic())
+                                    self._zero_barrier()
+                                self._set_lidar_mode(True, cancellation_requested, target, True, preserve_phase=True)
+                                with self._state_lock:
+                                    self._retained_loss = False
+                                    self._operator_run.update(last_operator_phase=target.value, error='', waiting=False,
+                                                              revision=self._operator_run['revision']+1)
+                                    self._operator_result = dict(request_id=operator_request['request_id'],
+                                        phase=target.value,kind=kind,state='APPLIED',reason='현재 단계의 진행 위치를 유지해 계속합니다.')
+                            else:
+                                with self._state_lock:
+                                    self._lidar_control.operator_phase(target, self._clock.monotonic())
+                                    self._retained_loss = False
+                                    self._zero_barrier()
+                                if waiting:
+                                    self._set_lidar_mode(True, cancellation_requested, target, True)
+                                phase_index = phases.index(target)-1
+                                with self._state_lock:
+                                    self._operator_run.update(last_operator_phase=target.value, error='', waiting=False)
+                                    self._operator_result = dict(request_id=operator_request['request_id'],phase=target.value,
+                                        kind=kind,state='APPLIED',reason='사용자 지정 단계 적용')
+                                break
                         except (ValueError, _LidarTransitionFailed) as error:
                             if self._operator_run.get('waiting'):
                                 self._retain_lidar_loss(str(error))
@@ -516,11 +573,12 @@ class StairSupervisor:
             return TraversalResult(ResultCode.COMMUNICATION_LOST, str(transport_error))
         return TraversalResult(ResultCode.STAIR_FAILED, reason)
 
-    def _set_lidar_mode(self, enabled, cancellation_requested, phase_override=None, neutral_only=False):
+    def _set_lidar_mode(self, enabled, cancellation_requested, phase_override=None, neutral_only=False, *, preserve_phase=False):
         """Maintain measured support correction while mode acknowledgment waits."""
         phase = phase_override if phase_override is not None else (Phase.VERIFY_ENTRY if enabled else Phase.EXIT_CONFIRM)
         started = self._clock.monotonic()
-        self._lidar_control.begin_phase(phase, started)
+        if not preserve_phase:
+            self._lidar_control.begin_phase(phase, started)
         if neutral_only:
             self._zero_barrier()
             self._lidar_control.reset_command(started)
@@ -705,6 +763,16 @@ class StairSupervisor:
             self._latest_nav = None
             self._ownership_epoch += 1
             self._zero_barrier()
+            return True
+
+    def prepare_rooftop_navigation(self) -> bool:
+        """Reassert WALK for an RF flat tour through the sole command owner."""
+        with self._state_lock:
+            if self._state is not SupervisorState.NAV or self._traversal_lock.locked():
+                return False
+            self._transport.send_walk_mode()
+            self._zero_barrier()
+            self._latest_nav = None
             return True
 
     def acknowledge_physical_handoff(self) -> bool:

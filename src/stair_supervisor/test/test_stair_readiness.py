@@ -35,46 +35,48 @@ class ReadinessTest(unittest.TestCase):
                  flight_1_polygon=box(0,-.615,2.52,.615),
                  landing_polygon=box(2.52,-.615,4.,2.085),
                  turn_path=[[3.26,0,0],[3.26,0,math.pi/2],[3.26,1.47,math.pi/2]])
-        r['limits'].update(margin_m=.02,anchor_uncertainty_m=.1,max_v=.15,max_w=.2,
+        r['limits'].update(margin_m=.02,support_margin_m=.06,anchor_uncertainty_m=.1,max_v=.15,max_w=.2,
             max_accel=.15,max_alpha=.3,warn_sec=.5,expire_sec=.9,recover_sec=2.)
         worker=Worker(); c=StairFeedback(worker,np.eye(4),[r])
         c.capture_entry('test_up',np.eye(4),.1,'synthetic fixture',100.)
         c.arm(replace(make_configuration().profiles[0],timeout_sec=300.),100.)
         return worker,c
 
-    def test_forward_boundary_can_reduce_translation_without_erasing_margin(self):
+    def test_ascent_keeps_observed_forward_feedback_near_corridor_edge(self):
         w,c=self.controller();c.begin_phase(Phase.FORWARD_SEGMENT_1,100.)
         w.value=sample(2,100.2,x=1.50,y=-.154,yaw=math.radians(-36.5),z=.97)
         c._last_command=(.08,.2)
         result=c.evaluate(c.phase,100.21)
         self.assertFalse(result.faulted,result.detail)
-        self.assertTrue(c.debug['boundary_adjusted'])
-        self.assertGreater(c.command()[0],0.);self.assertLess(c.command()[0],.08)
-        self.assertAlmostEqual(c.debug['effective_margin_m'],.12)
+        self.assertGreater(c.command()[0],0.)
+        self.assertLessEqual(c.command()[0],c.route['limits']['max_v'])
+        self.assertAlmostEqual(c.debug['effective_margin_m'],.06)
         self.assertAlmostEqual(c.command()[1],.2)
         self.assertGreaterEqual(c.command()[0],.08-.15*.21-1e-9)
 
-    def test_command_filter_cannot_jump_outside_acceleration_window(self):
+    def test_fresh_ascent_feedback_is_not_rejected_by_acceleration_window(self):
         w,c=self.controller();c.begin_phase(Phase.FORWARD_SEGMENT_1,100.)
         w.value=sample(2,100.001,x=1.50,y=-.154,yaw=math.radians(-36.5),z=.97)
         c._last_command=(.15,.2)
         result=c.evaluate(c.phase,100.001)
-        self.assertTrue(result.faulted)
-        self.assertEqual(c.debug['tracking_state'],'SUPPORT_LIMIT')
+        self.assertFalse(result.faulted,result.detail)
+        self.assertGreater(c.command()[0],0.)
 
     def test_landing_approach_does_not_reintroduce_a_margin_at_internal_join(self):
         w,c=self.controller();c.begin_phase(Phase.LANDING,100.)
         w.value=sample(2,100.2,x=2.914,y=-.066,yaw=math.radians(24.1),z=1.60)
         result=c.evaluate(c.phase,100.21)
         self.assertFalse(result.faulted,result.detail)
-        self.assertFalse(result.complete)  # body still needs full flat clearance
-        self.assertGreater(c.command()[0],0.)
+        self.assertTrue(result.complete)  # 6 cm support clearance is sufficient at this joined landing
+        self.assertEqual(c.command()[0],0.)  # completed phase leaves command handoff to supervisor
         self.assertEqual(c.debug['support_regions'],['flight_1_polygon','landing_polygon'])
 
-    def test_later_turn_requires_flat_landing_and_external_edges_still_fail(self):
+    def test_six_cm_margin_allows_landing_turn_but_external_edges_still_fail(self):
         w,c=self.controller();c.begin_phase(Phase.TURN_TO_NEXT_FLIGHT,100.);c.turn_index=1
         w.value=sample(2,100.2,x=2.914,y=-.066,yaw=math.radians(24.1),z=1.60)
-        self.assertTrue(c.evaluate(c.phase,100.21).faulted)
+        result=c.evaluate(c.phase,100.21)
+        self.assertFalse(result.faulted,c.debug)
+        self.assertTrue(c.debug['current_supported'])
         w,c=self.controller();c.begin_phase(Phase.LANDING,100.)
         w.value=sample(2,100.2,x=3.0,y=-.60,z=1.53)
         self.assertTrue(c.evaluate(c.phase,100.21).faulted)
@@ -97,13 +99,27 @@ class ReadinessTest(unittest.TestCase):
             self.assertNotIn('entry_reference',r)
         self.assertAlmostEqual(r['flight_1'][1][2],9*.17)
         self.assertAlmostEqual(r['flight_2'][1][2],19*.17)
+        self.assertAlmostEqual(r['limits']['support_margin_m'],.06)
+        self.assertAlmostEqual(r['limits']['anchor_uncertainty_m'],.1)
         self.assertAlmostEqual(normalize_twist(r['limits']['min_flight_v'],0,profiles.robot.websocket_full_scale).x,1.)
         c.test_plan(profiles.profiles[0],Phase.FORWARD_SEGMENT_1,65.,True)
         c.test_plan(profiles.profiles[0],Phase.EXIT_CONFIRM,255.,True)
         self.assertTrue(inside_polygon(np.array(r['footprint'])+np.array(r['flight_1'][0][:2]),
-                                       r['entry_polygon'],.12))
+                                       r['entry_polygon'],r['limits']['support_margin_m']))
 
-    def test_field_both_flights_reach_full_input_with_steering_and_slew(self):
+    def test_all_commissioned_routes_share_six_cm_support_margin_not_match_budget(self):
+        from stair_supervisor.stair_feedback import effective_support_margin
+        root=Path(__file__).resolve().parents[1]/'config'
+        cfg=load_lidar_configuration(root/'stair_lidar_3f_4f_test.yaml','control',False)
+        routes={r['id']:r for r in cfg.document['routes']}
+        self.assertEqual(set(routes),{'stair_3f_4f_up','stair_5f_rf_up','stair_5f_rf_down'})
+        for route in routes.values():
+            with self.subTest(route=route['id']):
+                self.assertAlmostEqual(route['limits']['anchor_uncertainty_m'],.1)
+                self.assertAlmostEqual(effective_support_margin(route,.1),.06)
+                self.assertAlmostEqual(effective_support_margin(route,.25),.06)
+
+    def test_field_both_flights_start_with_full_input_and_bounded_steering(self):
         root=Path(__file__).resolve().parents[1]/'config'
         cfg=load_lidar_configuration(root/'stair_lidar_3f_4f_test.yaml','control',False)
         r=cfg.document['routes'][0]; profiles=load_stair_configuration(root)
@@ -124,8 +140,8 @@ class ReadinessTest(unittest.TestCase):
                     result=c.evaluate(phase,stamp+.01)
                     self.assertFalse(result.faulted,result.detail)
                     commands.append(c.command())
-                self.assertLess(commands[0][0],r['limits']['min_flight_v'])
-                self.assertTrue(all(abs(b[0]-a[0])<=.15*.2+1e-8 for a,b in zip(commands,commands[1:])))
+                self.assertEqual(commands[0][0],r['limits']['max_v'])
+                self.assertTrue(all(command[0]==r['limits']['max_v'] for command in commands))
                 sent=normalize_twist(*commands[-1],profiles.robot.websocket_full_scale)
                 self.assertAlmostEqual(sent.x,1.)
                 self.assertNotEqual(sent.z,0.)
@@ -154,8 +170,8 @@ class ReadinessTest(unittest.TestCase):
                 w.value=sample(2,104.02,x=x,y=y,z=z,yaw=yaw)
                 result=c.evaluate(phase,104.03,command_required=True)
                 self.assertFalse(result.faulted,result.detail)
-                self.assertLessEqual(abs(c.command()[0]),.06+1e-9)
-                self.assertLessEqual(abs(normalize_twist(*c.command(),profiles.robot.websocket_full_scale).x),.06/.55+1e-9)
+                self.assertLessEqual(abs(c.command()[0]),(.06 if phase is Phase.EXIT_CONFIRM else .195)+1e-9)
+                self.assertLessEqual(abs(normalize_twist(*c.command(),profiles.robot.websocket_full_scale).x),(.06 if phase is Phase.EXIT_CONFIRM else .195)/.55+1e-9)
                 self.assertLessEqual(abs(c.command()[1]),.2+1e-9)
 
     def test_midroute_client_keeps_reference_and_rejects_epoch_change(self):
@@ -174,12 +190,12 @@ class ReadinessTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             module.refresh_retained_reference(dict(route_id='r',epoch=3),dict(epoch=3),'r',80.)
 
-    def test_forward_floor_does_not_bypass_slew(self):
+    def test_forward_floor_is_immediate_during_upward_ascent(self):
         w,c=self.controller();c.route['limits'].update(max_v=.30,min_flight_v=.275)
         c.begin_phase(Phase.FORWARD_SEGMENT_1,100.);w.value=sample(2,100.2,x=.1,z=.1)
         self.assertFalse(c.evaluate(c.phase,100.21).faulted)
-        self.assertLessEqual(c.command()[0],.15*.21+1e-9)
-        self.assertTrue(c.debug['below_flight_command_floor'])
+        self.assertEqual(c.command()[0],.275)
+        self.assertFalse(c.debug['below_flight_command_floor'])
         bad=route();bad['limits']['min_flight_v']=1.
         with self.assertRaises(ValueError):StairFeedback(w,np.eye(4),[bad])
 

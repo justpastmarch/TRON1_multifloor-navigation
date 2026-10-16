@@ -8,8 +8,6 @@
   <arg name="cloud_in"/>
   <arg name="image_rect"/>
   <arg name="camera_info"/>
-  <arg name="tag_config" default="$(find multifloor_manager)/config/apriltag_ros_tags.yaml"/>
-  <arg name="tag_topic" default="/tag_detections"/>
   <arg name="initial_floor"/>
   <arg name="home_location_id"/>
   <arg name="initial_location_id"/>
@@ -27,6 +25,7 @@
   <arg name="acc_lim_x" default="0.4"/>
   <arg name="acc_lim_theta" default="2.0"/>
   <arg name="rviz" default="true"/>
+  <arg name="stair_on_local" default="true"/>
   <arg name="stair_lidar_mode" default="off"/>
   <arg name="stair_python" default=""/>
   <arg name="stair_lidar_observe_only" default="true"/>
@@ -37,14 +36,9 @@
 
   <!-- /scan is published by the mini PC sensor stack (mid360s_laserscan).
        Do not add a second publisher here. -->
-  <include file="$(find multifloor_manager)/launch/apriltag.launch">
-    <arg name="image_rect" value="$(arg image_rect)"/>
-    <arg name="camera_info" value="$(arg camera_info)"/>
-    <arg name="tag_config" value="$(arg tag_config)"/>
-    <arg name="tag_topic" value="$(arg tag_topic)"/>
-  </include>
   <include file="$(find multifloor_manager)/launch/navigation.launch">
-    <arg name="precise_arrival" value="$(arg arrival_hold_enabled)"/>
+    <!-- Position hold must not tighten ordinary NAV arrival tolerances. -->
+    <arg name="precise_arrival" value="false"/>
     <arg name="managed_localization" value="$(eval arg('startup_localization') != 'disabled')"/>
     <arg name="map_yaml" value="$(arg map_yaml)"/>
     <arg name="nav_params_dir" value="$(arg nav_params_dir)"/>
@@ -67,10 +61,11 @@
     <param name="initial_floor" value="$(arg initial_floor)"/>
     <param name="startup_localization" value="$(arg startup_localization)"/>
     <param name="initialpose_topic" value="/multifloor/amcl_initialpose" if="$(eval arg('startup_localization') != 'disabled')"/>
-    <param name="tag_topic" value="$(arg tag_topic)"/>
+    <param name="floor_confirmation_source" value="stair_result"/>
   </node>
   <node pkg="stair_supervisor" type="stair_supervisor_node.py"
-        name="stair_supervisor" output="screen" launch-prefix="$(arg stair_python)">
+        name="stair_supervisor" output="screen" launch-prefix="$(arg stair_python)"
+        if="$(arg stair_on_local)">
     <env name="OMP_NUM_THREADS" value="2"/>
     <env name="OPENBLAS_NUM_THREADS" value="1"/>
     <param name="config_dir" value="$(find stair_supervisor)/config"
@@ -85,7 +80,16 @@
   </node>
   <node pkg="mission_manager" type="mission_manager_node.py"
         name="mission_manager" output="screen">
-    <param name="tag_topic" value="$(arg tag_topic)"/>
+    <param name="nav_default_max_vel_x" value="$(arg max_vel_x)"/>
+    <param name="nav_rooftop_speed_scale" value="0.70"/>
+    <!-- Accept NAV in a small arrival region; stair LiDAR remains the precise
+         first-step admission check. The progress watchdog only cancels after
+         a sustained stall or stale feedback. -->
+    <param name="nav_arrival_radius_m" value="0.35"/>
+    <param name="nav_arrival_yaw_tolerance_rad" value="0.5235987755982988"/>
+    <param name="nav_arrival_dwell_sec" value="0.5"/>
+    <param name="nav_no_progress_timeout_sec" value="20.0"/>
+    <param name="nav_feedback_stale_timeout_sec" value="10.0"/>
     <!-- Entry point-cloud matching precedes token consumption; admission still
          rechecks current pose/floor/ownership when it consumes the token. -->
     <!-- 3s fit + 1s fresh LiDAR + 4s bounded re-observation + 2s scheduling budget. -->

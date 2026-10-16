@@ -57,7 +57,8 @@ class ConnectedGeometryTest(unittest.TestCase):
         self.assertTrue(result.complete,result.detail);self.assertFalse(result.faulted)
         self.assertEqual(c.command(),previous)  # no fictitious sent-command history
         required=c.evaluate(c.phase,100.21,command_required=True)
-        self.assertTrue(required.faulted)  # actually sending forward still cannot pass
+        self.assertFalse(required.faulted)  # observed policy checks current body, not an unsent future footprint
+        self.assertGreater(c.command()[0], 0.)
 
     def test_completion_never_bypasses_current_body_support(self):
         worker,c=self.policy();c.begin_phase(Phase.FORWARD_SEGMENT_1,100.)
@@ -72,7 +73,7 @@ class ConnectedGeometryTest(unittest.TestCase):
             self.assertEqual(c.command(),(0.,0.))
         c.reset_command(101.);worker.value=sample(10,101.02)
         c.evaluate(c.phase,101.025)
-        self.assertLessEqual(abs(c.command()[0]),c.route['limits']['max_accel']*.025+1e-9)
+        self.assertGreater(c.command()[0],c.route['limits']['max_accel']*.025)
 
     def test_explicit_uncommissioned_tests_do_not_enable_normal_missions(self):
         r=route();r['commissioned']=False

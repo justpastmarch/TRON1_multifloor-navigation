@@ -35,6 +35,19 @@ class OperatorPhaseTest(unittest.TestCase):
   self.assertEqual(s.operator_status()['result']['request_id'],'A')
   self.assertEqual(s.operator_status()['result']['state'],'APPLIED')
   with self.assertRaises(ValueError):s.request_operator_phase(request if False else dict(submitted[0]))
+ def test_continue_request_requires_waiting_and_same_current_phase(self):
+  s,_,_,_,_=PhaseTest().setup_system()
+  s._state=__import__('stair_supervisor.supervisor',fromlist=['SupervisorState']).SupervisorState.STAIR
+  s._operator_run=dict(active=True,waiting=False,run_id='run',revision=4,phase='TURN_TO_NEXT_FLIGHT',phases=['TURN_TO_NEXT_FLIGHT'])
+  request=dict(kind='continue',run_id='run',revision=4,phase='TURN_TO_NEXT_FLIGHT',confirmed=True,request_id='continue-1')
+  with self.assertRaisesRegex(ValueError,'중단 대기'):
+   s.request_operator_phase(request)
+  s._operator_run['waiting']=True
+  wrong=dict(request,phase='LANDING')
+  with self.assertRaisesRegex(ValueError,'현재 경로'):
+   s.request_operator_phase(wrong)
+  accepted=s.request_operator_phase(request)
+  self.assertTrue(accepted['accepted']);self.assertEqual(s.operator_status()['pending'],True)
  def test_old_run_revision_and_unknown_phase_do_not_queue(self):
   s,c,t,clock,a=PhaseTest().setup_system()
   s._state=__import__('stair_supervisor.supervisor',fromlist=['SupervisorState']).SupervisorState.STAIR
@@ -88,6 +101,24 @@ class RecoveryWaitTest(unittest.TestCase):
   self.assertFalse(s._retained_loss);self.assertEqual(s.operator_status()['result']['state'],'APPLIED')
   self.assertEqual(c.operator_phase.call_args.args[0],Phase.FORWARD_SEGMENT_1)
   self.assertIn(Phase.TURN_TO_NEXT_FLIGHT,c.seen);self.assertIn(Phase.EXIT_CONFIRM,c.seen)
+ def test_same_phase_continue_uses_live_state_without_restarting_phase(self):
+  s,c,t,clock,a=self.setup_wait();sleep=clock.sleep;requests=[]
+  c.continue_phase=Mock()
+  c.operator_phase=Mock()
+  def wait(seconds):
+   status=s.operator_status()
+   if status.get('waiting') and not requests:
+    requests.append(s.request_operator_phase(dict(kind='continue',run_id=status['run_id'],revision=status['revision'],
+      phase=status['phase'],confirmed=True,request_id='continue-current')))
+   sleep(seconds)
+  clock.sleep=wait
+  result=s.traverse(StairGoal('test_up',Direction.UP,''),lambda:False)
+  self.assertEqual(result,'finished');self.assertEqual(len(requests),1)
+  c.continue_phase.assert_called_once()
+  c.operator_phase.assert_not_called()
+  self.assertEqual(c.seen.count(Phase.FORWARD_SEGMENT_1),1)
+  self.assertFalse(s.operator_status()['waiting'])
+  self.assertEqual(s.operator_status()['result']['kind'],'continue')
  def test_manual_landing_completion_can_skip_failed_flight(self):
   s,c,t,clock,a=self.setup_wait();sleep=clock.sleep;requests=[]
   def wait(seconds):
@@ -104,6 +135,84 @@ class RecoveryWaitTest(unittest.TestCase):
   result=s.traverse(StairGoal('test_up',Direction.UP,''),lambda:s.operator_status().get('waiting',False))
   self.assertTrue(result.cancelled);self.assertFalse(s.operator_status()['active'])
   c.operator_phase.assert_not_called();s._finish.assert_not_called()
+
+class TerminalResumeTest(unittest.TestCase):
+ def test_terminal_stop_resumes_same_flight_without_new_anchor_or_admission(self):
+  s,c,t,clock,a=PhaseTest().setup_system(complete=True)
+  s._operator_recovery_enabled=True
+  c.continue_phase=Mock()
+  original_arm=c.arm;c.arm=Mock(wraps=original_arm)
+  s._finish=Mock(return_value='finished')
+  stopped=[]
+  def cancel():
+   phase=s.operator_status().get('phase')
+   if phase=='FORWARD_SEGMENT_1' and not stopped:
+    stopped.append(True);return True
+   return False
+  result=s.traverse(StairGoal('test_up',Direction.UP,''),cancel)
+  self.assertTrue(result.cancelled)
+  checkpoint=s.operator_status()
+  self.assertTrue(checkpoint['resume_available'])
+  self.assertEqual(checkpoint['route_id'],'test_up')
+  self.assertEqual(checkpoint['phase'],'FORWARD_SEGMENT_1')
+  seen=c.seen.count(Phase.FORWARD_SEGMENT_1)
+  resume=dict(run_id=checkpoint['run_id'],revision=checkpoint['revision'],phase=checkpoint['phase'])
+  self.assertEqual(s.traverse(StairGoal('test_up',Direction.UP,''),lambda:False,resume=resume),'finished')
+  self.assertEqual(c.seen.count(Phase.FORWARD_SEGMENT_1),seen)
+  self.assertEqual(c.arm.call_count,1)
+  self.assertEqual(len(a.calls),1)
+  c.continue_phase.assert_called_once()
+  self.assertIn(Phase.FORWARD_SEGMENT_2,c.seen)
+ def test_mode_handoff_interruption_still_retains_route(self):
+  s,c,t,clock,a=PhaseTest().setup_system(complete=False)
+  result=s.traverse(StairGoal('test_up',Direction.UP,''),lambda:True)
+  self.assertTrue(result.cancelled)
+  status=s.operator_status()
+  self.assertTrue(status['resume_available'])
+  self.assertEqual((status['route_id'],status['phase']),('test_up','VERIFY_ENTRY'))
+
+ def test_separate_phase_test_invalidates_terminal_checkpoint(self):
+  s,c,t,clock,a=PhaseTest().setup_system(complete=False)
+  from stair_supervisor.supervisor import SupervisorState
+  s._state=SupervisorState.STAIR;s._retained_loss=True
+  s._operator_run=dict(active=False,run_id='old',route_id='test_up',revision=3,
+                       phase='TURN_TO_NEXT_FLIGHT',phases=['TURN_TO_NEXT_FLIGHT'])
+  self.assertTrue(s.operator_status()['resume_available'])
+  s.traverse(StairGoal('test_up',Direction.UP,''),lambda:False,
+             phase_test=dict(route_id='test_up',phase='TURN_TO_NEXT_FLIGHT',max_duration_sec=.1,operator_confirmed=True))
+  self.assertFalse(s.operator_status()['resume_available'])
+
+ def test_ros_action_resume_skips_entry_registration(self):
+  from types import SimpleNamespace
+  from stair_supervisor.msg import StairTraversalGoal
+  from stair_supervisor.ros_node import RosStairSupervisorNode
+  from stair_supervisor.supervisor import SupervisorState,TraversalResult
+  node=RosStairSupervisorNode.__new__(RosStairSupervisorNode)
+  node._lidar=SimpleNamespace(configuration=SimpleNamespace(mode='control'),ensure_entry=Mock())
+  node._supervisor=SimpleNamespace(state=SupervisorState.STAIR,ownership_epoch=7,
+    traverse=Mock(return_value=TraversalResult(ResultCode.OK,'stair complete')))
+  node._action=Mock();node._publish_state=Mock()
+  goal=StairTraversalGoal(stair_id='test_up',direction=StairTraversalGoal.UP,
+    admission_token='',resume_run_id='retained-run',resume_revision=3,resume_phase='FORWARD_SEGMENT_2')
+  node._execute_request(goal,None)
+  node._lidar.ensure_entry.assert_not_called()
+  self.assertEqual(node._supervisor.traverse.call_args.kwargs['resume'],
+                   dict(run_id='retained-run',revision=3,phase='FORWARD_SEGMENT_2'))
+  node._action.set_succeeded.assert_called_once()
+
+ def test_stale_or_wrong_route_checkpoint_cannot_send_motion(self):
+  s,c,t,clock,a=PhaseTest().setup_system(complete=True)
+  s._state=__import__('stair_supervisor.supervisor',fromlist=['SupervisorState']).SupervisorState.STAIR
+  s._retained_loss=True
+  s._operator_run=dict(active=False,run_id='5f-rf',route_id='test_up',revision=7,
+                       phase='FORWARD_SEGMENT_2',phases=['FORWARD_SEGMENT_2','EXIT_CONFIRM'])
+  for request in (dict(run_id='old',revision=7,phase='FORWARD_SEGMENT_2'),
+                  dict(run_id='5f-rf',revision=6,phase='FORWARD_SEGMENT_2'),
+                  dict(run_id='5f-rf',revision=7,phase='LANDING')):
+   before=list(t.events)
+   result=s.traverse(StairGoal('test_up',Direction.UP,''),lambda:False,resume=request)
+   self.assertEqual(result.code,ResultCode.ENTRY_REJECTED)
+   self.assertEqual(t.events,before)
 
 class RealControllerRecoveryTest(unittest.TestCase):
  def test_real_controller_mode_timeout_and_cancel_keep_zero(self):

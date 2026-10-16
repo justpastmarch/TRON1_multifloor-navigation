@@ -20,16 +20,16 @@ from stair_supervisor.msg import SupervisorState  # noqa: E402
 
 from mission_manager.configuration import Location  # noqa: E402
 from mission_manager.navigation_executor import (  # noqa: E402
-    HandoffSafetyError,
     InvalidNavigationGoalError,
     NavigationExecutor,
+    NavigationLifecycleError,
     NavigationOutcome,
     NavigationReadinessError,
     NavigationRequest,
     NavigationRuntime,
     RosNavigationSources,
 )
-from navigation_executor_fakes import FakeActionClient, FakeCostmaps, FakeHandoffBarrier  # noqa: E402
+from navigation_executor_fakes import FakeActionClient, FakeCostmaps  # noqa: E402
 
 
 class NavigationExecutorTest(unittest.TestCase):
@@ -38,7 +38,6 @@ class NavigationExecutorTest(unittest.TestCase):
         self.supervisor_state = SupervisorState(state=SupervisorState.NAV)
         self.location = Location("stair_entry", "3F", "stair_entry", 1.25, -0.5, math.pi / 2)
         self.costmaps = FakeCostmaps()
-        self.barrier = FakeHandoffBarrier()
 
     def executor(
         self,
@@ -51,7 +50,6 @@ class NavigationExecutorTest(unittest.TestCase):
             clear_costmaps=self.costmaps.clear,
             floor_state=floor_state if floor_state is not None else lambda: self.floor_state,
             supervisor_state=lambda: self.supervisor_state,
-            handoff_barrier=self.barrier,
             now=lambda: Time(123, 456),
         )
         return NavigationExecutor(runtime), client
@@ -75,7 +73,7 @@ class NavigationExecutorTest(unittest.TestCase):
     def test_ros_factory_uses_only_move_base_action_and_clear_service(self, _params) -> None:
         # Given: patched ROS factories and no initialized production node.
         client = FakeActionClient((GoalStatus.SUCCEEDED,))
-        sources = RosNavigationSources(lambda: self.floor_state, lambda: self.supervisor_state, self.barrier)
+        sources = RosNavigationSources(lambda: self.floor_state, lambda: self.supervisor_state)
         with mock.patch("mission_manager.navigation_executor.actionlib.SimpleActionClient", return_value=client) as action_factory:
             with mock.patch("mission_manager.navigation_executor.rospy.ServiceProxy") as service_factory:
                 with mock.patch("mission_manager.navigation_executor.rospy.init_node") as init_node:
@@ -85,6 +83,10 @@ class NavigationExecutorTest(unittest.TestCase):
         self.assertFalse(executor.has_active_goal)
         self.assertEqual(action_factory.call_args.args[0], "/move_base")
         self.assertEqual(service_factory.call_args.args[0], "/move_base/clear_costmaps")
+        adapter = executor._runtime.action_client
+        self.assertEqual(adapter.default_entry_region, (0.35, math.radians(30.0)))
+        self.assertEqual(adapter.policy, {"timeout": 20.0, "feedback_timeout": 10.0})
+        self.assertEqual(adapter.arrival_dwell_sec, 0.5)
         init_node.assert_not_called()
 
     def test_nonfinite_yaw_is_rejected_before_goal_send(self) -> None:
@@ -123,13 +125,56 @@ class NavigationExecutorTest(unittest.TestCase):
         self.assertEqual((result.outcome, result.status), (NavigationOutcome.NAVIGATION_FAILED, GoalStatus.ABORTED))
         self.assertEqual((result.attempts, len(client.goals), self.costmaps.calls, executor.has_active_goal), (2, 2, 1, False))
 
-    def test_progress_failure_does_not_blindly_clear_and_retry(self) -> None:
+    def test_retry_waits_for_recovered_tf_before_costmap_clear(self):
+        executor, client = self.executor((GoalStatus.ABORTED, GoalStatus.SUCCEEDED))
+        def recovered(cancelled):
+            self.assertEqual(len(client.goals), 1)
+            self.assertEqual(self.costmaps.calls, 0)
+            return True
+        client.wait_for_navigation_ready = recovered
+        client.failure_reason = 'NAV_FEEDBACK_STALE'
+        result = executor.execute(self.request())
+        self.assertEqual(result.outcome, NavigationOutcome.SUCCEEDED)
+        self.assertEqual(len(client.goals), 2)
+
+    def test_stop_during_tf_wait_does_not_retry(self):
+        executor, client = self.executor((GoalStatus.ABORTED, GoalStatus.SUCCEEDED))
+        def wait(cancelled):
+            executor.request_cancel()
+            return False
+        client.wait_for_navigation_ready = wait
+        result = executor.execute(self.request())
+        self.assertEqual(result.outcome, NavigationOutcome.CANCELLED)
+        self.assertEqual((len(client.goals), self.costmaps.calls), (1,0))
+
+    def test_tf_timeout_does_not_send_stale_retry(self):
         executor, client = self.executor((GoalStatus.ABORTED,))
-        client.failure_reason = 'NAV_NO_PROGRESS'
+        client.wait_for_navigation_ready = lambda cancelled:False
+        result = executor.execute(self.request())
+        self.assertEqual(result.outcome, NavigationOutcome.NAVIGATION_FAILED)
+        self.assertEqual((len(client.goals), self.costmaps.calls), (1,0))
+
+    def test_stale_feedback_failure_does_not_clear_and_retry(self) -> None:
+        executor, client = self.executor((GoalStatus.ABORTED,))
+        client.failure_reason = 'NAV_FEEDBACK_STALE'
         result = executor.execute(self.request())
         self.assertEqual(result.outcome, NavigationOutcome.NAVIGATION_FAILED)
         self.assertEqual((result.attempts, self.costmaps.calls), (1, 0))
-        self.assertEqual(executor.failure_reason, 'NAV_NO_PROGRESS')
+        self.assertEqual(executor.failure_reason, 'NAV_FEEDBACK_STALE')
+
+    def test_fresh_no_progress_uses_exactly_one_existing_costmap_retry(self) -> None:
+        executor, client = self.executor((GoalStatus.ABORTED, GoalStatus.SUCCEEDED))
+        client.failure_reason = 'NAV_NO_PROGRESS'
+        result = executor.execute(self.request())
+        self.assertEqual(result.outcome, NavigationOutcome.SUCCEEDED)
+        self.assertEqual((result.attempts, len(client.goals), self.costmaps.calls), (2, 2, 1))
+
+    def test_repeated_fresh_no_progress_stops_after_one_retry(self) -> None:
+        executor, client = self.executor((GoalStatus.ABORTED, GoalStatus.ABORTED))
+        client.failure_reason = 'NAV_NO_PROGRESS'
+        result = executor.execute(self.request())
+        self.assertEqual(result.outcome, NavigationOutcome.NAVIGATION_FAILED)
+        self.assertEqual((result.attempts, len(client.goals), self.costmaps.calls), (2, 2, 1))
 
     def test_late_terminal_after_wait_error_releases_only_old_goal(self) -> None:
         executor, client = self.executor((GoalStatus.SUCCEEDED,))
@@ -145,6 +190,25 @@ class NavigationExecutorTest(unittest.TestCase):
         self.assertEqual(executor.execute(self.request()).outcome, NavigationOutcome.SUCCEEDED)
         old_callback(GoalStatus.ABORTED, None)
         self.assertFalse(executor.has_active_goal)
+
+    def test_timed_out_cancel_reconciles_only_confirmed_terminal_goal(self) -> None:
+        executor, client = self.executor((GoalStatus.SUCCEEDED,))
+        def fail_wait():
+            raise NavigationLifecycleError("cancellation acknowledgement timed out")
+        client.on_wait = fail_wait
+        with self.assertRaises(NavigationLifecycleError):
+            executor.execute(self.request())
+        self.assertTrue(executor.has_active_goal)
+        with self.assertRaises(NavigationLifecycleError):
+            executor.execute(self.request())
+        self.assertEqual(len(client.goals), 1)
+        client._state = GoalStatus.LOST  # actionlib cannot prove this robot stopped
+        with self.assertRaises(NavigationLifecycleError):
+            executor.execute(self.request())
+        self.assertEqual(len(client.goals), 1)
+        client._state = GoalStatus.PREEMPTED
+        self.assertEqual(executor.execute(self.request()).outcome, NavigationOutcome.SUCCEEDED)
+        self.assertEqual(len(client.goals), 2)
 
     def test_lost_goal_permits_only_the_same_single_retry(self) -> None:
         # Given: actionlib reports LOST before a successful retry.
@@ -273,28 +337,18 @@ class NavigationExecutorTest(unittest.TestCase):
             return self.floor_state
 
         executor, client = self.executor((GoalStatus.ABORTED, GoalStatus.SUCCEEDED), floor_state)
-        # When: the second-attempt floor gate completes the handoff barrier.
+        # When: the second-attempt floor gate cancels NAV for stair handoff.
         result = executor.execute(self.request())
         # Then: handoff returns only after retry eligibility is permanently revoked.
         self.assertEqual((result.outcome, len(client.goals)), (NavigationOutcome.CANCELLED, 1))
-        self.assertEqual(self.barrier.calls, 1)
-
-    def test_stair_handoff_cancels_waits_then_requires_zero_stationary(self) -> None:
+    def test_stair_handoff_waits_for_move_base_terminal(self) -> None:
         # Given: stair acquisition interrupts an active navigation goal.
         executor, client = self.executor((GoalStatus.SUCCEEDED,))
         client.on_wait = executor.prepare_for_stair
-        # When: execution reaches the handoff barrier.
+        # When: execution reaches the handoff boundary.
         result = executor.execute(self.request())
-        # Then: cancellation reaches PREEMPTED before zero/stationary evidence.
-        self.assertEqual((result.outcome, client.cancel_count, self.barrier.calls), (NavigationOutcome.CANCELLED, 1, 1))
-
-    def test_stair_handoff_rejects_missing_stationary_evidence(self) -> None:
-        # Given: the zero barrier cannot confirm the robot is stationary.
-        self.barrier.stationary = False
-        executor, _client = self.executor(())
-        # When/Then: stair ownership cannot be acquired.
-        with self.assertRaises(HandoffSafetyError):
-            executor.prepare_for_stair()
+        # Then: the active NAV goal reaches a terminal cancellation before return.
+        self.assertEqual((result.outcome, client.cancel_count), (NavigationOutcome.CANCELLED, 1))
 
 
 if __name__ == "__main__":

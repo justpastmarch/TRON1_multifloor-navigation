@@ -108,9 +108,12 @@ class RosEvidenceCallbacks:
             if epoch is None or self.localization is None:
                 return
         stamp = message.header.stamp
+        # Scans from the MiniPC can be stamped a few milliseconds ahead of the
+        # workstation clock. Give the corresponding TF a short bounded window
+        # to arrive instead of rejecting an otherwise current scan immediately.
         transform_valid = self.tf_buffer.can_transform(
-            "map", "odom", stamp, rospy.Duration(0.0)
-        ) and self.tf_buffer.can_transform("odom", "base_Link", stamp, rospy.Duration(0.0))
+            "map", message.header.frame_id, stamp, rospy.Duration(0.05)
+        )
         with self.condition:
             if self.active_epoch != epoch or self.localization is None:
                 return
