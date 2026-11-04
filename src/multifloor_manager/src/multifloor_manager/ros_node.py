@@ -159,7 +159,8 @@ class MultifloorManagerNode:
         )
 
     def _fail(self, reason: str, preempted: bool = False) -> None:
-        self.runtime.finish_transition(FloorState.FAULT, reason)
+        self.runtime.finish_transition(
+            FloorState.FAULT, reason, self.runtime.current_floor or self.runtime.initial_floor)
         result = self._result(FloorTransitionResult.LOCALIZATION_FAILED, reason)
         if preempted:
             self.server.set_preempted(result, reason)
@@ -178,6 +179,34 @@ class MultifloorManagerNode:
                     return False, "transition evidence timeout"
                 self.runtime.condition.wait(min(remaining, 0.05))
 
+    def _wait_with_localization_refresh(self, predicate, deadline: float) -> Tuple[bool, str]:
+        """Refresh a stationary AMCL while waiting in the same floor transaction."""
+        epoch = self.runtime.active_epoch
+        while True:
+            if self.server.is_preempt_requested():
+                return False, "transition cancelled"
+            if self.runtime.active_epoch != epoch:
+                return False, "transition superseded"
+            with self.runtime.condition:
+                if self.runtime.active_epoch != epoch:
+                    return False, "transition superseded"
+                if predicate():
+                    return True, ""
+            if time.monotonic() >= deadline:
+                return False, "transition evidence timeout"
+            try:
+                self.services.call(self.nomotion_name, self.nomotion_update)
+            except ServiceCallError as error:
+                return False, "request_nomotion_update failed: {}".format(error)
+            ok, reason = self._wait(
+                lambda: self.runtime.active_epoch == epoch and predicate(),
+                min(deadline, time.monotonic() + 0.25),
+            )
+            if self.runtime.active_epoch != epoch:
+                return False, "transition superseded"
+            if ok or reason != "transition evidence timeout":
+                return ok, reason
+
     def _wait_for_policy_ready(
         self,
         token: EpochToken,
@@ -187,7 +216,12 @@ class MultifloorManagerNode:
         self._feedback("POLICY_READY", "evaluating final transition policy")
         self.runtime.begin_policy(token)
         deadline = time.monotonic() + self.runtime.policy.timeout_sec
+        refresh_at = 0.0
         while True:
+            if self.server.is_preempt_requested():
+                return False, "transition cancelled"
+            if self.runtime.active_epoch != token.epoch:
+                return False, "transition superseded"
             with self.runtime.condition:
                 if self.server.is_preempt_requested():
                     return False, "transition cancelled"
@@ -212,6 +246,16 @@ class MultifloorManagerNode:
                 if remaining <= 0:
                     return False, "transition policy timeout"
                 self.runtime.condition.wait(min(remaining, 0.05))
+            if self.server.is_preempt_requested():
+                return False, "transition cancelled"
+            if self.runtime.active_epoch != token.epoch:
+                return False, "transition superseded"
+            if time.monotonic() >= refresh_at:
+                try:
+                    self.services.call(self.nomotion_name, self.nomotion_update)
+                except ServiceCallError as error:
+                    return False, "request_nomotion_update failed: {}".format(error)
+                refresh_at = time.monotonic() + 0.25
 
     def _target_metadata_matches(self, target: MapIdentity, after_sequence: int) -> bool:
         observed = self.runtime.costmap_identity
@@ -319,28 +363,24 @@ class MultifloorManagerNode:
         self.initialpose_publisher.publish(pose)
         localization_deadline = time.monotonic() + self.transaction_timeout
         pose_marker = pose_stamp.to_nsec()
-        try:
-            for _ in range(3):
-                self.services.call(self.nomotion_name, self.nomotion_update)
-                response_marker = rospy.Time.now().to_nsec()
-                pose_fence = max(pose_marker, response_marker)
-                ok, reason = self._wait(
-                    lambda marker=pose_fence: self.runtime.has_pose_newer_than(marker),
-                    localization_deadline,
-                )
-                if not ok:
-                    self._fail(reason, self.server.is_preempt_requested())
-                    return
-                pose_marker = self.runtime.pose_high_water_ns(pose_fence)
-        except ServiceCallError as error:
-            self._fail("request_nomotion_update failed: {}".format(error))
-            return
+        for _ in range(3):
+            # AMCL stamps the pose with scan acquisition time, not RPC completion.
+            # Keep the initialpose/accepted-pose fence even if a new callback is
+            # delivered before request_nomotion_update returns.
+            ok, reason = self._wait_with_localization_refresh(
+                lambda marker=pose_marker: self.runtime.has_pose_newer_than(marker),
+                localization_deadline,
+            )
+            if not ok:
+                self._fail(reason, self.server.is_preempt_requested())
+                return
+            pose_marker = self.runtime.pose_high_water_ns(pose_marker)
         self._feedback("AMCL_READY", "waiting for covariance, samples, scan, odom, and TF")
         def localized() -> bool:
             evidence = self.runtime.localization_evidence()
             return evidence is not None and evidence.ready
 
-        ok, reason = self._wait(localized, localization_deadline)
+        ok, reason = self._wait_with_localization_refresh(localized, localization_deadline)
         if not ok:
             self._fail(reason, self.server.is_preempt_requested())
             return
@@ -352,7 +392,7 @@ class MultifloorManagerNode:
             self._fail("clear_costmaps failed: {}".format(error))
             return
         self._feedback("COSTMAP_READY", "waiting for target global costmap metadata")
-        ok, reason = self._wait(
+        ok, reason = self._wait_with_localization_refresh(
             lambda: self._target_metadata_matches(target, marker),
             time.monotonic() + self.transaction_timeout,
         )

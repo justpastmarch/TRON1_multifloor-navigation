@@ -10,6 +10,8 @@ import uuid
 import threading
 
 import actionlib
+from dynamic_reconfigure.msg import Config, DoubleParameter
+from dynamic_reconfigure.srv import Reconfigure, ReconfigureResponse
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Joy
@@ -109,6 +111,8 @@ class RosStairSupervisorNode:
             self._accept_navigation,
             queue_size=1,
         )
+        self._nav_limit_service = rospy.Service(
+            "~set_navigation_limits", Reconfigure, self._set_navigation_limits)
         self._joy_subscriber = rospy.Subscriber('/tron/sensor_joy', Joy, self._accept_manual_input, queue_size=1)
         self._odom_subscriber = rospy.Subscriber(
             settings.odom_topic,
@@ -228,6 +232,25 @@ class RosStairSupervisorNode:
 
     def _accept_navigation(self, message: Twist) -> None:
         self._supervisor.accept_navigation(message.linear.x, message.angular.z)
+
+    def _apply_navigation_limits(self, config):
+        values = {item.name: item.value for item in config.doubles
+                  if item.name in ('max_vel_x', 'max_vel_theta')}
+        revisions = [item.value for item in config.strs if item.name == 'nav_limit_revision']
+        if len(revisions) != 1 or not revisions[0].isdigit() or len(revisions[0]) > 32:
+            raise ValueError('NAV limit request needs a positive revision')
+        revision = int(revisions[0])
+        return self._supervisor.set_navigation_limits(
+            values.get('max_vel_x'), values.get('max_vel_theta'), revision=revision)
+
+    def _set_navigation_limits(self, request):
+        try:
+            linear, angular = self._apply_navigation_limits(request.config)
+        except (ValueError, TypeError) as error:
+            raise rospy.ServiceException(str(error))
+        return ReconfigureResponse(config=Config(doubles=[
+            DoubleParameter(name='max_vel_x', value=linear),
+            DoubleParameter(name='max_vel_theta', value=angular)]))
 
     def _monotonic_sensor_stamp(self, stamp: rospy.Time) -> float:
         wall_age = (rospy.Time.now() - stamp).to_sec()

@@ -151,7 +151,7 @@ class RosEvidenceRuntime(RosEvidenceCallbacks):
             self.tag_accepted = False
             self.wrong_floor_tag = False
             self.localization = None
-            self.publish_floor(FloorState.TRANSITIONING, "floor transition active")
+            self.publish_floor(FloorState.TRANSITIONING, "floor transition active", self.current_floor)
             self.condition.notify_all()
             return token
 

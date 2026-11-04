@@ -43,6 +43,8 @@ install(
 )
 
 if(CATKIN_ENABLE_TESTING)
+  catkin_add_nosetests(test/test_child_action_wait.py)
+  catkin_add_nosetests(test/test_mapping_stream_hash.py)
   find_package(rostest REQUIRED)
   catkin_add_nosetests(test/test_fixture_discovery.py)
   catkin_add_nosetests(test/test_route_planner.py)

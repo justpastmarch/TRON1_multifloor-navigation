@@ -64,6 +64,11 @@ class StairSupervisor:
         self._state = SupervisorState.DISARMED
         self._ownership_epoch = 0
         self._latest_nav: tuple[float, float, float, int] | None = None
+        self._navigation_limits = (
+            configuration.robot.move_base.max_vel_x,
+            configuration.robot.move_base.max_vel_theta,
+        )
+        self._navigation_limit_revision = 0
         self._state_lock = threading.RLock()
         self._traversal_lock = threading.Lock()
         self._closed = False
@@ -129,6 +134,28 @@ class StairSupervisor:
         with self._state_lock:
             self._state = SupervisorState.NAV
 
+    def set_navigation_limits(self, linear_mps=None, angular_radps=None, *, revision=None) -> tuple[float, float]:
+        """Apply NAV-only limits without changing stair commands or ownership."""
+        with self._state_lock:
+            previous = self._navigation_limits
+            values = (previous[0] if linear_mps is None else linear_mps,
+                      previous[1] if angular_radps is None else angular_radps)
+            full_scale = self._configuration.robot.websocket_full_scale
+            if any(not math.isfinite(v) or v < 0 for v in values):
+                raise ValueError('NAV limits must be finite and nonnegative')
+            limits = (min(values[0], full_scale.linear_mps),
+                      min(values[1], full_scale.angular_radps))
+            if revision is not None:
+                if type(revision) is not int or revision <= 0:
+                    raise ValueError('NAV limit revision must be a positive integer')
+                if revision < self._navigation_limit_revision:
+                    raise ValueError('superseded NAV limit request')
+                if revision == self._navigation_limit_revision and limits != previous:
+                    raise ValueError('NAV limit revision reused with different limits')
+                self._navigation_limit_revision = revision
+            self._navigation_limits = limits
+            return self._navigation_limits
+
     def accept_navigation(self, linear_mps: float, angular_radps: float) -> None:
         """Capture a finite NAV command in the currently owned epoch."""
         with self._state_lock:
@@ -189,6 +216,9 @@ class StairSupervisor:
                     fresh = self._clock.monotonic() - received_at <= self._nav_freshness_sec
                     if fresh and command_epoch == self._ownership_epoch:
                         linear, angular = command_linear, command_angular
+                max_linear, max_angular = self._navigation_limits
+                linear = max(-max_linear, min(max_linear, linear))
+                angular = max(-max_angular, min(max_angular, angular))
                 self._transport.update_twist(linear, angular)
                 self._transport.send_current()
         except TransportFault:

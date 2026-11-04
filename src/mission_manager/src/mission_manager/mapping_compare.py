@@ -28,7 +28,11 @@ def prepare_input(source, destination, seconds=None):
                 tf_count+=len(msg.transforms)
             output.write(topic,msg,t,connection_header=dict(type=msg._type,md5sum=msg._md5sum,message_definition=msg._full_text,latching='1') if topic=='/tf_static' else None)
     if count<2:raise ValueError('비교에 필요한 /scan 데이터가 부족합니다.')
-    digest=hashlib.sha256(destination.read_bytes()).hexdigest()
+    hasher=hashlib.sha256()
+    with destination.open('rb') as stream:
+        for block in iter(lambda: stream.read(1024*1024), b''):
+            hasher.update(block)
+    digest=hasher.hexdigest()
     return dict(scan_count=count,input_tf_count=tf_count,duration_sec=last-first,sha256=digest)
 
 

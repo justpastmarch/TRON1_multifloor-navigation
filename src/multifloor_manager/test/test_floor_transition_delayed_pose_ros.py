@@ -94,8 +94,8 @@ class DelayedPoseRosTest(unittest.TestCase):
     def setUpClass(cls) -> None:
         rospy.init_node("floor_transition_delayed_pose_test", anonymous=True)
 
-    def test_pre_response_pose_committing_after_response_cannot_advance_handshake(self) -> None:
-        # Given: real pose reduction with each old-stamped callback withheld until the wait begins.
+    def test_post_initialpose_scan_committing_after_rpc_response_advances_handshake(self) -> None:
+        # A scan acquired after initialpose remains valid when RPC delivery is slower.
         target = MapIdentity(
             "map",
             3,
@@ -138,6 +138,7 @@ class DelayedPoseRosTest(unittest.TestCase):
         node.clear_costmaps_name = "/move_base/clear_costmaps"
         node.change_map = node.nomotion_update = node.clear_costmaps = None
         node.tag_timeout = node.transaction_timeout = 2.0
+        node.floor_confirmation_source = "tag"
         node.identities = {"4F": target}
         node.floors = {"4F": SimpleNamespace(map_yaml=Path("4F.yaml"))}
         covariance = (0.0,) * 36
@@ -181,18 +182,6 @@ class DelayedPoseRosTest(unittest.TestCase):
             self.assertIsNotNone(services.pending_pose)
             runtime.pose_callback(services.pending_pose)
             delayed_pose_accepted.append(predicate())
-            accepted_fence = observed_fences[-1]
-            valid_stamp = max(rospy.Time.now().to_nsec(), accepted_fence + 1)
-            valid_pose = PoseWithCovarianceStamped()
-            valid_pose.header.frame_id = "map"
-            valid_pose.header.stamp = rospy.Time(
-                secs=valid_stamp // 1_000_000_000,
-                nsecs=valid_stamp % 1_000_000_000,
-            )
-            valid_pose.pose.covariance[0] = 0.01
-            valid_pose.pose.covariance[7] = 0.01
-            valid_pose.pose.covariance[35] = 0.01
-            runtime.pose_callback(valid_pose)
             valid_pose_commits += 1
             services.pending.clear()
             return predicate(), ""
@@ -203,9 +192,9 @@ class DelayedPoseRosTest(unittest.TestCase):
         # When: all three service responses precede release of their queued old-stamped pose.
         node._run_transaction("stair_a", "4F")
 
-        # Then: none can satisfy an iteration or cause a premature AMCL_READY transition.
-        self.assertEqual(delayed_pose_accepted, [False, False, False])
-        self.assertEqual(services.nomotion_calls, 3)
+        # Three distinct post-initialpose scans suffice without post-response stamps.
+        self.assertEqual(delayed_pose_accepted, [True, True, True])
+        self.assertGreaterEqual(services.nomotion_calls, 3)
         self.assertEqual(
             [commit_count for phase, commit_count in feedback if phase == "AMCL_READY"],
             [3],

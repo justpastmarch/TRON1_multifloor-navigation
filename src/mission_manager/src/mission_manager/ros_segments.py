@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import threading
+import math
 import time
 from dataclasses import replace
 from dataclasses import dataclass
@@ -43,6 +44,87 @@ from mission_manager.stair_admission import StairAdmissionContext, StairAdmissio
 from mission_manager.stair_entry_gate import StairEntryPose
 
 
+class ChildActionWait:
+    """One goal's wall-clock liveness; live status permits arbitrarily long phases."""
+
+    def __init__(self, client, silence_sec, cancel_sec, clock=time.monotonic):
+        if not all(math.isfinite(value) and value > 0 for value in (silence_sec, cancel_sec)):
+            raise ValueError('child communication/cancel timeouts must be positive and finite')
+        self.client, self.clock = client, clock
+        self.silence_sec, self.cancel_sec = silence_sec, cancel_sec
+        self.lock = threading.RLock()
+        self.done = threading.Event()
+        self.activity = clock()
+        self.last_status = getattr(getattr(client, 'action_client', None), 'last_status_msg', None)
+        self.cancel_at = None
+        self.reason = ''
+        self.terminal_at = None
+        self.status, self.result = None, None
+        self.goal_id = None
+
+    def bind_goal(self):
+        # Noetic SimpleActionClient exposes the generated ID on its goal handle.
+        machine = getattr(getattr(self.client, 'gh', None), 'comm_state_machine', None)
+        identifier = getattr(getattr(getattr(machine, 'action_goal', None), 'goal_id', None), 'id', None)
+        with self.lock:self.goal_id = identifier if isinstance(identifier, str) and identifier else None
+
+    def feedback(self, _message):
+        with self.lock:self.activity = self.clock()
+
+    def completed(self, status, result):
+        with self.lock:
+            self.status, self.result = status, result
+            self.done.set()
+
+    def confirmed_terminal(self):
+        with self.lock:
+            return (self.done.is_set() and self.result is not None and
+                    self.status in (GoalStatus.SUCCEEDED, GoalStatus.ABORTED, GoalStatus.REJECTED,
+                                    GoalStatus.PREEMPTED, GoalStatus.RECALLED))
+
+    def cancel(self, reason=''):
+        with self.lock:
+            if self.done.is_set() or self.cancel_at is not None:return
+            self.cancel_at, self.reason = self.clock(), reason
+        self.client.cancel_goal()
+
+    def wait(self, cancelled):
+        while not self.done.wait(.2):
+            now = self.clock()
+            status = getattr(getattr(self.client, 'action_client', None), 'last_status_msg', None)
+            get_state = getattr(self.client, 'get_state', None)
+            goal_status = get_state() if callable(get_state) else None
+            with self.lock:
+                # Only this goal's status renews liveness: an empty array or
+                # another goal's heartbeat cannot acknowledge our request.
+                if status is not None and status is not self.last_status:
+                    self.last_status = status
+                    if self.goal_id is not None and any(
+                            getattr(getattr(entry, 'goal_id', None), 'id', None) == self.goal_id
+                            for entry in getattr(status, 'status_list', ())):
+                        self.activity = now
+                silent = now-self.activity >= self.silence_sec
+                # get_state refers to this client's goal handle, not another
+                # goal in the server's status array. Terminal status alone is
+                # not its correlated result or proof of successful arrival.
+                if goal_status in (GoalStatus.SUCCEEDED, GoalStatus.ABORTED, GoalStatus.REJECTED,
+                                   GoalStatus.PREEMPTED, GoalStatus.RECALLED, GoalStatus.LOST):
+                    if self.terminal_at is None:self.terminal_at = now
+                result_missing = self.terminal_at is not None and now-self.terminal_at >= self.cancel_sec
+            if cancelled():self.cancel()
+            elif silent:self.cancel('child action communication stopped')
+            with self.lock:
+                expired = self.cancel_at is not None and now-self.cancel_at >= self.cancel_sec
+            if self.done.is_set():break
+            if result_missing:return None, None, 'child action reported terminal status without its result'
+            if expired:
+                return None, None, self.reason or 'child action did not acknowledge cancellation'
+            if rospy.is_shutdown():return None, None, 'mission node shutdown during child wait'
+        with self.lock:
+            error = self.reason if self.status in (GoalStatus.PREEMPTED, GoalStatus.RECALLED) else ''
+            return self.status, self.result, error
+
+
 @dataclass(frozen=True)
 class RosSegmentResources:
     """Immutable dependency bundle shared by all ROS segment adapters."""
@@ -80,6 +162,7 @@ class RosSegmentExecutor(SegmentExecutor):
         )
         self._active_lock = threading.RLock()
         self._active_type: SegmentType | None = None
+        self._child_waits = {}
         self.photo_settings = None
         self.photo_camera = None
         self.return_hold_location = None
@@ -109,10 +192,33 @@ class RosSegmentExecutor(SegmentExecutor):
             active = self._active_type
             if active is SegmentType.NAVIGATION:
                 self._navigation.request_cancel()
-            elif active is SegmentType.STAIR:
-                self._stair.cancel_goal()
-            elif active is SegmentType.FLOOR_TRANSITION:
-                self._floor.cancel_goal()
+            elif active in (SegmentType.STAIR, SegmentType.FLOOR_TRANSITION):
+                client = self._stair if active is SegmentType.STAIR else self._floor
+                wait = self._child_waits.get(client)
+                if wait is not None:wait.cancel()
+                else:client.cancel_goal()
+
+    def _run_child(self, client, goal, cancelled):
+        with self._active_lock:
+            previous = self._child_waits.get(client)
+            if previous is not None and not previous.confirmed_terminal():
+                # LOST/DONE without a result is not proof of released control.
+                # A valid late result or confirmed idle receiver permits recovery.
+                from stair_supervisor.msg import SupervisorState
+                idle = self._state.health().healthy and (
+                    self._state.supervisor_state().state == SupervisorState.NAV
+                    if client is self._stair else
+                    self._state.floor_state().state == self._state.floor_state().READY)
+                if not idle:
+                    return None, None, 'previous child command is unresolved; confirm receiver idle before retry'
+            if cancelled():return GoalStatus.PREEMPTED, None, ''
+            wait = ChildActionWait(
+                client, float(rospy.get_param('~child_communication_timeout', 30.)),
+                float(rospy.get_param('~child_cancel_timeout', 5.)))
+            self._child_waits[client] = wait
+            client.send_goal(goal, done_cb=wait.completed, feedback_cb=wait.feedback)
+            wait.bind_goal()
+        return wait.wait(cancelled)
 
     def start_recording(self, request: RouteRecordingRequest) -> RecordingSession:
         """Start one mission-owned rosbag session before route dispatch."""
@@ -203,18 +309,14 @@ class RosSegmentExecutor(SegmentExecutor):
                 lambda: self._state.stair_entry_decision(fence, expected_pose),
             )
         try:
-            with self._active_lock:
-                if context.cancellation_requested():
-                    return SegmentExecution.cancelled('mission cancelled before stair goal')
-                self._stair.send_goal(StairTraversalGoal(
+            status, result, error = self._run_child(
+                self._stair, StairTraversalGoal(
                     stair_id=profile.id, direction=direction, admission_token=token,
                     resume_run_id=context.resume_run_id, resume_revision=context.resume_revision,
                     resume_phase=context.resume_phase,
-                ))
-            if not self._stair.wait_for_result():
-                return SegmentExecution.abort("stair action wait ended without result", "communication loss")
-            status = self._stair.get_state()
-            result: StairTraversalResult | None = self._stair.get_result()
+                ), context.cancellation_requested)
+            if error:
+                return SegmentExecution.abort(error, "stair child communication/cancellation timeout")
         finally:
             if token:
                 self._stair_admission.clear(token)
@@ -236,16 +338,11 @@ class RosSegmentExecutor(SegmentExecutor):
         generation = int(self._state.floor_state().map_generation)
         if segment.stair_id is None:
             return SegmentExecution.abort("floor transition missing stair id", "route contract")
-        with self._active_lock:
-            if context.cancellation_requested():
-                return SegmentExecution.cancelled('mission cancelled before floor transition')
-            self._floor.send_goal(
-                FloorTransitionGoal(transition_id=segment.stair_id, target_floor=segment.target_floor)
-            )
-        if not self._floor.wait_for_result():
-            return SegmentExecution.abort("floor action wait ended without result", "communication loss")
-        status = self._floor.get_state()
-        result: FloorTransitionResult | None = self._floor.get_result()
+        status, result, error = self._run_child(
+            self._floor, FloorTransitionGoal(transition_id=segment.stair_id, target_floor=segment.target_floor),
+            context.cancellation_requested)
+        if error:
+            return SegmentExecution.abort(error, "floor child communication/cancellation timeout")
         if status in (GoalStatus.PREEMPTED, GoalStatus.RECALLED):
             return SegmentExecution.cancelled("floor transition cancelled at safe checkpoint")
         if result is None or status == GoalStatus.LOST:

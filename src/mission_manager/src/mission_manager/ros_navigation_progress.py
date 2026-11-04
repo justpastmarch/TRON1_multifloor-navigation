@@ -10,6 +10,10 @@ from actionlib_msgs.msg import GoalStatus
 from mission_manager.navigation_progress import NavigationProgress
 
 
+_nav_limit_lock = threading.Lock()
+_nav_limit_revision = 0
+
+
 class ProgressAwareClient:
     def __init__(self, client, clock=time.monotonic, policy=None, entry_region=(0.25, 0.2), arrival_dwell_sec=0.5):
         if not math.isfinite(arrival_dwell_sec) or arrival_dwell_sec <= 0:
@@ -107,7 +111,8 @@ class ProgressAwareClient:
             cancel = False
             with self.lock:
                 warning = ''
-                if self.terminal is None and not self.user_cancel and not self.entry_region_reached:
+                if (self.terminal is None and self.cancel_at is None
+                        and not self.user_cancel and not self.entry_region_reached):
                     now = self.clock()
                     if (self.entry_approach and self.entry_since is not None
                             and now-self.entry_since >= self.arrival_dwell_sec and self.entry_latest is not None
@@ -175,7 +180,8 @@ class ProgressAwareClient:
 
 def configure_floor_speed(floor_id):
     """Use the original linear limit outside RF; never compound the scale."""
-    from dynamic_reconfigure.msg import DoubleParameter
+    global _nav_limit_revision
+    from dynamic_reconfigure.msg import DoubleParameter, StrParameter
     from dynamic_reconfigure.srv import Reconfigure, ReconfigureRequest
     from multifloor_manager.ros_services import BoundedServiceCaller
     base = float(rospy.get_param('~nav_default_max_vel_x', 0.30))
@@ -183,12 +189,22 @@ def configure_floor_speed(floor_id):
     limit = base*scale
     if not math.isfinite(limit) or limit <= 0:
         raise ValueError('NAV linear speed must be positive and finite')
+    # Reserve command ordering before either RPC; a delayed earlier call must
+    # not receive a newer revision after a later floor request has completed.
+    with _nav_limit_lock:
+        _nav_limit_revision = revision = max(time.time_ns(), _nav_limit_revision+1)
     name = '/move_base/TrajectoryPlannerROS/set_parameters'
     request = ReconfigureRequest()
     request.config.doubles = [DoubleParameter(name='max_vel_x', value=limit)]
     # Only change max_vel_x; steering and stair commands have their own limits.
     try:
-        BoundedServiceCaller(2.0).call(name, rospy.ServiceProxy(name, Reconfigure), request)
+        caller = BoundedServiceCaller(2.0)
+        caller.call(name, rospy.ServiceProxy(name, Reconfigure), request)
+        name = '/stair_supervisor/set_navigation_limits'
+        receiver_request = ReconfigureRequest()
+        receiver_request.config.doubles = [DoubleParameter(name='max_vel_x', value=limit)]
+        receiver_request.config.strs = [StrParameter(name='nav_limit_revision', value=str(revision))]
+        caller.call(name, rospy.ServiceProxy(name, Reconfigure), receiver_request)
     except Exception as error:
         from mission_manager.navigation_executor import NavigationLifecycleError
         raise NavigationLifecycleError('NAV speed configuration failed: '+str(error)) from error

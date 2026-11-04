@@ -231,3 +231,20 @@ class EntryRegionTest(AdapterTest):
         self.assertEqual(self.raw.cancelled, 1)
         self.assertTrue(self.client.entry_region_reached)
         self.assertEqual(self.results,[GoalStatus.PREEMPTED])
+
+class CancelDeadlineTest(unittest.TestCase):
+    def test_persistent_stale_feedback_cannot_restart_cancel_deadline(self):
+        from types import SimpleNamespace
+        from mission_manager.navigation_executor import NavigationLifecycleError
+        now = [0.]
+        raw = SimpleNamespace(cancel_goal=unittest.mock.Mock())
+        adapter = ProgressAwareClient(raw, clock=lambda:now[0])
+        adapter.guard = SimpleNamespace(failure=lambda stamp:'NAV_FEEDBACK_STALE')
+        def tick(_):
+            now[0] += .2
+            if now[0] > 7:raise AssertionError('cancellation deadline was restarted')
+            return False
+        with patch.object(adapter.finished,'wait',side_effect=tick), patch('rospy.is_shutdown',return_value=False), patch('rospy.logwarn'), patch('rospy.logwarn_throttle'):
+            with self.assertRaises(NavigationLifecycleError):adapter.wait_for_result()
+        raw.cancel_goal.assert_called_once()
+        self.assertLess(now[0],6.)

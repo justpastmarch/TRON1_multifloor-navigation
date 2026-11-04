@@ -58,6 +58,7 @@ install(
 )
 
 if(CATKIN_ENABLE_TESTING)
+  catkin_add_nosetests(test/test_floor_recovery.py)
   catkin_add_nosetests(test/test_floor_selection.py)
   find_package(rostest REQUIRED)
   get_filename_component(TRON1_WORKSPACE_ROOT "${CMAKE_SOURCE_DIR}" DIRECTORY)

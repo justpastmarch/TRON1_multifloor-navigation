@@ -145,6 +145,7 @@ class ProcessTrackingWorker:
         self._epoch, self._sample, self._process, self._reader = 0, None, None, None
         self._diagnostic = dict(queue_length=0, dropped_scans=0, rejected_imu=0, worker_error="")
         self._ingress_drops = self._imu_drops = 0
+        self._ingress_old_drops = self._ingress_new_drops = 0
         self._jobs, self._job_id = {}, 0
         self._last_stamp = None
         self._restarting = False
@@ -163,6 +164,8 @@ class ProcessTrackingWorker:
             result = dict(self._diagnostic, epoch=self._epoch, backend="process")
             result["queue_length"] += 0 if self._restarting or self._closed else self._scans.qsize()
             result["dropped_scans"] += self._ingress_drops
+            result["ingress_dropped_old_scans"] = self._ingress_old_drops
+            result["ingress_dropped_new_scans"] = self._ingress_new_drops
             result["rejected_imu"] += self._imu_drops
             return result
 
@@ -206,12 +209,28 @@ class ProcessTrackingWorker:
                     return False
                 self.reset("LiDAR clock reversed; anchor invalidated")
             self._last_stamp = stamp
+            value = (self._epoch, stamp, bytes(buffer), now, now if measured_at is None else measured_at)
             try:
-                self._scans.put_nowait((self._epoch, stamp, bytes(buffer), now, now if measured_at is None else measured_at))
+                self._scans.put_nowait(value)
                 return True
             except queue.Full:
-                self._ingress_drops += 1
-                return False
+                # multiprocessing.Queue may be Full before its feeder has made
+                # the oldest item readable. Bound that wait to preserve callback
+                # responsiveness; a concurrent consumer may also free the slot.
+                try:
+                    self._scans.get(timeout=.005)
+                except queue.Empty:
+                    pass
+                else:
+                    self._ingress_drops += 1
+                    self._ingress_old_drops += 1
+                try:
+                    self._scans.put_nowait(value)
+                    return True
+                except queue.Full:
+                    self._ingress_drops += 1
+                    self._ingress_new_drops += 1
+                    return False
 
     def entry_job(self, operation):
         with self._lock:

@@ -38,6 +38,7 @@ class FakeRuntime:
 
     def begin_policy(self, token: EpochToken) -> None:
         self.begin_token = token
+        self.active_epoch = token.epoch
 
     @staticmethod
     def localization_evidence() -> SimpleNamespace:
@@ -113,7 +114,16 @@ class PolicyFinalGateTest(unittest.TestCase):
 
     def test_preemption_at_second_check_cannot_commit_ready(self) -> None:
         # Given: the action server requests cancellation only after a true evaluation.
-        node, runtime, _feedback = self._node(FakeActionServer(preempt_after=2))
+        server = FakeActionServer()
+        node, runtime, _feedback = self._node(server)
+        cancelled = [False]
+        server.is_preempt_requested = lambda: cancelled[0]
+        evaluate = runtime.evaluate_policy
+        def cancel_during_evaluation(token):
+            result = evaluate(token)
+            cancelled[0] = True
+            return result
+        runtime.evaluate_policy = cancel_during_evaluation
         # When: the final gate reaches its cancellation decision point.
         result = node._wait_for_policy_ready(EpochToken(4), object(), 0)
         # Then: cancellation wins and READY commit is never called.

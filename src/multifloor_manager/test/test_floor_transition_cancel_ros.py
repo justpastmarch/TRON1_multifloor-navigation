@@ -64,7 +64,7 @@ class FloorTransitionCancelRosTest(unittest.TestCase):
         self.assertEqual(client.get_state(), GoalStatus.PREEMPTED)
         self.assertTrue(wait_for_state(states, FloorState.FAULT, 1.0))
         self.assertEqual(states[-1].state, FloorState.FAULT)
-        self.assertEqual(states[-1].floor_id, "")
+        self.assertEqual(states[-1].floor_id, "3F")
         state_subscriber.unregister()
 
 

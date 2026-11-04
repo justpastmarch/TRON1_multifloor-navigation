@@ -48,11 +48,14 @@ class ConsoleRecording:
         self.raw_copies = {}
         self.copy_lock = threading.Lock()
         self.raw_capture_unverified = False
+        self.raw_pending = False
 
     def snapshot(self):
         with self.lock:
             if self.process and self.process.poll() is not None and not self.stopping and self.state in ('starting', 'recording'):
                 self.state, self.error = 'error', '녹화 프로세스가 예기치 않게 종료됐습니다. 로그를 확인하세요.'
+                if self.raw_pending:
+                    self.stop()
             return dict(state=self.state, path=str(self.path or ''), error=self.error,
                         busy=self.stopping or bool(self.process and self.process.poll() is None),
                         log_path=str(self.path.with_suffix('.log')) if self.path else '',
@@ -84,21 +87,26 @@ class ConsoleRecording:
             name = 'ui_test_'+time.strftime('%Y%m%d_%H%M%S')+'_'+uuid.uuid4().hex[:8]
             self.path = self.root/(name+'.bag')
             self.error, self.state = '', 'starting'
+            self.process = None
             self.raw_name = name + '_raw' if self.remote_raw else None
             self.raw_path = self.root/(self.raw_name+'.bag') if self.raw_name else None
             if self.raw_name:
                 if not self.remote_tool:
                     self.state = 'error'
                     raise ValueError('MiniPC 원본 센서 녹화 도구가 설정되지 않았습니다.')
+                self.raw_pending = True
                 try:
                     result = subprocess.run([self.remote_tool, 'start', self.raw_name],
                                             capture_output=True, text=True, timeout=25)
                 except (OSError, subprocess.TimeoutExpired) as error:
                     self.state, self.error = 'error', str(error)
+                    self.stop()
                     raise ValueError('MiniPC 원본 센서 녹화를 시작하지 못했습니다: '+str(error)) from error
                 if result.returncode:
                     self.state, self.error = 'error', result.stderr.strip() or 'MiniPC 원본 센서 녹화 시작 실패'
-                    raise ValueError(self.error)
+                    error = self.error
+                    self.stop()
+                    raise ValueError(error)
             try:
                 with self.path.with_suffix('.log').open('xb') as log:
                     self.process = subprocess.Popen(
@@ -108,12 +116,7 @@ class ConsoleRecording:
             except OSError as error:
                 self.process = None
                 self.state, self.error = 'error', str(error)
-                if self.raw_name:
-                    try:
-                        subprocess.run([self.remote_tool, 'abort', self.raw_name],
-                                       capture_output=True, timeout=10)
-                    except (OSError, subprocess.TimeoutExpired):
-                        pass  # The MiniPC bag remains recoverable if SSH is unavailable.
+                self.stop()
                 raise ValueError('rosbag을 시작하지 못했습니다: '+str(error)) from error
             process, path = self.process, self.path
         deadline = time.monotonic()+8
@@ -126,7 +129,9 @@ class ConsoleRecording:
                     raise ValueError('녹화 시작이 취소됐습니다.')
                 if process.poll() is not None:
                     self.state, self.error = 'error', '녹화를 시작하지 못했습니다. 녹화 로그를 확인하세요.'
-                    raise ValueError(self.error)
+                    error = self.error
+                    self.stop()
+                    raise ValueError(error)
                 file_ready = Path(str(path)+'.active').exists()
             # Opening a bag precedes subscribing. Wait for the recorder's
             # subscriptions too, so the initial mission goal is not sent early.
@@ -134,7 +139,9 @@ class ConsoleRecording:
             with self.lock:
                 if process.poll() is not None:
                     self.state, self.error = 'error', '녹화 프로세스가 준비 중 종료됐습니다.'
-                    raise ValueError(self.error)
+                    error = self.error
+                    self.stop()
+                    raise ValueError(error)
                 if subscribed and not self.stopping and not (stop_event and stop_event.is_set()):
                     self.state = 'recording'
                     return self.snapshot()
@@ -157,14 +164,18 @@ class ConsoleRecording:
 
     def stop(self):
         with self.lock:
-            if self.stopping or self.process is None:
-                return self.snapshot()
-            if self.process.poll() is not None and self.state in ('saved', 'error'):
+            if self.stopping:
                 return self.snapshot()
             process, path = self.process, self.path
-            raw_name, raw_path = self.raw_name, self.raw_path
+            if not self.raw_pending and (process is None or
+                    process.poll() is not None and self.state in ('saved', 'error')):
+                return self.snapshot()
+            raw_name = self.raw_name if self.raw_pending else None
+            raw_path = self.raw_path
             self.stopping, self.state = True, 'stopping'
-            if process.poll() is None:
+            if raw_name:
+                self.raw_capture_unverified = True
+            if process is not None and process.poll() is None:
                 try:
                     process.send_signal(signal.SIGINT)
                 except ProcessLookupError:
@@ -175,9 +186,10 @@ class ConsoleRecording:
 
     def _finish(self, process, path, raw_name=None, raw_path=None):
         # No SIGKILL: large files may need time to flush their final index.
-        code = process.wait()
-        local_saved = code == 0 and path.exists() and not Path(str(path)+'.active').exists()
+        code = process.wait() if process is not None else None
+        local_saved = code == 0 and path is not None and path.exists() and not Path(str(path)+'.active').exists()
         seal_error = ''
+        raw_absent = False
         if raw_name:
             with self.lock:
                 self.raw_copies[raw_name] = dict(path=str(raw_path), state='sealing', error='')
@@ -186,6 +198,8 @@ class ConsoleRecording:
                                         capture_output=True, text=True, timeout=90)
                 if result.returncode:
                     seal_error = result.stderr.strip() or 'MiniPC 원본 센서 BAG 종료 실패'
+                else:
+                    raw_absent = getattr(result, 'stdout', '').strip() == 'RAW_BAG_ABSENT'
             except (OSError, subprocess.TimeoutExpired) as error:
                 seal_error = str(error)
         with self.lock:
@@ -199,11 +213,12 @@ class ConsoleRecording:
                 self.error = '정상 저장을 확인하지 못했습니다. .active와 로그를 보존했습니다.'
             if raw_name:
                 self.raw_copies[raw_name].update(
-                    state='error' if seal_error else 'copying', error=seal_error)
+                    state='error' if seal_error else 'not_recorded' if raw_absent else 'copying', error=seal_error)
                 self.raw_capture_unverified = bool(seal_error)
+                self.raw_pending = bool(seal_error)
                 # Preserve the transfer result across later recording starts.
                 # Copying a large raw BAG must never retain mission ownership.
-                if not seal_error:
+                if not seal_error and not raw_absent:
                     threading.Thread(target=self._copy_raw, args=(raw_name, raw_path),
                                      daemon=True, name='ui-raw-bag-copy').start()
 

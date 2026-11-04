@@ -37,8 +37,9 @@ class FakeActionClient:
     def wait_for_server(self, _timeout) -> bool:
         return True
 
-    def send_goal(self, goal) -> None:
+    def send_goal(self, goal, done_cb=None, feedback_cb=None) -> None:
         self.goals.append(goal)
+        if done_cb:done_cb(self.get_state(), self.result)
 
     def wait_for_result(self) -> bool:
         return True

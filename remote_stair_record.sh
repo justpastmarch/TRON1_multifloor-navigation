@@ -21,7 +21,16 @@ case "$1" in
         ;;
     seal)
         ssh -o BatchMode=yes -o ConnectTimeout=5 "$target" \
-            "systemctl --user stop '$unit' >/dev/null 2>&1 || true; test -f '${base}/bags/$2.bag'; test ! -e '${base}/bags/$2.bag.active'"
+            "systemctl --user stop '$unit' >/dev/null 2>&1 || true
+             unit_rc=0
+             unit_state=\$(systemctl --user is-active '$unit' 2>/dev/null) || unit_rc=\$?
+             case \"\$unit_state:\$unit_rc\" in inactive:3|failed:3|unknown:3|unknown:4) ;; *) echo 'MiniPC raw recorder unit is not confirmed inactive.' >&2; exit 1 ;; esac
+             process_rc=0
+             pgrep -f -- '(^|[[:space:]])__name:=$2([[:space:]]|$)' >/dev/null 2>&1 || process_rc=\$?
+             test \"\$process_rc\" = 1 || { echo 'MiniPC raw recorder process is not confirmed absent.' >&2; exit 1; }
+             test ! -e '${base}/bags/$2.bag.active' || { echo 'MiniPC raw BAG is still active.' >&2; exit 1; }
+             if test -f '${base}/bags/$2.bag'; then exit 0; fi
+             printf '%s\n' RAW_BAG_ABSENT"
         ;;
     copy)
         [[ $# == 3 ]] || exit 2
@@ -33,8 +42,12 @@ case "$1" in
         ;;
     stop)
         [[ $# == 3 ]] || exit 2
-        "$0" seal "$2"
-        "$0" copy "$2" "$3"
+        sealed="$("$0" seal "$2")"
+        if [[ "$sealed" == RAW_BAG_ABSENT ]]; then
+            printf '%s\n' "$sealed"
+        else
+            "$0" copy "$2" "$3"
+        fi
         ;;
     abort)
         ssh -o BatchMode=yes -o ConnectTimeout=5 "$target" \

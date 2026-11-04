@@ -96,8 +96,9 @@ class StartupLocalization:
                        request_id=self.generation, **details)
         self.status.publish(String(data=json.dumps(payload, ensure_ascii=False)))
 
-    def busy(self):
-        if self.runtime.state in (FloorState.TRANSITIONING, FloorState.FAULT):
+    def busy(self, allow_fault=False):
+        if (self.runtime.state == FloorState.TRANSITIONING
+                or (self.runtime.state == FloorState.FAULT and not allow_fault)):
             return True
         if self.supervisor is not None and self.supervisor.state == SupervisorState.STAIR:
             return True
