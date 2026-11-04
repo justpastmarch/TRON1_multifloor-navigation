@@ -1,0 +1,442 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "TRON independent-site mapping API",
+    "version": "2026-10-21"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8766"
+    }
+  ],
+  "paths": {
+    "/api/mapping/start": {
+      "post": {
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "request_id",
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "resume_id": {
+                    "type": "string"
+                  },
+                  "resume_key": {
+                    "type": "string"
+                  },
+                  "request_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Accepted, not physical or task completion; poll /api/state.jobs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "accepted",
+                    "job_id"
+                  ],
+                  "properties": {
+                    "accepted": {
+                      "type": "boolean"
+                    },
+                    "job_id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Host, origin or token rejected"
+          },
+          "409": {
+            "description": "Invalid request, duplicate ID conflict, or operation busy"
+          }
+        }
+      }
+    },
+    "/api/mapping/save": {
+      "post": {
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "request_id"
+                ],
+                "properties": {
+                  "request_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Accepted, not physical or task completion; poll /api/state.jobs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "accepted",
+                    "job_id"
+                  ],
+                  "properties": {
+                    "accepted": {
+                      "type": "boolean"
+                    },
+                    "job_id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Host, origin or token rejected"
+          },
+          "409": {
+            "description": "Invalid request, duplicate ID conflict, or operation busy"
+          }
+        }
+      }
+    },
+    "/api/mapping/stop": {
+      "post": {
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "request_id"
+                ],
+                "properties": {
+                  "request_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Accepted, not physical or task completion; poll /api/state.jobs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "accepted",
+                    "job_id"
+                  ],
+                  "properties": {
+                    "accepted": {
+                      "type": "boolean"
+                    },
+                    "job_id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Host, origin or token rejected"
+          },
+          "409": {
+            "description": "Invalid request, duplicate ID conflict, or operation busy"
+          }
+        }
+      }
+    },
+    "/api/mapping/compare": {
+      "post": {
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "request_id",
+                  "session_id"
+                ],
+                "properties": {
+                  "session_id": {
+                    "type": "string"
+                  },
+                  "request_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Accepted, not physical or task completion; poll /api/state.jobs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "accepted",
+                    "job_id"
+                  ],
+                  "properties": {
+                    "accepted": {
+                      "type": "boolean"
+                    },
+                    "job_id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Host, origin or token rejected"
+          },
+          "409": {
+            "description": "Invalid request, duplicate ID conflict, or operation busy"
+          }
+        }
+      }
+    },
+    "/api/mapping/import_compare": {
+      "post": {
+        "security": [
+          {
+            "ConsoleToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "request_id",
+                  "bag_id"
+                ],
+                "properties": {
+                  "bag_id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "request_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Accepted, not physical or task completion; poll /api/state.jobs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "accepted",
+                    "job_id"
+                  ],
+                  "properties": {
+                    "accepted": {
+                      "type": "boolean"
+                    },
+                    "job_id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Host, origin or token rejected"
+          },
+          "409": {
+            "description": "Invalid request, duplicate ID conflict, or operation busy"
+          }
+        }
+      }
+    },
+    "/api/state": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Mapping state, session, maps, jobs and token. mode=mapping; no robot motion commands."
+          }
+        }
+      }
+    },
+    "/api/map": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Current mapping OccupancyGrid PNG and geometry."
+          }
+        }
+      }
+    },
+    "/api/mapping/bags": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Read-only list of allowed source BAG names."
+          }
+        }
+      }
+    },
+    "/api/maps/{session_id}/{key}/preview": {
+      "get": {
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Read-only map preview JSON"
+          },
+          "404": {
+            "description": "File/map not found or path rejected"
+          }
+        }
+      }
+    },
+    "/api/maps/{session_id}/{key}/file": {
+      "get": {
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "map.pgm",
+                "map.yaml",
+                "graph.posegraph",
+                "graph.data"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Map/graph bytes; no active-map change"
+          },
+          "404": {
+            "description": "File/map not found or path rejected"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ConsoleToken": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-TRON-Token"
+      }
+    }
+  }
+}

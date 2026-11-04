@@ -48,6 +48,14 @@ class ConsoleServer:
                     return self.reply(200, result)
                 if path == '/api/map':
                     return self.reply(200, owner.backend.map_snapshot())
+                if hasattr(owner.backend, 'mapping_get'):
+                    try:
+                        result = owner.backend.mapping_get(self.path)
+                        if isinstance(result, tuple):
+                            return self.reply(200, result[0], result[1])
+                        return self.reply(200, result)
+                    except (ValueError, OSError, KeyError) as error:
+                        return self.reply(404, {'error': str(error)})
                 return self.reply(404, {'error': 'not found'})
 
             def do_POST(self):
@@ -64,6 +72,8 @@ class ConsoleServer:
                     data = json.loads(self.rfile.read(length))
                     if not isinstance(data, dict):
                         raise ValueError('request must be an object')
+                    if hasattr(owner.backend, 'mapping_request'):
+                        return self.reply(200, owner.backend.mapping_request(self.path, data))
                     if self.path == '/api/operator_phase':
                         return self.reply(200, owner.backend.operator_phase(data))
                     if self.path == '/api/localization/pose_estimate':

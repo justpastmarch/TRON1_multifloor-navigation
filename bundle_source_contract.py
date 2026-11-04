@@ -20,6 +20,8 @@ EXPECTED_NODE_INITIALIZERS = frozenset(
 )
 # Existing one-shot operator client; it must never enter a launch graph.
 OPERATOR_CLIENT_INITIALIZERS = frozenset({
+    # Private-master A/B worker; no robot command publishers or sockets.
+    ("src/mission_manager/src/mission_manager/mapping_compare.py", "mapping_comparison"),
     ("src/stair_supervisor/scripts/stair_entry_test.py", "stair_entry_test_client"),
     ("src/stair_supervisor/scripts/prepare_stair_mission.py", "prepare_stair_mission"),
 })

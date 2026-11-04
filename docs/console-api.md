@@ -187,3 +187,21 @@ State를 약 1초마다 갱신하고 map 이미지는 revision 변경 시 받는
 메시지: `src/mission_manager/action/Mission.action`, `src/multifloor_manager/msg/FloorState.msg`, `src/stair_supervisor/msg/SupervisorState.msg`.
 
 검증 범위: HTTP 라우팅/인증/요청 형식은 `test_console.py`, door HTTP는 `test_console_door_http.py`, 어댑터 명령 계약은 `test_ros_console.py`, 수동 lease는 `test_console_manual.py`에서 확인한다. 새 UI의 시각·상호작용 검증은 실제 robot 대신 로컬 mock HTTP 응답으로 수행하며, 이를 실주행 성공률이나 실장비 정지/도착 증명으로 해석하지 않는다.
+
+## 새 장소 지도 관리 (2026-10-21)
+
+기존 주행 콘솔과 별도 실행 모드이며 기본 포트는 8766입니다. 주행 API를 호출하지 않습니다. `GET /api/state`의 mode는 mapping입니다. `GET /api/map`은 작성 중 grid, `GET /api/mapping/bags`는 비교용 기존 BAG 목록입니다.
+
+모든 변경 요청은 기존 X-TRON-Token/Origin 검사와 request_id를 사용하며 accepted/job_id를 반환합니다. 최종 결과는 state.jobs에서 확인합니다.
+
+| POST 경로 | 입력 |
+|---|---|
+| /api/mapping/start | name, 선택적으로 resume_id/resume_key |
+| /api/mapping/save | request_id |
+| /api/mapping/stop | request_id; 진행 중 지도 작업 취소도 요청 |
+| /api/mapping/compare | session_id |
+| /api/mapping/import_compare | bag_id, name |
+
+`GET /api/maps/{session_id}/{key}/preview`는 파일 미리보기, `GET /api/maps/{session_id}/{key}/file?name=map.pgm` 등은 다운로드입니다. 파일명은 map.pgm, map.yaml, graph.posegraph, graph.data만 허용합니다. 장소 목록은 state.maps에 있습니다. 현재 하드웨어 연결이나 임무를 변경하지 않고 조회할 수 있습니다.
+
+[범위·사용법·호환성 검증](mapping-gui-20261021.md).

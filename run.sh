@@ -13,8 +13,13 @@ usage() {
         "  --preflight  Also require production config and hardware connectivity" \
         "  --record-manual  Record sensors and physical SensorJoy input; starts no robot software" \
         "  --replay-joy  Preview up to 30s of recorded SensorJoy on /replay/tron/sensor_joy" \
+        "  --mapping    Open independent-site 2D map creation and A/B comparison" \
         "  --help       Show this help"
 }
+
+if [[ "${1:-}" == "--mapping" ]]; then
+    exec bash "$ROOT/run_mapping.sh" "${@:2}"
+fi
 
 case "${1:-}" in
     --help|-h) usage; exit 0 ;;

@@ -68,6 +68,10 @@ def pause(message):
 
 
 def main():
+    import sys
+    if '--mapping' in sys.argv[1:]:
+        return subprocess.call(['/bin/bash', str(ROOT / 'run.sh'), '--mapping'],
+                               cwd=str(ROOT), env=dict(os.environ, MAPPING_OPEN_BROWSER='1'))
     if reuse_console():
         return 0
     state_dir = Path.home() / '.local/state/tron1'

@@ -313,6 +313,10 @@ catkin_test_results --verbose build/test_results
 따릅니다. SDK listener의 실제 callback이 준비된 뒤 operator는
 `./run.sh --record-manual`만 실행합니다.
 
+새 장소의 2D 지도 생성·저장·조회와 한 번의 기록으로 두 방식을 비교하려면 바탕화면의 **TRON 지도 관리** 또는 `bash run.sh --mapping`을 사용합니다. 기본 매핑은 기존 MID360 `/scan`을 사용하는 ROS1 SLAM Toolbox이며, 비교군은 Gmapping입니다. 기존 주행 프로그램을 종료하고 실행합니다. [지도 GUI 사용법·실제 검증 범위](docs/mapping-gui-20261021.md)를 먼저 확인하세요.
+
+아래 manual RViz와 notebooks의 Gmapping 절차는 별도 수동 경로입니다. GUI 기본 매핑과 혼동하지 마세요.
+
 맵 생성과 저장 후 수동 navigation 확인에는 manual RViz 화면을 사용합니다. Mapping
 중에는 표시 기능만 사용하고, 저장한 맵으로 AMCL과 `move_base`를 시작한 뒤
 `2D Pose Estimate`와 `2D Nav Goal`을 사용합니다.

@@ -7,6 +7,9 @@ import rospy
 
 def main() -> int:
     """Host the Mission action until ROS shutdown."""
+    if rospy.get_param('~mode', 'navigation') == 'mapping':
+        from mission_manager.mapping_console import main as mapping_main
+        return mapping_main()
     from mission_manager.ros_runtime import create_mission_action_server
 
     server = create_mission_action_server()
