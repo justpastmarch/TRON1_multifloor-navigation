@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
 import math
 from pathlib import Path
 import threading
@@ -31,6 +32,13 @@ from multifloor_manager.msg import (
 from multifloor_manager.ros_runtime import EpochToken, RosEvidenceRuntime
 from multifloor_manager.ros_services import BoundedServiceCaller, ServiceCallError
 from multifloor_manager.stair_completion import StairCompletionCache
+from multifloor_manager.transaction_record import (
+    MAP_UNKNOWN,
+    RESUME_INITIALPOSE,
+    TransactionProgress,
+    TransitionFault,
+    resume_stage,
+)
 from stair_supervisor.msg import StairTraversalActionGoal, StairTraversalActionResult
 from multifloor_manager.tag_evidence import FloorId, FloorTagSet, TagId
 from multifloor_manager.transitions import PredicateObservation
@@ -99,6 +107,10 @@ class MultifloorManagerNode:
         self.transaction_timeout = float(rospy.get_param("~transaction_timeout", 30.0))
         self._active_lock = threading.Lock()
         self._active = False
+        # A failed transition may resume with the same goal within this window.
+        self.resume_max_age_sec = float(rospy.get_param("~transition_resume_max_age_sec", 300.0))
+        self._progress = None
+        self._last_fault = None
         subscribers = [
             rospy.Subscriber(rospy.get_param("~map_topic", "/map"), OccupancyGrid, self.runtime.map_callback, queue_size=2),
             rospy.Subscriber(rospy.get_param("~amcl_pose_topic", "/amcl_pose"), PoseWithCovarianceStamped, self.runtime.pose_callback, queue_size=10),
@@ -150,6 +162,35 @@ class MultifloorManagerNode:
     def _feedback(self, phase: str, detail: str) -> None:
         self.server.publish_feedback(FloorTransitionFeedback(phase=phase, detail=detail))
 
+    def _mark(self, stage: str) -> None:
+        progress = getattr(self, "_progress", None)
+        if progress is not None:
+            self._progress = progress.at(stage)
+
+    def _stage(self, stage: str, detail: str) -> None:
+        """Record the transaction stage, then publish it as action feedback."""
+        self._mark(stage)
+        self._feedback(stage, detail)
+
+    def _observed_map_floor(self) -> str:
+        """Floor whose configured identity matches the last observed /map, or ''."""
+        fingerprint = self.runtime.map_state.current_fingerprint
+        if fingerprint is None:
+            return ""
+        identity = fingerprint.identity()
+        for floor_id, known in self.identities.items():
+            if identity == known:
+                return floor_id
+        return ""
+
+    def _observe_map(self, progress: TransactionProgress) -> TransactionProgress:
+        """Upgrade the recorded map only on direct /map evidence for it."""
+        observed = self._observed_map_floor()
+        if observed and (observed == progress.map_floor
+                         or (progress.map_floor == MAP_UNKNOWN and observed == progress.target_floor)):
+            return progress.with_map(observed, True)
+        return progress
+
     def _result(self, code: int, reason: str) -> FloorTransitionResult:
         return FloorTransitionResult(
             result_code=code,
@@ -159,8 +200,23 @@ class MultifloorManagerNode:
         )
 
     def _fail(self, reason: str, preempted: bool = False) -> None:
+        # floor_id stays the last confirmed floor; the loaded map, failed stage
+        # and target confirmation are recorded beside it, never instead of it.
+        progress = getattr(self, "_progress", None)
+        if progress is not None:
+            progress = self._observe_map(progress)
+            reason = progress.describe(reason)
         self.runtime.finish_transition(
             FloorState.FAULT, reason, self.runtime.current_floor or self.runtime.initial_floor)
+        if progress is not None:
+            self._last_fault = TransitionFault(
+                progress, int(self.runtime.map_state.generation), time.monotonic(), reason)
+            self._progress = None
+            try:
+                rospy.set_param("~last_fault", self._last_fault.as_dict())
+            except Exception as error:  # noqa: BROAD_EXCEPT_OK - diagnostics must not mask the fault.
+                rospy.logwarn("could not publish ~last_fault: %s", error)
+            rospy.logerr("floor transition fault: %s", reason)
         result = self._result(FloorTransitionResult.LOCALIZATION_FAILED, reason)
         if preempted:
             self.server.set_preempted(result, reason)
@@ -286,8 +342,22 @@ class MultifloorManagerNode:
         current_floor = self.runtime.current_floor
         current_endpoint = stair.endpoint_for(current_floor) if stair is not None else None
         target_endpoint = stair.endpoint_for(target_floor) if stair is not None else None
+        # Repeating the goal of a transaction that failed after the target was
+        # confirmed continues from its first unfinished stage; it never spends
+        # a second stair result and never repeats a map change already observed.
+        resume = resume_stage(
+            getattr(self, "_last_fault", None),
+            transition_id=transition_id,
+            target_floor=target_floor,
+            in_fault=self.runtime.state == FloorState.FAULT,
+            current_floor=current_floor,
+            map_generation=int(self.runtime.map_state.generation),
+            observed_map_floor=self._observed_map_floor(),
+            now=time.monotonic(),
+            max_age_sec=float(getattr(self, "resume_max_age_sec", 300.0)),
+        )
         valid = (
-            self.runtime.state == FloorState.READY
+            (self.runtime.state == FloorState.READY or resume is not None)
             and stair is not None
             and current_endpoint is not None
             and target_endpoint is not None
@@ -298,9 +368,19 @@ class MultifloorManagerNode:
             self.server.set_aborted(self._result(FloorTransitionResult.INVALID_GOAL, "goal is not the current directed stair"))
             return
         target = self.identities[target_floor]
-        self._feedback("ARM_TARGET", "checking stair completion before map change")
+        previous_fault = getattr(self, "_last_fault", None)
+        self._last_fault = None
+        if resume is None:
+            self._progress = TransactionProgress(transition_id, current_floor, target_floor,
+                                                 map_floor=current_floor, map_observed=True)
+        else:
+            self._progress = previous_fault.progress.at("RESUME")
+        if resume is None:
+            self._stage("ARM_TARGET", "checking stair completion before map change")
         token = self.runtime.arm_transition(target_floor, target_endpoint.expected_tag_ids, target)
-        if self.floor_confirmation_source == "tag":
+        if resume is not None:
+            self._stage("RESUME", "continuing failed transition at {}; target confirmation already consumed".format(resume))
+        elif self.floor_confirmation_source == "tag":
             ok, reason = self._wait(
                 lambda: self.runtime.tag_accepted or self.runtime.wrong_floor_tag,
                 time.monotonic() + self.tag_timeout,
@@ -320,32 +400,42 @@ class MultifloorManagerNode:
                 self._fail("matching recent stair success missing: " + reason, self.server.is_preempt_requested())
                 return
             self._feedback("ARM_TARGET", "matched {} success epoch {}".format(expected_profile, completion["epoch"]))
+        if resume is None:
+            self._progress = replace(self._progress, floor_confirmed=True)
         self.runtime.record_policy_observation(
             token,
             "T_FLOOR_CONFIRMED",
             PredicateObservation(True, time.monotonic(), token.epoch),
         )
-        self._feedback("CHANGE_MAP", "calling map_server change_map")
-        try:
-            response = self.services.call(
-                self.change_map_name,
-                self.change_map,
-                str((self.config_root / self.floors[target_floor].map_yaml).resolve()),
+        if resume == RESUME_INITIALPOSE:
+            self._stage("MAP_CONFIRM", "target map already observed in failed transaction; not reloading")
+        else:
+            self._stage("CHANGE_MAP", "calling map_server change_map")
+            try:
+                response = self.services.call(
+                    self.change_map_name,
+                    self.change_map,
+                    str((self.config_root / self.floors[target_floor].map_yaml).resolve()),
+                )
+            except ServiceCallError as error:
+                # A timed-out RPC may still have switched the map.
+                self._progress = self._progress.with_map(MAP_UNKNOWN, False)
+                self._fail("change_map failed: {}".format(error))
+                return
+            if response.result != LoadMapResponse.RESULT_SUCCESS:
+                # map_server rejected the request and keeps serving its current map.
+                self._fail("change_map result {}".format(response.result))
+                return
+            self._progress = self._progress.with_map(target_floor, False)
+            self._stage("MAP_CONFIRM", "waiting for newer matching map publication")
+            ok, reason = self._wait(
+                lambda: self.runtime.map_guard is not None and not self.runtime.map_guard.armed,
+                time.monotonic() + self.transaction_timeout,
             )
-        except ServiceCallError as error:
-            self._fail("change_map failed: {}".format(error))
-            return
-        if response.result != LoadMapResponse.RESULT_SUCCESS:
-            self._fail("change_map result {}".format(response.result))
-            return
-        self._feedback("MAP_CONFIRM", "waiting for newer matching map publication")
-        ok, reason = self._wait(
-            lambda: self.runtime.map_guard is not None and not self.runtime.map_guard.armed,
-            time.monotonic() + self.transaction_timeout,
-        )
-        if not ok:
-            self._fail(reason, self.server.is_preempt_requested())
-            return
+            if not ok:
+                self._fail(reason, self.server.is_preempt_requested())
+                return
+            self._progress = self._progress.with_map(target_floor, True)
         pose_stamp = rospy.Time.now()
         pose = PoseWithCovarianceStamped()
         pose.header.stamp = pose_stamp
@@ -358,7 +448,7 @@ class MultifloorManagerNode:
         pose.pose.pose.orientation.z = orientation.z
         pose.pose.pose.orientation.w = orientation.w
         pose.pose.covariance = target_endpoint.covariance
-        self._feedback("INITIALPOSE", "publishing stored landing hypothesis")
+        self._stage("INITIALPOSE", "publishing stored landing hypothesis")
         self.runtime.arm_localization(pose_stamp.to_nsec())
         self.initialpose_publisher.publish(pose)
         localization_deadline = time.monotonic() + self.transaction_timeout
@@ -375,7 +465,7 @@ class MultifloorManagerNode:
                 self._fail(reason, self.server.is_preempt_requested())
                 return
             pose_marker = self.runtime.pose_high_water_ns(pose_marker)
-        self._feedback("AMCL_READY", "waiting for covariance, samples, scan, odom, and TF")
+        self._stage("AMCL_READY", "waiting for covariance, samples, scan, odom, and TF")
         def localized() -> bool:
             evidence = self.runtime.localization_evidence()
             return evidence is not None and evidence.ready
@@ -384,14 +474,14 @@ class MultifloorManagerNode:
         if not ok:
             self._fail(reason, self.server.is_preempt_requested())
             return
-        self._feedback("CLEAR_COSTMAPS", "clearing navigation costmaps")
+        self._stage("CLEAR_COSTMAPS", "clearing navigation costmaps")
         marker = self.runtime.costmap_sequence
         try:
             self.services.call(self.clear_costmaps_name, self.clear_costmaps)
         except ServiceCallError as error:
             self._fail("clear_costmaps failed: {}".format(error))
             return
-        self._feedback("COSTMAP_READY", "waiting for target global costmap metadata")
+        self._stage("COSTMAP_READY", "waiting for target global costmap metadata")
         ok, reason = self._wait_with_localization_refresh(
             lambda: self._target_metadata_matches(target, marker),
             time.monotonic() + self.transaction_timeout,
@@ -399,10 +489,12 @@ class MultifloorManagerNode:
         if not ok:
             self._fail(reason, self.server.is_preempt_requested())
             return
+        self._mark("POLICY_READY")
         ok, reason = self._wait_for_policy_ready(token, target, marker)
         if not ok:
             self._fail(reason, self.server.is_preempt_requested())
             return
+        self._progress = None
         self.runtime.finish_transition(FloorState.READY, "floor transition complete", target_floor)
         self.server.set_succeeded(self._result(FloorTransitionResult.OK, ""))
 

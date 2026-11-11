@@ -602,7 +602,7 @@ FAULT        = 3
 | `UNKNOWN` | 초기 map 또는 초기 floor 상태를 아직 신뢰할 수 없음 | matching initial map 관찰 시 `READY` 가능 |
 | `TRANSITIONING` | 하나의 active epoch이 map/tag/localization/costmap/policy를 처리 중 | 성공 시 `READY`, 실패/cancel 시 `FAULT` |
 | `READY` | 현재 floor가 운영 가능한 상태 | 올바른 directed stair goal 수신 시 `TRANSITIONING` |
-| `FAULT` | 전이 실패 또는 cancel 이후 terminal fault 상태 | 다음 정상 운영 cycle에서 명시적 복구 정책 필요 |
+| `FAULT` | 전이 실패 또는 cancel 이후 terminal fault 상태 | 같은 goal 재전송으로 재개(7.7) 또는 `/multifloor/select_floor` |
 
 실제 publisher는 `RosEvidenceRuntime.publish_floor()`다.
 
@@ -705,7 +705,7 @@ READY            FAULT
 
 `_run_transaction()`은 실제 작업 전에 다음을 모두 확인한다.
 
-- 현재 `FloorState`가 `READY`인가
+- 현재 `FloorState`가 `READY`인가 (또는 7.7의 재개 조건을 만족하는 `FAULT`인가)
 - `transition_id`가 설정된 stair인가
 - stair의 `from_floor`가 현재 floor인가
 - stair의 `to_floor`가 요청한 target floor인가
@@ -746,6 +746,35 @@ active_epoch == callback이 캡처한 epoch
 ```
 
 다르면 해당 callback은 무시한다. `finish_transition()`은 epoch를 다시 증가시키고 active epoch을 해제하여 늦은 callback을 무효화한다.
+
+### 7.7 실패 기록과 재개
+
+`FAULT`의 `floor_id`는 계속 **마지막으로 확정된 층**이다. 실제 `map_server`가 가진 맵,
+실패 단계, 목표 층 확정 여부는 `detail` 끝과 `~last_fault` 파라미터에 따로 기록한다
+(`transaction_record.py`).
+
+```text
+transition evidence timeout [stage=INITIALPOSE; map=4F; confirmed_floor=3F; target=4F; target_confirmed=yes]
+```
+
+- `map=4F`: target 맵이 `/map`으로 관찰됨
+- `map=4F (requested, not yet observed)`: `change_map`은 성공했지만 새 `/map`을 아직 못 봄
+- `map=unknown (...)`: `change_map` RPC가 timeout/오류로 끝나 결과를 알 수 없음
+- `map=3F`: `map_server`가 요청을 거절해 기존 맵 유지
+
+같은 `transition_id`/`target_floor` goal을 다시 보내면 다음 조건에서 처음부터가 아니라
+남은 단계부터 이어서 진행한다.
+
+- 아직 그 실패로 생긴 `FAULT` 상태이고, 이후 `map_generation`이 바뀌지 않았다
+  (`select_floor` 등으로 맵이 바뀌면 재개 불가)
+- 실패 전에 목표 층 확정(계단 결과 또는 tag vote)을 이미 소비했다
+- 실패 후 `~transition_resume_max_age_sec`(기본 300초) 이내다. 저장된 착지 pose가
+  여전히 유효하다고 볼 수 있는 시간이다.
+
+재개 지점은 target 맵이 이미 관찰됐으면 `INITIALPOSE`(맵 재로드 없음), 아니면
+`CHANGE_MAP`(맵 재요청)이다. 계단 결과를 두 번 소비하지 않는다. 조건을 만족하지
+않으면 기존처럼 `INVALID_GOAL`이며, 이때는 `/multifloor/select_floor`로 실제 층을
+지정해 복구한다.
 
 ## 8. 상태별 관리·수정 위치
 
