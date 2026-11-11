@@ -52,9 +52,9 @@ locations:
 - id: roof_loop_nw
   floor_id: RF
   type: SCAN
-  x: -2.083093
-  y: -3.400745
-  yaw: 0.562131
+  x: -2.442143
+  y: -3.677607
+  yaw: 0.515847
 - id: roof_loop_ne
   floor_id: RF
   type: SCAN

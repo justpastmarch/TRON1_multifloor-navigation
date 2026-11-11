@@ -1385,21 +1385,23 @@ class StairFeedback:
                         self._holding = False
                         v = 0.
                         w = -limits['yaw_kp']*deadband(epsi, limits['yaw_deadband'])
+                final_turn_approach = region_turn and self.turn_index == len(self._landing_path())-1
+                needs_pivot_space = (region_turn and not final_turn_approach
+                    and not self._landing_turn_debug.get('rotation_disk_supported', False))
                 if (region_turn and not rotation_waypoint
-                        and (self.turn_index == 2 or (phase is Phase.ROOFTOP_TURN and self.turn_index == 0))
-                        and (distance > position_limit or not self._landing_turn_debug.get('rotation_disk_supported', False))
+                        and (final_turn_approach or self.turn_index == 2
+                             or (phase is Phase.ROOFTOP_TURN and self.turn_index == 0))
+                        and (distance > position_limit or needs_pivot_space)
                         and not degraded and not neutral_only):
-                    # Steer toward the supported pivot, rather than holding the
-                    # old cross-landing heading while lateral error remains.
-                    # A nearby point is not a reason to neutralize an inward
-                    # correction when the next rotation still cannot fit.
+                    # Point toward the approach target so yaw and lateral
+                    # corrections cannot cancel outside the next-flight corridor.
                     bearing = math.atan2(delta[1], delta[0])
                     travel_sign = 1. if along >= 0. else -1.
                     bearing_error = wrap(bearing-yaw+(math.pi if travel_sign < 0 else 0.))
                     w = limits['yaw_kp'] * bearing_error
                     v = travel_sign * min(limits.get('landing_max_v', limits['hold_v']),
                         limits['hold_kp'] * distance) * max(0., math.cos(bearing_error))
-                    if not self._landing_turn_debug.get('rotation_disk_supported', False):
+                    if needs_pivot_space:
                         v = travel_sign * max(abs(v), min(limits.get('landing_max_v', limits['hold_v']),2*limits['hold_v']))
                     polygon = np.asarray(self._turn_polygon())
                     edges = np.roll(polygon,-1,axis=0)-polygon

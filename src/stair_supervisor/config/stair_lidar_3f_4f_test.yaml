@@ -31,7 +31,8 @@ tracking:
   queue_capacity: 8
   imu_wait_sec: 0.15
 routes:
-- id: stair_3f_4f_up
+- &stair_3f_4f_up
+  id: stair_3f_4f_up
   commissioned: true
   flight_command_policy: observed_feedback
   # UP destination height is a lower bound; entry/held-surface bands are separate.
@@ -221,6 +222,16 @@ routes:
     validated_anchor_error_m: 0.1
     timeout_sec: 3.0
     unique_geometry_verified: true
+# Same physical 9+10-step geometry, confirmed by the operator on 2026-11-06.
+# The entry anchor uses the 4F map endpoint, not the 3F point-cloud template.
+- <<: *stair_3f_4f_up
+  id: stair_4f_5f_up
+  entry_reference: null
+  entry_map:
+    package: mission_manager
+    locations: config/locations.yaml
+    location_id: stair_4f_to_5f
+    floor_id: 4F
 - id: stair_5f_rf_up
   commissioned: true
   exit_arrival_policy: supported_region

@@ -204,11 +204,11 @@ class RosLidarInterface:
         self._timer = rospy.Timer(rospy.Duration(.1), self._publish)
 
     def ensure_entry(self, route_id):
-        """Automatically fit a surveyed entry template when one is commissioned."""
+        """Anchor from the configured floor map or surveyed entry template."""
         if self.control is None or route_id not in self.control.routes:
             raise ValueError("no LiDAR route for requested profile")
         route=self.control.routes[route_id]
-        if route.get('direction')=='DOWN' and 'entry_map' in route:
+        if 'entry_map' in route:
             return self._ensure_map_entry(route_id,route)
         reference=route.get("entry_reference")
         if reference is None:
@@ -255,7 +255,7 @@ class RosLidarInterface:
         path=Path(rospkg.RosPack().get_path(reference['package']))/reference['locations']
         document=yaml.safe_load(path.read_text())
         location=next((x for x in document['locations'] if x['id']==reference['location_id']),None)
-        if location is None:raise ValueError('RF map stair endpoint is missing')
+        if location is None:raise ValueError('floor map stair endpoint is missing')
         records=[]
         subscription=rospy.Subscriber('/amcl_pose',PoseWithCovarianceStamped,records.append,queue_size=1)
         try:
@@ -264,22 +264,22 @@ class RosLidarInterface:
             BoundedServiceCaller(2.).call('/request_nomotion_update',rospy.ServiceProxy('/request_nomotion_update',Empty))
             deadline=self.clock.monotonic()+2.
             while not records and self.clock.monotonic()<deadline:time.sleep(.02)
-            if not records:raise ValueError('RF entry has no refreshed AMCL pose')
+            if not records:raise ValueError('floor entry has no refreshed AMCL pose')
             floor=rospy.wait_for_message('/multifloor/floor_state',FloorState,timeout=2.)
-            if floor.state!=FloorState.READY:raise ValueError('RF floor is not ready')
+            if floor.state!=FloorState.READY:raise ValueError('current floor is not ready')
             message=records[-1];q=message.pose.pose.orientation;p=message.pose.pose.position
             if (message.header.frame_id.lstrip('/')!='map' or not all(math.isfinite(v) for v in (q.x,q.y,q.z,q.w))
                     or abs(q.x*q.x+q.y*q.y+q.z*q.z+q.w*q.w-1.)>.01):
-                raise ValueError('RF entry pose frame/orientation invalid')
+                raise ValueError('floor entry pose frame/orientation invalid')
             yaw=math.atan2(2*(q.w*q.z+q.x*q.y),1-2*(q.y*q.y+q.z*q.z))
             sample=self.worker.snapshot()
-            if sample is None:raise ValueError('RF entry has no LiDAR observation')
+            if sample is None:raise ValueError('floor entry has no LiDAR observation')
             anchor=map_entry_anchor(route,location,(p.x,p.y,yaw),
                 [message.pose.covariance[i] for i in (0,7,35)],sample,self.control.base_from_lidar,
                 floor.floor_id,self.clock.monotonic(),rospy.Time.now().to_sec(),message.header.stamp.to_sec())
             self.control.install_anchor(route_id,anchor)
         except (rospy.ROSException,StopIteration,ServiceCallError) as error:
-            raise ValueError('RF map entry observation failed: '+str(error)) from error
+            raise ValueError('floor map entry observation failed: '+str(error)) from error
         finally:subscription.unregister()
 
     def _start_observation(self, _request):

@@ -1,4 +1,4 @@
-"""Surveyed floor-map/entry transform for forward RF descent.
+"""Surveyed floor-map/entry transform for a configured stair route.
 
 AMCL supplies the local offset from the registered RF stair endpoint. This is
 not an ICP result and cannot disambiguate a wrong map pose on its own.
@@ -11,14 +11,14 @@ from .stair_feedback import se2,transform,RouteAnchor,placed_entry_transform
 def map_entry_anchor(route, location, map_pose, covariance, sample, base_from_lidar,
                      floor, now, ros_now, pose_stamp):
     if floor != route['entry_map']['floor_id'] or location['floor_id']!=floor:
-        raise ValueError('downhill entry map/floor mismatch')
+        raise ValueError('stair entry map/floor mismatch')
     if not 0<=ros_now-pose_stamp<=1. or not sample.geometry_valid or not 0<=now-sample.measured_at<=route['limits']['warn_sec']:
-        raise ValueError('downhill entry needs fresh map pose and LiDAR observation')
+        raise ValueError('stair entry needs fresh map pose and LiDAR observation')
     if abs(sample.stamp-pose_stamp)>1.:
         raise ValueError('map pose and LiDAR timestamps do not overlap')
     if (len(covariance)!=3 or any(not math.isfinite(v) or v<0 or v>.25 for v in covariance)
             or len(map_pose)!=3 or not all(map(math.isfinite,map_pose))):
-        raise ValueError('invalid or uncertain RF map localization')
+        raise ValueError('invalid or uncertain stair map localization')
     start,end=np.asarray(route['flight_1'],float)
     yaw=math.atan2(end[1]-start[1],end[0]-start[0])
     map_entry=se2(location['x'],location['y'],location['yaw'])
@@ -36,4 +36,4 @@ def map_entry_anchor(route, location, map_pose, covariance, sample, base_from_li
     uncertainty=max(route['limits']['anchor_uncertainty_m'],
                     2*math.sqrt(max(covariance[:2]))+2*radius*math.sin(min(math.pi,2*math.sqrt(covariance[2]))/2))
     return RouteAnchor(sample.epoch,sample.sequence,sample.measured_at,tuple(local_from_profile.flat),
-        uncertainty,'surveyed RF map endpoint + fresh AMCL offset; no ICP match')
+        uncertainty,'surveyed floor map endpoint + fresh AMCL offset; no ICP match')
