@@ -315,6 +315,21 @@ class RosStairSupervisorNode:
         self._publish_state(self._state_detail)
         self._manual_status()
 
+    @staticmethod
+    def _discard_legacy_phase_test() -> None:
+        """Remove an unbound legacy test request so it cannot affect later goals."""
+        with _PHASE_TEST_REQUEST_LOCK:
+            stale = rospy.get_param("~phase_test", None)
+            if stale is None:
+                return
+            try:
+                rospy.delete_param("~phase_test")
+            except KeyError:
+                pass
+        rospy.logwarn(
+            "ignored unbound ~phase_test %r; phase tests require admission_token "
+            "'phase-test:<uuid>' with ~phase_test_requests/<uuid>", stale)
+
     def _execute(self, message: StairTraversalGoal) -> None:
         receipt = None
         handled = False
@@ -339,9 +354,12 @@ class RosStairSupervisorNode:
                 receipt = "~phase_test_receipts/" + identifier
                 rospy.set_param(receipt, dict(goal_id=self._action.current_goal.get_goal_id().id, state="accepted"))
             else:
-                phase_test = rospy.get_param("~phase_test", None)
-                if phase_test is not None:
-                    rospy.delete_param("~phase_test")  # compatibility with existing manual requests
+                # Only a goal that names its bound ticket may run a phase test.
+                # A leftover legacy ~phase_test must never turn an ordinary
+                # traversal into an admission-free test: discard it and continue
+                # the goal exactly as requested.
+                phase_test = None
+                self._discard_legacy_phase_test()
             self._execute_request(message, phase_test)
             handled = True
         except (ValueError, KeyError, TypeError, AttributeError) as error:
