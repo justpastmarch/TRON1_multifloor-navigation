@@ -70,6 +70,13 @@ class StairSupervisor:
         )
         self._navigation_limit_revision = 0
         self._state_lock = threading.RLock()
+        # Lock order: _tx_lock, then _state_lock; never the reverse.
+        # _tx_lock serializes ownership changes with the supervisor's own robot
+        # I/O, so a command decided for one owner/epoch cannot be sent after a
+        # change. _state_lock is held only for short reads/writes, never across
+        # robot I/O or LiDAR evaluation, so status queries and joystick/cmd_vel
+        # callbacks do not wait for a slow socket.
+        self._tx_lock = threading.RLock()
         self._traversal_lock = threading.Lock()
         self._closed = False
         self._shutdown_requested = threading.Event()
@@ -131,7 +138,7 @@ class StairSupervisor:
                 self._state = SupervisorState.FAULT
             self._close_transport()
             raise
-        with self._state_lock:
+        with self._tx_lock, self._state_lock:
             self._state = SupervisorState.NAV
 
     def set_navigation_limits(self, linear_mps=None, angular_radps=None, *, revision=None) -> tuple[float, float]:
@@ -176,14 +183,29 @@ class StairSupervisor:
                 self._arrival_hold = False
 
     def stream_navigation(self) -> None:
-        """Emit one NAV tick or a complete zero for absent/stale input."""
+        """Emit one NAV tick or a complete zero for absent/stale input.
+
+        The decision is a short snapshot under _state_lock; LiDAR evaluation
+        and robot I/O run under _tx_lock only. Ownership changes also take
+        _tx_lock, so the snapshot cannot go stale before this tick is sent.
+        """
         try:
-            with self._state_lock:
-                if self._shutdown_requested.is_set():
-                    return
-                if self._landing_test_hold:
+            with self._tx_lock:
+                with self._state_lock:
+                    if self._shutdown_requested.is_set():
+                        return
                     now = self._clock.monotonic()
-                    if self._manual_active or self._manual_received_at is None or not 0 <= now-self._manual_received_at <= .5:
+                    landing_hold = self._landing_test_hold
+                    manual_fresh = (not self._manual_active and self._manual_received_at is not None
+                                    and 0 <= now-self._manual_received_at <= .5)
+                    retained = self._retained_loss
+                    state = self._state
+                    arrival_hold = self._arrival_hold
+                    command = self._latest_nav
+                    epoch = self._ownership_epoch
+                    max_linear, max_angular = self._navigation_limits
+                if landing_hold:
+                    if not manual_fresh:
                         self._retain_lidar_loss('landing hold released: manual input or joystick feedback stale')
                         self._zero_barrier()
                         return
@@ -195,13 +217,13 @@ class StairSupervisor:
                     self._transport.update_twist(*self._lidar_control.command())
                     self._transport.send_current()
                     return
-                if self._retained_loss:
+                if retained:
                     self._lidar_control.evaluate(self._lidar_control.phase, self._clock.monotonic())
                     self._zero_barrier()  # command neutralization, not physical hold evidence
                     return
-                if self._state is not SupervisorState.NAV:
+                if state is not SupervisorState.NAV:
                     return
-                if self._arrival_hold and self._lidar_control is not None:
+                if arrival_hold and self._lidar_control is not None:
                     report = self._lidar_control.evaluate(Phase.EXIT_CONFIRM, self._clock.monotonic(), command_required=True)
                     if report.faulted:
                         self._retain_lidar_loss(report.detail)
@@ -209,14 +231,12 @@ class StairSupervisor:
                     self._transport.update_twist(*self._lidar_control.command())
                     self._transport.send_current()
                     return
-                command = self._latest_nav
                 linear, angular = 0.0, 0.0
                 if command is not None:
                     command_linear, command_angular, received_at, command_epoch = command
                     fresh = self._clock.monotonic() - received_at <= self._nav_freshness_sec
-                    if fresh and command_epoch == self._ownership_epoch:
+                    if fresh and command_epoch == epoch:
                         linear, angular = command_linear, command_angular
-                max_linear, max_angular = self._navigation_limits
                 linear = max(-max_linear, min(max_linear, linear))
                 angular = max(-max_angular, min(max_angular, angular))
                 self._transport.update_twist(linear, angular)
@@ -318,7 +338,7 @@ class StairSupervisor:
                         self._lidar_control.operator_phase(resume_phase, self._clock.monotonic())
                 except ValueError as error:
                     return TraversalResult(ResultCode.ENTRY_REJECTED, str(error))
-            with self._state_lock:
+            with self._tx_lock, self._state_lock:
                 if self._state is not admitted_state or self._ownership_epoch != ownership_epoch:
                     return TraversalResult(ResultCode.ENTRY_REJECTED, "stair admission ownership changed")
                 self._state = SupervisorState.STAIR
@@ -351,12 +371,12 @@ class StairSupervisor:
         try:
             self._evidence.arm(profile, self._clock.monotonic(), phase_test=True, start_phase=phases[0])
         except ValueError as error:
-            with self._state_lock:
+            with self._tx_lock, self._state_lock:
                 self._state, self._retained_loss = admitted_state, retained_loss
             return TraversalResult(ResultCode.ENTRY_REJECTED, str(error))
         except Exception as error:
             return self._control_exception(error)
-        with self._state_lock:
+        with self._tx_lock, self._state_lock:
             self._arrival_hold = False
         try:
             control.test_status = dict(state="MODE_ACK", target_phase=phases[-1].value,
@@ -399,18 +419,21 @@ class StairSupervisor:
                         self._clock.sleep(self._transport.stream_period_sec)
                 control.test_status.update(state="TARGET_REACHED")
                 if phases[-1] is Phase.LANDING:
-                    with self._state_lock:
-                        now = self._clock.monotonic()
-                        if (not cancellation_requested() and not self._shutdown_requested.is_set()
-                                and not self._manual_active and self._manual_received_at is not None
-                                and 0 <= now-self._manual_received_at <= .5):
+                    with self._tx_lock:
+                        with self._state_lock:
+                            now = self._clock.monotonic()
+                            eligible = (not cancellation_requested() and not self._shutdown_requested.is_set()
+                                        and not self._manual_active and self._manual_received_at is not None
+                                        and 0 <= now-self._manual_received_at <= .5)
+                        if eligible:
                             self._zero_barrier()
                             try:
                                 control.begin_landing_hold(now)
                             except ValueError as error:
                                 reason = 'landing reached, hold unavailable: '+str(error)
                             else:
-                                self._landing_test_hold = True
+                                with self._state_lock:
+                                    self._landing_test_hold = True
                                 control.test_status.update(state='LANDING_HOLD')
                                 return TraversalResult(ResultCode.STAIR_FAILED,
                                     'phase test target reached; landing position hold active; not stair arrival', cancelled=True)
@@ -440,12 +463,12 @@ class StairSupervisor:
             if resume_phase is None:
                 self._evidence.arm(profile, started_at)
         except ValueError as error:
-            with self._state_lock:
+            with self._tx_lock, self._state_lock:
                 self._state = SupervisorState.NAV
             return TraversalResult(ResultCode.ENTRY_REJECTED, str(error))
         except Exception as error:
             return self._control_exception(error)
-        with self._state_lock:
+        with self._tx_lock, self._state_lock:
             self._arrival_hold = False
         cancel_pending = False
         phases = (self._lidar_control.traversal_phases(profile) if self._lidar_control is not None
@@ -498,20 +521,22 @@ class StairSupervisor:
                             if kind == 'continue':
                                 if not waiting or target is not phase:
                                     raise ValueError('같은 단계 이어가기는 중단 대기 중인 현재 단계에서만 가능합니다.')
-                                with self._state_lock:
-                                    self._lidar_control.continue_phase(self._clock.monotonic())
+                                with self._tx_lock:
+                                    with self._state_lock:
+                                        self._lidar_control.continue_phase(self._clock.monotonic())
                                     self._zero_barrier()
                                 self._set_lidar_mode(True, cancellation_requested, target, True, preserve_phase=True)
-                                with self._state_lock:
+                                with self._tx_lock, self._state_lock:
                                     self._retained_loss = False
                                     self._operator_run.update(last_operator_phase=target.value, error='', waiting=False,
                                                               revision=self._operator_run['revision']+1)
                                     self._operator_result = dict(request_id=operator_request['request_id'],
                                         phase=target.value,kind=kind,state='APPLIED',reason='현재 단계의 진행 위치를 유지해 계속합니다.')
                             else:
-                                with self._state_lock:
-                                    self._lidar_control.operator_phase(target, self._clock.monotonic())
-                                    self._retained_loss = False
+                                with self._tx_lock:
+                                    with self._state_lock:
+                                        self._lidar_control.operator_phase(target, self._clock.monotonic())
+                                        self._retained_loss = False
                                     self._zero_barrier()
                                 if waiting:
                                     self._set_lidar_mode(True, cancellation_requested, target, True)
@@ -697,12 +722,23 @@ class StairSupervisor:
                 if report.complete:
                     break
                 self._clock.sleep(self._transport.stream_period_sec)
-        with self._state_lock:
-            if self._shutdown_requested.is_set():
+        with self._tx_lock:
+            with self._state_lock:
+                shutdown = self._shutdown_requested.is_set()
+                cancelled_now = not shutdown and self._lidar_control is not None and cancellation_requested()
+            if shutdown:
                 return TraversalResult(ResultCode.STAIR_FAILED, "supervisor shutdown", cancelled=True)
-            if self._lidar_control is not None and cancellation_requested():
+            if cancelled_now:
                 self._retain_lidar_loss("cancelled before arrival ownership transfer")
                 return TraversalResult(ResultCode.STAIR_FAILED, "cancelled before arrival ownership transfer", cancelled=True)
+            self._hand_back_to_nav(cancelled)
+        if cancelled:
+            return TraversalResult(ResultCode.STAIR_FAILED, "cancelled", cancelled=True)
+        return TraversalResult(ResultCode.OK, "stair traversal complete")
+
+    def _hand_back_to_nav(self, cancelled: bool) -> None:
+        """Ownership transfer to NAV; caller holds _tx_lock."""
+        with self._state_lock:
             self._ownership_epoch += 1
             self._latest_nav = None
             self._state = SupervisorState.NAV
@@ -711,9 +747,6 @@ class StairSupervisor:
                 # Floor/tag/map preparation owns its own deadlines. Continue
                 # measured flat-exit correction until NAV takes over or releases.
                 self._lidar_control.begin_arrival_hold()
-        if cancelled:
-            return TraversalResult(ResultCode.STAIR_FAILED, "cancelled", cancelled=True)
-        return TraversalResult(ResultCode.OK, "stair traversal complete")
 
     def _try_entry_nav_recovery(self):
         """Restore NAV only before ascent, with repeated flat-pose/RC checks."""
@@ -731,26 +764,36 @@ class StairSupervisor:
             if not eligible():
                 return False
         def progress():
-            with self._state_lock:
-                if not eligible() or self._clock.monotonic()-started >= control.route['limits']['handoff_sec']:
+            with self._tx_lock:
+                with self._state_lock:
+                    ok = eligible() and self._clock.monotonic()-started < control.route['limits']['handoff_sec']
+                if not ok:
                     raise _LidarTransitionFailed('flat-entry recovery no longer confirmed')
                 self._zero_barrier()
         try:
             progress()
             self._transport.request_stair_mode_with_feedback(False, progress)
-            with self._state_lock:
-                if not eligible():
-                    return False
+            with self._tx_lock:
+                with self._state_lock:
+                    if not eligible():
+                        return False
                 self._zero_barrier()
-                self._latest_nav = None
-                self._ownership_epoch += 1
-                self._retained_loss = False
-                self._arrival_hold = self._landing_test_hold = False
-                self._state = SupervisorState.NAV
-                control.interrupt()
+                with self._state_lock:
+                    if not eligible():
+                        return False
+                    self._restore_entry_nav(control)
                 return True
         except _LidarTransitionFailed:
             return False
+
+    def _restore_entry_nav(self, control) -> None:
+        """Caller holds _tx_lock and _state_lock."""
+        self._latest_nav = None
+        self._ownership_epoch += 1
+        self._retained_loss = False
+        self._arrival_hold = self._landing_test_hold = False
+        self._state = SupervisorState.NAV
+        control.interrupt()
 
     def _retain_lidar_loss(self, reason: str) -> None:
         """Execute the commissioned response without assuming zero/WALK holds.
@@ -759,63 +802,77 @@ class StairSupervisor:
         Only neutral velocity is requested; no physical posture hold is implied.
         Transport/session remains for explicit operator handoff; no emergency API.
         """
-        with self._state_lock:
-            self._state = SupervisorState.STAIR
-            self._latest_nav = None
-            self._arrival_hold = False
-            self._landing_test_hold = False
-            if not self._retained_loss:
+        with self._tx_lock:
+            with self._state_lock:
+                self._state = SupervisorState.STAIR
+                self._latest_nav = None
+                self._arrival_hold = False
+                self._landing_test_hold = False
+                first = not self._retained_loss
+            if first:
                 self._lidar_control.loss_response(self._transport)
                 self._transport.update_twist(0., 0.)
-                self._retained_loss = True
+                with self._state_lock:
+                    self._retained_loss = True
 
     def accept_manual_input(self, active: bool) -> None:
         """Only relinquish the landing test hold; never auto-resume after RC."""
         with self._state_lock:
             self._manual_received_at = self._clock.monotonic()
             self._manual_active = bool(active)
-            if active and self._landing_test_hold:
-                self._retain_lidar_loss('landing hold released by operator')
-                self._zero_barrier()
+            release = active and self._landing_test_hold
+        if release:
+            with self._tx_lock:
+                with self._state_lock:
+                    release = self._landing_test_hold
+                if release:
+                    self._retain_lidar_loss('landing hold released by operator')
+                    self._zero_barrier()
 
     def release_arrival_hold(self) -> bool:
         """Explicit stop/new mission may disable the temporary flat-exit hold."""
-        with self._state_lock:
-            if self._landing_test_hold:
+        with self._tx_lock:
+            with self._state_lock:
+                landing = self._landing_test_hold
+                if not landing:
+                    if self._state is not SupervisorState.NAV:
+                        return False
+                    if not self._arrival_hold:
+                        return True  # a late release must not clear a newer NAV command
+                    self._arrival_hold = False
+                    self._latest_nav = None
+                    self._ownership_epoch += 1
+            if landing:
                 self._retain_lidar_loss('landing hold explicitly released')
-                self._zero_barrier()
-                return True
-            if self._state is not SupervisorState.NAV:
-                return False
-            if not self._arrival_hold:
-                return True  # a late release must not clear a newer NAV command
-            self._arrival_hold = False
-            self._latest_nav = None
-            self._ownership_epoch += 1
             self._zero_barrier()
             return True
 
     def prepare_rooftop_navigation(self) -> bool:
         """Reassert WALK for an RF flat tour through the sole command owner."""
-        with self._state_lock:
-            if self._state is not SupervisorState.NAV or self._traversal_lock.locked():
-                return False
+        with self._tx_lock:
+            with self._state_lock:
+                if self._state is not SupervisorState.NAV or self._traversal_lock.locked():
+                    return False
             self._transport.send_walk_mode()
             self._zero_barrier()
-            self._latest_nav = None
+            with self._state_lock:
+                self._latest_nav = None
             return True
 
     def acknowledge_physical_handoff(self) -> bool:
         """Operator-only recovery after a retained loss, never automatic resume."""
-        with self._state_lock:
-            if not self._retained_loss or self._traversal_lock.locked():
-                return False
+        with self._tx_lock:
+            with self._state_lock:
+                if not self._retained_loss or self._traversal_lock.locked():
+                    return False
+            # The mode request waits for the robot; only _tx_lock is held.
             self._transport.request_stair_mode(False)
             self._zero_barrier()
-            self._latest_nav = None
-            self._ownership_epoch += 1
-            self._retained_loss = False
-            self._state = SupervisorState.NAV
+            with self._state_lock:
+                self._latest_nav = None
+                self._ownership_epoch += 1
+                self._retained_loss = False
+                self._state = SupervisorState.NAV
             return True
 
     def _zero_barrier(self) -> None:
@@ -823,10 +880,11 @@ class StairSupervisor:
         self._transport.send_current()
 
     def _latch_fault(self) -> None:
-        with self._state_lock:
-            self._state = SupervisorState.FAULT
-            self._latest_nav = None
-        self._close_transport()
+        with self._tx_lock:
+            with self._state_lock:
+                self._state = SupervisorState.FAULT
+                self._latest_nav = None
+            self._close_transport()
 
     def _close_transport(self) -> None:
         if not self._closed:
@@ -848,12 +906,14 @@ class StairSupervisor:
             self._shutdown_transport()
 
     def _shutdown_transport(self) -> None:
-        with self._state_lock:
+        with self._tx_lock:
             if not self._closed:
                 try:
                     self._zero_barrier()
                 except TransportFault:
-                    self._state = SupervisorState.FAULT
+                    with self._state_lock:
+                        self._state = SupervisorState.FAULT
                 self._close_transport()
-            if self._state is not SupervisorState.FAULT:
-                self._state = SupervisorState.DISARMED
+            with self._state_lock:
+                if self._state is not SupervisorState.FAULT:
+                    self._state = SupervisorState.DISARMED
