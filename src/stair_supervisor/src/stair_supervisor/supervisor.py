@@ -778,9 +778,9 @@ class StairSupervisor:
                     if not eligible():
                         return False
                 self._zero_barrier()
+                # Decided by the single check above (pre-lock-split behavior):
+                # input that arrives during this zero send does not cancel it.
                 with self._state_lock:
-                    if not eligible():
-                        return False
                     self._restore_entry_nav(control)
                 return True
         except _LidarTransitionFailed:
