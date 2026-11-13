@@ -269,6 +269,13 @@ def match_entry_landmarks(observed_xy, profile_candidates, max_residual, ambigui
     return fits[0][1], fits[0][0]
 
 
+# Outputs of StairFeedback._flight_step/_flat_step consumed by _evaluate.
+_STEP_KEYS = ('target', 'target_yaw', 'v', 'w', 'ey', 'epsi', 'progress', 'complete', 'checks',
+              'settling', 'alignment', 'rotation_waypoint', 'rotation_drift_recovery',
+              'flight_end_conflict', 'steering_detail', 'flight_heading_detail', 'idx',
+              'direction', 'corridor_entry')
+
+
 class StairFeedback:
     """Implements PhaseEvidence plus motion policy for the existing Supervisor."""
 
@@ -1032,104 +1039,9 @@ class StairFeedback:
             age = math.inf if sample is None or sample.last_geometry_at is None else now - sample.last_geometry_at
             reset = self.worker.epoch != self.anchor.epoch or sample is not None and sample.epoch != self.anchor.epoch
             expired = sample is None or age >= limits["expire_sec"] or age < 0 or bool(self.worker.diagnostics()["worker_error"])
-            input_resume = False
-            # Only a short same-epoch input delay during an already moving
-            # flight is recoverable. Missing geometry, clock/worker failures,
-            # interruption and epoch changes retain the existing fault path.
-            input_eligible = (phase in (Phase.FORWARD_SEGMENT_1, Phase.FORWARD_SEGMENT_2, Phase.FORWARD_SEGMENT_3)
-                and not reset and not self._interrupted and sample is not None
-                and math.isfinite(age) and age >= 0
-                and not self.worker.diagnostics()['worker_error']
-                and not self._flight_end_conflict
-                and not self._entry_alignment_pending
-                and limits.get('flight_input_recover_sec', 0.) > 0)
-            if input_eligible and self._input_gap is None and expired and self._last_command[0] > 0:
-                # Age starts at the last measured geometry, not at expiry.
-                # During a long blind interval, never repeat the full ascent
-                # request past the last surveyed flight end by dead reckoning.
-                index = {Phase.FORWARD_SEGMENT_1: 1, Phase.FORWARD_SEGMENT_2: 2,
-                         Phase.FORWARD_SEGMENT_3: 3}[phase]
-                start, end = np.asarray(self.route['flight_%d' % index], dtype=float)
-                axis = end[:2]-start[:2]
-                length = float(np.linalg.norm(axis))
-                axis /= length
-                if self._last_sample is not None:
-                    previous = self._last_sample[1][:2,3]
-                elif sample.geometry_valid:
-                    previous = (np.linalg.inv(transform(self.anchor.local_from_profile)) @
-                                transform(sample.transform) @
-                                np.linalg.inv(self.base_from_lidar))[:2,3]
-                else:
-                    previous = None
-                remaining = (max(0., length-float((previous-start[:2]) @ axis))
-                             if previous is not None else 0.)
-                observed_bound = max((abs(float(h[3][:2] @ axis))
-                    for h in self._history if sample.stamp-h[0] <= limits['settle_sec']), default=0.)
-                speed_bound = max(limits['max_v'], observed_bound)
-                motion_age = (remaining+limits['position_on'])/speed_bound
-                self._input_gap = dict(at=now, sequence=sample.sequence,
-                    motion_age_sec=motion_age, remaining_m=remaining,
-                    speed_bound_mps=speed_bound)
-            if input_eligible and self._input_gap is not None:
-                gap_elapsed = max(0., now-self._input_gap['at'])
-                elapsed = self._input_gap_used + gap_elapsed
-                window_used = self._rolling_recovery(now, self._input_gap['at'])
-                window_budget = limits.get('flight_recovery_window_budget_sec', math.inf)
-                # A single uninterrupted registration gap has its own cap. Short
-                # gaps across a loaded ascent use the separate rolling budget.
-                exhausted = (gap_elapsed >= limits['flight_input_recover_sec'] or
-                             window_used >= window_budget)
-                fresh = (sample.geometry_valid and age <= limits['warn_sec']
-                         and sample.sequence > self._input_gap['sequence'])
-                reobserve_limit = (limits['flight_input_recover_sec']
-                                   + limits.get('flight_input_reobserve_sec', 0.))
-                blind_end = age >= self._input_gap.get('motion_age_sec', math.inf)
-                if (exhausted or blind_end) and not fresh:
-                    # Exhaustion ends command repetition, not the current
-                    # phase. A fresh same-epoch observation may still restore it.
-                    self._last_command, self._last_command_at = (0., 0.), now
-                    waiting = (gap_elapsed < reobserve_limit
-                               and limits.get('flight_input_reobserve_sec', 0.) > 0.)
-                    self.debug = dict(tracking_state='INPUT_REOBSERVING' if waiting else 'RECOVERING',
-                        loss_response=not waiting, age=age, input_recovery=True,
-                        input_recovery_elapsed_sec=elapsed, input_recovery_gap_sec=gap_elapsed,
-                        input_recovery_budget_sec=limits['flight_input_recover_sec'],
-                        input_recovery_window_used_sec=window_used,
-                        input_recovery_window_budget_sec=window_budget,
-                        blind_end_reached=blind_end,
-                        blind_motion_age_sec=self._input_gap.get('motion_age_sec'),
-                        blind_remaining_at_last_scan_m=self._input_gap.get('remaining_m'),
-                        blind_speed_bound_mps=self._input_gap.get('speed_bound_mps'),
-                        command=[0., 0.], physical_hold_verified=False)
-                    return EvidenceReport(phase, False, not waiting,
-                        'waiting for fresh flight observation' if waiting else
-                        'input recovery budget exhausted', 0, 0, age)
-                if exhausted and gap_elapsed >= reobserve_limit:
-                    self._last_command, self._last_command_at = (0., 0.), now
-                    self.debug = dict(tracking_state='RECOVERING', loss_response=True,
-                        age=age, input_recovery=True, command=[0., 0.],
-                        physical_hold_verified=False)
-                    return EvidenceReport(phase, False, True,
-                        'input recovery budget exhausted', 0, 0, age)
-                if not fresh:
-                    # A tread impact can delay registration while the robot is
-                    # still loading its wheels. Within the existing bounded,
-                    # same-epoch recovery window, repeat only the last accepted
-                    # flight command; do not infer motion or increase steering.
-                    self._last_command_at = now
-                    self.debug = dict(tracking_state='INPUT_DELAY_CONTINUING', loss_response=False,
-                        age=age, input_recovery=True, input_recovery_elapsed_sec=elapsed,
-                        input_recovery_gap_sec=gap_elapsed,
-                        input_recovery_budget_sec=limits['flight_input_recover_sec'],
-                        input_recovery_window_used_sec=window_used,
-                        input_recovery_window_budget_sec=window_budget,
-                        command=list(self._last_command), physical_hold_verified=False)
-                    return EvidenceReport(phase, False, False,
-                        'input delayed: retaining last bounded flight command', 0, 0, age)
-                self._recovery_events.append((self._input_gap['at'], now))
-                self._input_gap_used = elapsed
-                self._input_gap = None
-                input_resume = True  # all geometry/attitude/path checks below still apply
+            report, input_resume = self._input_delay_recovery(phase, now, sample, age, reset, expired, limits)
+            if report is not None:
+                return report
             flat_reobserve = (phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT,
                 Phase.ROOFTOP_TURN, Phase.EXIT_CONFIRM) and expired and not reset
                 and not self._interrupted and sample is not None and sample.geometry_valid
@@ -1205,352 +1117,20 @@ class StairFeedback:
             landing = inside_polygon(support, self.route["landing_polygon"], landing_margin)
             exit_clear = inside_polygon(support, self.route["exit_polygon"],
                 effective_support_margin(self.route, self.anchor.uncertainty_m, region='exit'))
-            complete = False
-            settling = None
-            v, w, ey, epsi, progress = 0., 0., 0., 0., 0.
-            alignment = False
-            rotation_waypoint = False
-            flight_end_conflict = False
-            steering_detail = {}
-            flight_heading_detail = {}
             if abs(roll) > limits["max_roll"] or abs(pitch) > limits["max_pitch"]:
                 self.debug = dict(tracking_state="ATTITUDE_LIMIT", loss_response=True, roll=roll, pitch=pitch)
                 return EvidenceReport(phase, False, True, "commissioned attitude envelope exceeded", 0, 0, age)
             if phase in (Phase.FORWARD_SEGMENT_1, Phase.FORWARD_SEGMENT_2, Phase.FORWARD_SEGMENT_3):
-                idx = {Phase.FORWARD_SEGMENT_1: 0, Phase.FORWARD_SEGMENT_2: 1, Phase.FORWARD_SEGMENT_3: 2}[phase]
-                start, end = np.asarray(self.route["flight_%d" % (idx + 1)])
-                direction = end[:2] - start[:2]
-                length = np.linalg.norm(direction)
-                direction = direction / length
-                target, target_yaw = end, math.atan2(direction[1], direction[0])
-                progress = float((pos[:2] - start[:2]) @ direction)
-                ey = float(direction[0] * (pos[1] - start[1]) - direction[1] * (pos[0] - start[0]))
-                steering_yaw, flight_heading_detail = self._flight_heading(
-                    sample, yaw, control_yaw, heading_detail, now, degraded, observed_feedback)
-                epsi = wrap(steering_yaw - math.atan2(direction[1], direction[0]))
-                actual_v = float(velocity[:2] @ direction)
-                nominal = min(self.profile.linear_speed, limits["max_v"])
-                # Use measured path velocity as feedback for the existing speed correction.
-                v = np.clip(nominal + limits["speed_kp"] * deadband(nominal - actual_v, limits["speed_deadband"]), 0, limits["max_v"])
-                # Smooth slowdown proportional to error, never a normal-noise stop gate.
-                v /= 1 + abs(epsi) + abs(ey)
-                # Operator's useful forward-command floor, in the transport's
-                # input units. Slew and geometric feasibility still take priority.
-                v = max(v, limits.get("min_flight_v", 0.))
-                if 'flight_input_v' in self.route:
-                    v = self.route['flight_input_v'][idx]
-                w = -limits["yaw_kp"] * deadband(epsi, limits["yaw_deadband"]) - limits["lateral_kp"] * deadband(ey, limits["lateral_deadband"])
-                # Preview measured sideways motion without rewriting pose or
-                # treating normalized input as a measured physical velocity.
-                lateral_rate = float(direction[0]*velocity[1]-direction[1]*velocity[0])
-                preview_ey = ey + lateral_rate*min(age, limits['warn_sec'])
-                # Anticipate outward drift while clearance is still available.
-                # Cap extra offset by the existing position band, and keep the
-                # existing capture-angle, angular magnitude and slew limits.
-                extra = 0.
-                if ey*lateral_rate > 0 and not degraded:
-                    extra = float(np.clip(lateral_rate*limits.get('flight_lateral_preview_sec', 0.),
-                                          -limits['position_on'], limits['position_on']))
-                    preview_ey += extra
-                w, steering_detail = self._flight_steering(epsi, preview_ey, heading_detail)
-                steering_detail.update(lateral_rate=lateral_rate, preview_ey=preview_ey, extra_preview_m=extra)
-                if idx > 0:
-                    if self._entry_alignment_pending is None:
-                        flat_start = landing if idx == 1 else inside_polygon(support, self.route['roof_landing_polygon'], landing_margin)
-                        self._entry_alignment_pending = flat_start and (abs(ey) > limits['position_off'] or abs(epsi) > limits['yaw_tolerance'])
-                    if self._entry_alignment_pending:
-                        waypoint = self.route['turn_path' if idx == 1 else 'roof_turn_path'][-1]
-                        delta = np.asarray(waypoint[:2])-pos[:2]
-                        aligned = self._resume_corridor(idx, pose, support, margin, epsi) if 'flight_resume_corridor_yaw' in limits else (np.linalg.norm(delta) <= limits['position_off'] and abs(epsi) <= limits['yaw_tolerance'])
-                        if aligned and not degraded:
-                            self._entry_alignment_pending = False
-                        else:
-                            alignment = True
-                            heading = np.array([math.cos(control_yaw), math.sin(control_yaw)])
-                            along = float(delta @ heading)
-                            distance = float(np.linalg.norm(delta))
-                            if distance > limits['position_off']:
-                                bearing = math.atan2(delta[1],delta[0])
-                                approach = wrap(bearing-control_yaw-(math.pi if along < 0 else 0.))
-                                v = float(np.clip(limits['hold_kp']*along-limits['hold_kd']*(velocity[:2]@heading), -limits['hold_v'], limits['hold_v']))
-                                w = limits['yaw_kp']*deadband(approach,limits['yaw_deadband'])
-                            else:
-                                v = 0.
-                                w = -limits['yaw_kp']*deadband(epsi,limits['yaw_deadband'])
-                            target = np.array([*waypoint[:2], pos[2]])
-                height_sign = 1. if self.route['direction']=='UP' else -1.
-                if height_sign*(pos[2] - start[2]) >= height_sign*(end[2] - start[2]) * .5:
-                    self._flight_seen[idx] = True
-                checks = dict(progress=progress >= length, ascent_seen=self._flight_seen[idx],
-                              height=self._ascent_height_reached(pos[2], end[2]),
-                              body_in_next_region=(landing if idx == 0 else
-                                  inside_polygon(support, self.route['roof_landing_polygon'], landing_margin)
-                                  if idx == 1 and 'flight_3' in self.route else exit_clear))
-                complete = all(checks.values())
-                # Reaching the surveyed horizontal end does not prove that the
-                # last riser is cleared. It also cannot justify driving farther
-                # at ascent input solely to chase an inconsistent Z estimate.
-                # Retain the phase and its strict completion evidence; neutral
-                # commands use the existing freshness/support/timeout handling.
-                self._flight_end_conflict |= bool(checks['progress'] and checks['ascent_seen']
-                                       and checks['body_in_next_region']
-                                       and not checks['height'] and not alignment)
-                end_continuation = False
-                if self._flight_end_conflict and not complete:
-                    end_continuation = self._end_geometry_continuation(idx, sample, pose, pitch, roll, now, degraded)
-                flight_end_conflict = self._flight_end_conflict and not complete and not end_continuation
-                if flight_end_conflict:
-                    v, w = 0., 0.
-                if alignment:
-                    complete = False
-                    checks['second_flight_aligned'] = False
+                step = self._flight_step(phase, now, sample, pose, pos, yaw, pitch, roll, control_yaw,
+                    heading_detail, velocity, support, margin, landing, landing_margin,
+                    exit_clear, degraded, observed_feedback, age, limits)
             else:
-                if phase in (Phase.VERIFY_ENTRY, Phase.ALIGN):
-                    target = np.asarray(self.route["flight_1"])[0]
-                    vector = np.diff(np.asarray(self.route["flight_1"]), axis=0)[0]
-                    target_yaw = math.atan2(vector[1], vector[0])
-                    supported = self.entry_supported(self.route, pose, support, margin)
-                elif phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN):
-                    roof_turn = phase is Phase.ROOFTOP_TURN
-                    if phase in (Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN):
-                        previous_index = self.turn_index
-                        self._capture_landing_turn(pose, margin, degraded or sample.sequence <= self._turn_sequence)
-                        if self.turn_index != previous_index:
-                            self._turn_sequence = sample.sequence
-                    path = (self._landing_path() if roof_turn else
-                            self._landing_path() if phase is Phase.TURN_TO_NEXT_FLIGHT else self.route['turn_path'])
-                    waypoint = path[self.turn_index]
-                    level = self.route['flight_2' if roof_turn else 'flight_1'][1][2]
-                    target = np.array([*waypoint[:2], level])
-                    target_yaw = waypoint[2]
-                    supported = inside_polygon(support, self.route['roof_landing_polygon'], margin) if roof_turn else landing
-                else:
-                    last_flight = "flight_3" if "flight_3" in self.route else "flight_2"
-                    target = np.asarray(self.route[last_flight])[1]
-                    vector = np.diff(np.asarray(self.route[last_flight]), axis=0)[0]
-                    target_yaw, supported = math.atan2(vector[1], vector[0]), exit_clear
-                region_exit = phase is Phase.EXIT_CONFIRM and self.route.get('exit_arrival_policy') == 'supported_region'
-                if region_exit:
-                    exit_yaw_tolerance = limits.get('entry_corridor_yaw', limits['yaw_tolerance'])
-                    if (self._exit_hold_target is None and exit_clear and self._all_flights_completed()
-                            and self._ascent_height_reached(pos[2], target[2])
-                            and abs(wrap(yaw-target_yaw)) <= exit_yaw_tolerance
-                            and not degraded and sample.sequence > self._phase_sequence):
-                        self._exit_hold_target = (pos.copy(), yaw)
-                    if self._exit_hold_target is not None:
-                        target, target_yaw = self._exit_hold_target
-                if landing_hold:
-                    target, target_yaw = self._landing_hold_target
-                    supported = landing
-                region_turn = self._region_turn()
-                rotation_waypoint = region_turn and self._landing_rotation_waypoint()
-                rotation_drift_recovery = False
-                evaluated_turn_index = self.turn_index
-                if rotation_waypoint:
-                    # Rotation has an orientation target, not a historical XY
-                    # hold target. Drift is checked against observed support.
-                    target[:2] = pos[:2]
-                delta = target[:2] - pos[:2]
-                distance = float(np.linalg.norm(delta))
-                verified_entry_handoff = phase is Phase.ALIGN and self._entry_verified
-                position_limit = (limits['position_on'] if verified_entry_handoff
-                                  else limits['position_off'])
-                if phase in (Phase.VERIFY_ENTRY, Phase.ALIGN):
-                    # A verified entry needs one fresh aligned observation,
-                    # not a second stationary dwell on a creeping platform.
-                    # Standalone ALIGN still uses the original precise gate.
-                    self._holding = distance > position_limit
-                else:
-                    if self._holding is None:
-                        self._holding = distance > limits['position_off']
-                    if distance >= limits["position_on"]:
-                        self._holding = True
-                    elif distance <= limits["position_off"]:
-                        self._holding = False
-                heading = np.array([math.cos(yaw), math.sin(yaw)])
-                along = float(delta @ heading)
-                epsi = wrap(yaw - target_yaw)
-                if self._holding or landing_hold:
-                    # A small bounded unicycle arc, with reverse only on surveyed
-                    # support. Each proposed step is checked below against edges.
-                    flat_transit = phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN) and not landing_hold
-                    speed_cap = min(limits.get('landing_max_v', limits['hold_v']), limits['max_v']) if flat_transit else limits['hold_v']
-                    v = np.clip(limits["hold_kp"] * along - limits["hold_kd"] * (velocity[:2] @ heading), -speed_cap, speed_cap)
-                    lateral = heading[0] * delta[1] - heading[1] * delta[0]
-                    w = -limits["yaw_kp"] * deadband(epsi, limits["yaw_deadband"]) + limits["lateral_kp"] * deadband(lateral, limits["lateral_deadband"]) * (1 if v >= 0 else -1)
-                else:
-                    w = -limits["yaw_kp"] * deadband(epsi, limits["yaw_deadband"])
-                corridor_entry = phase in (Phase.VERIFY_ENTRY, Phase.ALIGN) and 'entry_corridor_yaw' in limits
-                if corridor_entry:
-                    # No retreat to the nominal -45cm point, including first-step
-                    # contact. Heading is aligned here; the flight controller
-                    # captures lateral offset on its already-checked path.
-                    self._holding = False
-                    v = 0.
-                    w = 0. if phase is Phase.VERIFY_ENTRY else -limits['yaw_kp']*deadband(epsi, limits['yaw_deadband'])
-                if region_turn:
-                    # A bounded capture region replaces exact-point settling;
-                    # the normal observed support and command checks still run.
-                    position_limit = (limits['position_on'] if self.turn_index < len(self._landing_path())-1
-                                      else limits['position_off'])
-                    if distance <= position_limit and self._landing_turn_debug.get('rotation_disk_supported', False):
-                        self._holding = False
-                        v = 0.
-                        w = -limits['yaw_kp']*deadband(epsi, limits['yaw_deadband'])
-                final_turn_approach = region_turn and self.turn_index == len(self._landing_path())-1
-                needs_pivot_space = (region_turn and not final_turn_approach
-                    and not self._landing_turn_debug.get('rotation_disk_supported', False))
-                if (region_turn and not rotation_waypoint
-                        and (final_turn_approach or self.turn_index == 2
-                             or (phase is Phase.ROOFTOP_TURN and self.turn_index == 0))
-                        and (distance > position_limit or needs_pivot_space)
-                        and not degraded and not neutral_only):
-                    # Point toward the approach target so yaw and lateral
-                    # corrections cannot cancel outside the next-flight corridor.
-                    bearing = math.atan2(delta[1], delta[0])
-                    travel_sign = 1. if along >= 0. else -1.
-                    bearing_error = wrap(bearing-yaw+(math.pi if travel_sign < 0 else 0.))
-                    w = limits['yaw_kp'] * bearing_error
-                    v = travel_sign * min(limits.get('landing_max_v', limits['hold_v']),
-                        limits['hold_kp'] * distance) * max(0., math.cos(bearing_error))
-                    if needs_pivot_space:
-                        v = travel_sign * max(abs(v), min(limits.get('landing_max_v', limits['hold_v']),2*limits['hold_v']))
-                    polygon = np.asarray(self._turn_polygon())
-                    edges = np.roll(polygon,-1,axis=0)-polygon
-                    normals = np.column_stack((-edges[:,1],edges[:,0])) / np.linalg.norm(edges,axis=1)[:,None]
-                    radius = max(np.linalg.norm(self.route['footprint'],axis=1))
-                    clearances = np.sum(normals*(pos[:2]-polygon),axis=1)
-                    near_edge = clearances < radius+margin+limits['position_on']
-                    if np.any(near_edge & ((normals @ heading)*v < -1e-9)):
-                        v = 0.  # turn inward before translating toward an edge
-                    self._landing_turn_debug['inward_guidance'] = True
-                if (region_turn and not rotation_waypoint and not degraded and not neutral_only
-                        and not self._landing_turn_debug.get('rotation_disk_supported', False)
-                        and distance > limits['position_on'] and abs(v) < limits['hold_v'] / 2):
-                    # A unicycle can become stationary when along-target error
-                    # vanishes but lateral error remains. A short same-heading
-                    # forward/reverse arc can move onto the surveyed pivot.
-                    travel = self._turn_direction()
-                    lateral_axis = np.array([-travel[1], travel[0]])
-                    lateral_error = float(delta @ lateral_axis)
-                    lateral_heading = float(heading @ lateral_axis)
-                    if (abs(lateral_error) > limits['position_on']
-                            and abs(lateral_heading) > .1):
-                        v = math.copysign(limits['hold_v'], lateral_error*lateral_heading)
-                        w = 0.
-                if region_turn and rotation_waypoint and not degraded and not neutral_only:
-                    # Rotation is normally in place. Only observed retreat
-                    # toward the rear landing edge warrants a small inward
-                    # translation; the full-body sweep below still applies.
-                    travel = self._turn_direction()
-                    retreat = -float(velocity[:2] @ travel)
-                    heading_inward = float(np.array([math.cos(yaw), math.sin(yaw)]) @ travel)
-                    flat_clearance = support_clearance(support, [self._turn_polygon()])
-                    if (flat_clearance is not None and flat_clearance < limits['position_on']
-                            and retreat > limits['stationary_v'] / 2
-                            and heading_inward > .5):
-                        self._rotation_drift_recovery = True
-                    elif (flat_clearance is None or flat_clearance > limits['position_on'] + .03
-                          or heading_inward <= .5):
-                        self._rotation_drift_recovery = False
-                    if self._rotation_drift_recovery:
-                        v = limits['hold_v']
-                        rotation_drift_recovery = True
-                    radius = max(np.linalg.norm(self.route['footprint'],axis=1))
-                    if not inside_polygon([pos[:2]], self._turn_polygon(), radius+margin):
-                        # Pivot admission has its own small reserve; if the
-                        # actual turning body needs more room, move inward
-                        # during the turn instead of waiting for a sweep fault.
-                        boundary = np.asarray(self._turn_polygon())
-                        edges = np.roll(boundary,-1,axis=0)-boundary
-                        normals = np.column_stack((-edges[:,1],edges[:,0])) / np.linalg.norm(edges,axis=1)[:,None]
-                        gaps = np.sum(normals*(pos[:2]-boundary),axis=1)
-                        inward = normals[int(np.argmin(gaps))]
-                        projection = float(heading @ inward)
-                        if abs(projection) > 1e-6:
-                            v = math.copysign(min(limits.get('landing_max_v',limits['hold_v']),2*limits['hold_v']),projection)
-                            rotation_drift_recovery = True
-                            self._landing_turn_debug['inward_rotation'] = True
-                turn_yaw_tolerance = (limits.get('flight_resume_corridor_yaw', limits['yaw_tolerance'])
-                                      if region_turn else limits['yaw_tolerance'])
-                settled = self._settled(sample, average_rate=phase in (Phase.VERIFY_ENTRY, Phase.ALIGN))
-                settling = dict(self._settling_detail)
-                if phase is Phase.VERIFY_ENTRY:
-                    # Verify the physical start region and measured height.
-                    # Precise position and yaw belong to the following ALIGN
-                    # phase, which can actively correct them before ascent.
-                    if corridor_entry:
-                        # A creeping platform need not become stationary to
-                        # enter ALIGN. Keep the anchor uncertainty hard; ALIGN
-                        # must restore the extra reserve before ascent.
-                        supported = supported or self.entry_supported(self.route, pose, support,
-                                                                      self.anchor.uncertainty_m)
-                    checks = dict(body_in_region=supported,
-                                  height=abs(pos[2] - target[2]) <= limits["height_tolerance"])
-                    if not corridor_entry:
-                        checks['settled'] = settled
-                elif corridor_entry:
-                    checks = dict(body_in_region=supported,
-                                  yaw=abs(epsi) <= limits['entry_corridor_yaw'],
-                                  height=abs(pos[2]-target[2]) <= limits['height_tolerance'],
-                                  entry_verified=verified_entry_handoff or settled)
-                elif verified_entry_handoff:
-                    checks = dict(body_in_region=supported, position=distance <= position_limit,
-                                  yaw=abs(epsi) <= limits["yaw_tolerance"],
-                                  height=abs(pos[2] - target[2]) <= limits["height_tolerance"],
-                                  entry_verified=True)
-                else:
-                    checks = dict(body_in_region=supported, position=distance <= position_limit,
-                                  yaw=abs(epsi) <= turn_yaw_tolerance)
-                    if rotation_waypoint:
-                        checks.pop('position')
-                    if not region_turn:
-                        checks['settled'] = settled
-                    elif self.turn_index+1 < len(self._landing_path()):
-                        path = self._landing_path()
-                        if np.allclose(path[self.turn_index][:2], path[self.turn_index+1][:2]):
-                            checks['rotation_space'] = self._landing_turn_debug.get('rotation_disk_supported', False)
-                if phase is Phase.ROOFTOP_TURN:
-                    checks['upper_landing_height'] = self._ascent_height_reached(pos[2], target[2])
-                if region_exit:
-                    checks = dict(body_in_region=exit_clear,
-                                  yaw=abs(epsi)<=exit_yaw_tolerance,
-                                  destination_captured=self._exit_hold_target is not None)
-                if region_turn:
-                    if self.turn_index == len(self._landing_path())-1:
-                        # Handoff to the next flight from its supported entry
-                        # corridor; do not chase a 5 cm point across a seam.
-                        next_idx = 2 if phase is Phase.ROOFTOP_TURN else 1
-                        checks.pop('position', None)
-                        checks.pop('yaw', None)
-                        a,b=np.asarray(self.route['flight_%d'%(next_idx+1)])
-                        direction=b[:2]-a[:2];direction/=np.linalg.norm(direction)
-                        near_entry=float((pos[:2]-target[:2]) @ direction)>=-limits['position_on']
-                        checks['next_flight_corridor'] = near_entry and self._resume_corridor(next_idx, pose, support, margin, epsi)
-                    checks['new_waypoint_observation'] = sample.sequence > self._turn_sequence
-                complete = all(checks.values())
-                if phase in (Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN) and complete:
-                    path = self._landing_path()
-                    if self.turn_index + 1 < len(path) and not degraded and sample.sequence > self._phase_sequence:
-                        if rotation_waypoint:
-                            self._connect_landing_leg(pos[:2], margin)
-                        self.turn_index += 1
-                        self._turn_sequence = sample.sequence
-                        self._history.clear()
-                        complete = False
-                if region_turn:
-                    self._landing_turn_debug.update(evaluated_index=evaluated_turn_index,
-                        waypoint_kind='rotation' if rotation_waypoint else 'translation',
-                        completed=all(checks.values()) and not degraded and sample.sequence > self._phase_sequence,
-                        position_target_required=not rotation_waypoint)
-                if phase is Phase.LANDING:
-                    complete = landing  # proceed directly to measured landing path
-                    checks = dict(body_in_landing=landing)
-                if phase is Phase.EXIT_CONFIRM:
-                    final_height = self.route['flight_3' if 'flight_3' in self.route else 'flight_2'][1][2]
-                    complete = complete and self._all_flights_completed() and self._ascent_height_reached(pos[2], final_height)
-                    checks.update(final_height=self._ascent_height_reached(pos[2], final_height), all_flights_completed=self._all_flights_completed(), all_flights_seen=all(self._flight_seen))
-                    checks.update(flight_1_seen=self._flight_seen[0], flight_2_seen=self._flight_seen[1])
+                step = self._flat_step(phase, now, sample, pose, pos, yaw, velocity, support, margin,
+                    landing, exit_clear, landing_hold, degraded, neutral_only, limits)
+            (target, target_yaw, v, w, ey, epsi, progress, complete, checks, settling,
+             alignment, rotation_waypoint, rotation_drift_recovery, flight_end_conflict,
+             steering_detail, flight_heading_detail, idx, direction, corridor_entry) = (
+                step[key] for key in _STEP_KEYS)
             steering_target_w = float(w)  # desired target; never an already-sent command
             checks["new_phase_observation"] = sample.sequence > self._phase_sequence
             if sample.sequence <= self._phase_sequence or degraded:
@@ -1589,45 +1169,10 @@ class StairFeedback:
             # recovery exactly while the body is returning (field 2026-10-16).
             # A stationary rotation sweep is not the trajectory of the robot
             # while the stair firmware also drives it forward.
-            recovery_floor = margin if margin_context != 'route' else min(self.anchor.uncertainty_m, margin)
-            turn_margin_recovery = bool(
-                rotation_waypoint and margin_context == 'route' and raw_supported and not current_supported
-                and not degraded and not neutral_only
-                and limits.get('turn_margin_recovery_m', 0.) > 0.)
-            if turn_margin_recovery:
-                recovery_floor = max(limits['margin_m'],
-                    margin - limits['turn_margin_recovery_m'])
-            flight_margin_recovery = bool(
-                phase in (Phase.FORWARD_SEGMENT_1, Phase.FORWARD_SEGMENT_2, Phase.FORWARD_SEGMENT_3)
-                and self.route['direction'] == 'UP' and margin_context == 'route' and not alignment and not flight_end_conflict
-                and raw_supported and not current_supported and not degraded and not neutral_only
-                and limits.get('flight_margin_recovery_m', 0.) > 0.)
-            if flight_margin_recovery:
-                recovery_floor = max(limits['margin_m'],
-                    margin - limits['flight_margin_recovery_m'])
-                bounded_w = self._limit_command(0., float(w), now)[1]
-                steering_inward = ey * bounded_w < -1e-6
-                heading_inward = ey * epsi < -1e-6
-                flight_margin_recovery = bool(
-                    inside_support_union(support, polygons, recovery_floor)
-                    and (steering_inward or heading_inward))
-                geometry["flight_margin_recovery_basis"] = (
-                    "steering" if steering_inward else "heading" if heading_inward else "none")
-                if not flight_margin_recovery:
-                    recovery_floor = margin
-            # A flat landing below its commissioned clearance may only move
-            # back inward: within a small commissioned band above margin_m,
-            # accept a bounded command whose end-of-horizon clearance does not
-            # shrink (selected below). A stationary/neutral request, a stale
-            # pose or a body below the band keeps the hard landing minimum.
-            landing_margin_recovery = bool(
-                margin_context == 'landing'
-                and phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN)
-                and raw_supported and not current_supported and not degraded and not neutral_only
-                and limits.get('landing_margin_recovery_m', 0.) > 0.)
-            if landing_margin_recovery:
-                recovery_floor = max(limits['margin_m'],
-                    margin - limits['landing_margin_recovery_m'])
+            recovery_floor, turn_margin_recovery, flight_margin_recovery, landing_margin_recovery = (
+                self._margin_recovery_floor(phase, now, support, polygons, margin, margin_context,
+                    raw_supported, current_supported, rotation_waypoint, alignment,
+                    flight_end_conflict, degraded, neutral_only, ey, epsi, w, geometry, limits))
             recovery = not current_supported and inside_support_union(support, polygons, recovery_floor)
             geometry["recovery_command_margin_m"] = float(
                 recovery_floor if recovery else margin)
@@ -1756,6 +1301,537 @@ class StairFeedback:
             return EvidenceReport(phase, complete, False, detail, progress, 0, age)
 
 
+
+    def _input_delay_recovery(self, phase, now, sample, age, reset, expired, limits):
+        """Bounded same-epoch input-delay handling during a moving flight.
+
+        Returns (report, input_resume): a report ends this evaluation; otherwise
+        input_resume marks a fresh observation after an eligible gap.
+        Called with self._lock held."""
+        input_resume = False
+        # Only a short same-epoch input delay during an already moving
+        # flight is recoverable. Missing geometry, clock/worker failures,
+        # interruption and epoch changes retain the existing fault path.
+        input_eligible = (phase in (Phase.FORWARD_SEGMENT_1, Phase.FORWARD_SEGMENT_2, Phase.FORWARD_SEGMENT_3)
+            and not reset and not self._interrupted and sample is not None
+            and math.isfinite(age) and age >= 0
+            and not self.worker.diagnostics()['worker_error']
+            and not self._flight_end_conflict
+            and not self._entry_alignment_pending
+            and limits.get('flight_input_recover_sec', 0.) > 0)
+        if input_eligible and self._input_gap is None and expired and self._last_command[0] > 0:
+            # Age starts at the last measured geometry, not at expiry.
+            # During a long blind interval, never repeat the full ascent
+            # request past the last surveyed flight end by dead reckoning.
+            index = {Phase.FORWARD_SEGMENT_1: 1, Phase.FORWARD_SEGMENT_2: 2,
+                     Phase.FORWARD_SEGMENT_3: 3}[phase]
+            start, end = np.asarray(self.route['flight_%d' % index], dtype=float)
+            axis = end[:2]-start[:2]
+            length = float(np.linalg.norm(axis))
+            axis /= length
+            if self._last_sample is not None:
+                previous = self._last_sample[1][:2,3]
+            elif sample.geometry_valid:
+                previous = (np.linalg.inv(transform(self.anchor.local_from_profile)) @
+                            transform(sample.transform) @
+                            np.linalg.inv(self.base_from_lidar))[:2,3]
+            else:
+                previous = None
+            remaining = (max(0., length-float((previous-start[:2]) @ axis))
+                         if previous is not None else 0.)
+            observed_bound = max((abs(float(h[3][:2] @ axis))
+                for h in self._history if sample.stamp-h[0] <= limits['settle_sec']), default=0.)
+            speed_bound = max(limits['max_v'], observed_bound)
+            motion_age = (remaining+limits['position_on'])/speed_bound
+            self._input_gap = dict(at=now, sequence=sample.sequence,
+                motion_age_sec=motion_age, remaining_m=remaining,
+                speed_bound_mps=speed_bound)
+        if input_eligible and self._input_gap is not None:
+            gap_elapsed = max(0., now-self._input_gap['at'])
+            elapsed = self._input_gap_used + gap_elapsed
+            window_used = self._rolling_recovery(now, self._input_gap['at'])
+            window_budget = limits.get('flight_recovery_window_budget_sec', math.inf)
+            # A single uninterrupted registration gap has its own cap. Short
+            # gaps across a loaded ascent use the separate rolling budget.
+            exhausted = (gap_elapsed >= limits['flight_input_recover_sec'] or
+                         window_used >= window_budget)
+            fresh = (sample.geometry_valid and age <= limits['warn_sec']
+                     and sample.sequence > self._input_gap['sequence'])
+            reobserve_limit = (limits['flight_input_recover_sec']
+                               + limits.get('flight_input_reobserve_sec', 0.))
+            blind_end = age >= self._input_gap.get('motion_age_sec', math.inf)
+            if (exhausted or blind_end) and not fresh:
+                # Exhaustion ends command repetition, not the current
+                # phase. A fresh same-epoch observation may still restore it.
+                self._last_command, self._last_command_at = (0., 0.), now
+                waiting = (gap_elapsed < reobserve_limit
+                           and limits.get('flight_input_reobserve_sec', 0.) > 0.)
+                self.debug = dict(tracking_state='INPUT_REOBSERVING' if waiting else 'RECOVERING',
+                    loss_response=not waiting, age=age, input_recovery=True,
+                    input_recovery_elapsed_sec=elapsed, input_recovery_gap_sec=gap_elapsed,
+                    input_recovery_budget_sec=limits['flight_input_recover_sec'],
+                    input_recovery_window_used_sec=window_used,
+                    input_recovery_window_budget_sec=window_budget,
+                    blind_end_reached=blind_end,
+                    blind_motion_age_sec=self._input_gap.get('motion_age_sec'),
+                    blind_remaining_at_last_scan_m=self._input_gap.get('remaining_m'),
+                    blind_speed_bound_mps=self._input_gap.get('speed_bound_mps'),
+                    command=[0., 0.], physical_hold_verified=False)
+                return EvidenceReport(phase, False, not waiting,
+                    'waiting for fresh flight observation' if waiting else
+                    'input recovery budget exhausted', 0, 0, age), False
+            if exhausted and gap_elapsed >= reobserve_limit:
+                self._last_command, self._last_command_at = (0., 0.), now
+                self.debug = dict(tracking_state='RECOVERING', loss_response=True,
+                    age=age, input_recovery=True, command=[0., 0.],
+                    physical_hold_verified=False)
+                return EvidenceReport(phase, False, True,
+                    'input recovery budget exhausted', 0, 0, age), False
+            if not fresh:
+                # A tread impact can delay registration while the robot is
+                # still loading its wheels. Within the existing bounded,
+                # same-epoch recovery window, repeat only the last accepted
+                # flight command; do not infer motion or increase steering.
+                self._last_command_at = now
+                self.debug = dict(tracking_state='INPUT_DELAY_CONTINUING', loss_response=False,
+                    age=age, input_recovery=True, input_recovery_elapsed_sec=elapsed,
+                    input_recovery_gap_sec=gap_elapsed,
+                    input_recovery_budget_sec=limits['flight_input_recover_sec'],
+                    input_recovery_window_used_sec=window_used,
+                    input_recovery_window_budget_sec=window_budget,
+                    command=list(self._last_command), physical_hold_verified=False)
+                return EvidenceReport(phase, False, False,
+                    'input delayed: retaining last bounded flight command', 0, 0, age), False
+            self._recovery_events.append((self._input_gap['at'], now))
+            self._input_gap_used = elapsed
+            self._input_gap = None
+            input_resume = True  # all geometry/attitude/path checks below still apply
+        return None, input_resume
+
+    def _margin_recovery_floor(self, phase, now, support, polygons, margin, margin_context,
+                               raw_supported, current_supported, rotation_waypoint, alignment,
+                               flight_end_conflict, degraded, neutral_only, ey, epsi, w, geometry, limits):
+        """Select the support floor a recovering command may use below the comfort
+        margin (turn / flight / landing bands); records the flight basis in geometry.
+        Called with self._lock held."""
+        recovery_floor = margin if margin_context != 'route' else min(self.anchor.uncertainty_m, margin)
+        turn_margin_recovery = bool(
+            rotation_waypoint and margin_context == 'route' and raw_supported and not current_supported
+            and not degraded and not neutral_only
+            and limits.get('turn_margin_recovery_m', 0.) > 0.)
+        if turn_margin_recovery:
+            recovery_floor = max(limits['margin_m'],
+                margin - limits['turn_margin_recovery_m'])
+        flight_margin_recovery = bool(
+            phase in (Phase.FORWARD_SEGMENT_1, Phase.FORWARD_SEGMENT_2, Phase.FORWARD_SEGMENT_3)
+            and self.route['direction'] == 'UP' and margin_context == 'route' and not alignment and not flight_end_conflict
+            and raw_supported and not current_supported and not degraded and not neutral_only
+            and limits.get('flight_margin_recovery_m', 0.) > 0.)
+        if flight_margin_recovery:
+            recovery_floor = max(limits['margin_m'],
+                margin - limits['flight_margin_recovery_m'])
+            bounded_w = self._limit_command(0., float(w), now)[1]
+            steering_inward = ey * bounded_w < -1e-6
+            heading_inward = ey * epsi < -1e-6
+            flight_margin_recovery = bool(
+                inside_support_union(support, polygons, recovery_floor)
+                and (steering_inward or heading_inward))
+            geometry["flight_margin_recovery_basis"] = (
+                "steering" if steering_inward else "heading" if heading_inward else "none")
+            if not flight_margin_recovery:
+                recovery_floor = margin
+        # A flat landing below its commissioned clearance may only move
+        # back inward: within a small commissioned band above margin_m,
+        # accept a bounded command whose end-of-horizon clearance does not
+        # shrink (selected below). A stationary/neutral request, a stale
+        # pose or a body below the band keeps the hard landing minimum.
+        landing_margin_recovery = bool(
+            margin_context == 'landing'
+            and phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN)
+            and raw_supported and not current_supported and not degraded and not neutral_only
+            and limits.get('landing_margin_recovery_m', 0.) > 0.)
+        if landing_margin_recovery:
+            recovery_floor = max(limits['margin_m'],
+                margin - limits['landing_margin_recovery_m'])
+        return recovery_floor, turn_margin_recovery, flight_margin_recovery, landing_margin_recovery
+
+    def _flight_step(self, phase, now, sample, pose, pos, yaw, pitch, roll, control_yaw,
+                     heading_detail, velocity, support, margin, landing, landing_margin,
+                     exit_clear, degraded, observed_feedback, age, limits):
+        """One flight-phase control step: centerline steering, second-flight
+        alignment and strict completion checks. Called with self._lock held."""
+        complete = False
+        settling = None
+        v, w, ey, epsi, progress = 0., 0., 0., 0., 0.
+        alignment = False
+        rotation_waypoint = False
+        rotation_drift_recovery = False
+        flight_end_conflict = False
+        steering_detail = {}
+        flight_heading_detail = {}
+        idx = direction = None
+        corridor_entry = False
+        idx = {Phase.FORWARD_SEGMENT_1: 0, Phase.FORWARD_SEGMENT_2: 1, Phase.FORWARD_SEGMENT_3: 2}[phase]
+        start, end = np.asarray(self.route["flight_%d" % (idx + 1)])
+        direction = end[:2] - start[:2]
+        length = np.linalg.norm(direction)
+        direction = direction / length
+        target, target_yaw = end, math.atan2(direction[1], direction[0])
+        progress = float((pos[:2] - start[:2]) @ direction)
+        ey = float(direction[0] * (pos[1] - start[1]) - direction[1] * (pos[0] - start[0]))
+        steering_yaw, flight_heading_detail = self._flight_heading(
+            sample, yaw, control_yaw, heading_detail, now, degraded, observed_feedback)
+        epsi = wrap(steering_yaw - math.atan2(direction[1], direction[0]))
+        actual_v = float(velocity[:2] @ direction)
+        nominal = min(self.profile.linear_speed, limits["max_v"])
+        # Use measured path velocity as feedback for the existing speed correction.
+        v = np.clip(nominal + limits["speed_kp"] * deadband(nominal - actual_v, limits["speed_deadband"]), 0, limits["max_v"])
+        # Smooth slowdown proportional to error, never a normal-noise stop gate.
+        v /= 1 + abs(epsi) + abs(ey)
+        # Operator's useful forward-command floor, in the transport's
+        # input units. Slew and geometric feasibility still take priority.
+        v = max(v, limits.get("min_flight_v", 0.))
+        if 'flight_input_v' in self.route:
+            v = self.route['flight_input_v'][idx]
+        w = -limits["yaw_kp"] * deadband(epsi, limits["yaw_deadband"]) - limits["lateral_kp"] * deadband(ey, limits["lateral_deadband"])
+        # Preview measured sideways motion without rewriting pose or
+        # treating normalized input as a measured physical velocity.
+        lateral_rate = float(direction[0]*velocity[1]-direction[1]*velocity[0])
+        preview_ey = ey + lateral_rate*min(age, limits['warn_sec'])
+        # Anticipate outward drift while clearance is still available.
+        # Cap extra offset by the existing position band, and keep the
+        # existing capture-angle, angular magnitude and slew limits.
+        extra = 0.
+        if ey*lateral_rate > 0 and not degraded:
+            extra = float(np.clip(lateral_rate*limits.get('flight_lateral_preview_sec', 0.),
+                                  -limits['position_on'], limits['position_on']))
+            preview_ey += extra
+        w, steering_detail = self._flight_steering(epsi, preview_ey, heading_detail)
+        steering_detail.update(lateral_rate=lateral_rate, preview_ey=preview_ey, extra_preview_m=extra)
+        if idx > 0:
+            if self._entry_alignment_pending is None:
+                flat_start = landing if idx == 1 else inside_polygon(support, self.route['roof_landing_polygon'], landing_margin)
+                self._entry_alignment_pending = flat_start and (abs(ey) > limits['position_off'] or abs(epsi) > limits['yaw_tolerance'])
+            if self._entry_alignment_pending:
+                waypoint = self.route['turn_path' if idx == 1 else 'roof_turn_path'][-1]
+                delta = np.asarray(waypoint[:2])-pos[:2]
+                aligned = self._resume_corridor(idx, pose, support, margin, epsi) if 'flight_resume_corridor_yaw' in limits else (np.linalg.norm(delta) <= limits['position_off'] and abs(epsi) <= limits['yaw_tolerance'])
+                if aligned and not degraded:
+                    self._entry_alignment_pending = False
+                else:
+                    alignment = True
+                    heading = np.array([math.cos(control_yaw), math.sin(control_yaw)])
+                    along = float(delta @ heading)
+                    distance = float(np.linalg.norm(delta))
+                    if distance > limits['position_off']:
+                        bearing = math.atan2(delta[1],delta[0])
+                        approach = wrap(bearing-control_yaw-(math.pi if along < 0 else 0.))
+                        v = float(np.clip(limits['hold_kp']*along-limits['hold_kd']*(velocity[:2]@heading), -limits['hold_v'], limits['hold_v']))
+                        w = limits['yaw_kp']*deadband(approach,limits['yaw_deadband'])
+                    else:
+                        v = 0.
+                        w = -limits['yaw_kp']*deadband(epsi,limits['yaw_deadband'])
+                    target = np.array([*waypoint[:2], pos[2]])
+        height_sign = 1. if self.route['direction']=='UP' else -1.
+        if height_sign*(pos[2] - start[2]) >= height_sign*(end[2] - start[2]) * .5:
+            self._flight_seen[idx] = True
+        checks = dict(progress=progress >= length, ascent_seen=self._flight_seen[idx],
+                      height=self._ascent_height_reached(pos[2], end[2]),
+                      body_in_next_region=(landing if idx == 0 else
+                          inside_polygon(support, self.route['roof_landing_polygon'], landing_margin)
+                          if idx == 1 and 'flight_3' in self.route else exit_clear))
+        complete = all(checks.values())
+        # Reaching the surveyed horizontal end does not prove that the
+        # last riser is cleared. It also cannot justify driving farther
+        # at ascent input solely to chase an inconsistent Z estimate.
+        # Retain the phase and its strict completion evidence; neutral
+        # commands use the existing freshness/support/timeout handling.
+        self._flight_end_conflict |= bool(checks['progress'] and checks['ascent_seen']
+                               and checks['body_in_next_region']
+                               and not checks['height'] and not alignment)
+        end_continuation = False
+        if self._flight_end_conflict and not complete:
+            end_continuation = self._end_geometry_continuation(idx, sample, pose, pitch, roll, now, degraded)
+        flight_end_conflict = self._flight_end_conflict and not complete and not end_continuation
+        if flight_end_conflict:
+            v, w = 0., 0.
+        if alignment:
+            complete = False
+            checks['second_flight_aligned'] = False
+        return dict(target=target, target_yaw=target_yaw, v=v, w=w, ey=ey, epsi=epsi, progress=progress, complete=complete, checks=checks, settling=settling, alignment=alignment, rotation_waypoint=rotation_waypoint, rotation_drift_recovery=rotation_drift_recovery, flight_end_conflict=flight_end_conflict, steering_detail=steering_detail, flight_heading_detail=flight_heading_detail, idx=idx, direction=direction, corridor_entry=corridor_entry)
+
+    def _flat_target(self, phase, sample, pose, pos, yaw, support, margin, landing,
+                     exit_clear, landing_hold, degraded, limits):
+        """Target pose and its supporting region for a flat phase; captures the
+        landing-turn pivot and the exit hold target. Called with self._lock held."""
+        exit_yaw_tolerance = None
+        if phase in (Phase.VERIFY_ENTRY, Phase.ALIGN):
+            target = np.asarray(self.route["flight_1"])[0]
+            vector = np.diff(np.asarray(self.route["flight_1"]), axis=0)[0]
+            target_yaw = math.atan2(vector[1], vector[0])
+            supported = self.entry_supported(self.route, pose, support, margin)
+        elif phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN):
+            roof_turn = phase is Phase.ROOFTOP_TURN
+            if phase in (Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN):
+                previous_index = self.turn_index
+                self._capture_landing_turn(pose, margin, degraded or sample.sequence <= self._turn_sequence)
+                if self.turn_index != previous_index:
+                    self._turn_sequence = sample.sequence
+            path = (self._landing_path() if roof_turn else
+                    self._landing_path() if phase is Phase.TURN_TO_NEXT_FLIGHT else self.route['turn_path'])
+            waypoint = path[self.turn_index]
+            level = self.route['flight_2' if roof_turn else 'flight_1'][1][2]
+            target = np.array([*waypoint[:2], level])
+            target_yaw = waypoint[2]
+            supported = inside_polygon(support, self.route['roof_landing_polygon'], margin) if roof_turn else landing
+        else:
+            last_flight = "flight_3" if "flight_3" in self.route else "flight_2"
+            target = np.asarray(self.route[last_flight])[1]
+            vector = np.diff(np.asarray(self.route[last_flight]), axis=0)[0]
+            target_yaw, supported = math.atan2(vector[1], vector[0]), exit_clear
+        region_exit = phase is Phase.EXIT_CONFIRM and self.route.get('exit_arrival_policy') == 'supported_region'
+        if region_exit:
+            exit_yaw_tolerance = limits.get('entry_corridor_yaw', limits['yaw_tolerance'])
+            if (self._exit_hold_target is None and exit_clear and self._all_flights_completed()
+                    and self._ascent_height_reached(pos[2], target[2])
+                    and abs(wrap(yaw-target_yaw)) <= exit_yaw_tolerance
+                    and not degraded and sample.sequence > self._phase_sequence):
+                self._exit_hold_target = (pos.copy(), yaw)
+            if self._exit_hold_target is not None:
+                target, target_yaw = self._exit_hold_target
+        if landing_hold:
+            target, target_yaw = self._landing_hold_target
+            supported = landing
+        return target, target_yaw, supported, region_exit, exit_yaw_tolerance
+
+    def _flat_step(self, phase, now, sample, pose, pos, yaw, velocity, support, margin,
+                   landing, exit_clear, landing_hold, degraded, neutral_only, limits):
+        """One flat-phase control step (entry, landing, turns, exit): target
+        selection, hold/turn commands and completion checks. Called with self._lock held."""
+        complete = False
+        settling = None
+        v, w, ey, epsi, progress = 0., 0., 0., 0., 0.
+        alignment = False
+        rotation_waypoint = False
+        rotation_drift_recovery = False
+        flight_end_conflict = False
+        steering_detail = {}
+        flight_heading_detail = {}
+        idx = direction = None
+        corridor_entry = False
+        target, target_yaw, supported, region_exit, exit_yaw_tolerance = self._flat_target(
+            phase, sample, pose, pos, yaw, support, margin, landing,
+            exit_clear, landing_hold, degraded, limits)
+        region_turn = self._region_turn()
+        rotation_waypoint = region_turn and self._landing_rotation_waypoint()
+        rotation_drift_recovery = False
+        evaluated_turn_index = self.turn_index
+        if rotation_waypoint:
+            # Rotation has an orientation target, not a historical XY
+            # hold target. Drift is checked against observed support.
+            target[:2] = pos[:2]
+        delta = target[:2] - pos[:2]
+        distance = float(np.linalg.norm(delta))
+        verified_entry_handoff = phase is Phase.ALIGN and self._entry_verified
+        position_limit = (limits['position_on'] if verified_entry_handoff
+                          else limits['position_off'])
+        if phase in (Phase.VERIFY_ENTRY, Phase.ALIGN):
+            # A verified entry needs one fresh aligned observation,
+            # not a second stationary dwell on a creeping platform.
+            # Standalone ALIGN still uses the original precise gate.
+            self._holding = distance > position_limit
+        else:
+            if self._holding is None:
+                self._holding = distance > limits['position_off']
+            if distance >= limits["position_on"]:
+                self._holding = True
+            elif distance <= limits["position_off"]:
+                self._holding = False
+        heading = np.array([math.cos(yaw), math.sin(yaw)])
+        along = float(delta @ heading)
+        epsi = wrap(yaw - target_yaw)
+        if self._holding or landing_hold:
+            # A small bounded unicycle arc, with reverse only on surveyed
+            # support. Each proposed step is checked below against edges.
+            flat_transit = phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN) and not landing_hold
+            speed_cap = min(limits.get('landing_max_v', limits['hold_v']), limits['max_v']) if flat_transit else limits['hold_v']
+            v = np.clip(limits["hold_kp"] * along - limits["hold_kd"] * (velocity[:2] @ heading), -speed_cap, speed_cap)
+            lateral = heading[0] * delta[1] - heading[1] * delta[0]
+            w = -limits["yaw_kp"] * deadband(epsi, limits["yaw_deadband"]) + limits["lateral_kp"] * deadband(lateral, limits["lateral_deadband"]) * (1 if v >= 0 else -1)
+        else:
+            w = -limits["yaw_kp"] * deadband(epsi, limits["yaw_deadband"])
+        corridor_entry = phase in (Phase.VERIFY_ENTRY, Phase.ALIGN) and 'entry_corridor_yaw' in limits
+        if corridor_entry:
+            # No retreat to the nominal -45cm point, including first-step
+            # contact. Heading is aligned here; the flight controller
+            # captures lateral offset on its already-checked path.
+            self._holding = False
+            v = 0.
+            w = 0. if phase is Phase.VERIFY_ENTRY else -limits['yaw_kp']*deadband(epsi, limits['yaw_deadband'])
+        if region_turn:
+            # A bounded capture region replaces exact-point settling;
+            # the normal observed support and command checks still run.
+            position_limit = (limits['position_on'] if self.turn_index < len(self._landing_path())-1
+                              else limits['position_off'])
+            if distance <= position_limit and self._landing_turn_debug.get('rotation_disk_supported', False):
+                self._holding = False
+                v = 0.
+                w = -limits['yaw_kp']*deadband(epsi, limits['yaw_deadband'])
+        final_turn_approach = region_turn and self.turn_index == len(self._landing_path())-1
+        needs_pivot_space = (region_turn and not final_turn_approach
+            and not self._landing_turn_debug.get('rotation_disk_supported', False))
+        if (region_turn and not rotation_waypoint
+                and (final_turn_approach or self.turn_index == 2
+                     or (phase is Phase.ROOFTOP_TURN and self.turn_index == 0))
+                and (distance > position_limit or needs_pivot_space)
+                and not degraded and not neutral_only):
+            # Point toward the approach target so yaw and lateral
+            # corrections cannot cancel outside the next-flight corridor.
+            bearing = math.atan2(delta[1], delta[0])
+            travel_sign = 1. if along >= 0. else -1.
+            bearing_error = wrap(bearing-yaw+(math.pi if travel_sign < 0 else 0.))
+            w = limits['yaw_kp'] * bearing_error
+            v = travel_sign * min(limits.get('landing_max_v', limits['hold_v']),
+                limits['hold_kp'] * distance) * max(0., math.cos(bearing_error))
+            if needs_pivot_space:
+                v = travel_sign * max(abs(v), min(limits.get('landing_max_v', limits['hold_v']),2*limits['hold_v']))
+            polygon = np.asarray(self._turn_polygon())
+            edges = np.roll(polygon,-1,axis=0)-polygon
+            normals = np.column_stack((-edges[:,1],edges[:,0])) / np.linalg.norm(edges,axis=1)[:,None]
+            radius = max(np.linalg.norm(self.route['footprint'],axis=1))
+            clearances = np.sum(normals*(pos[:2]-polygon),axis=1)
+            near_edge = clearances < radius+margin+limits['position_on']
+            if np.any(near_edge & ((normals @ heading)*v < -1e-9)):
+                v = 0.  # turn inward before translating toward an edge
+            self._landing_turn_debug['inward_guidance'] = True
+        if (region_turn and not rotation_waypoint and not degraded and not neutral_only
+                and not self._landing_turn_debug.get('rotation_disk_supported', False)
+                and distance > limits['position_on'] and abs(v) < limits['hold_v'] / 2):
+            # A unicycle can become stationary when along-target error
+            # vanishes but lateral error remains. A short same-heading
+            # forward/reverse arc can move onto the surveyed pivot.
+            travel = self._turn_direction()
+            lateral_axis = np.array([-travel[1], travel[0]])
+            lateral_error = float(delta @ lateral_axis)
+            lateral_heading = float(heading @ lateral_axis)
+            if (abs(lateral_error) > limits['position_on']
+                    and abs(lateral_heading) > .1):
+                v = math.copysign(limits['hold_v'], lateral_error*lateral_heading)
+                w = 0.
+        if region_turn and rotation_waypoint and not degraded and not neutral_only:
+            # Rotation is normally in place. Only observed retreat
+            # toward the rear landing edge warrants a small inward
+            # translation; the full-body sweep below still applies.
+            travel = self._turn_direction()
+            retreat = -float(velocity[:2] @ travel)
+            heading_inward = float(np.array([math.cos(yaw), math.sin(yaw)]) @ travel)
+            flat_clearance = support_clearance(support, [self._turn_polygon()])
+            if (flat_clearance is not None and flat_clearance < limits['position_on']
+                    and retreat > limits['stationary_v'] / 2
+                    and heading_inward > .5):
+                self._rotation_drift_recovery = True
+            elif (flat_clearance is None or flat_clearance > limits['position_on'] + .03
+                  or heading_inward <= .5):
+                self._rotation_drift_recovery = False
+            if self._rotation_drift_recovery:
+                v = limits['hold_v']
+                rotation_drift_recovery = True
+            radius = max(np.linalg.norm(self.route['footprint'],axis=1))
+            if not inside_polygon([pos[:2]], self._turn_polygon(), radius+margin):
+                # Pivot admission has its own small reserve; if the
+                # actual turning body needs more room, move inward
+                # during the turn instead of waiting for a sweep fault.
+                boundary = np.asarray(self._turn_polygon())
+                edges = np.roll(boundary,-1,axis=0)-boundary
+                normals = np.column_stack((-edges[:,1],edges[:,0])) / np.linalg.norm(edges,axis=1)[:,None]
+                gaps = np.sum(normals*(pos[:2]-boundary),axis=1)
+                inward = normals[int(np.argmin(gaps))]
+                projection = float(heading @ inward)
+                if abs(projection) > 1e-6:
+                    v = math.copysign(min(limits.get('landing_max_v',limits['hold_v']),2*limits['hold_v']),projection)
+                    rotation_drift_recovery = True
+                    self._landing_turn_debug['inward_rotation'] = True
+        turn_yaw_tolerance = (limits.get('flight_resume_corridor_yaw', limits['yaw_tolerance'])
+                              if region_turn else limits['yaw_tolerance'])
+        settled = self._settled(sample, average_rate=phase in (Phase.VERIFY_ENTRY, Phase.ALIGN))
+        settling = dict(self._settling_detail)
+        if phase is Phase.VERIFY_ENTRY:
+            # Verify the physical start region and measured height.
+            # Precise position and yaw belong to the following ALIGN
+            # phase, which can actively correct them before ascent.
+            if corridor_entry:
+                # A creeping platform need not become stationary to
+                # enter ALIGN. Keep the anchor uncertainty hard; ALIGN
+                # must restore the extra reserve before ascent.
+                supported = supported or self.entry_supported(self.route, pose, support,
+                                                              self.anchor.uncertainty_m)
+            checks = dict(body_in_region=supported,
+                          height=abs(pos[2] - target[2]) <= limits["height_tolerance"])
+            if not corridor_entry:
+                checks['settled'] = settled
+        elif corridor_entry:
+            checks = dict(body_in_region=supported,
+                          yaw=abs(epsi) <= limits['entry_corridor_yaw'],
+                          height=abs(pos[2]-target[2]) <= limits['height_tolerance'],
+                          entry_verified=verified_entry_handoff or settled)
+        elif verified_entry_handoff:
+            checks = dict(body_in_region=supported, position=distance <= position_limit,
+                          yaw=abs(epsi) <= limits["yaw_tolerance"],
+                          height=abs(pos[2] - target[2]) <= limits["height_tolerance"],
+                          entry_verified=True)
+        else:
+            checks = dict(body_in_region=supported, position=distance <= position_limit,
+                          yaw=abs(epsi) <= turn_yaw_tolerance)
+            if rotation_waypoint:
+                checks.pop('position')
+            if not region_turn:
+                checks['settled'] = settled
+            elif self.turn_index+1 < len(self._landing_path()):
+                path = self._landing_path()
+                if np.allclose(path[self.turn_index][:2], path[self.turn_index+1][:2]):
+                    checks['rotation_space'] = self._landing_turn_debug.get('rotation_disk_supported', False)
+        if phase is Phase.ROOFTOP_TURN:
+            checks['upper_landing_height'] = self._ascent_height_reached(pos[2], target[2])
+        if region_exit:
+            checks = dict(body_in_region=exit_clear,
+                          yaw=abs(epsi)<=exit_yaw_tolerance,
+                          destination_captured=self._exit_hold_target is not None)
+        if region_turn:
+            if self.turn_index == len(self._landing_path())-1:
+                # Handoff to the next flight from its supported entry
+                # corridor; do not chase a 5 cm point across a seam.
+                next_idx = 2 if phase is Phase.ROOFTOP_TURN else 1
+                checks.pop('position', None)
+                checks.pop('yaw', None)
+                a,b=np.asarray(self.route['flight_%d'%(next_idx+1)])
+                direction=b[:2]-a[:2];direction/=np.linalg.norm(direction)
+                near_entry=float((pos[:2]-target[:2]) @ direction)>=-limits['position_on']
+                checks['next_flight_corridor'] = near_entry and self._resume_corridor(next_idx, pose, support, margin, epsi)
+            checks['new_waypoint_observation'] = sample.sequence > self._turn_sequence
+        complete = all(checks.values())
+        if phase in (Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN) and complete:
+            path = self._landing_path()
+            if self.turn_index + 1 < len(path) and not degraded and sample.sequence > self._phase_sequence:
+                if rotation_waypoint:
+                    self._connect_landing_leg(pos[:2], margin)
+                self.turn_index += 1
+                self._turn_sequence = sample.sequence
+                self._history.clear()
+                complete = False
+        if region_turn:
+            self._landing_turn_debug.update(evaluated_index=evaluated_turn_index,
+                waypoint_kind='rotation' if rotation_waypoint else 'translation',
+                completed=all(checks.values()) and not degraded and sample.sequence > self._phase_sequence,
+                position_target_required=not rotation_waypoint)
+        if phase is Phase.LANDING:
+            complete = landing  # proceed directly to measured landing path
+            checks = dict(body_in_landing=landing)
+        if phase is Phase.EXIT_CONFIRM:
+            final_height = self.route['flight_3' if 'flight_3' in self.route else 'flight_2'][1][2]
+            complete = complete and self._all_flights_completed() and self._ascent_height_reached(pos[2], final_height)
+            checks.update(final_height=self._ascent_height_reached(pos[2], final_height), all_flights_completed=self._all_flights_completed(), all_flights_seen=all(self._flight_seen))
+            checks.update(flight_1_seen=self._flight_seen[0], flight_2_seen=self._flight_seen[1])
+        return dict(target=target, target_yaw=target_yaw, v=v, w=w, ey=ey, epsi=epsi, progress=progress, complete=complete, checks=checks, settling=settling, alignment=alignment, rotation_waypoint=rotation_waypoint, rotation_drift_recovery=rotation_drift_recovery, flight_end_conflict=flight_end_conflict, steering_detail=steering_detail, flight_heading_detail=flight_heading_detail, idx=idx, direction=direction, corridor_entry=corridor_entry)
 
     @staticmethod
     def _turn_recovery_improves_clearance(position, support, w, horizon, polygons):
