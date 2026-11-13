@@ -14,7 +14,7 @@ ROS graph는 `mission_manager/launch/system.launch` 하나가 소유합니다.
 | node | 소유권 | action/state |
 |---|---|---|
 | `mission_manager` | 경로 계획, segment orchestration, scan artifact | `/mission` |
-| `multifloor_manager` | map 교체, AMCL 재초기화, tag 기반 층 확정 | `/multifloor/floor_transition`, `/multifloor/floor_state` |
+| `multifloor_manager` | map 교체, AMCL 재초기화, 층 확정(기본: 계단 성공 결과) | `/multifloor/floor_transition`, `/multifloor/floor_state` |
 | `stair_supervisor` | `/navigation/cmd_vel` 또는 계단 명령의 단일 robot transport | `/stair_traversal`, `/stair_supervisor/state` |
 
 `system.launch`는 이 세 node와 표준 `map_server`/AMCL/`move_base`,
@@ -131,6 +131,18 @@ ssh "${MINI_PC_USER}@${MINI_PC_HOST}" "ping -c 1 -W 2 '${ROBOT_HOST}'"
 `--preflight`와 실제 시작은 production profile을 **SSH tunnel 또는 robot 연결보다
 먼저** 검사합니다. incomplete/disabled profile은 robot motion 전에 종료됩니다.
 
+### 계단 경로의 `commissioned`
+
+`stair_lidar_3f_4f_test.yaml`의 route별 `commissioned`는 **일반 주행 실행 허용**
+표시입니다. 현장 검증을 마쳤다는 뜻이 아닙니다.
+
+- `true`: 콘솔 목적지와 일반 stair goal에서 이 경로를 사용합니다.
+- `false`: 일반 goal은 거부합니다(`no commissioned LiDAR route`). `phase-test:<uuid>`
+  단계 시험만 허용하며, `phase_test_limits`가 없으면 1구간 4초 예산이 적용됩니다.
+- 하강 route(`reverse_of`)는 자기 `commissioned` 값을 따로 가집니다.
+
+현장 주행 여부는 `docs/field-check.md`의 주행 후 점검으로 기록합니다.
+
 ## 층 전환 policy contract
 
 전이조건과 `multifloor_manager` 상태머신을 수정·개발·검증하는 상세 절차는
@@ -159,9 +171,12 @@ dwell_sec: 0.2
 timeout_sec: 8.0
 ```
 
-현재 지원하는 non-safety condition은 없습니다. `T_FLOOR_CONFIRMED`는 tag vote가
-통과한 epoch 이벤트이고, `T_LOCALIZED`와 `T_COSTMAP_READY`는 final gate에서 매번
-다시 확인하는 live level입니다. policy timeout은 transition arm 시점이 아니라
+현재 지원하는 non-safety condition은 없습니다. `T_FLOOR_CONFIRMED`는 목표 층이
+확정된 epoch 이벤트입니다. 확정 근거는 `~floor_confirmation_source`로 정합니다.
+기본값 `stair_result`는 같은 계단 profile의 최근 성공 결과를 한 번만 소비하고,
+`tag`는 기존 tag vote를 사용합니다. `T_LOCALIZED`와 `T_COSTMAP_READY`는 final gate에서
+매번 다시 관측해 기록하는 live level입니다. 관측 직후 평가하므로 `freshness_sec`
+때문에 막히는 일은 사실상 없고, 실제로 막는 것은 값이 false인 경우입니다. policy timeout은 transition arm 시점이 아니라
 고정된 map/localization/costmap barrier를 모두 통과한 `POLICY_READY` 시점부터
 monotonic clock으로 계산합니다. stale, future-dated, false, 누락 또는 이전 epoch의
 evidence는 성공으로 처리되지 않습니다.
@@ -186,6 +201,16 @@ evidence는 성공으로 처리되지 않습니다.
 증가시킵니다. YAML에는 command, URL, IP, socket payload 또는 retry 동작을 넣지
 않습니다. 향후 자동문처럼 외부 동작이 필요한 경우에는 `OPEN_DOOR` 같은 typed action과
 별도의 `T_DOOR_OPEN_CONFIRMED` safety condition 경계를 설계해야 합니다.
+
+### 실패한 층 전환 이어가기
+
+층 전환이 실패하면 `~last_fault` parameter에 실패 단계, 지도 층, 목표 층 확정 여부가
+남습니다. 목표 층이 이미 확정된 뒤 실패했다면, FAULT 상태에서 같은 goal
+(`transition_id`, `target_floor`)을 `~transition_resume_max_age_sec`(기본 300초) 안에
+다시 보내면 첫 미완료 단계부터 이어갑니다. 계단 성공 결과를 다시 쓰지 않고, 이미
+반영된 지도 교체도 반복하지 않습니다. 자세한 내용은
+[층 전환 상태머신 7.7](docs/transition-policy-state-machine.md)을 봅니다. 현재 콘솔에는
+이 재개 버튼이 없습니다.
 
 ## 운영 시작과 readiness contract
 
@@ -291,7 +316,7 @@ mini PC sensor stack은 다음 실행에서 재사용합니다.
 - `/scan` publisher가 0 또는 2개 이상: remote sensor launch와 표준 converter 중
   정확히 하나만 `/scan`을 publish하도록 deployment를 수정
 - stale input: 두 PC NTP와 sensor header timestamp 확인
-- tag 없음: camera remap, `TAG_DETECTIONS_TOPIC`, detector tag artifact 확인
+- tag 없음(`floor_confirmation_source=tag`일 때): camera remap, `TAG_DETECTIONS_TOPIC`, detector tag artifact 확인
 - action 없음: `roslaunch --nodes mission_manager system.launch ...`와 package build 확인
 - AprilTag assertion, ROS master/action 연결, 계단 진입 NAV oscillation과 후진 제약:
   [인지·네트워크·평지 주행 장애 RCA와 복구 가이드](docs/navigation-perception-network-incident-rca-ko.md)
