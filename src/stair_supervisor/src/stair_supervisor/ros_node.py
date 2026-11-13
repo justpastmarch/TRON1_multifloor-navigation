@@ -447,4 +447,6 @@ class RosStairSupervisorNode:
         self._manual_subscriber.unregister()
         self._release_service.shutdown()
         self._handoff_service.shutdown()
+        self._nav_limit_service.shutdown()
+        self._roof_nav_service.shutdown()
         self._publish_state("shutdown")
