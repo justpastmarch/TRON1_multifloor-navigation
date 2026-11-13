@@ -14,6 +14,7 @@ import io
 import threading
 from collections import deque
 
+import stair_supervisor.msg  # noqa: F401  devel package with generated messages, before fixtures prepend src
 import numpy as np
 from scipy.spatial.transform import Rotation
 
@@ -112,7 +113,7 @@ class ReadinessTest(unittest.TestCase):
         root=Path(__file__).resolve().parents[1]/'config'
         cfg=load_lidar_configuration(root/'stair_lidar_3f_4f_test.yaml','control',False)
         routes={r['id']:r for r in cfg.document['routes']}
-        self.assertEqual(set(routes),{'stair_3f_4f_up','stair_5f_rf_up','stair_5f_rf_down'})
+        self.assertEqual(set(routes),{'stair_3f_4f_up', 'stair_4f_5f_up', 'stair_5f_rf_up', 'stair_5f_rf_down', 'stair_3f_4f_down', 'stair_4f_5f_down'})
         for route in routes.values():
             with self.subTest(route=route['id']):
                 self.assertAlmostEqual(route['limits']['anchor_uncertainty_m'],.1)

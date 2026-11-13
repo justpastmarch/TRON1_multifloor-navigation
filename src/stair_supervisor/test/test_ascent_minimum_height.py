@@ -15,7 +15,7 @@ from stair_supervisor.stair_feedback import StairFeedback
 class MinimumHeight(unittest.TestCase):
     def production(self, band=False):
         helper=ObservedFlight();helper.setUp()
-        route=copy.deepcopy(helper.routes[1])
+        route=copy.deepcopy(helper.route('stair_5f_rf_up'))
         # Historical 23:53 BAG coordinates use the pre-v20 survey. Keep the
         # height-policy regression independent of later live geometry updates.
         route['flight_1'][1][0] = 3.1550000000000002

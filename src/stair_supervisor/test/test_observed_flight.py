@@ -25,8 +25,12 @@ class ObservedFlight(unittest.TestCase):
         self.routes=[r for r in yaml.safe_load(path.read_text())['routes'] if r.get('direction')=='UP']
         self.profiles=load_stair_configuration(REPO/'src/stair_supervisor/config').profiles
 
+    def route(self, route_id):
+        """Select by id: route order changes as routes are added (4F-5F, 11/11)."""
+        return next(r for r in self.routes if r['id'] == route_id)
+
     def armed(self, route=None):
-        route=copy.deepcopy(route or self.routes[1]);w=Worker();w.value=sample(1,100.,x=-.3)
+        route=copy.deepcopy(route or self.route('stair_5f_rf_up'));w=Worker();w.value=sample(1,100.,x=-.3)
         c=StairFeedback(w,np.eye(4),[route]);c.capture_entry(route['id'],np.eye(4),.1,'recorded-estimate reconstruction',100.)
         c.arm(next(p for p in self.profiles if p.id==route['id']),100.01)
         c.begin_phase(Phase.FORWARD_SEGMENT_1,100.01)
@@ -172,7 +176,7 @@ class ObservedFlight(unittest.TestCase):
             c.continue_phase(100.21)
 
     def test_prediction_gated_policy_is_rejected(self):
-        route = copy.deepcopy(self.routes[1])
+        route = copy.deepcopy(self.route('stair_5f_rf_up'))
         route['flight_command_policy'] = 'prediction_gated'
         with self.assertRaisesRegex(ValueError, 'only observed_feedback'):
             StairFeedback._validate_route(route)

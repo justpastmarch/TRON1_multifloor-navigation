@@ -25,6 +25,10 @@ class EntryForwardCapture(unittest.TestCase):
         self.routes = [r for r in yaml.safe_load(path.read_text())['routes'] if r.get('direction')=='UP']
         self.profiles = load_stair_configuration(REPO / 'src/stair_supervisor/config').profiles
 
+    def route(self, route_id):
+        """Select by id: route order changes as routes are added (4F-5F, 11/11)."""
+        return next(r for r in self.routes if r['id'] == route_id)
+
     def armed(self, route, pose):
         w = Worker()
         c = StairFeedback(w, np.eye(4), [copy.deepcopy(route)])
@@ -40,7 +44,7 @@ class EntryForwardCapture(unittest.TestCase):
     def test_recorded_entry_and_final_align_pose_leave_align(self):
         for pose in RECORDED_POSES:
             with self.subTest(pose=pose):
-                w, c, report = self.armed(self.routes[1], pose)
+                w, c, report = self.armed(self.route('stair_5f_rf_up'), pose)
                 self.assertTrue(report.complete, c.debug)
                 self.assertFalse(report.faulted)
                 c.begin_phase(Phase.FORWARD_SEGMENT_1, 100.22)
@@ -62,27 +66,27 @@ class EntryForwardCapture(unittest.TestCase):
 
     def test_large_heading_still_aligns_without_forward(self):
         for angle in (-30., 30., 90.):
-            _, c, report = self.armed(self.routes[1], dict(x=-.3, yaw=math.radians(angle)))
+            _, c, report = self.armed(self.route('stair_5f_rf_up'), dict(x=-.3, yaw=math.radians(angle)))
             self.assertFalse(report.complete)
             self.assertEqual(c.command()[0], 0.)
 
     def test_exact_twenty_degree_boundary_and_just_outside(self):
         for angle in (-20., 20.):
-            _, c, report = self.armed(self.routes[1], dict(x=-.3, yaw=math.radians(angle)))
+            _, c, report = self.armed(self.route('stair_5f_rf_up'), dict(x=-.3, yaw=math.radians(angle)))
             self.assertTrue(report.complete, c.debug)
         for angle in (-20.01, 20.01):
-            _, c, report = self.armed(self.routes[1], dict(x=-.3, yaw=math.radians(angle)))
+            _, c, report = self.armed(self.route('stair_5f_rf_up'), dict(x=-.3, yaw=math.radians(angle)))
             self.assertFalse(report.complete)
             self.assertEqual(c.command()[0], 0.)
 
     def test_height_and_side_are_not_relaxed(self):
         for pose in (dict(x=-.3, y=.5, yaw=.2), dict(x=-.3, z=.3, yaw=.2)):
             with self.assertRaises(ValueError):
-                self.armed(self.routes[1], pose)
+                self.armed(self.route('stair_5f_rf_up'), pose)
 
     def test_height_and_side_checked_after_entry_is_prepared(self):
         for pose in (dict(x=-.3, y=.5, yaw=.2), dict(x=-.3, z=.3, yaw=.2)):
-            w, c, _ = self.armed(self.routes[1], dict(x=-.3, yaw=.2))
+            w, c, _ = self.armed(self.route('stair_5f_rf_up'), dict(x=-.3, yaw=.2))
             w.value = sample(4, 100.3, **pose)
             report = c.evaluate(Phase.ALIGN, 100.31)
             self.assertFalse(report.complete, c.debug)
@@ -90,7 +94,7 @@ class EntryForwardCapture(unittest.TestCase):
 
     def test_same_frame_and_stale_observation_cannot_transition(self):
         pose = dict(x=-.3, yaw=.2)
-        w, c, _ = self.armed(self.routes[1], pose)
+        w, c, _ = self.armed(self.route('stair_5f_rf_up'), pose)
         c.begin_phase(Phase.ALIGN, 100.22)
         report = c.evaluate(Phase.ALIGN, 100.23)
         self.assertFalse(report.complete)
@@ -99,7 +103,7 @@ class EntryForwardCapture(unittest.TestCase):
         self.assertTrue(report.faulted)
 
     def test_old_angle_reproduces_recorded_wait(self):
-        rr = copy.deepcopy(self.routes[1])
+        rr = copy.deepcopy(self.route('stair_5f_rf_up'))
         rr['limits']['entry_corridor_yaw'] = math.radians(10.)
         for pose in RECORDED_POSES:
             _, c, report = self.armed(rr, pose)
