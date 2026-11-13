@@ -477,3 +477,23 @@ routes:
     locations: config/locations.yaml
     location_id: stair_rf_landing
     floor_id: RF
+
+# Two-flight descents: the same surveyed UP geometry reversed, forward-facing.
+# entry_map is the upper landing location with its yaw facing down the stair.
+- id: stair_3f_4f_down
+  reverse_of: stair_3f_4f_up
+  commissioned: true
+  entry_map:
+    package: mission_manager
+    locations: config/locations.yaml
+    location_id: stair_4f_from_3f
+    floor_id: 4F
+
+- id: stair_4f_5f_down
+  reverse_of: stair_4f_5f_up
+  commissioned: true
+  entry_map:
+    package: mission_manager
+    locations: config/locations.yaml
+    location_id: stair_5f_from_4f
+    floor_id: 5F

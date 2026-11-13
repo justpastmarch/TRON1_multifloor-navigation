@@ -17,6 +17,11 @@ edges:
     from: stair_4f_from_3f
     to: stair_4f_to_5f
     type: NAV
+  # Descent continuity on 4F (as stair_5f_entry_to_landing on 5F).
+  - id: stair_4f_entry_to_landing
+    from: stair_4f_to_5f
+    to: stair_4f_from_3f
+    type: NAV
   - id: stair_3f_4f_up
     from: stair_3f_up_entry
     to: stair_4f_from_3f

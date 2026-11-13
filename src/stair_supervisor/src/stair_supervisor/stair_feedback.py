@@ -328,8 +328,9 @@ class StairFeedback:
                 raise ValueError("phase_test_limits needs named phases and positive finite seconds")
         if route['direction'] not in ('UP','DOWN'):
             raise ValueError('route direction must be UP or DOWN')
-        if route['direction']=='DOWN' and ('reverse_of' not in route or len(route.get('flight_input_v',[]))!=3):
-            raise ValueError('DOWN requires a derived RF route and three forward flight inputs')
+        if route['direction']=='DOWN' and ('reverse_of' not in route or
+                len(route.get('flight_input_v',[])) != (3 if 'flight_3' in route else 2)):
+            raise ValueError('DOWN requires a route derived from UP and one forward input per flight')
         if 'flight_input_v' in route and any(type(v) not in (int,float) or not math.isfinite(v) or v<=0 or v>route['limits']['max_v'] for v in route['flight_input_v']):
             raise ValueError('flight inputs must be positive and within max_v')
         if type(route["commissioned"]) is not bool:

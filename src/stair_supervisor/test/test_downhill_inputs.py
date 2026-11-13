@@ -27,10 +27,16 @@ class DownhillInputTest(unittest.TestCase):
    v,w=c._phase_command(phase,p);sent=normalize_twist(v,w,config.robot.websocket_full_scale)
    self.assertAlmostEqual(sent.x,expected);self.assertEqual(sent.z,0.)
   self.assertGreater(p.flight_1_distance_m,0);self.assertGreater(p.flight_2_distance_m,0)
- def test_up_and_other_profiles_keep_legacy_inputs(self):
+ def test_up_profiles_keep_legacy_inputs_and_every_down_is_forward(self):
   config=self.config();c=StairSupervisor(config,FakeTransport(),ScriptedEvidence(),FakeClock(),lambda r:None,admission=FakeAdmission(),nav_freshness_sec=.2)
+  downs=[p for p in config.profiles if p.direction is Direction.DOWN]
+  self.assertEqual({p.id for p in downs},{'stair_3f_4f_down','stair_4f_5f_down','stair_5f_rf_down'})
+  for p in downs:
+   # All descents are forward-facing reversals of their UP route.
+   self.assertEqual(len(p.downhill_forward_inputs),2)
+   self.assertGreater(p.flight_1_distance_m,0);self.assertGreater(p.flight_2_distance_m,0)
   for p in config.profiles:
-   if p.id=='stair_5f_rf_down':continue
+   if p.direction is Direction.DOWN:continue
    self.assertEqual(p.downhill_forward_inputs,())
    v,w=c._phase_command(Phase.FORWARD_SEGMENT_1,p)
    self.assertAlmostEqual(abs(v),min(p.linear_speed,config.robot.websocket_full_scale.linear_mps))
