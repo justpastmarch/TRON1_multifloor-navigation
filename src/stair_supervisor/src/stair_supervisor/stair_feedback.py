@@ -818,6 +818,12 @@ class StairFeedback:
                         lidar_from_imu=self._lidar_from_imu.tolist(),
                         max_gap=self._imu_max_gap)
 
+    def holds_anchor(self):
+        """An arrival/landing hold still controls against the current anchor epoch."""
+        with self._lock:
+            return bool(getattr(self, '_arrival_holding', False)
+                        or getattr(self, '_landing_hold_target', None) is not None)
+
     def push_imu(self, row):
         """Mirror the existing IMU stream; no estimator reset or new ROS topic."""
         row = tuple(float(v) for v in row)
