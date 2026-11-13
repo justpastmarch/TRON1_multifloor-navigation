@@ -1571,9 +1571,13 @@ class StairFeedback:
                             incomplete_conditions=[k for k, value in checks.items() if not value])
             # An ascent can temporarily cross the comfort margin as the body
             # rocks at a riser. Require the full footprint on surveyed support,
-            # a smaller route minimum, and bounded steering toward the flight
-            # centerline. A stationary rotation sweep is not the trajectory of
-            # the robot while the stair firmware also drives it forward.
+            # a smaller route minimum, and motion toward the flight centerline:
+            # either bounded steering toward it, or a measured heading already
+            # toward it. Centering unwinds steering to ~0 once the inward
+            # capture heading is reached, so the command alone would revoke
+            # recovery exactly while the body is returning (field 2026-10-16).
+            # A stationary rotation sweep is not the trajectory of the robot
+            # while the stair firmware also drives it forward.
             recovery_floor = margin if margin_context != 'route' else min(self.anchor.uncertainty_m, margin)
             turn_margin_recovery = bool(
                 rotation_waypoint and margin_context == 'route' and raw_supported and not current_supported
@@ -1591,9 +1595,13 @@ class StairFeedback:
                 recovery_floor = max(limits['margin_m'],
                     margin - limits['flight_margin_recovery_m'])
                 bounded_w = self._limit_command(0., float(w), now)[1]
+                steering_inward = ey * bounded_w < -1e-6
+                heading_inward = ey * epsi < -1e-6
                 flight_margin_recovery = bool(
                     inside_support_union(support, polygons, recovery_floor)
-                    and ey * bounded_w < -1e-6)
+                    and (steering_inward or heading_inward))
+                geometry["flight_margin_recovery_basis"] = (
+                    "steering" if steering_inward else "heading" if heading_inward else "none")
                 if not flight_margin_recovery:
                     recovery_floor = margin
             recovery = not current_supported and inside_support_union(support, polygons, recovery_floor)
