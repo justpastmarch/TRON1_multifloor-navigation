@@ -58,6 +58,12 @@ class RobotTransport:
         self._client = DirectRobotClient(config.connection, connection_factory)
         self._state = TransportState.NEW
         self._fault: TransportFault | None = None
+        # Lock order: _send_lock -> _command_lock. _command_lock guards command
+        # state only and is never held across socket I/O, so a slow send cannot
+        # stall update_twist() or manual status. _send_lock keeps each snapshot
+        # and its sends ordered (an ended manual lease is never sent after its
+        # zero barrier).
+        self._send_lock = threading.RLock()
         self._command_lock = threading.RLock()
         self._web_manual = WebManual()
         self._desired_twist = NormalizedTwist.zero()
@@ -228,23 +234,30 @@ class RobotTransport:
 
     def update_web_manual(self, lease, sequence, forward, turn, remaining):
         self._require_ready()
-        with self._command_lock:
-            now = self._clock.monotonic()
-            self._web_manual.update(lease, sequence, forward, turn, now, remaining)
-            manual = self._web_manual.selected(now)
+        with self._send_lock:
+            with self._command_lock:
+                now = self._clock.monotonic()
+                self._web_manual.update(lease, sequence, forward, turn, now, remaining)
+                manual = self._web_manual.selected(now)
             if manual is not None:
                 self._send_twist(manual, now)
 
     def end_web_manual(self, lease):
-        with self._command_lock:
-            self._web_manual.end(lease)
-            self._send_twist(NormalizedTwist.zero(), self._clock.monotonic())
+        with self._send_lock:
+            with self._command_lock:
+                self._web_manual.end(lease)
+                now = self._clock.monotonic()
+            self._send_twist(NormalizedTwist.zero(), now)
 
     def expire_web_manual(self):
-        with self._command_lock:
-            now = self._clock.monotonic()
-            if self._web_manual.lease is not None and not self._web_manual.ended and now >= self._web_manual.expires:
-                self._web_manual.end(self._web_manual.lease)
+        with self._send_lock:
+            with self._command_lock:
+                now = self._clock.monotonic()
+                expired = (self._web_manual.lease is not None and not self._web_manual.ended
+                           and now >= self._web_manual.expires)
+                if expired:
+                    self._web_manual.end(self._web_manual.lease)
+            if expired:
                 self._send_twist(NormalizedTwist.zero(), now)
 
     def web_manual_status(self):
@@ -256,16 +269,17 @@ class RobotTransport:
         self._raise_if_unavailable()
         if self._state is not TransportState.READY:
             raise TransportFault("robot transport is not ready for motion")
-        with self._command_lock:
-            now = self._clock.monotonic()
-            age = now - self._updated_at
-            desired_twist = self._desired_twist
-            automatic = (
-                NormalizedTwist.zero()
-                if age > self._config.stream.watchdog_sec
-                else desired_twist
-            )
-            manual = self._web_manual.selected(now)
+        with self._send_lock:
+            with self._command_lock:
+                now = self._clock.monotonic()
+                age = now - self._updated_at
+                desired_twist = self._desired_twist
+                automatic = (
+                    NormalizedTwist.zero()
+                    if age > self._config.stream.watchdog_sec
+                    else desired_twist
+                )
+                manual = self._web_manual.selected(now)
             self._send_twist(automatic, now)
             if manual is not None:
                 self._send_twist(manual, now)
@@ -273,7 +287,7 @@ class RobotTransport:
     def send_walk_mode(self) -> None:
         """Send WALK once; missing robot ACK must not block a flat tour."""
         self._require_ready()
-        with self._command_lock:
+        with self._send_lock:
             receipt = self._send_request(RequestTitle.WALK_MODE, {})
             if receipt is None:
                 raise TransportFault("WALK request could not be sent")
