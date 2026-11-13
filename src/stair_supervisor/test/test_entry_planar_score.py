@@ -4,6 +4,9 @@ from types import SimpleNamespace
 from unittest.mock import patch
 import numpy as np
 from scipy.spatial.transform import Rotation
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parent))  # sibling test fixtures
 from test_lidar_control import route, sample
 from stair_supervisor import ros_lidar
 from stair_supervisor.lidar_tracking import TrackingSettings

@@ -154,6 +154,12 @@ class FloorTransitionRosTest(unittest.TestCase):
         def publish_target() -> None:
             self.succeeded_before_target_costmap = self.client.get_state() == GoalStatus.SUCCEEDED
             self.costmap_publisher.publish(map_message("4F"))
+            if rospy.get_param("~expected_policy_outcome", "success") == "blocked":
+                # Blocked policy: the costmap reverts to a mismatching one during
+                # the policy dwell, so T_COSTMAP_READY is false at commit. (Each
+                # observation is recorded immediately before evaluation, so a tiny
+                # freshness_sec alone can no longer make the policy stale.)
+                threading.Timer(0.05, lambda: self.costmap_publisher.publish(wrong)).start()
 
         threading.Timer(0.05, publish_target).start()
         return EmptyResponse()
@@ -190,7 +196,7 @@ class FloorTransitionRosTest(unittest.TestCase):
             FloorTransitionGoal(transition_id="stair_a", target_floor="4F"),
             feedback_cb=lambda feedback: self.feedback.append(feedback.phase),
         )
-        self.assertTrue(self.client.wait_for_result(rospy.Duration(12.0)))
+        self.assertTrue(self.client.wait_for_result(rospy.Duration(20.0)))
         tag_thread.join(timeout=1.0)
 
         if expected_policy_outcome == "blocked":

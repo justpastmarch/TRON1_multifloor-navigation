@@ -8,7 +8,7 @@ from pathlib import Path
 import threading
 
 import actionlib
-from geometry_msgs.msg import PoseWithCovarianceStamped
+from geometry_msgs.msg import PoseWithCovarianceStamped, TransformStamped
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal, MoveBaseResult
 from multifloor_manager.msg import (
     FloorState,
@@ -18,12 +18,14 @@ from multifloor_manager.msg import (
 from multifloor_manager.readiness import DEFAULT_READINESS_POLICY
 from nav_msgs.msg import Odometry
 import rospy
+import tf2_ros
 from stair_supervisor.msg import (
     StairTraversalAction,
     StairTraversalGoal,
     StairTraversalResult,
     SupervisorState,
 )
+from dynamic_reconfigure.srv import Reconfigure, ReconfigureResponse
 from std_srvs.srv import Empty, EmptyResponse, Trigger, TriggerResponse
 import yaml
 
@@ -53,8 +55,17 @@ class MockMissionChildren:
         self._amcl_pub = rospy.Publisher(
             "/amcl_pose", PoseWithCovarianceStamped, queue_size=1, latch=True
         )
+        # NAV's single retry waits for a fresh map->base_Link transform.
+        self._tf = tf2_ros.TransformBroadcaster()
         self._nomotion = rospy.Service("/request_nomotion_update", Empty, self._refresh_pose)
         self._clear = rospy.Service("/move_base/clear_costmaps", Empty, self._clear_costmaps)
+        # NAV dispatch first applies the floor speed limit to move_base and the
+        # stair supervisor's NAV forwarding (configure_floor_speed).
+        self._nav_limits = [
+            rospy.Service(name, Reconfigure, self._accept_reconfigure)
+            for name in ("/move_base/TrajectoryPlannerROS/set_parameters",
+                         "/stair_supervisor/set_navigation_limits")
+        ]
         self._nav = actionlib.SimpleActionServer(
             "/move_base", MoveBaseAction, execute_cb=self._execute_nav, auto_start=False
         )
@@ -183,6 +194,11 @@ class MockMissionChildren:
         self._odom_pub.publish(odom)
         self._publish_amcl_pose()
 
+    @staticmethod
+    def _accept_reconfigure(request):
+        MockMissionChildren._increment("/mission_test/nav_limit_count")
+        return ReconfigureResponse(config=request.config)
+
     def _refresh_pose(self, _request):
         self._publish_amcl_pose()
         return EmptyResponse()
@@ -206,6 +222,13 @@ class MockMissionChildren:
         pose.pose.covariance[7] = DEFAULT_READINESS_POLICY.max_covariance_y * 0.5
         pose.pose.covariance[35] = DEFAULT_READINESS_POLICY.max_covariance_yaw * 0.5
         self._amcl_pub.publish(pose)
+        transform = TransformStamped()
+        transform.header = pose.header
+        transform.child_frame_id = "base_Link"
+        transform.transform.translation.x = location["x"]
+        transform.transform.translation.y = location["y"]
+        transform.transform.rotation = pose.pose.pose.orientation
+        self._tf.sendTransform(transform)
 
     def _set_current_location(self, location_id: str) -> None:
         if location_id in self._locations:

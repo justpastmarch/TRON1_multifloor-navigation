@@ -15,6 +15,9 @@ from multifloor_manager.map_evidence import MapIdentity, MapOrigin
 from multifloor_manager.transitions import TransitionPolicy, TransitionCondition
 from stair_supervisor.msg import SupervisorState
 
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parent))  # sibling test fixtures
 import test_floor_selection as floor_selection_fixture
 
 

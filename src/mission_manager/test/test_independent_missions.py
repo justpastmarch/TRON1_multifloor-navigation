@@ -12,6 +12,9 @@ from mission_manager.mission_action_server import admit_goal
 from mission_manager.mission_types import MissionRunRequest, MissionType, SegmentExecution, SegmentExecutionStatus
 from mission_manager.route_planner import LogicalAnchor
 from mission_manager.console_navigation import _relocate_worker, _confirmed_idle, relocate
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parent))  # sibling test fixtures
 from test_ros_console import TestAdapter
 from test_photo_mission import PhotoTourTest
 

@@ -10,6 +10,7 @@ import threading
 from urllib.parse import urlparse
 
 import actionlib
+from dynamic_reconfigure.srv import Reconfigure, ReconfigureResponse
 from apriltag_ros.msg import AprilTagDetection, AprilTagDetectionArray
 from geometry_msgs.msg import PoseWithCovarianceStamped, TransformStamped
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal, MoveBaseResult
@@ -136,6 +137,11 @@ class SyntheticHardwarePeers:
         )
         self.clear_costmaps = rospy.Service(
             "/move_base/clear_costmaps", Empty, self._clear_costmaps
+        )
+        # NAV dispatch applies the floor speed limit to move_base first.
+        self.planner_limits = rospy.Service(
+            "/move_base/TrajectoryPlannerROS/set_parameters", Reconfigure,
+            lambda request: ReconfigureResponse(config=request.config)
         )
         self.move_base.start()
         self.timer = rospy.Timer(rospy.Duration(0.02), self._publish_sensors)
