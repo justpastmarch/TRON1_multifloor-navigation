@@ -459,8 +459,12 @@ routes:
   - - -1.0750000000000002
     - 2.705
   entry_reference:
+    # 2026-11-13: template rotated -6.7 deg about the entry point (-0.45, 0).
+    # Its stairs/walls were at +6.7 deg to this route's flight axes (template
+    # risers 7.0, walls 6.5; 105 field-cloud measurements 6.5-6.8). Route
+    # polygons were already stair-aligned and are unchanged.
     path: stair_5f_rf_up_entry.npy
-    sha256: 59523e8c92a6edfd233a85a2846fcc6ae4668c6cbfc91169f2abd396c85223ce
+    sha256: 1e4f98922ac85fdce58944be8291dec1817d54537b8135a4964ae52681281077
     yaw_candidates:
     - -0.17453292519943295
     - 0.0
