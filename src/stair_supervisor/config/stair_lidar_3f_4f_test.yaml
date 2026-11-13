@@ -158,6 +158,9 @@ routes:
     support_margin_m: 0.06
     # Landing arrival, turn, hold and adjoining flight handoff: 3 cm minimum.
     landing_support_margin_m: 0.03
+    # Flat-landing recovery band (3 -> 2 cm): below 3 cm only inward commands
+    # that do not shrink clearance are allowed; neutral/stale/below 2 cm stops.
+    landing_margin_recovery_m: 0.01
     # Additional pivot-disk clearance only; body/arrival support remains 3 cm.
     rotation_space_margin_m: 0.01
     # On ascent, measured 3-6 cm clearance can continue only with bounded
@@ -363,6 +366,9 @@ routes:
     margin_m: 0.02
     support_margin_m: 0.06
     landing_support_margin_m: 0.03
+    # Flat-landing recovery band (3 -> 2 cm): below 3 cm only inward commands
+    # that do not shrink clearance are allowed; neutral/stale/below 2 cm stops.
+    landing_margin_recovery_m: 0.01
     # Applies to both landing and rooftop turns; inherited by reverse traversal.
     rotation_space_margin_m: 0.01
     roof_pivot_radius_m: 0.35

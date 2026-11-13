@@ -387,7 +387,8 @@ class StairFeedback:
                            "flight_input_reobserve_sec", "flat_reobserve_sec", "landing_max_v",
                            "pose_jump_xy_m", "pose_jump_z_m", "pose_jump_reobserve_sec",
                            "flight_end_advance_m", "flight_end_advance_sec", "flight_end_flat_tolerance_m", "flight_end_height_gap_m",
-                           "turn_margin_recovery_m", "flight_margin_recovery_m", "rotation_space_margin_m", "roof_pivot_radius_m"}
+                           "turn_margin_recovery_m", "flight_margin_recovery_m", "landing_margin_recovery_m",
+                           "rotation_space_margin_m", "roof_pivot_radius_m"}
         if not keys <= set(limits) or set(limits) - keys - optional_limits or any(type(v) not in (int, float) or not math.isfinite(v) or v <= 0 for v in limits.values()):
             raise ValueError("route limits require finite positive commissioning values: " + str(sorted(keys)))
         if limits.get("entry_corridor_yaw", .1) >= math.pi/2:
@@ -446,6 +447,10 @@ class StairFeedback:
         if (limits.get('turn_margin_recovery_m', 0.) >
                 limits.get('support_margin_m', limits['margin_m'] + limits['anchor_uncertainty_m']) - limits['margin_m']):
             raise ValueError('turn recovery cannot cross the route minimum support margin')
+        # Without landing_support_margin_m no landing context exists, so the band is inert.
+        if ('landing_margin_recovery_m' in limits and 'landing_support_margin_m' in limits and
+                limits['landing_margin_recovery_m'] > limits['landing_support_margin_m'] - limits['margin_m'] + 1e-12):
+            raise ValueError('landing recovery band cannot cross margin_m')
         if (limits.get('flight_margin_recovery_m', 0.) >
                 limits.get('support_margin_m', limits['margin_m'] + limits['anchor_uncertainty_m']) - limits['margin_m']):
             raise ValueError('flight recovery cannot cross the route minimum support margin')
@@ -1604,11 +1609,25 @@ class StairFeedback:
                     "steering" if steering_inward else "heading" if heading_inward else "none")
                 if not flight_margin_recovery:
                     recovery_floor = margin
+            # A flat landing below its commissioned clearance may only move
+            # back inward: within a small commissioned band above margin_m,
+            # accept a bounded command whose end-of-horizon clearance does not
+            # shrink (selected below). A stationary/neutral request, a stale
+            # pose or a body below the band keeps the hard landing minimum.
+            landing_margin_recovery = bool(
+                margin_context == 'landing'
+                and phase in (Phase.LANDING, Phase.TURN_TO_NEXT_FLIGHT, Phase.ROOFTOP_TURN)
+                and raw_supported and not current_supported and not degraded and not neutral_only
+                and limits.get('landing_margin_recovery_m', 0.) > 0.)
+            if landing_margin_recovery:
+                recovery_floor = max(limits['margin_m'],
+                    margin - limits['landing_margin_recovery_m'])
             recovery = not current_supported and inside_support_union(support, polygons, recovery_floor)
             geometry["recovery_command_margin_m"] = float(
                 recovery_floor if recovery else margin)
             geometry["turn_margin_recovery"] = bool(turn_margin_recovery and recovery)
             geometry["flight_margin_recovery"] = bool(flight_margin_recovery and recovery)
+            geometry["landing_margin_recovery"] = bool(landing_margin_recovery and recovery)
             if not current_supported and not recovery:
                 self.debug = dict(tracking_state="CORRIDOR_LIMIT", loss_response=True, **geometry)
                 return EvidenceReport(phase, False, True, "body/clearance exceeds connected support", 0, 0, age)
@@ -1649,6 +1668,15 @@ class StairFeedback:
                     v = self.route['flight_input_v'][idx] if 'flight_input_v' in self.route else limits['flight_restart_v']
                     proposed = (v, w)
                     restart = True
+            elif not transition and landing_margin_recovery and recovery:
+                alternative = self._landing_recovery_command(
+                    pos[:2], yaw, support, v, w, horizon, polygons, recovery_floor, now)
+                if alternative is None:
+                    self.debug = dict(tracking_state="SUPPORT_LIMIT", loss_response=True,
+                                      proposed_command=[v, w], prediction_horizon_sec=horizon, **geometry)
+                    return EvidenceReport(phase, False, True, "no inward landing correction within recovery band", 0, 0, age)
+                v, w = alternative
+                adjusted = True
             elif not transition and (recovery or not self._swept_support(pos[:2], yaw, support, v, w, horizon, polygons, margin)):
                 entry_reserve = (phase is Phase.ALIGN and corridor_entry and recovery
                                  and not degraded and not neutral_only
@@ -2069,6 +2097,56 @@ class StairFeedback:
                 continue
             return 0., cw
         return None
+
+    @staticmethod
+    def _motion_end_body(position, yaw, support, v, w, horizon):
+        """Body points after a constant (v, w) arc for horizon seconds."""
+        theta = w * horizon
+        if abs(w) < 1e-8:
+            center = position + v * horizon * np.array([math.cos(yaw), math.sin(yaw)])
+        else:
+            center = position + (v / w) * np.array([math.sin(yaw + theta) - math.sin(yaw),
+                                                    math.cos(yaw) - math.cos(yaw + theta)])
+        c, s = math.cos(theta), math.sin(theta)
+        relative = support - position
+        return np.column_stack((c * relative[:, 0] - s * relative[:, 1],
+                                s * relative[:, 0] + c * relative[:, 1])) + center
+
+    def _landing_recovery_command(self, position, yaw, support, v, w, horizon, polygons, floor, now):
+        """Choose a slow command that moves a flat-landing body back inward.
+
+        Candidates: the requested command reduced in magnitude (braking is
+        immediate on a flat landing), then slow straight motion either way and
+        slow pivots either way. Each must keep its full swept body above the
+        recovery floor and end with no less clearance than now; the one ending
+        farthest inside wins. None means the hard stop is kept.
+        """
+        before = support_clearance(support, polygons)
+        if before is None:
+            return None
+        limits = self.route['limits']
+        slow_v = limits['hold_v']
+        slow_w = min(limits['max_w'], .5 * limits['max_w'] if abs(w) < 1e-9 else abs(w))
+        candidates = []
+        for scale in (1., .5, .25):
+            candidates.append((v * scale, w * scale))
+        candidates += [(slow_v, 0.), (-slow_v, 0.), (0., slow_w), (0., -slow_w)]
+        best = None
+        for raw_v, raw_w in candidates:
+            limited = self._limit_command(raw_v, raw_w, now)
+            # Flat landing: magnitude reduction is immediate, sign follows the request.
+            candidate = (math.copysign(min(abs(limited[0]), abs(raw_v)), raw_v) if abs(raw_v) > 1e-12 else 0.,
+                         math.copysign(min(abs(limited[1]), abs(raw_w)), raw_w) if abs(raw_w) > 1e-12 else 0.)
+            if max(abs(x) for x in candidate) < 1e-9:
+                continue
+            if not self._swept_support(position, yaw, support, *candidate, horizon, polygons, floor):
+                continue
+            after = support_clearance(self._motion_end_body(position, yaw, support, *candidate, horizon), polygons)
+            if after is None or after < before - 1e-6:
+                continue
+            if best is None or after > best[0] + 1e-9:
+                best = (after, candidate)
+        return None if best is None else best[1]
 
     def _supported_command(self, position, yaw, support, v, w, horizon, polygons, margin, now):
         """Find a smaller same-direction command whose full-body sweep fits.

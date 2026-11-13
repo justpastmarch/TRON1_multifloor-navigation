@@ -4,7 +4,7 @@ from dataclasses import replace
 import numpy as np,yaml
 from test_lidar_control import sample,Worker
 from test_supervisor import make_configuration
-from stair_supervisor.stair_feedback import StairFeedback
+from stair_supervisor.stair_feedback import StairFeedback,support_clearance
 from stair_supervisor.stair_evidence import Phase
 
 class LandingRegionTest(unittest.TestCase):
@@ -91,9 +91,10 @@ class LandingRegionTest(unittest.TestCase):
    self.assertFalse(result.faulted,result.detail)
    self.assertAlmostEqual(c.command()[0],.55)
 
- def setup_control(self):
+ def setup_control(self,band=True):
   path=Path(__file__).resolve().parents[1]/'config/stair_lidar_3f_4f_test.yaml'
   r=next(r for r in yaml.safe_load(path.read_text())['routes'] if r['id']=='stair_5f_rf_up');r=copy.deepcopy(r);r['id']='test_up';r.pop('motion_prediction',None)
+  if not band:r['limits'].pop('landing_margin_recovery_m')
   w=Worker();c=StairFeedback(w,np.eye(4),[r]);c.capture_entry('test_up',np.eye(4),.1,'recorded frame fixture',100.)
   c.arm(replace(make_configuration().profiles[0],timeout_sec=120.),100.);c.begin_phase(Phase.TURN_TO_NEXT_FLIGHT,100.)
   return w,c
@@ -138,14 +139,27 @@ class LandingRegionTest(unittest.TestCase):
   self.assertFalse(result.faulted,c.debug)
   self.assertEqual(c.command()[0],.55)
 
- def test_turn_does_not_accept_body_below_three_cm_clearance(self):
-  w,c=self.setup_control();c.turn_index=3
+ def turn_at_clearance(self,gap,band=True):
+  w,c=self.setup_control(band);c.turn_index=3
   # Top footprint extent at this yaw is .225*(|cos|+|sin|).
-  y=2.085-.225*(abs(math.cos(2.7007))+abs(math.sin(2.7007)))-.029
+  y=2.085-.225*(abs(math.cos(2.7007))+abs(math.sin(2.7007)))-gap
   w.value=sample(2,100.2,x=2.8338,y=y,z=1.819,yaw=2.7007)
-  result=c.evaluate(Phase.TURN_TO_NEXT_FLIGHT,100.21)
+  return c.evaluate(Phase.TURN_TO_NEXT_FLIGHT,100.21),c,w
+ def test_turn_does_not_accept_body_below_three_cm_clearance_without_band(self):
+  result,c,_=self.turn_at_clearance(.029,band=False)
   self.assertTrue(result.faulted)
   self.assertEqual(c.debug['tracking_state'],'CORRIDOR_LIMIT')
+ def test_turn_below_three_cm_only_moves_inward_within_band(self):
+  for gap in (.029,.021):
+   with self.subTest(gap=gap):
+    result,c,w=self.turn_at_clearance(gap)
+    self.assertFalse(result.faulted,c.debug);self.assertTrue(c.debug['landing_margin_recovery'])
+    pose,_,_,_,_,_,support=c._observe(w.value);v,omega=c.command()
+    end=c._motion_end_body(pose[:2,3],math.atan2(pose[1,0],pose[0,0]),support,v,omega,c.route['limits']['expire_sec'])
+    polygons=[c.route['landing_polygon']]
+    self.assertGreaterEqual(support_clearance(end,polygons),support_clearance(support,polygons)-1e-6)
+  result,c,_=self.turn_at_clearance(.019)
+  self.assertTrue(result.faulted);self.assertEqual(c.debug['tracking_state'],'CORRIDOR_LIMIT')
 
  def test_turn_recovery_rejects_rotation_that_shrinks_clearance(self):
   w,c=self.setup_control();c.turn_index=3
