@@ -74,6 +74,7 @@ if(CATKIN_ENABLE_TESTING)
   catkin_add_nosetests(test/test_idle_localization.py)
   catkin_add_nosetests(test/test_transitions.py)
   catkin_add_nosetests(test/test_policy_final_gate.py)
+  catkin_add_nosetests(test/test_transition_fault_record.py)
   set(_multifloor_python_executable "${PYTHON_EXECUTABLE}")
   set(PYTHON_EXECUTABLE "${CMAKE_CURRENT_SOURCE_DIR}/test/rostest_python.sh")
   add_rostest(

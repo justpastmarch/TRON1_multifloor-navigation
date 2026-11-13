@@ -1,9 +1,15 @@
 """A slow robot send must not stall state readers, yet ownership stays ordered."""
 from __future__ import annotations
 
+from pathlib import Path
+import sys
 import threading
 import time
 import unittest
+
+# nosetests (catkin run_tests) does not put the test directory on sys.path.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from test_supervisor import FakeAdmission, FakeClock, FakeTransport, ScriptedEvidence, make_configuration
 from stair_supervisor.configuration import Direction
