@@ -88,7 +88,7 @@
         <div class="page-heading"><div><div class="eyebrow">Manual & recovery</div><h1 style="margin-top:6px">직접 조작·이어서 진행</h1><p class="muted">수동 입력 중에도 자동 임무는 유지됩니다.</p></div></div>
         <div class="manual-layout"><section class="panel manual-card"><h3>수동 조작</h3><p class="muted">원을 움직이거나 키보드 방향키를 누르세요.<br>놓으면 수동 입력을 종료하고 자동 명령이 이어집니다.</p><div class="joystick" id="joystick" role="group" aria-label="수동 전후진·회전 조이스틱" aria-disabled="true"><div class="stick" id="stick"></div></div><div class="axis-readout" id="manualAxes">전진 0% · 회전 0%</div><div class="manual-label" id="manualNote" role="status">수동 입력 연결 확인 중</div><button id="manualStop" disabled>수동 입력 종료</button><p class="muted">전후진·회전 입력 범위 ±1 · ↑ 전진 / ↓ 후진 / ← 좌회전 / → 우회전</p></section>
         <div><section class="panel phase-card"><h2>계단 단계 이어가기</h2><div id="phaseStatus" class="status-text" role="status">계단 임무 상태 확인 중</div><button class="primary" id="phaseResume" disabled>현재 단계 이어가기</button><details><summary>수동 이동 후 단계 직접 지정</summary><label class="sr-only" for="phaseSelect">이어서 진행할 계단 단계</label><select id="phaseSelect" disabled></select><button id="phaseApply" disabled>선택 단계부터 진행</button><p class="muted" style="margin-top:9px">로봇을 해당 구간으로 수동 이동한 후 사용합니다. 앞선 단계 완료와 실제 위치를 확인합니다.</p></details><div id="phaseResult" role="status"></div><p class="muted" style="margin-top:13px">중단된 계단 경로가 보존되면 해당 경로의 현재 단계 또는 선택 단계에서 재개합니다. 도착 층은 계단 완료 후에만 확정됩니다.</p></section>
-        <section id="recoveryPanel" class="notice recovery-panel" hidden><b>계단 중단 후 선택</b><div>아직 계단 위라면 위의 ‘현재 단계 이어가기’를 사용하세요. 평지로 옮겨 계단 임무를 포기했다면 먼저 ‘중단·저장’으로 임무를 끝내고 아래에서 NAV 제어권을 복구하세요.</div><button id="recoverControl" disabled>평지 이동 확인 · NAV 복구</button></section></div></div>
+        <section id="recoveryPanel" class="notice recovery-panel" hidden><b>계단 중단 후 선택</b><div>아직 계단 위라면 위의 ‘현재 단계 이어가기’를 사용하세요. 평지로 옮겨 계단 임무를 포기했다면 먼저 ‘중단·저장’으로 임무를 끝내고 아래에서 NAV 제어권을 복구하세요.</div><button id="recoverControl" disabled>평지 이동 확인 · NAV 복구</button></section><section id="floorResumePanel" class="notice recovery-panel" hidden><b>층 전환 실패</b><div id="floorResumeStatus" role="status"></div><button id="floorResume" disabled>층 전환 이어가기</button></section></div></div>
       </section>
       <section id="diagnosticsView" role="tabpanel" aria-labelledby="diagnosticsTab" hidden>
         <div class="page-heading"><div><div class="eyebrow">Diagnostics & records</div><h1 style="margin-top:6px">상태와 기록</h1><p class="muted">센서 수신, 녹화 저장과 메일 발송 결과를 확인합니다.</p></div><button id="export">진단 내보내기</button></div>
@@ -172,6 +172,7 @@ $('roofRelocate').onclick=()=>prepareFlat('RF');
 $('roofPoseHelp').onclick=()=>{ $('localizationTools').open=true; if(!poseMode)$('poseMode').click(); $('mapCanvas').scrollIntoView({behavior:'smooth',block:'center'}); message('RF 지도에서 로봇의 실제 위치를 누르고 바라보는 방향으로 끈 뒤 위치 적용을 누르세요. 적용 후 옥상 순회를 다시 시작할 수 있습니다.'); };
 
 const stages={NAVIGATION:'평지 이동',STAIR:'계단 주행',FLOOR_TRANSITION:'도착 층 확인',SCAN:'센서 기록',PHOTO:'사진 촬영',RETURN_POSE:'출발 위치 복귀'};
+function floorResumable(){const f=state?.floor_fault,fl=state?.telemetry?.floor;return !!(state?.mode==='live'&&f&&f.target_confirmed&&fl&&fl.age_sec<=2&&fl.value.state===3&&fl.value.floor_id===f.source_floor);}
 function message(text){$('message').hidden=!text;$('message').textContent=text;}
 function invalidate(){lastPlan=null;$('planResult').replaceChildren();}
 let actualFloorInitialized=false,doorDeviceInitialized=false;
@@ -208,8 +209,12 @@ function controls(){
  const phase=state?.telemetry?.operator_phase;
  const stairWaiting=owner&&owner.age_sec<=2&&owner.value.state===2&&phase&&phase.age_sec<=2&&phase.value.active&&phase.value.waiting;
  const stairIdle=owner&&owner.age_sec<=2&&owner.value.state===2&&phase&&phase.age_sec<=2&&phase.value.resume_available&&!state?.active&&!state?.observed_active&&!state?.starting;
- $('recoveryPanel').hidden=!(stairWaiting||stairIdle);$('recoveryShortcut').hidden=!(stairWaiting||stairIdle);
- $('recoveryShortcut').textContent=stairWaiting?'계단 대기 중 · 단계 재개 / 중단 후 평지 복구':'계단 중단됨 · 현재 단계 재개 / 평지 NAV 복구';
+ const floorFault=floorResumable();
+ $('recoveryPanel').hidden=!(stairWaiting||stairIdle);$('recoveryShortcut').hidden=!(stairWaiting||stairIdle||floorFault);
+ $('recoveryShortcut').textContent=stairWaiting?'계단 대기 중 · 단계 재개 / 중단 후 평지 복구':stairIdle?'계단 중단됨 · 현재 단계 재개 / 평지 NAV 복구':'층 전환 실패 · 이어가기';
+ $('floorResumePanel').hidden=!floorFault;
+ if(floorFault){const f=state.floor_fault;$('floorResumeStatus').textContent=f.source_floor+' → '+f.target_floor+' 전환이 '+f.stage+' 단계에서 멈췄습니다 ('+f.reason+'). 계단은 다시 오르지 않고 남은 단계만 진행합니다.';}
+ $('floorResume').disabled=!floorFault||busy||state?.active||state?.observed_active||state?.starting||state?.recovering||state?.floor_selecting||state?.relocating||!connected;
  $('recoverControl').disabled=!stairIdle||busy||state?.recovering||state?.floor_selecting||!connected||!owner?.value.connected||state?.mode!=='live';
  $('selectFloor').disabled=state?.relocating||state?.recovering||state?.floor_selecting||busy||!connected||state?.mode!=='live';
  $('roofRelocate').disabled=$('selectFloor').disabled;
@@ -227,7 +232,7 @@ function controls(){
  manualControls();manualPoseControls();pointControls();
 }
 async function api(path,data){
- const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),path==='/api/select_floor'?30000:15000);
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),path==='/api/select_floor'?30000:path==='/api/resume_floor_transition'?45000:15000);
  try{
   const response=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json','X-TRON-Token':token},body:JSON.stringify(data),signal:controller.signal});
   const value=await response.json();if(!response.ok)throw Error(value.error||'요청 실패');return value;
@@ -448,6 +453,7 @@ $('retryPhoto').onclick=()=>{
 $('start').onclick=startRun;
 
 $('selectFloor').onclick=()=>prepareFlat($('actualFloor').value);
+$('floorResume').onclick=async()=>{const f=state?.floor_fault;if(!floorResumable()){message('이어 갈 층 전환 실패 상태가 아닙니다.');return;}if(!confirm(f.source_floor+' → '+f.target_floor+' 층 전환을 이어갑니다. 로봇이 '+f.target_floor+' 계단 도착 지점에 있습니까?'))return;busy=true;controls();try{const r=await api('/api/resume_floor_transition',{transition_id:f.transition_id,target_floor:f.target_floor});invalidate();message(r.note);}catch(e){message(e.message);}finally{busy=false;controls();}};
 $('recoverControl').onclick=async()=>{const phase=state?.telemetry?.operator_phase;if(!phase||phase.age_sec>2){message('계단 단계 상태가 최신이 아닙니다.');return;}const text=prompt('로봇을 계단참·계단에서 물리적으로 평지로 옮겼습니까? 계단 임무를 포기하고 NAV 제어권으로 바꾸려면 “평지 이동 완료”를 입력하세요.');if(text!=='평지 이동 완료')return;busy=true;controls();try{const r=await api('/api/recover_control',{confirmed_flat_ground:true,confirmed_physical_relocation:text,confirmed_run_id:phase.value.run_id||''});invalidate();message(r.note);}catch(e){message(e.message);}finally{busy=false;controls();}};
 $('cancel').onclick=async()=>{++startAttempt;endGesture();stopBusy=true;message('중지 요청을 전송하고 있습니다…');controls();try{const r=await api('/api/cancel',{});message(r.note);}catch(e){message('중지 응답을 확인하지 못했습니다: '+e.message+' · 제어 상태를 확인하세요.');}finally{stopBusy=false;controls();}};
 

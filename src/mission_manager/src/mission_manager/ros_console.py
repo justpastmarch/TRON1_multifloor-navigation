@@ -7,7 +7,7 @@ from collections import deque
 
 import actionlib
 import rospy
-from actionlib_msgs.msg import GoalStatusArray
+from actionlib_msgs.msg import GoalStatus, GoalStatusArray
 from std_msgs.msg import String
 from geometry_msgs.msg import PoseWithCovarianceStamped
 from nav_msgs.srv import GetMap
@@ -94,6 +94,7 @@ class RosConsole:
             pass
 
     def snapshot(self):
+        floor_fault = self.floor_fault()  # parameter read stays outside the console lock
         with self.lock:
             received, status = self.telemetry.get('mission_status', (0, {}))
             observed_active = time.monotonic()-received <= 2 and status.get('active', False)
@@ -104,6 +105,7 @@ class RosConsole:
             return dict(mail=mail_state,manual=self.manual.snapshot() if getattr(self,'manual',None) else {},hold=hold_state,mode='live', locations=self.locations, anchor=self.orchestrator.confirmed_location_id,
                         active=self.active, observed_active=observed_active,
                         starting=self.starting, recovering=getattr(self, 'recovering', False), floor_selecting=getattr(self,"floor_selecting",False), recording=self.recorder.snapshot(),
+                        floor_fault=floor_fault,
                         relocating=getattr(self, 'relocating', False), relocation=dict(getattr(self, 'relocation', {})),
                         navigation=self.map_view.snapshot(),
                         progress=self.progress if self.active else self.telemetry.get('mission_feedback', (0, {}))[1],
@@ -592,6 +594,68 @@ class RosConsole:
                 self.telemetry.pop('floor', None)
                 self.events.append(dict(time=time.time(), kind='floor_selection', detail='실제 층 지정: '+target))
             return dict(accepted=True, note='지도를 바꿨습니다. 자동 위치 확인 후 주행할 수 있습니다. 위치가 다르면 RViz에서 2D Pose Estimate로 지정하세요.')
+        finally:
+            with self.lock:
+                self.floor_selecting = False
+
+    def floor_fault(self, refresh=False):
+        """Last failed floor transition recorded by the floor manager (~last_fault), cached 1 s."""
+        now = time.monotonic()
+        stamp, value = getattr(self, '_floor_fault_cache', (float('-inf'), None))
+        if refresh or now-stamp > 1.:
+            try:
+                fetched = rospy.get_param('/multifloor_manager/last_fault', None)
+                value = fetched if isinstance(fetched, dict) else None
+            except Exception:  # master briefly unavailable: keep the last reading
+                pass
+            self._floor_fault_cache = (now, value)
+        return value
+
+    def resume_floor_transition(self, data):
+        """Repeat the failed directed floor transition so the floor manager continues it.
+
+        Only after the target floor was confirmed (the stair already succeeded):
+        the floor manager then resumes at its first unfinished stage without a
+        new stair traversal, or rejects the goal if the record is no longer valid.
+        """
+        from multifloor_manager.msg import FloorTransitionAction, FloorTransitionGoal
+        with self.lock:
+            tick, status = self.telemetry.get('mission_status', (0, {}))
+            if (self.active or self.starting or self.floor_selecting or getattr(self, 'recovering', False)
+                    or getattr(self, 'relocating', False) or time.monotonic()-tick > 2 or status.get('active')):
+                raise ValueError('임무와 층 변경이 끝난 뒤 층 전환을 이어가세요.')
+            floor_tick, floor = self.telemetry.get('floor', (0, {}))
+            if time.monotonic()-floor_tick > 2 or floor.get('state') != FloorState.FAULT:
+                raise ValueError('층 관리자가 FAULT 상태가 아닙니다. 이어 갈 층 전환이 없습니다.')
+        fault = self.floor_fault(refresh=True)
+        if not fault or not fault.get('target_confirmed'):
+            raise ValueError('이어 갈 수 있는 층 전환 실패 기록이 없습니다. 목표 층 확정 전에 실패했다면 층 선택으로 복구하세요.')
+        if (data.get('transition_id') != fault.get('transition_id')
+                or data.get('target_floor') != fault.get('target_floor')):
+            raise ValueError('층 전환 실패 기록이 바뀌었습니다. 현재 상태를 다시 확인하세요.')
+        if floor.get('floor_id') != fault.get('source_floor'):
+            raise ValueError('현재 층 상태가 실패한 층 전환의 출발 층과 다릅니다.')
+        with self.lock:
+            if self.floor_selecting:
+                raise ValueError('층 지도를 변경하는 중입니다.')
+            self.floor_selecting = True
+        try:
+            client = actionlib.SimpleActionClient('/multifloor/floor_transition', FloorTransitionAction)
+            if not client.wait_for_server(rospy.Duration(2.)):
+                raise ValueError('층 전환 action server에 연결할 수 없습니다.')
+            client.send_goal(FloorTransitionGoal(transition_id=fault['transition_id'],
+                                                 target_floor=fault['target_floor']))
+            if not client.wait_for_result(rospy.Duration(40.)):
+                client.cancel_goal()
+                raise ValueError('층 전환 이어가기가 40초 안에 끝나지 않아 취소했습니다.')
+            result = client.get_result()
+            if client.get_state() != GoalStatus.SUCCEEDED:
+                raise ValueError('층 전환 이어가기 실패: '+(result.reason if result is not None else '결과 없음'))
+            with self.lock:
+                self.telemetry.pop('floor', None)
+                self.events.append(dict(time=time.time(), kind='floor_selection',
+                                        detail='층 전환 이어가기 완료: '+fault['target_floor']))
+            return dict(accepted=True, note=fault['target_floor']+' 층 전환을 마쳤습니다. 위치 확인 후 다음 주행을 시작하세요.')
         finally:
             with self.lock:
                 self.floor_selecting = False

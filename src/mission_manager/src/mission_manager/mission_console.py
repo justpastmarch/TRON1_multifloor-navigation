@@ -101,6 +101,8 @@ class ConsoleServer:
                         return self.reply(200, owner.backend.recover_control(data))
                     if self.path == '/api/select_floor':
                         return self.reply(200, owner.backend.select_floor(data))
+                    if self.path == '/api/resume_floor_transition':
+                        return self.reply(200, owner.backend.resume_floor_transition(data))
                     method = {'/api/door/return': owner.door.manual_return,
                               '/api/door/stop': owner.door.stop,
                               '/api/plan': owner.backend.plan,

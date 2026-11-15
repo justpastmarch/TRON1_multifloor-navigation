@@ -209,8 +209,9 @@ evidence는 성공으로 처리되지 않습니다.
 (`transition_id`, `target_floor`)을 `~transition_resume_max_age_sec`(기본 300초) 안에
 다시 보내면 첫 미완료 단계부터 이어갑니다. 계단 성공 결과를 다시 쓰지 않고, 이미
 반영된 지도 교체도 반복하지 않습니다. 자세한 내용은
-[층 전환 상태머신 7.7](docs/transition-policy-state-machine.md)을 봅니다. 현재 콘솔에는
-이 재개 버튼이 없습니다.
+[층 전환 상태머신 7.7](docs/transition-policy-state-machine.md)을 봅니다. 콘솔의
+‘직접 조작·이어서 진행’ 탭에서는 이 조건일 때만 **층 전환 이어가기** 버튼이 나타나며,
+같은 goal을 다시 보냅니다. 계단 goal은 보내지 않습니다.
 
 ## 운영 시작과 readiness contract
 
