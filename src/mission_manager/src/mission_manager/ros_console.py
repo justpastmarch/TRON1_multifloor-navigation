@@ -331,7 +331,7 @@ class RosConsole:
             if kind == 'photo_return':
                 # Validate the return route before outbound motion as well.
                 saved=photo.snapshot()
-                origin=saved['origin']['id'] if saved.get('origin') and saved.get('stage')!='COMPLETE' else self.orchestrator.confirmed_location_id
+                origin=saved['origin']['id'] if saved.get('origin') and saved.get('stage') not in ('COMPLETE','CLOSED') else self.orchestrator.confirmed_location_id
                 last=payload['destination_id']
                 try:
                     back=self.planner.plan_from_current_pose(last,origin)
@@ -459,6 +459,18 @@ class RosConsole:
         if photo is None:raise ValueError('촬영 순회 설정이 없습니다.')
         return self.start(dict(destination=photo.settings['locations'][-1],
                                kind='rooftop_photo',record=data.get('record',False)))
+
+    def close_photo_session(self, data):
+        photo=getattr(self.orchestrator,'photo',None)
+        if photo is None:raise ValueError('촬영 미션 설정이 없습니다.')
+        with self.lock:
+            tick,status=self.telemetry.get('mission_status',(0,{}))
+            if (self.active or self.starting or getattr(self,'recovering',False) or getattr(self,'relocating',False)
+                    or time.monotonic()-tick>2 or status.get('active')):
+                raise ValueError('진행 중인 임무가 끝난 뒤 촬영 임무를 종료하세요.')
+            photo.close_without_return(data.get('mission_id'))
+            self.events.append(dict(time=time.time(),kind='photo',detail='촬영 임무를 복귀 없이 종료'))
+        return dict(closed=True,note='촬영 임무를 복귀 없이 종료했습니다. 로봇은 움직이지 않았고 사진은 그대로 남아 있습니다. 위치 유지 중이면 중단·저장으로 해제하세요.')
 
     def approve_return(self, data):
         photo=getattr(self.orchestrator,'photo',None)

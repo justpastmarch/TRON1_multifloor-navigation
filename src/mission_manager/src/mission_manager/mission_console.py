@@ -88,6 +88,8 @@ class ConsoleServer:
                         return self.reply(200, owner.backend.capture_and_mail(data))
                     if self.path == '/api/mail/settings':
                         return self.reply(200, owner.backend.mail_settings(data))
+                    if self.path == '/api/photo/close':
+                        return self.reply(200, owner.backend.close_photo_session(data))
                     if self.path == '/api/mail/retry':
                         return self.reply(200, owner.backend.mail_retry(data))
                     if self.path.startswith('/api/manual/'):

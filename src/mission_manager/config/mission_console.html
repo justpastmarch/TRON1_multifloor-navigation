@@ -78,7 +78,7 @@
             <button class="primary start-button" id="start" disabled>주행 시작</button><button class="plan-button" id="plan">경로 미리보기</button>
             <div id="readiness" class="readiness" role="status">연결 상태를 확인합니다.</div>
             <div id="planResult" class="plan-result" aria-live="polite"></div>
-            <section class="photo-session" id="photoSession" hidden><h2>촬영 임무·복귀</h2><div id="photoState" class="status-text">촬영 임무 대기</div><button id="retryPhoto" hidden disabled>현재 위치에서 촬영 임무 재시도</button><button id="approveReturn" disabled>복귀 승인·출발 위치로</button><details><summary>촬영 결과·저장 위치</summary><div id="photoFiles" class="muted"></div></details></section>
+            <section class="photo-session" id="photoSession" hidden><h2>촬영 임무·복귀</h2><div id="photoState" class="status-text">촬영 임무 대기</div><button id="retryPhoto" hidden disabled>현재 위치에서 촬영 임무 재시도</button><button id="approveReturn" disabled>복귀 승인·출발 위치로</button><button id="closePhoto" class="plan-button" hidden disabled>복귀 없이 촬영 임무 종료</button><details><summary>촬영 결과·저장 위치</summary><div id="photoFiles" class="muted"></div></details></section>
           </aside>
         </div>
       </section>
@@ -343,7 +343,7 @@ $('mailSave').onclick=async()=>{mailBusy=true;try{const r=await saveMail();messa
 
 function renderPhoto(){
  renderMail();const p=state?.photo||{},rec=state?.recording||{};
- const labels={PHOTO_ARRIVED:'촬영 완료 · 위치 유지 인계 중',RETURN_ARRIVED:'출발 위치 도착 · 위치 유지 인계 중',OUTBOUND:'촬영 순회 중',WAITING_RETURN:p.photo_outcome==='PARTIAL'?'촬영 일부 누락 · 복귀 승인 대기':'촬영 완료 · 복귀 승인 대기',RETURNING:'출발 위치로 복귀 중',COMPLETE:'출발 위치 복귀 완료',FAILED:'임무 중단 · 복귀 가능 상태 확인',CANCELLED:'사용자가 중단함',INTERRUPTED:'재시작으로 중단됨'};
+ const labels={PHOTO_ARRIVED:'촬영 완료 · 위치 유지 인계 중',RETURN_ARRIVED:'출발 위치 도착 · 위치 유지 인계 중',OUTBOUND:'촬영 순회 중',WAITING_RETURN:p.photo_outcome==='PARTIAL'?'촬영 일부 누락 · 복귀 승인 대기':'촬영 완료 · 복귀 승인 대기',RETURNING:'출발 위치로 복귀 중',COMPLETE:'출발 위치 복귀 완료',CLOSED:'복귀 없이 종료됨',FAILED:'임무 중단 · 복귀 가능 상태 확인',CANCELLED:'사용자가 중단함',INTERRUPTED:'재시작으로 중단됨'};
  $('photoSession').hidden=!p.stage;
  $('photoState').textContent=(labels[p.stage]||'촬영 임무 대기')+(p.detail?' · '+p.detail:'')+(state?.hold?.armed?' · 위치 유지 중':'');
  $('photoFiles').textContent=[...(p.photos||[]).map(x=>(names[x.location]||x.location)+': '+x.path),...(p.missed_photos||[]).map(x=>'촬영 누락: '+(names[x.location]||x.location)+' ('+x.reason+')')].join(' / ')||'저장된 사진이 없습니다.';
@@ -353,6 +353,8 @@ function renderPhoto(){
  $('retryPhoto').disabled=!p.retry_available||!enabled||(rec.busy&&!$('recordToggle').checked);
  $('approveReturn').hidden=!returnStage;
  $('approveReturn').disabled=!returnStage||!p.origin||!enabled||(rec.busy&&!$('recordToggle').checked);
+ $('closePhoto').hidden=!returnStage;
+ $('closePhoto').disabled=!returnStage||!enabled;
  manualControls();
 }
 function render(){
@@ -459,6 +461,13 @@ async function returnRun(){
  catch(error){message(error.message);}finally{busy=false;controls();renderPhoto();}
 }
 $('approveReturn').onclick=returnRun;
+$('closePhoto').onclick=async()=>{
+ const p=state?.photo||{};if(busy||!p.mission_id)return;
+ if(!confirm('출발 위치로 돌아가지 않고 이 촬영 임무를 끝냅니다.\n\n· 로봇은 움직이지 않습니다(위치 유지 중이면 그대로 유지).\n· 저장된 사진과 메일은 그대로 남습니다.\n· 이후 남은 지점 재시도와 복귀 승인은 할 수 없습니다.\n\n종료할까요?'))return;
+ busy=true;controls();renderPhoto();
+ try{const r=await api('/api/photo/close',{mission_id:p.mission_id});invalidate();message(r.note);}
+ catch(error){message(error.message);}finally{busy=false;controls();renderPhoto();}
+};
 $('retryPhoto').onclick=()=>{
  if(!state?.photo?.retry_available)return;
  document.querySelector(state?.telemetry?.floor?.value?.floor_id==='RF'?'[data-kind="rooftop_photo"]':'[data-kind="photo_return"]').click();

@@ -241,4 +241,31 @@ class PhotoTourTest(unittest.TestCase):
   self.assertNotEqual(r.status,SegmentExecutionStatus.SUCCESS);self.assertEqual(self.photo.snapshot()['stage'],'FAILED')
   self.assertFalse(any(v[0]=='RETURN_POSE' for v in self.executor.events))
 
+ def test_close_without_return_ends_session_without_motion(self):
+  self.run_tour();before=list(self.executor.events);session=self.photo.snapshot()
+  closed=self.photo.close_without_return(session['mission_id'])
+  self.assertEqual(closed['stage'],'CLOSED');self.assertEqual(closed['closed_from'],'WAITING_RETURN')
+  self.assertEqual(self.executor.events,before)                      # no motion of any kind
+  self.assertEqual(closed['photos'],session['photos'])               # photos kept
+  self.assertFalse(self.photo.snapshot()['retry_available'])
+  with self.assertRaisesRegex(ValueError,'복귀할 촬영 임무가 없습니다'):self.photo.preflight(True)
+  self.photo.preflight(False)                                        # a new tour is allowed again
+  self.assertNotEqual(self.run_return().status,SegmentExecutionStatus.SUCCESS)
+  self.assertEqual(self.executor.events,before)
+ def test_close_without_return_after_cancel_and_restart_survives_reload(self):
+  self.executor.cancel_photo_keys={'roof_loop_nw'}
+  self.host.run(MissionRunRequest('cancelled_tour','roof_loop_se',MissionType.PHOTO_TOUR,True),lambda p:None,lambda:False)
+  self.assertTrue(self.photo.snapshot()['retry_available'])
+  self.photo.close_without_return('cancelled_tour')
+  reloaded=PhotoMission(self.settings,self.temp.name,self.executor)
+  self.assertEqual(reloaded.snapshot()['stage'],'CLOSED');self.assertFalse(reloaded.snapshot()['retry_available'])
+ def test_close_without_return_refuses_running_finished_or_changed_sessions(self):
+  with self.assertRaisesRegex(ValueError,'끝낼 촬영 임무가 없습니다'):self.photo.close_without_return('none')
+  self.run_tour()
+  with self.assertRaisesRegex(ValueError,'바뀌었습니다'):self.photo.close_without_return('other_mission')
+  self.photo.save(stage='RETURNING')
+  with self.assertRaisesRegex(ValueError,'끝낼 촬영 임무가 없습니다'):self.photo.close_without_return('test_tour')
+  self.photo.save(stage='COMPLETE')
+  with self.assertRaisesRegex(ValueError,'끝낼 촬영 임무가 없습니다'):self.photo.close_without_return('test_tour')
+
 if __name__=='__main__':unittest.main()
