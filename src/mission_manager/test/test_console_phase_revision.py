@@ -19,6 +19,10 @@ class PhaseRevisionTest(unittest.TestCase):
     def run_button(self, *, current=False, change=None, retained=False, api_error=False, get_error=False):
         html=(Path(__file__).parents[1]/'config/mission_console.html').read_text()
         handler=html[html.index('async function applyPhase(current)'):html.index("$('phaseResume').onclick=")]
+        # The handler names routes and phases through the page's own helpers.
+        helpers='\n'.join(line for line in html.splitlines()
+                          if line.startswith(('const floorNames=','function routeName(','function phaseLabel(')))
+        handler=helpers+'\n'+handler
         old=dict(run_id='mission-one',route_id='stair_5f_rf_up',revision=5,
                  phase='FORWARD_SEGMENT_2',phases=['FORWARD_SEGMENT_2','ROOFTOP_TURN'],
                  active=not retained,resume_available=retained,waiting=True,continue_supported=True)
