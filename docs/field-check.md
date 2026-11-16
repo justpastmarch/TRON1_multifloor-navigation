@@ -10,6 +10,17 @@ python3 src/stair_supervisor/scripts/field_check.py /mnt/ethan/tron-bags/live/ui
 
 `_raw.bag`가 아니라 같은 이름의 본 BAG를 넣는다.
 
+콘솔에서 BAG 기록을 켜고 주행하면 저장이 끝난 뒤 이 점검이 자동으로(낮은 우선순위) 실행된다.
+- 원본 결과: `<bag>.check.json`
+- 요약: `<bag>.run.json`의 `field_check` (진단·기록 탭 BAG 카드에도 표시)
+
+`<bag>.run.json`(schema `tron-run/1`)에는 그 BAG에서 시작한 임무, 결과, 첫 정지 원인, 콘솔 이벤트,
+실험 조건·메모, 코드 commit, 계단 설정 sha256이 함께 남는다. 주행을 찾을 때는 BAG 대신 이 파일을 검색한다.
+
+```bash
+grep -l '"profile_id": "stair_3f_4f_up"' /mnt/ethan/tron-bags/live/ui-tests/*.run.json
+```
+
 ## 항목과 판단
 
 | # | 항목 | 정상 | 이상 신호 |

@@ -75,5 +75,44 @@ class RunRecordTest(unittest.TestCase):
         self.assertEqual(json.loads(self.bag.with_suffix('.run.json').read_text())['console_events'], [])
 
 
+    def test_post_run_check_is_attached_to_the_summary(self):
+        report = dict(config=dict(match=True), flights=[dict(route='stair_5f_rf_up', phase='FORWARD_SEGMENT_1', drift_slope_deg=0.83,
+                      min_clearance_m=0.126)], turns=[dict(route='stair_5f_rf_up', phase='TURN_TO_NEXT_FLIGHT', duration_s=40.04,
+                      forward_creep_mps=0.05, min_clearance_m=0.031)], first_faults=[], recovery_ticks={}, tx=dict(gap_p99_s=0.05, gap_max_s=0.1))
+        self.run.runner = lambda bag: report
+        self.run.begin(self.bag); self.run.finish(saved=True)
+        self.run.check_async().join(5)
+        check = json.loads(self.bag.with_suffix('.run.json').read_text())['field_check']
+        self.assertEqual(check['state'], 'done')
+        self.assertEqual((check['summary']['config_match'], check['summary']['min_clearance_m']), (True, 0.031))
+        self.assertEqual(check['summary']['flights'][0]['slope_deg'], 0.8)
+        self.assertEqual(self.run.snapshot()['field_check']['state'], 'done')
+
+    def test_failed_check_is_reported_and_unsaved_bags_are_not_checked(self):
+        self.run.runner = lambda bag: 1 / 0
+        self.run.begin(self.bag); self.run.finish(saved=True)
+        self.run.check_async().join(5)
+        self.assertEqual(json.loads(self.bag.with_suffix('.run.json').read_text())['field_check']['state'], 'error')
+        self.run.begin(self.bag); self.run.finish(saved=False)
+        self.assertIsNone(self.run.check_async())
+
+    def test_real_field_check_script_reads_a_console_bag(self):
+        import rosbag
+        from std_msgs.msg import String
+        import rospy
+        from mission_manager.run_record import FIELD_CHECK, RunRecord as Real
+        import hashlib
+        config = FIELD_CHECK.parents[1] / 'config' / 'stair_lidar_3f_4f_test.yaml'
+        sha = hashlib.sha256(config.read_bytes()).hexdigest()
+        with rosbag.Bag(str(self.bag), 'w') as bag:
+            for i in range(20):
+                t = rospy.Time.from_sec(1.8e9 + i * .1)
+                bag.write('/stair_supervisor/tracking_status', String(json.dumps(dict(config_sha256=sha))), t)
+                bag.write('/stair_supervisor/websocket_tx', String(json.dumps(dict(title='request_twist'))), t)
+        summary = __import__('mission_manager.run_record', fromlist=['x']).summarize_field_check(Real._run_field_check(self.bag, timeout=120))
+        self.assertTrue(summary['config_match'])
+        self.assertEqual((summary['flights'], summary['first_faults']), ([], []))
+
+
 if __name__ == '__main__':
     unittest.main()

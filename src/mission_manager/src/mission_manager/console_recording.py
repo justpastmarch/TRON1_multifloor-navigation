@@ -217,6 +217,8 @@ class ConsoleRecording:
                 self.state = 'error'
                 self.error = '정상 저장을 확인하지 못했습니다. .active와 로그를 보존했습니다.'
             self.run.finish(local_saved, self.error)
+            if local_saved:
+                self.run.check_async()
             if raw_name:
                 self.raw_copies[raw_name].update(
                     state='error' if seal_error else 'not_recorded' if raw_absent else 'copying', error=seal_error)

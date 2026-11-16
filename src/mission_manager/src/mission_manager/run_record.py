@@ -9,6 +9,7 @@ config hash. Recording only: nothing here commands the robot or gates a run.
 import json
 import os
 import subprocess
+import sys
 import threading
 import time
 from pathlib import Path
@@ -19,6 +20,7 @@ RESULT_NAMES = {0: 'OK', 1: 'BUSY', 2: 'INVALID_GOAL', 3: 'CAPABILITY_DISABLED',
                 9: 'MISSION_ABORT'}
 NOTE_MAX = 500
 _REPO = Path(__file__).resolve().parents[4]
+FIELD_CHECK = _REPO / 'src' / 'stair_supervisor' / 'scripts' / 'field_check.py'
 
 
 def code_version(repo=_REPO):
@@ -44,9 +46,26 @@ def _iso(t):
     return time.strftime('%Y-%m-%dT%H:%M:%S', time.localtime(t)) + '%+03d:00' % (-time.timezone // 3600)
 
 
+def summarize_field_check(report):
+    """Condense one field_check.py report into the numbers an operator compares run to run."""
+    flights = [dict(route=f['route'], phase=f['phase'], slope_deg=round(f['drift_slope_deg'], 1),
+                    min_clearance_m=f.get('min_clearance_m')) for f in report.get('flights', [])]
+    turns = [dict(route=t['route'], phase=t['phase'], duration_s=round(t['duration_s'], 1),
+                  creep_mps=t.get('forward_creep_mps'), min_clearance_m=t.get('min_clearance_m'))
+             for t in report.get('turns', [])]
+    clearances = [x['min_clearance_m'] for x in flights + turns if isinstance(x.get('min_clearance_m'), (int, float))]
+    return dict(config_match=report.get('config', {}).get('match'), flights=flights, turns=turns,
+                min_clearance_m=min(clearances) if clearances else None,
+                first_faults=[dict(route=f.get('route'), phase=f.get('phase'), reason=f.get('reason'))
+                              for f in report.get('first_faults', [])],
+                recovery_ticks=report.get('recovery_ticks', {}),
+                tx_gap_p99_s=report.get('tx', {}).get('gap_p99_s'), tx_gap_max_s=report.get('tx', {}).get('gap_max_s'))
+
+
 class RunRecord:
-    def __init__(self, clock=time.time, version=lambda: dict(_CODE_VERSION)):
+    def __init__(self, clock=time.time, version=lambda: dict(_CODE_VERSION), runner=None):
         self.lock = threading.RLock()
+        self.runner = runner or self._run_field_check
         self.clock, self.version = clock, version
         self.events_provider = None   # callable -> console events (dicts with time/kind/detail)
         self.current = None
@@ -112,6 +131,7 @@ class RunRecord:
             if source is None:
                 return dict(active=False, notes=[], missions=0, summary_path=None)
             return dict(active=self.current is not None, notes=list(source.get('notes', [])),
+                        field_check=None if self.current is not None else source.get('field_check'),
                         missions=len(source.get('missions', [])), results=list(source.get('results', []))[-3:],
                         summary_path=None if self.current is not None else self.last_path)
 
@@ -139,6 +159,45 @@ class RunRecord:
                 return None
             self.last_path, self.last_record = str(path), record
             return str(path)
+
+    def check_async(self):
+        """Run the read-only post-run field check on the last saved BAG (background, low priority)."""
+        with self.lock:
+            if self.last_record is None or not self.last_record.get('bag_saved'):
+                return None
+            path, bag = self.last_path, self.last_record['bag']
+            self.last_record['field_check'] = dict(state='running')
+        thread = threading.Thread(target=self._check, args=(path, bag), daemon=True, name='run-field-check')
+        thread.start()
+        return thread
+
+    def _check(self, path, bag):
+        try:
+            report = self.runner(bag)
+            outcome = dict(state='done', summary=summarize_field_check(report))
+        except Exception as error:  # noqa: BROAD_EXCEPT_OK - analysis only; the BAG is already saved
+            outcome = dict(state='error', error='{}: {}'.format(type(error).__name__, error)[:300])
+        with self.lock:
+            try:
+                data = json.loads(Path(path).read_text())
+                data['field_check'] = outcome
+                self._write(Path(path), data)
+            except (OSError, ValueError):
+                return
+            if self.last_path == path:
+                self.last_record = data
+
+    @staticmethod
+    def _run_field_check(bag, timeout=900):
+        output = Path(bag).with_suffix('.check.json')
+        command = ['nice', '-n', '15', sys.executable, str(FIELD_CHECK), '--json', str(output), str(bag)]
+        result = subprocess.run(command, capture_output=True, text=True, timeout=timeout)
+        if result.returncode or not output.exists():
+            raise RuntimeError((result.stderr or result.stdout or 'field_check failed').strip()[-300:])
+        reports = json.loads(output.read_text())
+        if not reports:
+            raise RuntimeError('field_check produced no report')
+        return reports[0]
 
     def _append(self, key, fields):
         with self.lock:
