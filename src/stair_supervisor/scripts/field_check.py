@@ -23,7 +23,6 @@ from pathlib import Path
 
 import numpy as np
 import rosbag
-import yaml
 
 DEBUG = '/stair_supervisor/control_debug'
 STATUS = '/stair_supervisor/tracking_status'
@@ -37,8 +36,11 @@ def wrap(a):
 
 
 def flight_axes(config):
+    # Load through the supervisor's own loader: DOWN routes carry only
+    # `reverse_of` in the YAML and get their flights when the file is loaded.
+    from stair_supervisor.configuration import load_lidar_configuration
     axes = {}
-    for route in yaml.safe_load(config.read_text())['routes']:
+    for route in load_lidar_configuration(config, 'control', False).document['routes']:
         for i in (1, 2, 3):
             flight = route.get('flight_%d' % i)
             if flight:
