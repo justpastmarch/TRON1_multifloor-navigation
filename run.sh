@@ -165,9 +165,36 @@ remote_ssh_check() {
     return 1
 }
 
+wait_for_mini_pc() {
+    # After a reboot the mini PC takes ~1.5 min to answer SSH and a few more
+    # seconds to sync NTP. Wait (bounded) instead of failing the first try;
+    # the checks below still run unchanged once it answers.
+    local target="$1" limit="${MINI_PC_BOOT_WAIT_SEC:-180}" start now waited last=-1
+    start="$(date +%s)"
+    while :; do
+        if [[ "$(ssh -o BatchMode=yes -o ConnectTimeout=3 "$target" \
+                'timedatectl show -p NTPSynchronized --value' 2>/dev/null)" == "yes" ]]; then
+            (( last >= 0 )) && printf '[WAIT] mini PC ready after %ss\n' "$(( $(date +%s) - start ))"
+            return 0
+        fi
+        now="$(date +%s)"; waited=$(( now - start ))
+        if (( waited >= limit )); then
+            printf '[WAIT] mini PC did not answer (or sync its clock) within %ss\n' "$limit" >&2
+            return 0  # fall through: the normal checks report the exact failure
+        fi
+        if (( last < 0 || waited - last >= 15 )); then
+            printf '[WAIT] waiting for mini PC %s (%ss / %ss) - normal right after a reboot\n' \
+                "$target" "$waited" "$limit"
+            last="$waited"
+        fi
+        sleep 3
+    done
+}
+
 remote_check() {
     local target="${MINI_PC_USER}@${MINI_PC_HOST}"
     local remote_epoch local_epoch delta clock_status
+    wait_for_mini_pc "$target"
     printf '[SSH] connecting to mini PC: %s\n' "$target"
     remote_ssh_check "$target" 'ROS files and tmux' \
         "test -r /opt/ros/noetic/setup.bash && test -r '${MINI_PC_WORKSPACE}/devel/setup.bash' && test -r '${MINI_PC_WORKSPACE}/src/sensor_integration/launch/wf_mapping.launch' && command -v tmux >/dev/null"
