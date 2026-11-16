@@ -9,6 +9,8 @@ import time
 import uuid
 import xmlrpc.client
 
+from .run_record import RunRecord
+
 
 # rosbag uses whole-topic boost::regex_match; keep the helper full-match too.
 # Record RGB JPEG and control/sensor evidence. Depth/infrared streams and
@@ -49,6 +51,7 @@ class ConsoleRecording:
         self.copy_lock = threading.Lock()
         self.raw_capture_unverified = False
         self.raw_pending = False
+        self.run = RunRecord()
 
     def snapshot(self):
         with self.lock:
@@ -63,7 +66,8 @@ class ConsoleRecording:
                         raw_bag_path=str(self.raw_path or ''),
                         raw_copies=[dict(item) for item in self.raw_copies.values()],
                         raw_capture_unverified=self.raw_capture_unverified,
-                        excluded_topics_regex=self.excluded_topics_regex)
+                        excluded_topics_regex=self.excluded_topics_regex,
+                        run=self.run.snapshot())
 
     def start(self, stop_event=None):
         with self.lock:
@@ -144,6 +148,7 @@ class ConsoleRecording:
                     raise ValueError(error)
                 if subscribed and not self.stopping and not (stop_event and stop_event.is_set()):
                     self.state = 'recording'
+                    self.run.begin(path, self.raw_path)
                     return self.snapshot()
             time.sleep(.05)
         self.stop()
@@ -211,6 +216,7 @@ class ConsoleRecording:
             else:
                 self.state = 'error'
                 self.error = '정상 저장을 확인하지 못했습니다. .active와 로그를 보존했습니다.'
+            self.run.finish(local_saved, self.error)
             if raw_name:
                 self.raw_copies[raw_name].update(
                     state='error' if seal_error else 'not_recorded' if raw_absent else 'copying', error=seal_error)

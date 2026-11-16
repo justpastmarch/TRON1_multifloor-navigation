@@ -41,6 +41,7 @@ class RosConsole:
         self.result = None
         self.progress = {}
         self.recorder = ConsoleRecording()
+        self.recorder.run.events_provider = self._events_copy
         self.starting = False
         self.stop_requested = False
         self.generation = 0
@@ -76,8 +77,25 @@ class RosConsole:
         rospy.on_shutdown(self.close)
         rospy.loginfo('Mission console http://127.0.0.1:%d', self.http.http.server_port)
 
+    def _events_copy(self):
+        # Called from the recorder's finalize thread: never take the console lock.
+        for _ in range(3):
+            try:
+                return list(self.events)
+            except RuntimeError:
+                continue
+        return []
+
+    def run_note(self, data):
+        result = self.recorder.run.note(data.get('text'))
+        with self.lock:
+            self.events.append(dict(time=time.time(), kind='note', detail='메모: '+str(data.get('text','')).strip()[:80]))
+        return dict(result, note='메모를 '+('현재 녹화' if result['saved_to']=='current' else '마지막 녹화')+' 요약에 저장했습니다.')
+
     def observe(self, key, value):
         with self.lock:
+            if key == 'control':
+                self.recorder.run.control(value)
             previous = self.telemetry.get(key, (None, {}))[1]
             if key == 'mission_result' or (key in ('floor', 'supervisor') and value.get('detail') != previous.get('detail')):
                 self.events.append(dict(time=time.time(), kind=key, detail=value.get('detail', value.get('reason', ''))))
@@ -444,6 +462,11 @@ class RosConsole:
                                       done_cb=lambda s,r:self.done(s,r,generation),
                                       feedback_cb=lambda m:self.feedback(m,generation))
                 self.events.append(dict(time=time.time(), kind='request', detail=('테스트 시작: ' if record else '주행 시작: ')+destination))
+                floor_now = self.telemetry.get('floor', (0, {}))[1]
+                self.recorder.run.mission(kind=data.get('kind', 'navigate'), destination=destination, generation=generation,
+                    start_floor=floor_now.get('floor_id'), resume_phase=data.get('resume_phase') if resume else None,
+                    segments=[{k: seg.get(k) for k in ('type', 'target_id', 'profile_id', 'source_floor', 'target_floor')}
+                              for seg in plan.get('segments', [])])
                 return dict(submitted=True, destination=destination, recording=record)
         except Exception:
             with self.lock:
@@ -490,6 +513,9 @@ class RosConsole:
             if generation is not None and generation != self.generation:
                 return
             self.active = False
+            primitive_result = primitive(result) if result else {}
+            self.recorder.run.result(status, primitive_result.get('result_code'), primitive_result.get('reason', '결과 없음'),
+                                     primitive_result.get('mission_id', ''))
             # Failed trials retain evidence through RC recovery and retries.
             # Explicit Stop/cancel still finalizes immediately; successful runs
             # keep their existing automatic save behavior.
