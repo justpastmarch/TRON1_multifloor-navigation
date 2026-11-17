@@ -598,7 +598,7 @@ function renderAlert(){
  $('autoHeading').textContent=a?a.title:(state?.active||state?.observed_active)?'임무 진행 중':'주행을 시작하세요';
  if(!a){alertKey='';return;}
  banner.dataset.level=a.level;$('alertTitle').textContent=a.title;$('alertText').textContent=a.text||'';
- const action=$('alertAction');action.hidden=!(a.view||a.run);action.textContent=a.action||'';
+ const action=$('alertAction');action.hidden=!(a.run||(a.view&&$(a.view+'View').hidden));action.textContent=a.action||'';
  action.onclick=()=>{if(a.run)a.run();else switchView(a.view);};
 }
 function renderLiveStatus(){
@@ -613,8 +613,7 @@ function renderLiveStatus(){
  $('connection').dataset.status=!connected?'offline':state?.mode==='preview'?'preview':fresh?'live':'offline';
  $('floor').textContent=fresh?floor.value.floor_id||'미확인':'—';
  $('owner').textContent=connected&&owner&&owner.age_sec<=2?['DISARMED','NAV','STAIR','FAULT'][owner.value.state]||'—':'—';
- const age=tracking?.value?.geometry_age_sec;
- $('age').textContent=connected&&typeof age==='number'&&tracking.age_sec<=2?(age+tracking.age_sec).toFixed(2)+' s':'—';
+ $('age').textContent=lidarAge===null?'—':lidarAge.toFixed(2)+' s';
 }
 setInterval(()=>{
  if(state){const elapsed=(performance.now()-stateReceivedAt)/1000;for(const [key,t] of Object.entries(state.telemetry||{}))t.age_sec=stateBaseAges[key]+elapsed;}
@@ -659,7 +658,7 @@ function switchView(view){
  for(const [name,id] of [['auto','autoView'],['manual','manualView'],['diagnostics','diagnosticsView']])$(id).hidden=view!==name;
  document.querySelectorAll('.view-tabs [data-view]').forEach(button=>{const selected=button.dataset.view===view;button.setAttribute('aria-selected',String(selected));button.tabIndex=selected?0:-1;});
  if(view==='auto')requestAnimationFrame(drawMap);
- manualControls();
+ manualControls();if(state)renderAlert();
 }
 for(const button of document.querySelectorAll('[data-view]'))button.onclick=()=>switchView(button.dataset.view);
 document.querySelectorAll('.view-tabs [role=tab]').forEach(tab=>tab.addEventListener('keydown',event=>{
