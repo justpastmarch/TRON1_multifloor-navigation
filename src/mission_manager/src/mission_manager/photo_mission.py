@@ -127,8 +127,12 @@ class PhotoMission:
         return len(set(self.settings['locations'])) == len(self.settings['locations'])
 
     def _retry_available(self, session):
+        # A finished tour that missed photos may also retry: only the missed
+        # visits remain, the original origin/return pose is kept.
+        stage=session.get('stage')
         return bool(session.get('origin') and self._route_matches(session) and
-                    session.get('stage') in ('FAILED','CANCELLED','INTERRUPTED') and
+                    (stage in ('FAILED','CANCELLED','INTERRUPTED') or
+                     (stage=='WAITING_RETURN' and session.get('missed_photos'))) and
                     not session.get('return_started',False) and
                     self._remaining_locations(session))
 

@@ -353,7 +353,7 @@ function renderPhoto(){
  $('photoFiles').textContent=[...(p.photos||[]).map(x=>(names[x.location]||x.location)+': '+x.path),...(p.missed_photos||[]).map(x=>'촬영 누락: '+(names[x.location]||x.location)+' ('+x.reason+')')].join(' / ')||'저장된 사진이 없습니다.';
  const returnStage=['WAITING_RETURN','FAILED','CANCELLED','INTERRUPTED'].includes(p.stage);
  const enabled=connected&&state?.mode==='live'&&!busy&&!state.active&&!state.observed_active&&!state.recovering&&!state.relocating&&!state.floor_selecting&&!state.starting&&(!rec.busy||rec.state==='recording');
- $('retryPhoto').hidden=!p.retry_available;
+ $('retryPhoto').hidden=!p.retry_available;$('retryPhoto').textContent=p.stage==='WAITING_RETURN'?`누락 지점 다시 촬영 (${(p.missed_photos||[]).length}곳)`:'현재 위치에서 촬영 임무 재시도';
  $('retryPhoto').disabled=!p.retry_available||!enabled||(rec.busy&&!$('recordToggle').checked);
  $('approveReturn').hidden=!returnStage;
  $('approveReturn').disabled=!returnStage||!p.origin||!enabled||(rec.busy&&!$('recordToggle').checked);
