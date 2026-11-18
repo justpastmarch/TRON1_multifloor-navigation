@@ -213,8 +213,12 @@ routes:
     FORWARD_SEGMENT_2: 45.0
     EXIT_CONFIRM: 15.0
   entry_reference:
+    # 2026-11-18: template leveled 4.0 deg about the entry point (-0.45, 0)
+    # (yaw unchanged). Its parallel side walls leaned 3.5/3.9 deg the same
+    # way, so its up axis was 4.0 deg off gravity and the entry fit failed the
+    # 5 deg IMU-gravity check (9/28 success replays at 5.7 deg; leveled 1.9).
     path: stair_3f_4f_entry.npy
-    sha256: 507f594e1db74370bdd961f9d1671e498a0400a3840953150dbbef1bb7ad6469
+    sha256: fce113c6a4bf6793156b7c01e4ee9166e80e843fc9bc7fb15fe29ad0d815b40c
     yaw_candidates:
     - -0.17453292519943295
     - 0.0
