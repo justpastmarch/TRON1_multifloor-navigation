@@ -224,7 +224,7 @@ class MappingConsole:
             if self.map_received==0:raise RuntimeError('SLAM 지도 출력 대기 시간이 지났습니다. 센서 시각과 TF를 확인하세요.')
             self.session['state']='MAPPING'
             atomic_json(directory/'capture.json',dict(topics=['/scan','/tron/wheel_odom_raw','/tf','/tf_static'],source='existing MID360 scan pipeline',
-                                                     raw_lidar='/livox/lidar,/livox/imu on mini PC' if self.raw_name else 'not recorded',motion_commands_sent=0))
+                                                     raw_lidar='/livox/lidar,/livox/imu,/camera1/color/image_raw/compressed on mini PC' if self.raw_name else 'not recorded',motion_commands_sent=0))
             return dict(session_id=identifier)
         except Exception:
             self.stop({})
@@ -252,7 +252,8 @@ class MappingConsole:
             # Console runs on the mini PC beside the LiDAR: record the raw
             # stream into the session folder like the 2D input.
             try:
-                self.raw_recorder=Process(['rosbag','record','-O',str(directory/'raw.bag'),'/livox/lidar','/livox/imu'],directory/'raw_record.log')
+                self.raw_recorder=Process(['rosbag','record','-O',str(directory/'raw.bag'),'/livox/lidar','/livox/imu',
+                                           '/camera1/color/image_raw/compressed','/camera1/color/camera_info'],directory/'raw_record.log')
             except OSError as error:
                 atomic_json(directory/'raw.json',dict(state='failed',error='원본 LiDAR 녹화 시작 실패: '+str(error)));return
             self.raw_name='raw.bag'

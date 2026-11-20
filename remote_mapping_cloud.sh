@@ -18,7 +18,8 @@ case "$1" in
         [[ $# == 2 ]] || exit 2
         ssh "${ssh_opts[@]}" "$target" "systemd-run --user --collect --unit=tron1-rawbag-$2 --property=KillSignal=SIGINT --property=TimeoutStopSec=60s \
             bash -c '$ros_env; source ${base}/runtime.env; export ROS_MASTER_URI ROS_IP; unset ROS_HOSTNAME; mkdir -p ${base}/bags; \
-            exec rosbag record -O ${raw} /livox/lidar /livox/imu /scan /tron/wheel_odom_raw /tf /tf_static __name:=$2' >/dev/null"
+            exec rosbag record -O ${raw} /livox/lidar /livox/imu /scan /tron/wheel_odom_raw /tf /tf_static \
+            /camera1/color/image_raw/compressed /camera1/color/camera_info __name:=$2' >/dev/null"
         if ! ssh "${ssh_opts[@]}" "$target" "for i in \$(seq 1 80); do test -f '${raw}.active' && exit 0; sleep .1; done; exit 1"; then
             ssh "${ssh_opts[@]}" "$target" "systemctl --user stop 'tron1-rawbag-$2.service'" || true
             echo 'MiniPC mapping recording did not become ready.' >&2; exit 1

@@ -27,7 +27,9 @@ MAX_WAYPOINTS = 100
 # Recorded beside the drive on the mini PC (no raw LiDAR: about 7 MB/min).
 DRIVE_TOPICS = ['/scan', '/tron/wheel_odom_raw', '/tf', '/tf_static', '/amcl_pose', '/initialpose',
                 '/move_base/NavfnROS/plan', '/move_base/goal', '/move_base/status', '/move_base/result',
-                '/navigation/cmd_vel', '/stair_supervisor/state']
+                '/navigation/cmd_vel', '/stair_supervisor/state',
+                # Robot RGB (JPEG, ~0.8 MB/s) is always part of the drive record.
+                '/camera1/color/image_raw/compressed', '/camera1/color/camera_info']
 
 
 def summarize_drive(path):

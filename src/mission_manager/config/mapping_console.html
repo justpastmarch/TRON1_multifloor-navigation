@@ -18,7 +18,7 @@ input[type=checkbox]{flex:none;min-width:0;width:auto;min-height:auto;margin-rig
 <div class="progress" id="progress"><div class="bar"><span id="progressBar"></span></div><p id="progressText"></p></div>
 <details><summary>기존 주행 BAG으로 만들기</summary><div class="row"><select id="oldBag" aria-label="기존 BAG"></select><button id="importCompare">BAG 불러와 만들기</button></div><p class="muted">평지 기록을 선택하세요. 같은 이름의 _raw BAG이 있으면 3D도 만듭니다.</p></details>
 <div class="maps" style="margin-top:20px"><div><h2>2D 지도 · SLAM Toolbox</h2><div class="viewer"><canvas id="canvasA" aria-label="2D 지도"></canvas><div class="tools"><button data-zoom="canvasA:1.4">＋</button><button data-zoom="canvasA:0.7">－</button><button data-fit="canvasA">맞춤</button></div><div class="empty" id="emptyA">기록을 선택해 지도를 만들거나 아래 목록에서 미리보기를 누르세요.</div><div class="hint">끌어서 이동 · 휠/두 손가락으로 확대</div></div><p id="infoA"></p></div>
-<div><h2>3D 지도 · 원본 LiDAR</h2><div class="viewer"><canvas id="cloudCanvas" aria-label="3D 점군 지도"></canvas><div class="tools"><button id="cloudTop">위에서</button><button id="cloudSide">비스듬히</button><button id="cloudFit">맞춤</button></div><div class="empty" id="emptyB">3D 지도가 없습니다.</div><div class="hint">끌어서 회전 · 오른쪽/Shift+끌기 이동 · 휠 확대</div></div><label class="cut">표시 높이 (천장 숨기기)<input id="cloudCut" type="range" min="0" max="1000" value="1000" aria-label="표시 높이 상한"><span id="cutValue"></span></label><p id="infoB"></p></div></div></section>
+<div><h2>3D 지도 · 원본 LiDAR</h2><div class="viewer"><canvas id="cloudCanvas" aria-label="3D 점군 지도"></canvas><div class="tools"><button id="cloudTop">위에서</button><button id="cloudSide">비스듬히</button><button id="cloudFit">맞춤</button></div><div class="empty" id="emptyB">3D 지도가 없습니다.</div><div class="hint">끌어서 회전 · 오른쪽/Shift+끌기 이동 · 휠 확대</div></div><label class="cut">아래 (바닥 숨기기)<input id="cloudLow" type="range" min="0" max="1" value="0" step="0.05" aria-label="표시 높이 하한"></label><label class="cut">위 (천장 숨기기)<input id="cloudCut" type="range" min="0" max="1" value="1" step="0.05" aria-label="표시 높이 상한"></label><div class="cut"><span id="cutValue"></span><button id="cloudAll" style="min-height:30px;padding:3px 10px;font-size:12px">모두 표시</button></div><p id="infoB"></p></div></div></section>
 <section><h2>저장된 장소·지도</h2><p class="muted">미리보기와 다운로드는 현재 지도·주행 설정을 바꾸지 않습니다. SLAM Toolbox 그래프가 저장된 버전은 첫 기록 위치에서 이어서 작성할 수 있습니다.</p><div id="library" class="library"></div></section>
 <section><h2>작업 상태</h2><button id="cancelJob">현재 지도 작업 중단</button><div id="jobs" class="status" role="status"></div><p id="root" class="muted"></p></section>
 </main><script>
@@ -66,7 +66,7 @@ class CloudView{constructor(canvas,empty){this.c=canvas;this.empty=empty;this.n=
  const gl=this.gl=canvas.getContext('webgl',{antialias:true});if(!gl){empty.textContent='이 브라우저는 WebGL을 지원하지 않습니다.';return;}
  const sh=(type,src)=>{const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s;};
  const p=this.prog=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,'attribute vec3 p;uniform mat4 m;uniform vec2 z;uniform float ps;varying float h;void main(){gl_Position=m*vec4(p,1.);gl_PointSize=ps;h=p.z;}'));
- gl.attachShader(p,sh(gl.FRAGMENT_SHADER,'precision mediump float;varying float h;uniform vec2 z;uniform float cut;void main(){if(h>cut)discard;float t=clamp((h-z.x)/(z.y-z.x),0.,1.);vec3 a=vec3(.18,.32,.85),b=vec3(.15,.75,.55),c=vec3(.98,.78,.2),d=vec3(.86,.25,.25);vec3 col=t<.33?mix(a,b,t/.33):t<.66?mix(b,c,(t-.33)/.33):mix(c,d,(t-.66)/.34);gl_FragColor=vec4(col,1.);}'));
+ gl.attachShader(p,sh(gl.FRAGMENT_SHADER,'precision mediump float;varying float h;uniform vec2 z;uniform float cut;uniform float low;void main(){if(h>cut||h<low)discard;float t=clamp((h-z.x)/(z.y-z.x),0.,1.);vec3 a=vec3(.18,.32,.85),b=vec3(.15,.75,.55),c=vec3(.98,.78,.2),d=vec3(.86,.25,.25);vec3 col=t<.33?mix(a,b,t/.33):t<.66?mix(b,c,(t-.33)/.33):mix(c,d,(t-.66)/.34);gl_FragColor=vec4(col,1.);}'));
  gl.linkProgram(p);this.buf=gl.createBuffer();
  const c=canvas;c.addEventListener('contextmenu',e=>e.preventDefault());
  c.addEventListener('pointerdown',e=>{c.setPointerCapture(e.pointerId);this.ptrs.set(e.pointerId,{x:e.offsetX,y:e.offsetY,pan:e.button===2||e.shiftKey});});
@@ -87,11 +87,25 @@ class CloudView{constructor(canvas,empty){this.c=canvas;this.empty=empty;this.n=
   const lo=[1e9,1e9,1e9],hi=[-1e9,-1e9,-1e9];for(let i=0;i<n*3;i+=3)for(let k=0;k<3;k++){const v=xyz[i+k];if(v<lo[k])lo[k]=v;if(v>hi[k])hi[k]=v;}
   const zs=[];for(let i=2;i<n*3;i+=3*Math.max(1,Math.floor(n/5000)))zs.push(xyz[i]);zs.sort((a,b)=>a-b);this.z=[zs[Math.floor(zs.length*.02)]||lo[2],zs[Math.floor(zs.length*.98)]||hi[2]];
   this.lo=lo;this.hi=hi;
-  /* Indoor ceiling: a dense 10 cm layer (>10% of points) in the upper half hides the room. Start below it. */
-  const bins=new Map();for(const z of zs){const k=Math.floor(z*10);bins.set(k,(bins.get(k)||0)+1);}let peak=null;for(const [k,c] of bins)if(k/10>(lo[2]+hi[2])/2&&c>zs.length*0.1&&(!peak||c>peak[1]))peak=[k,c];
-  $('cloudCut').value=peak?Math.max(0,Math.min(1000,Math.round(((peak[0]/10-0.2)-lo[2])/(hi[2]-lo[2]+0.01)*1000))):1000;
+  /* Floor and ceiling are dense horizontal layers that hide walls from above. They smear over tens of cm on large
+     sites, so look for broad peaks: 20 cm bins, a peak must be 1.8x the median bin, floor in the lower 40%,
+     ceiling in the upper 60% and at least 1.5 m above the floor. Start with the band between them. */
+  const z0=this.z[0],z1=this.z[1],nb=Math.max(1,Math.ceil((z1-z0)/0.2)),counts=new Array(nb).fill(0);
+  for(const z of zs){if(z<z0||z>z1)continue;counts[Math.min(nb-1,Math.floor((z-z0)/0.2))]++;}
+  const sorted=counts.filter(c=>c>0).sort((a,b)=>a-b),median=sorted[Math.floor(sorted.length/2)]||0;
+  let floor=null,ceil=null;counts.forEach((c,i)=>{const f=(i+0.5)/nb;if(c<1.8*median)return;
+   if(f<0.4&&(!floor||c>counts[floor]))floor=i;if(f>0.4&&(!ceil||c>counts[ceil]))ceil=i;});
+  /* walk from each peak to the edge of its dense layer */
+  if(floor!==null)while(floor+1<nb&&counts[floor+1]>=1.4*median)floor++;
+  if(ceil!==null)while(ceil-1>0&&counts[ceil-1]>=1.4*median)ceil--;
+  if(ceil!==null&&floor!==null&&(ceil-floor)*0.2<1.5)ceil=null;
+  const low=floor!==null?z0+(floor+1)*0.2+0.1:lo[2],high=ceil!==null?z0+ceil*0.2-0.1:hi[2];
+  for(const [id,v] of [['cloudLow',low],['cloudCut',high]]){const el=$(id);el.min=lo[2].toFixed(2);el.max=(hi[2]+0.01).toFixed(2);el.step='0.05';el.value=v.toFixed(2);}
+  this.z=[low,Math.max(low+0.5,high)];
   const gl=this.gl;gl.bindBuffer(gl.ARRAY_BUFFER,this.buf);gl.bufferData(gl.ARRAY_BUFFER,xyz,gl.STATIC_DRAW);this.empty.hidden=true;this.cutSlider();this.fit();}
- cutSlider(){const v=+$('cloudCut').value/1000;this.cut=this.n?this.lo[2]+(this.hi[2]-this.lo[2]+0.01)*v:1e9;$('cutValue').textContent=this.n?(v>=1?'모두 표시':this.cut.toFixed(2)+' m 이하'):'';this.draw();}
+ cutSlider(){if(!this.n){this.cut=1e9;this.low=-1e9;$('cutValue').textContent='';this.draw();return;}
+  this.low=+$('cloudLow').value;this.cut=+$('cloudCut').value;if(this.low>this.cut-0.1){this.low=this.cut-0.1;$('cloudLow').value=this.low;}
+  $('cutValue').textContent=`${this.low<=this.lo[2]+0.01?'바닥 포함':this.low.toFixed(2)+' m'} ~ ${this.cut>=this.hi[2]?'천장 포함':this.cut.toFixed(2)+' m'}`;this.draw();}
  clear(text){this.n=0;this.empty.hidden=false;if(text)this.empty.textContent=text;this.draw();}
  fit(){if(!this.n)return;this.t=[(this.lo[0]+this.hi[0])/2,(this.lo[1]+this.hi[1])/2,(this.lo[2]+this.hi[2])/2];this.dist=Math.max(this.hi[0]-this.lo[0],this.hi[1]-this.lo[1],2)*1.1;this.draw();}
  view(pitch){this.pitch=pitch;if(pitch>1.5)this.yaw=-Math.PI/2;this.fit();}
@@ -103,12 +117,13 @@ class CloudView{constructor(canvas,empty){this.c=canvas;this.empty=empty;this.n=
   const view=[s[0],u[0],-f[0],0,s[1],u[1],-f[1],0,s[2],u[2],-f[2],0,-dot(s,eye),-dot(u,eye),dot(f,eye),1];
   const fov=1/Math.tan(0.45),a=w/h,near=Math.max(this.dist*0.01,0.02),far=this.dist*20+100;
   const proj=[fov/a,0,0,0,0,fov,0,0,0,0,(far+near)/(near-far),-1,0,0,2*far*near/(near-far),0];
-  const p=this.prog;gl.useProgram(p);gl.uniformMatrix4fv(gl.getUniformLocation(p,'m'),false,mul(proj,view));gl.uniform2f(gl.getUniformLocation(p,'z'),this.z[0],this.z[1]);gl.uniform1f(gl.getUniformLocation(p,'cut'),this.cut);gl.uniform1f(gl.getUniformLocation(p,'ps'),Math.max(2.2,Math.min(5,60/this.dist))*d);
+  const p=this.prog;gl.useProgram(p);gl.uniformMatrix4fv(gl.getUniformLocation(p,'m'),false,mul(proj,view));gl.uniform2f(gl.getUniformLocation(p,'z'),this.z[0],this.z[1]);gl.uniform1f(gl.getUniformLocation(p,'cut'),this.cut);gl.uniform1f(gl.getUniformLocation(p,'low'),this.low==null?-1e9:this.low);gl.uniform1f(gl.getUniformLocation(p,'ps'),Math.max(2.2,Math.min(5,60/this.dist))*d);
   gl.bindBuffer(gl.ARRAY_BUFFER,this.buf);const loc=gl.getAttribLocation(p,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,3,gl.FLOAT,false,0,0);gl.drawArrays(gl.POINTS,0,this.n);}}
 const sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],norm=a=>{const l=Math.hypot(...a)||1;return a.map(v=>v/l);};
 function mul(a,b){const o=new Array(16).fill(0);for(let c=0;c<4;c++)for(let r=0;r<4;r++)for(let k=0;k<4;k++)o[c*4+r]+=a[k*4+r]*b[c*4+k];return o;}
 const cloud=new CloudView($('cloudCanvas'),$('emptyB'));
-$('cloudTop').onclick=()=>cloud.view(1.55);$('cloudSide').onclick=()=>cloud.view(0.6);$('cloudFit').onclick=()=>cloud.fit();$('cloudCut').oninput=()=>cloud.cutSlider();
+$('cloudTop').onclick=()=>cloud.view(1.55);$('cloudSide').onclick=()=>cloud.view(0.6);$('cloudFit').onclick=()=>cloud.fit();$('cloudCut').oninput=()=>cloud.cutSlider();$('cloudLow').oninput=()=>cloud.cutSlider();
+$('cloudAll').onclick=()=>{if(!cloud.n)return;$('cloudLow').value=$('cloudLow').min;$('cloudCut').value=$('cloudCut').max;cloud.cutSlider();};
 
 async function preview2d(id,m){try{const v=await api(`/api/maps/${id}/${m.key}/preview`);views.canvasA.set(await mapImage(v),false);$('infoA').textContent=(methodName[m.method]||m.method)+' · '+info(m);}catch(e){message(e.message);}}
 async function preview3d(id,m){try{cloud.clear('3D 지도를 불러오는 중');const r=await fetch(`/api/maps/${id}/${m.key}/cloud?max=250000`);if(!r.ok)throw Error('3D 지도를 불러오지 못했습니다.');
