@@ -43,8 +43,18 @@ class WatchTest(unittest.TestCase):
         result, _, _ = self.run_case([(1, 'a'), None, (1, 'a')], [False, False, True])
         self.assertEqual(result, 0)
 
+    def test_short_outage_keeps_sensors(self):
+        # 20 s unreachable (hotspot drop) then back: no restart.
+        result, child, _ = self.run_case([(1, 'a')] + [None] * 10 + [(1, 'a')], [False] * 11 + [True])
+        self.assertEqual(result, 0)
+
     def test_master_lost(self):
-        result, _, _ = self.run_case([(1, 'a'), None, None, None], [False] * 3)
+        n = watch.UNREACHABLE_RESTART_SEC // 2
+        result, _, _ = self.run_case([(1, 'a')] + [None] * n, [False] * n)
+        self.assertEqual(result, 1)
+
+    def test_master_replaced_after_outage(self):
+        result, _, _ = self.run_case([(1, 'a'), None, None, None, (2, 'b')], [False] * 4)
         self.assertEqual(result, 1)
 
     def test_launch_exits(self):

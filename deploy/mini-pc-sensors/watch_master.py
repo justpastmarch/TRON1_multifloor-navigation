@@ -7,6 +7,9 @@ import threading
 import xmlrpc.client
 
 
+UNREACHABLE_RESTART_SEC = 120
+
+
 class Transport(xmlrpc.client.Transport):
     def make_connection(self, host):
         conn = super().make_connection(host)
@@ -61,6 +64,11 @@ def main():
           % (uri, env.get('ROS_IP')), flush=True)
     child = subprocess.Popen(['/opt/ros/noetic/bin/roslaunch', '--wait', '--required',
                               'sensor_integration', 'wf_mapping.launch'], env=env)
+    # An unreachable master alone does not restart the sensors: on a phone
+    # hotspot the link drops for seconds at a time, and every restart resets
+    # wheel odometry. ROS nodes reconnect by themselves once the master
+    # answers again. A replaced master (new PID/run_id) still restarts
+    # registration, and so does a master gone for UNREACHABLE_RESTART_SEC.
     failures = 0
     try:
         while not stopping.wait(2):
@@ -68,8 +76,14 @@ def main():
                 print('Sensor launch exited; systemd will retry', flush=True)
                 return 1
             current = master_identity(uri)
-            failures = failures + 1 if current is None else 0
-            if failures >= 3 or (current is not None and current != identity):
+            if current is None:
+                failures += 1
+                if failures == 3:
+                    print('Master unreachable; keeping sensors running', flush=True)
+            elif failures:
+                print('Master reachable again after %d s' % (failures * 2), flush=True)
+                failures = 0
+            if failures * 2 >= UNREACHABLE_RESTART_SEC or (current is not None and current != identity):
                 print('Master lost or replaced; restarting sensor registration', flush=True)
                 return 1
         return 0
