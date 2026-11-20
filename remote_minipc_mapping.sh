@@ -18,8 +18,11 @@ case "${1:-}" in
     start)
         if active tron1-mapping.service; then
             # New code (second argument "changed") is loaded only when nothing is recording.
-            state="$(curl -s -m 3 "http://127.0.0.1:${port}/api/state" || true)"
-            if [[ "${2:-}" == changed && "$state" == *'"recording": false'* && "$state" != *'"state": "RUNNING"'* && "$state" != *'"state": "QUEUED"'* && "$state" == *'"site": {"state": "IDLE"'* ]]; then
+            idle="$(curl -s -m 3 "http://127.0.0.1:${port}/api/state" | python3 -c 'import json,sys
+d=json.load(sys.stdin)
+busy=d.get("recording") or any(j.get("state") in ("RUNNING","QUEUED") for j in d.get("jobs",[])) or (d.get("site") or {}).get("state","IDLE")!="IDLE"
+print("idle" if not busy else "busy")' 2>/dev/null || echo busy)"
+            if [[ "${2:-}" == changed && "$idle" == idle ]]; then
                 echo 'restarting mapping console with updated code'
                 systemctl --user stop tron1-mapping.service
             else
