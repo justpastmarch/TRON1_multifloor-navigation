@@ -97,6 +97,16 @@ class MappingCloudTests(unittest.TestCase):
         self.assertEqual(n, 500); self.assertLess(np.abs(back - xyz).max(), 0.006)
         self.assertFalse((out / 'cloud.npz').exists()); self.assertTrue((out / 'cloud.ply').is_file())
 
+    def test_compact_preview_halves_size_and_keeps_centimetres(self):
+        xyz = np.random.RandomState(2).uniform(-5, 40, (1000, 3)).astype('<f4')
+        data = struct.pack('<I', 1000) + xyz.tobytes() + bytes(1000)
+        packed = mc.compact_preview(data, 400)
+        self.assertEqual(packed[:4], b'TRC2'); n = struct.unpack('<I', packed[4:8])[0]
+        origin = np.frombuffer(packed, '<f4', 3, 8); back = np.frombuffer(packed, '<u2', n * 3, 20).reshape(-1, 3) / 100 + origin
+        self.assertEqual(n, 400); self.assertEqual(len(packed), 20 + 400 * 6)
+        nearest = np.abs(back[:, None, :] - xyz[None, :, :]).max(axis=2).min(axis=1)
+        self.assertLess(nearest.max(), 0.006)
+
     def test_gravity_filter_tracks_accelerometer(self):
         rows = [(k * 0.005, 0, 0, 0, 0.0, 0.5, 0.866) for k in range(400)]
         _, up = mc.gravity_track(rows, np.eye(3), 0.01)
@@ -174,6 +184,19 @@ class MappingConsoleRawTests(unittest.TestCase):
             console.compare(dict(session_id=identifier))
         self.assertEqual(runner.call_args[0][0][-1], str(directory / 'raw.bag'))
         self.assertEqual(run.call_args[0][0], directory / 'input.bag')
+
+    def test_blank_name_gets_date_time(self):
+        console = self.console('')
+        names = []
+        def stop_after_create(name):
+            names.append(name); raise RuntimeError('stop')
+        with patch.object(console.library, 'create', side_effect=stop_after_create), \
+             patch('rosnode.get_node_names', return_value=[]):
+            console.scan_received = 1e18
+            console.buffer.lookup_transform.return_value = None
+            with self.assertRaises(RuntimeError):
+                console.start(dict(name='  '))
+        self.assertRegex(names[0], r'^지도 \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$')
 
     def test_without_raw_no_cloud_step(self):
         console = self.console('')

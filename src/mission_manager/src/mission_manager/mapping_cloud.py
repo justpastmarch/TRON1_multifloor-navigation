@@ -161,6 +161,19 @@ def finish_transport(directory, preview_points=DEFAULTS['preview_points']):
     (directory / 'cloud.npz').unlink()
 
 
+def compact_preview(data, limit):
+    """cloud.bin -> b'TRC2' + uint32 n + float32 origin[3] + uint16 cm xyz[n].
+    About half the size of float32 and subsampled to `limit` points, for
+    viewing over a slow link; 1 cm is finer than the 5 cm voxels."""
+    (count,) = struct.unpack_from('<I', data, 0)
+    xyz = np.frombuffer(data, '<f4', count * 3, 4).reshape(-1, 3)
+    if count > limit:
+        xyz = xyz[np.random.RandomState(0).choice(count, limit, replace=False)]
+    origin = xyz.min(axis=0) if len(xyz) else np.zeros(3, np.float32)
+    cm = np.clip(np.round((xyz - origin) * 100), 0, 65535).astype('<u2')
+    return b'TRC2' + struct.pack('<I', len(xyz)) + np.asarray(origin, '<f4').tobytes() + cm.tobytes()
+
+
 def build(raw_bag, trajectory, params, output, progress=None):
     import rosbag
     started = time.monotonic()

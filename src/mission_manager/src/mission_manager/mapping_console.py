@@ -108,7 +108,10 @@ class MappingConsole:
         if len(parts)==5 and parts[:2]==['api','maps']:
             _,_,identifier,key,action=parts
             if action=='preview':return self.library.preview(identifier,key)
-            if action=='cloud':return self.library.file(identifier,key,'cloud.bin'),'application/octet-stream'
+            if action=='cloud':
+                from mission_manager.mapping_cloud import compact_preview
+                limit=int(q.get('max',['150000'])[0])
+                return compact_preview(self.library.file(identifier,key,'cloud.bin'),max(1000,min(limit,400000))),'application/octet-stream'
             if action=='file':return self.library.file(identifier,key,q.get('name',[''])[0]),'application/octet-stream'
         raise ValueError('지원하지 않는 지도 조회입니다.')
 
@@ -116,6 +119,9 @@ class MappingConsole:
         if path=='/api/photo/capture_mail':
             if not self.photo:raise ValueError('촬영 기능 미설정')
             return self.photo.capture_and_mail(data.get('recipient'))
+        if path=='/api/mail/retry':
+            if not self.photo or self.photo.mail is None:raise ValueError('메일 작업 미설정')
+            return self.photo.mail.retry(data.get('id'),data.get('confirm_unknown') is True)
         if path=='/api/mail/settings':
             if not self.photo:raise ValueError('촬영 기능 미설정')
             if not isinstance(data.get('recipient'),str):raise ValueError('메일 주소를 입력하세요.')
@@ -170,8 +176,9 @@ class MappingConsole:
             folder=self.library.result_path(data['resume_id'],data.get('resume_key'))
             if not all((folder/f).is_file() for f in ['graph.posegraph','graph.data']):raise ValueError('이어서 작성할 그래프 파일이 없습니다.')
             resume=folder/'graph'
-        identifier,directory=self.library.create(data.get('name',''))
-        self.session=dict(id=identifier,name=data['name'],state='STARTING',resume_id=data.get('resume_id'),resume_key=data.get('resume_key'))
+        name=str(data.get('name') or '').strip() or time.strftime('지도 %Y-%m-%d %H:%M:%S')
+        identifier,directory=self.library.create(name)
+        self.session=dict(id=identifier,name=name,state='STARTING',resume_id=data.get('resume_id'),resume_key=data.get('resume_key'))
         self.grid=None;self.map_received=0
         try:
             self.recorder=Process(['rosbag','record','-O',str(directory/'input.bag'),'/scan','/tron/wheel_odom_raw','/tf','/tf_static'],directory/'record.log')

@@ -15,7 +15,16 @@ export ROS_MASTER_URI=http://127.0.0.1:11311 ROS_IP=127.0.0.1; unset ROS_HOSTNAM
 active() { systemctl --user is-active --quiet "$1"; }
 case "${1:-}" in
     start)
-        if active tron1-mapping.service; then echo 'mapping console already running'; exit 0; fi
+        if active tron1-mapping.service; then
+            # New code (second argument "changed") is loaded only when nothing is recording.
+            state="$(curl -s -m 3 "http://127.0.0.1:${port}/api/state" || true)"
+            if [[ "${2:-}" == changed && "$state" == *'"recording": false'* && "$state" != *'"state": "RUNNING"'* && "$state" != *'"state": "QUEUED"'* ]]; then
+                echo 'restarting mapping console with updated code'
+                systemctl --user stop tron1-mapping.service
+            else
+                echo 'mapping console already running'; exit 0
+            fi
+        fi
         mkdir -p "${output}/mapping" "${output}/artifacts"
         if ! active tron1-mapping-master.service; then
             systemd-run --user --collect --unit=tron1-mapping-master --property=KillSignal=SIGINT \

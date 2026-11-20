@@ -46,13 +46,13 @@ if [[ "$MAPPING_LOCATION" == minipc ]]; then
     retry() { local n; for n in 1 2 3 4 5 6 7 8 9 10; do "$@" && return 0; printf '[MINI PC] 연결 재시도 %d/10\n' "$n" >&2; sleep 3; done; return 1; }
     printf '[MINI PC] 지도 관리를 미니 PC에서 실행합니다 (%s). 연결이 끊겨도 녹화와 지도 작성은 계속됩니다.\n' "$MINI_PC_HOST"
     export RSYNC_RSH="ssh ${ssh_opts[*]}"
-    retry rsync -a --checksum --delete --exclude=test --exclude=__pycache__ --exclude='*.pyc' \
-        "$ROOT/src/mission_manager/" "${target}:${base}/ws/src/mission_manager/" || { echo '[MINI PC] 코드 동기화 실패' >&2; exit 1; }
+    changes="$(retry rsync -ai --checksum --delete --exclude=test --exclude=__pycache__ --exclude='*.pyc' \
+        "$ROOT/src/mission_manager/" "${target}:${base}/ws/src/mission_manager/")" || { echo '[MINI PC] 코드 동기화 실패' >&2; exit 1; }
     retry rsync -a "$ROOT/remote_minipc_mapping.sh" "${target}:${base}/mapping.sh" || exit 1
     # Sensor watcher that can attach to a master on the mini PC itself.
     retry rsync -a "$ROOT/deploy/mini-pc-sensors/watch_master.py" "${target}:/home/${MINI_PC_USER}/.local/lib/tron1-sensors/watch_master.py" || exit 1
     retry ssh "${ssh_opts[@]}" "$target" "grep -q '^ROS_MASTER_URI_LOCAL=' ~/.config/tron1-sensors.env || printf 'ROS_MASTER_URI_LOCAL=http://127.0.0.1:11311\\nROS_IP_LOCAL=127.0.0.1\\n' >> ~/.config/tron1-sensors.env" || exit 1
-    retry ssh "${ssh_opts[@]}" "$target" "bash '${base}/mapping.sh' start" || { echo '[MINI PC] 지도 관리 시작 실패' >&2; exit 1; }
+    retry ssh "${ssh_opts[@]}" "$target" "bash '${base}/mapping.sh' start ${changes:+changed}" || { echo '[MINI PC] 지도 관리 시작 실패' >&2; exit 1; }
     remote_cleanup() {
         trap - INT TERM EXIT
         pkill -P "$tunnel_pid" 2>/dev/null || true; kill "$tunnel_pid" 2>/dev/null || true
