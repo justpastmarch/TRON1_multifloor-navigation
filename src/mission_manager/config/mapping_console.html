@@ -63,11 +63,15 @@ async function mapImage(m){const image=new Image();image.src=m.image;await image
 
 /* 3D point cloud view (WebGL): orbit, pan, zoom, colour by height, height cut. */
 class CloudView{constructor(canvas,empty){this.c=canvas;this.empty=empty;this.n=0;this.yaw=-0.6;this.pitch=0.9;this.dist=10;this.t=[0,0,0];this.ptrs=new Map();this.cut=1e9;
- const gl=this.gl=canvas.getContext('webgl',{antialias:true});if(!gl){empty.textContent='이 브라우저는 WebGL을 지원하지 않습니다.';return;}
+ const gl=this.gl=canvas.getContext('webgl',{antialias:true});if(!gl){this.mode='2d';this.ctx=canvas.getContext('2d');}else this.mode='webgl';
+ if(this.mode==='webgl'){
  const sh=(type,src)=>{const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s;};
- const p=this.prog=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,'attribute vec3 p;uniform mat4 m;uniform vec2 z;uniform float ps;varying float h;void main(){gl_Position=m*vec4(p,1.);gl_PointSize=ps;h=p.z;}'));
- gl.attachShader(p,sh(gl.FRAGMENT_SHADER,'precision mediump float;varying float h;uniform vec2 z;uniform float cut;uniform float low;void main(){if(h>cut||h<low)discard;float t=clamp((h-z.x)/(z.y-z.x),0.,1.);vec3 a=vec3(.18,.32,.85),b=vec3(.15,.75,.55),c=vec3(.98,.78,.2),d=vec3(.86,.25,.25);vec3 col=t<.33?mix(a,b,t/.33):t<.66?mix(b,c,(t-.33)/.33):mix(c,d,(t-.66)/.34);gl_FragColor=vec4(col,1.);}'));
- gl.linkProgram(p);this.buf=gl.createBuffer();
+ const p=this.prog=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,'attribute vec3 p;uniform mat4 m;uniform float ps;varying float h;void main(){gl_Position=m*vec4(p,1.);gl_PointSize=ps;h=p.z;}'));
+ gl.attachShader(p,sh(gl.FRAGMENT_SHADER,'#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nvarying float h;uniform vec2 z;uniform float cut;uniform float low;void main(){if(h>cut||h<low)discard;float t=clamp((h-z.x)/(z.y-z.x),0.,1.);vec3 a=vec3(.18,.32,.85),b=vec3(.15,.75,.55),c=vec3(.98,.78,.2),d=vec3(.86,.25,.25);vec3 col=t<.33?mix(a,b,t/.33):t<.66?mix(b,c,(t-.33)/.33):mix(c,d,(t-.66)/.34);gl_FragColor=vec4(col,1.);}'));
+ gl.linkProgram(p);
+ if(!gl.getProgramParameter(p,gl.LINK_STATUS)){console.warn('WebGL point shader failed, using 2D canvas:',gl.getProgramInfoLog(p));this.gl=null;this.mode='2d';this.ctx=null;}
+ else this.buf=gl.createBuffer();}
+ if(this.mode==='2d'&&!this.ctx){const c2=canvas.cloneNode();canvas.replaceWith(c2);this.c=canvas=c2;this.ctx=canvas.getContext('2d');}
  const c=canvas;c.addEventListener('contextmenu',e=>e.preventDefault());
  c.addEventListener('pointerdown',e=>{c.setPointerCapture(e.pointerId);this.ptrs.set(e.pointerId,{x:e.offsetX,y:e.offsetY,pan:e.button===2||e.shiftKey});});
  c.addEventListener('pointermove',e=>{const prev=this.ptrs.get(e.pointerId);if(!prev)return;const dx=e.offsetX-prev.x,dy=e.offsetY-prev.y;
@@ -102,23 +106,34 @@ class CloudView{constructor(canvas,empty){this.c=canvas;this.empty=empty;this.n=
   const low=floor!==null?z0+(floor+1)*0.2+0.1:lo[2],high=ceil!==null?z0+ceil*0.2-0.1:hi[2];
   for(const [id,v] of [['cloudLow',low],['cloudCut',high]]){const el=$(id);el.min=lo[2].toFixed(2);el.max=(hi[2]+0.01).toFixed(2);el.step='0.05';el.value=v.toFixed(2);}
   this.z=[low,Math.max(low+0.5,high)];
-  const gl=this.gl;gl.bindBuffer(gl.ARRAY_BUFFER,this.buf);gl.bufferData(gl.ARRAY_BUFFER,xyz,gl.STATIC_DRAW);this.empty.hidden=true;this.cutSlider();this.fit();}
+  this.xyz=xyz;if(this.mode==='webgl'){const gl=this.gl;gl.bindBuffer(gl.ARRAY_BUFFER,this.buf);gl.bufferData(gl.ARRAY_BUFFER,xyz,gl.STATIC_DRAW);}this.empty.hidden=true;this.cutSlider();this.fit();}
  cutSlider(){if(!this.n){this.cut=1e9;this.low=-1e9;$('cutValue').textContent='';this.draw();return;}
   this.low=+$('cloudLow').value;this.cut=+$('cloudCut').value;if(this.low>this.cut-0.1){this.low=this.cut-0.1;$('cloudLow').value=this.low;}
   $('cutValue').textContent=`${this.low<=this.lo[2]+0.01?'바닥 포함':this.low.toFixed(2)+' m'} ~ ${this.cut>=this.hi[2]?'천장 포함':this.cut.toFixed(2)+' m'}`;this.draw();}
  clear(text){this.n=0;this.empty.hidden=false;if(text)this.empty.textContent=text;this.draw();}
  fit(){if(!this.n)return;this.t=[(this.lo[0]+this.hi[0])/2,(this.lo[1]+this.hi[1])/2,(this.lo[2]+this.hi[2])/2];this.dist=Math.max(this.hi[0]-this.lo[0],this.hi[1]-this.lo[1],2)*1.1;this.draw();}
  view(pitch){this.pitch=pitch;if(pitch>1.5)this.yaw=-Math.PI/2;this.fit();}
- draw(){if(!this.gl)return;const r=this.c.getBoundingClientRect(),d=devicePixelRatio||1,w=Math.max(1,Math.round(r.width*d)),h=Math.max(1,Math.round(r.height*d));if(this.c.width!==w||this.c.height!==h){this.c.width=w;this.c.height=h;}
-  const gl=this.gl;gl.viewport(0,0,w,h);gl.clearColor(.9,.914,.937,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);if(!this.n)return;gl.enable(gl.DEPTH_TEST);
+ draw(){if(this.mode!=='webgl'&&!this.ctx)return;const r=this.c.getBoundingClientRect(),d=devicePixelRatio||1,w=Math.max(1,Math.round(r.width*d)),h=Math.max(1,Math.round(r.height*d));if(this.c.width!==w||this.c.height!==h){this.c.width=w;this.c.height=h;}
   const cp=Math.cos(this.pitch),sp=Math.sin(this.pitch),cy=Math.cos(this.yaw),sy=Math.sin(this.yaw);
   const eye=[this.t[0]+this.dist*cp*cy,this.t[1]+this.dist*cp*sy,this.t[2]+this.dist*sp];
   const f=norm(sub(this.t,eye)),s=norm(cross(f,[0,0,1])),u=cross(s,f);
   const view=[s[0],u[0],-f[0],0,s[1],u[1],-f[1],0,s[2],u[2],-f[2],0,-dot(s,eye),-dot(u,eye),dot(f,eye),1];
   const fov=1/Math.tan(0.45),a=w/h,near=Math.max(this.dist*0.01,0.02),far=this.dist*20+100;
   const proj=[fov/a,0,0,0,0,fov,0,0,0,0,(far+near)/(near-far),-1,0,0,2*far*near/(near-far),0];
+  if(this.mode!=='webgl')return this.draw2d(mul(proj,view),w,h,d);
+  const gl=this.gl;gl.viewport(0,0,w,h);gl.clearColor(.9,.914,.937,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);if(!this.n)return;gl.enable(gl.DEPTH_TEST);
   const p=this.prog;gl.useProgram(p);gl.uniformMatrix4fv(gl.getUniformLocation(p,'m'),false,mul(proj,view));gl.uniform2f(gl.getUniformLocation(p,'z'),this.z[0],this.z[1]);gl.uniform1f(gl.getUniformLocation(p,'cut'),this.cut);gl.uniform1f(gl.getUniformLocation(p,'low'),this.low==null?-1e9:this.low);gl.uniform1f(gl.getUniformLocation(p,'ps'),Math.max(2.2,Math.min(5,60/this.dist))*d);
-  gl.bindBuffer(gl.ARRAY_BUFFER,this.buf);const loc=gl.getAttribLocation(p,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,3,gl.FLOAT,false,0,0);gl.drawArrays(gl.POINTS,0,this.n);}}
+  gl.bindBuffer(gl.ARRAY_BUFFER,this.buf);const loc=gl.getAttribLocation(p,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,3,gl.FLOAT,false,0,0);gl.drawArrays(gl.POINTS,0,this.n);}
+ /* Canvas 2D fallback when WebGL is unavailable or the shader does not link: project, z-buffer, square splats. */
+ draw2d(m,w,h,d){const g=this.ctx;g.fillStyle='#e6e9ef';g.fillRect(0,0,w,h);if(!this.n||!this.xyz)return;
+  const img=g.getImageData(0,0,w,h),px=img.data,zb=new Float32Array(w*h).fill(Infinity),xyz=this.xyz,z0=this.z[0],zs=(this.z[1]-this.z[0])||1,size=Math.max(1,Math.round(Math.max(2,Math.min(4,60/this.dist))*d/1.5));
+  const ramp=[[46,82,217],[38,191,140],[250,199,51],[219,64,64]];
+  for(let i=0;i<this.n;i++){const x=xyz[i*3],y=xyz[i*3+1],z=xyz[i*3+2];if(z>this.cut||z<this.low)continue;
+   const cw=m[3]*x+m[7]*y+m[11]*z+m[15];if(cw<=0)continue;const sx=Math.round(((m[0]*x+m[4]*y+m[8]*z+m[12])/cw*0.5+0.5)*w),sy=Math.round((0.5-(m[1]*x+m[5]*y+m[9]*z+m[13])/cw*0.5)*h);
+   if(sx<0||sy<0||sx>=w||sy>=h)continue;let t=Math.min(1,Math.max(0,(z-z0)/zs))*2.999;const k=Math.floor(t),fr=t-k,c0=ramp[k],c1=ramp[Math.min(3,k+1)];
+   const R=c0[0]+(c1[0]-c0[0])*fr,G=c0[1]+(c1[1]-c0[1])*fr,B=c0[2]+(c1[2]-c0[2])*fr;
+   for(let oy=0;oy<size;oy++){const yy=sy+oy;if(yy>=h)break;for(let ox=0;ox<size;ox++){const xx=sx+ox;if(xx>=w)break;const q=yy*w+xx;if(cw<zb[q]){zb[q]=cw;px[q*4]=R;px[q*4+1]=G;px[q*4+2]=B;px[q*4+3]=255;}}}}
+  g.putImageData(img,0,0);}}
 const sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],norm=a=>{const l=Math.hypot(...a)||1;return a.map(v=>v/l);};
 function mul(a,b){const o=new Array(16).fill(0);for(let c=0;c<4;c++)for(let r=0;r<4;r++)for(let k=0;k<4;k++)o[c*4+r]+=a[k*4+r]*b[c*4+k];return o;}
 const cloud=new CloudView($('cloudCanvas'),$('emptyB'));
@@ -129,7 +144,7 @@ async function preview2d(id,m){try{const v=await api(`/api/maps/${id}/${m.key}/p
 async function preview3d(id,m){try{cloud.clear('3D 지도를 불러오는 중');const r=await fetch(`/api/maps/${id}/${m.key}/cloud?max=250000`);if(!r.ok)throw Error('3D 지도를 불러오지 못했습니다.');
   const total=+r.headers.get('Content-Length')||0,reader=r.body.getReader(),parts=[];let got=0,started=performance.now();
   for(;;){const {done,value}=await reader.read();if(done)break;parts.push(value);got+=value.length;const sec=(performance.now()-started)/1000;$('emptyB').textContent=`3D 지도를 받는 중 ${(got/1e6).toFixed(2)}${total?' / '+(total/1e6).toFixed(2):''} MB`+(total&&got>0&&sec>1?` · 남은 시간 약 ${fmtTime((total-got)/(got/sec))}`:'');}
-  const buffer=new Uint8Array(got);let at=0;for(const p of parts){buffer.set(p,at);at+=p.length;}cloud.load(buffer.buffer);$('infoB').textContent=info(m)+' · 높이 색: 파랑(낮음)→빨강(높음)';}catch(e){cloud.clear(e.message);}}
+  const buffer=new Uint8Array(got);let at=0;for(const p of parts){buffer.set(p,at);at+=p.length;}cloud.load(buffer.buffer);$('infoB').textContent=info(m)+' · 높이 색: 파랑(낮음)→빨강(높음) · 화면 표시 '+cloud.n.toLocaleString()+'점 ('+(cloud.mode==='webgl'?'WebGL':'2D 대체 그리기')+')';}catch(e){cloud.clear(e.message);}}
 async function download(id,key,name){try{const response=await fetch(`/api/maps/${id}/${key}/file?name=${encodeURIComponent(name)}`);if(!response.ok)throw Error('파일을 가져오지 못했습니다.');const url=URL.createObjectURL(await response.blob());const a=document.createElement('a');a.href=url;a.download=id+'_'+key+'_'+name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}catch(e){message(e.message);}}
 function button(text,action){const b=document.createElement('button');b.textContent=text;b.onclick=action;return b;}
 const rawLabel={recording:'미니 PC 녹화 중',sealed:'저장됨',absent:'없음',failed:'녹화 실패',unverified:'마감 확인 실패',unavailable:'녹화 안 함'};
