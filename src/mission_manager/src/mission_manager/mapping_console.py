@@ -62,7 +62,8 @@ class MappingConsole:
         self.library=MapLibrary(root);self.env=env or os.environ
         self.raw_tool=self.env.get('MAPPING_RAW_RECORD_TOOL','')
         self.cloud_tool=self.env.get('MAPPING_CLOUD_TOOL','')
-        self.raw_name=None;self.photo=None
+        self.local_raw=self.env.get('MAPPING_LOCAL_RAW')=='1'
+        self.raw_name=None;self.raw_recorder=None;self.photo=None
         self.lock=threading.RLock();self.worker=ThreadPoolExecutor(max_workers=1)
         self.cancel_event=threading.Event();self.jobs={};self.requests={}
         self.session=None;self.mapper=None;self.recorder=None;self.grid=None
@@ -211,6 +212,15 @@ class MappingConsole:
         """Raw LiDAR+IMU are recorded beside the publisher on the mini PC (the
         same recorder as stair runs). Failure only drops the later 3D map."""
         self.raw_name=None
+        if self.local_raw:
+            # Console runs on the mini PC beside the LiDAR: record the raw
+            # stream into the session folder like the 2D input.
+            try:
+                self.raw_recorder=Process(['rosbag','record','-O',str(directory/'raw.bag'),'/livox/lidar','/livox/imu'],directory/'raw_record.log')
+            except OSError as error:
+                atomic_json(directory/'raw.json',dict(state='failed',error='원본 LiDAR 녹화 시작 실패: '+str(error)));return
+            self.raw_name='raw.bag'
+            atomic_json(directory/'raw.json',dict(name='raw.bag',state='recording',host='local'));return
         if not self.raw_tool:
             atomic_json(directory/'raw.json',dict(state='unavailable',error='원본 녹화 도구 미설정'));return
         name='map_'+identifier
@@ -230,6 +240,10 @@ class MappingConsole:
         name,self.raw_name=self.raw_name,None
         if not name or not self.session:return
         directory=self.library.path(self.session['id'])
+        if self.raw_recorder:
+            self.raw_recorder.stop();self.raw_recorder=None
+            state='sealed' if (directory/'raw.bag').is_file() else 'absent'
+            atomic_json(directory/'raw.json',dict(name=name,state=state,host='local'));return
         try:
             result=subprocess.run([self.raw_tool,'seal',name],capture_output=True,text=True,timeout=90)
             if result.returncode:raise RuntimeError(result.stderr.strip()[-300:] or '마감 실패')
@@ -254,7 +268,10 @@ class MappingConsole:
         cloud=None
         raw=json.loads((directory/'raw.json').read_text()) if (directory/'raw.json').is_file() else {}
         progress=self._progress(data)
-        if raw.get('state')=='sealed' and self.cloud_tool:
+        if raw.get('state')=='sealed' and raw.get('host')=='local' and (directory/'raw.bag').is_file():
+            from mission_manager import mapping_cloud
+            cloud=cloud_runner(['nice','-n','10',sys.executable,mapping_cloud.__file__,str(directory/'raw.bag')],cloud_params(self.env),directory/'cloud.log')
+        elif raw.get('state')=='sealed' and self.cloud_tool:
             cloud=cloud_runner([self.cloud_tool,'build',raw['name']],dict(cloud_params(self.env),transport=True),directory/'cloud.log')
             if raw.get('with_2d'):
                 source=self._fetch_2d(raw['name'],directory,progress) or source

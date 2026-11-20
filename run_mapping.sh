@@ -32,6 +32,59 @@ cleanup() {
 trap cleanup EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
+# Where the mapping console runs. auto: on the mini PC when the link is
+# Tailscale (phone hotspot), here on the robotnet LAN.
+MAPPING_LOCATION="${MAPPING_LOCATION:-auto}"
+if [[ "$MAPPING_LOCATION" == auto ]]; then
+    [[ "$TRON_NETWORK" == tailscale && -z "${MAPPING_MASTER_URI:-}" ]] && MAPPING_LOCATION=minipc || MAPPING_LOCATION=workstation
+fi
+if [[ "$MAPPING_LOCATION" == minipc ]]; then
+    PORT="${MAPPING_CONSOLE_PORT:-8766}"
+    target="${MINI_PC_USER}@${MINI_PC_HOST}"
+    base="/home/${MINI_PC_USER}/.local/share/tron1-stair-supervisor"
+    ssh_opts=(-o BatchMode=yes -o ConnectTimeout=10 -o ServerAliveInterval=5 -o ServerAliveCountMax=3)
+    retry() { local n; for n in 1 2 3 4 5 6 7 8 9 10; do "$@" && return 0; printf '[MINI PC] 연결 재시도 %d/10\n' "$n" >&2; sleep 3; done; return 1; }
+    printf '[MINI PC] 지도 관리를 미니 PC에서 실행합니다 (%s). 연결이 끊겨도 녹화와 지도 작성은 계속됩니다.\n' "$MINI_PC_HOST"
+    export RSYNC_RSH="ssh ${ssh_opts[*]}"
+    retry rsync -a --checksum --delete --exclude=test --exclude=__pycache__ --exclude='*.pyc' \
+        "$ROOT/src/mission_manager/" "${target}:${base}/ws/src/mission_manager/" || { echo '[MINI PC] 코드 동기화 실패' >&2; exit 1; }
+    retry rsync -a "$ROOT/remote_minipc_mapping.sh" "${target}:${base}/mapping.sh" || exit 1
+    # Sensor watcher that can attach to a master on the mini PC itself.
+    retry rsync -a "$ROOT/deploy/mini-pc-sensors/watch_master.py" "${target}:/home/${MINI_PC_USER}/.local/lib/tron1-sensors/watch_master.py" || exit 1
+    retry ssh "${ssh_opts[@]}" "$target" "grep -q '^ROS_MASTER_URI_LOCAL=' ~/.config/tron1-sensors.env || printf 'ROS_MASTER_URI_LOCAL=http://127.0.0.1:11311\\nROS_IP_LOCAL=127.0.0.1\\n' >> ~/.config/tron1-sensors.env" || exit 1
+    retry ssh "${ssh_opts[@]}" "$target" "bash '${base}/mapping.sh' start" || { echo '[MINI PC] 지도 관리 시작 실패' >&2; exit 1; }
+    remote_cleanup() {
+        trap - INT TERM EXIT
+        pkill -P "$tunnel_pid" 2>/dev/null || true; kill "$tunnel_pid" 2>/dev/null || true
+        printf '[MINI PC] 지도 관리 종료 중 (녹화 마감)...\n'
+        retry ssh "${ssh_opts[@]}" "$target" "bash '${base}/mapping.sh' stop" || \
+            echo '[MINI PC] 종료 명령을 보내지 못했습니다. 미니 PC에서 계속 실행 중입니다. 다시 실행하면 이어서 볼 수 있습니다.' >&2
+        local library=/mnt/ethan/tron-bags/mapping
+        mountpoint -q /mnt/ethan || library="${HOME}/TRON1_maps/mapping"
+        mkdir -p "$library"
+        printf '[MINI PC] 결과 지도를 %s 로 복사합니다 (원본 LiDAR BAG은 미니 PC에 남김)...\n' "$library"
+        retry rsync -a --partial --exclude=raw.bag --exclude='*.active' --exclude='replay.bag' \
+            "${target}:/home/${MINI_PC_USER}/TRON1_maps/mapping/" "$library/" || \
+            echo '[MINI PC] 결과 복사 실패. 연결이 좋을 때 다시 실행 후 종료하면 복사합니다.' >&2
+    }
+    tunnel_pid=0
+    trap remote_cleanup EXIT
+    # Screen only: forward the loopback console; reconnect whenever the link returns.
+    ( while true; do
+        ssh "${ssh_opts[@]}" -o ExitOnForwardFailure=yes -N -L "127.0.0.1:${PORT}:127.0.0.1:${PORT}" "$target" 2>/dev/null
+        sleep 2
+      done ) &
+    tunnel_pid=$!
+    if [[ "${MAPPING_OPEN_BROWSER:-0}" == 1 ]]; then
+        for _ in $(seq 1 120); do
+            if curl -s -m 2 -o /dev/null "http://127.0.0.1:${PORT}/api/state"; then xdg-open "http://127.0.0.1:${PORT}/" >/dev/null 2>&1 || true; break; fi
+            sleep .5
+        done
+    fi
+    printf '지도 관리 UI: http://127.0.0.1:%s/ (미니 PC 화면을 연결해 보여 줌)\n물리 조종기로 이동하세요. 끝낼 때는 화면에서 작성 종료 후 이 창에서 Ctrl+C.\n' "$PORT"
+    wait "$tunnel_pid"
+    exit 0
+fi
 if ! timeout 3s rostopic list >/dev/null 2>&1; then
     roscore -p "${ROS_MASTER_URI##*:}" &
     pids+=("$!")

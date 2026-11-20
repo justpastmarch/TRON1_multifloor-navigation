@@ -21,7 +21,7 @@ class WatchTest(unittest.TestCase):
              patch.object(watch, 'master_identity', side_effect=identities) as probe, \
              patch.object(watch.subprocess, 'Popen', return_value=child) as spawn, \
              patch.dict(watch.os.environ, env or dict(ROS_MASTER_URI='http://fixture:11311')):
-            for key in ('ROS_MASTER_URI_ALT', 'ROS_IP_ALT'):
+            for key in ('ROS_MASTER_URI_ALT', 'ROS_IP_ALT', 'ROS_MASTER_URI_LOCAL', 'ROS_IP_LOCAL'):
                 if key not in (env or {}):
                     watch.os.environ.pop(key, None)
             result = watch.main()
@@ -77,6 +77,12 @@ class WatchTest(unittest.TestCase):
         env = spawn.call_args.kwargs['env']
         self.assertEqual((env['ROS_MASTER_URI'], env['ROS_IP']), ('http://tail:11311', '100.64.0.56'))
         self.assertEqual(self.probes, ['http://lan:11311', 'http://tail:11311', 'http://tail:11311'])
+
+    def test_local_master_is_last_choice(self):
+        env = dict(self.TWO_PATHS, ROS_MASTER_URI_LOCAL='http://127.0.0.1:11311', ROS_IP_LOCAL='127.0.0.1')
+        result, _, spawn = self.run_case([None, None, (1, 'a')], [True], env=env)
+        self.assertEqual(spawn.call_args.kwargs['env']['ROS_IP'], '127.0.0.1')
+        self.assertEqual(self.probes, ['http://lan:11311', 'http://tail:11311', 'http://127.0.0.1:11311'])
 
     def test_prefers_lan_when_it_answers(self):
         result, _, spawn = self.run_case([(1, 'a')], [True], env=self.TWO_PATHS)

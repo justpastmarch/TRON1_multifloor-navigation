@@ -19,11 +19,14 @@ class Transport(xmlrpc.client.Transport):
 
 def candidates():
     """(master URI, own ROS_IP) pairs in preference order: the robotnet LAN
-    first, then the optional Tailscale path (ROS_MASTER_URI_ALT/ROS_IP_ALT)."""
+    first, then the optional Tailscale path (ROS_MASTER_URI_ALT/ROS_IP_ALT),
+    then a master on this mini PC (ROS_MASTER_URI_LOCAL/ROS_IP_LOCAL), used
+    when the mapping console runs here."""
     pairs = [(os.environ['ROS_MASTER_URI'], os.environ.get('ROS_IP'))]
-    alt = os.environ.get('ROS_MASTER_URI_ALT')
-    if alt:
-        pairs.append((alt, os.environ.get('ROS_IP_ALT')))
+    for suffix in ('_ALT', '_LOCAL'):
+        uri = os.environ.get('ROS_MASTER_URI' + suffix)
+        if uri:
+            pairs.append((uri, os.environ.get('ROS_IP' + suffix)))
     return pairs
 
 

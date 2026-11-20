@@ -154,6 +154,27 @@ class MappingConsoleRawTests(unittest.TestCase):
             console.compare(dict(session_id=identifier))
         self.assertEqual(run.call_args[0][0], directory / 'input.bag')
 
+    def test_local_raw_mode_records_and_builds_in_the_session(self):
+        from mission_manager import mapping_console
+        with patch.object(mapping_console.rospy, 'Subscriber'), patch.object(mapping_console.tf2_ros, 'TransformListener'), patch.object(mapping_console.tf2_ros, 'Buffer'):
+            console = mapping_console.MappingConsole(str(self.root), env=dict(MAPPING_LOCAL_RAW='1'))
+        identifier, directory = console.library.create('site')
+        with patch.object(mapping_console, 'Process') as process:
+            console._start_raw(identifier, directory)
+        self.assertIn('/livox/lidar', process.call_args[0][0]); self.assertEqual(console.raw_name, 'raw.bag')
+        console.session = dict(id=identifier)
+        (directory / 'raw.bag').write_bytes(b'')
+        console._seal_raw()
+        raw = json.loads((directory / 'raw.json').read_text())
+        self.assertEqual((raw['state'], raw['host']), ('sealed', 'local'))
+        (directory / 'input.bag').write_bytes(b'')
+        with patch('mission_manager.mapping_compare.run_comparison', return_value='ok') as run, \
+             patch('mission_manager.mapping_console.cloud_params', return_value={}), \
+             patch('mission_manager.mapping_console.cloud_runner', return_value='runner') as runner:
+            console.compare(dict(session_id=identifier))
+        self.assertEqual(runner.call_args[0][0][-1], str(directory / 'raw.bag'))
+        self.assertEqual(run.call_args[0][0], directory / 'input.bag')
+
     def test_without_raw_no_cloud_step(self):
         console = self.console('')
         identifier, directory = console.library.create('site')
