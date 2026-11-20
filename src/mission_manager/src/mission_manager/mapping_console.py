@@ -260,6 +260,10 @@ class MappingConsole:
             atomic_json(directory/'raw.json',dict(name=name,state='unverified',host='minipc',error=str(error)))
 
     def stop(self,data):
+        # The live map at the end of the drive is the 2D result: keep it.
+        if self.session and self.mapper and self.mapper.alive and self.grid is not None and self.session.get('state')=='MAPPING':
+            try:self.save({})
+            except Exception as error:rospy.logwarn('Final live map not saved: %s',error)
         if self.recorder:self.recorder.stop();self.recorder=None
         self._seal_raw()
         if self.mapper:self.mapper.stop();self.mapper=None
@@ -275,14 +279,33 @@ class MappingConsole:
         cloud=None
         raw=json.loads((directory/'raw.json').read_text()) if (directory/'raw.json').is_file() else {}
         progress=self._progress(data)
-        if raw.get('state')=='sealed' and raw.get('host')=='local' and (directory/'raw.bag').is_file():
+        if raw.get('state')=='sealed' and raw.get('host')=='local':
+            if not (directory/'raw.bag').is_file():
+                raise ValueError('이 기록의 원본 LiDAR는 미니 PC에 있습니다. 핫스팟 연결에서 지도 관리를 실행해(미니 PC 모드) 만드세요.')
             from mission_manager import mapping_cloud
             cloud=cloud_runner(['nice','-n','10',sys.executable,mapping_cloud.__file__,str(directory/'raw.bag')],cloud_params(self.env),directory/'cloud.log')
-        elif raw.get('state')=='sealed' and self.cloud_tool:
+            live=self._live_source(directory,source)
+            if live:
+                from mission_manager.mapping_compare import run_live
+                return run_live(source,directory,live,self.cancel_event,progress,cloud)
+        elif raw.get('state')=='sealed' and raw.get('host')=='minipc' and self.cloud_tool:
             cloud=cloud_runner([self.cloud_tool,'build',raw['name']],dict(cloud_params(self.env),transport=True),directory/'cloud.log')
             if raw.get('with_2d'):
                 source=self._fetch_2d(raw['name'],directory,progress) or source
         return run_comparison(source,directory,self.cancel_event,progress,cloud)
+
+    def _live_source(self,directory,source):
+        """Latest live map saved in this session, if the recording also holds
+        the live SLAM trajectory for (nearly) every scan; else None -> replay."""
+        from mission_manager.mapping_compare import live_trajectory
+        saved=sorted(directory.glob('saved_*/result.json'),key=lambda p:p.stat().st_mtime)
+        if not saved:return None
+        try:rows,stamps=live_trajectory(source)
+        except Exception as error:
+            rospy.logwarn('Live trajectory unreadable, replaying: %s',error);return None
+        if len(stamps)<10 or len(rows)<0.8*len(stamps):return None
+        result=json.loads(saved[-1].read_text());result['key']=saved[-1].parent.name
+        return result
 
     def _fetch_2d(self,name,directory,progress):
         """Complete 2D input recorded on the mini PC; None keeps the workstation copy."""

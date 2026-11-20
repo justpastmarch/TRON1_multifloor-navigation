@@ -36,6 +36,67 @@ def prepare_input(source, destination, seconds=None):
     return dict(scan_count=count,input_tf_count=tf_count,duration_sec=last-first,sha256=digest)
 
 
+def live_trajectory(source, period=0.05):
+    """map->base_Link (t, x, y, yaw) from the live SLAM TF recorded in the
+    session BAG, at the scan times. Empty when the live map->odom is missing."""
+    import math
+    import rosbag
+    import rospy
+    import tf2_py
+    import warnings
+    warnings.filterwarnings('ignore',message='(translation|rotation) should be of type')
+    core=tf2_py.BufferCore(rospy.Duration(36000))
+    stamps=[]
+    with rosbag.Bag(str(source)) as bag:
+        for topic,msg,t in bag.read_messages(topics=['/tf','/tf_static','/scan']):
+            if topic=='/scan':stamps.append(msg.header.stamp.to_sec());continue
+            for transform in msg.transforms:
+                if topic=='/tf_static':core.set_transform_static(transform,'bag')
+                else:core.set_transform(transform,'bag')
+    rows=[];last=None
+    for t in sorted(stamps):
+        if last is not None and t-last<period:continue
+        try:transform=core.lookup_transform_core('map','base_Link',rospy.Time.from_sec(t))
+        except Exception:continue
+        q=transform.transform.rotation;p=transform.transform.translation
+        rows.append([t,p.x,p.y,math.atan2(2*(q.w*q.z+q.x*q.y),1-2*(q.y*q.y+q.z*q.z))]);last=t
+    return rows,stamps
+
+
+def run_live(source, root, saved, stop=None, progress=None, cloud=None):
+    """No 2D replay: the live SLAM map saved during the drive is the 2D result
+    and its recorded trajectory places the raw LiDAR for the 3D map."""
+    root=Path(root);directory=root/('compare_'+time.strftime('%Y%m%d_%H%M%S'))
+    directory.mkdir()
+    report=dict(state='RUNNING',mode='live',input=dict(source=Path(source).name),results=[dict(saved)],methods=['live','3d'],
+                accuracy='외부 실측 없음: 이 결과만으로 정확도를 판정할 수 없습니다.')
+    atomic_json(root/'comparison.json',report)
+    def tell(index,label,fraction,eta=None):
+        if progress:progress(dict(step=index,steps=2,label=label,fraction=max(0.,min(1.,fraction)),eta_sec=eta,detail=''))
+    try:
+        tell(1,'실시간 경로 읽기',0.)
+        rows,_=live_trajectory(source)
+        atomic_json(directory/'trajectory.json',rows);report['input']['trajectory_poses']=len(rows)
+        tell(1,'실시간 경로 읽기',1.,0)
+        key3=directory.name+'_3d';started=time.monotonic()
+        def cloud_progress(fraction,detail=''):
+            if stop and stop.is_set():raise RuntimeError('지도 생성 중단됨')
+            elapsed=time.monotonic()-started
+            tell(2,'3D 지도 (원본 LiDAR)',fraction,elapsed*(1-fraction)/fraction if fraction>.05 else None)
+        try:
+            result=cloud(directory/'trajectory.json',root/key3,cloud_progress)
+            result['key']=key3;report['results'].append(result)
+        except Exception as error:
+            report['cloud_error']=str(error)
+        report['state']='COMPLETE'
+    except Exception as error:
+        report.update(state='FAILED',error=str(error))
+        raise
+    finally:
+        atomic_json(root/'comparison.json',report)
+    return report
+
+
 def run_comparison(source, root, stop=None, progress=None, cloud=None):
     """2D SLAM Toolbox replay of the recorded scan/odom/TF, then (when a raw
     LiDAR BAG of the same run exists) a 3D point cloud along its trajectory.

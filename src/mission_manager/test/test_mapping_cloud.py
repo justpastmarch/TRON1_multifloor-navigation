@@ -133,7 +133,7 @@ class MappingConsoleRawTests(unittest.TestCase):
         console = self.console('/bin/true')
         identifier, directory = console.library.create('site')
         (directory / 'input.bag').write_bytes(b'')
-        (directory / 'raw.json').write_text(json.dumps(dict(name='map_x', state='sealed')))
+        (directory / 'raw.json').write_text(json.dumps(dict(name='map_x', host='minipc', state='sealed')))
         with patch('mission_manager.mapping_compare.run_comparison', return_value='ok') as run, \
              patch('mission_manager.mapping_console.cloud_params', return_value=dict(base_from_lidar=IDENTITY, lidar_from_imu=IDENTITY)), \
              patch('mission_manager.mapping_console.cloud_runner', return_value='runner') as runner:
@@ -146,7 +146,7 @@ class MappingConsoleRawTests(unittest.TestCase):
         console = self.console('/bin/true')
         identifier, directory = console.library.create('site')
         (directory / 'input.bag').write_bytes(b'')
-        (directory / 'raw.json').write_text(json.dumps(dict(name='map_x', state='sealed', with_2d=True)))
+        (directory / 'raw.json').write_text(json.dumps(dict(name='map_x', host='minipc', state='sealed', with_2d=True)))
         def fetched(command, **kwargs):
             Path(command[3]).write_bytes(b'bag')
             return type('R', (), dict(returncode=0))()
@@ -184,6 +184,33 @@ class MappingConsoleRawTests(unittest.TestCase):
             console.compare(dict(session_id=identifier))
         self.assertEqual(runner.call_args[0][0][-1], str(directory / 'raw.bag'))
         self.assertEqual(run.call_args[0][0], directory / 'input.bag')
+
+    def test_local_session_with_live_trajectory_skips_replay(self):
+        from mission_manager import mapping_console
+        with patch.object(mapping_console.rospy, 'Subscriber'), patch.object(mapping_console.tf2_ros, 'TransformListener'), patch.object(mapping_console.tf2_ros, 'Buffer'):
+            console = mapping_console.MappingConsole(str(self.root), env=dict(MAPPING_LOCAL_RAW='1'))
+        identifier, directory = console.library.create('site')
+        for name in ('input.bag', 'raw.bag'):
+            (directory / name).write_bytes(b'')
+        (directory / 'raw.json').write_text(json.dumps(dict(name='raw.bag', host='local', state='sealed')))
+        (directory / 'saved_1').mkdir(); (directory / 'saved_1' / 'result.json').write_text(json.dumps(dict(method='toolbox', width=3)))
+        rows = [[float(t), 0, 0, 0] for t in range(20)]
+        with patch('mission_manager.mapping_compare.live_trajectory', return_value=(rows, list(range(20)))), \
+             patch('mission_manager.mapping_compare.run_live', return_value='live') as live, \
+             patch('mission_manager.mapping_compare.run_comparison', return_value='replay'), \
+             patch('mission_manager.mapping_console.cloud_params', return_value={}), \
+             patch('mission_manager.mapping_console.cloud_runner', return_value='runner'):
+            self.assertEqual(console.compare(dict(session_id=identifier)), 'live')
+        self.assertEqual(live.call_args[0][2]['key'], 'saved_1')
+        # Sparse live trajectory (e.g. lossy link) -> replay instead.
+        with patch('mission_manager.mapping_compare.live_trajectory', return_value=(rows[:5], list(range(20)))), \
+             patch('mission_manager.mapping_compare.run_comparison', return_value='replay'), \
+             patch('mission_manager.mapping_console.cloud_params', return_value={}), \
+             patch('mission_manager.mapping_console.cloud_runner', return_value='runner'):
+            self.assertEqual(console.compare(dict(session_id=identifier)), 'replay')
+        (directory / 'raw.bag').unlink()
+        with self.assertRaisesRegex(ValueError, '미니 PC'):
+            console.compare(dict(session_id=identifier))
 
     def test_blank_name_gets_date_time(self):
         console = self.console('')

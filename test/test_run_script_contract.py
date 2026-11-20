@@ -26,13 +26,16 @@ class RunScriptContractTest(unittest.TestCase):
         self.assertEqual(values["ROS_MASTER_HOST"], "192.168.1.26")
         self.assertEqual(values["MINI_PC_ROS_IP"], "192.168.1.56")
 
-    def _network(self, choice, reachable=()):
+    def _network(self, choice, reachable=(), tailscale_status=''):
         # Source config.env with a stub ping that answers only for `reachable`.
         with tempfile.TemporaryDirectory() as stub:
             ping = Path(stub) / "ping"
             ping.write_text('#!/bin/sh\nfor a; do last="$a"; done\ncase " %s " in *" $last "*) exit 0;; esac\nexit 1\n'
                             % " ".join(reachable))
             ping.chmod(0o755)
+            status = Path(stub) / "tailscale"
+            status.write_text("#!/bin/sh\nprintf '%s'\n" % tailscale_status.replace("'", ""))
+            status.chmod(0o755)
             env = dict(os.environ, PATH=stub + os.pathsep + os.environ["PATH"])
             env.pop("TRON_NETWORK", None)
             if choice:
@@ -52,6 +55,9 @@ class RunScriptContractTest(unittest.TestCase):
         self.assertEqual(self._network(None, []), lan)
         self.assertEqual(self._network("tailscale", ["192.168.1.56"]), tail)
         self.assertEqual(self._network("lan", ["100.86.246.109"]), lan)
+        # Pings lost on a weak hotspot, but Tailscale lists the mini PC as connected.
+        self.assertEqual(self._network(None, [], "100.86.246.109  minipc  user  linux  active; relay tok\\n"), tail)
+        self.assertEqual(self._network(None, [], "100.86.246.109  minipc  user  linux  offline\\n"), lan)
 
     def test_wrapper_owns_master_and_probes_complete_action_connections(self) -> None:
         # Given: the production startup path.
