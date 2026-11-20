@@ -214,14 +214,17 @@ class MappingConsole:
         if not self.raw_tool:
             atomic_json(directory/'raw.json',dict(state='unavailable',error='원본 녹화 도구 미설정'));return
         name='map_'+identifier
+        # The mapping recorder also keeps the 2D inputs beside the sensors, so the
+        # final maps do not depend on what crossed a weak link during the drive.
+        command=[self.cloud_tool,'record',name] if self.cloud_tool else [self.raw_tool,'start',name]
         try:
-            result=subprocess.run([self.raw_tool,'start',name],capture_output=True,text=True,timeout=25)
+            result=subprocess.run(command,capture_output=True,text=True,timeout=25)
             if result.returncode:raise RuntimeError(result.stderr.strip()[-300:] or '시작 실패')
         except (OSError,subprocess.TimeoutExpired,RuntimeError) as error:
             atomic_json(directory/'raw.json',dict(name=name,state='failed',error='원본 LiDAR 녹화 시작 실패: '+str(error)))
             rospy.logwarn('Raw LiDAR recording not started: %s',error);return
         self.raw_name=name
-        atomic_json(directory/'raw.json',dict(name=name,state='recording',host='minipc'))
+        atomic_json(directory/'raw.json',dict(name=name,state='recording',host='minipc',with_2d=bool(self.cloud_tool)))
 
     def _seal_raw(self):
         name,self.raw_name=self.raw_name,None
@@ -231,7 +234,7 @@ class MappingConsole:
             result=subprocess.run([self.raw_tool,'seal',name],capture_output=True,text=True,timeout=90)
             if result.returncode:raise RuntimeError(result.stderr.strip()[-300:] or '마감 실패')
             state='absent' if 'RAW_BAG_ABSENT' in result.stdout else 'sealed'
-            atomic_json(directory/'raw.json',dict(name=name,state=state,host='minipc'))
+            atomic_json(directory/'raw.json',dict(name=name,state=state,host='minipc',with_2d=bool(self.cloud_tool)))
         except (OSError,subprocess.TimeoutExpired,RuntimeError) as error:
             atomic_json(directory/'raw.json',dict(name=name,state='unverified',host='minipc',error=str(error)))
 
@@ -250,9 +253,28 @@ class MappingConsole:
         if not source.is_file():raise ValueError('저장이 완료된 비교용 BAG이 없습니다.')
         cloud=None
         raw=json.loads((directory/'raw.json').read_text()) if (directory/'raw.json').is_file() else {}
+        progress=self._progress(data)
         if raw.get('state')=='sealed' and self.cloud_tool:
             cloud=cloud_runner([self.cloud_tool,'build',raw['name']],dict(cloud_params(self.env),transport=True),directory/'cloud.log')
-        return run_comparison(source,directory,self.cancel_event,self._progress(data),cloud)
+            if raw.get('with_2d'):
+                source=self._fetch_2d(raw['name'],directory,progress) or source
+        return run_comparison(source,directory,self.cancel_event,progress,cloud)
+
+    def _fetch_2d(self,name,directory,progress):
+        """Complete 2D input recorded on the mini PC; None keeps the workstation copy."""
+        target=directory/'input_minipc.bag'
+        if target.is_file():return target
+        progress(dict(step=1,steps=1,label='미니 PC 2D 기록 가져오기',fraction=0.,eta_sec=None,detail=''))
+        partial=directory/'input_minipc.bag.part'
+        try:
+            with open(directory/'cloud.log','a') as log:
+                result=subprocess.run([self.cloud_tool,'fetch2d',name,str(partial)],stdout=log,stderr=log,timeout=900)
+            if result.returncode or not partial.is_file():raise RuntimeError('fetch2d 실패')
+            partial.rename(target);return target
+        except (OSError,subprocess.TimeoutExpired,RuntimeError) as error:
+            rospy.logwarn('Mini PC 2D input not fetched, using the workstation recording: %s',error)
+            if partial.exists():partial.unlink()
+            return None
 
     def _progress(self,data):
         job=data.get('_job')

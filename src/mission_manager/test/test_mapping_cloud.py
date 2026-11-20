@@ -132,6 +132,28 @@ class MappingConsoleRawTests(unittest.TestCase):
         self.assertTrue(runner.call_args[0][1]['transport'])
         self.assertEqual(run.call_args[0][4], 'runner')
 
+    def test_mini_pc_2d_input_is_preferred_and_failure_falls_back(self):
+        console = self.console('/bin/true')
+        identifier, directory = console.library.create('site')
+        (directory / 'input.bag').write_bytes(b'')
+        (directory / 'raw.json').write_text(json.dumps(dict(name='map_x', state='sealed', with_2d=True)))
+        def fetched(command, **kwargs):
+            Path(command[3]).write_bytes(b'bag')
+            return type('R', (), dict(returncode=0))()
+        with patch('mission_manager.mapping_compare.run_comparison', return_value='ok') as run, \
+             patch('mission_manager.mapping_console.cloud_params', return_value={}), \
+             patch('mission_manager.mapping_console.cloud_runner', return_value='runner'), \
+             patch('mission_manager.mapping_console.subprocess.run', side_effect=fetched):
+            console.compare(dict(session_id=identifier))
+        self.assertEqual(run.call_args[0][0], directory / 'input_minipc.bag')
+        (directory / 'input_minipc.bag').unlink()
+        with patch('mission_manager.mapping_compare.run_comparison', return_value='ok') as run, \
+             patch('mission_manager.mapping_console.cloud_params', return_value={}), \
+             patch('mission_manager.mapping_console.cloud_runner', return_value='runner'), \
+             patch('mission_manager.mapping_console.subprocess.run', return_value=type('R', (), dict(returncode=1))()):
+            console.compare(dict(session_id=identifier))
+        self.assertEqual(run.call_args[0][0], directory / 'input.bag')
+
     def test_without_raw_no_cloud_step(self):
         console = self.console('')
         identifier, directory = console.library.create('site')
