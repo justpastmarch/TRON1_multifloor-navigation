@@ -14,9 +14,19 @@ class Transport(xmlrpc.client.Transport):
         return conn
 
 
-def master_identity():
+def candidates():
+    """(master URI, own ROS_IP) pairs in preference order: the robotnet LAN
+    first, then the optional Tailscale path (ROS_MASTER_URI_ALT/ROS_IP_ALT)."""
+    pairs = [(os.environ['ROS_MASTER_URI'], os.environ.get('ROS_IP'))]
+    alt = os.environ.get('ROS_MASTER_URI_ALT')
+    if alt:
+        pairs.append((alt, os.environ.get('ROS_IP_ALT')))
+    return pairs
+
+
+def master_identity(uri):
     try:
-        with xmlrpc.client.ServerProxy(os.environ['ROS_MASTER_URI'],
+        with xmlrpc.client.ServerProxy(uri,
                                       transport=Transport()) as master:
             code, _, pid = master.getPid('/sensor_boot_watch')
             run_code, _, run_id = master.getParam('/sensor_boot_watch', '/run_id')
@@ -31,24 +41,33 @@ def main():
     stopping = threading.Event()
     for sig in (signal.SIGINT, signal.SIGTERM):
         signal.signal(sig, lambda *_: stopping.set())
-    print('Waiting for workstation ROS master: ' + os.environ['ROS_MASTER_URI'], flush=True)
+    pairs = candidates()
+    print('Waiting for workstation ROS master: ' + ' or '.join(uri for uri, _ in pairs), flush=True)
+    identity = None
     while not stopping.is_set():
-        identity = master_identity()
+        for uri, ros_ip in pairs:
+            identity = master_identity(uri)
+            if identity is not None:
+                break
         if identity is not None:
             break
         stopping.wait(2)
     if stopping.is_set():
         return 0
-    print('Master ready; starting sensor_integration wf_mapping.launch', flush=True)
+    env = dict(os.environ, ROS_MASTER_URI=uri)
+    if ros_ip:
+        env['ROS_IP'] = ros_ip
+    print('Master ready at %s (ROS_IP %s); starting sensor_integration wf_mapping.launch'
+          % (uri, env.get('ROS_IP')), flush=True)
     child = subprocess.Popen(['/opt/ros/noetic/bin/roslaunch', '--wait', '--required',
-                              'sensor_integration', 'wf_mapping.launch'])
+                              'sensor_integration', 'wf_mapping.launch'], env=env)
     failures = 0
     try:
         while not stopping.wait(2):
             if child.poll() is not None:
                 print('Sensor launch exited; systemd will retry', flush=True)
                 return 1
-            current = master_identity()
+            current = master_identity(uri)
             failures = failures + 1 if current is None else 0
             if failures >= 3 or (current is not None and current != identity):
                 print('Master lost or replaced; restarting sensor registration', flush=True)

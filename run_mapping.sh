@@ -7,6 +7,7 @@ source /opt/ros/noetic/setup.bash
 source "$ROOT/devel/setup.bash"
 source "$ROOT/config.env"
 set -u
+printf '[NET] %s path: mini PC %s, ROS master %s\n' "$TRON_NETWORK" "$MINI_PC_HOST" "$ROS_MASTER_HOST"
 export ROS_MASTER_URI="${MAPPING_MASTER_URI:-http://${ROS_MASTER_HOST}:${ROS_MASTER_PORT}}"
 export ROS_IP="${MAPPING_ROS_IP:-${ROS_MASTER_HOST}}"
 unset ROS_HOSTNAME

@@ -33,6 +33,7 @@ if [[ ! -r "$CONFIG_FILE" ]]; then
 fi
 # shellcheck disable=SC1090
 source "$CONFIG_FILE"
+printf '[NET] %s path: mini PC %s, ROS master %s\n' "$TRON_NETWORK" "$MINI_PC_HOST" "$ROS_MASTER_HOST"
 STAIR_EXECUTION_HOST="${STAIR_EXECUTION_HOST:-minipc}"
 case "$STAIR_EXECUTION_HOST" in
     minipc|workstation) ;;
