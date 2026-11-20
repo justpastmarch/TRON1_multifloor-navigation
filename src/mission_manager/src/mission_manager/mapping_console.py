@@ -71,6 +71,8 @@ class MappingConsole:
         self.buffer=tf2_ros.Buffer(rospy.Duration(15));self.listener=tf2_ros.TransformListener(self.buffer)
         self.subs=[rospy.Subscriber('/mapping/map',OccupancyGrid,self.on_map,queue_size=1),
                    rospy.Subscriber('/scan',LaserScan,self.on_scan,queue_size=1)]
+        from mission_manager.site_navigation import SiteNavigation
+        self.site=SiteNavigation(self.library,self.buffer,self.env,self.env.get('MAPPING_SUPERVISOR_TOOL',''))
         self.server=None;self.closed=False
 
     def on_map(self,msg):
@@ -86,7 +88,7 @@ class MappingConsole:
                         mapper_alive=bool(self.mapper and self.mapper.alive),
                         recording=bool(self.recorder and self.recorder.alive),
                         jobs=list(self.jobs.values())[-20:],maps=self.library.list(),
-                        raw_recording=self.raw_name,
+                        raw_recording=self.raw_name,site=self.site.snapshot(),
                         photo=self.photo.mail_snapshot() if self.photo else dict(configured=False,reason='촬영 기능 미설정'),
                         root=str(self.library.root),motion_commands_sent=0)
 
@@ -116,6 +118,10 @@ class MappingConsole:
         raise ValueError('지원하지 않는 지도 조회입니다.')
 
     def mapping_request(self,path,data):
+        # Driving commands never wait behind a mapping job; stop is always immediate.
+        site={'/api/site/halt':self.site.halt,'/api/site/goto':self.site.goto,'/api/site/patrol':self.site.start_patrol,
+              '/api/site/pose':self.site.set_pose,'/api/site/waypoints':self.site.set_waypoints}
+        if path in site:return site[path](data)
         if path=='/api/photo/capture_mail':
             if not self.photo:raise ValueError('촬영 기능 미설정')
             return self.photo.capture_and_mail(data.get('recipient'))
@@ -128,7 +134,8 @@ class MappingConsole:
             return self.photo.mail_settings(data['recipient'])
         operations={'/api/mapping/start':self.start,'/api/mapping/save':self.save,
                     '/api/mapping/stop':self.stop,'/api/mapping/compare':self.compare,
-                    '/api/mapping/import_compare':self.import_compare}
+                    '/api/mapping/import_compare':self.import_compare,
+                    '/api/site/start':self.site_start,'/api/site/stop':self.site.stop}
         if path not in operations:raise ValueError('지도 작성 모드에서는 이 명령을 지원하지 않습니다.')
         request_id=data.get('request_id')
         if not isinstance(request_id,str) or not request_id or len(request_id)>100:raise ValueError('요청 ID가 필요합니다.')
@@ -157,9 +164,13 @@ class MappingConsole:
             with self.lock:self.jobs[identifier].update(state='FAILED',detail=str(error))
             rospy.logwarn('Mapping task failed: %s',error)
 
+    def site_start(self,data):
+        return self.site.start(data,mapping_active=bool(self.mapper and self.mapper.alive))
+
     def start(self,data):
         import rosnode
         if self.mapper and self.mapper.alive:raise ValueError('이미 지도 작성 중입니다.')
+        if self.site.active:raise ValueError('주행 중에는 지도 작성을 시작할 수 없습니다. 주행 종료 후 시작하세요.')
         conflict={'/amcl','/move_base','/map_server','/slam_toolbox','/slam_gmapping'} & set(rosnode.get_node_names())
         if conflict:raise ValueError('지도 작성과 충돌하는 기존 실행을 종료하세요: '+', '.join(sorted(conflict)))
         deadline=time.monotonic()+30
@@ -353,8 +364,10 @@ class MappingConsole:
     def close(self):
         if self.closed:return
         self.closed=True;self.cancel_event.set()
+        self.site.halt()
         self.worker.shutdown(wait=True)
         self.stop({})
+        if self.site.active:self.site.stop()
         if self.photo:
             self.photo.capture_stop.set()
             if self.photo.mail:self.photo.mail.close()
