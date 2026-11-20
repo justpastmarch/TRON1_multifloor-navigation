@@ -61,6 +61,22 @@ class SiteNavigationTests(unittest.TestCase):
         self.assertEqual(self.nav.state, 'FAILED'); self.assertIn('A', self.nav.detail)
         self.assertEqual(client.send_goal.call_count, 1)
 
+    def test_drive_log_records_goals_and_summary(self):
+        client = Mock(); client.wait_for_result.return_value = True; client.get_state.side_effect = [3, 4]
+        self.nav.client = client
+        self.nav.log_path = Path(self.temp.name) / self.site_id / 'drive_20261120_120000.jsonl'
+        self.nav.robot_pose = lambda: dict(x=1.0, y=2.0, yaw=0.0, age=0.0)
+        self.nav._event('start', map_key='saved_1')
+        with patch.object(sn.rospy, 'Time'):
+            self.nav._run([dict(x=0, y=0, yaw=0, name='A'), dict(x=1, y=0, yaw=0, name='B')], False, '순회')
+        self.nav._event('stop')
+        rows = [json.loads(l) for l in self.nav.log_path.read_text().splitlines()]
+        self.assertEqual([r['event'] for r in rows], ['start', 'goal', 'arrived', 'goal', 'failed', 'stop'])
+        self.assertEqual(rows[2]['pose']['x'], 1.0)
+        summary = sn.summarize_drive(self.nav.log_path)
+        self.assertEqual((summary['goals'], summary['arrived'], summary['failed'], summary['finished']), (2, 1, 1, True))
+        self.assertEqual(self.library.list()[0]['drives'][0]['id'], 'drive_20261120_120000')
+
     def test_patrol_visits_points_in_order(self):
         client = Mock(); client.wait_for_result.return_value = True; client.get_state.return_value = 3
         self.nav.client = client

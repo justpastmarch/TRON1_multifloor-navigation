@@ -24,6 +24,28 @@ from mission_manager.mapping_store import atomic_json
 GOAL_STATES = {0: 'PENDING', 1: 'ACTIVE', 2: 'PREEMPTED', 3: 'SUCCEEDED', 4: 'ABORTED',
                5: 'REJECTED', 6: 'PREEMPTING', 7: 'RECALLING', 8: 'RECALLED', 9: 'LOST'}
 MAX_WAYPOINTS = 100
+# Recorded beside the drive on the mini PC (no raw LiDAR: about 7 MB/min).
+DRIVE_TOPICS = ['/scan', '/tron/wheel_odom_raw', '/tf', '/tf_static', '/amcl_pose', '/initialpose',
+                '/move_base/NavfnROS/plan', '/move_base/goal', '/move_base/status', '/move_base/result',
+                '/navigation/cmd_vel', '/stair_supervisor/state']
+
+
+def summarize_drive(path):
+    """One drive_*.jsonl -> counts and times for the library list."""
+    events = []
+    for line in Path(path).read_text().splitlines():
+        try:
+            events.append(json.loads(line))
+        except ValueError:
+            continue
+    if not events:
+        return None
+    kinds = [e.get('event') for e in events]
+    bag = Path(path).with_suffix('.bag')
+    return dict(id=Path(path).stem, started=events[0].get('t'), ended=events[-1].get('t'),
+                map_key=events[0].get('map_key'), goals=kinds.count('goal'), arrived=kinds.count('arrived'),
+                failed=kinds.count('failed'), halted=kinds.count('halt'),
+                finished=kinds[-1] == 'stop', bag_bytes=bag.stat().st_size if bag.is_file() else 0)
 
 
 def _finite(*values):
@@ -58,6 +80,8 @@ class SiteNavigation:
         self.client = None
         self.subscribers = []
         self.pose_publisher = None
+        self.log_path = None
+        self.recorder = None
 
     # ---------- lifecycle ----------
     @property
@@ -85,17 +109,27 @@ class SiteNavigation:
                    'min_in_place_vel_theta:=%s' % env.get('MIN_IN_PLACE_VEL_THETA', '0.30'),
                    'acc_lim_x:=%s' % env.get('ACC_LIM_X', '0.4'), 'acc_lim_theta:=%s' % env.get('ACC_LIM_THETA', '2.0')]
         log = folder.parent / 'navigation.log'
+        stamp = time.strftime('%Y%m%d_%H%M%S')
         with self.lock:
             self.state, self.detail = 'STARTING', '주행 노드 시작 중'
             self.map = dict(id=data['map_id'], key=data['map_key'], name=data.get('map_name', ''))
             self.waypoints = self._load_waypoints(folder)
+            self.log_path = folder.parent / ('drive_%s.jsonl' % stamp)
+        self._event('start', map_key=data['map_key'], initial=pose, waypoints=len(self.waypoints))
         try:
             self._supervisor('drive-start')
             self.process = Process(command, log)
             self._connect(time.monotonic() + 60)
-        except Exception:
+        except Exception as error:
+            self._event('start_failed', reason=str(error)[:300])
             self.stop()
             raise
+        try:
+            self.recorder = Process(['rosbag', 'record', '-O', str(folder.parent / ('drive_%s.bag' % stamp))] + DRIVE_TOPICS
+                                    + ['__name:=drive_record_%s' % stamp], folder.parent / ('drive_%s_record.log' % stamp))
+        except OSError as error:
+            # The drive does not depend on its recording.
+            self._event('record_failed', reason=str(error))
         with self.lock:
             self.state, self.detail = 'READY', '대기 · 지도에서 이동할 곳이나 순회 지점을 정하세요'
         return dict(ready=True)
@@ -125,6 +159,9 @@ class SiteNavigation:
 
     def stop(self, data=None):
         self.halt()
+        recorder, self.recorder = self.recorder, None
+        if recorder:
+            recorder.stop()
         with self.lock:
             process, self.process = self.process, None
             for sub in self.subscribers:
@@ -141,8 +178,9 @@ class SiteNavigation:
             self._supervisor('drive-stop')
         except Exception as error:
             rospy.logwarn('Stair Supervisor stop: %s', error)
+        self._event('stop')
         with self.lock:
-            self.state, self.detail, self.map = 'IDLE', '주행 종료', None
+            self.state, self.detail, self.map, self.log_path = 'IDLE', '주행 종료', None, None
         return dict(stopped=True)
 
     # ---------- commands ----------
@@ -162,6 +200,7 @@ class SiteNavigation:
         covariance[35] = math.radians(15) ** 2
         message.pose.covariance = covariance
         self.pose_publisher.publish(message)
+        self._event('pose_set', x=x, y=y, yaw=yaw)
         with self.lock:
             self.detail = '위치 지정 (%.2f, %.2f)' % (x, y)
         return dict(published=True)
@@ -196,6 +235,8 @@ class SiteNavigation:
 
     def halt(self, data=None):
         """Operator stop: cancel the patrol and every move_base goal."""
+        if self.state in ('MOVING', 'PATROL') and data is not None:
+            self._event('halt')
         self._end_run(cancel_all=True)
         with self.lock:
             if self.state == 'FAILED' and self.active:
@@ -255,12 +296,18 @@ class SiteNavigation:
                         self.detail = '%s · %s (%d/%d)%s' % (label, point['name'], index + 1, len(points),
                                                              ' · %d바퀴째' % lap if loop else '')
                     self.client.send_goal(goal)
+                    sent = time.monotonic()
+                    self._event('goal', label=label, name=point['name'], index=index, total=len(points), lap=lap,
+                                goal=dict(x=point['x'], y=point['y'], yaw=point['yaw']))
                     while not self.patrol_stop.is_set():
                         if self.client.wait_for_result(rospy.Duration(0.5)):
                             break
                     if self.patrol_stop.is_set():
+                        self._event('cancelled', name=point['name'], seconds=round(time.monotonic() - sent, 1))
                         return
                     status = self.client.get_state()
+                    self._event('arrived' if status == 3 else 'failed', name=point['name'], index=index,
+                                seconds=round(time.monotonic() - sent, 1), move_base=GOAL_STATES.get(status, status))
                     if status != 3:
                         with self.lock:
                             self.state = 'FAILED'
@@ -277,6 +324,24 @@ class SiteNavigation:
         except Exception as error:
             with self.lock:
                 self.state, self.detail, self.target = 'FAILED', '%s 오류: %s' % (label, error), None
+
+    # ---------- drive log ----------
+    def _event(self, event, **fields):
+        path = self.log_path
+        if path is None:
+            return
+        row = dict(t=round(time.time(), 3), event=event, **fields)
+        try:
+            pose = self.robot_pose()
+        except Exception:
+            pose = None
+        if pose:
+            row['pose'] = pose
+        try:
+            with open(str(path), 'a') as stream:
+                stream.write(json.dumps(row, ensure_ascii=False) + '\n')
+        except OSError as error:
+            rospy.logwarn('drive log: %s', error)
 
     # ---------- state ----------
     def _require_ready(self):

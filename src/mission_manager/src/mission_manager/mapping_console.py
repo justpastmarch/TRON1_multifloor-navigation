@@ -88,9 +88,19 @@ class MappingConsole:
                         mapper_alive=bool(self.mapper and self.mapper.alive),
                         recording=bool(self.recorder and self.recorder.alive),
                         jobs=list(self.jobs.values())[-20:],maps=self.library.list(),
-                        raw_recording=self.raw_name,site=self.site.snapshot(),
+                        raw_recording=self.raw_name,site=self.site.snapshot(),robot=self.mapping_pose(),
                         photo=self.photo.mail_snapshot() if self.photo else dict(configured=False,reason='촬영 기능 미설정'),
                         root=str(self.library.root),motion_commands_sent=0)
+
+    def mapping_pose(self):
+        """Robot pose on the live SLAM map while mapping (map -> base_Link)."""
+        if not (self.mapper and self.mapper.alive):return None
+        import math
+        try:t=self.buffer.lookup_transform('map','base_Link',rospy.Time(0),rospy.Duration(0.05))
+        except Exception:return None
+        q,p=t.transform.rotation,t.transform.translation
+        return dict(x=round(p.x,3),y=round(p.y,3),yaw=round(math.atan2(2*(q.w*q.z+q.x*q.y),1-2*(q.y*q.y+q.z*q.z)),3),
+                    age=round((rospy.Time.now()-t.header.stamp).to_sec(),2))
 
     def map_snapshot(self):
         from mission_manager.console_map import encode_map

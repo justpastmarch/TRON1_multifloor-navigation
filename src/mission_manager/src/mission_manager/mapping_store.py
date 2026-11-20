@@ -56,6 +56,8 @@ class MapLibrary:
                     row['maps'].append(result)
                 row['bag_ready'] = (path/'input.bag').is_file()
                 row['raw'] = json.loads((path/'raw.json').read_text()) if (path/'raw.json').is_file() else None
+                from mission_manager.site_navigation import summarize_drive
+                row['drives'] = [d for d in (summarize_drive(f) for f in sorted(path.glob('drive_*.jsonl'), reverse=True)) if d]
                 row['comparison'] = json.loads((path/'comparison.json').read_text()) if (path/'comparison.json').is_file() else None
                 rows.append(row)
         return rows
