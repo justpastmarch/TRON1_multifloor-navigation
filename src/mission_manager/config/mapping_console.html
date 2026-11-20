@@ -97,7 +97,7 @@ class CloudView{constructor(canvas,empty){this.c=canvas;this.empty=empty;this.n=
   const view=[s[0],u[0],-f[0],0,s[1],u[1],-f[1],0,s[2],u[2],-f[2],0,-dot(s,eye),-dot(u,eye),dot(f,eye),1];
   const fov=1/Math.tan(0.45),a=w/h,near=Math.max(this.dist*0.01,0.02),far=this.dist*20+100;
   const proj=[fov/a,0,0,0,0,fov,0,0,0,0,(far+near)/(near-far),-1,0,0,2*far*near/(near-far),0];
-  const p=this.prog;gl.useProgram(p);gl.uniformMatrix4fv(gl.getUniformLocation(p,'m'),false,mul(proj,view));gl.uniform2f(gl.getUniformLocation(p,'z'),this.z[0],this.z[1]);gl.uniform1f(gl.getUniformLocation(p,'cut'),this.cut);gl.uniform1f(gl.getUniformLocation(p,'ps'),Math.max(1.5,Math.min(4,40/this.dist))*d);
+  const p=this.prog;gl.useProgram(p);gl.uniformMatrix4fv(gl.getUniformLocation(p,'m'),false,mul(proj,view));gl.uniform2f(gl.getUniformLocation(p,'z'),this.z[0],this.z[1]);gl.uniform1f(gl.getUniformLocation(p,'cut'),this.cut);gl.uniform1f(gl.getUniformLocation(p,'ps'),Math.max(2.2,Math.min(5,60/this.dist))*d);
   gl.bindBuffer(gl.ARRAY_BUFFER,this.buf);const loc=gl.getAttribLocation(p,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,3,gl.FLOAT,false,0,0);gl.drawArrays(gl.POINTS,0,this.n);}}
 const sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],norm=a=>{const l=Math.hypot(...a)||1;return a.map(v=>v/l);};
 function mul(a,b){const o=new Array(16).fill(0);for(let c=0;c<4;c++)for(let r=0;r<4;r++)for(let k=0;k<4;k++)o[c*4+r]+=a[k*4+r]*b[c*4+k];return o;}
@@ -105,7 +105,7 @@ const cloud=new CloudView($('cloudCanvas'),$('emptyB'));
 $('cloudTop').onclick=()=>cloud.view(1.55);$('cloudSide').onclick=()=>cloud.view(0.6);$('cloudFit').onclick=()=>cloud.fit();$('cloudCut').oninput=()=>cloud.cutSlider();
 
 async function preview2d(id,m){try{const v=await api(`/api/maps/${id}/${m.key}/preview`);views.canvasA.set(await mapImage(v),false);$('infoA').textContent=(methodName[m.method]||m.method)+' · '+info(m);}catch(e){message(e.message);}}
-async function preview3d(id,m){try{cloud.clear('3D 지도를 불러오는 중');const r=await fetch(`/api/maps/${id}/${m.key}/cloud?max=150000`);if(!r.ok)throw Error('3D 지도를 불러오지 못했습니다.');
+async function preview3d(id,m){try{cloud.clear('3D 지도를 불러오는 중');const r=await fetch(`/api/maps/${id}/${m.key}/cloud?max=250000`);if(!r.ok)throw Error('3D 지도를 불러오지 못했습니다.');
   const total=+r.headers.get('Content-Length')||0,reader=r.body.getReader(),parts=[];let got=0,started=performance.now();
   for(;;){const {done,value}=await reader.read();if(done)break;parts.push(value);got+=value.length;const sec=(performance.now()-started)/1000;$('emptyB').textContent=`3D 지도를 받는 중 ${(got/1e6).toFixed(2)}${total?' / '+(total/1e6).toFixed(2):''} MB`+(total&&got>0&&sec>1?` · 남은 시간 약 ${fmtTime((total-got)/(got/sec))}`:'');}
   const buffer=new Uint8Array(got);let at=0;for(const p of parts){buffer.set(p,at);at+=p.length;}cloud.load(buffer.buffer);$('infoB').textContent=info(m)+' · 높이 색: 파랑(낮음)→빨강(높음)';}catch(e){cloud.clear(e.message);}}

@@ -4,10 +4,27 @@ import os
 import signal
 import subprocess
 import threading
+import time
 import xmlrpc.client
 
 
 UNREACHABLE_RESTART_SEC = 120
+# The Livox driver only finds a LiDAR that is powered when it starts (the
+# LiDAR is powered by the robot). If no LiDAR IMU message arrives for
+# SILENT_RESTART_SEC after a start-up grace period, restart the launch.
+SENSOR_GRACE_SEC = 40
+SENSOR_CHECK_SEC = 10
+SILENT_RESTART_SEC = 40
+SENSOR_TOPIC = '/livox/imu/header'
+
+
+def sensor_alive(env):
+    try:
+        return subprocess.run(['/opt/ros/noetic/bin/rostopic', 'echo', '-n', '1', SENSOR_TOPIC],
+                              env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                              timeout=5).returncode == 0
+    except (OSError, subprocess.TimeoutExpired):
+        return False
 
 
 class Transport(xmlrpc.client.Transport):
@@ -73,6 +90,9 @@ def main():
     # answers again. A replaced master (new PID/run_id) still restarts
     # registration, and so does a master gone for UNREACHABLE_RESTART_SEC.
     failures = 0
+    started = time.monotonic()
+    last_check = started
+    silent_since = None
     try:
         while not stopping.wait(2):
             if child.poll() is not None:
@@ -89,6 +109,19 @@ def main():
             if failures * 2 >= UNREACHABLE_RESTART_SEC or (current is not None and current != identity):
                 print('Master lost or replaced; restarting sensor registration', flush=True)
                 return 1
+            now = time.monotonic()
+            if current is not None and now - started >= SENSOR_GRACE_SEC and now - last_check >= SENSOR_CHECK_SEC:
+                last_check = now
+                if sensor_alive(env):
+                    if silent_since is not None:
+                        print('LiDAR data back', flush=True)
+                    silent_since = None
+                else:
+                    silent_since = silent_since or now
+                    if now - silent_since >= SILENT_RESTART_SEC:
+                        print('No LiDAR data for %d s (robot/LiDAR powered after start?); restarting sensors'
+                              % (now - silent_since), flush=True)
+                        return 1
         return 0
     finally:
         if child.poll() is None:

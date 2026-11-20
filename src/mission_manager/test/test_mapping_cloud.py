@@ -103,9 +103,22 @@ class MappingCloudTests(unittest.TestCase):
         packed = mc.compact_preview(data, 400)
         self.assertEqual(packed[:4], b'TRC2'); n = struct.unpack('<I', packed[4:8])[0]
         origin = np.frombuffer(packed, '<f4', 3, 8); back = np.frombuffer(packed, '<u2', n * 3, 20).reshape(-1, 3) / 100 + origin
-        self.assertEqual(n, 400); self.assertEqual(len(packed), 20 + 400 * 6)
+        self.assertLessEqual(n, 400); self.assertGreater(n, 100); self.assertEqual(len(packed), 20 + n * 6)
         nearest = np.abs(back[:, None, :] - xyz[None, :, :]).max(axis=2).min(axis=1)
         self.assertLess(nearest.max(), 0.006)
+
+    def test_ply_round_trip_for_previews(self):
+        xyz = np.random.RandomState(4).uniform(-3, 3, (50, 3))
+        mc.write_ply(self.root / 'c.ply', xyz, np.zeros(50))
+        self.assertLess(np.abs(mc.read_ply_xyz(self.root / 'c.ply') - xyz).max(), 1e-5)
+
+    def test_uniform_thinning_keeps_sparse_structure(self):
+        # A dense blob plus a thin wall: random sampling would drop the wall, cell thinning keeps it.
+        blob = np.random.RandomState(3).uniform(0, 0.5, (20000, 3))
+        wall = np.stack([np.linspace(5, 15, 200), np.full(200, 5.), np.full(200, 1.)], axis=1)
+        kept = mc.thin_uniform(np.vstack([blob, wall]), 500)
+        self.assertLessEqual(len(kept), 500)
+        self.assertGreater(((kept[:, 1] == 5.) & (kept[:, 2] == 1.)).sum(), 30)
 
     def test_gravity_filter_tracks_accelerometer(self):
         rows = [(k * 0.005, 0, 0, 0, 0.0, 0.5, 0.866) for k in range(400)]

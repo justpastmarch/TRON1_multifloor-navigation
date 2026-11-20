@@ -17,6 +17,7 @@ class WatchTest(unittest.TestCase):
         child = Mock()
         child.poll.return_value = poll
         with patch.object(watch.threading, 'Event', return_value=event), \
+             patch.object(watch, 'sensor_alive', return_value=True), \
              patch.object(watch.signal, 'signal'), \
              patch.object(watch, 'master_identity', side_effect=identities) as probe, \
              patch.object(watch.subprocess, 'Popen', return_value=child) as spawn, \
@@ -61,6 +62,31 @@ class WatchTest(unittest.TestCase):
         result, child, _ = self.run_case([(1, 'a')], [False], poll=1)
         self.assertEqual(result, 1)
         child.send_signal.assert_not_called()
+
+    def test_silent_lidar_restarts_after_grace(self):
+        clock = iter(range(0, 10000, 10))
+        event = Mock(); event.is_set.return_value = False; event.wait.side_effect = [False] * 20
+        child = Mock(); child.poll.return_value = None
+        with patch.object(watch.threading, 'Event', return_value=event), patch.object(watch.signal, 'signal'), \
+             patch.object(watch, 'master_identity', return_value=(1, 'a')), \
+             patch.object(watch.subprocess, 'Popen', return_value=child), \
+             patch.object(watch, 'sensor_alive', return_value=False) as alive, \
+             patch.object(watch.time, 'monotonic', side_effect=lambda: next(clock)), \
+             patch.dict(watch.os.environ, ROS_MASTER_URI='http://fixture:11311'):
+            self.assertEqual(watch.main(), 1)
+        self.assertGreaterEqual(alive.call_count, 2)
+
+    def test_live_lidar_keeps_running(self):
+        clock = iter(range(0, 10000, 10))
+        event = Mock(); event.is_set.return_value = False; event.wait.side_effect = [False] * 15 + [True]
+        child = Mock(); child.poll.return_value = None
+        with patch.object(watch.threading, 'Event', return_value=event), patch.object(watch.signal, 'signal'), \
+             patch.object(watch, 'master_identity', return_value=(1, 'a')), \
+             patch.object(watch.subprocess, 'Popen', return_value=child), \
+             patch.object(watch, 'sensor_alive', return_value=True), \
+             patch.object(watch.time, 'monotonic', side_effect=lambda: next(clock)), \
+             patch.dict(watch.os.environ, ROS_MASTER_URI='http://fixture:11311'):
+            self.assertEqual(watch.main(), 0)
 
     def test_connection_failure(self):
         with patch.object(watch.xmlrpc.client, 'ServerProxy', side_effect=OSError):

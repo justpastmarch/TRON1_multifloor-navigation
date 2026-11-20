@@ -112,8 +112,16 @@ class MappingConsole:
             if action=='preview':return self.library.preview(identifier,key)
             if action=='cloud':
                 from mission_manager.mapping_cloud import compact_preview
-                limit=int(q.get('max',['150000'])[0])
-                return compact_preview(self.library.file(identifier,key,'cloud.bin'),max(1000,min(limit,400000))),'application/octet-stream'
+                limit=max(1000,min(int(q.get('max',['250000'])[0]),400000))
+                cache=self.library.result_path(identifier,key)/('preview_%d.trc'%limit)
+                if not cache.is_file():
+                    folder=self.library.result_path(identifier,key)
+                    if (folder/'cloud.ply').is_file():
+                        from mission_manager.mapping_cloud import read_ply_xyz
+                        data=compact_preview(read_ply_xyz(folder/'cloud.ply'),limit)
+                    else:data=compact_preview(self.library.file(identifier,key,'cloud.bin'),limit)
+                    temporary=cache.with_suffix('.tmp');temporary.write_bytes(data);temporary.replace(cache)
+                return cache.read_bytes(),'application/octet-stream'
             if action=='file':return self.library.file(identifier,key,q.get('name',[''])[0]),'application/octet-stream'
         raise ValueError('지원하지 않는 지도 조회입니다.')
 

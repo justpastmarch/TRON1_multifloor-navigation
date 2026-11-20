@@ -161,14 +161,40 @@ def finish_transport(directory, preview_points=DEFAULTS['preview_points']):
     (directory / 'cloud.npz').unlink()
 
 
-def compact_preview(data, limit):
-    """cloud.bin -> b'TRC2' + uint32 n + float32 origin[3] + uint16 cm xyz[n].
-    About half the size of float32 and subsampled to `limit` points, for
+def thin_uniform(xyz, limit):
+    """Keep one point per cell, growing the cell until at most `limit` remain:
+    walls and floors stay complete instead of thinning randomly."""
+    if len(xyz) <= limit:
+        return xyz
+    low = xyz.min(axis=0)
+    # Surface-like clouds shrink with the square of the cell size.
+    size = max(0.05, 0.05 * math.sqrt(len(xyz) / limit) * 0.8)
+    while True:
+        cells = np.floor((xyz - low) / size).astype(np.int64)
+        keys = (cells[:, 0] << 42) | (cells[:, 1] << 21) | cells[:, 2]
+        _, first = np.unique(keys, return_index=True)
+        if len(first) <= limit:
+            return xyz[np.sort(first)]
+        size *= 1.15
+
+
+def read_ply_xyz(path):
+    """All points of a cloud.ply written by write_ply (float x, y, z, uchar i)."""
+    data = Path(path).read_bytes()
+    end = data.index(b'end_header\n') + len(b'end_header\n')
+    count = int(data[:end].split(b'element vertex ')[1].split(b'\n')[0])
+    rows = np.frombuffer(data, dtype=[('x', '<f4'), ('y', '<f4'), ('z', '<f4'), ('i', 'u1')], count=count, offset=end)
+    return np.stack([rows['x'], rows['y'], rows['z']], axis=1)
+
+
+def compact_preview(xyz, limit):
+    """points -> b'TRC2' + uint32 n + float32 origin[3] + uint16 cm xyz[n].
+    About half the size of float32 and thinned to `limit` points, for
     viewing over a slow link; 1 cm is finer than the 5 cm voxels."""
-    (count,) = struct.unpack_from('<I', data, 0)
-    xyz = np.frombuffer(data, '<f4', count * 3, 4).reshape(-1, 3)
-    if count > limit:
-        xyz = xyz[np.random.RandomState(0).choice(count, limit, replace=False)]
+    if isinstance(xyz, (bytes, bytearray)):
+        (count,) = struct.unpack_from('<I', xyz, 0)
+        xyz = np.frombuffer(xyz, '<f4', count * 3, 4).reshape(-1, 3)
+    xyz = thin_uniform(np.asarray(xyz), limit)
     origin = xyz.min(axis=0) if len(xyz) else np.zeros(3, np.float32)
     cm = np.clip(np.round((xyz - origin) * 100), 0, 65535).astype('<u2')
     return b'TRC2' + struct.pack('<I', len(xyz)) + np.asarray(origin, '<f4').tobytes() + cm.tobytes()
