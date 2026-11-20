@@ -4,7 +4,27 @@ import os
 import signal
 import subprocess
 import threading
+import time
 import xmlrpc.client
+
+
+UNREACHABLE_RESTART_SEC = 120
+# The Livox driver only finds a LiDAR that is powered when it starts (the
+# LiDAR is powered by the robot). If no LiDAR IMU message arrives for
+# SILENT_RESTART_SEC after a start-up grace period, restart the launch.
+SENSOR_GRACE_SEC = 40
+SENSOR_CHECK_SEC = 10
+SILENT_RESTART_SEC = 40
+SENSOR_TOPIC = '/livox/imu/header'
+
+
+def sensor_alive(env):
+    try:
+        return subprocess.run(['/opt/ros/noetic/bin/rostopic', 'echo', '-n', '1', SENSOR_TOPIC],
+                              env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                              timeout=5).returncode == 0
+    except (OSError, subprocess.TimeoutExpired):
+        return False
 
 
 class Transport(xmlrpc.client.Transport):
@@ -14,9 +34,22 @@ class Transport(xmlrpc.client.Transport):
         return conn
 
 
-def master_identity():
+def candidates():
+    """(master URI, own ROS_IP) pairs in preference order: the robotnet LAN
+    first, then the optional Tailscale path (ROS_MASTER_URI_ALT/ROS_IP_ALT),
+    then a master on this mini PC (ROS_MASTER_URI_LOCAL/ROS_IP_LOCAL), used
+    when the mapping console runs here."""
+    pairs = [(os.environ['ROS_MASTER_URI'], os.environ.get('ROS_IP'))]
+    for suffix in ('_ALT', '_LOCAL'):
+        uri = os.environ.get('ROS_MASTER_URI' + suffix)
+        if uri:
+            pairs.append((uri, os.environ.get('ROS_IP' + suffix)))
+    return pairs
+
+
+def master_identity(uri):
     try:
-        with xmlrpc.client.ServerProxy(os.environ['ROS_MASTER_URI'],
+        with xmlrpc.client.ServerProxy(uri,
                                       transport=Transport()) as master:
             code, _, pid = master.getPid('/sensor_boot_watch')
             run_code, _, run_id = master.getParam('/sensor_boot_watch', '/run_id')
@@ -31,28 +64,64 @@ def main():
     stopping = threading.Event()
     for sig in (signal.SIGINT, signal.SIGTERM):
         signal.signal(sig, lambda *_: stopping.set())
-    print('Waiting for workstation ROS master: ' + os.environ['ROS_MASTER_URI'], flush=True)
+    pairs = candidates()
+    print('Waiting for workstation ROS master: ' + ' or '.join(uri for uri, _ in pairs), flush=True)
+    identity = None
     while not stopping.is_set():
-        identity = master_identity()
+        for uri, ros_ip in pairs:
+            identity = master_identity(uri)
+            if identity is not None:
+                break
         if identity is not None:
             break
         stopping.wait(2)
     if stopping.is_set():
         return 0
-    print('Master ready; starting sensor_integration wf_mapping.launch', flush=True)
+    env = dict(os.environ, ROS_MASTER_URI=uri)
+    if ros_ip:
+        env['ROS_IP'] = ros_ip
+    print('Master ready at %s (ROS_IP %s); starting sensor_integration wf_mapping.launch'
+          % (uri, env.get('ROS_IP')), flush=True)
     child = subprocess.Popen(['/opt/ros/noetic/bin/roslaunch', '--wait', '--required',
-                              'sensor_integration', 'wf_mapping.launch'])
+                              'sensor_integration', 'wf_mapping.launch'], env=env)
+    # An unreachable master alone does not restart the sensors: on a phone
+    # hotspot the link drops for seconds at a time, and every restart resets
+    # wheel odometry. ROS nodes reconnect by themselves once the master
+    # answers again. A replaced master (new PID/run_id) still restarts
+    # registration, and so does a master gone for UNREACHABLE_RESTART_SEC.
     failures = 0
+    started = time.monotonic()
+    last_check = started
+    silent_since = None
     try:
         while not stopping.wait(2):
             if child.poll() is not None:
                 print('Sensor launch exited; systemd will retry', flush=True)
                 return 1
-            current = master_identity()
-            failures = failures + 1 if current is None else 0
-            if failures >= 3 or (current is not None and current != identity):
+            current = master_identity(uri)
+            if current is None:
+                failures += 1
+                if failures == 3:
+                    print('Master unreachable; keeping sensors running', flush=True)
+            elif failures:
+                print('Master reachable again after %d s' % (failures * 2), flush=True)
+                failures = 0
+            if failures * 2 >= UNREACHABLE_RESTART_SEC or (current is not None and current != identity):
                 print('Master lost or replaced; restarting sensor registration', flush=True)
                 return 1
+            now = time.monotonic()
+            if current is not None and now - started >= SENSOR_GRACE_SEC and now - last_check >= SENSOR_CHECK_SEC:
+                last_check = now
+                if sensor_alive(env):
+                    if silent_since is not None:
+                        print('LiDAR data back', flush=True)
+                    silent_since = None
+                else:
+                    silent_since = silent_since or now
+                    if now - silent_since >= SILENT_RESTART_SEC:
+                        print('No LiDAR data for %d s (robot/LiDAR powered after start?); restarting sensors'
+                              % (now - silent_since), flush=True)
+                        return 1
         return 0
     finally:
         if child.poll() is None:

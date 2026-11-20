@@ -1,5 +1,8 @@
 from pathlib import Path
 from unittest.mock import Mock
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parent))  # sibling test fixtures
 from test_photo_mission import PhotoTourTest
 from mission_manager.mail_outbox import MailOutbox
 from mission_manager.mission_types import SegmentExecutionStatus

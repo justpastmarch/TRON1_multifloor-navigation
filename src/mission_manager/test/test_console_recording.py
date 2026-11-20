@@ -1,3 +1,4 @@
+import json
 import os
 import signal
 import re
@@ -50,6 +51,10 @@ class RecorderTest(unittest.TestCase):
             self.assertEqual(r.snapshot()['state'],'saved')
             self.assertEqual(p.signals,[signal.SIGINT])
             self.assertTrue(Path(s['path']).exists())
+            # The run summary is written next to the finalized BAG.
+            summary=json.loads(Path(s['path']).with_suffix('.run.json').read_text())
+            self.assertEqual((summary['bag'],summary['bag_saved']),(s['path'],True))
+            self.assertEqual(r.snapshot()['run']['summary_path'],str(Path(s['path']).with_suffix('.run.json')))
 
     def test_minipc_mode_records_raw_sensor_bag_separately(self):
         with tempfile.TemporaryDirectory() as directory:

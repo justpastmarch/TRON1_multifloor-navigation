@@ -14,6 +14,7 @@ import io
 import threading
 from collections import deque
 
+import stair_supervisor.msg  # noqa: F401  devel package with generated messages, before fixtures prepend src
 import numpy as np
 from scipy.spatial.transform import Rotation
 
@@ -112,7 +113,7 @@ class ReadinessTest(unittest.TestCase):
         root=Path(__file__).resolve().parents[1]/'config'
         cfg=load_lidar_configuration(root/'stair_lidar_3f_4f_test.yaml','control',False)
         routes={r['id']:r for r in cfg.document['routes']}
-        self.assertEqual(set(routes),{'stair_3f_4f_up','stair_5f_rf_up','stair_5f_rf_down'})
+        self.assertEqual(set(routes),{'stair_3f_4f_up', 'stair_4f_5f_up', 'stair_5f_rf_up', 'stair_5f_rf_down', 'stair_3f_4f_down', 'stair_4f_5f_down'})
         for route in routes.values():
             with self.subTest(route=route['id']):
                 self.assertAlmostEqual(route['limits']['anchor_uncertainty_m'],.1)
@@ -268,6 +269,29 @@ class ReadinessTest(unittest.TestCase):
             node._execute(SimpleNamespace(admission_token='phase-test:'+token,stair_id='test_up'))
             self.assertEqual(node._execute_request.call_count,before)
             self.assertTrue(node._action.set_aborted.called)
+
+    def test_leftover_legacy_phase_test_never_reaches_ordinary_goal(self):
+        from stair_supervisor import ros_node
+        node=ros_node.RosStairSupervisorNode.__new__(ros_node.RosStairSupervisorNode)
+        node._action=Mock();node._execute_request=Mock()
+        legacy=dict(route_id='test_up',phase='ALIGN',max_duration_sec=5.,operator_confirmed=True)
+        data={'~phase_test':legacy}
+        with patch.object(ros_node.rospy,'get_param',side_effect=lambda k,d=None:data.get(k,d)), \
+             patch.object(ros_node.rospy,'delete_param',side_effect=lambda k:data.pop(k)), \
+             patch.object(ros_node.rospy,'logwarn') as warn:
+            # Ordinary admitted goal and resume goal (empty token) both stay ordinary.
+            for token in ('admission-token-1',''):
+                data['~phase_test']=legacy
+                node._execute(SimpleNamespace(admission_token=token,stair_id='test_up'))
+                self.assertIsNone(node._execute_request.call_args[0][1])
+                self.assertNotIn('~phase_test',data)
+            self.assertEqual(warn.call_count,2)
+            # Without a leftover parameter nothing is logged and the goal still runs.
+            node._execute(SimpleNamespace(admission_token='admission-token-2',stair_id='test_up'))
+            self.assertIsNone(node._execute_request.call_args[0][1])
+            self.assertEqual(warn.call_count,2)
+        self.assertEqual(node._execute_request.call_count,3)
+        node._action.set_aborted.assert_not_called()
 
     def test_expired_bound_ticket_cannot_fall_back_to_normal_traversal(self):
         from stair_supervisor import ros_node

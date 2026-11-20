@@ -202,6 +202,34 @@ class PhotoTourTest(unittest.TestCase):
   self.assertEqual(completed['missed_photos'],[])
   self.assertEqual(completed['photo_outcome'],'COMPLETE')
 
+ def test_finished_tour_with_missed_photo_retries_only_the_missed_visit(self):
+  from mission_manager.route_planner import LogicalAnchor
+  self.executor.fail_photo_keys={'roof_loop_nw'}
+  self.assertEqual(self.run_tour().status,SegmentExecutionStatus.SUCCESS)
+  waiting=self.photo.snapshot()
+  self.assertEqual(waiting['stage'],'WAITING_RETURN');self.assertEqual(waiting['photo_outcome'],'PARTIAL')
+  self.assertTrue(waiting['retry_available'])
+  self.executor.fail_photo_keys.clear()
+  self.host._anchor=LogicalAnchor('roof_loop_se')
+  planned=self.photo.plan(self.planner,self.host.confirmed_location_id)
+  self.assertEqual([x['target_id'] for x in planned['segments'] if x['type']=='PHOTO'],['roof_loop_nw'])
+  before=len(self.executor.events)
+  self.assertEqual(self.run_tour().status,SegmentExecutionStatus.SUCCESS)
+  self.assertEqual([e[1] for e in self.executor.events[before:] if e[0]=='PHOTO'],['roof_loop_nw'])
+  done=self.photo.snapshot()
+  self.assertEqual(done['mission_id'],waiting['mission_id']);self.assertEqual(done['origin'],waiting['origin'])
+  self.assertEqual(done['stage'],'WAITING_RETURN');self.assertEqual(done['photo_outcome'],'COMPLETE')
+  self.assertEqual(done['missed_photos'],[]);self.assertFalse(done['retry_available'])
+  self.assertEqual(sorted(x['visit_index'] for x in done['photos']),[0,1,2,3])
+  self.assertEqual(self.run_return().status,SegmentExecutionStatus.SUCCESS)
+  self.assertEqual(self.photo.snapshot()['stage'],'COMPLETE')
+
+ def test_finished_tour_without_missed_photo_offers_no_retry(self):
+  self.assertEqual(self.run_tour().status,SegmentExecutionStatus.SUCCESS)
+  self.assertEqual(self.photo.snapshot()['stage'],'WAITING_RETURN')
+  self.assertFalse(self.photo.snapshot()['retry_available'])
+  with self.assertRaisesRegex(ValueError,'복귀가 남아'):self.photo.preflight()
+
  def test_return_failure_does_not_offer_outbound_retry(self):
   self.run_tour()
   self.photo.save(stage='RETURNING',return_started=True)
@@ -240,5 +268,32 @@ class PhotoTourTest(unittest.TestCase):
   self.run_tour();self.executor.fail_stair=True;r=self.run_return()
   self.assertNotEqual(r.status,SegmentExecutionStatus.SUCCESS);self.assertEqual(self.photo.snapshot()['stage'],'FAILED')
   self.assertFalse(any(v[0]=='RETURN_POSE' for v in self.executor.events))
+
+ def test_close_without_return_ends_session_without_motion(self):
+  self.run_tour();before=list(self.executor.events);session=self.photo.snapshot()
+  closed=self.photo.close_without_return(session['mission_id'])
+  self.assertEqual(closed['stage'],'CLOSED');self.assertEqual(closed['closed_from'],'WAITING_RETURN')
+  self.assertEqual(self.executor.events,before)                      # no motion of any kind
+  self.assertEqual(closed['photos'],session['photos'])               # photos kept
+  self.assertFalse(self.photo.snapshot()['retry_available'])
+  with self.assertRaisesRegex(ValueError,'복귀할 촬영 임무가 없습니다'):self.photo.preflight(True)
+  self.photo.preflight(False)                                        # a new tour is allowed again
+  self.assertNotEqual(self.run_return().status,SegmentExecutionStatus.SUCCESS)
+  self.assertEqual(self.executor.events,before)
+ def test_close_without_return_after_cancel_and_restart_survives_reload(self):
+  self.executor.cancel_photo_keys={'roof_loop_nw'}
+  self.host.run(MissionRunRequest('cancelled_tour','roof_loop_se',MissionType.PHOTO_TOUR,True),lambda p:None,lambda:False)
+  self.assertTrue(self.photo.snapshot()['retry_available'])
+  self.photo.close_without_return('cancelled_tour')
+  reloaded=PhotoMission(self.settings,self.temp.name,self.executor)
+  self.assertEqual(reloaded.snapshot()['stage'],'CLOSED');self.assertFalse(reloaded.snapshot()['retry_available'])
+ def test_close_without_return_refuses_running_finished_or_changed_sessions(self):
+  with self.assertRaisesRegex(ValueError,'끝낼 촬영 임무가 없습니다'):self.photo.close_without_return('none')
+  self.run_tour()
+  with self.assertRaisesRegex(ValueError,'바뀌었습니다'):self.photo.close_without_return('other_mission')
+  self.photo.save(stage='RETURNING')
+  with self.assertRaisesRegex(ValueError,'끝낼 촬영 임무가 없습니다'):self.photo.close_without_return('test_tour')
+  self.photo.save(stage='COMPLETE')
+  with self.assertRaisesRegex(ValueError,'끝낼 촬영 임무가 없습니다'):self.photo.close_without_return('test_tour')
 
 if __name__=='__main__':unittest.main()

@@ -2,6 +2,10 @@
 import math
 import unittest
 
+import stair_supervisor.msg  # noqa: F401  devel package with generated messages, before fixtures prepend src
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parent))  # sibling test fixtures
 from test_supervisor import (
     FakeAdmission, FakeClock, FakeTransport, ScriptedEvidence, make_configuration,
 )

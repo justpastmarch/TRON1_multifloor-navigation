@@ -127,8 +127,12 @@ class PhotoMission:
         return len(set(self.settings['locations'])) == len(self.settings['locations'])
 
     def _retry_available(self, session):
+        # A finished tour that missed photos may also retry: only the missed
+        # visits remain, the original origin/return pose is kept.
+        stage=session.get('stage')
         return bool(session.get('origin') and self._route_matches(session) and
-                    session.get('stage') in ('FAILED','CANCELLED','INTERRUPTED') and
+                    (stage in ('FAILED','CANCELLED','INTERRUPTED') or
+                     (stage=='WAITING_RETURN' and session.get('missed_photos'))) and
                     not session.get('return_started',False) and
                     self._remaining_locations(session))
 
@@ -147,6 +151,26 @@ class PhotoMission:
                 json.dump(self.session,stream,ensure_ascii=False,indent=2);stream.flush();os.fsync(stream.fileno())
             temporary.replace(path)
 
+    FINISHED=('COMPLETE','CLOSED')
+    CLOSABLE=('WAITING_RETURN','FAILED','CANCELLED','INTERRUPTED')
+
+    def close_without_return(self, mission_id):
+        """End the session where the robot is: no motion, photos and mail kept.
+
+        Only from the states that offer a return (never while a tour or a
+        return is running). Afterwards retry and return are no longer offered
+        and the next 올라가서 촬영 starts a new session from the current pose.
+        """
+        with self.lock:
+            stage=self.session.get('stage') if self.session else None
+            if stage not in self.CLOSABLE:
+                raise ValueError('복귀 없이 끝낼 촬영 임무가 없습니다.')
+            if mission_id!=self.session.get('mission_id'):
+                raise ValueError('촬영 임무 기록이 바뀌었습니다. 현재 상태를 다시 확인하세요.')
+            self.save(stage='CLOSED',closed_from=stage,return_started=False,
+                      detail='출발 위치로 돌아가지 않음 · 사진 보존')
+            return deepcopy(self.session)
+
     def preflight(self, returning=False, rooftop_only=False):
         session=self.snapshot()
         if returning:
@@ -155,7 +179,7 @@ class PhotoMission:
             identity=getattr(self.executor,'photo_map_identity',None)
             if identity is not None and session.get('origin_map_sha256')!=identity(session['origin']['floor_id']):
                 raise ValueError('저장된 출발 좌표의 지도가 변경되었습니다. 출발 위치를 다시 확인해야 합니다.')
-        elif not rooftop_only and self._route_matches(session) and session.get('origin') and session.get('stage')!='COMPLETE':
+        elif not rooftop_only and self._route_matches(session) and session.get('origin') and session.get('stage') not in self.FINISHED:
             if not self._retry_available(session):
                 raise ValueError('기존 촬영 임무의 복귀가 남아 있습니다. 복귀 승인으로 출발점에 돌아오세요.')
             identity=getattr(self.executor,'photo_map_identity',None)

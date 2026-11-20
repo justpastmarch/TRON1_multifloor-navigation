@@ -3,6 +3,8 @@
         name="multifloor_manager" output="screen" required="true">
     <param name="config_root" value="$(find multifloor_manager)/../../test/fixtures/building_valid"/>
     <param name="initial_floor" value="3F"/>
+    <!-- Tag-confirmed transition path; production default is stair_result. -->
+    <param name="floor_confirmation_source" value="tag"/>
     <param name="service_timeout" value="0.2"/>
     <param name="tag_timeout" value="1.0"/>
     <param name="transaction_timeout" value="1.0"/>

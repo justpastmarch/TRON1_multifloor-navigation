@@ -30,8 +30,8 @@ class LandingMarginTest(unittest.TestCase):
         control.arm(self.profiles[route_id], 100.01)
         return worker, control
 
-    def test_three_routes_have_landing_three_cm_and_route_six_cm(self):
-        self.assertEqual(len(self.routes), 3)
+    def test_all_routes_have_landing_three_cm_and_route_six_cm(self):
+        self.assertEqual({route['id'] for route in self.routes}, {'stair_3f_4f_up', 'stair_4f_5f_up', 'stair_5f_rf_up', 'stair_5f_rf_down', 'stair_3f_4f_down', 'stair_4f_5f_down'})
         for route in self.routes:
             for uncertainty in (.01, .1, .25):
                 with self.subTest(route=route['id'], uncertainty=uncertainty):
@@ -155,6 +155,9 @@ class LandingMarginTest(unittest.TestCase):
 
     def test_roof_margin_follows_physical_region_when_route_is_reversed(self):
         expected = {'stair_3f_4f_up': (.06, .06),
+                    'stair_4f_5f_up': (.06, .06),
+                    'stair_3f_4f_down': (.06, .06),
+                    'stair_4f_5f_down': (.06, .06),
                     'stair_5f_rf_up': (.06, .03),
                     'stair_5f_rf_down': (.03, .06)}
         for route in self.routes:

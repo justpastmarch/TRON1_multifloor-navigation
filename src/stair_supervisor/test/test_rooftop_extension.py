@@ -1,6 +1,9 @@
 import unittest, math
 import numpy as np
 from dataclasses import replace
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parent))  # sibling test fixtures
 from test_lidar_control import route, box, sample, Worker
 from test_supervisor import make_configuration
 from stair_supervisor.stair_feedback import StairFeedback

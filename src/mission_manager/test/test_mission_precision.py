@@ -1,6 +1,9 @@
 """Idle arrival hold ownership, including concurrent handoff failures."""
 import unittest
 from mission_manager.configuration import Location
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parent))  # sibling test fixtures
 from test_navigation_hold import HoldTest
 
 

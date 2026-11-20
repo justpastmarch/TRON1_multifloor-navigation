@@ -244,9 +244,14 @@ physical acceptance work before enabling unattended control.
 
 LiDAR loss/cancellation sends zero twist, never `emergency_stop`. Operator remote
 control may interrupt at any time; software zero does not imply physical hold.
-The existing action accepts one-shot private `~phase_test` configuration with
-`route_id`, `phase`, `max_duration_sec` (0 < duration <= 30) and
-`operator_confirmed: true`. Supported phases are ALIGN, FORWARD_SEGMENT_1,
+A phase test is a one-shot bound ticket: the client stores
+`~phase_test_requests/<uuid>` = `{expires_at, test}` and sends a goal whose
+`admission_token` is `phase-test:<uuid>` (`scripts/stair_entry_test.py` does
+this). `test` holds `route_id`, `phase`, `max_duration_sec` (0 < duration <= 30)
+and `operator_confirmed: true`. Only the goal naming that ticket consumes it.
+The former unbound `~phase_test` parameter is no longer applied: if one is left
+over, the next goal deletes it, logs a warning, and runs as an ordinary
+traversal with full admission. Supported phases are ALIGN, FORWARD_SEGMENT_1,
 LANDING, TURN_TO_NEXT_FLIGHT and FORWARD_SEGMENT_2. A current anchor describing
 the robot's actual pose in the route is still required. Starting mid-route must
 not relabel that position as the route origin. Geometry and tracking checks run

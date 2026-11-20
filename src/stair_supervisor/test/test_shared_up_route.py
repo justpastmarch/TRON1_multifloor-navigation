@@ -47,6 +47,41 @@ class SharedUpRouteTest(unittest.TestCase):
         self.assertEqual(adapter.ensure_entry(route['id']),'map-anchor')
         adapter._ensure_map_entry.assert_called_once_with(route['id'],route)
 
+    def attitude_adapter(self, *, tracked_roll, holds_anchor=False):
+        """Entry adapter with a level quasi-static IMU and a tracker at tracked_roll."""
+        import test_attitude_consistency as fixture
+        route = self.routes['stair_4f_5f_up']
+        worker = fixture.FakeWorker(tracked_roll, 0.)
+        def reset(reason):
+            worker.resets.append(reason)
+            worker.epoch += 1
+            worker.sample = SimpleNamespace(epoch=worker.epoch, geometry_valid=True,
+                                            transform=fixture.tracking_transform(0., 0.))
+        worker.reset = reset
+        adapter = RosLidarInterface.__new__(RosLidarInterface)
+        adapter.worker = worker
+        adapter.clock = SimpleNamespace(monotonic=lambda: 10.)
+        adapter.control = SimpleNamespace(
+            routes={route['id']: route}, base_from_lidar=fixture.BASE_FROM_LIDAR,
+            holds_anchor=lambda: holds_anchor,
+            entry_imu_context=lambda: fixture.context(fixture.imu_rows(0., 0.)))
+        adapter._ensure_map_entry = Mock(return_value='map-anchor')
+        return adapter, worker, route
+
+    def test_entry_relevels_a_frame_that_disagrees_with_imu_gravity(self):
+        adapter, worker, route = self.attitude_adapter(tracked_roll=.35)
+        self.assertEqual(adapter.ensure_entry(route['id']), 'map-anchor')
+        self.assertEqual(len(worker.resets), 1)
+        self.assertEqual(adapter.entry_attitude_check['action'], 'relevel')
+        adapter._ensure_map_entry.assert_called_once_with(route['id'], route)
+
+    def test_entry_keeps_a_consistent_frame_or_an_active_hold(self):
+        for tracked_roll, hold in ((.02, False), (.35, True)):
+            adapter, worker, route = self.attitude_adapter(tracked_roll=tracked_roll, holds_anchor=hold)
+            self.assertEqual(adapter.ensure_entry(route['id']), 'map-anchor')
+            self.assertEqual(worker.resets, [])
+            self.assertEqual(adapter.entry_attitude_check['action'], 'none')
+
     def anchor(self, floor='4F', offset=.1):
         route = self.routes['stair_4f_5f_up']
         # An arbitrary map origin shows this is not copied 3F map placement.

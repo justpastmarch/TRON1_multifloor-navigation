@@ -5,6 +5,9 @@ from unittest.mock import patch
 from pathlib import Path
 import numpy as np,yaml
 from scipy.spatial.transform import Rotation
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parent))  # sibling test fixtures
 from test_lidar_control import Worker,sample
 from test_supervisor import make_configuration
 from stair_supervisor.stair_feedback import StairFeedback,RouteAnchor

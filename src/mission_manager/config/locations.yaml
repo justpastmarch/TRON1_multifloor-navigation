@@ -18,7 +18,8 @@ locations:
   type: LANDING
   x: 8.621981
   y: -4.168881
-  yaw: -1.311197
+  # yaw faces down the stair: shared UP arrival / DOWN entry (as stair_rf_landing)
+  yaw: 1.8303956535897932
 - id: stair_4f_to_5f
   floor_id: 4F
   type: STAIR_ENTRY
@@ -30,7 +31,8 @@ locations:
   type: LANDING
   x: 8.230684
   y: -4.731632
-  yaw: -1.822373
+  # yaw faces down the stair: shared UP arrival / DOWN entry (as stair_rf_landing)
+  yaw: 1.319219653589793
 - id: stair_5f_to_rf
   floor_id: 5F
   type: STAIR_ENTRY

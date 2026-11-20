@@ -93,10 +93,23 @@ class MissionActionRosTest(unittest.TestCase):
             raise AssertionError("mission did not terminate")
         return self.client.get_state(), self.client.get_result(), feedback
 
+    def _wait_active(self, client=None) -> None:
+        """Cancel only after the client has seen its goal in /mission/status.
+
+        Feedback and status are separate topics. A cancel sent on feedback alone
+        can be followed by an older status array that predates the goal, which
+        actionlib's client then marks LOST instead of PREEMPTED.
+        """
+        client = client or self.client
+        deadline = time.monotonic() + 5.0
+        while client.get_state() != GoalStatus.ACTIVE:
+            self.assertLess(time.monotonic(), deadline, "goal never reported ACTIVE")
+            time.sleep(0.01)
+
     def _restore_home(self) -> None:
         self._set_scenario("default")
         state, result, _ = self._run("home_3f")
-        self.assertEqual(state, GoalStatus.SUCCEEDED)
+        self.assertEqual(state, GoalStatus.SUCCEEDED, str(result))
         self.assertEqual(result.result_code, MissionResult.OK)
 
     def test_busy_goal_is_rejected_without_preempting_active_goal(self) -> None:
@@ -108,6 +121,7 @@ class MissionActionRosTest(unittest.TestCase):
             feedback_cb=lambda _message: dispatched.set(),
         )
         self.assertTrue(dispatched.wait(5.0))
+        self._wait_active()
 
         # When: a second client submits a well-formed goal.
         self.secondary.send_goal(
@@ -131,6 +145,7 @@ class MissionActionRosTest(unittest.TestCase):
             feedback_cb=lambda _message: dispatched.set(),
         )
         self.assertTrue(dispatched.wait(5.0))
+        self._wait_active()
 
         # When: the action is cancelled and a replacement mission is submitted.
         self.client.cancel_goal()
@@ -290,9 +305,10 @@ class MissionActionRosTest(unittest.TestCase):
                 feedback_cb=lambda _message: dispatched.set(),
             )
             self.assertTrue(dispatched.wait(5.0))
+            self._wait_active()
             self.client.cancel_goal()
             self.assertTrue(self.client.wait_for_result(rospy.Duration(5.0)))
-            self.assertEqual(self.client.get_state(), GoalStatus.PREEMPTED)
+            self.assertEqual(self.client.get_state(), GoalStatus.PREEMPTED, str(self.client.get_result()))
 
         # When: a later mission runs normally.
         self._set_scenario("default")

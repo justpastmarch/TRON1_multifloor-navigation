@@ -7,7 +7,7 @@ from collections import deque
 
 import actionlib
 import rospy
-from actionlib_msgs.msg import GoalStatusArray
+from actionlib_msgs.msg import GoalStatus, GoalStatusArray
 from std_msgs.msg import String
 from geometry_msgs.msg import PoseWithCovarianceStamped
 from nav_msgs.srv import GetMap
@@ -41,6 +41,7 @@ class RosConsole:
         self.result = None
         self.progress = {}
         self.recorder = ConsoleRecording()
+        self.recorder.run.events_provider = self._events_copy
         self.starting = False
         self.stop_requested = False
         self.generation = 0
@@ -76,8 +77,25 @@ class RosConsole:
         rospy.on_shutdown(self.close)
         rospy.loginfo('Mission console http://127.0.0.1:%d', self.http.http.server_port)
 
+    def _events_copy(self):
+        # Called from the recorder's finalize thread: never take the console lock.
+        for _ in range(3):
+            try:
+                return list(self.events)
+            except RuntimeError:
+                continue
+        return []
+
+    def run_note(self, data):
+        result = self.recorder.run.note(data.get('text'))
+        with self.lock:
+            self.events.append(dict(time=time.time(), kind='note', detail='메모: '+str(data.get('text','')).strip()[:80]))
+        return dict(result, note='메모를 '+('현재 녹화' if result['saved_to']=='current' else '마지막 녹화')+' 요약에 저장했습니다.')
+
     def observe(self, key, value):
         with self.lock:
+            if key == 'control':
+                self.recorder.run.control(value)
             previous = self.telemetry.get(key, (None, {}))[1]
             if key == 'mission_result' or (key in ('floor', 'supervisor') and value.get('detail') != previous.get('detail')):
                 self.events.append(dict(time=time.time(), kind=key, detail=value.get('detail', value.get('reason', ''))))
@@ -94,6 +112,7 @@ class RosConsole:
             pass
 
     def snapshot(self):
+        floor_fault = self.floor_fault()  # parameter read stays outside the console lock
         with self.lock:
             received, status = self.telemetry.get('mission_status', (0, {}))
             observed_active = time.monotonic()-received <= 2 and status.get('active', False)
@@ -104,6 +123,7 @@ class RosConsole:
             return dict(mail=mail_state,manual=self.manual.snapshot() if getattr(self,'manual',None) else {},hold=hold_state,mode='live', locations=self.locations, anchor=self.orchestrator.confirmed_location_id,
                         active=self.active, observed_active=observed_active,
                         starting=self.starting, recovering=getattr(self, 'recovering', False), floor_selecting=getattr(self,"floor_selecting",False), recording=self.recorder.snapshot(),
+                        floor_fault=floor_fault,
                         relocating=getattr(self, 'relocating', False), relocation=dict(getattr(self, 'relocation', {})),
                         navigation=self.map_view.snapshot(),
                         progress=self.progress if self.active else self.telemetry.get('mission_feedback', (0, {}))[1],
@@ -329,7 +349,7 @@ class RosConsole:
             if kind == 'photo_return':
                 # Validate the return route before outbound motion as well.
                 saved=photo.snapshot()
-                origin=saved['origin']['id'] if saved.get('origin') and saved.get('stage')!='COMPLETE' else self.orchestrator.confirmed_location_id
+                origin=saved['origin']['id'] if saved.get('origin') and saved.get('stage') not in ('COMPLETE','CLOSED') else self.orchestrator.confirmed_location_id
                 last=payload['destination_id']
                 try:
                     back=self.planner.plan_from_current_pose(last,origin)
@@ -442,6 +462,11 @@ class RosConsole:
                                       done_cb=lambda s,r:self.done(s,r,generation),
                                       feedback_cb=lambda m:self.feedback(m,generation))
                 self.events.append(dict(time=time.time(), kind='request', detail=('테스트 시작: ' if record else '주행 시작: ')+destination))
+                floor_now = self.telemetry.get('floor', (0, {}))[1]
+                self.recorder.run.mission(kind=data.get('kind', 'navigate'), destination=destination, generation=generation,
+                    start_floor=floor_now.get('floor_id'), resume_phase=data.get('resume_phase') if resume else None,
+                    segments=[{k: seg.get(k) for k in ('type', 'target_id', 'profile_id', 'source_floor', 'target_floor')}
+                              for seg in plan.get('segments', [])])
                 return dict(submitted=True, destination=destination, recording=record)
         except Exception:
             with self.lock:
@@ -457,6 +482,18 @@ class RosConsole:
         if photo is None:raise ValueError('촬영 순회 설정이 없습니다.')
         return self.start(dict(destination=photo.settings['locations'][-1],
                                kind='rooftop_photo',record=data.get('record',False)))
+
+    def close_photo_session(self, data):
+        photo=getattr(self.orchestrator,'photo',None)
+        if photo is None:raise ValueError('촬영 미션 설정이 없습니다.')
+        with self.lock:
+            tick,status=self.telemetry.get('mission_status',(0,{}))
+            if (self.active or self.starting or getattr(self,'recovering',False) or getattr(self,'relocating',False)
+                    or time.monotonic()-tick>2 or status.get('active')):
+                raise ValueError('진행 중인 임무가 끝난 뒤 촬영 임무를 종료하세요.')
+            photo.close_without_return(data.get('mission_id'))
+            self.events.append(dict(time=time.time(),kind='photo',detail='촬영 임무를 복귀 없이 종료'))
+        return dict(closed=True,note='촬영 임무를 복귀 없이 종료했습니다. 로봇은 움직이지 않았고 사진은 그대로 남아 있습니다. 위치 유지 중이면 중단·저장으로 해제하세요.')
 
     def approve_return(self, data):
         photo=getattr(self.orchestrator,'photo',None)
@@ -476,6 +513,9 @@ class RosConsole:
             if generation is not None and generation != self.generation:
                 return
             self.active = False
+            primitive_result = primitive(result) if result else {}
+            self.recorder.run.result(status, primitive_result.get('result_code'), primitive_result.get('reason', '결과 없음'),
+                                     primitive_result.get('mission_id', ''))
             # Failed trials retain evidence through RC recovery and retries.
             # Explicit Stop/cancel still finalizes immediately; successful runs
             # keep their existing automatic save behavior.
@@ -592,6 +632,68 @@ class RosConsole:
                 self.telemetry.pop('floor', None)
                 self.events.append(dict(time=time.time(), kind='floor_selection', detail='실제 층 지정: '+target))
             return dict(accepted=True, note='지도를 바꿨습니다. 자동 위치 확인 후 주행할 수 있습니다. 위치가 다르면 RViz에서 2D Pose Estimate로 지정하세요.')
+        finally:
+            with self.lock:
+                self.floor_selecting = False
+
+    def floor_fault(self, refresh=False):
+        """Last failed floor transition recorded by the floor manager (~last_fault), cached 1 s."""
+        now = time.monotonic()
+        stamp, value = getattr(self, '_floor_fault_cache', (float('-inf'), None))
+        if refresh or now-stamp > 1.:
+            try:
+                fetched = rospy.get_param('/multifloor_manager/last_fault', None)
+                value = fetched if isinstance(fetched, dict) else None
+            except Exception:  # master briefly unavailable: keep the last reading
+                pass
+            self._floor_fault_cache = (now, value)
+        return value
+
+    def resume_floor_transition(self, data):
+        """Repeat the failed directed floor transition so the floor manager continues it.
+
+        Only after the target floor was confirmed (the stair already succeeded):
+        the floor manager then resumes at its first unfinished stage without a
+        new stair traversal, or rejects the goal if the record is no longer valid.
+        """
+        from multifloor_manager.msg import FloorTransitionAction, FloorTransitionGoal
+        with self.lock:
+            tick, status = self.telemetry.get('mission_status', (0, {}))
+            if (self.active or self.starting or self.floor_selecting or getattr(self, 'recovering', False)
+                    or getattr(self, 'relocating', False) or time.monotonic()-tick > 2 or status.get('active')):
+                raise ValueError('임무와 층 변경이 끝난 뒤 층 전환을 이어가세요.')
+            floor_tick, floor = self.telemetry.get('floor', (0, {}))
+            if time.monotonic()-floor_tick > 2 or floor.get('state') != FloorState.FAULT:
+                raise ValueError('층 관리자가 FAULT 상태가 아닙니다. 이어 갈 층 전환이 없습니다.')
+        fault = self.floor_fault(refresh=True)
+        if not fault or not fault.get('target_confirmed'):
+            raise ValueError('이어 갈 수 있는 층 전환 실패 기록이 없습니다. 목표 층 확정 전에 실패했다면 층 선택으로 복구하세요.')
+        if (data.get('transition_id') != fault.get('transition_id')
+                or data.get('target_floor') != fault.get('target_floor')):
+            raise ValueError('층 전환 실패 기록이 바뀌었습니다. 현재 상태를 다시 확인하세요.')
+        if floor.get('floor_id') != fault.get('source_floor'):
+            raise ValueError('현재 층 상태가 실패한 층 전환의 출발 층과 다릅니다.')
+        with self.lock:
+            if self.floor_selecting:
+                raise ValueError('층 지도를 변경하는 중입니다.')
+            self.floor_selecting = True
+        try:
+            client = actionlib.SimpleActionClient('/multifloor/floor_transition', FloorTransitionAction)
+            if not client.wait_for_server(rospy.Duration(2.)):
+                raise ValueError('층 전환 action server에 연결할 수 없습니다.')
+            client.send_goal(FloorTransitionGoal(transition_id=fault['transition_id'],
+                                                 target_floor=fault['target_floor']))
+            if not client.wait_for_result(rospy.Duration(40.)):
+                client.cancel_goal()
+                raise ValueError('층 전환 이어가기가 40초 안에 끝나지 않아 취소했습니다.')
+            result = client.get_result()
+            if client.get_state() != GoalStatus.SUCCEEDED:
+                raise ValueError('층 전환 이어가기 실패: '+(result.reason if result is not None else '결과 없음'))
+            with self.lock:
+                self.telemetry.pop('floor', None)
+                self.events.append(dict(time=time.time(), kind='floor_selection',
+                                        detail='층 전환 이어가기 완료: '+fault['target_floor']))
+            return dict(accepted=True, note=fault['target_floor']+' 층 전환을 마쳤습니다. 위치 확인 후 다음 주행을 시작하세요.')
         finally:
             with self.lock:
                 self.floor_selecting = False

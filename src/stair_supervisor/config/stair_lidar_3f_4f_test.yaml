@@ -158,6 +158,9 @@ routes:
     support_margin_m: 0.06
     # Landing arrival, turn, hold and adjoining flight handoff: 3 cm minimum.
     landing_support_margin_m: 0.03
+    # Flat-landing recovery band (3 -> 2 cm): below 3 cm only inward commands
+    # that do not shrink clearance are allowed; neutral/stale/below 2 cm stops.
+    landing_margin_recovery_m: 0.01
     # Additional pivot-disk clearance only; body/arrival support remains 3 cm.
     rotation_space_margin_m: 0.01
     # On ascent, measured 3-6 cm clearance can continue only with bounded
@@ -210,8 +213,12 @@ routes:
     FORWARD_SEGMENT_2: 45.0
     EXIT_CONFIRM: 15.0
   entry_reference:
+    # 2026-11-18: template leveled 4.0 deg about the entry point (-0.45, 0)
+    # (yaw unchanged). Its parallel side walls leaned 3.5/3.9 deg the same
+    # way, so its up axis was 4.0 deg off gravity and the entry fit failed the
+    # 5 deg IMU-gravity check (9/28 success replays at 5.7 deg; leveled 1.9).
     path: stair_3f_4f_entry.npy
-    sha256: 507f594e1db74370bdd961f9d1671e498a0400a3840953150dbbef1bb7ad6469
+    sha256: fce113c6a4bf6793156b7c01e4ee9166e80e843fc9bc7fb15fe29ad0d815b40c
     yaw_candidates:
     - -0.17453292519943295
     - 0.0
@@ -363,6 +370,9 @@ routes:
     margin_m: 0.02
     support_margin_m: 0.06
     landing_support_margin_m: 0.03
+    # Flat-landing recovery band (3 -> 2 cm): below 3 cm only inward commands
+    # that do not shrink clearance are allowed; neutral/stale/below 2 cm stops.
+    landing_margin_recovery_m: 0.01
     # Applies to both landing and rooftop turns; inherited by reverse traversal.
     rotation_space_margin_m: 0.01
     roof_pivot_radius_m: 0.35
@@ -453,8 +463,12 @@ routes:
   - - -1.0750000000000002
     - 2.705
   entry_reference:
+    # 2026-11-13: template rotated -6.7 deg about the entry point (-0.45, 0).
+    # Its stairs/walls were at +6.7 deg to this route's flight axes (template
+    # risers 7.0, walls 6.5; 105 field-cloud measurements 6.5-6.8). Route
+    # polygons were already stair-aligned and are unchanged.
     path: stair_5f_rf_up_entry.npy
-    sha256: 59523e8c92a6edfd233a85a2846fcc6ae4668c6cbfc91169f2abd396c85223ce
+    sha256: 1e4f98922ac85fdce58944be8291dec1817d54537b8135a4964ae52681281077
     yaw_candidates:
     - -0.17453292519943295
     - 0.0
@@ -477,3 +491,23 @@ routes:
     locations: config/locations.yaml
     location_id: stair_rf_landing
     floor_id: RF
+
+# Two-flight descents: the same surveyed UP geometry reversed, forward-facing.
+# entry_map is the upper landing location with its yaw facing down the stair.
+- id: stair_3f_4f_down
+  reverse_of: stair_3f_4f_up
+  commissioned: true
+  entry_map:
+    package: mission_manager
+    locations: config/locations.yaml
+    location_id: stair_4f_from_3f
+    floor_id: 4F
+
+- id: stair_4f_5f_down
+  reverse_of: stair_4f_5f_up
+  commissioned: true
+  entry_map:
+    package: mission_manager
+    locations: config/locations.yaml
+    location_id: stair_5f_from_4f
+    floor_id: 5F

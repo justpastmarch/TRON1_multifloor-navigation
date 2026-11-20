@@ -29,6 +29,7 @@ from livox_ros_driver2.msg import CustomMsg
 from .lidar_tracking import TrackingSettings, load_imu_rotation
 from .lidar_process import ProcessTrackingWorker, raw_header_stamp, points_from_raw_livox
 from .stair_feedback import StairFeedback, RouteAnchor, effective_support_margin, match_entry_landmarks, transform, se2, wrap
+from .attitude_consistency import relevel_before_entry
 from .lidar_tracking_core import register_scan_to_map, voxel_downsample_points
 from .configuration import load_stair_configuration
 from .stair_evidence import Phase
@@ -208,6 +209,22 @@ class RosLidarInterface:
         if self.control is None or route_id not in self.control.routes:
             raise ValueError("no LiDAR route for requested profile")
         route=self.control.routes[route_id]
+        # Never anchor a stair route on a tracked frame that disagrees with
+        # IMU gravity: re-level first (no new stop; unchanged when consistent).
+        holds_anchor = getattr(self.control, 'holds_anchor', None)
+        if (holds_anchor is None or getattr(self, 'worker', None) is None
+                or not hasattr(self.control, 'entry_imu_context')):
+            self.entry_attitude_check = dict(action='none', reason='attitude check unavailable')
+        elif holds_anchor():
+            # A reset would invalidate the hold's epoch and stop it: keep the frame.
+            self.entry_attitude_check = dict(action='none', reason='anchor-dependent hold active; tracked frame kept')
+        else:
+            self.entry_attitude_check = relevel_before_entry(
+                self.worker, self.control.entry_imu_context(), self.control.base_from_lidar,
+                clock=self.clock.monotonic, sleep=time.sleep)
+        self.entry_attitude_check['route_id'] = route_id
+        if self.entry_attitude_check['action'] == 'relevel':
+            rospy.logwarn('stair entry re-leveled LiDAR tracking: %s', self.entry_attitude_check)
         if 'entry_map' in route:
             return self._ensure_map_entry(route_id,route)
         reference=route.get("entry_reference")
@@ -394,6 +411,8 @@ class RosLidarInterface:
         diagnostic = self.worker.diagnostics()
         diagnostic.update(mode=self.configuration.mode, observe_only=self.configuration.observe_only)
         diagnostic['phase_test_protocol'] = 'bound-ticket-v1'
+        if getattr(self, 'entry_attitude_check', None) is not None:
+            diagnostic['entry_attitude_check'] = self.entry_attitude_check
         diagnostic.update(config_path=self.configuration.source_path,
                           config_sha256=self.configuration.source_sha256,
                           routes=[dict(id=r['id'], commissioned=r['commissioned'])
