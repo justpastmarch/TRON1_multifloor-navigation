@@ -74,6 +74,7 @@ if(CATKIN_ENABLE_TESTING)
   catkin_add_nosetests(test/test_console_recording.py)
   catkin_add_nosetests(test/test_console_map.py)
   catkin_add_nosetests(test/test_mapping_library.py)
+  catkin_add_nosetests(test/test_mapping_cloud.py)
   set(_mission_python_executable "${PYTHON_EXECUTABLE}")
   set(PYTHON_EXECUTABLE "${CMAKE_CURRENT_SOURCE_DIR}/test/rostest_python.sh")
   add_rostest(

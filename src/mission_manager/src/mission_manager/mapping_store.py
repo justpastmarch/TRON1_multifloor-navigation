@@ -55,6 +55,7 @@ class MapLibrary:
                     result['key'] = meta.parent.name
                     row['maps'].append(result)
                 row['bag_ready'] = (path/'input.bag').is_file()
+                row['raw'] = json.loads((path/'raw.json').read_text()) if (path/'raw.json').is_file() else None
                 row['comparison'] = json.loads((path/'comparison.json').read_text()) if (path/'comparison.json').is_file() else None
                 rows.append(row)
         return rows
@@ -69,7 +70,7 @@ class MapLibrary:
         return target
 
     def file(self, identifier, key, name):
-        if name not in ('map.pgm', 'map.yaml', 'graph.posegraph', 'graph.data'):
+        if name not in ('map.pgm', 'map.yaml', 'graph.posegraph', 'graph.data', 'cloud.ply', 'cloud.bin'):
             raise ValueError('지원하지 않는 파일입니다.')
         path = self.result_path(identifier,key)/name
         if not path.is_file() or path.is_symlink():

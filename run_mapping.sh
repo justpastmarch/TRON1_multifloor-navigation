@@ -47,9 +47,17 @@ if [[ -z "${MAPPING_MASTER_URI:-}" ]]; then
     ssh -o BatchMode=yes -o ConnectTimeout=5 "${MINI_PC_USER}@${MINI_PC_HOST}" \
         'systemctl --user start tron1-sensors.service' || \
         echo '센서 서비스 연결 대기: GUI의 scan 상태를 확인하세요.' >&2
+    # The mini PC raw LiDAR recorder (shared with stair runs) reads its master
+    # from runtime.env; point it at this session's network path.
+    ssh -o BatchMode=yes -o ConnectTimeout=5 "${MINI_PC_USER}@${MINI_PC_HOST}" \
+        "f=~/.local/share/tron1-stair-supervisor/runtime.env; test -f \$f && sed -i -e 's#^ROS_MASTER_URI=.*#ROS_MASTER_URI=${ROS_MASTER_URI}#' -e 's#^ROS_IP=.*#ROS_IP=${MINI_PC_ROS_IP}#' \$f" || \
+        echo '미니 PC 원본 LiDAR 녹화 설정을 갱신하지 못했습니다. 3D 지도는 만들어지지 않을 수 있습니다.' >&2
+    export MAPPING_RAW_RECORD_TOOL="${ROOT}/remote_stair_record.sh"
+    export MAPPING_CLOUD_TOOL="${ROOT}/remote_mapping_cloud.sh"
 fi
+export STAIR_LIDAR_CONFIG SCAN_OUTPUT_BASE
 PORT="${MAPPING_CONSOLE_PORT:-8766}"
-rosrun mission_manager mission_manager_node.py _mode:=mapping _console_port:="$PORT" &
+rosrun mission_manager mission_manager_node.py _mode:=mapping _console_port:="$PORT" _scan_output_base:="$SCAN_OUTPUT_BASE" &
 node_pid=$!
 pids+=("$node_pid")
 if [[ "${MAPPING_OPEN_BROWSER:-0}" == 1 ]]; then

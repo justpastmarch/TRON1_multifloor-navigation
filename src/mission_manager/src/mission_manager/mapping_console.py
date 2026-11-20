@@ -3,6 +3,8 @@ from concurrent.futures import ThreadPoolExecutor
 import json
 import os
 from pathlib import Path
+import subprocess
+import sys
 import threading
 import time
 import uuid
@@ -16,9 +18,51 @@ import tf2_ros
 from mission_manager.mapping_engine import Process,mapper_command,save_grid,save_graph
 from mission_manager.mapping_store import MapLibrary,atomic_json
 
+def cloud_params(env):
+    """LiDAR mounting and IMU calibration already approved for the stair stack."""
+    import numpy as np
+    import yaml
+    path=env.get('STAIR_LIDAR_CONFIG')
+    if not path:
+        import rospkg
+        path=Path(rospkg.RosPack().get_path('stair_supervisor'))/'config/stair_lidar_3f_4f_test.yaml'
+    path=Path(path);document=yaml.safe_load(path.read_text())
+    calibration=Path(document['calibration'])
+    if not calibration.is_absolute():calibration=path.parent/calibration
+    rotation=np.asarray(yaml.safe_load(calibration.read_text())['mapping']['extrinsic_R'],float).reshape(3,3)
+    return dict(base_from_lidar=document['base_from_lidar'],lidar_from_imu=rotation.T.tolist())
+
+
+def cloud_runner(command_prefix, params, log):
+    """Run mapping_cloud (locally or through the mini PC tool) and stream PROGRESS lines."""
+    def run(trajectory, output, progress):
+        output=Path(output);parameters=output.parent/(output.name+'_params.json')
+        atomic_json(parameters,params)
+        command=command_prefix+[str(trajectory),str(parameters),str(output)]
+        with open(log,'a') as stream:
+            child=subprocess.Popen(command,stdout=subprocess.PIPE,stderr=stream,text=True,start_new_session=True)
+            try:
+                for line in child.stdout:
+                    if line.startswith('PROGRESS '):
+                        try:progress(float(line.split()[1]))
+                        except ValueError:pass
+                if child.wait():raise RuntimeError('3D 지도 생성 실패: '+str(log))
+            finally:
+                if child.poll() is None:
+                    child.kill();child.wait()
+        if (output/'cloud.npz').is_file():
+            from mission_manager.mapping_cloud import finish_transport
+            finish_transport(output)
+        return json.loads((output/'result.json').read_text())
+    return run
+
+
 class MappingConsole:
     def __init__(self, root, env=None):
         self.library=MapLibrary(root);self.env=env or os.environ
+        self.raw_tool=self.env.get('MAPPING_RAW_RECORD_TOOL','')
+        self.cloud_tool=self.env.get('MAPPING_CLOUD_TOOL','')
+        self.raw_name=None;self.photo=None
         self.lock=threading.RLock();self.worker=ThreadPoolExecutor(max_workers=1)
         self.cancel_event=threading.Event();self.jobs={};self.requests={}
         self.session=None;self.mapper=None;self.recorder=None;self.grid=None
@@ -41,6 +85,8 @@ class MappingConsole:
                         mapper_alive=bool(self.mapper and self.mapper.alive),
                         recording=bool(self.recorder and self.recorder.alive),
                         jobs=list(self.jobs.values())[-20:],maps=self.library.list(),
+                        raw_recording=self.raw_name,
+                        photo=self.photo.mail_snapshot() if self.photo else dict(configured=False,reason='촬영 기능 미설정'),
                         root=str(self.library.root),motion_commands_sent=0)
 
     def map_snapshot(self):
@@ -61,10 +107,18 @@ class MappingConsole:
         if len(parts)==5 and parts[:2]==['api','maps']:
             _,_,identifier,key,action=parts
             if action=='preview':return self.library.preview(identifier,key)
+            if action=='cloud':return self.library.file(identifier,key,'cloud.bin'),'application/octet-stream'
             if action=='file':return self.library.file(identifier,key,q.get('name',[''])[0]),'application/octet-stream'
         raise ValueError('지원하지 않는 지도 조회입니다.')
 
     def mapping_request(self,path,data):
+        if path=='/api/photo/capture_mail':
+            if not self.photo:raise ValueError('촬영 기능 미설정')
+            return self.photo.capture_and_mail(data.get('recipient'))
+        if path=='/api/mail/settings':
+            if not self.photo:raise ValueError('촬영 기능 미설정')
+            if not isinstance(data.get('recipient'),str):raise ValueError('메일 주소를 입력하세요.')
+            return self.photo.mail_settings(data['recipient'])
         operations={'/api/mapping/start':self.start,'/api/mapping/save':self.save,
                     '/api/mapping/stop':self.stop,'/api/mapping/compare':self.compare,
                     '/api/mapping/import_compare':self.import_compare}
@@ -84,7 +138,7 @@ class MappingConsole:
             self.jobs[identifier]=dict(id=identifier,operation=path,state='QUEUED',detail='대기 중')
             self.requests[request_id]=(path,dict(data),identifier)
             if not busy:self.cancel_event.clear()
-            self.worker.submit(self._execute,identifier,operations[path],data)
+            self.worker.submit(self._execute,identifier,operations[path],dict(data,_job=identifier))
         return dict(accepted=True,job_id=identifier)
 
     def _execute(self,identifier,operation,data):
@@ -120,6 +174,7 @@ class MappingConsole:
         self.grid=None;self.map_received=0
         try:
             self.recorder=Process(['rosbag','record','-O',str(directory/'input.bag'),'/scan','/tron/wheel_odom_raw','/tf','/tf_static'],directory/'record.log')
+            self._start_raw(identifier,directory)
             # Record subscriptions must exist before SLAM starts.
             time.sleep(.5)
             if not self.recorder.alive:raise RuntimeError('비교용 BAG 기록을 시작하지 못했습니다.')
@@ -131,7 +186,8 @@ class MappingConsole:
                 time.sleep(.2)
             if self.map_received==0:raise RuntimeError('SLAM 지도 출력 대기 시간이 지났습니다. 센서 시각과 TF를 확인하세요.')
             self.session['state']='MAPPING'
-            atomic_json(directory/'capture.json',dict(topics=['/scan','/tron/wheel_odom_raw','/tf','/tf_static'],source='existing MID360 scan pipeline',motion_commands_sent=0))
+            atomic_json(directory/'capture.json',dict(topics=['/scan','/tron/wheel_odom_raw','/tf','/tf_static'],source='existing MID360 scan pipeline',
+                                                     raw_lidar='/livox/lidar,/livox/imu on mini PC' if self.raw_name else 'not recorded',motion_commands_sent=0))
             return dict(session_id=identifier)
         except Exception:
             self.stop({})
@@ -151,8 +207,37 @@ class MappingConsole:
         atomic_json(target/'result.json',result)
         return dict(session_id=self.session['id'],key=key,**result)
 
+    def _start_raw(self,identifier,directory):
+        """Raw LiDAR+IMU are recorded beside the publisher on the mini PC (the
+        same recorder as stair runs). Failure only drops the later 3D map."""
+        self.raw_name=None
+        if not self.raw_tool:
+            atomic_json(directory/'raw.json',dict(state='unavailable',error='원본 녹화 도구 미설정'));return
+        name='map_'+identifier
+        try:
+            result=subprocess.run([self.raw_tool,'start',name],capture_output=True,text=True,timeout=25)
+            if result.returncode:raise RuntimeError(result.stderr.strip()[-300:] or '시작 실패')
+        except (OSError,subprocess.TimeoutExpired,RuntimeError) as error:
+            atomic_json(directory/'raw.json',dict(name=name,state='failed',error='원본 LiDAR 녹화 시작 실패: '+str(error)))
+            rospy.logwarn('Raw LiDAR recording not started: %s',error);return
+        self.raw_name=name
+        atomic_json(directory/'raw.json',dict(name=name,state='recording',host='minipc'))
+
+    def _seal_raw(self):
+        name,self.raw_name=self.raw_name,None
+        if not name or not self.session:return
+        directory=self.library.path(self.session['id'])
+        try:
+            result=subprocess.run([self.raw_tool,'seal',name],capture_output=True,text=True,timeout=90)
+            if result.returncode:raise RuntimeError(result.stderr.strip()[-300:] or '마감 실패')
+            state='absent' if 'RAW_BAG_ABSENT' in result.stdout else 'sealed'
+            atomic_json(directory/'raw.json',dict(name=name,state=state,host='minipc'))
+        except (OSError,subprocess.TimeoutExpired,RuntimeError) as error:
+            atomic_json(directory/'raw.json',dict(name=name,state='unverified',host='minipc',error=str(error)))
+
     def stop(self,data):
         if self.recorder:self.recorder.stop();self.recorder=None
+        self._seal_raw()
         if self.mapper:self.mapper.stop();self.mapper=None
         if self.session:self.session['state']='STOPPED'
         return dict(stopped=True,bag_saved=bool(self.session and (self.library.path(self.session['id'])/'input.bag').is_file()))
@@ -163,7 +248,20 @@ class MappingConsole:
         directory=self.library.path(data.get('session_id'))
         source=directory/'input.bag'
         if not source.is_file():raise ValueError('저장이 완료된 비교용 BAG이 없습니다.')
-        return run_comparison(source,directory,self.cancel_event)
+        cloud=None
+        raw=json.loads((directory/'raw.json').read_text()) if (directory/'raw.json').is_file() else {}
+        if raw.get('state')=='sealed' and self.cloud_tool:
+            cloud=cloud_runner([self.cloud_tool,'build',raw['name']],dict(cloud_params(self.env),transport=True),directory/'cloud.log')
+        return run_comparison(source,directory,self.cancel_event,self._progress(data),cloud)
+
+    def _progress(self,data):
+        job=data.get('_job')
+        def update(value):
+            with self.lock:
+                if job in self.jobs:
+                    self.jobs[job]['progress']=value
+                    self.jobs[job]['detail']='%s (%d/%d)'%(value['label'],value['step'],value['steps'])
+        return update
 
     def import_compare(self,data):
         from mission_manager.mapping_compare import run_comparison
@@ -177,16 +275,52 @@ class MappingConsole:
         from mission_manager.mapping_compare import prepare_input
         prepare_input(source,directory/'input.bag')
         atomic_json(directory/'source.json',dict(source=str(source)))
-        return run_comparison(directory/'input.bag',directory,self.cancel_event)
+        raw=source.with_name(source.stem+'_raw.bag');cloud=None
+        if raw.is_file():
+            from mission_manager import mapping_cloud
+            cloud=cloud_runner(['nice','-n','10',sys.executable,mapping_cloud.__file__,str(raw)],cloud_params(self.env),directory/'cloud.log')
+        return run_comparison(directory/'input.bag',directory,self.cancel_event,self._progress(data),cloud)
 
     def close(self):
         if self.closed:return
         self.closed=True;self.cancel_event.set()
         self.worker.shutdown(wait=True)
         self.stop({})
+        if self.photo:
+            self.photo.capture_stop.set()
+            if self.photo.mail:self.photo.mail.close()
         for sub in self.subs:sub.unregister()
         self.listener.unregister()
         if self.server:self.server.close()
+
+
+class OnDemandCamera:
+    """Subscribe to the RGB stream only while one photo is taken: the mapping
+    link may be a phone hotspot that cannot carry a continuous image stream."""
+    def __init__(self,topic,timeout):
+        self.topic,self.timeout=topic,timeout
+    def capture_photo(self,location_id,output,cancelled):
+        from mission_manager.photo_capture import PhotoCapture
+        camera=PhotoCapture(self.topic,self.timeout)
+        try:return camera.capture(location_id,output,cancelled)
+        finally:
+            camera.subscriber.unregister();camera.recording.unregister()
+
+
+def mapping_photo(output_base):
+    """Same capture-and-mail path, recipient and outbox as the driving console."""
+    if not output_base:return None
+    try:
+        import rospkg
+        import yaml
+        from mission_manager.mail_outbox import MailOutbox
+        from mission_manager.photo_mission import PhotoMission
+        settings=yaml.safe_load((Path(rospkg.RosPack().get_path('mission_manager'))/'config/photo_tour.yaml').read_text())
+        mail=MailOutbox(Path(output_base)/'photos')
+        return PhotoMission(settings,output_base,OnDemandCamera(settings['image_topic'],float(settings['frame_timeout_sec'])),mail=mail)
+    except Exception as error:
+        rospy.logwarn('Photo mail unavailable in mapping mode: %s',error)
+        return None
 
 
 def main():
@@ -194,6 +328,7 @@ def main():
     import rospkg
     default='/mnt/ethan/tron-bags/mapping' if os.path.ismount('/mnt/ethan') else str(Path.home()/'TRON1_maps/mapping')
     backend=MappingConsole(rospy.get_param('~mapping_output_root',os.environ.get('MAPPING_OUTPUT_ROOT',default)))
+    backend.photo=mapping_photo(rospy.get_param('~scan_output_base',os.environ.get('SCAN_OUTPUT_BASE','')))
     html=Path(rospkg.RosPack().get_path('mission_manager'))/'config/mapping_console.html'
     class NoDoor:
         def __init__(self,*args):pass
